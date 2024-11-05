@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>AI Chat Assistant</title>
+   <style>
+      #chatbox {
+         border: 1px solid #ccc;
+         width: 300px;
+         height: 400px;
+         display: flex;
+         flex-direction: column;
+         justify-content: space-between;
+      }
+      #chatDisplay {
+         flex: 1;
+         padding: 10px;
+         overflow-y: auto;
+         background-color: #f9f9f9;
+      }
+      input#userMessage {
+         width: 100%;
+         padding: 10px;
+         box-sizing: border-box;
+      }
+      button {
+         background-color: #007bff;
+         color: white;
+         padding: 10px;
+         width: 100%;
+         cursor: pointer;
+      }
+      .user { color: blue; }
+      .ai { color: green; }
+   </style>
+</head>
+<body>
+
+<div id="chatbox">
+   <div id="chatDisplay"></div>
+   <input type="text" id="userMessage" placeholder="Ask me anything...">
+   <button onclick="sendMessage()">Send</button>
+</div>
+
+<script>
+   // Your API key (replace with your actual key)
+   const OPENAI_API_KEY = 'sk-svcacct-ElXZNXYpQxaMeCtrVVKsxfSJ4HiiW1qlQ0Oq8u6z1vkQwHlT72PzSgLK2h8eFT3BlbkFJi8HiEm3JXlXTKxlN1mf-vRu0jLKmsaIqqsr1AlrirGhYHTsR8zPsySR3e-CAA';
+
+   async function sendMessage() {
+      const userMessage = document.getElementById('userMessage').value;
+      displayMessage(userMessage, 'user');
+      document.getElementById('userMessage').value = ''; // Clear input field
+
+      try {
+         const response = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+               'Authorization': `Bearer ${sk-svcacct-ElXZNXYpQxaMeCtrVVKsxfSJ4HiiW1qlQ0Oq8u6z1vkQwHlT72PzSgLK2h8eFT3BlbkFJi8HiEm3JXlXTKxlN1mf-vRu0jLKmsaIqqsr1AlrirGhYHTsR8zPsySR3e-CAA}`,
+               'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+               model: "gpt-4",
+               messages: [{ role: "user", content: userMessage }]
+            })
+         });
+
+         const data = await response.json();
+         const aiMessage = data.choices[0].message.content;
+         displayMessage(aiMessage, 'ai');
+      } catch (error) {
+         console.error('Error:', error);
+         displayMessage("Sorry, something went wrong.", 'error');
+      }
+   }
+
+   function displayMessage(message, sender) {
+      const chatDisplay = document.getElementById('chatDisplay');
+      const messageDiv = document.createElement('div');
+      messageDiv.classList.add(sender);
+      messageDiv.textContent = message;
+      chatDisplay.appendChild(messageDiv);
+      chatDisplay.scrollTop = chatDisplay.scrollHeight; // Auto-scroll
+   }
+</script>
+
+</body>
+</html>
