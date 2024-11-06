@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catch the Swimming Fish - Which One Did You Know? </title>
+    <title>Catch the Swimming Fish - French Vocabulary</title>
     <style>
         * {
             margin: 0;
@@ -12,8 +12,8 @@
         }
 
         body {
-            background-color: #000000;
-            color: #ffffff;
+            background-color: #000;
+            color: #00ffff;
             font-family: Arial, sans-serif;
             display: flex;
             flex-direction: column;
@@ -24,39 +24,41 @@
         }
 
         h1 {
-            margin-top: 20px;
+            margin-top: 10px;
             font-size: 2em;
             text-shadow: 0 0 10px #00ffff;
         }
 
         .ocean {
             position: relative;
-            width: 100vw;
-            height: 80vh;
+            width: 80vw;
+            height: 70vh;
             overflow: hidden;
-            background: radial-gradient(circle, #003366, #001f3f);
+            background: linear-gradient(to bottom, #001f3f, #000a1f);
             border: 2px solid #00ffff;
+            border-radius: 10px;
             box-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
+            margin-top: 20px;
         }
 
         .fish {
             position: absolute;
-            width: 60px;
-            height: 40px;
+            width: 70px;
+            height: 50px;
             background-color: #ff6347;
             border-radius: 50%;
             cursor: pointer;
             color: #fff;
-            font-size: 1em;
+            font-size: 0.8em;
+            font-weight: bold;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
-            transition: transform 5.8s;
+            transition: transform 0.2s;
         }
 
         .fish:hover {
-            transform: scale(1.2);
+            transform: scale(1.1);
         }
 
         .fish:after {
@@ -64,15 +66,15 @@
             position: absolute;
             width: 0;
             height: 0;
-            border-top: 12px solid transparent;
-            border-bottom: 12px solid transparent;
-            border-left: 18px solid #ff6347;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-left: 15px solid #ff6347;
             left: -15px;
-            top: 8px;
+            top: 15px;
         }
 
         .scoreboard {
-            font-size: 1.5em;
+            font-size: 1.2em;
             color: #00ffff;
             text-shadow: 0 0 5px #00ffff;
             margin-top: 10px;
@@ -81,7 +83,7 @@
 </head>
 <body>
 
-    <h1>Catch the Swimming Fish - Which One Did You Know? </h1>
+    <h1>Catch the Swimming Fish - Which One Did You Know?</h1>
     <div class="ocean" id="ocean"></div>
     <div class="scoreboard">Score: <span id="score">0</span></div>
 
@@ -107,13 +109,13 @@
             fish.textContent = randomWord;
 
             // Randomly position fish
-            const startX = Math.random() * (window.innerWidth - 60);
-            const startY = Math.random() * (ocean.clientHeight - 40);
+            const startX = Math.random() * (ocean.clientWidth - 70);
+            const startY = Math.random() * (ocean.clientHeight - 50);
             fish.style.left = `${startX}px`;
             fish.style.top = `${startY}px`;
 
             // Random speed for fish to swim
-            const speed = Math.random() * 1 + 2;
+            const speed = Math.random() * 3 + 1;
 
             // Add event listener to catch fish
             fish.addEventListener("click", catchFish);
@@ -129,9 +131,9 @@
                 let posX = parseFloat(fish.style.left);
                 let posY = parseFloat(fish.style.top);
 
-                // Change direction if fish hits the screen edges
-                if (posX <= 0 || posX >= window.innerWidth - 60) directionX *= -1;
-                if (posY <= 0 || posY >= ocean.clientHeight - 40) directionY *= -1;
+                // Change direction if fish hits the container edges
+                if (posX <= 0 || posX >= ocean.clientWidth - 70) directionX *= -1;
+                if (posY <= 0 || posY >= ocean.clientHeight - 50) directionY *= -1;
 
                 // Update position
                 fish.style.left = `${posX + speed * directionX}px`;
