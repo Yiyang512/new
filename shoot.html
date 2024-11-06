@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Vocabulary Shooting Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000; /* Totally black background */
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+        }
+
+        .game-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            background-color: #000; /* Totally black background */
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 50px;
+        }
+
+        .target-word {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .scoreboard {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 1.2em;
+            color: #39FF14;
+        }
+
+        .target {
+            position: absolute;
+            background-color: #8A2BE2;
+            color: #fff;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            animation: move 4s infinite ease-in-out;
+        }
+
+        /* Randomized animation to move targets in different directions */
+        @keyframes move {
+            0% {
+                transform: translate(0, 0);
+            }
+            25% {
+                transform: translate(calc(-10px + 20px * var(--random-x)), calc(-15px + 30px * var(--random-y)));
+            }
+            50% {
+                transform: translate(calc(15px - 30px * var(--random-x)), calc(10px - 20px * var(--random-y)));
+            }
+            75% {
+                transform: translate(calc(-10px + 20px * var(--random-x)), calc(-15px + 30px * var(--random-y)));
+            }
+            100% {
+                transform: translate(0, 0);
+            }
+        }
+
+        .target.correct {
+            background-color: #28a745;
+        }
+
+        .target.incorrect {
+            background-color: #dc3545;
+        }
+
+        .play-again-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #8A2BE2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: none;
+        }
+
+        .play-again-btn:hover {
+            background-color: #5b1b99;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="game-container">
+        <div class="scoreboard" id="scoreboard">Score: 0</div>
+        <div class="target-word" id="target-word">Translate: "Courage"</div>
+        <button class="play-again-btn" id="play-again-btn" onclick="startGame()">Play Again</button>
+    </div>
+
+    <script>
+        const vocabWords = [
+            { english: "Courage", french: "Courage" },
+            { english: "Wisdom", french: "Sagesse" },
+            { english: "Determination", french: "Détermination" },
+            { english: "Generosity", french: "Générosité" },
+            { english: "Patience", french: "Patience" },
+            { english: "Integrity", french: "Intégrité" },
+            { english: "Perseverance", french: "Persévérance" },
+            { english: "Creativity", french: "Créativité" },
+            { english: "Curiosity", french: "Curiosité" },
+            { english: "Confidence", french: "Confiance" },
+            { english: "Independence", french: "Indépendance" },
+            { english: "Responsibility", french: "Responsabilité" },
+            { english: "Ambition", french: "Ambition" },
+            { english: "Empathy", french: "Empathie" },
+            { english: "Optimism", french: "Optimisme" },
+            { english: "Understanding", french: "Compréhension" },
+            { english: "Passion", french: "Passion" },
+            { english: "Bravery", french: "Bravoure" },
+            { english: "Serenity", french: "Sérénité" },
+            { english: "Adaptability", french: "Adaptabilité" }
+        ];
+
+        let score = 0;
+        let currentTargetWord;
+        let targets = [];
+        let gameContainer = document.querySelector('.game-container');
+        const scoreboard = document.getElementById('scoreboard');
+        const targetWordDisplay = document.getElementById('target-word');
+        const playAgainBtn = document.getElementById('play-again-btn');
+
+        function startGame() {
+            score = 0;
+            updateScore();
+            playAgainBtn.style.display = 'none';
+            loadNextWord();
+        }
+
+        function loadNextWord() {
+            // Clear existing targets
+            targets.forEach(target => target.remove());
+            targets = [];
+
+            // Select a random word from vocab
+            currentTargetWord = vocabWords[Math.floor(Math.random() * vocabWords.length)];
+            targetWordDisplay.innerText = `Translate: "${currentTargetWord.english}"`;
+
+            // Generate targets (correct answer + random incorrect answers)
+            let correctTarget = createTarget(currentTargetWord.french, true);
+            gameContainer.appendChild(correctTarget);
+            targets.push(correctTarget);
+
+            for (let i = 0; i < 19; i++) {  // Adding 19 additional options for a total of 20
+                let randomWord;
+                do {
+                    randomWord = vocabWords[Math.floor(Math.random() * vocabWords.length)].french;
+                } while (randomWord === currentTargetWord.french || targets.some(t => t.innerText === randomWord));
+
+                let incorrectTarget = createTarget(randomWord, false);
+                gameContainer.appendChild(incorrectTarget);
+                targets.push(incorrectTarget);
+            }
+
+            // Randomly position the targets
+            positionTargets();
+        }
+
+        function createTarget(text, isCorrect) {
+            let target = document.createElement('div');
+            target.classList.add('target');
+            target.innerText = text;
+            target.style.setProperty('--random-x', Math.random());  // Randomize x direction
+            target.style.setProperty('--random-y', Math.random());  // Randomize y direction
+            target.onclick = () => shootTarget(target, isCorrect);
+            return target;
+        }
+
+        function positionTargets() {
+            targets.forEach(target => {
+                const x = Math.floor(Math.random() * (gameContainer.clientWidth - 100));
+                const y = Math.floor(Math.random() * (gameContainer.clientHeight - 200)) + 100;
+                target.style.left = `${x}px`;
+                target.style.top = `${y}px`;
+            });
+        }
+
+        function shootTarget(target, isCorrect) {
+            if (isCorrect) {
+                target.classList.add('correct');
+                score++;
+                updateScore();
+                setTimeout(() => loadNextWord(), 800);
+            } else {
+                target.classList.add('incorrect');
+                target.onclick = null;
+            }
+        }
+
+        function updateScore() {
+            scoreboard.innerText = `Score: ${score}`;
+        }
+
+        function endGame() {
+            playAgainBtn.style.display = 'block';
+            targetWordDisplay.innerText = "Game Over! Final Score: " + score;
+            targets.forEach(target => target.remove());
+        }
+
+        startGame();
+    </script>
+</body>
+</html>
