@@ -3,253 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced English-French Flip Cards</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <title>French Grammar Course</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Poppins', sans-serif;
             background-color: #000;
             color: #fff;
-            min-height: 100vh;
-            overflow: auto;
-        }
-
-        .flip-card-container {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 20px;
-            padding: 20px;
-            max-width: 1200px;
-        }
-
-        .flip-card {
-            background-color: transparent;
-            width: 160px;
-            height: 160px;
-            perspective: 1000px;
-        }
-
-        .flip-card-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            text-align: center;
-            transition: transform 0.6s;
-            transform-style: preserve-3d;
-            cursor: pointer;
-        }
-
-        .flip-card:hover .flip-card-inner {
-            transform: rotateY(180deg);
-        }
-
-        .flip-card-front, .flip-card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-            border-radius: 10px;
+            font-family: poppins, sans-serif;
             display: flex;
-            align-items: center;
             justify-content: center;
-            font-size: 1.1em;
-            color: #000;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+            flex-direction: column;
+        }
+        .flash {
+            animation: flash 1s infinite;
+        }
+        .heading {
+            font-weight: bold;
+            margin-bottom: 1.6rem;
+            font-size: 2rem;
+        }
+        .subheading {
+            font-weight: bold;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            font-size: 2rem;
+        }
+        .footer {
+            font-style: italic;
+            margin-top: 2rem;
+            font-size: 1rem;
         }
 
-        .flip-card-front {
-            background-color: #40E0D0; /* Turquoise */
-        }
-
-        .flip-card-back {
-            background-color: #FFD700; /* Gold */
-            transform: rotateY(180deg);
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 800px) {
-            .flip-card-container {
-                grid-template-columns: repeat(3, 1fr);
+        /* Keyframes for flashing animation */
+        @keyframes flash {
+            0%, 50%, 100% {
+                opacity: 1;
             }
-        }
-
-        @media (max-width: 500px) {
-            .flip-card-container {
-                grid-template-columns: 1fr;
+            25%, 75% {
+                opacity: 0;
             }
         }
     </style>
 </head>
 <body>
 
-    <div class="flip-card-container">
-        <!-- 50 Advanced Flip Cards -->
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">Knowledge</div>
-                <div class="flip-card-back">Connaissance</div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">Wisdom</div>
-                <div class="flip-card-back">Sagesse</div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">Courage</div>
-                <div class="flip-card-back">Courage</div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">Mystery</div>
-                <div class="flip-card-back">Mystère</div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">Fortune</div>
-                <div class="flip-card-back">Fortune</div>
-            </div>
-        </div>
+    <div class="heading flash">Tired of outdated lessons?</div>
+    <p class="flash">Our grammar videos are evergreen – meaning they never go out of style! No matter your level, our step-by-step videos break down the trickiest grammar points into easy, digestible chunks.</p> 
+    <p class="flash">Whether you're a beginner or advanced learner, these lessons are designed to evolve with you, offering value every time you revisit them.</p>
 
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">Hope</div>
-                <div class="flip-card-back">Espoir</div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">Freedom</div>
-                <div class="flip-card-back">Liberté</div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">Faith</div>
-                <div class="flip-card-back">Foi</div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">Justice</div>
-                <div class="flip-card-back">Justice</div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">Culture</div>
-                <div class="flip-card-back">Culture</div>
-            </div>
-        </div>
+    <div class="subheading flash">What makes it unique?</div>
+    <p class="flash">Each video is packed with examples, interactive elements, and real-world applications to make sure you truly understand the concepts.</p>
 
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">Community</div>
-                <div class="flip-card-back">Communauté</div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">Respect</div>
-                <div class="flip-card-back">Respect</div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">Charity</div>
-                <div class="flip-card-back">Charité</div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">Happiness</div>
-                <div class="flip-card-back">Bonheur</div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">Strength</div>
-                <div class="flip-card-back">Force</div>
-            </div>
-        </div>
-
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">Love</div>
-                <div class="flip-card-back">Amour</div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">Victory</div>
-                <div class="flip-card-back">Victoire</div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">Harmony</div>
-                <div class="flip-card-back">Harmonie</div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">Peace</div>
-                <div class="flip-card-back">Paix</div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">Power</div>
-                <div class="flip-card-back">Pouvoir</div>
-            </div>
-        </div>
-
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">Success</div>
-                <div class="flip-card-back">Succès</div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">Adventure</div>
-                <div class="flip-card-back">Aventure</div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">Dream</div>
-                <div class="flip-card-back">Rêve</div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">Reality</div>
-                <div class="flip-card-back">Réalité</div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">Nature</div>
-                <div class="flip-card-back">Nature</div>
-            </div>
-        </div>
-
-        <!-- Add more advanced words to reach 50 cards -->
-        <!-- Replace the English and French words as needed for each card -->
-    </div>
+    <div class="footer flash">Uncharted Territory: Your First Course to Master French Grammar</div>
 
 </body>
 </html>
