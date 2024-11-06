@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>French Vocabulary Snake Game</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            height: 100vh;
+            justify-content: center;
+        }
+
+        h1 {
+            color: #FFD700;
+            text-shadow: 0 0 10px #FFD700;
+            margin-bottom: 10px;
+        }
+
+        #gameCanvas {
+            border: 2px solid #FFD700;
+            background-color: #111;
+        }
+
+        .scoreboard {
+            font-size: 1.5em;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>French Vocabulary Snake Game</h1>
+    <canvas id="gameCanvas" width="400" height="400"></canvas>
+    <div class="scoreboard">Score: <span id="score">0</span></div>
+    <div id="translation">Learned Word: None</div>
+
+    <script>
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
+        const box = 20; // Size of the snake's body
+        let score = 0;
+
+        // Vocabulary words
+        const words = [
+            { french: "Chien", english: "Dog" },
+            { french: "Chat", english: "Cat" },
+            { french: "Maison", english: "House" },
+            { french: "Arbre", english: "Tree" },
+            { french: "Livre", english: "Book" },
+            { french: "Eau", english: "Water" },
+            { french: "Soleil", english: "Sun" },
+            { french: "Amour", english: "Love" },
+            { french: "Pain", english: "Bread" },
+            { french: "Pomme", english: "Apple" }
+        ];
+
+        let snake = [{ x: 10 * box, y: 10 * box }];
+        let direction = "RIGHT";
+        let food = getRandomFood();
+
+        document.addEventListener("keydown", changeDirection);
+
+        function changeDirection(event) {
+            if (event.key === "ArrowLeft" && direction !== "RIGHT") direction = "LEFT";
+            else if (event.key === "ArrowUp" && direction !== "DOWN") direction = "UP";
+            else if (event.key === "ArrowRight" && direction !== "LEFT") direction = "RIGHT";
+            else if (event.key === "ArrowDown" && direction !== "UP") direction = "DOWN";
+        }
+
+        function getRandomFood() {
+            const word = words[Math.floor(Math.random() * words.length)];
+            return {
+                x: Math.floor(Math.random() * 20) * box,
+                y: Math.floor(Math.random() * 20) * box,
+                word: word
+            };
+        }
+
+        function drawGame() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw snake
+            for (let i = 0; i < snake.length; i++) {
+                ctx.fillStyle = (i === 0) ? "#FFD700" : "#FFA500";
+                ctx.fillRect(snake[i].x, snake[i].y, box, box);
+                ctx.strokeStyle = "#111";
+                ctx.strokeRect(snake[i].x, snake[i].y, box, box);
+            }
+
+            // Draw food (French word)
+            ctx.fillStyle = "#FF4500";
+            ctx.fillRect(food.x, food.y, box, box);
+            ctx.fillStyle = "#FFFFFF";
+            ctx.font = "12px Arial";
+            ctx.fillText(food.word.french, food.x + 2, food.y + 15);
+
+            // Snake movement
+            let snakeX = snake[0].x;
+            let snakeY = snake[0].y;
+
+            if (direction === "LEFT") snakeX -= box;
+            if (direction === "UP") snakeY -= box;
+            if (direction === "RIGHT") snakeX += box;
+            if (direction === "DOWN") snakeY += box;
+
+            // Wrap the snake when it hits the wall
+            if (snakeX < 0) snakeX = canvas.width - box;
+            if (snakeY < 0) snakeY = canvas.height - box;
+            if (snakeX >= canvas.width) snakeX = 0;
+            if (snakeY >= canvas.height) snakeY = 0;
+
+            // Check if snake eats the food
+            if (snakeX === food.x && snakeY === food.y) {
+                score++;
+                document.getElementById("score").textContent = score;
+                document.getElementById("translation").textContent = `Learned Word: ${food.word.french} - ${food.word.english}`;
+                food = getRandomFood(); // Get new food
+            } else {
+                snake.pop();
+            }
+
+            // Add new head to the snake
+            const newHead = { x: snakeX, y: snakeY };
+
+            // Check if snake collides with itself
+            if (collision(newHead, snake)) {
+                // Reset game if collision with itself occurs
+                score = 0;
+                snake = [{ x: 9 * box, y: 10 * box }];
+                direction = "RIGHT";
+                food = getRandomFood();
+                document.getElementById("score").textContent = score;
+                document.getElementById("translation").textContent = "Learned Word: None";
+                return;
+            }
+
+            snake.unshift(newHead);
+        }
+
+        function collision(head, array) {
+            for (let i = 1; i < array.length; i++) {
+                if (head.x === array[i].x && head.y === array[i].y) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // Game loop
+        let game = setInterval(drawGame, 200);
+    </script>
+</body>
+</html>
