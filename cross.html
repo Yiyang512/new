@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phrase of the Day - Word Hunt</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #000;
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(12, 40px);
+            grid-template-rows: repeat(12, 40px);
+            gap: 3px;
+            margin-bottom: 20px;
+        }
+
+        .cell {
+            width: 40px;
+            height: 40px;
+            background-color: #333;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            border-radius: 5px;
+        }
+
+        .cell.found {
+            background-color: #39FF14; /* Green for found words */
+            color: #000;
+        }
+
+        .instructions {
+            max-width: 400px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .phrase {
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #FFD700; /* Gold color */
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Phrase of the Day - Word Hunt</h1>
+    <div class="instructions">
+        Find each word in the phrase of the day hidden in the grid. Click on each letter to reveal the words.
+    </div>
+    
+    <!-- Grid for the word hunt -->
+    <div class="grid-container" id="grid-container"></div>
+    
+    <!-- Display phrase after all words are found -->
+    <div class="phrase" id="phrase-display" style="display: none;">
+        Phrase of the Day: <span id="phrase-text"></span>
+    </div>
+
+    <script>
+        // Phrase of the day and words to find
+        const phrase = "L'effort constant mène à la maîtrise";
+        const words = ["L'effort", "constant", "mène", "à", "la", "maîtrise"];
+        
+        // 12x12 letter grid for a larger word search puzzle
+        const gridLetters = [
+            ["L", "E", "F", "F", "O", "R", "T", "C", "O", "N", "S", "T"],
+            ["A", "N", "T", "M", "E", "N", "E", "A", "Z", "R", "E", "F"],
+            ["C", "U", "A", "B", "D", "L", "A", "Q", "P", "J", "N", "S"],
+            ["M", "A", "Î", "T", "R", "I", "S", "E", "W", "O", "R", "K"],
+            ["R", "L", "Q", "V", "F", "O", "I", "R", "D", "E", "L", "A"],
+            ["T", "G", "C", "N", "O", "N", "R", "S", "G", "T", "H", "M"],
+            ["I", "O", "R", "K", "S", "P", "N", "H", "A", "P", "B", "E"],
+            ["O", "W", "P", "J", "Q", "A", "R", "T", "E", "I", "O", "U"],
+            ["C", "Z", "L", "E", "M", "E", "N", "T", "A", "U", "A", "V"],
+            ["S", "A", "L", "O", "N", "A", "E", "I", "S", "I", "O", "F"],
+            ["K", "N", "U", "T", "R", "S", "A", "C", "G", "M", "É", "N"],
+            ["T", "R", "E", "S", "H", "D", "J", "L", "A", "I", "T", "P"]
+        ];
+
+        const gridContainer = document.getElementById("grid-container");
+        const phraseDisplay = document.getElementById("phrase-display");
+        const phraseText = document.getElementById("phrase-text");
+
+        // Track found words
+        let foundWords = 0;
+
+        // Display the grid and initialize cells
+        gridLetters.forEach((row, rowIndex) => {
+            row.forEach((letter, colIndex) => {
+                const cell = document.createElement("div");
+                cell.classList.add("cell");
+                cell.innerText = letter;
+                cell.dataset.letter = letter;
+                cell.dataset.row = rowIndex;
+                cell.dataset.col = colIndex;
+                gridContainer.appendChild(cell);
+
+                // Add click event to reveal letters if part of a word
+                cell.addEventListener("click", () => {
+                    checkLetter(cell);
+                });
+            });
+        });
+
+        // Function to check if a letter is part of a word and reveal it
+        function checkLetter(cell) {
+            const letter = cell.dataset.letter;
+            const row = parseInt(cell.dataset.row);
+            const col = parseInt(cell.dataset.col);
+
+            // Iterate through words to see if this cell is part of any
+            let wordFound = false;
+            for (const word of words) {
+                if (word.includes(letter) && isWordPart(word, row, col)) {
+                    revealWord(word);
+                    wordFound = true;
+                    break;
+                }
+            }
+
+            if (!wordFound) {
+                cell.classList.add("found"); // Incorrect letters remain highlighted once clicked
+            }
+
+            // Check if all words are found
+            if (foundWords === words.length) {
+                phraseText.innerText = phrase;
+                phraseDisplay.style.display = "block";
+            }
+        }
+
+        // Function to validate if a cell is part of a word
+        function isWordPart(word, row, col) {
+            const wordLetters = word.split("");
+            let isPart = false;
+
+            wordLetters.forEach((wLetter, index) => {
+                if (wLetter === gridLetters[row][col]) {
+                    isPart = true;
+                }
+            });
+            return isPart;
+        }
+
+        // Reveal full word once matched correctly
+        function revealWord(word) {
+            foundWords++;
+            const letters = document.querySelectorAll(".cell");
+            letters.forEach((cell) => {
+                if (word.includes(cell.dataset.letter)) {
+                    cell.classList.add("found");
+                }
+            });
+        }
+    </script>
+</body>
+</html>
