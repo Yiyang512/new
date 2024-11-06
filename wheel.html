@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>High-Tech Vocabulary Wheel Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=poppins&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #000;
+            color: #fff;
+            font-family: 'poppins', sans-serif;
+        }
+
+        .wheel-container {
+            position: relative;
+            width: 350px;
+            height: 350px;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 0 120px rgba(0, 255, 255, 0.7), 0 0 30px rgba(0, 255, 255, 0.5);
+        }
+
+        .wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(
+                #0FF0FC 0deg 45deg,
+                #FF3CAC 45deg 90deg,
+                #2BFF88 90deg 135deg,
+                #FFD700 135deg 180deg,
+                #E94B3C 180deg 225deg,
+                #33CCFF 225deg 270deg,
+                #9400D3 270deg 315deg,
+                #FFA500 315deg 360deg
+            );
+            transition: transform 5s ease;
+            position: relative;
+        }
+
+        .pointer {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0; 
+            height: 0; 
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-bottom: 30px solid #0FF0FC;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.8), 0 0 20px rgba(0, 255, 255, 0.6);
+        }
+
+        .spin-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            color: #000;
+            background-color: #00FFFF;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
+        }
+
+        .spin-btn:hover {
+            background-color: #00BFFF;
+        }
+
+        /* Labels for each section */
+        .wheel .label {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1em;
+            font-weight: bold;
+            text-transform: uppercase;
+            transform-origin: 100% 100%;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+        }
+
+        /* Position labels for each section */
+        .label1 { transform: rotate(22.5deg); }
+        .label2 { transform: rotate(67.5deg); }
+        .label3 { transform: rotate(112.5deg); }
+        .label4 { transform: rotate(157.5deg); }
+        .label5 { transform: rotate(202.5deg); }
+        .label6 { transform: rotate(247.5deg); }
+        .label7 { transform: rotate(292.5deg); }
+        .label8 { transform: rotate(337.5deg); }
+
+        .question-container {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 1.3em;
+        }
+
+        .input-container {
+            margin-top: 15px;
+        }
+
+        .answer-input {
+            padding: 10px;
+            font-size: 1.1em;
+            border-radius: 5px;
+            border: none;
+            width: 200px;
+            text-align: center;
+        }
+
+        .submit-btn {
+            padding: 10px 20px;
+            margin-left: 10px;
+            font-size: 1.1em;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .score {
+            margin-top: 20px;
+            font-size: 1.4em;
+        }
+    </style>
+</head>
+<body>
+
+
+    <!-- Wheel and Pointer -->
+    <div class="wheel-container">
+        <div class="wheel" id="wheel">
+            <div class="label label1">Chat</div>
+            <div class="label label2">Maison</div>
+            <div class="label label3">Livre</div>
+            <div class="label label4">Arbre</div>
+            <div class="label label5">Amour</div>
+            <div class="label label6">Soleil</div>
+            <div class="label label7">Eau</div>
+            <div class="label label8">Jardin</div>
+        </div>
+        <div class="pointer"></div>
+    </div>
+
+    <!-- Spin Button -->
+    <button class="spin-btn" onclick="spinWheel()">Spin the Wheel</button>
+
+    <!-- Question Container -->
+    <div class="question-container" id="question-container" style="display: none;">
+        <p id="question"></p>
+        <div class="input-container">
+            <input type="text" class="answer-input" id="answer-input" placeholder="Your answer">
+            <button class="submit-btn" onclick="checkAnswer()">Submit</button>
+        </div>
+    </div>
+
+    <!-- Score Display -->
+    <div class="score" id="score">Score: 0</div>
+
+    <script>
+        const wheel = document.getElementById('wheel');
+        const questionContainer = document.getElementById('question-container');
+        const questionText = document.getElementById('question');
+        const answerInput = document.getElementById('answer-input');
+        const scoreDisplay = document.getElementById('score');
+        
+        let isSpinning = false;
+        let score = 0;
+        let currentQuestion = '';
+
+        // Array of questions and answers
+        const questions = [
+            { question: "What is the French word for 'Cat'?", answer: "chat" },
+            { question: "Translate to French: 'House'", answer: "maison" },
+            { question: "Translate to French: 'Book'", answer: "livre" },
+            { question: "What is the French word for 'Tree'?", answer: "arbre" },
+            { question: "Translate to French: 'Love'", answer: "amour" },
+            { question: "What is the French word for 'Sun'?", answer: "soleil" },
+            { question: "Translate to French: 'Water'", answer: "eau" },
+            { question: "What is the French word for 'Garden'?", answer: "jardin" }
+        ];
+
+        function spinWheel() {
+            if (isSpinning) return;
+            isSpinning = true;
+
+            const randomRotation = Math.floor(Math.random() * 360) + 720;
+            wheel.style.transform = `rotate(${randomRotation}deg)`;
+
+            setTimeout(() => {
+                isSpinning = false;
+                showQuestion();
+            }, 5000);
+        }
+
+        function showQuestion() {
+            questionContainer.style.display = 'block';
+            const randomIndex = Math.floor(Math.random() * questions.length);
+            currentQuestion = questions[randomIndex];
+            questionText.innerText = currentQuestion.question;
+        }
+
+        function checkAnswer() {
+            const userAnswer = answerInput.value.trim().toLowerCase();
+            if (userAnswer === currentQuestion.answer) {
+                score += 10;
+                alert("Correct!");
+            } else {
+                alert("Incorrect. The correct answer was " + currentQuestion.answer + ".");
+            }
+
+            updateScore();
+            resetQuestion();
+        }
+
+        function updateScore() {
+            scoreDisplay.innerText = `Score: ${score}`;
+        }
+
+        function resetQuestion() {
+            answerInput.value = '';
+            questionContainer.style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>
