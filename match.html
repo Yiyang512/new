@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Vocabulary Matching Panel - English to French</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Poppins', sans-serif;
+            background-color: #000;
+            color: #fff;
+        }
+
+        .matching-panel-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            width: 80%;
+            max-width: 800px;
+            background: #333;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.6), 0 0 25px rgba(0, 255, 255, 0.4);
+        }
+
+        .column {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 45%;
+        }
+
+        .match-item {
+            padding: 15px;
+            background-color: #8A2BE2;
+            color: #E0FFFF;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .match-item:hover {
+            background-color: #FF00FF;
+        }
+
+        /* Highlight selected items */
+        .match-item.selected {
+            background-color: #FF69B4; /* Hot pink color for selected items */
+            color: #fff;
+        }
+
+        .match-item.correct {
+            background-color: #28a745;
+            color: #fff;
+            cursor: default;
+        }
+
+        .match-item.incorrect {
+            background-color: #dc3545;
+            color: #fff;
+            cursor: default;
+        }
+
+        .score {
+            width: 100%;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.5em;
+            color: #FFD700;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="matching-panel-container">
+        <!-- English words column -->
+        <div class="column" id="english-words">
+            <!-- English words will be dynamically added here -->
+        </div>
+
+        <!-- French words column -->
+        <div class="column" id="french-words">
+            <!-- French words will be dynamically added here -->
+        </div>
+
+        <!-- Score display -->
+        <div class="score" id="score">Score: 0</div>
+    </div>
+
+    <script>
+        const pairs = [
+            { english: "Perseverance", french: "Persévérance" },
+            { english: "Achievement", french: "Accomplissement" },
+            { english: "Determination", french: "Détermination" },
+            { english: "Responsibility", french: "Responsabilité" },
+            { english: "Innovation", french: "Innovation" },
+            { english: "Integrity", french: "Intégrité" },
+            { english: "Resilience", french: "Résilience" },
+            { english: "Sustainability", french: "Durabilité" },
+            { english: "Collaboration", french: "Collaboration" },
+            { english: "Empowerment", french: "Autonomisation" },
+            { english: "Authenticity", french: "Authenticité" },
+            { english: "Compassion", french: "Compassion" },
+            { english: "Curiosity", french: "Curiosité" },
+            { english: "Imagination", french: "Imagination" },
+            { english: "Patience", french: "Patience" }
+        ];
+
+        let score = 0;
+        let selectedEnglish = null;
+        let selectedFrench = null;
+
+        // Shuffle function to randomize words
+        function shuffle(array) {
+            return array.sort(() => Math.random() - 0.5);
+        }
+
+        function loadWords() {
+            const englishContainer = document.getElementById("english-words");
+            const frenchContainer = document.getElementById("french-words");
+
+            // Shuffle pairs and split into two lists
+            const shuffledPairs = shuffle([...pairs]);
+            const englishWords = shuffledPairs.map(pair => pair.english);
+            const frenchWords = shuffle(shuffledPairs.map(pair => pair.french)); // Shuffle French words separately
+
+            // Display English words
+            englishWords.forEach(word => {
+                const englishDiv = document.createElement("div");
+                englishDiv.className = "match-item";
+                englishDiv.innerText = word;
+                englishDiv.onclick = () => selectWord(englishDiv, "english", word);
+                englishContainer.appendChild(englishDiv);
+            });
+
+            // Display French words
+            frenchWords.forEach(word => {
+                const frenchDiv = document.createElement("div");
+                frenchDiv.className = "match-item";
+                frenchDiv.innerText = word;
+                frenchDiv.onclick = () => selectWord(frenchDiv, "french", word);
+                frenchContainer.appendChild(frenchDiv);
+            });
+        }
+
+        function selectWord(element, type, word) {
+            if (type === "english") {
+                // Deselect previous English word if any
+                if (selectedEnglish) selectedEnglish.classList.remove("selected");
+                selectedEnglish = element;
+                selectedEnglish.classList.add("selected");
+            } else {
+                // Deselect previous French word if any
+                if (selectedFrench) selectedFrench.classList.remove("selected");
+                selectedFrench = element;
+                selectedFrench.classList.add("selected");
+            }
+
+            // Check if both selections are made
+            if (selectedEnglish && selectedFrench) {
+                checkMatch();
+            }
+        }
+
+        function checkMatch() {
+            const englishWord = selectedEnglish.innerText;
+            const frenchWord = selectedFrench.innerText;
+
+            // Check if selected pair is correct
+            const isCorrect = pairs.some(pair => pair.english === englishWord && pair.french === frenchWord);
+
+            if (isCorrect) {
+                selectedEnglish.classList.add("correct");
+                selectedFrench.classList.add("correct");
+                score++;
+            } else {
+                selectedEnglish.classList.add("incorrect");
+                selectedFrench.classList.add("incorrect");
+            }
+
+            // Disable the matched or mismatched items
+            selectedEnglish.onclick = null;
+            selectedFrench.onclick = null;
+
+            // Update the score and reset selections
+            document.getElementById("score").innerText = "Score: " + score;
+            selectedEnglish = null;
+            selectedFrench = null;
+        }
+
+        // Initialize matching panel
+        loadWords();
+    </script>
+
+</body>
+</html>
