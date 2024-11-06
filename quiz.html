@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocabulary Quiz - Flip Cards</title>
+    <!-- Import Google Font Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <style>
+        /* Basic styling for the quiz */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000; /* Totally black background */
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+        }
+
+        /* Centered quiz container with glow effect */
+        .quiz-container {
+            background: #333;
+            border-radius: 15px;
+            padding: 40px;
+            width: 400px;
+            max-width: 90%; /* Responsive sizing */
+            text-align: center;
+            color: white;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.6), 0 0 25px rgba(0, 255, 255, 0.4), 0 0 35px rgba(0, 255, 255, 0.3);
+            animation: glow 2s infinite alternate, wave 4s infinite ease-in-out, vibrate 0.4s infinite;
+            margin: 0 auto;
+        }
+
+        /* Keyframes for the glowing effect */
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 15px rgba(0, 255, 255, 0.6), 0 0 25px rgba(0, 255, 255, 0.4), 0 0 35px rgba(0, 255, 255, 0.3);
+            }
+            to {
+                box-shadow: 0 0 25px rgba(0, 255, 255, 0.8), 0 0 35px rgba(0, 255, 255, 0.6), 0 0 45px rgba(0, 255, 255, 0.5);
+            }
+        }
+
+        /* Keyframes for the waving animation */
+        @keyframes wave {
+            0%, 100% {
+                transform: rotate(0deg) scale(1);
+            }
+            50% {
+                transform: rotate(1deg) scale(1.02);
+            }
+        }
+
+        /* Keyframes for the subtle vibration effect */
+        @keyframes vibrate {
+            0% { transform: translate(1px, 1px); }
+            25% { transform: translate(-1px, 1px); }
+            50% { transform: translate(-1px, -1px); }
+            75% { transform: translate(1px, -1px); }
+            100% { transform: translate(1px, 1px); }
+        }
+
+        .question {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+
+        /* Flip card container */
+        .flip-card-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        /* Flip card style */
+        .flip-card {
+            background-color: transparent;
+            width: 150px;
+            height: 150px;
+            perspective: 1000px;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .flip-card:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            color: black;
+        }
+
+        /* Front card style */
+        .flip-card-front {
+            background-color: #40E0D0; /* Turquoise */
+        }
+
+        /* Back card style for correct and incorrect answers */
+        .flip-card-back.correct {
+            background-color: #28a745; /* Green for correct answer */
+            color: white;
+        }
+
+        .flip-card-back.wrong {
+            background-color: #dc3545; /* Red for wrong answer */
+            color: white;
+        }
+
+        .flip-card-back {
+            transform: rotateY(180deg);
+        }
+
+        .score {
+            margin-top: 20px;
+            font-size: 1.5em;
+        }
+
+        .next-btn {
+            margin-top: 25px;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            background-color: #007bff;
+            color: #fff;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .next-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="quiz-container">
+        <div class="question" id="question">What is the French word for "Hello"?</div>
+        <div class="flip-card-container" id="options">
+            <!-- Flip cards will be added dynamically here -->
+        </div>
+        <div class="score" id="score">Score: 0</div>
+        <button class="next-btn" onclick="nextQuestion()">Next Question</button>
+    </div>
+
+    <script>
+        // Updated questions array with new vocabulary
+        const questions = [
+            { question: "What is the French word for 'Good morning'?", correctAnswer: "Bonjour", options: ["Bonjour", "Bonsoir", "Merci", "Salut"] },
+            { question: "What is the French word for 'Apple'?", correctAnswer: "Pomme", options: ["Banane", "Pomme", "Orange", "Raisin"] },
+            { question: "What is the French word for 'Book'?", correctAnswer: "Livre", options: ["Stylo", "Cahier", "Livre", "Crayon"] },
+            { question: "What is the French word for 'Car'?", correctAnswer: "Voiture", options: ["Bateau", "Voiture", "Avion", "Train"] },
+            { question: "What is the French word for 'Dog'?", correctAnswer: "Chien", options: ["Chat", "Poisson", "Chien", "Oiseau"] },
+            { question: "What is the French word for 'School'?", correctAnswer: "École", options: ["Université", "École", "Classe", "Gymnase"] },
+            { question: "What is the French word for 'Teacher'?", correctAnswer: "Professeur", options: ["Élève", "Professeur", "Directeur", "Parent"] },
+            { question: "What is the French word for 'Street'?", correctAnswer: "Rue", options: ["Rue", "Parc", "Maison", "Pont"] },
+            { question: "What is the French word for 'Door'?", correctAnswer: "Porte", options: ["Fenêtre", "Mur", "Porte", "Plafond"] },
+            { question: "What is the French word for 'Table'?", correctAnswer: "Table", options: ["Chaise", "Table", "Lit", "Sofa"] }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+
+        // Display the question and options as flip cards
+        function loadQuestion() {
+            const questionElement = document.getElementById("question");
+            const optionsContainer = document.getElementById("options");
+            optionsContainer.innerHTML = ""; // Clear previous options
+
+            questionElement.innerText = questions[currentQuestion].question;
+            questions[currentQuestion].options.forEach(optionText => {
+                const isCorrect = optionText === questions[currentQuestion].correctAnswer;
+
+                // Create flip card
+                const flipCard = document.createElement("div");
+                flipCard.className = "flip-card";
+                flipCard.innerHTML = `
+                    <div class="flip-card-inner" onclick="flipCard(this, ${isCorrect})">
+                        <div class="flip-card-front">${optionText}</div>
+                        <div class="flip-card-back ${isCorrect ? 'correct' : 'wrong'}">
+                            ${isCorrect ? 'Correct!' : 'Incorrect!'}
+                        </div>
+                    </div>
+                `;
+                optionsContainer.appendChild(flipCard);
+            });
+        }
+
+        // Flip card and handle answer checking
+        function flipCard(card, isCorrect) {
+            card.style.transform = "rotateY(180deg)";
+            if (isCorrect) score++;
+            document.getElementById("score").innerText = "Score: " + score;
+        }
+
+        // Load the next question
+        function nextQuestion() {
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                loadQuestion();
+            } else {
+                alert("Quiz Completed! Your final score is " + score + " out of " + questions.length);
+                currentQuestion = 0;
+                score = 0;
+            }
+            document.getElementById("score").innerText = "Score: " + score;
+            loadQuestion();
+        }
+
+        // Initialize quiz
+        loadQuestion();
+    </script>
+
+</body>
+</html>
