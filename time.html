@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Attack Grammar Quiz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000;
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .quiz-container {
+            background: #333;
+            border-radius: 15px;
+            padding: 40px;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.6), 0 0 25px rgba(0, 255, 255, 0.4), 0 0 35px rgba(0, 255, 255, 0.3);
+        }
+
+        h1 {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+
+        .question {
+            font-size: 1.4em;
+            margin: 20px 0;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .option-btn {
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            background-color: #555;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 1.1em;
+        }
+
+        .option-btn:hover {
+            background-color: #666;
+        }
+
+        .option-btn.correct {
+            background-color: #28a745; /* Green for correct answer */
+        }
+
+        .option-btn.wrong {
+            background-color: #dc3545; /* Red for wrong answer */
+        }
+
+        .score, .timer {
+            font-size: 1.2em;
+            margin-top: 20px;
+        }
+        
+        .next-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            background-color: #007bff;
+            color: #fff;
+            font-size: 1.1em;
+            cursor: pointer;
+        }
+
+        .next-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="quiz-container">
+        <h1>Time Attack Grammar Quiz</h1>
+        <div class="question" id="question">Question will appear here</div>
+        <div class="options">
+            <button class="option-btn" onclick="checkAnswer(this, 0)">Option 1</button>
+            <button class="option-btn" onclick="checkAnswer(this, 1)">Option 2</button>
+            <button class="option-btn" onclick="checkAnswer(this, 2)">Option 3</button>
+            <button class="option-btn" onclick="checkAnswer(this, 3)">Option 4</button>
+        </div>
+        <div class="timer" id="timer">Time Left: 10s</div>
+        <div class="score" id="score">Score: 0</div>
+        <button class="next-btn" onclick="nextQuestion()" style="display: none;">Next Question</button>
+    </div>
+
+    <script>
+        const questions = [
+            { question: "Select the correct conjugation: 'Il ____ (avoir) un chien.'", correctAnswer: "a", options: ["a", "as", "ont", "avez"] },
+            { question: "Identify the proper pronoun: '____ suis ici.'", correctAnswer: "Je", options: ["Tu", "Je", "Il", "Nous"] },
+            { question: "Complete the sentence: 'Nous ____ (être) fatigués.'", correctAnswer: "sommes", options: ["êtes", "sont", "sommes", "es"] },
+            { question: "Choose the correct article: '____ chat est noir.'", correctAnswer: "Le", options: ["Le", "La", "Les", "Un"] },
+            { question: "Select the correct form: 'Elle ____ (aller) au marché.'", correctAnswer: "va", options: ["vais", "va", "vas", "allez"] },
+            { question: "Identify the correct translation: 'I am learning French.'", correctAnswer: "J'apprends le français", options: ["J'apprendre le français", "Je apprends français", "J'apprends le français", "Je apprend le français"] },
+            { question: "Choose the correct adjective form: 'Elle est ____.'", correctAnswer: "intelligente", options: ["intelligent", "intelligents", "intelligente", "intelligentes"] },
+            { question: "Complete the question: 'Où ____ tu habites ?'", correctAnswer: "est-ce que", options: ["est-ce que", "es-tu", "fais-tu", "êtes-vous"] },
+            { question: "Pick the correct verb: 'Nous ____ (faire) un gâteau.'", correctAnswer: "faisons", options: ["fait", "faisons", "faites", "font"] },
+            { question: "Translate the phrase: 'They are happy.'", correctAnswer: "Ils sont heureux", options: ["Ils sont heureuses", "Ils est heureux", "Ils sont heureux", "Ils sommes heureux"] }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let timeLeft = 10;
+        let timer;
+        
+        const questionElement = document.getElementById("question");
+        const optionButtons = document.querySelectorAll(".option-btn");
+        const timerElement = document.getElementById("timer");
+        const scoreElement = document.getElementById("score");
+        const nextButton = document.querySelector(".next-btn");
+
+        function startTimer() {
+            timeLeft = 10;
+            timer = setInterval(() => {
+                timeLeft--;
+                timerElement.innerText = `Time Left: ${timeLeft}s`;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    endGame();
+                }
+            }, 1000);
+        }
+
+        function loadQuestion() {
+            const current = questions[currentQuestion];
+            questionElement.innerText = current.question;
+            optionButtons.forEach((button, index) => {
+                button.innerText = current.options[index];
+                button.classList.remove("correct", "wrong");
+                button.disabled = false;
+            });
+            timerElement.innerText = `Time Left: ${timeLeft}s`;
+            nextButton.style.display = "none";
+            startTimer();
+        }
+
+        function checkAnswer(button, index) {
+            clearInterval(timer);
+            const selectedAnswer = button.innerText;
+            const correctAnswer = questions[currentQuestion].correctAnswer;
+            
+            if (selectedAnswer === correctAnswer) {
+                button.classList.add("correct");
+                score += timeLeft;  // Reward with remaining time points
+                scoreElement.innerText = `Score: ${score}`;
+            } else {
+                button.classList.add("wrong");
+                endGame();
+                return;
+            }
+
+            optionButtons.forEach(btn => btn.disabled = true);
+            nextButton.style.display = "inline";
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                loadQuestion();
+            } else {
+                alert(`Quiz Completed! Final Score: ${score}`);
+                resetGame();
+            }
+        }
+
+        function endGame() {
+            alert(`Time's up or Incorrect Answer! Final Score: ${score}`);
+            resetGame();
+        }
+
+        function resetGame() {
+            currentQuestion = 0;
+            score = 0;
+            scoreElement.innerText = `Score: ${score}`;
+            nextButton.style.display = "none";
+            loadQuestion();
+        }
+
+        // Initialize the quiz
+        loadQuestion();
+    </script>
+
+</body>
+</html>
