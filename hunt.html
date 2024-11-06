@@ -8,24 +8,28 @@
     body {
       margin: 0;
       display: flex;
-      align-items: left;
-      justify-content: left;
+      align-items: center;
+      justify-content: flex-start; /* Align the container to the left */
       height: 100vh;
-      background: transparent;
       font-family: Arial, sans-serif;
       color: #fff;
       overflow: hidden;
+      background: url('background-image.png') no-repeat center center/cover; /* Add your background image path here */
+      padding-left: 20px; /* Adjust this padding as needed */
     }
 
     .container {
-      text-align: center;
+      text-align: left; /* Left-align text inside the container */
       max-width: 600px;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.5); /* Adding a slight overlay for better text visibility */
+      border-radius: 10px;
     }
 
     .heading {
-      font-size: 2em;
+      font-size: 1.8em;
       font-weight: bold;
-      margin-bottom: 10px;
+      margin-bottom: 5px;
       color: #ffffff;
     }
 
@@ -33,7 +37,8 @@
       font-size: 2.5em;
       font-weight: bold;
       margin: 10px 0;
-      color: #ffffff;
+      color: #ff57b9;
+      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5); /* Text shadow for better readability */
     }
 
     .emphasis {
@@ -43,7 +48,7 @@
     .info-text {
       font-size: 1.2em;
       color: #ffffff;
-      margin-top: 10px;
+      margin-top: 5px;
       opacity: 0.8;
     }
 
@@ -71,6 +76,16 @@
       height: 150px;
       background: url('hand.png') no-repeat center/cover;
     }
+
+    /* Adjust layout for smaller screens */
+    @media (max-width: 768px) {
+      .subheading {
+        font-size: 2em;
+      }
+      .heading, .info-text {
+        font-size: 1em;
+      }
+    }
   </style>
 </head>
 <body>
@@ -78,7 +93,7 @@
   <div class="container">
     <div class="animated-circle"></div>
     <h1 class="heading">We are the 1st Canadian</h1>
-    <h2 class="subheading"><span class="emphasis">AI-driven VR French School</span></h2>
+    <h2 class="subheading">AI-driven VR French School</h2>
     <p class="heading">For Accelerated Learning with Evergreen Courses!</p>
     <p class="info-text">Empowering French Learning via Creative Technology.</p>
     <div class="hand-gesture"></div>
