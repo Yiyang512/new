@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catch the Swimming Fish - Which One Did You Know? </title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        h1 {
+            margin-top: 20px;
+            font-size: 2em;
+            text-shadow: 0 0 10px #00ffff;
+        }
+
+        .ocean {
+            position: relative;
+            width: 100vw;
+            height: 80vh;
+            overflow: hidden;
+            background: radial-gradient(circle, #003366, #001f3f);
+            border: 2px solid #00ffff;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
+        }
+
+        .fish {
+            position: absolute;
+            width: 60px;
+            height: 40px;
+            background-color: #ff6347;
+            border-radius: 50%;
+            cursor: pointer;
+            color: #fff;
+            font-size: 1em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            transition: transform 5.8s;
+        }
+
+        .fish:hover {
+            transform: scale(1.2);
+        }
+
+        .fish:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-top: 12px solid transparent;
+            border-bottom: 12px solid transparent;
+            border-left: 18px solid #ff6347;
+            left: -15px;
+            top: 8px;
+        }
+
+        .scoreboard {
+            font-size: 1.5em;
+            color: #00ffff;
+            text-shadow: 0 0 5px #00ffff;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Catch the Swimming Fish - Which One Did You Know? </h1>
+    <div class="ocean" id="ocean"></div>
+    <div class="scoreboard">Score: <span id="score">0</span></div>
+
+    <script>
+        const ocean = document.getElementById("ocean");
+        const scoreDisplay = document.getElementById("score");
+        let score = 0;
+
+        const words = [
+            "Amour", "Bonheur", "Courage", "Liberté", "Espoir", "Joie", "Nature",
+            "Étoile", "Soleil", "Lune", "Mer", "Montagne", "Rivière", "Fleur", "Forêt",
+            "Sagesse", "Force", "Beauté", "Harmonie", "Paix", "Amitié", "Famille", 
+            "Rêve", "Passion", "Énergie", "Respect"
+        ];
+
+        // Function to create a fish
+        function createFish() {
+            const fish = document.createElement("div");
+            fish.classList.add("fish");
+
+            // Set a random word on the fish
+            const randomWord = words[Math.floor(Math.random() * words.length)];
+            fish.textContent = randomWord;
+
+            // Randomly position fish
+            const startX = Math.random() * (window.innerWidth - 60);
+            const startY = Math.random() * (ocean.clientHeight - 40);
+            fish.style.left = `${startX}px`;
+            fish.style.top = `${startY}px`;
+
+            // Random speed for fish to swim
+            const speed = Math.random() * 1 + 2;
+
+            // Add event listener to catch fish
+            fish.addEventListener("click", catchFish);
+
+            // Append fish to ocean
+            ocean.appendChild(fish);
+
+            // Make fish swim in different directions
+            let directionX = Math.random() < 0.5 ? 1 : -1;
+            let directionY = Math.random() < 0.5 ? 1 : -1;
+
+            function swim() {
+                let posX = parseFloat(fish.style.left);
+                let posY = parseFloat(fish.style.top);
+
+                // Change direction if fish hits the screen edges
+                if (posX <= 0 || posX >= window.innerWidth - 60) directionX *= -1;
+                if (posY <= 0 || posY >= ocean.clientHeight - 40) directionY *= -1;
+
+                // Update position
+                fish.style.left = `${posX + speed * directionX}px`;
+                fish.style.top = `${posY + speed * directionY}px`;
+
+                requestAnimationFrame(swim);
+            }
+            swim();
+        }
+
+        // Function to catch fish
+        function catchFish(event) {
+            score++;
+            scoreDisplay.textContent = score;
+            event.target.remove();
+            createFish(); // Create a new fish when one is caught
+        }
+
+        // Generate 25 fish at the start
+        function startGame() {
+            for (let i = 0; i < 25; i++) {
+                createFish();
+            }
+        }
+
+        startGame();
+    </script>
+</body>
+</html>
