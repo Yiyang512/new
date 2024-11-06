@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conjugation Challenge - French</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000; /* Black background */
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .game-container {
+            background-color: #222;
+            padding: 30px;
+            border-radius: 25px;
+            box-shadow: 0 0 145px rgba(0, 255, 255, 0.6);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .question {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .option-btn {
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            background-color: #555;
+            color: #fff;
+            cursor: pointer;
+            font-size: 1.2em;
+            transition: background-color 0.3s;
+        }
+
+        .option-btn:hover {
+            background-color: #666;
+        }
+
+        .option-btn.correct {
+            background-color: #28a745; /* Green for correct answer */
+        }
+
+        .option-btn.wrong {
+            background-color: #dc3545; /* Red for wrong answer */
+        }
+
+        .scoreboard {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+
+        .next-btn {
+            margin-top: 25px;
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #8A2BE2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .next-btn:hover {
+            background-color: #5b1b99;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="game-container">
+        <div class="question" id="question">Conjugate the verb for "Je" - "Parler"</div>
+        <div class="options" id="options">
+            <!-- Option buttons will be added here dynamically -->
+        </div>
+        <div class="scoreboard" id="score">Score: 0</div>
+        <button class="next-btn" id="next-btn" onclick="loadNextQuestion()">Next Question</button>
+    </div>
+
+    <script>
+        const conjugationQuestions = [
+            { verb: "Parler", pronoun: "Je", correctAnswer: "parle", options: ["parler", "parle", "parles", "parlons"] },
+            { verb: "Être", pronoun: "Tu", correctAnswer: "es", options: ["suis", "es", "est", "êtes"] },
+            { verb: "Avoir", pronoun: "Il", correctAnswer: "a", options: ["ai", "as", "a", "avons"] },
+            { verb: "Aller", pronoun: "Nous", correctAnswer: "allons", options: ["allez", "va", "allons", "vais"] },
+            { verb: "Faire", pronoun: "Vous", correctAnswer: "faites", options: ["fais", "faisons", "faites", "font"] },
+            { verb: "Prendre", pronoun: "Ils", correctAnswer: "prennent", options: ["prends", "prend", "prenons", "prennent"] },
+            { verb: "Venir", pronoun: "Je", correctAnswer: "viens", options: ["vient", "viens", "venons", "venez"] },
+            { verb: "Manger", pronoun: "Elle", correctAnswer: "mange", options: ["manges", "mange", "mangent", "mangeons"] },
+            { verb: "Finir", pronoun: "Nous", correctAnswer: "finissons", options: ["finis", "finissons", "finissez", "finissent"] },
+            { verb: "Choisir", pronoun: "Vous", correctAnswer: "choisissez", options: ["choisis", "choisit", "choisissez", "choisissent"] }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+
+        const questionDisplay = document.getElementById("question");
+        const optionsContainer = document.getElementById("options");
+        const scoreDisplay = document.getElementById("score");
+
+        // Load the question and options
+        function loadQuestion() {
+            const questionData = conjugationQuestions[currentQuestion];
+            questionDisplay.innerText = `Conjugate the verb for "${questionData.pronoun}" - "${questionData.verb}"`;
+
+            optionsContainer.innerHTML = "";
+            questionData.options.forEach(option => {
+                const optionBtn = document.createElement("button");
+                optionBtn.classList.add("option-btn");
+                optionBtn.innerText = option;
+                optionBtn.onclick = () => checkAnswer(optionBtn, option);
+                optionsContainer.appendChild(optionBtn);
+            });
+        }
+
+        // Check if the selected answer is correct
+        function checkAnswer(button, selectedAnswer) {
+            const correctAnswer = conjugationQuestions[currentQuestion].correctAnswer;
+
+            if (selectedAnswer === correctAnswer) {
+                button.classList.add("correct");
+                score++;
+            } else {
+                button.classList.add("wrong");
+                document.querySelectorAll(".option-btn").forEach(btn => {
+                    if (btn.innerText === correctAnswer) btn.classList.add("correct");
+                });
+            }
+
+            scoreDisplay.innerText = `Score: ${score}`;
+            // Disable all buttons after selecting an answer
+            document.querySelectorAll(".option-btn").forEach(btn => btn.disabled = true);
+        }
+
+        // Load the next question
+        function loadNextQuestion() {
+            currentQuestion++;
+            if (currentQuestion < conjugationQuestions.length) {
+                loadQuestion();
+            } else {
+                alert(`Quiz Completed! Your final score is ${score} out of ${conjugationQuestions.length}`);
+                currentQuestion = 0;
+                score = 0;
+            }
+
+            scoreDisplay.innerText = `Score: ${score}`;
+            loadQuestion();
+        }
+
+        // Initialize the game
+        loadQuestion();
+    </script>
+
+</body>
+</html>
