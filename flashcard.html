@@ -52,7 +52,14 @@
             transform: rotateY(180deg);
         }
 
-        /* Front and back of the card */
+        /* Keyframes for a fluid, waving animation */
+        @keyframes fluidGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Front and back of the card with neon glow effect */
         .flip-card-front, .flip-card-back {
             position: absolute;
             width: 100%;
@@ -64,16 +71,21 @@
             justify-content: center;
             color: black;
             font-size: 1.7em;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.6), 0 0 20px rgba(255, 20, 147, 0.4); /* Glow effect */
         }
 
-        /* Front card style with turquoise color */
+        /* Front card with dominant Electric Blue gradient and fluid animation */
         .flip-card-front {
-            background-color: #40E0D0; /* Turquoise */
+            background: linear-gradient(100deg, #00FFFF 10%, #FF1493 20%, #00FFFF 90%);
+            background-size: 200% 200%; /* To enable the fluid motion effect */
+            animation: fluidGradient 5s ease-in-out infinite; /* Apply the animation */
         }
 
-        /* Back card style with bright purple color */
+        /* Back card with dominant Neon Purple gradient and fluid animation */
         .flip-card-back {
-            background-color: #DA70D6; /* Bright purple */
+            background: linear-gradient(100deg, #9400D3 10%, #FF1493 20%, #9400D3 90%);
+            background-size: 200% 200%; /* To enable the fluid motion effect */
+            animation: fluidGradient 5s ease-in-out infinite; /* Apply the animation */
             transform: rotateY(180deg);
         }
     </style>
