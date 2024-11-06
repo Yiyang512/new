@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lego Language Builder Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+            font-size: 2em;
+            color: #FFD700;
+            text-shadow: 0 0 10px #FFD700;
+        }
+
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #222;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            width: 90%;
+            max-width: 800px;
+        }
+
+        .level {
+            font-size: 2.1em;
+            color: #FFD700;
+            margin-top: 15px;
+        }
+
+        .lego-blocks {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .lego-block {
+            width: 250px;
+            height: 250px;
+            background-color: #FFD700;
+            color: #000;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .lego-block.correct {
+            background-color: #28a745;
+        }
+
+        .lego-block.incorrect {
+            background-color: #dc3545;
+        }
+
+        .lego-block:hover {
+            transform: scale(1.1);
+        }
+
+        .message {
+            margin-top: 20px;
+            font-size: 5em;
+            color: #FFD700;
+            display: none;
+        }
+
+        .next-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            color: #000;
+            background-color: #FFD700;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .next-button:hover {
+            background-color: #ffa500;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Lego Language Builder Game</h1>
+    <div class="game-container">
+        <div class="level" id="level">Level 1: Basic Vocabulary</div>
+        <div class="lego-blocks" id="lego-blocks">
+            <!-- Lego blocks for vocabulary will be added dynamically -->
+        </div>
+        <div class="message" id="message"></div>
+        <button class="next-button" id="next-button" onclick="nextLevel()">Next Level</button>
+    </div>
+
+    <script>
+        const levels = [
+            {
+                level: "Level 1: Basic Vocabulary",
+                blocks: [
+                    { text: "Le chat", match: "The cat" },
+                    { text: "Un livre", match: "A book" },
+                    { text: "Un enfant", match: "A child" },
+                    { text: "La maison", match: "The house" },
+                    { text: "La pomme", match: "The apple" }
+                ]
+            },
+            {
+                level: "Level 2: Simple Sentences",
+                blocks: [
+                    { text: "Le chat dort", match: "The cat sleeps" },
+                    { text: "L’enfant joue", match: "The child plays" },
+                    { text: "La maison est grande", match: "The house is big" },
+                    { text: "Le chien court", match: "The dog runs" },
+                    { text: "L’arbre est vert", match: "The tree is green" }
+                ]
+            },
+            {
+                level: "Level 3: Food Vocabulary",
+                blocks: [
+                    { text: "Une banane", match: "A banana" },
+                    { text: "Du pain", match: "Bread" },
+                    { text: "Du fromage", match: "Cheese" },
+                    { text: "Un gâteau", match: "A cake" },
+                    { text: "De l’eau", match: "Water" }
+                ]
+            },
+            {
+                level: "Level 4: Daily Routine",
+                blocks: [
+                    { text: "Je me réveille", match: "I wake up" },
+                    { text: "Je prends le petit déjeuner", match: "I have breakfast" },
+                    { text: "Je vais à l’école", match: "I go to school" },
+                    { text: "Je rentre à la maison", match: "I return home" },
+                    { text: "Je me couche", match: "I go to bed" }
+                ]
+            },
+            {
+                level: "Level 5: Weather and Nature",
+                blocks: [
+                    { text: "Il fait froid", match: "It is cold" },
+                    { text: "Il pleut", match: "It is raining" },
+                    { text: "Le soleil brille", match: "The sun is shining" },
+                    { text: "Il neige", match: "It is snowing" },
+                    { text: "Le vent souffle", match: "The wind is blowing" }
+                ]
+            },
+            {
+                level: "Level 6: Advanced Vocabulary",
+                blocks: [
+                    { text: "Une opportunité", match: "An opportunity" },
+                    { text: "Une responsabilité", match: "A responsibility" },
+                    { text: "La persévérance", match: "Perseverance" },
+                    { text: "L’intégrité", match: "Integrity" },
+                    { text: "La réussite", match: "Success" }
+                ]
+            },
+            {
+                level: "Level 7: Idiomatic Phrases",
+                blocks: [
+                    { text: "Tomber dans les pommes", match: "To faint" },
+                    { text: "Avoir le cafard", match: "To feel down" },
+                    { text: "Être dans la lune", match: "To be daydreaming" },
+                    { text: "Casser les pieds", match: "To annoy" },
+                    { text: "Faire la grasse matinée", match: "To sleep in" }
+                ]
+            },
+        ];
+
+        let currentLevel = 0;
+
+        function loadLevel(levelIndex) {
+            const levelData = levels[levelIndex];
+            document.getElementById("level").textContent = levelData.level;
+            const legoBlocksContainer = document.getElementById("lego-blocks");
+            legoBlocksContainer.innerHTML = ""; // Clear previous blocks
+
+            levelData.blocks.forEach(block => {
+                const blockElement = document.createElement("div");
+                blockElement.classList.add("lego-block");
+                blockElement.textContent = block.text;
+                blockElement.onclick = () => checkAnswer(block, blockElement);
+                legoBlocksContainer.appendChild(blockElement);
+            });
+        }
+
+        function checkAnswer(block, blockElement) {
+            const correctText = prompt(`Translate this to English: "${block.text}"`);
+            if (correctText.toLowerCase() === block.match.toLowerCase()) {
+                blockElement.classList.add("correct");
+                blockElement.classList.remove("incorrect");
+                blockElement.onclick = null;
+                showMessage("Correct!", "correct");
+            } else {
+                blockElement.classList.add("incorrect");
+                blockElement.classList.remove("correct");
+                showMessage(`Incorrect! The correct answer is "${block.match}"`, "incorrect");
+            }
+        }
+
+        function showMessage(text, type) {
+            const message = document.getElementById("message");
+            message.textContent = text;
+            message.style.color = type === "correct" ? "#28a745" : "#dc3545";
+            message.style.display = "block";
+        }
+
+        function nextLevel() {
+            currentLevel++;
+            if (currentLevel < levels.length) {
+                loadLevel(currentLevel);
+                document.getElementById("message").style.display = "none";
+            } else {
+                alert("Congratulations! You've completed all levels.");
+                document.getElementById("next-button").style.display = "none";
+            }
+        }
+
+        loadLevel(currentLevel); // Load the first level on start
+    </script>
+
+</body>
+</html>
