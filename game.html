@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dialogue Builder - French Conversational Practice</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000;
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .game-container {
+            background-color: #222;
+            padding: 30px;
+            border-radius: 45px;
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 0 560px rgba(0, 255, 255, 0.3);
+        }
+
+        .prompt {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+
+        .response-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .response-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            background-color: #8A2BE2;
+            color: #fff;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .response-btn:hover {
+            background-color: #5b1b99;
+        }
+
+        .scoreboard {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #39FF14;
+        }
+
+        .next-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            background-color: #8A2BE2;
+            color: white;
+            font-size: 1em;
+            cursor: pointer;
+            display: none;
+        }
+
+        .next-btn:hover {
+            background-color: #5b1b99;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="game-container">
+        <div class="prompt" id="prompt">Bonjour ! Comment ça va ?</div>
+        <div class="response-options" id="response-options">
+            <!-- Options will be loaded here -->
+        </div>
+        <button class="next-btn" id="next-btn" onclick="loadNextDialogue()">Next</button>
+        <div class="scoreboard" id="scoreboard">Score: 0</div>
+    </div>
+
+    <script>
+        // Sample dialogue conversation for the game
+        const dialogues = [
+            {
+                prompt: "Bonjour ! Comment ça va ?",
+                options: [
+                    { response: "Ça va bien, merci ! Et toi ?", isCorrect: true },
+                    { response: "Non, je ne suis pas d'accord.", isCorrect: false },
+                    { response: "Je vais au marché.", isCorrect: false }
+                ]
+            },
+            {
+                prompt: "Qu'est-ce que tu fais ce soir ?",
+                options: [
+                    { response: "Je vais regarder un film.", isCorrect: true },
+                    { response: "Non, je ne sais pas.", isCorrect: false },
+                    { response: "Je suis très fatigué.", isCorrect: false }
+                ]
+            },
+            {
+                prompt: "Est-ce que tu aimes le café ?",
+                options: [
+                    { response: "Oui, j'adore ça !", isCorrect: true },
+                    { response: "Non, je préfère le thé.", isCorrect: true },
+                    { response: "Je suis en vacances.", isCorrect: false }
+                ]
+            },
+            {
+                prompt: "As-tu déjà visité Paris ?",
+                options: [
+                    { response: "Oui, c'est magnifique !", isCorrect: true },
+                    { response: "Je préfère rester à la maison.", isCorrect: false },
+                    { response: "Je n'ai jamais visité.", isCorrect: true }
+                ]
+            },
+            {
+                prompt: "Quel est ton plat préféré ?",
+                options: [
+                    { response: "J'adore la pizza !", isCorrect: true },
+                    { response: "Je préfère le football.", isCorrect: false },
+                    { response: "Je n'aime pas beaucoup les repas.", isCorrect: false }
+                ]
+            }
+        ];
+
+        let score = 0;
+        let currentDialogueIndex = 0;
+
+        const promptDisplay = document.getElementById("prompt");
+        const responseOptionsContainer = document.getElementById("response-options");
+        const nextBtn = document.getElementById("next-btn");
+        const scoreboard = document.getElementById("scoreboard");
+
+        function loadDialogue() {
+            responseOptionsContainer.innerHTML = ""; // Clear previous options
+            const dialogue = dialogues[currentDialogueIndex];
+
+            promptDisplay.innerText = dialogue.prompt;
+
+            dialogue.options.forEach(option => {
+                const button = document.createElement("button");
+                button.classList.add("response-btn");
+                button.innerText = option.response;
+                button.onclick = () => handleResponse(option.isCorrect);
+                responseOptionsContainer.appendChild(button);
+            });
+        }
+
+        function handleResponse(isCorrect) {
+            if (isCorrect) {
+                score++;
+                alert("Correct!");
+            } else {
+                alert("Incorrect. Try to choose the most appropriate response.");
+            }
+
+            // Update score and show next button
+            updateScore();
+            nextBtn.style.display = "block";
+        }
+
+        function loadNextDialogue() {
+            currentDialogueIndex++;
+            if (currentDialogueIndex < dialogues.length) {
+                loadDialogue();
+                nextBtn.style.display = "none"; // Hide next button until response is selected
+            } else {
+                endGame();
+            }
+        }
+
+        function updateScore() {
+            scoreboard.innerText = `Score: ${score}`;
+        }
+
+        function endGame() {
+            promptDisplay.innerText = "Conversation Completed! Final Score: " + score;
+            responseOptionsContainer.innerHTML = ""; // Clear options
+            nextBtn.style.display = "none"; // Hide next button
+        }
+
+        // Initialize game
+        loadDialogue();
+    </script>
+</body>
+</html>
