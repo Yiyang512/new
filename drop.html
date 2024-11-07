@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced French Word Drop</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        .game-container {
+            position: relative;
+            width: 500px;
+            height: 700px;
+            background-color: #111;
+            border: 3px solid #FFD700;
+            overflow: hidden;
+        }
+
+        .word {
+            position: absolute;
+            font-size: 0.9em; /* Reduced font size */
+            color: violet;
+            white-space: nowrap; /* Prevent line breaks within words */
+        }
+
+        .basket {
+            position: absolute;
+            bottom: 10px;
+            width: 40px;
+            height: 20px;
+            background-color: #00FFFF;
+            border-radius: 5px;
+        }
+
+        .score {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 1.2em;
+        }
+
+        .target-word {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.2em;
+            color: #00FF00;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="game-container" id="game-container">
+        <div class="score" id="score">Score: 0</div>
+        <div class="target-word" id="target-word"></div>
+        <div class="basket" id="basket"></div>
+    </div>
+
+    <script>
+        const frenchWords = [
+            { english: "Perseverance", french: "Persévérance" },
+            { english: "Achievement", french: "Accomplissement" },
+            { english: "Determination", french: "Détermination" },
+            { english: "Responsibility", french: "Responsabilité" },
+            { english: "Innovation", french: "Innovation" },
+            { english: "Integrity", french: "Intégrité" },
+            { english: "Understanding", french: "Compréhension" },
+            { english: "Communication", french: "Communication" },
+            { english: "Confidence", french: "Confiance" },
+            { english: "Patience", french: "Patience" },
+            { english: "Curiosity", french: "Curiosité" },
+            { english: "Excellence", french: "Excellence" },
+            { english: "Flexibility", french: "Flexibilité" },
+            { english: "Friendship", french: "Amitié" },
+            { english: "Harmony", french: "Harmonie" },
+            { english: "Knowledge", french: "Connaissance" },
+            { english: "Leadership", french: "Leadership" },
+            { english: "Motivation", french: "Motivation" },
+            { english: "Persistence", french: "Persistance" },
+            { english: "Creativity", french: "Créativité" }
+        ];
+
+        let score = 0;
+        let fallingSpeed = 2;
+        const gameContainer = document.getElementById("game-container");
+        const basket = document.getElementById("basket");
+        const scoreDisplay = document.getElementById("score");
+        const targetWordDisplay = document.getElementById("target-word");
+
+        let targetWord = getRandomWord();
+        targetWordDisplay.innerText = `Catch: ${targetWord.english}`;
+
+        function getRandomWord() {
+            return frenchWords[Math.floor(Math.random() * frenchWords.length)];
+        }
+
+        function createWord() {
+            const wordDiv = document.createElement("div");
+            wordDiv.classList.add("word");
+            const randomWord = frenchWords[Math.floor(Math.random() * frenchWords.length)];
+            wordDiv.innerText = randomWord.french;
+            wordDiv.dataset.french = randomWord.french;
+
+            // Adjust position to avoid overcrowding
+            wordDiv.style.left = `${Math.random() * (gameContainer.offsetWidth - 100)}px`;
+            gameContainer.appendChild(wordDiv);
+            moveWordDown(wordDiv);
+        }
+
+        function moveWordDown(wordDiv) {
+            let position = 0;
+            const interval = setInterval(() => {
+                if (position > gameContainer.offsetHeight) {
+                    wordDiv.remove();
+                    clearInterval(interval);
+                } else {
+                    position += fallingSpeed;
+                    wordDiv.style.top = `${position}px`;
+
+                    const wordRect = wordDiv.getBoundingClientRect();
+                    const basketRect = basket.getBoundingClientRect();
+
+                    if (
+                        wordRect.bottom >= basketRect.top &&
+                        wordRect.right >= basketRect.left &&
+                        wordRect.left <= basketRect.right
+                    ) {
+                        if (wordDiv.dataset.french === targetWord.french) {
+                            score += 10;
+                            scoreDisplay.innerText = `Score: ${score}`;
+                            targetWord = getRandomWord();
+                            targetWordDisplay.innerText = `Catch: ${targetWord.english}`;
+                        } else {
+                            score -= 5;
+                            scoreDisplay.innerText = `Score: ${score}`;
+                        }
+                        wordDiv.remove();
+                        clearInterval(interval);
+                    }
+                }
+            }, 30);
+        }
+
+        function moveBasket(event) {
+            const basketWidth = basket.offsetWidth;
+            const gameWidth = gameContainer.offsetWidth;
+
+            if (event.key === "ArrowLeft" && basket.offsetLeft > 0) {
+                basket.style.left = `${basket.offsetLeft - 20}px`;
+            } else if (event.key === "ArrowRight" && basket.offsetLeft < gameWidth - basketWidth) {
+                basket.style.left = `${basket.offsetLeft + 20}px`;
+            }
+        }
+
+        setInterval(createWord, 1500); // Adjust drop speed here
+        window.addEventListener("keydown", moveBasket);
+    </script>
+</body>
+</html>
