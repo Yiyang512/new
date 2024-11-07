@@ -1,200 +1,196 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dialogue Builder - French Conversational Practice</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>French Quiz Puzzle Game - VR Style with Levels</title>
+  <style>
+    /* VR-inspired style */
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #000;
+      color: #00FFDD;
+    }
 
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #000;
-            color: #fff;
-            font-family: 'Poppins', sans-serif;
-        }
+    h1 {
+      color: #00FFDD;
+      text-shadow: 0 0 10px #00FFDD, 0 0 20px #00FFDD, 0 0 30px #00FFDD;
+    }
 
-        .game-container {
-            background-color: #222;
-            padding: 30px;
-            border-radius: 45px;
-            max-width: 600px;
-            width: 90%;
-            text-align: center;
-            box-shadow: 0 0 560px rgba(0, 255, 255, 0.3);
-        }
+    .sentence {
+      margin: 20px;
+      font-size: 18px;
+      color: #00FFDD;
+    }
 
-        .prompt {
-            font-size: 1.5em;
-            margin-bottom: 20px;
-        }
+    .blank {
+      display: inline-block;
+      width: 100px;
+      height: 30px;
+      border-bottom: 2px solid #00FFDD;
+      text-align: center;
+      color: #00FFDD;
+      text-shadow: 0 0 5px #00FFDD, 0 0 10px #00FFDD;
+    }
 
-        .response-options {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
+    .words {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      max-width: 400px;
+      justify-content: center;
+    }
 
-        .response-btn {
-            padding: 12px 20px;
-            border: none;
-            border-radius: 8px;
-            background-color: #8A2BE2;
-            color: #fff;
-            font-size: 1.2em;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
+    .word {
+      padding: 8px 16px;
+      background-color: #333;
+      color: #00FFDD;
+      border-radius: 4px;
+      cursor: grab;
+      font-size: 18px;
+      box-shadow: 0 0 5px #00FFDD, 0 0 10px #00FFDD;
+      text-shadow: 0 0 5px #00FFDD, 0 0 10px #00FFDD;
+    }
 
-        .response-btn:hover {
-            background-color: #5b1b99;
-        }
+    .word.dragging {
+      opacity: 0.5;
+    }
 
-        .scoreboard {
-            margin-top: 20px;
-            font-size: 1.2em;
-            color: #39FF14;
-        }
-
-        .next-btn {
-            margin-top: 20px;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            background-color: #8A2BE2;
-            color: white;
-            font-size: 1em;
-            cursor: pointer;
-            display: none;
-        }
-
-        .next-btn:hover {
-            background-color: #5b1b99;
-        }
-    </style>
+    #next-level-btn {
+      display: none;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #00FFDD;
+      color: #000;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
 
-    <div class="game-container">
-        <div class="prompt" id="prompt">Bonjour ! Comment ça va ?</div>
-        <div class="response-options" id="response-options">
-            <!-- Options will be loaded here -->
-        </div>
-        <button class="next-btn" id="next-btn" onclick="loadNextDialogue()">Next</button>
-        <div class="scoreboard" id="scoreboard">Score: 0</div>
-    </div>
+<h1>French VR Quiz Puzzle - Level <span id="level-number">1</span></h1>
 
-    <script>
-        // Sample dialogue conversation for the game
-        const dialogues = [
-            {
-                prompt: "Bonjour ! Comment ça va ?",
-                options: [
-                    { response: "Ça va bien, merci ! Et toi ?", isCorrect: true },
-                    { response: "Non, je ne suis pas d'accord.", isCorrect: false },
-                    { response: "Je vais au marché.", isCorrect: false }
-                ]
-            },
-            {
-                prompt: "Qu'est-ce que tu fais ce soir ?",
-                options: [
-                    { response: "Je vais regarder un film.", isCorrect: true },
-                    { response: "Non, je ne sais pas.", isCorrect: false },
-                    { response: "Je suis très fatigué.", isCorrect: false }
-                ]
-            },
-            {
-                prompt: "Est-ce que tu aimes le café ?",
-                options: [
-                    { response: "Oui, j'adore ça !", isCorrect: true },
-                    { response: "Non, je préfère le thé.", isCorrect: true },
-                    { response: "Je suis en vacances.", isCorrect: false }
-                ]
-            },
-            {
-                prompt: "As-tu déjà visité Paris ?",
-                options: [
-                    { response: "Oui, c'est magnifique !", isCorrect: true },
-                    { response: "Je préfère rester à la maison.", isCorrect: false },
-                    { response: "Je n'ai jamais visité.", isCorrect: true }
-                ]
-            },
-            {
-                prompt: "Quel est ton plat préféré ?",
-                options: [
-                    { response: "J'adore la pizza !", isCorrect: true },
-                    { response: "Je préfère le football.", isCorrect: false },
-                    { response: "Je n'aime pas beaucoup les repas.", isCorrect: false }
-                ]
-            }
-        ];
+<div id="level-container">
+  <!-- Level 1 -->
+  <div class="sentence" data-level="1">
+    Je m'appelle <span class="blank" data-answer="Jean"></span> et j'habite en <span class="blank" data-answer="France"></span>.
+  </div>
 
-        let score = 0;
-        let currentDialogueIndex = 0;
+  <!-- Level 2 -->
+  <div class="sentence" data-level="2" style="display: none;">
+    J'aime manger <span class="blank" data-answer="des croissants"></span> et boire <span class="blank" data-answer="du café"></span>.
+  </div>
 
-        const promptDisplay = document.getElementById("prompt");
-        const responseOptionsContainer = document.getElementById("response-options");
-        const nextBtn = document.getElementById("next-btn");
-        const scoreboard = document.getElementById("scoreboard");
+  <!-- Level 3 -->
+  <div class="sentence" data-level="3" style="display: none;">
+    Mon animal préféré est le <span class="blank" data-answer="chat"></span>, mais j'aime aussi le <span class="blank" data-answer="chien"></span>.
+  </div>
+  
+  <!-- Level 4 -->
+  <div class="sentence" data-level="4" style="display: none;">
+    En été, j'adore aller à la <span class="blank" data-answer="plage"></span> et nager dans la <span class="blank" data-answer="mer"></span>.
+  </div>
+</div>
 
-        function loadDialogue() {
-            responseOptionsContainer.innerHTML = ""; // Clear previous options
-            const dialogue = dialogues[currentDialogueIndex];
+<div class="words" id="words-container">
+  <!-- Words for Level 1 -->
+  <div class="word" draggable="true" data-word="Jean">Jean</div>
+  <div class="word" draggable="true" data-word="France">France</div>
+  <div class="word" draggable="true" data-word="Paris">Paris</div>
+  <div class="word" draggable="true" data-word="Canada">Canada</div>
+</div>
 
-            promptDisplay.innerText = dialogue.prompt;
+<button id="next-level-btn">Next Level</button>
 
-            dialogue.options.forEach(option => {
-                const button = document.createElement("button");
-                button.classList.add("response-btn");
-                button.innerText = option.response;
-                button.onclick = () => handleResponse(option.isCorrect);
-                responseOptionsContainer.appendChild(button);
-            });
+<script>
+  let currentLevel = 1;
+  const maxLevel = 4;
+
+  const wordsContainer = document.getElementById('words-container');
+  const levelNumberDisplay = document.getElementById('level-number');
+  const nextLevelButton = document.getElementById('next-level-btn');
+
+  function loadWords(level) {
+    wordsContainer.innerHTML = ''; // Clear previous words
+    const wordsByLevel = {
+      1: ['Jean', 'France', 'Paris', 'Canada'],
+      2: ['des croissants', 'du café', 'eau', 'jus'],
+      3: ['chat', 'chien', 'oiseau', 'poisson'],
+      4: ['plage', 'mer', 'montagne', 'forêt']
+    };
+
+    wordsByLevel[level].forEach(word => {
+      const wordElement = document.createElement('div');
+      wordElement.className = 'word';
+      wordElement.draggable = true;
+      wordElement.textContent = word;
+      wordElement.dataset.word = word;
+
+      // Add drag events
+      wordElement.addEventListener('dragstart', () => wordElement.classList.add('dragging'));
+      wordElement.addEventListener('dragend', () => wordElement.classList.remove('dragging'));
+
+      wordsContainer.appendChild(wordElement);
+    });
+  }
+
+  function setupLevel(level) {
+    // Hide all sentences, then show the current level
+    document.querySelectorAll('.sentence').forEach(sentence => {
+      sentence.style.display = sentence.dataset.level == level ? 'block' : 'none';
+    });
+    levelNumberDisplay.textContent = level;
+    loadWords(level);
+    nextLevelButton.style.display = 'none';
+  }
+
+  function checkCompletion() {
+    const blanks = document.querySelectorAll(`.sentence[data-level="${currentLevel}"] .blank`);
+    return Array.from(blanks).every(blank => blank.textContent === blank.dataset.answer);
+  }
+
+  document.querySelectorAll('.blank').forEach(blank => {
+    blank.addEventListener('dragover', (e) => e.preventDefault());
+
+    blank.addEventListener('drop', (e) => {
+      const draggingWord = document.querySelector('.word.dragging');
+      const answer = blank.getAttribute('data-answer');
+      const selectedWord = draggingWord.getAttribute('data-word');
+
+      if (selectedWord === answer) {
+        blank.textContent = selectedWord;
+        draggingWord.style.visibility = 'hidden';
+
+        if (checkCompletion()) {
+          nextLevelButton.style.display = 'block';
         }
+      } else {
+        alert("Incorrect, try again!");
+      }
+    });
+  });
 
-        function handleResponse(isCorrect) {
-            if (isCorrect) {
-                score++;
-                alert("Correct!");
-            } else {
-                alert("Incorrect. Try to choose the most appropriate response.");
-            }
+  nextLevelButton.addEventListener('click', () => {
+    if (currentLevel < maxLevel) {
+      currentLevel++;
+      setupLevel(currentLevel);
+    }
+  });
 
-            // Update score and show next button
-            updateScore();
-            nextBtn.style.display = "block";
-        }
+  // Initialize level 1
+  setupLevel(currentLevel);
+</script>
 
-        function loadNextDialogue() {
-            currentDialogueIndex++;
-            if (currentDialogueIndex < dialogues.length) {
-                loadDialogue();
-                nextBtn.style.display = "none"; // Hide next button until response is selected
-            } else {
-                endGame();
-            }
-        }
-
-        function updateScore() {
-            scoreboard.innerText = `Score: ${score}`;
-        }
-
-        function endGame() {
-            promptDisplay.innerText = "Conversation Completed! Final Score: " + score;
-            responseOptionsContainer.innerHTML = ""; // Clear options
-            nextBtn.style.display = "none"; // Hide next button
-        }
-
-        // Initialize game
-        loadDialogue();
-    </script>
 </body>
 </html>
