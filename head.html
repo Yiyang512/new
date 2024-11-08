@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VR French School - Cross-Browser Consistency</title>
+  <title>VR French School - Responsive Text</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap" rel="stylesheet">
   <style>
     body {
@@ -20,8 +20,8 @@
 
     .container {
       text-align: left;
-      width: 1000px; /* Fixed width to ensure consistency */
-      padding-left: 0px; /* Additional spacing if needed */
+      width: 1000px;
+      padding-left: 0px;
     }
 
     .line {
@@ -37,80 +37,41 @@
       display: inline-block;
     }
 
-    .line:nth-child(1) {
-      animation-delay: 0.2s;
-      font-size: 40px; /* Pixel font sizes for consistency */
-      margin-bottom: 15px;
-    }
-
-    .line:nth-child(2) {
-      animation-delay: 0.4s;
-      font-size: 100px;
-      line-height: 1.1;
-      margin-bottom: -15px;
-    }
-
-    .line:nth-child(3) {
-      animation-delay: 0.6s;
-      font-size: 85px;
-      line-height: 1.1;
-      margin-bottom: 20px;
-    }
-
-    .line:nth-child(4) {
-      animation-delay: 0.8s;
-      font-size: 50px;
-      margin-bottom: 10px;
-    }
-
-    .line:nth-child(5) {
-      animation-delay: 1s;
-      font-size: 50px;
-      margin-bottom: 20px;
-    }
-
-    .line:nth-child(6) {
-      animation-delay: 1.2s;
-      font-size: 24px;
-      font-weight: 400;
-      font-style: italic;
-      margin-top: -5px;
-    }
+    .line:nth-child(1) { animation-delay: 0.2s; font-size: 40px; margin-bottom: 15px; }
+    .line:nth-child(2) { animation-delay: 0.4s; font-size: 100px; line-height: 1.1; margin-bottom: -15px; }
+    .line:nth-child(3) { animation-delay: 0.6s; font-size: 85px; line-height: 1.1; margin-bottom: 20px; }
+    .line:nth-child(4) { animation-delay: 0.8s; font-size: 50px; margin-bottom: 10px; }
+    .line:nth-child(5) { animation-delay: 1s; font-size: 50px; margin-bottom: 20px; }
+    .line:nth-child(6) { animation-delay: 1.2s; font-size: 24px; font-weight: 400; font-style: italic; margin-top: -5px; }
 
     /* Floating effect */
-    @keyframes float {
-      0%, 100% {
-        transform: translateY(0);
-      }
-      50% {
-        transform: translateY(-10px);
-      }
-    }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
     /* Waving effect */
-    @keyframes wave {
-      0%, 100% {
-        transform: translateX(0);
-      }
-      50% {
-        transform: translateX(5px);
-      }
-    }
+    @keyframes wave { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(5px); } }
 
     /* Pop effect for initial appearance */
-    @keyframes pop {
-      0% {
-        opacity: 0;
-        transform: scale(0.8);
-      }
-      60% {
-        opacity: 1;
-        transform: scale(1.1);
-      }
-      100% {
-        opacity: 1;
-        transform: scale(1);
-      }
+    @keyframes pop { 0% { opacity: 0; transform: scale(0.8); } 60% { opacity: 1; transform: scale(1.1); } 100% { opacity: 1; transform: scale(1); } }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) { /* Tablet & Mobile */
+      .container { width: 100%; padding-left: 10px; padding-right: 10px; }
+      .line:nth-child(1) { font-size: 28px; }
+      .line:nth-child(2) { font-size: 60px; margin-bottom: -10px; }
+      .line:nth-child(3) { font-size: 50px; margin-bottom: 15px; }
+      .line:nth-child(4) { font-size: 32px; }
+      .line:nth-child(5) { font-size: 32px; }
+      .line:nth-child(6) { font-size: 16px; }
+    }
+
+    @media (max-width: 480px) { /* Small mobile screens */
+      .container { padding-left: 5px; padding-right: 5px; }
+      .line:nth-child(1) { font-size: 24px; }
+      .line:nth-child(2) { font-size: 50px; margin-bottom: -5px; }
+      .line:nth-child(3) { font-size: 42px; margin-bottom: 10px; }
+      .line:nth-child(4) { font-size: 28px; }
+      .line:nth-child(5) { font-size: 28px; }
+      .line:nth-child(6) { font-size: 14px; }
     }
   </style>
 </head>
