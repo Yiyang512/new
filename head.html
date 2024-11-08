@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VR French School - Canva Style</title>
+  <title>VR French School - Responsive Text</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap" rel="stylesheet">
   <style>
     body {
@@ -15,13 +15,13 @@
       height: 100vh;
       margin: 0;
       font-family: 'Montserrat', sans-serif;
-      padding-left: 60px; /* Move text further left */
+      padding-left: 60px;
       color: #fff;
     }
 
     .container {
       text-align: left;
-      max-width: 700px; /* Increase container width slightly */
+      max-width: 700px;
     }
 
     .line {
@@ -37,22 +37,23 @@
       display: inline-block;
     }
 
+    /* Desktop Font Sizes */
     .line:nth-child(1) {
       animation-delay: 0.2s;
-      font-size: 3rem; /* Increased font size */
+      font-size: 2.5rem;
       margin-bottom: 15px;
     }
 
     .line:nth-child(2) {
       animation-delay: 0.4s;
-      font-size: 6rem; /* Increased font size */
+      font-size: 6rem;
       line-height: 1.1;
       margin-bottom: -15px;
     }
 
     .line:nth-child(3) {
       animation-delay: 0.6s;
-      font-size: 5.5rem; /* Increased font size */
+      font-size: 5.5rem;
       line-height: 1.1;
       margin-bottom: 20px;
     }
@@ -110,6 +111,46 @@
       100% {
         opacity: 1;
         transform: scale(1);
+      }
+    }
+
+    /* Mobile Adjustments */
+    @media (max-width: 768px) {
+      body {
+        padding-left: 20px; /* Less padding for smaller screens */
+      }
+
+      .container {
+        max-width: 90vw; /* Wider container on mobile */
+      }
+
+      .line:nth-child(1) {
+        font-size: 1.8rem; /* Smaller font for mobile */
+        margin-bottom: 10px;
+      }
+
+      .line:nth-child(2) {
+        font-size: 4rem;
+        margin-bottom: -10px;
+      }
+
+      .line:nth-child(3) {
+        font-size: 3.8rem;
+        margin-bottom: 15px;
+      }
+
+      .line:nth-child(4) {
+        font-size: 2rem;
+        margin-bottom: 8px;
+      }
+
+      .line:nth-child(5) {
+        font-size: 2rem;
+        margin-bottom: 10px;
+      }
+
+      .line:nth-child(6) {
+        font-size: 1rem;
       }
     }
   </style>
