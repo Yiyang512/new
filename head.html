@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VR French School - Canva Style</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #000; /* Pure black background */
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      padding-left: 40px;
+    }
+
+    .container {
+      text-align: left;
+      max-width: 600px;
+    }
+
+    .line {
+      opacity: 0;
+      transform: scale(0.8);
+      animation: pop 0.6s ease forwards, float 4s ease-in-out infinite, wave 2s ease-in-out infinite;
+      font-weight: 700;
+      background: linear-gradient(90deg, #00f5ff, #0077ff, #6a00ff, #ff004d); /* Slightly more purple */
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent; /* Makes the gradient show as the text color */
+      margin: 0;
+      display: inline-block; /* Allows each line to have individual floating/waving effect */
+    }
+
+    .line:nth-child(1) {
+      animation-delay: 0.2s;
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    .line:nth-child(2) {
+      animation-delay: 0.4s;
+      font-size: 5.2rem;
+      line-height: 1.1;
+      margin-bottom: -20px;
+    }
+
+    .line:nth-child(3) {
+      animation-delay: 0.6s;
+      font-size: 4.8rem;
+      line-height: 1.1;
+      margin-bottom: 15px;
+    }
+
+    .line:nth-child(4) {
+      animation-delay: 0.8s;
+      font-size: 2.5rem;
+      margin-bottom: 5px;
+    }
+
+    .line:nth-child(5) {
+      animation-delay: 1s;
+      font-size: 2.8rem;
+      margin-bottom: 15px;
+    }
+
+    .line:nth-child(6) {
+      animation-delay: 1.2s;
+      font-size: 1.2rem;
+      font-weight: 400;
+      font-style: italic;
+      margin-top: -5px;
+    }
+
+    /* Floating effect */
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    /* Waving effect */
+    @keyframes wave {
+      0%, 100% {
+        transform: translateX(0);
+      }
+      50% {
+        transform: translateX(5px);
+      }
+    }
+
+    /* Pop effect for initial appearance */
+    @keyframes pop {
+      0% {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+      60% {
+        opacity: 1;
+        transform: scale(1.1);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="line">We are the 1st Canadian</div>
+  <div class="line">AI-driven VR</div> 
+  <div class="line">French School</div>
+  <div class="line">For Accelerated Learning</div>
+  <div class="line">with Evergreen Courses!</div>
+  <div class="line">Empowering French Learning via Creative Technology.</div>
+</div>
+
+</body>
+</html>
