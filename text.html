@@ -18,22 +18,22 @@
         }
         .container {
             display: grid;
-            gap: 20px;
+            gap: 20px; /* Increased gap for wider spacing */
             padding: 10px 0;
-            grid-template-columns: repeat(4, 1fr);
-            max-width: 1400px;
+            grid-template-columns: repeat(4, 1fr); /* 4 columns on larger screens */
+            max-width: 1400px; /* Set a maximum width for the container */
             width: 100%;
         }
         .box {
-            background-color: #000;
+            background-color: #000; /* Set box background to pure black */
             padding: 20px;
             text-align: center;
             border-radius: 12px;
             width: 100%;
-            max-width: 250px;
+            max-width: 250px; /* Wider box width */
         }
         .box h1 {
-            font-size: 64px;
+            font-size: 75px;
             font-weight: 700;
             margin: 0;
             color: transparent;
@@ -41,7 +41,6 @@
             -webkit-background-clip: text;
             background-clip: text;
             letter-spacing: -1px;
-            -webkit-text-stroke: 1px #00FFFF; /* Adds white border effect around text */
             animation: fancyAnimation 4s infinite ease-in-out;
         }
         .box p {
@@ -82,16 +81,15 @@
         /* Responsive Design for Mobile Devices */
         @media (max-width: 768px) {
             .container {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(2, 1fr); /* 2 columns on smaller screens */
                 gap: 15px;
                 padding: 0 10px;
             }
             .box {
-                max-width: 100%;
+                max-width: 100%; /* Allow boxes to take full width on smaller screens */
             }
             .box h1 {
-                font-size: 56px;
-                -webkit-text-stroke: 1.5px #FFFFFF; /* Adjust stroke width for smaller screens */
+                font-size: 56px; /* Adjust font size for smaller screens */
             }
             .box p {
                 font-size: 16px;
@@ -136,7 +134,7 @@
                 if (count < target) {
                     count += increment;
                     counter.innerText = Math.ceil(count) + "+";
-                    setTimeout(updateCount, 20); // Adjust the speed here
+                    setTimeout(updateCount, 40); // Adjust the speed here
                 } else {
                     // Reset and start again
                     counter.innerText = target + "+";
