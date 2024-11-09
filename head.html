@@ -81,6 +81,12 @@
 
     /* Media query for smaller mobile devices, keeping laptop ratios */
     @media (max-width: 768px) {
+      body {
+        align-items: flex-start; /* Align content closer to the top */
+        padding-top: 5vh; /* Reduce space from top on mobile */
+        padding-bottom: 5vh; /* Reduce space from bottom on mobile */
+      }
+
       .line:nth-child(1) { font-size: 6vw; }
       .line:nth-child(2) { font-size: 10vw; }
       .line:nth-child(3) { font-size: 9vw; }
@@ -93,6 +99,12 @@
 
     /* Even larger font sizes for very small screens */
     @media (max-width: 480px) {
+      body {
+        align-items: flex-start;
+        padding-top: 3vh;
+        padding-bottom: 3vh;
+      }
+
       .line:nth-child(1) { font-size: 7vw; }
       .line:nth-child(2) { font-size: 12vw; }
       .line:nth-child(3) { font-size: 10vw; }
