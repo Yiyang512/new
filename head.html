@@ -7,22 +7,22 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap" rel="stylesheet">
   <style>
     body {
-      background: url('path/to/your-image.jpg') no-repeat center center; /* Replace with the path to your background image */
-      background-size: cover;
+      background-color: transparent; /* Transparent background */
       display: flex;
-      justify-content: flex-start;
-      align-items: center;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
       height: 100vh;
       margin: 0;
       font-family: 'Montserrat', sans-serif;
       color: #fff;
+      padding-left: 40px;
     }
 
     .container {
       text-align: left;
       width: 100%;
       max-width: 1000px;
-      padding-left: 0;
     }
 
     .line {
@@ -54,6 +54,26 @@
     /* Pop effect for initial appearance */
     @keyframes pop { 0% { opacity: 0; transform: scale(0.8); } 60% { opacity: 1; transform: scale(1.1); } 100% { opacity: 1; transform: scale(1); } }
 
+    /* Button Styling */
+    .button {
+      margin-top: 20px;
+      padding: 15px 30px;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #fff;
+      background-color: #0077ff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .button:hover {
+      background-color: #005bb5;
+      transform: scale(1.05);
+    }
+
     /* Mobile Adjustments */
     @media (max-width: 768px) {
       .container {
@@ -67,6 +87,7 @@
       .line:nth-child(4) { font-size: 6.5vw; }
       .line:nth-child(5) { font-size: 6.5vw; }
       .line:nth-child(6) { font-size: 4vw; }
+      .button { font-size: 1.2rem; padding: 12px 25px; }
     }
   </style>
 </head>
@@ -79,6 +100,7 @@
   <div class="line">For Accelerated Learning</div>
   <div class="line">with Evergreen Courses!</div>
   <div class="line">Empowering French Learning via Creative Technology.</div>
+  <a href="https://simplefrenchwithhems.com/about-us" class="button">Learn More</a>
 </div>
 
 </body>
