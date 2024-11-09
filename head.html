@@ -40,7 +40,7 @@
       opacity: 0;
       overflow: hidden;
       white-space: nowrap;
-      animation: typewriter 0.5s steps(30) forwards, glitch 2s infinite alternate ease-in-out 2s; /* Added typewriter effect */
+      animation: typewriter 3s steps(30) forwards, glitch 4s infinite alternate ease-in-out 3s;
     }
 
     /* Cloned text layers for additional glitch effect */
@@ -55,7 +55,7 @@
       color: transparent;
       opacity: 0.5;
       clip-path: inset(10%);
-      animation: glitch-anim 4s infinite alternate ease-in-out 3s; /* Delay glitch to start after typewriter */
+      animation: glitch-anim 4s infinite alternate ease-in-out 3s;
     }
 
     .line::before {
@@ -111,17 +111,27 @@
       display: flex;
       align-items: center;
       font-size: 1.5vw;
-      color: #00f5ff;
+      color: #ffffff;
       font-weight: 700;
-      margin-top: 2vh;
+      margin-top: 6vh; /* Increased space above "Check Below" */
+      animation: heartbeat 1.5s ease-in-out infinite; /* Heartbeat animation */
+    }
+
+    /* Heartbeat animation */
+    @keyframes heartbeat {
+      0% { transform: scale(1); }
+      30% { transform: scale(1.1); }
+      50% { transform: scale(1); }
+      70% { transform: scale(1.1); }
+      100% { transform: scale(1); }
     }
 
     /* Arrow styling */
     .arrow-down {
-      margin-left: 8px;
+      margin-left: 15px;
       font-size: 2.5vw;
       color: #00f5ff;
-      animation: bounce 1s infinite, glow 1.5s ease-in-out infinite;
+      animation: bounce 2s infinite, glow 2.5s ease-in-out infinite;
       position: relative;
     }
 
@@ -129,7 +139,7 @@
     @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
     @keyframes glow {
       0%, 100% { text-shadow: 0 0 8px rgba(255, 0, 77, 0.5), 0 0 20px rgba(255, 0, 77, 0.3), 0 0 30px rgba(255, 0, 77, 0.2); }
-      50% { text-shadow: 0 0 15px rgba(255, 0, 77, 1), 0 0 30px rgba(255, 0, 77, 0.8), 0 0 45px rgba(255, 0, 77, 0.5); }
+      50% { text-shadow: 0 0 8px rgba(255, 0, 77, 1), 0 0 30px rgba(255, 0, 77, 0.8), 0 0 45px rgba(255, 0, 77, 0.5); }
     }
 
     /* Media query for smaller mobile devices */
