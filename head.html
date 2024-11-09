@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VR French School - Glitch Animation</title>
+  <title>VR French School - Glitch and Typewriter Animation</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap" rel="stylesheet">
   <style>
     /* Basic styling for the body */
@@ -26,7 +26,7 @@
       max-width: 1000px;
     }
 
-    /* Main glitch text lines */
+    /* Main glitch and typewriter text lines */
     .line {
       position: relative;
       display: inline-block;
@@ -37,7 +37,10 @@
       color: transparent;
       margin: 0;
       font-size: 4vw;
-      animation: glitch 4s infinite alternate ease-in-out; /* Slower speed */
+      opacity: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      animation: typewriter 0.5s steps(30) forwards, glitch 2s infinite alternate ease-in-out 2s; /* Added typewriter effect */
     }
 
     /* Cloned text layers for additional glitch effect */
@@ -52,7 +55,7 @@
       color: transparent;
       opacity: 0.5;
       clip-path: inset(10%);
-      animation: glitch-anim 4s infinite alternate ease-in-out; /* Slower speed */
+      animation: glitch-anim 4s infinite alternate ease-in-out 3s; /* Delay glitch to start after typewriter */
     }
 
     .line::before {
@@ -76,6 +79,12 @@
     .line:nth-child(4) { animation-delay: 4s; font-size: 4.5vw; }
     .line:nth-child(5) { animation-delay: 5s; font-size: 4.5vw; }
     .line:nth-child(6) { animation-delay: 6s; font-size: 2.5vw; font-weight: 400; font-style: italic; }
+
+    /* Typewriter effect for each line */
+    @keyframes typewriter {
+      0% { width: 0; opacity: 1; }
+      100% { width: 100%; opacity: 1; }
+    }
 
     /* Main glitch effect */
     @keyframes glitch {
