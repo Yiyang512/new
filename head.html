@@ -6,8 +6,9 @@
   <title>VR French School - Responsive Text</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap" rel="stylesheet">
   <style>
+    /* Basic styling for the body */
     body {
-      background-color: transparent; /* Transparent background */
+      background-color: transparent;
       display: flex;
       justify-content: flex-start;
       align-items: center;
@@ -15,15 +16,17 @@
       margin: 0;
       font-family: 'Montserrat', sans-serif;
       color: #fff;
-      padding-left: 40px;
+      padding-left: 2vw;
     }
 
+    /* Container styling */
     .container {
       text-align: left;
       width: 100%;
       max-width: 1000px;
     }
 
+    /* Lines with animations and font sizing based on viewport */
     .line {
       opacity: 0;
       transform: scale(0.8);
@@ -37,68 +40,55 @@
       display: inline-block;
     }
 
+    /* Font sizes relative to viewport */
     .line:nth-child(1) { animation-delay: 0.2s; font-size: 4vw; margin-bottom: 1vw; }
-    .line:nth-child(2) { animation-delay: 0.4s; font-size: 10vw; line-height: 1.1; margin-bottom: -1.5vw; }
-    .line:nth-child(3) { animation-delay: 0.6s; font-size: 8.5vw; line-height: 1.1; margin-bottom: 2vw; }
-    .line:nth-child(4) { animation-delay: 0.8s; font-size: 5vw; margin-bottom: 1vw; }
-    .line:nth-child(5) { animation-delay: 1s; font-size: 5vw; margin-bottom: 2vw; }
-    .line:nth-child(6) { animation-delay: 1.2s; font-size: 3vw; font-weight: 400; font-style: italic; margin-top: -0.5vw; }
+    .line:nth-child(2) { animation-delay: 0.4s; font-size: 9vw; line-height: 1.1; margin-bottom: -1vw; }
+    .line:nth-child(3) { animation-delay: 0.6s; font-size: 8vw; line-height: 1.1; margin-bottom: 1.5vw; }
+    .line:nth-child(4) { animation-delay: 0.8s; font-size: 4.5vw; margin-bottom: 1vw; }
+    .line:nth-child(5) { animation-delay: 1s; font-size: 4.5vw; margin-bottom: 1.5vw; }
+    .line:nth-child(6) { animation-delay: 1.2s; font-size: 2.5vw; font-weight: 400; font-style: italic; margin-top: -0.5vw; }
 
-    /* Floating effect */
+    /* Floating, waving, and pop effects */
     @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-
-    /* Waving effect */
     @keyframes wave { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(5px); } }
-
-    /* Pop effect for initial appearance */
     @keyframes pop { 0% { opacity: 0; transform: scale(0.8); } 60% { opacity: 1; transform: scale(1.1); } 100% { opacity: 1; transform: scale(1); } }
 
-    /* Style for "Check Below" text and VR-inspired arrow */
+    /* Check Below text styling */
     .check-below {
       display: flex;
       align-items: center;
-      font-size: 1.5rem;
+      font-size: 1.5vw;
       color: #00f5ff;
       font-weight: 700;
-      margin-top: 20px;
+      margin-top: 2vh;
     }
 
-    /* Neon-style glowing arrow */
+    /* Arrow styling */
     .arrow-down {
       margin-left: 8px;
-      font-size: 2rem;
+      font-size: 2.5vw;
       color: #00f5ff;
       animation: bounce 1s infinite, glow 1.5s ease-in-out infinite;
       position: relative;
     }
 
-    /* Bouncing animation for the arrow */
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(10px); }
-    }
-
-    /* Glowing effect */
+    /* Arrow animations */
+    @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
     @keyframes glow {
       0%, 100% { text-shadow: 0 0 8px rgba(255, 0, 77, 0.5), 0 0 20px rgba(255, 0, 77, 0.3), 0 0 30px rgba(255, 0, 77, 0.2); }
       50% { text-shadow: 0 0 15px rgba(255, 0, 77, 1), 0 0 30px rgba(255, 0, 77, 0.8), 0 0 45px rgba(255, 0, 77, 0.5); }
     }
 
-    /* Mobile Adjustments */
-    @media (max-width: 768px) {
-      .container {
-        max-width: 90vw;
-        padding-left: 5vw;
-      }
-
-      .line:nth-child(1) { font-size: 6vw; }
-      .line:nth-child(2) { font-size: 12vw; margin-bottom: -2vw; }
-      .line:nth-child(3) { font-size: 10vw; margin-bottom: 3vw; }
-      .line:nth-child(4) { font-size: 6.5vw; }
-      .line:nth-child(5) { font-size: 6.5vw; }
-      .line:nth-child(6) { font-size: 4vw; }
-      .check-below { font-size: 1.2rem; }
-      .arrow-down { font-size: 1.8rem; }
+    /* Additional media query for smaller mobile devices */
+    @media (max-width: 480px) {
+      .line:nth-child(1) { font-size: 5vw; }
+      .line:nth-child(2) { font-size: 10vw; }
+      .line:nth-child(3) { font-size: 8.5vw; }
+      .line:nth-child(4) { font-size: 5vw; }
+      .line:nth-child(5) { font-size: 5vw; }
+      .line:nth-child(6) { font-size: 3vw; }
+      .check-below { font-size: 3vw; }
+      .arrow-down { font-size: 4vw; }
     }
   </style>
 </head>
