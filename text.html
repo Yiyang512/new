@@ -18,9 +18,11 @@
         }
         .container {
             display: grid;
-            gap: 20px;
+            gap: 20px; /* Increased gap for wider spacing */
             padding: 10px 0;
             grid-template-columns: repeat(4, 1fr); /* 4 columns on larger screens */
+            max-width: 1400px; /* Set a maximum width for the container */
+            width: 100%;
         }
         .box {
             background-color: #000; /* Set box background to pure black */
@@ -28,6 +30,7 @@
             text-align: center;
             border-radius: 12px;
             width: 100%;
+            max-width: 250px; /* Wider box width */
         }
         .box h1 {
             font-size: 64px;
@@ -81,6 +84,9 @@
                 grid-template-columns: repeat(2, 1fr); /* 2 columns on smaller screens */
                 gap: 15px;
                 padding: 0 10px;
+            }
+            .box {
+                max-width: 100%; /* Allow boxes to take full width on smaller screens */
             }
             .box h1 {
                 font-size: 56px; /* Adjust font size for smaller screens */
