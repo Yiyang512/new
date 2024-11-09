@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VR French School - Typewriter Pop Animation</title>
+  <title>VR French School - Glitch Animation</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap" rel="stylesheet">
   <style>
     /* Basic styling for the body */
@@ -26,40 +26,75 @@
       max-width: 1000px;
     }
 
-    /* Lines with typewriter-pop effect */
+    /* Main glitch text lines */
     .line {
-      opacity: 0;
+      position: relative;
       display: inline-block;
-      overflow: hidden; /* Hides text during typewriter effect */
-      white-space: nowrap;
-      transform-origin: bottom;
       font-weight: 700;
       background: linear-gradient(90deg, #00f5ff, #0077ff, #6a00ff, #ff004d);
       background-clip: text;
       -webkit-background-clip: text;
       color: transparent;
       margin: 0;
+      font-size: 4vw;
+      animation: glitch 4s infinite alternate ease-in-out; /* Slower speed */
     }
 
-    /* Delays and font sizes for each line */
-    .line:nth-child(1) { animation: typewriter 2s steps(20) 0.2s forwards, pop 0.3s ease 2.2s forwards; font-size: 4vw; margin-bottom: 1vw; }
-    .line:nth-child(2) { animation: typewriter 2.2s steps(25) 0.4s forwards, pop 0.3s ease 2.6s forwards; font-size: 9vw; line-height: 1.1; margin-bottom: -1vw; }
-    .line:nth-child(3) { animation: typewriter 2.4s steps(25) 0.6s forwards, pop 0.3s ease 3s forwards; font-size: 8vw; line-height: 1.1; margin-bottom: 1.5vw; }
-    .line:nth-child(4) { animation: typewriter 2.6s steps(20) 0.8s forwards, pop 0.3s ease 3.4s forwards; font-size: 4.5vw; margin-bottom: 1vw; }
-    .line:nth-child(5) { animation: typewriter 2.8s steps(20) 1s forwards, pop 0.3s ease 3.8s forwards; font-size: 4.5vw; margin-bottom: 1.5vw; }
-    .line:nth-child(6) { animation: typewriter 3s steps(25) 1.2s forwards, pop 0.3s ease 4.2s forwards; font-size: 2.5vw; font-weight: 400; font-style: italic; margin-top: -0.5vw; }
-
-    /* Typewriter effect for each line */
-    @keyframes typewriter {
-      0% { width: 0; opacity: 1; }
-      100% { width: 100%; opacity: 1; }
+    /* Cloned text layers for additional glitch effect */
+    .line::before,
+    .line::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      opacity: 0.5;
+      clip-path: inset(10%);
+      animation: glitch-anim 4s infinite alternate ease-in-out; /* Slower speed */
     }
 
-    /* Pop effect at the end of typewriter animation */
-    @keyframes pop {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.1); }
-      100% { transform: scale(1); }
+    .line::before {
+      color: #ff004d;
+      left: 2px;
+      text-shadow: -2px 0 #00f5ff;
+      clip-path: inset(0 10% 10% 0);
+    }
+
+    .line::after {
+      color: #00f5ff;
+      left: -2px;
+      text-shadow: -2px 0 #ff004d;
+      clip-path: inset(10% 0 0 10%);
+    }
+
+    /* Increased delays for each line */
+    .line:nth-child(1) { animation-delay: 1s; }
+    .line:nth-child(2) { animation-delay: 2s; font-size: 9vw; line-height: 1.1; }
+    .line:nth-child(3) { animation-delay: 3s; font-size: 8vw; line-height: 1.1; }
+    .line:nth-child(4) { animation-delay: 4s; font-size: 4.5vw; }
+    .line:nth-child(5) { animation-delay: 5s; font-size: 4.5vw; }
+    .line:nth-child(6) { animation-delay: 6s; font-size: 2.5vw; font-weight: 400; font-style: italic; }
+
+    /* Main glitch effect */
+    @keyframes glitch {
+      0% { transform: translate(0); }
+      20% { transform: translate(-2px, -2px); }
+      40% { transform: translate(2px, 2px); }
+      60% { transform: translate(-2px, 2px); }
+      80% { transform: translate(2px, -2px); }
+      100% { transform: translate(0); }
+    }
+
+    /* Additional glitch animation */
+    @keyframes glitch-anim {
+      0% { clip-path: inset(0% 0% 90% 0); transform: translate(2px, -2px); }
+      20% { clip-path: inset(10% 0% 85% 0); transform: translate(-2px, 2px); }
+      40% { clip-path: inset(15% 0% 70% 0); transform: translate(2px, -2px); }
+      60% { clip-path: inset(20% 0% 50% 0); transform: translate(-2px, 2px); }
+      80% { clip-path: inset(25% 0% 25% 0); transform: translate(2px, -2px); }
+      100% { clip-path: inset(0% 0% 0% 0); transform: translate(0); }
     }
 
     /* Check Below text styling */
@@ -116,12 +151,12 @@
 <body>
 
 <div class="container">
-  <div class="line">We are the 1st Canadian</div>
-  <div class="line">AI-driven VR</div> 
-  <div class="line">French School</div>
-  <div class="line">For Accelerated Learning</div>
-  <div class="line">with Evergreen Courses!</div>
-  <div class="line">Empowering French Learning via Creative Technology.</div>
+  <div class="line" data-text="We are the 1st Canadian">We are the 1st Canadian</div>
+  <div class="line" data-text="AI-driven VR">AI-driven VR</div> 
+  <div class="line" data-text="French School">French School</div>
+  <div class="line" data-text="For Accelerated Learning">For Accelerated Learning</div>
+  <div class="line" data-text="with Evergreen Courses!">with Evergreen Courses!</div>
+  <div class="line" data-text="Empowering French Learning via Creative Technology.">Empowering French Learning via Creative Technology.</div>
   
   <div class="check-below">
     Check Below
