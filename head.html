@@ -105,35 +105,12 @@
       80% { clip-path: inset(25% 0% 25% 0); transform: translate(2px, -2px); }
       100% { clip-path: inset(0% 0% 0% 0); transform: translate(0); }
     }
-
-    /* Welcome text styling */
-    .welcome {
-      display: flex;
-      align-items: center;
-      font-size: 2vw;
-      color: #ffffff;
-      font-weight: 700;
-      margin-top: 10vh; /* Increased space above "Welcome" */
-      animation: fadeInScale 2s ease-out forwards; /* Smooth fade-in and scale-up animation */
-    }
-
-    /* Smooth fade-in and scale-up animation */
-    @keyframes fadeInScale {
-      0% {
-        opacity: 0;
-        transform: scale(0.8);
-      }
-      100% {
-        opacity: 1;
-        transform: scale(1);
-      }
-    }
-
+    
     /* Arrow styling */
     .arrow-down {
       margin-left: 8px;
       font-size: 2.5vw;
-      color: #ffffff;
+      color: #00f5ff;
       animation: bounce 1s infinite, glow 1.5s ease-in-out infinite;
       position: relative;
     }
@@ -153,7 +130,6 @@
       .line:nth-child(4) { font-size: 6vw; }
       .line:nth-child(5) { font-size: 6vw; }
       .line:nth-child(6) { font-size: 4vw; }
-      .welcome { font-size: 3.5vw; }
       .arrow-down { font-size: 4.5vw; }
     }
 
@@ -165,7 +141,6 @@
       .line:nth-child(4) { font-size: 7vw; }
       .line:nth-child(5) { font-size: 7vw; }
       .line:nth-child(6) { font-size: 5vw; }
-      .welcome { font-size: 4.5vw; }
       .arrow-down { font-size: 6vw; }
     }
   </style>
@@ -179,11 +154,6 @@
   <div class="line" data-text="For Accelerated Learning">For Accelerated Learning</div>
   <div class="line" data-text="with Evergreen Courses!">with Evergreen Courses!</div>
   <div class="line" data-text="Empowering French Learning via Creative Technology.">Empowering French Learning via Creative Technology.</div>
-  
-  <div class="welcome">
-    Welcome!
-    <span class="arrow-down">✨</span>
-  </div>
 </div>
 
 </body>
