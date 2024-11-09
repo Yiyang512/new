@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI-driven VR French School</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap">
+  <style>
+    body {
+      background-color: #000;
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      display: flex;
+      justify-content: left;
+      align-items: left;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .container {
+      text-align: left;
+      max-width: 800px;
+      padding: 20px;
+      position: relative;
+    }
+
+    /* Gradient Text Styles */
+    .highlight {
+      font-size: 2em;
+      font-weight: bold;
+      background: linear-gradient(90deg, #00FFFF, #4e48b8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: fadeIn 1s ease-in-out forwards;
+    }
+
+    .ai-driven {
+      font-size: 4em;
+      font-weight: bold;
+      line-height: 1.2;
+      background: linear-gradient(90deg, #FF007A, #FFD700);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: slideIn 1.5s ease-in-out forwards;
+    }
+
+    .description {
+      font-size: 1.2em;
+      margin-top: 20px;
+      background: linear-gradient(90deg, #FFD700, #00FFFF);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: fadeIn 2s ease-in-out forwards;
+    }
+
+    .rainbow-line {
+      margin-top: 30px;
+      height: 5px;
+      width: 100%;
+      background: linear-gradient(90deg, #FF007A, #FFD700, #00FFFF, #FF007A);
+      animation: expand 2s ease-in-out forwards;
+    }
+
+    /* Keyframes for animations */
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    @keyframes slideIn {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(0); }
+    }
+
+    @keyframes expand {
+      0% { width: 0; }
+      100% { width: 100%; }
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="highlight">We are the 1st Canadian</div>
+  <div class="ai-driven">AI-driven VR<br>French School</div>
+  <div class="description">For Accelerated Learning with Evergreen Courses!</div>
+  <div class="rainbow-line"></div>
+</div>
+
+</body>
+</html>
