@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VR French School - Glitch and Typewriter Animation</title>
+  <title>VR French School - Glitch, Typewriter, and Heartbeat Animation</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap" rel="stylesheet">
   <style>
     /* Basic styling for the body */
@@ -16,7 +16,7 @@
       margin: 0;
       font-family: 'Montserrat', sans-serif;
       color: #fff;
-      padding-left: 2vw;
+      padding-left: 4vw;
     }
 
     /* Container styling */
@@ -26,7 +26,7 @@
       max-width: 1000px;
     }
 
-    /* Main glitch and typewriter text lines */
+    /* Main glitch, typewriter, and heartbeat text lines */
     .line {
       position: relative;
       display: inline-block;
@@ -40,7 +40,7 @@
       opacity: 0;
       overflow: hidden;
       white-space: nowrap;
-      animation: typewriter 3s steps(30) forwards, glitch 4s infinite alternate ease-in-out 3s;
+      animation: typewriter 3s steps(30) forwards, glitch 4s infinite alternate ease-in-out 3s, heartbeat 1.5s ease-in-out infinite 7s;
     }
 
     /* Cloned text layers for additional glitch effect */
@@ -79,6 +79,7 @@
     .line:nth-child(4) { animation-delay: 4s; font-size: 4.5vw; }
     .line:nth-child(5) { animation-delay: 5s; font-size: 4.5vw; }
     .line:nth-child(6) { animation-delay: 6s; font-size: 2.5vw; font-weight: 400; font-style: italic; }
+    .line:nth-child(7) { animation-delay: 7s; font-size: 2.5vw; font-weight: 400; font-style: italic; }
 
     /* Typewriter effect for each line */
     @keyframes typewriter {
@@ -105,6 +106,14 @@
       80% { clip-path: inset(25% 0% 25% 0); transform: translate(2px, -2px); }
       100% { clip-path: inset(0% 0% 0% 0); transform: translate(0); }
     }
+
+    /* Heartbeat animation */
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      25% { transform: scale(1.05); }
+      50% { transform: scale(1.1); }
+      75% { transform: scale(1.05); }
+    }
     
     /* Arrow styling */
     .arrow-down {
@@ -129,7 +138,7 @@
       .line:nth-child(3) { font-size: 9vw; }
       .line:nth-child(4) { font-size: 6vw; }
       .line:nth-child(5) { font-size: 6vw; }
-      .line:nth-child(6) { font-size: 4vw; }
+      .line:nth-child(6), .line:nth-child(7) { font-size: 4vw; }
       .arrow-down { font-size: 4.5vw; }
     }
 
@@ -140,7 +149,7 @@
       .line:nth-child(3) { font-size: 10vw; }
       .line:nth-child(4) { font-size: 7vw; }
       .line:nth-child(5) { font-size: 7vw; }
-      .line:nth-child(6) { font-size: 5vw; }
+      .line:nth-child(6), .line:nth-child(7) { font-size: 5vw; }
       .arrow-down { font-size: 6vw; }
     }
   </style>
@@ -153,7 +162,8 @@
   <div class="line" data-text="French School">French School</div>
   <div class="line" data-text="For Accelerated Learning">For Accelerated Learning</div>
   <div class="line" data-text="with Evergreen Courses!">with Evergreen Courses!</div>
-  <div class="line" data-text="Empowering French Learning via Creative Technology.">Empowering French Learning via Creative Technology.</div>
+  <div class="line" data-text="Empowering French Learning">Empowering French Learning</div>
+  <div class="line" data-text="via Creative Technology.">via Creative Technology.</div>
 </div>
 
 </body>
