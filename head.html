@@ -8,8 +8,7 @@
   <style>
     /* Basic styling for the body */
     body {
-      background: url('https://yiyang512.github.io/new/background.jpg') no-repeat center center;
-      background-size: cover;
+      background-color: transparent;
       display: flex;
       justify-content: flex-start;
       align-items: center;
@@ -83,9 +82,9 @@
     /* Media query for smaller mobile devices, keeping laptop ratios */
     @media (max-width: 768px) {
       body {
-        align-items: flex-start;
-        padding-top: 2vh; /* Reduced top space for mobile */
-        padding-bottom: 2vh; /* Reduced bottom space for mobile */
+        align-items: flex-start; /* Align content closer to the top */
+        padding-top: 5vh; /* Reduce space from top on mobile */
+        padding-bottom: 5vh; /* Reduce space from bottom on mobile */
       }
 
       .line:nth-child(1) { font-size: 6vw; }
@@ -98,12 +97,12 @@
       .arrow-down { font-size: 4.5vw; }
     }
 
-    /* Further reduction for very small screens */
+    /* Even larger font sizes for very small screens */
     @media (max-width: 480px) {
       body {
         align-items: flex-start;
-        padding-top: 1vh;
-        padding-bottom: 1vh;
+        padding-top: 3vh;
+        padding-bottom: 3vh;
       }
 
       .line:nth-child(1) { font-size: 7vw; }
