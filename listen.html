@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Listening Tests Section</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* Basic styling for the body */
+    body {
+      background-color: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+
+    /* Container styling */
+    .container {
+      max-width: 800px;
+      line-height: 1.6;
+      opacity: 1;
+      animation: fadeInUp 2s ease forwards;
+    }
+
+    /* Big title styling */
+    .big-title {
+      font-size: 4em;
+      font-weight: 700;
+      background: linear-gradient(90deg, #c2a2e3, #a08bd3, #c2a2e3);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      margin: 0 0 20px;
+      animation: pulse 3s ease forwards, colorGlow 6s linear infinite;
+      background-size: 200%;
+      background-position: 0% 50%;
+    }
+
+    /* Paragraph styling */
+    p {
+      font-size: 1em;
+      font-weight: 400;
+      color: #ddd;
+      margin: 10px 0;
+      animation: fadeInUp 2s ease 0.5s forwards;
+    }
+
+    /* Fade In and Up Animation */
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Fade In for Big Title */
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    /* Pulse Animation for Subtle Scaling */
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.05); opacity: 0.9; }
+    }
+
+    /* Gradient Glow Animation */
+    @keyframes colorGlow {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+
+    /* Responsive Styling */
+    @media (max-width: 600px) {
+      .big-title {
+        font-size: 3em;
+      }
+      p {
+        font-size: 0.9em;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="big-title">Listening Tests</div>
+  <p>Sharpen your French listening skills with our immersive listening tests. Featuring authentic audio clips from everyday conversations, news, and interviews, these tests are designed to enhance your ability to understand spoken French in real-world situations. Practice at your own pace and track your improvement as you master the art of listening comprehension!</p>
+</div>
+
+</body>
+</html>
