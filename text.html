@@ -15,41 +15,41 @@
             font-family: 'Kanit', sans-serif;
             height: 100vh;
             margin: 0;
-            padding: 0; /* Remove extra padding */
-            overflow: hidden; /* Prevent scrollbars from appearing */
+            padding: 0;
         }
         .container {
-            display: flex;
-            gap: 20px; /* Reduced the gap between boxes */
-            padding: 10px 0; /* Minimal padding on top and bottom */
+            display: grid;
+            gap: 20px;
+            padding: 10px 0;
+            grid-template-columns: repeat(4, 1fr); /* 4 columns on larger screens */
         }
         .box {
             background-color: #111;
-            padding: 20px; /* Reduced padding inside the box */
+            padding: 20px;
             text-align: center;
             border-radius: 12px;
-            width: 180px; /* Adjusted width for better fit */
+            width: 100%;
         }
         .box h1 {
-            font-size: 64px; /* Slightly reduced font size */
+            font-size: 64px;
             font-weight: 700;
             margin: 0;
-            color: transparent; /* Make the text transparent */
-            background: linear-gradient(90deg, #FFD300, #FFD700, #7F00FF, #9400D3); /* VR-inspired gradient color */
-            -webkit-background-clip: text; /* Ensures the gradient is clipped to text on WebKit browsers */
+            color: transparent;
+            background: linear-gradient(90deg, #FFD300, #FFD700, #7F00FF, #9400D3);
+            -webkit-background-clip: text;
             background-clip: text;
             letter-spacing: -1px;
-            animation: fancyAnimation 4s infinite ease-in-out; /* Apply complex animation */
+            animation: fancyAnimation 4s infinite ease-in-out;
         }
         .box p {
-            font-size: 18px; /* Slightly reduced font size */
-            color: #FFFFFF; /* Change text to white */
-            margin: 5px 0 0; /* Reduced margin on top */
+            font-size: 18px;
+            color: #FFFFFF;
+            margin: 5px 0 0;
             letter-spacing: -0.5px;
             font-weight: 400;
         }
 
-        /* Fancier Animation */
+        /* Fancy Animation */
         @keyframes fancyAnimation {
             0% {
                 opacity: 0;
@@ -73,6 +73,33 @@
             100% {
                 opacity: 0;
                 transform: scale(0.8) rotate(0deg) translateY(0);
+            }
+        }
+
+        /* Responsive Design for Mobile Devices */
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: repeat(2, 1fr); /* 2 columns on medium screens */
+                gap: 10px;
+            }
+            .box h1 {
+                font-size: 56px; /* Adjust font size for smaller screens */
+            }
+            .box p {
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                grid-template-columns: 1fr; /* 1 column on small screens */
+                padding: 0 10px;
+            }
+            .box h1 {
+                font-size: 48px; /* Smaller font size for mobile */
+            }
+            .box p {
+                font-size: 14px;
             }
         }
     </style>
@@ -120,7 +147,7 @@
                     setTimeout(() => {
                         counter.innerText = "0+";
                         countUp();
-                    }, 3500); // Pause before restarting
+                    }, 4500); // Pause before restarting
                 }
             };
             
