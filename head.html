@@ -9,9 +9,8 @@
     body {
       background-color: transparent; /* Transparent background */
       display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: flex-start;
+      justify-content: flex-start;
+      align-items: center;
       height: 100vh;
       margin: 0;
       font-family: 'Montserrat', sans-serif;
@@ -54,24 +53,35 @@
     /* Pop effect for initial appearance */
     @keyframes pop { 0% { opacity: 0; transform: scale(0.8); } 60% { opacity: 1; transform: scale(1.1); } 100% { opacity: 1; transform: scale(1); } }
 
-    /* Button Styling */
-    .button {
-      margin-top: 20px;
-      padding: 15px 30px;
+    /* Style for "Check Below" text and VR-inspired arrow */
+    .check-below {
+      display: flex;
+      align-items: center;
       font-size: 1.5rem;
-      font-weight: bold;
-      color: #fff;
-      background-color: #0077ff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      text-decoration: none;
-      transition: background-color 0.3s ease, transform 0.3s ease;
+      color: #00f5ff;
+      font-weight: 700;
+      margin-top: 20px;
     }
 
-    .button:hover {
-      background-color: #005bb5;
-      transform: scale(1.05);
+    /* Neon-style glowing arrow */
+    .arrow-down {
+      margin-left: 8px;
+      font-size: 2rem;
+      color: #00f5ff;
+      animation: bounce 1s infinite, glow 1.5s ease-in-out infinite;
+      position: relative;
+    }
+
+    /* Bouncing animation for the arrow */
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(10px); }
+    }
+
+    /* Glowing effect */
+    @keyframes glow {
+      0%, 100% { text-shadow: 0 0 8px rgba(255, 0, 77, 0.5), 0 0 20px rgba(255, 0, 77, 0.3), 0 0 30px rgba(255, 0, 77, 0.2); }
+      50% { text-shadow: 0 0 15px rgba(255, 0, 77, 1), 0 0 30px rgba(255, 0, 77, 0.8), 0 0 45px rgba(255, 0, 77, 0.5); }
     }
 
     /* Mobile Adjustments */
@@ -87,7 +97,8 @@
       .line:nth-child(4) { font-size: 6.5vw; }
       .line:nth-child(5) { font-size: 6.5vw; }
       .line:nth-child(6) { font-size: 4vw; }
-      .button { font-size: 1.2rem; padding: 12px 25px; }
+      .check-below { font-size: 1.2rem; }
+      .arrow-down { font-size: 1.8rem; }
     }
   </style>
 </head>
@@ -100,7 +111,11 @@
   <div class="line">For Accelerated Learning</div>
   <div class="line">with Evergreen Courses!</div>
   <div class="line">Empowering French Learning via Creative Technology.</div>
-  <a href="https://simplefrenchwithhems.com/about-us" class="button">Learn More</a>
+  
+  <div class="check-below">
+    Check Below
+    <span class="arrow-down">⬇</span>
+  </div>
 </div>
 
 </body>
