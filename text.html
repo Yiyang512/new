@@ -20,7 +20,7 @@
         .container {
             display: grid;
             gap: 20px;
-            padding: 10px 10px;
+            padding: 10px;
             grid-template-columns: repeat(4, 1fr);
             max-width: 90vw;
             width: 100%;
@@ -33,6 +33,7 @@
             border-radius: 12px;
             width: 100%;
             max-width: 250px;
+            margin: 0 auto; /* Center boxes */
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         /* Glowing animation with violet color */
@@ -41,7 +42,7 @@
                 box-shadow: none;
             }
             50% {
-                box-shadow: 0 0 60px rgba(138, 43, 226, 0.7); /* Violet color */
+                box-shadow: 0 0 70px rgba(138, 43, 226, 0.7); /* Violet color */
             }
         }
         /* Apply glowing animation in sequence with longer delay and duration */
@@ -96,11 +97,13 @@
         @media (max-width: 768px) {
             .container {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 10px;
+                gap: 15px;
+                max-width: 80vw; /* Reduce container width on mobile */
                 padding: 0 15px; /* Add padding on the sides */
             }
             .box {
                 max-width: 100%;
+                margin: 0 5px; /* Add side margins for space */
             }
             .box h1 {
                 font-size: 56px;
