@@ -15,14 +15,16 @@
             height: 100vh;
             margin: 0;
             padding: 0;
+            overflow: hidden;
         }
         .container {
             display: grid;
             gap: 20px;
-            padding: 10px 0;
+            padding: 10px 20px;
             grid-template-columns: repeat(4, 1fr);
-            max-width: 1400px;
+            max-width: 90vw;
             width: 100%;
+            box-sizing: border-box;
         }
         .box {
             background-color: #000;
@@ -41,12 +43,14 @@
             font-size: 75px;
             font-weight: 700;
             margin: 0;
-            color: transparent;
-            background: linear-gradient(90deg, #FFD300, #FFD700, #7F00FF, #9400D3);
-            -webkit-background-clip: text;
-            background-clip: text;
-            animation: gradientShift 5s infinite linear;
+            color: #FFD700; /* Solid color for the numbers */
             letter-spacing: -1px;
+            animation: heartbeat 1.5s ease-in-out infinite;
+            text-shadow:
+                2px 2px 0 #FF8C00,    /* Orange shadow for 3D effect */
+                4px 4px 0 #FF00FF,    /* Pink layer for additional depth */
+                6px 6px 0 #9400D3,    /* Purple layer for more depth */
+                8px 8px 5px rgba(0, 0, 0, 0.4); /* Soft black shadow for further depth */
         }
         .box p {
             font-size: 18px;
@@ -55,12 +59,6 @@
             letter-spacing: -0.5px;
             font-weight: 400;
             animation: heartbeat 1.5s ease-in-out infinite;
-        }
-
-        /* Gradient Animation for Text */
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 100% 50%; }
         }
 
         /* Heartbeat Animation */
@@ -133,7 +131,7 @@
                 if (count < target) {
                     count += increment;
                     counter.innerText = Math.ceil(count) + "+";
-                    counter.style.animation = "heartbeat 1.5s ease-in-out infinite, countUpOpacity 0.5s ease-in-out"; // Apply heartbeat and opacity animations
+                    counter.style.animation = "heartbeat 1.5s ease-in-out infinite, countUpOpacity 0.5s ease-in-out";
                     setTimeout(updateCount, 40);
                 } else {
                     counter.innerText = target + "+";
