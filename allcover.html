@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: Poppins, sans-serif;
-            background-color: #f0f0f0;
+            background-color: #000000; /* Pure black background */
             color: #333;
             margin: 0;
             overflow-x: hidden;
@@ -36,19 +36,19 @@
             box-shadow: 0 0 10px rgba(255, 215, 0, 0);
             animation: bounceIn 1s ease forwards, glowAnimation 3s ease infinite;
             border: 2px solid transparent;
-            flex: 1 1 calc(33.33% - 30px); /* 3 items per row with spacing */
+            flex: 1 1 calc(33.33% - 30px);
             max-width: 150px;
         }
         /* Responsive adjustments */
         @media (min-width: 768px) {
             .course-card {
-                flex: 1 1 calc(33.33% - 30px); /* 3 items per row for tablets and up */
-                max-width: 200px; /* Slightly larger cards */
+                flex: 1 1 calc(33.33% - 30px);
+                max-width: 200px;
             }
         }
         @media (min-width: 1024px) {
             .course-card {
-                flex: 1 1 calc(16.66% - 30px); /* 6 items per row for desktops */
+                flex: 1 1 calc(16.66% - 30px);
                 max-width: 150px;
             }
         }
@@ -104,7 +104,7 @@
             padding: 10px;
             font-size: 0.85em;
             font-weight: bold;
-            color: #333;
+            color: #ffffff; /* White text for better contrast on black background */
             border-radius: 0 0 10px 10px;
             z-index: 1;
             position: relative;
@@ -180,7 +180,7 @@
                 <a href="https://simplefrenchwithhems.com/b/a2-french" target="_blank">
                     <img src="https://yiyang512.github.io/new/a2.png" alt="Level A2 Complete French Mastery">
                 </a>
-                <div class="course-info"> Level Aa - Complete French Mastery</div>
+                <div class="course-info"> Level A2 - Complete French Mastery</div>
             </div>
             <div class="course-card" style="animation-delay: 0.9s;">
                 <a href="https://simplefrenchwithhems.com/b/F21fg" target="_blank">
