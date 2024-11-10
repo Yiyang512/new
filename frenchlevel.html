@@ -16,7 +16,7 @@
       height: 100vh;
       font-family: 'Anton', sans-serif;
       color: #fff;
-      overflow: hidden; /* Ensures no extra scroll space */
+      overflow: hidden;
     }
 
     /* Banner styling */
@@ -27,10 +27,10 @@
       display: flex;
       align-items: center;
       padding: 10px 20px;
-      font-size: 6vw;
+      font-size: 6vw; /* Larger font size for prominence */
       white-space: nowrap;
       overflow: hidden;
-      background-color: #000; /* Background to ensure contrast */
+      background-color: #000;
     }
 
     /* Gradient Text Effect with Repeating Typewriter Animation */
@@ -50,7 +50,7 @@
     @keyframes typewriter {
       0% { width: 0; }
       90% { width: 100%; }
-      100% { width: 0; } /* Resetting text width to zero to repeat */
+      100% { width: 0; }
     }
 
     /* Blinking cursor animation */
@@ -89,6 +89,22 @@
     @keyframes pulse {
       0%, 100% { transform: scale(1); opacity: 1; }
       50% { transform: scale(1.2); opacity: 0.8; }
+    }
+
+    /* Media query for mobile devices */
+    @media (max-width: 768px) {
+      .banner {
+        font-size: 8vw; /* Increase font size on smaller screens */
+        padding: 15px 25px; /* Adjust padding */
+      }
+      .banner .line {
+        height: 8px; /* Make the line thicker */
+        width: 60vw; /* Extend the line width */
+      }
+      .banner .circle {
+        width: 40px; /* Larger circle */
+        height: 40px;
+      }
     }
   </style>
 </head>
