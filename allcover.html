@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple French with Hems</title>
+    <style>
+        body {
+            font-family: Poppins, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            margin: 0;
+            overflow-x: hidden;
+        }
+        .section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 50px 20px;
+            text-align: center;
+        }
+        .course-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            padding-bottom: 15px;
+        }
+        .course-card {
+            position: relative;
+            background-color: #a0e4f7;
+            border-radius: 10px;
+            overflow: hidden;
+            width: 150px;
+            transform: translateY(50px) scale(0.9);
+            opacity: 0;
+            transition: transform 1.5s ease, opacity 1.5s ease, box-shadow 0.5s ease;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0);
+            animation: bounceIn 1s ease forwards, glowAnimation 3s ease infinite;
+            border: 2px solid transparent;
+            flex: 1 1 calc(33.33% - 30px); /* 3 items per row with spacing */
+            max-width: 150px; /* Ensures cards stay compact */
+        }
+        /* Responsive adjustments */
+        @media (min-width: 768px) {
+            .course-card {
+                flex: 1 1 calc(33.33% - 30px); /* 3 items per row for tablets and up */
+                max-width: 200px; /* Slightly larger cards */
+            }
+        }
+        @media (min-width: 1024px) {
+            .course-card {
+                flex: 1 1 calc(16.66% - 30px); /* 6 items per row for desktops */
+                max-width: 150px;
+            }
+        }
+        .course-card::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 250%;
+            height: 250%;
+            background: radial-gradient(circle, rgba(255, 223, 0, 0.3), transparent);
+            border-radius: 80%;
+            transform: translate(-50%, -50%) rotate(0deg);
+            z-index: -2;
+            animation: rotateGlow 10s linear infinite;
+        }
+        .course-card::after {
+            content: '';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            width: 40px;
+            height: 20px;
+            background: radial-gradient(circle, rgba(255, 223, 0, 0.8), transparent);
+            border-radius: 50%;
+            z-index: -1;
+            box-shadow: 0 0 10px rgba(255, 223, 0, 0.8), 0 0 20px rgba(255, 223, 0, 0.5);
+            animation: sparkle 2s infinite alternate;
+        }
+        .course-card.visible {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+            box-shadow: 0 20px 20px rgba(255, 223, 0, 0.4);
+            border-image: linear-gradient(45deg, #a0e4f7, #40c4d8, #1c91b9) 1;
+            animation: bounceIn 1s ease forwards, glowAnimation 3s ease infinite;
+        }
+        .course-card:hover {
+            transform: scale(1.05) rotate(-1deg);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.6), 0 0 15px rgba(255, 223, 0, 0.6);
+        }
+        .course-card img {
+            width: 100%;
+            height: auto;
+            z-index: 1;
+            position: relative;
+            transition: transform 0.3s ease;
+            border-radius: 10px;
+        }
+        .course-card:hover img {
+            transform: scale(1.05);
+        }
+        .course-info {
+            padding: 10px;
+            font-size: 0.85em;
+            font-weight: bold;
+            color: #333;
+            background-color: #a0e4f7;
+            border-radius: 0 0 10px 10px;
+            z-index: 1;
+            position: relative;
+        }
+        
+        /* Keyframes for the bounce-in effect */
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: translateY(50px) scale(0.9);
+            }
+            50% {
+                opacity: 1;
+                transform: translateY(-10px) scale(1.05);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Keyframes for rotating sparkle glow */
+        @keyframes rotateGlow {
+            0% {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+            100% {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+
+        /* Keyframes for sparkle animation */
+        @keyframes sparkle {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1.3);
+                opacity: 0.7;
+            }
+        }
+
+    /* Keyframes for the glowing effect */
+@keyframes glowAnimation {
+    0%, 100% {
+        box-shadow: 0 0 10px rgba(255, 223, 0, 0); /* Start and end with no glow */
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(0, 150, 255, 0.8), 0 0 40px rgba(0, 75, 200, 0.6); /* Blue glow */
+    }
+}
+
+    </style>
+</head>
+<body>
+
+    <!-- Featured Courses Section -->
+    <div class="section" id="featured-courses">
+        <div class="course-grid">
+            <div class="course-card" style="animation-delay: 0s;">
+                <a href="https://simplefrenchwithhems.com/b/freefrench" target="_blank">
+                    <img src="https://yiyang512.github.io/new/threedays.png" alt="French Fundamentals">
+                </a>
+                <div class="course-info"> French Fundamentals - 3 Days Challenge!</div>
+            </div>
+            <div class="course-card" style="animation-delay: 0.3s;">
+                <a href="https://simplefrenchwithhems.com/b/a1-introduction" target="_blank">
+                    <img src="https://yiyang512.github.io/new/a1.png" alt="Level A1 Complete French Mastery">
+                </a>
+                <div class="course-info"> Level A1 - Complete French Mastery</div>
+            </div>
+            <div class="course-card" style="animation-delay: 0.6s;">
+                <a href="https://simplefrenchwithhems.com/b/a2-french" target="_blank">
+                    <img src="https://yiyang512.github.io/new/a2.png" alt="Level A2 Complete French Mastery">
+                </a>
+                <div class="course-info"> Level Aa - Complete French Mastery</div>
+            </div>
+            <div class="course-card" style="animation-delay: 0.9s;">
+                <a href="https://simplefrenchwithhems.com/b/F21fg" target="_blank">
+                    <img src="https://yiyang512.github.io/new/beginner.png" alt="Beginner's Guide French Quest">
+                </a>
+                <div class="course-info"> Beginner‘s Guide - French Quest</div>
+            </div>
+            <!-- New Course Card for VR Game -->
+            <div class="course-card" style="animation-delay: 1.2s;">
+                <a href="https://simplefrenchwithhems.com/vr-game" target="_blank">
+                    <img src="https://yiyang512.github.io/new/vr.png" alt="VR Game - School Pulse">
+                </a>
+                <div class="course-info"> VR Game - School Pulse ™</div>
+            </div>
+            <!-- New Course Card for Animated Stories -->
+            <div class="course-card" style="animation-delay: 1.5s;">
+                <a href="https://simplefrenchwithhems.com/course-features" target="_blank">
+                    <img src="https://yiyang512.github.io/new/animation.png" alt="Animated Stories">
+                </a>
+                <div class="course-info"> Animated Stories</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript for scroll animation -->
+    <script>
+        // Function to handle scroll animation
+        function revealCourses() {
+            const courseCards = document.querySelectorAll('.course-card');
+            courseCards.forEach((card) => {
+                const courseTop = card.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                if (courseTop < windowHeight - 50) {
+                    card.classList.add('visible');
+                }
+            });
+        }
+
+        // Initial call to reveal courses that are already in view on page load
+        revealCourses();
+
+        // Add scroll event listener
+        window.addEventListener('scroll', revealCourses);
+    </script>
+</body>
+</html>
