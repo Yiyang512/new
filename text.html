@@ -16,29 +16,28 @@
             margin: 0;
             padding: 0;
         }
-.container {
-    display: grid;
-    gap: 30px; /* Increase gap to provide more space between boxes */
-    padding: 10px 40px; /* Increase padding on the sides */
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsive grid with minimum width */
-    max-width: 1300px; /* Slightly reduce max-width for extra space on edges */
-    width: 100%;
-    box-sizing: border-box;
-}
+        .container {
+            display: grid;
+            gap: 30px;
+            padding: 10px 60px;
+            grid-template-columns: repeat(4, 1fr);
+            max-width: 1200px;
+            width: 100%;
+            box-sizing: border-box;
+            margin: 0 auto;
+        }
+        .box {
+            background-color: #000;
+            padding: 20px;
+            text-align: center;
+            border-radius: 12px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            width: 100%;
+            max-width: 250px;
+            margin: 0 auto;
+            animation: glow 3s infinite ease-in-out;
+        }
 
-.box {
-    background-color: #000;
-    padding: 20px;
-    text-align: center;
-    border-radius: 12px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    width: 100%;
-    max-width: 250px;
-    margin: 0 auto;
-    animation: glow 3s infinite ease-in-out;
-}
-
-        
         /* Sequence Delays */
         .box:nth-child(1) {
             animation-delay: 0s;
@@ -56,10 +55,10 @@
         /* Glowing animation with violet color */
         @keyframes glow {
             0%, 100% {
-                box-shadow: 0 0 10px rgba(138, 43, 226, 0.7);
+                box-shadow: 0 0 60px rgba(138, 43, 226, 0.7);
             }
             50% {
-                box-shadow: 0 0 30px rgba(138, 43, 226, 1), 0 0 60px rgba(138, 43, 226, 0.5);
+                box-shadow: 0 0 60px rgba(138, 43, 226, 1), 0 0 60px rgba(138, 43, 226, 0.5);
             }
         }
 
@@ -86,6 +85,7 @@
             margin: 5px 0 0;
             letter-spacing: -0.5px;
             font-weight: 400;
+            animation: waveText 2s infinite ease-in-out; /* Add wave animation */
         }
 
         /* Fancy Animation */
@@ -112,6 +112,22 @@
             100% {
                 opacity: 0;
                 transform: scale(0.8) rotate(0deg) translateY(0);
+            }
+        }
+
+        /* Wave Animation for the Text Below Numbers */
+        @keyframes waveText {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            25% {
+                transform: translateY(-5px);
+            }
+            50% {
+                transform: translateY(3px);
+            }
+            75% {
+                transform: translateY(-3px);
             }
         }
 
@@ -177,7 +193,7 @@
                     setTimeout(() => {
                         counter.innerText = "0+";
                         countUp();
-                    }, 5000);
+                    }, 5500);
                 }
             };
             
