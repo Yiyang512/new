@@ -35,22 +35,45 @@
             max-width: 250px;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        .box:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 60px rgba(255, 215, 0, 0.5);
+        /* Glowing animation */
+        @keyframes glow {
+            0%, 100% {
+                box-shadow: none;
+            }
+            50% {
+                box-shadow: 0 0 20px 10px rgba(255, 215, 0, 0.7);
+            }
         }
+        /* Apply glowing animation in sequence with longer delay and duration */
+        .box:nth-child(1) {
+            animation: glow 2s infinite;
+            animation-delay: 0s;
+        }
+        .box:nth-child(2) {
+            animation: glow 2s infinite;
+            animation-delay: 0.3s;
+        }
+        .box:nth-child(3) {
+            animation: glow 2s infinite;
+            animation-delay: 0.6s;
+        }
+        .box:nth-child(4) {
+            animation: glow 2s infinite;
+            animation-delay: 0.9s;
+        }
+        
         .box h1 {
             font-size: 75px;
             font-weight: 700;
             margin: 0;
-            color: #FFD700; /* Solid color for the numbers */
+            color: #FFD700;
             letter-spacing: -1px;
             animation: heartbeat 1.5s ease-in-out infinite;
             text-shadow:
-                2px 2px 0 #FF8C00,    /* Orange shadow for 3D effect */
-                4px 4px 0 #FF00FF,    /* Pink layer for additional depth */
-                6px 6px 0 #9400D3,    /* Purple layer for more depth */
-                8px 8px 5px rgba(0, 0, 0, 0.4); /* Soft black shadow for further depth */
+                2px 2px 0 #FF8C00,
+                4px 4px 0 #FF00FF,
+                6px 6px 0 #9400D3,
+                8px 8px 5px rgba(0, 0, 0, 0.4);
         }
         .box p {
             font-size: 18px;
@@ -67,12 +90,6 @@
             25% { transform: scale(1.1); }
             50% { transform: scale(1); }
             75% { transform: scale(1.05); }
-        }
-
-        /* Count-up Opacity Animation */
-        @keyframes countUpOpacity {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
         }
 
         /* Responsive Design for Mobile Devices */
