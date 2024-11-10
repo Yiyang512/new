@@ -27,7 +27,6 @@
         }
         .course-card {
             position: relative;
-            background-color: #a0e4f7;
             border-radius: 10px;
             overflow: hidden;
             width: 150px;
@@ -38,7 +37,7 @@
             animation: bounceIn 1s ease forwards, glowAnimation 3s ease infinite;
             border: 2px solid transparent;
             flex: 1 1 calc(33.33% - 30px); /* 3 items per row with spacing */
-            max-width: 150px; /* Ensures cards stay compact */
+            max-width: 150px;
         }
         /* Responsive adjustments */
         @media (min-width: 768px) {
@@ -106,7 +105,6 @@
             font-size: 0.85em;
             font-weight: bold;
             color: #333;
-            background-color: #a0e4f7;
             border-radius: 0 0 10px 10px;
             z-index: 1;
             position: relative;
@@ -150,16 +148,15 @@
             }
         }
 
-    /* Keyframes for the glowing effect */
-@keyframes glowAnimation {
-    0%, 100% {
-        box-shadow: 0 0 10px rgba(255, 223, 0, 0); /* Start and end with no glow */
-    }
-    50% {
-        box-shadow: 0 0 20px rgba(0, 150, 255, 0.8), 0 0 40px rgba(0, 75, 200, 0.6); /* Blue glow */
-    }
-}
-
+        /* Keyframes for the glowing effect */
+        @keyframes glowAnimation {
+            0%, 100% {
+                box-shadow: 0 0 10px rgba(255, 215, 0, 0);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(0, 150, 255, 0.8), 0 0 40px rgba(0, 75, 200, 0.6); /* Blue glow */
+            }
+        }
     </style>
 </head>
 <body>
