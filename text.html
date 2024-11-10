@@ -33,7 +33,7 @@
             border-radius: 12px;
             width: 100%;
             max-width: 250px;
-            margin: 0 auto; /* Center boxes */
+            margin: 0 auto;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         /* Glowing animation with violet color */
@@ -42,10 +42,9 @@
                 box-shadow: none;
             }
             50% {
-                box-shadow: 0 0 70px rgba(138, 43, 226, 0.7); /* Violet color */
+                box-shadow: 0 0 70px rgba(138, 43, 226, 0.7);
             }
         }
-        /* Apply glowing animation in sequence with longer delay and duration */
         .box:nth-child(1) {
             animation: glow 6s infinite;
             animation-delay: 0s;
@@ -64,12 +63,12 @@
         }
         
         .box h1 {
-            font-size: 75px;
+            font-size: 60px;
             font-weight: 700;
             margin: 0;
             color: #FFD700;
             letter-spacing: -1px;
-            animation: heartbeat 1.5s ease-in-out infinite;
+            animation: heartbeat 1.5s ease-in-out infinite, fade-in 1s ease-in-out;
             text-shadow:
                 2px 2px 0 #FF8C00,
                 4px 4px 0 #FF00FF,
@@ -93,17 +92,23 @@
             75% { transform: scale(1.05); }
         }
 
+        /* Fade-in Animation */
+        @keyframes fade-in {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
         /* Responsive Design for Mobile Devices */
         @media (max-width: 768px) {
             .container {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 15px;
-                max-width: 80vw; /* Reduce container width on mobile */
-                padding: 0 15px; /* Add padding on the sides */
+                max-width: 80vw;
+                padding: 0 15px;
             }
             .box {
                 max-width: 100%;
-                margin: 0 5px; /* Add side margins for space */
+                margin: 0 5px;
             }
             .box h1 {
                 font-size: 56px;
@@ -151,7 +156,6 @@
                 if (count < target) {
                     count += increment;
                     counter.innerText = Math.ceil(count) + "+";
-                    counter.style.animation = "heartbeat 1.0s ease-in-out infinite, countUpOpacity 0.5s ease-in-out";
                     setTimeout(updateCount, 40);
                 } else {
                     counter.innerText = target + "+";
