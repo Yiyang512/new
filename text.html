@@ -41,25 +41,25 @@
                 box-shadow: none;
             }
             50% {
-                box-shadow: 0 0 20px 10px rgba(255, 215, 0, 0.7);
+                box-shadow: 0 0 30px rgba(255, 215, 0, 0.5); /* Reduced blur radius and opacity */
             }
         }
         /* Apply glowing animation in sequence with longer delay and duration */
         .box:nth-child(1) {
-            animation: glow 2s infinite;
+            animation: glow 6s infinite;
             animation-delay: 0s;
         }
         .box:nth-child(2) {
-            animation: glow 2s infinite;
-            animation-delay: 0.3s;
+            animation: glow 6s infinite;
+            animation-delay: 1.5s;
         }
         .box:nth-child(3) {
-            animation: glow 2s infinite;
-            animation-delay: 0.6s;
+            animation: glow 6s infinite;
+            animation-delay: 3s;
         }
         .box:nth-child(4) {
-            animation: glow 2s infinite;
-            animation-delay: 0.9s;
+            animation: glow 6s infinite;
+            animation-delay: 4.5s;
         }
         
         .box h1 {
@@ -148,7 +148,7 @@
                 if (count < target) {
                     count += increment;
                     counter.innerText = Math.ceil(count) + "+";
-                    counter.style.animation = "heartbeat 1.5s ease-in-out infinite, countUpOpacity 0.5s ease-in-out";
+                    counter.style.animation = "heartbeat 1.0s ease-in-out infinite, countUpOpacity 0.5s ease-in-out";
                     setTimeout(updateCount, 40);
                 } else {
                     counter.innerText = target + "+";
