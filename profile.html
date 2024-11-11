@@ -21,21 +21,6 @@
             background-attachment: fixed;
         }
 
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-                padding: 30px;
-            }
-            .profile-section, .content-section {
-                width: 100%;
-            }
-            .orbit-container {
-                width: 300px;
-                height: 300px;
-            }
-        }
-
         /* Animated neon starry background */
         body::before {
             content: '';
@@ -60,7 +45,7 @@
             display: flex;
             max-width: 980px;
             background: rgba(0, 0, 0, 0.85);
-            border: 3px solid #ff00cc;
+            border: 3px solid #40E0D0;
             border-radius: 65px;
             animation: boxShine 2s infinite alternate;
             z-index: 1;
@@ -121,7 +106,7 @@
 
         /* Keep logos upright with independent rotation */
         .school-logo, .company-logo {
-            width:100px;
+            width: 100px;
             height: 100px;
             border-radius: 10%;
             position: absolute;
@@ -260,6 +245,49 @@
         @keyframes textWave {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-5px); }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                max-width: 100%;
+                flex-direction: column;
+                padding: 15px;
+            }
+            .profile-section, .content-section {
+                width: 100%;
+            }
+            .orbit-container {
+                width: 250px;
+                height: 250px;
+            }
+            .purple-circle {
+                width: 200px;
+                height: 200px;
+            }
+            .turquoise-circle {
+                width: 180px;
+                height: 180px;
+            }
+            .yellow-circle {
+                width: 160px;
+                height: 160px;
+            }
+            .profile-image {
+                width: 150px;
+                height: 150px;
+            }
+            .title {
+                font-size: 24px;
+            }
+            .description {
+                font-size: 13px;
+            }
+            .follow-button {
+                font-size: 14px;
+                padding: 8px 20px;
+                border-width: 3px;
+            }
         }
     </style>
 </head>
