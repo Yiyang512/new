@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple French with Hems - Banners</title>
+    <style>
+        body {
+            font-family: Poppins, sans-serif;
+            background-color: #000000;
+            color: #333;
+            margin: 0;
+            overflow-x: hidden;
+        }
+        .section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 50px 20px;
+            text-align: center;
+        }
+        .banner-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .banner-card {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            width: 300px;
+            height: 500px; /* Fixed height for uniform size */
+            transform: scale(0.9);
+            opacity: 0;
+            transition: box-shadow 0.5s ease, transform 0.3s ease;
+            box-shadow: 0 0 20px rgba(0, 150, 255, 0.4), 0 0 40px rgba(0, 75, 200, 0.6); /* Blue glow */
+            animation: popIn 0.6s ease forwards, waving 3s ease-in-out infinite;
+            border: 2px solid transparent;
+            max-width: 300px;
+        }
+        .banner-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(0, 150, 255, 0.7), 0 0 60px rgba(0, 75, 200, 0.8); /* Stronger blue glow on hover */
+        }
+        .banner-card::before, .banner-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            height: 100%;
+            width: 10px;
+            background: linear-gradient(to bottom, #00aaff, #0055ff); /* Blue gradient for the side frames */
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 150, 255, 0.6);
+        }
+        .banner-card::before {
+            left: -10px;
+        }
+        .banner-card::after {
+            right: -10px;
+        }
+        @keyframes popIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        @keyframes waving {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+        .banner-card img {
+            width: 100%;
+            height: 60%; /* Ensures image fills part of the card */
+            object-fit: cover;
+            z-index: 1;
+            position: relative;
+            transition: transform 0.3s ease;
+            border-radius: 10px 10px 0 0;
+        }
+        .banner-card:hover img {
+            transform: scale(1.05);
+        }
+        .banner-info {
+            padding: 15px;
+            font-size: 1em;
+            font-weight: bold;
+            color: #ffffff;
+            background-color: #333;
+            height: 40%; /* Ensures text takes up remaining space */
+            border-radius: 0 0 10px 10px;
+            z-index: 1;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Banner Section -->
+    <div class="section" id="banners">
+        <div class="banner-grid">
+            <!-- Higher CRS Boost Banner -->
+            <div class="banner-card" style="animation-delay: 0s;">
+                <a href="https://yiyang512.github.io/new/crs.png" target="_blank">
+                    <img src="https://yiyang512.github.io/new/crs.png" alt="Higher CRS Boost">
+                </a>
+                <div class="banner-info">
+                    Higher CRS Boost: Boost your CRS score with our French courses — gain 60 points for immigration, outpacing a PhD's 18 points without the years and high costs.
+                </div>
+            </div>
+
+            <!-- Save Huge Time Banner -->
+            <div class="banner-card" style="animation-delay: 0.3s;">
+                <a href="https://yiyang512.github.io/new/time.png" target="_blank">
+                    <img src="https://yiyang512.github.io/new/time.png" alt="Save Huge Time">
+                </a>
+                <div class="banner-info">
+                    Save Huge Time - Learning French can earn CRS points in just 6-12 months, compared to the 4-7 years required for a PhD — accelerating your path to permanent residency.
+                </div>
+            </div>
+
+            <!-- Flexible Online Learning Banner -->
+            <div class="banner-card" style="animation-delay: 0.6s;">
+                <a href="https://yiyang512.github.io/new/online.png" target="_blank">
+                    <img src="https://yiyang512.github.io/new/online.png" alt="Flexible Online Learning">
+                </a>
+                <div class="banner-info">
+                    Flexible Online Learning - Our on-demand French courses let you upskill at your own pace, bypassing rigid 3-year timelines and saving up to $4,000 compared to traditional language schools.
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
