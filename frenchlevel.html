@@ -24,6 +24,7 @@
       display: flex;
       font-size: 8vw;
       color: #fff;
+      padding: 0px 0; /* Top and bottom padding */
     }
 
     /* Gradient Text Effect with Sequential Waving Animation */
@@ -58,6 +59,14 @@
     @keyframes waveSequence {
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-10px); }
+    }
+
+    /* Increase font size and reduce padding on smaller screens */
+    @media (max-width: 768px) {
+      .banner {
+        font-size: 15vw;
+        padding: 0px 0; /* Reduced top and bottom padding */
+      }
     }
   </style>
 </head>
