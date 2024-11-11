@@ -30,14 +30,34 @@
             border-radius: 10px;
             overflow: hidden;
             width: 150px;
-            transform: translateY(50px) scale(0.9);
+            transform: scale(0.9);
             opacity: 0;
-            transition: transform 1.5s ease, opacity 1.5s ease, box-shadow 0.5s ease;
+            transition: box-shadow 0.5s ease;
             box-shadow: 0 0 10px rgba(255, 215, 0, 0);
-            animation: bounceIn 1s ease forwards, glowAnimation 3s ease infinite;
+            animation: popIn 0.6s ease forwards, waving 3s ease-in-out infinite;
             border: 2px solid transparent;
             flex: 1 1 calc(33.33% - 30px);
             max-width: 150px;
+        }
+        /* Animation to pop in each card with a delay */
+        @keyframes popIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        /* Waving effect (up and down) */
+        @keyframes waving {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
         }
         /* Responsive adjustments */
         @media (min-width: 768px) {
@@ -79,14 +99,12 @@
             animation: sparkle 2s infinite alternate;
         }
         .course-card.visible {
-            transform: translateY(0) scale(1);
-            opacity: 1;
             box-shadow: 0 20px 20px rgba(255, 223, 0, 0.4);
             border-image: linear-gradient(45deg, #a0e4f7, #40c4d8, #1c91b9) 1;
-            animation: bounceIn 1s ease forwards, glowAnimation 3s ease infinite;
+            animation: popIn 0.6s ease forwards, waving 3s ease-in-out infinite;
         }
         .course-card:hover {
-            transform: scale(1.05) rotate(-1deg);
+            transform: scale(1.05);
             box-shadow: 0 10px 30px rgba(255, 215, 0, 0.6), 0 0 15px rgba(255, 223, 0, 0.6);
         }
         .course-card img {
@@ -108,22 +126,6 @@
             border-radius: 0 0 10px 10px;
             z-index: 1;
             position: relative;
-        }
-        
-        /* Keyframes for the bounce-in effect */
-        @keyframes bounceIn {
-            0% {
-                opacity: 0;
-                transform: translateY(50px) scale(0.9);
-            }
-            50% {
-                opacity: 1;
-                transform: translateY(-10px) scale(1.05);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
         }
 
         /* Keyframes for rotating sparkle glow */
@@ -210,10 +212,11 @@
         // Function to handle scroll animation
         function revealCourses() {
             const courseCards = document.querySelectorAll('.course-card');
-            courseCards.forEach((card) => {
+            courseCards.forEach((card, index) => {
                 const courseTop = card.getBoundingClientRect().top;
                 const windowHeight = window.innerHeight;
                 if (courseTop < windowHeight - 50) {
+                    card.style.animationDelay = `${index * 0.2}s`; // Sequential delay
                     card.classList.add('visible');
                 }
             });
