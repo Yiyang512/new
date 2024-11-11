@@ -55,22 +55,16 @@
             100% { transform: translate(-100px, -100px); }
         }
 
-        /* Container styling with shine effect */
+        /* Container styling */
         .container {
             display: flex;
-            max-width: 800px;
+            max-width: 980px;
             background: rgba(0, 0, 0, 0.85);
             border: 3px solid #ff00cc;
             border-radius: 65px;
-            box-shadow: 0px 0px 30px 10px #40E0D0, 0px 0px 50px #40E0D0, inset 0px 0px 10px #40E0D0;
             animation: boxShine 2s infinite alternate;
             z-index: 1;
             overflow: hidden;
-        }
-
-        @keyframes boxShine {
-            0% { box-shadow: 0px 0px 30px 30px #40E0D0, 0px 0px 50px #00ccff, inset 0px 0px 30px #ff00cc; }
-            100% { box-shadow: 0px 0px 60px 20px #40E0D0, 0px 0px 80px #00ccff, inset 0px 0px 40px #ff00cc; }
         }
 
         /* Profile section styling */
@@ -88,7 +82,6 @@
             width: 200px;
             height: 200px;
             border-radius: 80%;
-            box-shadow: 0 0 0px #40E0D0, 0 0 0px #40E0D0;
             animation: pulseGlow 1s infinite alternate ease-in-out;
             z-index: 2;
         }
@@ -131,7 +124,6 @@
             width:100px;
             height: 100px;
             border-radius: 10%;
-            box-shadow: 0 0 0px #ff00cc, 0 0 0px #00ccff;
             position: absolute;
             transform-origin: center;
             animation: heartBeat 1.5s infinite alternate, keepUpright 12s linear infinite;
@@ -169,8 +161,8 @@
 
         /* Animations */
         @keyframes pulseGlow {
-            0% { transform: scale(1); box-shadow: 0 0 00px #40E0D0, 0 0 0px #40E0D0; }
-            100% { transform: scale(1.1); box-shadow: 0 0 40px #40E0D0, 0 0 80px #00ccff; }
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
         }
 
         @keyframes rotateOrbit {
