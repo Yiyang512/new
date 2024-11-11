@@ -18,13 +18,12 @@
             padding: 50px 20px;
             text-align: center;
         }
-.banner-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 40px; /* Increased gap to add more space between boxes */
-    justify-content: center;
-}
-
+        .banner-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px; /* Increased gap to add more space between boxes */
+            justify-content: center;
+        }
         .banner-card {
             position: relative;
             border-radius: 10px;
@@ -34,14 +33,14 @@
             transform: scale(0.9);
             opacity: 0;
             transition: box-shadow 0.5s ease, transform 0.3s ease;
-            box-shadow: 0 0 20px rgba(0, 150, 255, 0.4), 0 0 40px rgba(0, 75, 200, 0.6); /* Blue glow */
+            box-shadow: 0 0 20px rgba(0, 170, 255, 0.4), 0 0 40px rgba(0, 85, 255, 0.6); /* Blue to purple glow */
             animation: popIn 0.6s ease forwards, waving 3s ease-in-out infinite;
             border: 2px solid transparent;
             max-width: 300px;
         }
         .banner-card:hover {
             transform: scale(1.05);
-            box-shadow: 0 0 30px rgba(0, 150, 255, 0.7), 0 0 60px rgba(0, 75, 200, 0.8); /* Stronger blue glow on hover */
+            box-shadow: 0 0 30px rgba(0, 170, 255, 0.7), 0 0 60px rgba(0, 85, 255, 0.8); /* Stronger gradient glow on hover */
         }
         .banner-card::before, .banner-card::after {
             content: '';
@@ -51,7 +50,7 @@
             width: 10px;
             background: linear-gradient(to bottom, #00aaff, #0055ff); /* Blue gradient for the side frames */
             border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 150, 255, 0.6);
+            box-shadow: 0 0 10px rgba(0, 170, 255, 0.6);
         }
         .banner-card::before {
             left: -10px;
@@ -113,9 +112,7 @@
         <div class="banner-grid">
             <!-- Higher CRS Boost Banner -->
             <div class="banner-card" style="animation-delay: 0s;">
-                <a href="https://yiyang512.github.io/new/crs.png" target="_blank">
-                    <img src="https://yiyang512.github.io/new/crs.png" alt="Higher CRS Boost">
-                </a>
+                <img src="https://yiyang512.github.io/new/crs.png" alt="Higher CRS Boost">
                 <div class="banner-info">
                     Higher CRS Boost: Boost your CRS score with our French courses — gain 60 points for immigration, outpacing a PhD's 18 points without the years and high costs.
                 </div>
@@ -123,9 +120,7 @@
 
             <!-- Save Huge Time Banner -->
             <div class="banner-card" style="animation-delay: 0.3s;">
-                <a href="https://yiyang512.github.io/new/time.png" target="_blank">
-                    <img src="https://yiyang512.github.io/new/time.png" alt="Save Huge Time">
-                </a>
+                <img src="https://yiyang512.github.io/new/time.png" alt="Save Huge Time">
                 <div class="banner-info">
                     Save Huge Time - Learning French can earn CRS points in just 6-12 months, compared to the 4-7 years required for a PhD — accelerating your path to permanent residency.
                 </div>
@@ -133,9 +128,7 @@
 
             <!-- Flexible Online Learning Banner -->
             <div class="banner-card" style="animation-delay: 0.6s;">
-                <a href="https://yiyang512.github.io/new/online.png" target="_blank">
-                    <img src="https://yiyang512.github.io/new/online.png" alt="Flexible Online Learning">
-                </a>
+                <img src="https://yiyang512.github.io/new/online.png" alt="Flexible Online Learning">
                 <div class="banner-info">
                     Flexible Online Learning - Our on-demand French courses let you upskill at your own pace, bypassing rigid 3-year timelines and saving up to $4,000 compared to traditional language schools.
                 </div>
