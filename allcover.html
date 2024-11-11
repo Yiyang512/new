@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: Poppins, sans-serif;
-            background-color: #000000; /* Pure black background */
+            background-color: #000000;
             color: #333;
             margin: 0;
             overflow-x: hidden;
@@ -33,13 +33,12 @@
             transform: scale(0.9);
             opacity: 0;
             transition: box-shadow 0.5s ease;
-            box-shadow: 0 0 20px rgba(255, 0, 127, 0.4); /* Initial box shadow with a gradient color */
+            box-shadow: 0 0 20px rgba(255, 0, 127, 0.4);
             animation: popIn 0.6s ease forwards, waving 3s ease-in-out infinite;
             border: 2px solid transparent;
             flex: 1 1 calc(33.33% - 30px);
             max-width: 150px;
         }
-        /* Animation to pop in each card with a delay */
         @keyframes popIn {
             0% {
                 opacity: 0;
@@ -50,7 +49,6 @@
                 transform: scale(1);
             }
         }
-        /* Waving effect (up and down) */
         @keyframes waving {
             0%, 100% {
                 transform: translateY(0);
@@ -59,7 +57,6 @@
                 transform: translateY(-10px);
             }
         }
-        /* Responsive adjustments */
         @media (min-width: 768px) {
             .course-card {
                 flex: 1 1 calc(33.33% - 30px);
@@ -79,7 +76,7 @@
             left: 50%;
             width: 250%;
             height: 250%;
-            background: radial-gradient(circle, rgba(255, 0, 127, 0.2), transparent); /* Matching gradient */
+            background: radial-gradient(circle, rgba(255, 0, 127, 0.2), transparent);
             border-radius: 80%;
             transform: translate(-50%, -50%) rotate(0deg);
             z-index: -2;
@@ -99,13 +96,13 @@
             animation: sparkle 2s infinite alternate;
         }
         .course-card.visible {
-            box-shadow: 0 0 20px rgba(255, 0, 127, 0.6), 0 0 30px rgba(148, 0, 211, 0.6), 0 0 40px rgba(0, 191, 255, 0.6); /* Gradient glow */
+            box-shadow: 0 0 20px rgba(255, 0, 127, 0.6), 0 0 30px rgba(148, 0, 211, 0.6), 0 0 40px rgba(0, 191, 255, 0.6);
             border-image: linear-gradient(45deg, #00f5ff, #6a00ff, #ff004d) 1;
             animation: popIn 0.6s ease forwards, waving 3s ease-in-out infinite;
         }
         .course-card:hover {
             transform: scale(1.05);
-            box-shadow: 0 0 30px rgba(255, 0, 127, 0.6), 0 0 40px rgba(148, 0, 211, 0.6), 0 0 50px rgba(0, 191, 255, 0.6); /* Glow intensifies on hover */
+            box-shadow: 0 0 30px rgba(255, 0, 127, 0.6), 0 0 40px rgba(148, 0, 211, 0.6), 0 0 50px rgba(0, 191, 255, 0.6);
         }
         .course-card img {
             width: 100%;
@@ -122,13 +119,11 @@
             padding: 10px;
             font-size: 0.85em;
             font-weight: bold;
-            color: #ffffff; /* White text for better contrast on black background */
+            color: #ffffff;
             border-radius: 0 0 10px 10px;
             z-index: 1;
             position: relative;
         }
-
-        /* Keyframes for rotating sparkle glow */
         @keyframes rotateGlow {
             0% {
                 transform: translate(-50%, -50%) rotate(0deg);
@@ -137,8 +132,6 @@
                 transform: translate(-50%, -50%) rotate(360deg);
             }
         }
-
-        /* Keyframes for sparkle animation */
         @keyframes sparkle {
             0% {
                 transform: scale(1);
@@ -149,11 +142,29 @@
                 opacity: 0.7;
             }
         }
+        /* Mobile adjustments */
+        @media (max-width: 767px) {
+            body, html {
+                height: 100vh;
+                overflow-y: hidden;
+            }
+            .section {
+                padding: 20px 10px;
+            }
+            .course-grid {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .course-card {
+                width: 100%;
+                max-width: none;
+                transform: scale(1);
+            }
+        }
     </style>
 </head>
 <body>
 
-    <!-- Featured Courses Section -->
     <div class="section" id="featured-courses">
         <div class="course-grid">
             <div class="course-card" style="animation-delay: 0s;">
@@ -180,14 +191,12 @@
                 </a>
                 <div class="course-info"> Beginner‘s Guide - French Quest</div>
             </div>
-            <!-- New Course Card for VR Game -->
             <div class="course-card" style="animation-delay: 1.2s;">
                 <a href="https://simplefrenchwithhems.com/vr-game" target="_blank">
                     <img src="https://yiyang512.github.io/new/vr.png" alt="VR Game - School Pulse">
                 </a>
                 <div class="course-info"> VR Game - School Pulse ™</div>
             </div>
-            <!-- New Course Card for Animated Stories -->
             <div class="course-card" style="animation-delay: 1.5s;">
                 <a href="https://simplefrenchwithhems.com/course-features" target="_blank">
                     <img src="https://yiyang512.github.io/new/animation.png" alt="Animated Stories">
@@ -197,25 +206,20 @@
         </div>
     </div>
 
-    <!-- JavaScript for scroll animation -->
     <script>
-        // Function to handle scroll animation
         function revealCourses() {
             const courseCards = document.querySelectorAll('.course-card');
             courseCards.forEach((card, index) => {
                 const courseTop = card.getBoundingClientRect().top;
                 const windowHeight = window.innerHeight;
                 if (courseTop < windowHeight - 50) {
-                    card.style.animationDelay = `${index * 0.2}s`; // Sequential delay
+                    card.style.animationDelay = `${index * 0.2}s`;
                     card.classList.add('visible');
                 }
             });
         }
 
-        // Initial call to reveal courses that are already in view on page load
         revealCourses();
-
-        // Add scroll event listener
         window.addEventListener('scroll', revealCourses);
     </script>
 </body>
