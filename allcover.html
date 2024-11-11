@@ -15,7 +15,7 @@
         .section {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 50px 20px;
+            padding: 20px;
             text-align: center;
         }
         .course-grid {
@@ -29,15 +29,14 @@
             position: relative;
             border-radius: 10px;
             overflow: hidden;
-            width: 150px;
+            width: calc(33.33% - 30px); /* 3 cards per row */
+            max-width: 150px;
             transform: scale(0.9);
             opacity: 0;
             transition: box-shadow 0.5s ease;
             box-shadow: 0 0 20px rgba(255, 0, 127, 0.4);
             animation: popIn 0.6s ease forwards, waving 3s ease-in-out infinite;
             border: 2px solid transparent;
-            flex: 1 1 calc(33.33% - 30px);
-            max-width: 150px;
         }
         @keyframes popIn {
             0% {
@@ -57,63 +56,16 @@
                 transform: translateY(-10px);
             }
         }
-        @media (min-width: 768px) {
-            .course-card {
-                flex: 1 1 calc(33.33% - 30px);
-                max-width: 200px;
-            }
-        }
-        @media (min-width: 1024px) {
-            .course-card {
-                flex: 1 1 calc(16.66% - 30px);
-                max-width: 150px;
-            }
-        }
-        .course-card::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 250%;
-            height: 250%;
-            background: radial-gradient(circle, rgba(255, 0, 127, 0.2), transparent);
-            border-radius: 80%;
-            transform: translate(-50%, -50%) rotate(0deg);
-            z-index: -2;
-            animation: rotateGlow 10s linear infinite;
-        }
-        .course-card::after {
-            content: '';
-            position: absolute;
-            top: -10px;
-            right: -10px;
-            width: 40px;
-            height: 20px;
-            background: radial-gradient(circle, rgba(255, 0, 127, 0.8), transparent);
-            border-radius: 50%;
-            z-index: -1;
-            box-shadow: 0 0 10px rgba(255, 0, 127, 0.8), 0 0 20px rgba(255, 0, 127, 0.5);
-            animation: sparkle 2s infinite alternate;
-        }
         .course-card.visible {
             box-shadow: 0 0 20px rgba(255, 0, 127, 0.6), 0 0 30px rgba(148, 0, 211, 0.6), 0 0 40px rgba(0, 191, 255, 0.6);
             border-image: linear-gradient(45deg, #00f5ff, #6a00ff, #ff004d) 1;
-            animation: popIn 0.6s ease forwards, waving 3s ease-in-out infinite;
-        }
-        .course-card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 30px rgba(255, 0, 127, 0.6), 0 0 40px rgba(148, 0, 211, 0.6), 0 0 50px rgba(0, 191, 255, 0.6);
         }
         .course-card img {
             width: 100%;
             height: auto;
             z-index: 1;
             position: relative;
-            transition: transform 0.3s ease;
             border-radius: 10px;
-        }
-        .course-card:hover img {
-            transform: scale(1.05);
         }
         .course-info {
             padding: 10px;
@@ -124,39 +76,13 @@
             z-index: 1;
             position: relative;
         }
-        @keyframes rotateGlow {
-            0% {
-                transform: translate(-50%, -50%) rotate(0deg);
-            }
-            100% {
-                transform: translate(-50%, -50%) rotate(360deg);
-            }
-        }
-        @keyframes sparkle {
-            0% {
-                transform: scale(1);
-                opacity: 1;
-            }
-            100% {
-                transform: scale(1.3);
-                opacity: 0.7;
-            }
-        }
         /* Mobile adjustments */
         @media (max-width: 767px) {
-            body, html {
-                height: 100vh;
-                overflow-y: hidden;
-            }
             .section {
-                padding: 20px 10px;
-            }
-            .course-grid {
-                flex-direction: column;
-                gap: 10px;
+                padding: 10px;
             }
             .course-card {
-                width: 100%;
+                width: calc(33.33% - 20px); /* 3 cards per row on mobile */
                 max-width: none;
                 transform: scale(1);
             }
@@ -167,37 +93,37 @@
 
     <div class="section" id="featured-courses">
         <div class="course-grid">
-            <div class="course-card" style="animation-delay: 0s;">
+            <div class="course-card">
                 <a href="https://simplefrenchwithhems.com/b/freefrench" target="_blank">
                     <img src="https://yiyang512.github.io/new/threedays.png" alt="French Fundamentals">
                 </a>
                 <div class="course-info"> French Fundamentals - 3 Days Challenge!</div>
             </div>
-            <div class="course-card" style="animation-delay: 0.3s;">
+            <div class="course-card">
                 <a href="https://simplefrenchwithhems.com/b/a1-introduction" target="_blank">
                     <img src="https://yiyang512.github.io/new/a1.png" alt="Level A1 Complete French Mastery">
                 </a>
                 <div class="course-info"> Level A1 - Complete French Mastery</div>
             </div>
-            <div class="course-card" style="animation-delay: 0.6s;">
+            <div class="course-card">
                 <a href="https://simplefrenchwithhems.com/b/a2-french" target="_blank">
                     <img src="https://yiyang512.github.io/new/a2.png" alt="Level A2 Complete French Mastery">
                 </a>
                 <div class="course-info"> Level A2 - Complete French Mastery</div>
             </div>
-            <div class="course-card" style="animation-delay: 0.9s;">
+            <div class="course-card">
                 <a href="https://simplefrenchwithhems.com/b/F21fg" target="_blank">
                     <img src="https://yiyang512.github.io/new/beginner.png" alt="Beginner's Guide French Quest">
                 </a>
                 <div class="course-info"> Beginner‘s Guide - French Quest</div>
             </div>
-            <div class="course-card" style="animation-delay: 1.2s;">
+            <div class="course-card">
                 <a href="https://simplefrenchwithhems.com/vr-game" target="_blank">
                     <img src="https://yiyang512.github.io/new/vr.png" alt="VR Game - School Pulse">
                 </a>
                 <div class="course-info"> VR Game - School Pulse ™</div>
             </div>
-            <div class="course-card" style="animation-delay: 1.5s;">
+            <div class="course-card">
                 <a href="https://simplefrenchwithhems.com/course-features" target="_blank">
                     <img src="https://yiyang512.github.io/new/animation.png" alt="Animated Stories">
                 </a>
