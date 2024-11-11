@@ -11,8 +11,8 @@
       background-color: #000;
       margin: 0;
       display: flex;
-      justify-content: center; /* Center horizontally */
-      align-items: center; /* Center vertically */
+      justify-content: center;
+      align-items: top;
       height: 100vh;
       font-family: 'Anton', sans-serif;
       color: #fff;
@@ -22,85 +22,46 @@
     /* Banner styling */
     .banner {
       display: flex;
-      align-items: center;
-      padding: 10px 20px;
-      font-size: 6vw; /* Larger font size for prominence */
-      white-space: nowrap;
-      overflow: hidden;
-      background-color: #000;
+      font-size: 8vw;
+      color: #fff;
+      padding: 0px 0; /* Top and bottom padding */
     }
 
-    /* Gradient Text Effect with Repeating Typewriter Animation */
-    .banner .title {
-      margin: 0 20px; /* Equal margin on both sides */
-      background: linear-gradient(90deg, #00f5ff, #0077ff, #6a00ff, #ff004d); /* Gradient colors */
-      -webkit-background-clip: text;
-      color: transparent;
-      overflow: hidden;
-      white-space: nowrap;
-      border-right: 3px solid #fff; /* Blinking cursor */
-      animation: typewriter 8s steps(30) infinite, blinkCursor 0.75s step-end infinite;
-      animation-delay: 1s;
+    /* Gradient Text Effect with Sequential Waving Animation */
+    .banner .title span {
+      display: inline-block;
+      animation: waveSequence 2s ease-in-out infinite alternate;
     }
 
-    /* Typewriter animation */
-    @keyframes typewriter {
-      0% { width: 0; }
-      90% { width: 100%; }
-      100% { width: 0; }
+    /* Adding smaller spaces between words */
+    .space {
+      margin-right: 0.3em; /* Adjust space size here as needed */
     }
 
-    /* Blinking cursor animation */
-    @keyframes blinkCursor {
-      0%, 100% { border-color: transparent; }
-      50% { border-color: #fff; }
+    /* Sequential waving animation */
+    .banner .title span:nth-child(1) { animation-delay: 0s; }
+    .banner .title span:nth-child(2) { animation-delay: 0.1s; }
+    .banner .title span:nth-child(3) { animation-delay: 0.2s; }
+    .banner .title span:nth-child(4) { animation-delay: 0.3s; }
+    .banner .title span:nth-child(5) { animation-delay: 0.4s; }
+    .banner .title span:nth-child(6) { animation-delay: 0.5s; }
+    .banner .title span:nth-child(7) { animation-delay: 0.6s; }
+    .banner .title span:nth-child(8) { animation-delay: 0.7s; }
+    .banner .title span:nth-child(9) { animation-delay: 0.8s; }
+    .banner .title span:nth-child(10) { animation-delay: 0.9s; }
+    .banner .title span:nth-child(11) { animation-delay: 1s; }
+
+    /* Keyframes for wave effect */
+    @keyframes waveSequence {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
     }
 
-    /* Gradient line */
-    .banner .line {
-      position: relative;
-      height: 6px;
-      background: linear-gradient(90deg, #00f5ff, #0077ff, #6a00ff, #ff004d);
-      width: 50vw;
-      margin: 0 10px;
-      animation: lineExpand 2s infinite alternate ease-in-out;
-    }
-
-    /* Circle in red to match the end of the gradient */
-    .banner .circle {
-      width: 32px;
-      height: 32px;
-      background-color: #ff004d;
-      border-radius: 50%;
-      box-shadow: 0 0 8px rgba(255, 0, 77, 0.6), 0 0 20px rgba(255, 0, 77, 0.4);
-      animation: pulse 2s ease-in-out infinite;
-    }
-
-    /* Line expand animation */
-    @keyframes lineExpand {
-      0%, 100% { width: 30vw; }
-      50% { width: 25vw; }
-    }
-
-    /* Circle pulse animation */
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.2); opacity: 0.8; }
-    }
-
-    /* Media query for mobile devices */
+    /* Increase font size and reduce padding on smaller screens */
     @media (max-width: 768px) {
       .banner {
-        font-size: 4vw; /* Increase font size on smaller screens */
-        padding: 10px 15px; /* Adjust padding */
-      }
-      .banner .line {
-        height: 4px; /* Make the line thicker */
-        width: 40vw; /* Extend the line width */
-      }
-      .banner .circle {
-        width: 10px; /* Larger circle */
-        height: 10px;
+        font-size: 14vw;
+        padding: 0px 0; /* Reduced top and bottom padding */
       }
     }
   </style>
@@ -108,11 +69,10 @@
 <body>
 
 <div class="banner">
-  <div class="circle"></div>
-  <div class="line"></div>
-  <div class="title">Supported By</div>
-  <div class="line"></div>
-  <div class="circle"></div>
+  <div class="title">
+    <span>S</span><span>u</span><span>p</span><span>p</span><span>o</span><span>r</span><span>t</span><span>e</span><span>d</span><span class="space"></span>
+    <span>B</span><span>y</span>
+  </div>
 </div>
 
 </body>
