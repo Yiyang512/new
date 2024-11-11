@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Simple French with Hems</title>
+    <style>
+        /* Futuristic background and color scheme */
+        body {
+            font-family: 'Orbitron', sans-serif;
+            background-color: #121212;
+            color: #e6e6e6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            background: radial-gradient(circle, #1a1a1a 10%, #000000 100%);
+            background-size: cover;
+            background-attachment: fixed;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                padding: 30px;
+            }
+            .profile-section, .content-section {
+                width: 100%;
+            }
+            .orbit-container {
+                width: 300px;
+                height: 300px;
+            }
+        }
+
+        /* Animated neon starry background */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://yiyang512.github.io/new/stars.png') repeat;
+            opacity: 0.1;
+            filter: hue-rotate(200deg);
+            animation: starryMove 12s infinite linear;
+        }
+
+        @keyframes starryMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-100px, -100px); }
+        }
+
+        /* Container styling with shine effect */
+        .container {
+            display: flex;
+            max-width: 1100px;
+            background: rgba(0, 0, 0, 0.85);
+            border: 3px solid #ff00cc;
+            border-radius: 65px;
+            box-shadow: 0px 0px 30px 10px #40E0D0, 0px 0px 50px #40E0D0, inset 0px 0px 10px #40E0D0;
+            animation: boxShine 2s infinite alternate;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        @keyframes boxShine {
+            0% { box-shadow: 0px 0px 30px 30px #40E0D0, 0px 0px 50px #00ccff, inset 0px 0px 30px #ff00cc; }
+            100% { box-shadow: 0px 0px 60px 20px #40E0D0, 0px 0px 80px #00ccff, inset 0px 0px 40px #ff00cc; }
+        }
+
+        /* Profile section styling */
+        .profile-section {
+            position: relative;
+            width: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+        }
+
+        /* Central image styling with additional pop effect */
+        .profile-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 80%;
+            box-shadow: 0 0 0px #40E0D0, 0 0 0px #40E0D0;
+            animation: pulseGlow 1s infinite alternate ease-in-out;
+            z-index: 2;
+        }
+
+        /* Multiple orbiting rings with gradient effect */
+        .purple-circle, .turquoise-circle, .yellow-circle {
+            position: absolute;
+            border-radius: 40%;
+            animation: circleWave 15s infinite alternate;
+        }
+        .purple-circle {
+            width: 300px;
+            height: 300px;
+            border: 4px solid #9b00ff;
+        }
+        .turquoise-circle {
+            width: 280px;
+            height: 280px;
+            border: 4px solid #00ccff;
+        }
+        .yellow-circle {
+            width: 260px;
+            height: 260px;
+            border: 4px solid #ffcc00;
+        }
+
+        /* Orbiting logo styles */
+        .orbit-container {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: rotateOrbit 12s linear infinite;
+        }
+
+        /* Keep logos upright with independent rotation */
+        .school-logo, .company-logo {
+            width:100px;
+            height: 100px;
+            border-radius: 10%;
+            box-shadow: 0 0 0px #ff00cc, 0 0 0px #00ccff;
+            position: absolute;
+            transform-origin: center;
+            animation: heartBeat 1.5s infinite alternate, keepUpright 12s linear infinite;
+        }
+
+        /* Position logos at opposite points in the orbit */
+        .school-logo {
+            top: 0;
+        }
+        .company-logo {
+            bottom: 0;
+        }
+
+        /* Small turquoise and yellow dots on the orbit */
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            position: absolute;
+            animation: popWave 1s infinite alternate;
+            box-shadow: 0px 0px 8px 2px rgba(255, 255, 255, 0.8);
+        }
+        .dot.turquoise {
+            background-color: #00ccff;
+            top: 20px;
+            left: 20px;
+            animation-delay: 0.5s;
+        }
+        .dot.yellow {
+            background-color: #ffcc00;
+            bottom: 20px;
+            right: 20px;
+            animation-delay: 1s;
+        }
+
+        /* Animations */
+        @keyframes pulseGlow {
+            0% { transform: scale(1); box-shadow: 0 0 00px #40E0D0, 0 0 0px #40E0D0; }
+            100% { transform: scale(1.1); box-shadow: 0 0 40px #40E0D0, 0 0 80px #00ccff; }
+        }
+
+        @keyframes rotateOrbit {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes circleWave {
+            0% { transform: scale(1) rotate(0deg); }
+            100% { transform: scale(1.05) rotate(360deg); }
+        }
+
+        @keyframes keepUpright {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(-360deg); }
+        }
+
+        /* Pop and wave effect for dots */
+        @keyframes popWave {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* Content section styling */
+        .content-section {
+            width: 50%;
+            padding: 50px;
+            text-align: left;
+        }
+
+        /* Title and gradient text styling */
+        .title {
+            font-size: 30px;
+            font-weight: bold;
+            color: #00ffcc;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+        .divider {
+            width: 150px;
+            height: 3px;
+            background-color: #ff00cc;
+            margin: 20px 0;
+            border-radius: 15px;
+        }
+        .description {
+            font-size: 15px;
+            line-height: 1.3;
+            background: linear-gradient(90deg, #ff00cc, #00ccff, #ffcc00);
+            -webkit-background-clip: text;
+            color: transparent;
+            animation: textWave 2s infinite alternate;
+        }
+
+        /* Futuristic button styling */
+        .follow-button {
+            padding: 12px 30px;
+            border: 5px solid #ff00cc;
+            background-color: transparent;
+            color: #40E0D0;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 50px;
+            transition: 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .follow-button:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #40E0D0;
+            border-radius: 50px;
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+            z-index: -1;
+        }
+        .follow-button:hover {
+            color: #000000;
+        }
+        .follow-button:hover:before {
+            transform: scaleX(1);
+        }
+
+        /* Text wave animation */
+        @keyframes textWave {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Left section with orbiting images, circles, and dots -->
+        <div class="profile-section">
+            <div class="purple-circle"></div>
+            <div class="turquoise-circle"></div>
+            <div class="yellow-circle"></div>
+            <img src="https://yiyang512.github.io/new/hems.png" alt="Hems Image" class="profile-image">
+            <div class="orbit-container">
+                <img src="https://yiyang512.github.io/new/schoolpulse.png" alt="School Pulse Logo" class="school-logo">
+                <img src="https://yiyang512.github.io/new/mainlogo.png" alt="Simple French with Hems Logo" class="company-logo">
+                <div class="dot turquoise"></div>
+                <div class="dot yellow"></div>
+            </div>
+        </div>
+
+        <!-- Right section with text content -->
+        <div class="content-section">
+            <div class="title">A Journey of Dedication and Innovation</div>
+            <div class="divider"></div>
+            
+            <div class="text-section">
+                <p class="description">
+                    With nearly a decade of experience in learning and teaching French, Hems has a deep understanding of the challenges faced by newcomers and students preparing for exams like DELF and TEF. He’s dedicated to reshaping the language-learning experience, making French accessible, engaging, and effective for diverse learners.
+                </p>
+                <p class="description">
+                    Simple French with Hems is built on a foundation of personalized support and innovative methods, empowering students to achieve their language goals with confidence. Led by Hems’ expertise and commitment, our mission is to provide a streamlined path to fluency in a supportive environment.
+                </p>
+                <p class="description" style="font-weight: bold;">Hems, Founder & CEO</p>
+            </div>
+
+           <button class="follow-button" onclick="window.location.href='https://simplefrenchwithhems.com/contact'">+ Follow</button>
+        </div>
+    </div>
+
+</body>
+</html>
