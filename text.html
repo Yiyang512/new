@@ -26,21 +26,39 @@
             box-sizing: border-box;
             margin: 0 auto;
         }
-        .box {
-            background-color: #000;
-            padding: 20px;
-            text-align: center;
-            border-radius: 20px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            width: 100%;
-            max-width: 150px; /* Smaller box size */
-            margin: 0 auto;
-            animation: glow 3s infinite ease-in-out;
-            border: 2px solid transparent;
-            position: relative; /* For the shine effect */
-        }
+.box {
+    background-color: #00f5ff;
+    padding: 20px;
+    text-align: center;
+    border-radius: 20px;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    width: 100%;
+    max-width: 150px;
+    margin: 0 auto;
+    animation: glow 1.5s infinite ease-in-out;
+    position: relative;
+    z-index: 1;
+    overflow: hidden; /* Ensures the pseudo-element stays within the box */
+}
 
-        /* Shining border effect */
+.box::before {
+    content: "";
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border-radius: 20px; /* Matches the border-radius of .box */
+    background: linear-gradient(45deg, #00f5ff, #6a00ff, #ff004d, #00f5ff); /* VR-like gradient */
+    z-index: -1;
+    padding: 2px; /* Inner padding to create the "border" effect */
+    mask-composite: exclude; /* Ensures the inner content is not covered */
+    -webkit-mask-composite: exclude;
+}
+
+
+
+        /* Gradient border effect */
         .box::before {
             content: "";
             position: absolute;
@@ -48,15 +66,15 @@
             left: -2px;
             right: -2px;
             bottom: -2px;
-            border-radius: 25px;
-            background: linear-gradient(45deg, rgba(255, 0, 0, 0.5), rgba(255, 69, 0, 0.8), rgba(255, 0, 0, 0.5));
+            border-radius: 5px;
+            background: linear-gradient(45deg, #00f5ff, #6a00ff, #ff004d); /* Gradient as in the picture */
             z-index: -1;
-            filter: blur(40px);
+            filter: blur(20px);
             animation: shine-border 3s infinite ease-in-out;
         }
 
         @keyframes shine-border {
-            0%, 100% { opacity: 0.6; }
+            0%, 100% { opacity: 0.7; }
             50% { opacity: 1; }
         }
 
@@ -66,24 +84,23 @@
         .box:nth-child(3) { animation-delay: 1s; }
         .box:nth-child(4) { animation-delay: 1.5s; }
 
-        /* Glowing animation with more red-ish color */
+        /* Gradient glow animation */
         @keyframes glow {
             0%, 100% {
-                box-shadow: 0 0 70px rgba(255, 0, 0, 0.8); /* Stronger red glow */
+                box-shadow: 0 0 30px rgba(0, 245, 255, 0.4), 0 0 40px rgba(106, 0, 255, 0.4), 0 0 50px rgba(255, 0, 77, 0.4);
             }
             50% {
-                box-shadow: 0 0 70px rgba(255, 69, 0, 1), 0 0 70px rgba(255, 69, 0, 0.5); /* Red-orange glow */
+                box-shadow: 0 0 40px rgba(0, 245, 255, 0.6), 0 0 50px rgba(106, 0, 255, 0.6), 0 0 60px rgba(255, 0, 77, 0.6);
             }
         }
 
         .box h1 {
-            font-size: 50px; /* Adjusted for smaller box */
+            font-size: 50px;
             font-weight: 700;
             margin: 0;
             color: #FFD700;
             letter-spacing: -1px;
             animation: fancyAnimation 4s infinite ease-in-out;
-            /* 3D Effect with multiple text shadows */
             text-shadow: 
                 1px 1px 0 #FF8C00,
                 2px 2px 0 #FF8C00,
@@ -99,10 +116,9 @@
             margin: 5px 0 0;
             letter-spacing: -0.5px;
             font-weight: 400;
-            animation: waveText 2s infinite ease-in-out; /* Add wave animation */
+            animation: waveText 2s infinite ease-in-out;
         }
 
-        /* Fancy Animation */
         @keyframes fancyAnimation {
             0% {
                 opacity: 0;
@@ -129,7 +145,6 @@
             }
         }
 
-        /* Wave Animation for the Text Below Numbers */
         @keyframes waveText {
             0%, 100% {
                 transform: translateY(0);
@@ -145,7 +160,6 @@
             }
         }
 
-        /* Responsive Design for Mobile Devices */
         @media (max-width: 768px) {
             .container {
                 grid-template-columns: repeat(2, 1fr);
@@ -153,11 +167,11 @@
                 padding: 0 10px;
             }
             .box {
-                max-width: 120px; /* Smaller box for mobile */
+                max-width: 120px;
                 padding: 15px;
             }
             .box h1 {
-                font-size: 35px; /* Smaller font for mobile */
+                font-size: 35px;
             }
             .box p {
                 font-size: 14px;
@@ -188,7 +202,6 @@
 </div>
 
 <script>
-    // Count-up effect with continuous repeat
     const counters = document.querySelectorAll('.box h1');
     
     counters.forEach(counter => {
