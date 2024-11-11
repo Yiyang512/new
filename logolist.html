@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple French with Hems - Partners & Collaborations</title>
+    <style>
+        body {
+            font-family: Poppins, sans-serif;
+            background-color: #000000;
+            color: #eee;
+            margin: 0;
+            overflow-x: hidden;
+        }
+        .section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+        .partner-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            padding-bottom: 15px;
+        }
+        .partner-card {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            width: 150px;
+            height: 150px; /* Fixed square size */
+            transform: scale(0.9);
+            opacity: 0;
+            transition: box-shadow 0.5s ease;
+            box-shadow: 0 0 20px rgba(255, 0, 127, 0.4);
+            animation: popIn 0.6s ease forwards, waving 3s ease-in-out infinite;
+            border: 2px solid transparent;
+        }
+        @keyframes popIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        @keyframes waving {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+        .partner-card.visible {
+            box-shadow: 0 0 20px rgba(255, 0, 127, 0.6), 0 0 30px rgba(148, 0, 211, 0.6), 0 0 40px rgba(0, 191, 255, 0.6);
+            border-image: linear-gradient(45deg, #00f5ff, #6a00ff, #ff004d) 1;
+        }
+        .partner-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensures image fills the square without distortion */
+            border-radius: 10px;
+        }
+        /* Mobile adjustments */
+        @media (max-width: 767px) {
+            .section {
+                padding: 10px;
+            }
+            .partner-card {
+                width: 100px;
+                height: 100px; /* Adjust square size for mobile */
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="section" id="partners-collaborations">
+        <div class="partner-grid">
+            <div class="partner-card">
+                <img src="https://yiyang512.github.io/new/aws.png" alt="AWS Collaboration">
+            </div>
+            <div class="partner-card">
+                <img src="https://yiyang512.github.io/new/chamber.png" alt="Chamber of Commerce">
+            </div>
+            <div class="partner-card">
+                <img src="https://yiyang512.github.io/new/limited.png" alt="Limited Edition">
+            </div>
+            <div class="partner-card">
+                <img src="https://yiyang512.github.io/new/erin.png" alt="Erin Collaboration">
+            </div>
+            <div class="partner-card">
+                <img src="https://yiyang512.github.io/new/calgary.png" alt="City of Calgary">
+            </div>
+            <div class="partner-card">
+                <img src="https://yiyang512.github.io/new/innovates.png" alt="Innovates Partnership">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function revealPartners() {
+            const partnerCards = document.querySelectorAll('.partner-card');
+            partnerCards.forEach((card, index) => {
+                const partnerTop = card.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                if (partnerTop < windowHeight - 50) {
+                    card.style.animationDelay = `${index * 0.2}s`;
+                    card.classList.add('visible');
+                }
+            });
+        }
+
+        revealPartners();
+        window.addEventListener('scroll', revealPartners);
+    </script>
+</body>
+</html>
