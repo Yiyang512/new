@@ -27,18 +27,17 @@
             margin: 0 auto;
         }
 .box {
-    background-color: #00f5ff;
+    background-color: #000;
     padding: 20px;
     text-align: center;
     border-radius: 20px;
-    transition: transform 0.1s ease, box-shadow 0.1s ease;
     width: 100%;
-    max-width: 150px;
+    max-width: 180px;
     margin: 0 auto;
-    animation: glow 1.5s infinite ease-in-out;
+    animation: popIn 0.6s ease forwards, heartbeat 2s infinite ease-in-out;
     position: relative;
     z-index: 1;
-    overflow: hidden; /* Ensures the pseudo-element stays within the box */
+    overflow: hidden;
 }
 
 .box::before {
@@ -48,14 +47,41 @@
     left: -2px;
     right: -2px;
     bottom: -2px;
-    border-radius: 20px; /* Matches the border-radius of .box */
-    background: linear-gradient(45deg, #00f5ff, #6a00ff, #ff004d, #00f5ff); /* VR-like gradient */
+    border-radius: 20px;
+    background: linear-gradient(45deg, #00f5ff, #6a00ff, #ff004d, #00f5ff);
     z-index: -1;
-    padding: 2px; /* Inner padding to create the "border" effect */
-    mask-composite: exclude; /* Ensures the inner content is not covered */
+    padding: 2px;
+    mask-composite: exclude;
     -webkit-mask-composite: exclude;
 }
 
+/* Keyframes for heartbeat effect */
+@keyframes heartbeat {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+/* Keyframes for pop-in effect */
+@keyframes popIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Sequence Delays */
+.box:nth-child(1) { animation-delay: 0s, 0s; }
+.box:nth-child(2) { animation-delay: 0.3s, 0.3s; }
+.box:nth-child(3) { animation-delay: 0.6s, 0.6s; }
+.box:nth-child(4) { animation-delay: 0.9s, 0.9s; }
 
 
         /* Gradient border effect */
