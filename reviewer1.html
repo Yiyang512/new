@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Featured Testimonials</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #000;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .testimonial-section {
+            max-width: 1000px;
+            padding: 40px;
+            text-align: center;
+        }
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        .testimonial-card {
+            background-color: #111;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.2);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .testimonial-card:hover {
+            transform: scale(1.05);
+            border-color: #00ffcc;
+        }
+        .testimonial-card::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(120deg, rgba(0, 170, 255, 0.2), rgba(138, 43, 226, 0.2), rgba(255, 20, 147, 0.2));
+            z-index: -1;
+            animation: rotate-gradient 6s linear infinite;
+        }
+        @keyframes rotate-gradient {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        .quote-icon {
+            font-size: 2em;
+            color: #00ffcc;
+        }
+        .testimonial-text {
+            font-size: 1rem;
+            line-height: 1.5;
+            margin: 15px 0;
+            color: #ccc;
+            font-style: italic;
+        }
+        .author {
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: #ff007f;
+            margin-top: 10px;
+            display: block;
+        }
+        .author::before {
+            content: "💎 ";
+            color: #00ffcc;
+        }
+        /* Responsive adjustments for mobile */
+        @media (max-width: 768px) {
+            .testimonial-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="testimonial-section">
+    <div class="testimonial-grid">
+        <!-- Testimonial 1 -->
+        <div class="testimonial-card">
+            <span class="quote-icon">“</span>
+            <p class="testimonial-text">
+                "The perfect crash course in French! In just three days, I went from knowing nothing to confidently greeting people, asking basic questions, and understanding key phrases. It’s amazing how much I learned in such a short time!"
+            </p>
+            <p class="author">Sarah Thompson, Toronto, Canada</p>
+        </div>
+
+        <!-- Testimonial 2 -->
+        <div class="testimonial-card">
+            <span class="quote-icon">“</span>
+            <p class="testimonial-text">
+                "This course packs so much into three days! The lessons were clear, engaging, and exactly what I needed to kickstart my French journey. I feel ready to keep learning, and I’m already using what I learned!"
+            </p>
+            <p class="author">James Rivera, San Francisco, USA</p>
+        </div>
+
+        <!-- Testimonial 3 -->
+        <div class="testimonial-card">
+            <span class="quote-icon">“</span>
+            <p class="testimonial-text">
+                "I was nervous about learning a new language, but this course made it fun and accessible. I loved the pacing and variety in lessons—three days well spent!"
+            </p>
+            <p class="author">Olivia Martinez, London, UK</p>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
