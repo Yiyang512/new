@@ -30,7 +30,7 @@
 
         .benefit-card {
             position: relative;
-            width: calc(25% - 25px);
+            width: 23%; /* Ensure 4 cards per row with some gap */
             max-width: 300px;
             height: 250px;
             perspective: 1000px;
@@ -39,11 +39,28 @@
             background-color: rgba(0, 0, 0, 0.6);
             transition: transform 0.3s;
             cursor: pointer;
-            animation: wave 2s ease-in-out infinite;
+            animation: border-shine 3s linear infinite, wave 2s ease-in-out infinite;
+            border: 4px solid; /* Adds a border */
+            border-image-slice: 1;
+            border-image-source: linear-gradient(45deg, #FF00FF, #00FFFF, #FF00FF); /* Gradient border */
+            background-clip: padding-box;
+        }
+
+        /* Shine effect for the border */
+        @keyframes border-shine {
+            0% {
+                border-image-source: linear-gradient(45deg, #FF00FF, #00FFFF, #FF00FF);
+            }
+            50% {
+                border-image-source: linear-gradient(135deg, #00FFFF, #FF00FF, #00FFFF);
+            }
+            100% {
+                border-image-source: linear-gradient(45deg, #FF00FF, #00FFFF, #FF00FF);
+            }
         }
 
         .benefit-card:hover {
-            transform: scale(1.05);
+            transform: scale(1.05); /* Pop effect on hover */
         }
 
         /* Assign a staggered delay to each card for sequential waving */
@@ -145,7 +162,7 @@
         @media (max-width: 767px) {
             .section { padding: 20px; }
             .benefit-card {
-                width: calc(50% - 15px);
+                width: calc(50% - 15px); /* 2 cards per row on smaller screens */
                 max-width: 200px;
                 height: 180px;
             }
