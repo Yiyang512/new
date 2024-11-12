@@ -160,8 +160,16 @@
         @media (max-width: 767px) {
             .section { padding: 20px; }
             .benefit-card {
-                width: calc(50% - 25px); /* 2 cards per row on smaller screens */
-                max-width: none;
+                width: calc(50% - 15px); /* 2 cards per row on smaller screens */
+                max-width: 200px;
+                height: 180px;
+            }
+            .flip-card-front .benefit-info {
+                font-size: 1rem;
+                padding: 4px 8px;
+            }
+            .flip-card-back {
+                font-size: 1rem;
             }
         }
     </style>
