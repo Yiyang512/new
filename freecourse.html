@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free French Learning Banner</title>
+    <style>
+        /* Base styling for the page */
+        body {
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        /* Main banner container */
+        .banner {
+            position: relative;
+            width: 800px;
+            height: 500px;
+            background-color: #111;
+            border-radius: 25px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.9);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease;
+            animation: tilt 5s ease-in-out infinite alternate;
+        }
+
+        /* Tilt animation */
+        @keyframes tilt {
+            0% { transform: rotateX(0deg) rotateY(0deg); }
+            100% { transform: rotateX(10deg) rotateY(-10deg); }
+        }
+
+        /* Multi-layer glowing border */
+        .banner::before, .banner::after {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(120deg, rgba(0, 170, 255, 0.4), rgba(138, 43, 226, 0.4), rgba(255, 20, 147, 0.4));
+            opacity: 0.8;
+            z-index: -1;
+            animation: rotate-bg 10s linear infinite;
+            border-radius: 25px;
+        }
+
+        .banner::after {
+            filter: blur(20px);
+            opacity: 0.6;
+        }
+
+        @keyframes rotate-bg {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* Particle effect for added fanciness */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #00eaff;
+            border-radius: 50%;
+            box-shadow: 0 0 15px #00eaff, 0 0 20px #8a2be2;
+            animation: particle-animation 8s linear infinite;
+            opacity: 0.8;
+        }
+
+        /* Different particle speeds */
+        .particle:nth-child(odd) { animation-duration: 12s; }
+        .particle:nth-child(even) { animation-duration: 7s; }
+
+        @keyframes particle-animation {
+            0% {
+                transform: translateY(0) translateX(0) scale(0.7);
+                opacity: 0.8;
+            }
+            50% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-800px) translateX(300px) scale(0.1);
+                opacity: 0;
+            }
+        }
+
+        /* Text Container */
+        .text-container {
+            text-align: center;
+            z-index: 2;
+            text-shadow: 0 0 25px rgba(0, 255, 255, 0.9), 0 0 20px rgba(0, 170, 255, 0.7);
+        }
+
+        /* Main title with animated gradient and shadow */
+        .title {
+            font-size: 3.5rem;
+            font-weight: bold;
+            color: #e0e0e0;
+            text-transform: uppercase;
+            background: linear-gradient(90deg, #00eaff, #ff69b4, #8a2be2, #00eaff);
+            background-size: 200%;
+            -webkit-background-clip: text;
+            color: transparent;
+            animation: gradient-flow 7s linear infinite, depth-shadow 3s ease-in-out infinite;
+        }
+
+        @keyframes gradient-flow {
+            0% { background-position: 0%; }
+            100% { background-position: 100%; }
+        }
+
+        @keyframes depth-shadow {
+            0%, 100% { text-shadow: 0 0 15px #00eaff, 0 0 30px #8a2be2; }
+            50% { text-shadow: 0 0 35px #ff69b4, 0 0 45px #00eaff; }
+        }
+
+        /* Subtitle */
+        .subtitle {
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            color: #8ab4f8;
+            margin-top: 10px;
+            animation: glow-text 2.5s infinite alternate-reverse;
+        }
+
+        /* Multi-colored border glow */
+        .neon-frame {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 25px;
+            box-shadow: 0 0 50px #00aaff, 0 0 80px #8a2be2, 0 0 110px #ff1493;
+            animation: border-glow 6s ease-in-out infinite alternate;
+            z-index: -2;
+        }
+
+        /* Keyframes for glow and text effects */
+        @keyframes border-glow {
+            0%, 100% { box-shadow: 0 0 50px #00aaff, 0 0 80px #8a2be2, 0 0 110px #ff1493; }
+            50% { box-shadow: 0 0 90px #00eaff, 0 0 110px #ff69b4; }
+        }
+
+        @keyframes glow-text {
+            from { text-shadow: 0 0 18px #00eaff, 0 0 22px #8a2be2; }
+            to { text-shadow: 0 0 28px #ff1493, 0 0 35px #00eaff; }
+        }
+
+        /* Circular tech elements */
+        .top-circles, .bottom-circles {
+            display: flex;
+            justify-content: space-between;
+            position: absolute;
+            width: 100%;
+            padding: 0 30px;
+            z-index: 1;
+        }
+
+        .top-circles { top: 10px; }
+        .bottom-circles { bottom: 10px; }
+
+        .circle {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #00aaff, #ff69b4);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.4);
+            animation: rotate 6s linear infinite;
+            position: relative;
+        }
+
+        .circle::before {
+            content: "";
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            border-radius: 50%;
+            background: radial-gradient(circle, #fff, rgba(255, 255, 255, 0));
+            animation: rotate-reverse 4s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes rotate-reverse {
+            0% { transform: rotate(360deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        .icon {
+            font-size: 2rem;
+            color: #00bfff;
+        }
+
+        /* Central Call-to-Action button */
+        .central-button {
+            position: absolute;
+            bottom: 25px;
+            padding: 15px 35px;
+            border: 2px solid #00bfff;
+            border-radius: 12px;
+            color: #00bfff;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            text-shadow: 0 0 7px #00bfff;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            animation: button-shimmer 2s ease-in-out infinite alternate;
+            overflow: hidden;
+        }
+
+        /* Button shimmer effect */
+        .central-button::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+            animation: shimmer 2.5s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="banner">
+    <div class="neon-frame"></div>
+    <div class="particles">
+        <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+        <div class="particle" style="left: 25%; animation-delay: 1s;"></div>
+        <div class="particle" style="left: 40%; animation-delay: 2s;"></div>
+        <div class="particle" style="left: 55%; animation-delay: 3s;"></div>
+        <div class="particle" style="left: 70%; animation-delay: 4s;"></div>
+        <div class="particle" style="left: 85%; animation-delay: 5s;"></div>
+    </div>
+    
+    <div class="top-circles">
+        <div class="circle"><div class="icon">⚙️</div></div>
+        <div class="circle"><div class="icon">⚙️</div></div>
+    </div>
+    
+    <div class="text-container">
+        <h1 class="title">FREE: Learn to Speak French in 2 hours!</h1>
+        <p class="subtitle">Unlock the Path to French Fluency</p>
+    </div>
+
+    <div class="bottom-circles">
+        <div class="circle"><div class="icon">👤</div></div>
+        <div class="circle"><div class="icon">🔒</div></div>
+    </div>
+
+    <div class="central-button">Join My 3-Day Free Journey!</div>
+</div>
+
+</body>
+</html>
