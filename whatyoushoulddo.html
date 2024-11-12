@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What You Should Do</title>
+<style>
+    body {
+        font-family: 'Orbitron', sans-serif;
+        background-color: #000;
+        color: #00ffcc;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        overflow: hidden;
+    }
+    .container {
+        max-width: 900px;
+        padding: 40px;
+        background: linear-gradient(135deg, #001f3f, #000);
+        border-radius: 10px;
+        box-shadow: 0 0 30px rgba(0, 255, 204, 0.5);
+        text-align: center;
+        animation: flicker 2s infinite;
+    }
+    h1 {
+        font-size: 2.5em;
+        color: #ff007f;
+        margin-bottom: 1em;
+        text-shadow: 0 0 8px #ff007f, 0 0 20px #ff007f;
+        animation: glow 1.5s ease-in-out infinite alternate;
+    }
+    .step {
+        font-size: 1.2em;
+        padding: 15px;
+        margin: 15px 0;
+        background: rgba(0, 255, 204, 0.1);
+        border: 1px solid #00ffcc;
+        border-radius: 8px;
+        transition: transform 0.3s ease, background 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    .step:hover {
+        background: rgba(0, 255, 204, 0.2);
+        transform: scale(1.05);
+    }
+    .step-number {
+        font-weight: bold;
+        color: #ff007f;
+    }
+    .icon {
+        margin-right: 0.3em;
+        animation: bounce 1.5s infinite;
+    }
+    .cta {
+        margin-top: 20px;
+        font-size: 1.2em;
+        padding: 12px 20px;
+        color: #000;
+        background: #ff007f;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: background 0.3s ease, color 0.3s ease;
+        animation: pulse 1.5s infinite;
+    }
+    .cta:hover {
+        background: #00ffcc;
+        color: #fff;
+    }
+    @keyframes glow {
+        from {
+            text-shadow: 0 0 10px #ff007f, 0 0 20px #ff007f;
+        }
+        to {
+            text-shadow: 0 0 20px #ff007f, 0 0 40px #ff007f;
+        }
+    }
+    @keyframes bounce {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-5px);
+        }
+    }
+    @keyframes flicker {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.9; }
+    }
+    @keyframes pulse {
+        0% {
+            box-shadow: 0 0 5px #ff007f, 0 0 15px #ff007f;
+        }
+        50% {
+            box-shadow: 0 0 15px #ff007f, 0 0 30px #ff007f;
+        }
+        100% {
+            box-shadow: 0 0 5px #ff007f, 0 0 15px #ff007f;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>What You Should Do?</h1>
+    <div class="step">
+        <span class="step-number">1. Say yes to learning <span class="icon">🚀</span></span>: Join our free course and reignite your French learning journey.
+    </div>
+    <div class="step">
+        <span class="step-number">2. Watch 25+ videos <span class="icon">🚀</span></span>: Access over 25 engaging lessons designed to help you progress quickly.
+    </div>
+    <div class="step">
+        <span class="step-number">3. Complete 120+ graded quizzes <span class="icon">🚀</span></span>: Test your knowledge with quizzes after each lesson to track your progress.
+    </div>
+    <div class="step">
+        <span class="step-number">4. Practice dictation and speaking <span class="icon">🚀</span></span>: Enhance your skills with dictation and speaking tests.
+    </div>
+    <div class="step">
+        <span class="step-number">5. Earn rewards <span class="icon">🚀</span></span>: Upon completing the course, get an $80 discount on our premium courses and books, plus a personalized certificate.
+    </div>
+    <div class="step">
+        <span class="step-number">6. Take charge of your future <span class="icon">🚀</span></span>: Start learning French and unlock new opportunities today!
+    </div>
+    <a href="#get-started" class="cta">Get Started Now</a>
+</div>
+
+</body>
+</html>
