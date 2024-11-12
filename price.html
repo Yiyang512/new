@@ -155,40 +155,6 @@
             to { opacity: 0.85; }
         }
 
-        /* Central Call-to-Action button */
-        .central-button {
-            position: absolute;
-            bottom: 25px;
-            padding: 15px 35px;
-            border: 2px solid #00bfff;
-            border-radius: 12px;
-            color: #00bfff;
-            font-size: 1.1rem;
-            text-transform: uppercase;
-            text-shadow: 0 0 7px #00bfff;
-            cursor: pointer;
-            transition: background 0.3s, transform 0.2s;
-            animation: button-shimmer 2s ease-in-out infinite alternate;
-            overflow: hidden;
-        }
-
-        /* Button shimmer effect */
-        .central-button::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
-            animation: shimmer 1.5s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { left: -100%; }
-            100% { left: 100%; }
-        }
-
         /* Responsive adjustments */
         @media (max-width: 768px) {
             .price-banner {
@@ -207,12 +173,6 @@
 
             .price.bundle {
                 font-size: 2rem;
-            }
-
-            .central-button {
-                font-size: 1rem;
-                padding: 10px 20px;
-                bottom: 15px;
             }
         }
     </style>
@@ -235,8 +195,6 @@
         <div class="price original">Original Price: $1100</div>
         <div class="price bundle">Bundle Buy: $999.99</div>
     </div>
-
-    <div class="central-button">Save Below</div>
 </div>
 
 </body>
