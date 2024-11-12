@@ -156,26 +156,28 @@
             to { opacity: 0.85; }
         }
 
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .price-banner {
-                width: 90%;
-                height: auto;
-                padding: 20px;
-            }
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .price-banner {
+        width: 90%;
+        height: auto;
+        padding-top: 5px; /* Reduced padding for top space */
+        justify-content: flex-start; /* Align content closer to the top */
+    }
 
-            .title {
-                font-size: 2rem;
-            }
+    .title {
+        font-size: 2rem;
+    }
 
-            .price {
-                font-size: 1.8rem;
-            }
+    .price {
+        font-size: 1.8rem;
+    }
 
-            .price.bundle {
-                font-size: 2rem;
-            }
-        }
+    .price.bundle {
+        font-size: 2rem;
+    }
+}
+
     </style>
 </head>
 <body>
