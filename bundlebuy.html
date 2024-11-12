@@ -17,25 +17,24 @@
         .section {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 60px 20px 20px; /* Increased top padding */
             text-align: center;
         }
 
         .benefits-grid {
             display: flex;
             flex-wrap: wrap;
-            gap: 45px;
+            gap: 25px;
             justify-content: center;
-            padding-bottom: 0px;
         }
 
         .benefit-card {
             position: relative;
-            width: calc(50% - 25px);
-            max-width: 400px;
-            height: 300px;
+            width: calc(25% - 25px); /* 4 cards per row on larger screens */
+            max-width: 300px;
+            height: 250px;
             perspective: 1000px;
-            border-radius: 45px;
+            border-radius: 20px;
             overflow: hidden;
             background-color: rgba(0, 0, 0, 0.6);
             transition: transform 0.3s, box-shadow 0.1s ease;
@@ -123,9 +122,9 @@
             left: 50%;
             transform: translateX(-50%);
             background: linear-gradient(0deg, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.4));
-            padding: 5px 5px;
+            padding: 5px 10px;
             border-radius: 15px;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             font-weight: 800;
             color: #FF00FF;
             text-shadow: 0 0 5px #00f0ff, 0 0 5px #007eff, 0 0 10px #00d4ff;
@@ -144,7 +143,7 @@
             justify-content: center;
             align-items: center;
             padding: 5px;
-            font-size: 1.6rem;
+            font-size: 1.2rem;
             text-align: center;
             text-shadow: 0 0 10px #00eaff, 0 0 15px #00d4ff;
             line-height: 1.5;
@@ -157,10 +156,13 @@
             text-shadow: 0 0 10px #00f0ff, 0 0 20px #00d4ff, 0 0 30px rgba(0, 255, 127, 0.5);
         }
 
+        /* Responsive adjustments for mobile */
         @media (max-width: 767px) {
             .section { padding: 20px; }
-            .benefit-card { width: 100%; max-width: none; }
-            .benefits-grid { gap: 40px; }
+            .benefit-card {
+                width: calc(50% - 25px); /* 2 cards per row on smaller screens */
+                max-width: none;
+            }
         }
     </style>
 </head>
