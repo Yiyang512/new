@@ -135,6 +135,11 @@
             gap: 10px;
         }
 
+        /* Hide the title on the back */
+        .benefit-card.flipped .flip-card-front .benefit-info {
+            visibility: hidden;
+        }
+
         .flip-card-back {
             background-color: rgba(10, 10, 10, 0.9);
             color: #ffffff;
@@ -165,11 +170,11 @@
                 height: 180px;
             }
             .flip-card-front .benefit-info {
-                font-size: 1rem;
+                font-size: 0.9rem; /* Smaller font size for mobile */
                 padding: 4px 8px;
             }
             .flip-card-back {
-                font-size: 1rem;
+                font-size: 0.9rem; /* Smaller font size for mobile */
             }
         }
     </style>
