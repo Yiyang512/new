@@ -3,113 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Featured Testimonials</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <title>Testimonials - Simple French with Hems</title>
     <style>
-        /* Base Styles */
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #000; /* Pure black background */
-            color: #ffffff;
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #FFFFFF;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            overflow: hidden;
         }
         .testimonial-section {
-            max-width: 100%;
-            padding: 20px;
+            max-width: 1200px;
+            padding: 40px;
             text-align: center;
-            position: relative;
         }
-
-        /* Neon Glow for Section Title */
-        .testimonial-title {
-            font-size: 1.8em;
-            color: #00ffcc;
-            text-shadow: 0 0 8px #00ffcc, 0 0 16px #ff007f;
-            margin-bottom: 20px;
-        }
-
-        /* Grid and Card Styles */
         .testimonial-grid {
             display: grid;
-            grid-template-columns: 1fr;
-            gap: 15px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
         }
         .testimonial-card {
             background-color: #111;
             border-radius: 10px;
-            padding: 15px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.1);
             position: relative;
             overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0 0 10px rgba(0, 255, 204, 0.3);
-            border: 1px solid transparent;
+            animation: glow 5s linear infinite, wave 3s ease-in-out infinite;
+            border: 1px solid #00ffcc;
+            transition: transform 0.3s ease;
+            max-width: 300px;
+            margin: 0 auto;
         }
+        /* Animation delay for each card */
+        .testimonial-card:nth-child(1) { animation-delay: 0s, 0s; }
+        .testimonial-card:nth-child(2) { animation-delay: 0.5s, 0.5s; }
+        .testimonial-card:nth-child(3) { animation-delay: 1s, 1s; }
+
         .testimonial-card:hover {
             transform: scale(1.05);
-            border: 1px solid #00ffcc;
-            box-shadow: 0 0 20px #00ffcc, 0 0 30px #ff007f;
         }
-
-        /* Icon, Text, and Author Styles */
-        .quote-icon {
-            font-size: 1.5em;
-            color: #00ffcc;
-            margin-bottom: 10px;
-            text-shadow: 0 0 3px rgba(0, 255, 204, 0.7);
+        .testimonial-card::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(120deg, rgba(0, 170, 255, 0.4), rgba(138, 43, 226, 0.4), rgba(255, 20, 147, 0.4));
+            opacity: 0.7;
+            z-index: -1;
+            animation: shine 3s linear infinite;
+        }
+        .stars {
+            color: #fff;
+            margin: 10px 0;
+            font-size: 1.2rem;
         }
         .testimonial-text {
-            font-size: 0.85rem;
-            line-height: 1.4;
-            color: #cccccc;
+            font-size: 1rem;
+            line-height: 1.5;
+            margin: 15px 0;
+            color: #ccc;
             font-style: italic;
-            margin: 10px 0;
         }
         .author {
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             font-weight: bold;
             color: #ff007f;
-            margin-top: 8px;
+            margin-top: 10px;
             display: block;
         }
-
-        /* Verified Badge */
         .verified-badge {
-            font-size: 0.75rem;
-            color: #ff0;
-            background-color: #333;
-            padding: 4px 8px;
-            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #000;
+            background: linear-gradient(45deg, #FFD700, #00FF7F);
+            padding: 5px 10px;
+            border-radius: 12px;
             display: inline-block;
             margin-top: 8px;
-            box-shadow: 0 0 8px rgba(255, 255, 0, 0.4);
-            text-shadow: 0 0 3px rgba(255, 255, 0, 0.6);
+            box-shadow: 0 0 8px rgba(255, 255, 0, 0.5);
+            font-weight: bold;
         }
-
-        /* Responsive adjustments */
-        @media (min-width: 768px) {
-            .testimonial-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .testimonial-title {
-                font-size: 2em;
-            }
-            .testimonial-card {
-                padding: 20px;
-                border-radius: 10px;
-            }
+        /* Additional animations */
+        @keyframes shine {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
         }
-        @media (min-width: 1024px) {
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); }
+            50% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.2); }
+        }
+        @media (max-width: 768px) {
             .testimonial-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-            .testimonial-section {
-                max-width: 1000px;
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -117,35 +108,34 @@
 <body>
 
 <div class="testimonial-section">
-    <h2 class="testimonial-title">✨ Featured Testimonials ✨</h2>
     <div class="testimonial-grid">
         <!-- Testimonial 1 -->
         <div class="testimonial-card">
-            <span class="quote-icon">“</span>
+            <div class="stars">★★★★★</div>
             <p class="testimonial-text">
-                "The perfect crash course in French! In just three days, I went from knowing nothing to confidently greeting people, asking basic questions, and understanding key phrases. It’s amazing how much I learned in such a short time!"
+                "Simple French with Hems Inc. has been a game-changer for me! The whiteboard video lessons are incredibly helpful, and the quizzes have really boosted my confidence. Highly recommend!"
             </p>
-            <p class="author">Sarah Thompson, Toronto, Canada</p>
+            <p class="author">Sarah, Ontario</p>
             <span class="verified-badge">Verified Buyer</span>
         </div>
 
         <!-- Testimonial 2 -->
         <div class="testimonial-card">
-            <span class="quote-icon">“</span>
+            <div class="stars">★★★★★</div>
             <p class="testimonial-text">
-                "This course packs so much into three days! The lessons were clear, engaging, and exactly what I needed to kickstart my French journey. I feel ready to keep learning, and I’m already using what I learned!"
+                "Simple French with Hems Inc. exceeded my expectations! The platform is user-friendly, and the variety of resources available is impressive. The affiliate program is a fantastic opportunity for anyone passionate about French education to get involved."
             </p>
-            <p class="author">James Rivera, San Francisco, USA</p>
+            <p class="author">Jeanine, Boston</p>
             <span class="verified-badge">Verified Buyer</span>
         </div>
 
         <!-- Testimonial 3 -->
         <div class="testimonial-card">
-            <span class="quote-icon">“</span>
+            <div class="stars">★★★★★</div>
             <p class="testimonial-text">
-                "I was nervous about learning a new language, but this course made it fun and accessible. I loved the pacing and variety in lessons—three days well spent!"
+                "Simple French with Hems Inc. has been a lifesaver for our family! With children aged 2-4, finding resources that cater to their different learning needs can be challenging. This platform has made learning French fun and accessible for everyone."
             </p>
-            <p class="author">Olivia Martinez, London, UK</p>
+            <p class="author">Parmar Family, Edmonton</p>
             <span class="verified-badge">Verified Buyer</span>
         </div>
     </div>
