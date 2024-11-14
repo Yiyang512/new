@@ -4,23 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Featured Testimonials</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        /* Base Styles */
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #000;
-            color: #fff;
+            font-family: 'Poppins', sans-serif;
+            background: #0c0c0c radial-gradient(circle at 20% 30%, rgba(0, 255, 204, 0.15), transparent);
+            color: #ffffff;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            overflow: hidden;
         }
         .testimonial-section {
             max-width: 1000px;
             padding: 40px;
             text-align: center;
+            position: relative;
         }
+
+        /* Animated Neon Grid Background */
+        .testimonial-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(90deg, transparent, transparent 20px, rgba(0, 255, 204, 0.1) 21px),
+                        repeating-linear-gradient(0deg, transparent, transparent 20px, rgba(0, 255, 204, 0.1) 21px);
+            opacity: 0.2;
+            z-index: -2;
+            animation: moveGrid 10s linear infinite;
+        }
+        @keyframes moveGrid {
+            0% { background-position: 0 0; }
+            100% { background-position: 100px 100px; }
+        }
+
+        /* Neon Glow for Section Title */
+        .testimonial-title {
+            font-size: 2.5em;
+            color: #00ffcc;
+            text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc, 0 0 30px #ff007f;
+            margin-bottom: 40px;
+            animation: flicker 1.5s infinite alternate;
+        }
+        @keyframes flicker {
+            0% { opacity: 1; text-shadow: 0 0 10px #00ffcc, 0 0 20px #ff007f, 0 0 30px #00ffcc; }
+            50% { opacity: 0.8; text-shadow: 0 0 15px #ff007f, 0 0 25px #00ffcc, 0 0 35px #00ffcc; }
+            100% { opacity: 1; text-shadow: 0 0 10px #00ffcc, 0 0 20px #ff007f, 0 0 30px #00ffcc; }
+        }
+
+        /* Grid and Card Styles */
         .testimonial-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -28,55 +67,78 @@
         }
         .testimonial-card {
             background-color: #111;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 0 15px rgba(0, 255, 204, 0.2);
+            border-radius: 15px;
+            padding: 30px 20px;
             position: relative;
             overflow: hidden;
-            transition: transform 0.3s ease;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.4);
             border: 2px solid transparent;
         }
         .testimonial-card:hover {
-            transform: scale(1.05);
-            border-color: #00ffcc;
+            transform: scale(1.1);
+            border: 2px solid #00ffcc;
+            box-shadow: 0 0 25px #00ffcc, 0 0 50px #ff007f, 0 0 75px rgba(255, 0, 127, 0.4);
         }
         .testimonial-card::before {
             content: "";
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(120deg, rgba(0, 170, 255, 0.2), rgba(138, 43, 226, 0.2), rgba(255, 20, 147, 0.2));
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(0, 255, 204, 0.2), transparent 70%);
+            opacity: 0.5;
             z-index: -1;
-            animation: rotate-gradient 6s linear infinite;
+            animation: pulseGlow 3s ease-in-out infinite;
         }
-        @keyframes rotate-gradient {
-            0% { transform: translate(-50%, -50%) rotate(0deg); }
-            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 0.8; }
         }
+
+        /* Icon, Text, and Author Styles */
         .quote-icon {
-            font-size: 2em;
+            font-size: 2.5em;
             color: #00ffcc;
+            margin-bottom: 15px;
+            text-shadow: 0 0 5px rgba(0, 255, 204, 0.7);
         }
         .testimonial-text {
-            font-size: 1rem;
-            line-height: 1.5;
-            margin: 15px 0;
-            color: #ccc;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #cccccc;
             font-style: italic;
+            margin: 15px 0;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
         }
         .author {
-            font-size: 0.95rem;
+            font-size: 1rem;
             font-weight: bold;
             color: #ff007f;
             margin-top: 10px;
+            text-shadow: 0 0 8px rgba(255, 0, 127, 0.5);
             display: block;
         }
-        .author::before {
-            content: "💎 ";
-            color: #00ffcc;
+
+        /* Verified Badge */
+        .verified-badge {
+            font-size: 0.85rem;
+            color: #ff0;
+            background-color: #333;
+            padding: 6px 12px;
+            border-radius: 12px;
+            display: inline-block;
+            margin-top: 10px;
+            box-shadow: 0 0 15px rgba(255, 255, 0, 0.5);
+            text-shadow: 0 0 5px rgba(255, 255, 0, 0.7);
+            animation: neonPulse 1.5s ease-in-out infinite alternate;
         }
+        @keyframes neonPulse {
+            0% { text-shadow: 0 0 5px #ff0, 0 0 10px #ff0; }
+            100% { text-shadow: 0 0 15px #ff0, 0 0 20px #ff0; }
+        }
+
         /* Responsive adjustments for mobile */
         @media (max-width: 768px) {
             .testimonial-grid {
@@ -88,6 +150,7 @@
 <body>
 
 <div class="testimonial-section">
+    <h2 class="testimonial-title">✨ Featured Testimonials ✨</h2>
     <div class="testimonial-grid">
         <!-- Testimonial 1 -->
         <div class="testimonial-card">
@@ -96,6 +159,7 @@
                 "The perfect crash course in French! In just three days, I went from knowing nothing to confidently greeting people, asking basic questions, and understanding key phrases. It’s amazing how much I learned in such a short time!"
             </p>
             <p class="author">Sarah Thompson, Toronto, Canada</p>
+            <span class="verified-badge">Verified Buyer</span>
         </div>
 
         <!-- Testimonial 2 -->
@@ -105,6 +169,7 @@
                 "This course packs so much into three days! The lessons were clear, engaging, and exactly what I needed to kickstart my French journey. I feel ready to keep learning, and I’m already using what I learned!"
             </p>
             <p class="author">James Rivera, San Francisco, USA</p>
+            <span class="verified-badge">Verified Buyer</span>
         </div>
 
         <!-- Testimonial 3 -->
@@ -114,6 +179,7 @@
                 "I was nervous about learning a new language, but this course made it fun and accessible. I loved the pacing and variety in lessons—three days well spent!"
             </p>
             <p class="author">Olivia Martinez, London, UK</p>
+            <span class="verified-badge">Verified Buyer</span>
         </div>
     </div>
 </div>
