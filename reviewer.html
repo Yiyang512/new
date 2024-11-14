@@ -132,10 +132,16 @@
             text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
             font-weight: bold;
         }
-        /* Responsive adjustments for mobile and laptop */
-        @media (max-width: 768px) {
+
+        /* Media Query for Small Screens */
+        @media (max-width: 480px) {
             .testimonial-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+            }
+            .testimonial-card {
+                max-width: 100%;
+                padding: 10px;
             }
         }
     </style>
@@ -168,7 +174,7 @@
         <div class="testimonial-card">
             <div class="stars">★★★★★</div>
             <p class="testimonial-text">
-                "Simple French with Hems Inc. has been a lifesaver for our family! With children aged 2-4, finding resources that cater to their different learning needs can be challenging. However, this platform has made learning French fun and accessible for everyone. Our 2-year-old can't go a day without singing the 'Alouette Song' from the platform!"
+                "Simple French with Hems Inc. has been a lifesaver for our family! With children aged 2-4, finding resources that cater to their different learning needs can be challenging. However, this platform has made learning French fun and accessible for everyone."
             </p>
             <p class="author">Parmar Family, Edmonton</p>
             <span class="verified-badge">Verified Buyer</span>
@@ -178,7 +184,7 @@
         <div class="testimonial-card">
             <div class="stars">★★★★★</div>
             <p class="testimonial-text">
-                "Showcase your happy customers by adding their testimonials and reviews! I went through the on-demand course from Simple French with Hems, and it's incredibly thorough. It covers all sections needed for the TEF and DELF exams. I love the animations and the way they handle speaking, reading, writing, pronunciation, and listening tests. I am very happy with it and feel well-prepared for my exams."
+                "I went through the on-demand course from Simple French with Hems, and it's incredibly thorough. It covers all sections needed for the TEF and DELF exams. I love the animations and the way they handle tests."
             </p>
             <p class="author">Michael T., Edmonton</p>
             <span class="verified-badge">Verified Buyer</span>
@@ -188,7 +194,7 @@
         <div class="testimonial-card">
             <div class="stars">★★★★★</div>
             <p class="testimonial-text">
-                "Traditional language classes were not working for me. Simple French with Hems introduced me to a whole new way of learning French. The on-demand course is incredibly detailed and covers everything I need for the TEF and DELF exams. The animations make it fun and interactive, especially the speaking and pronunciation tests. It's the innovation in education that we desperately needed!"
+                "Traditional language classes were not working for me. Simple French with Hems introduced me to a whole new way of learning French. The course is incredibly detailed and covers everything I need."
             </p>
             <p class="author">Janice, Chicago</p>
             <span class="verified-badge">Verified Buyer</span>
@@ -198,7 +204,7 @@
         <div class="testimonial-card">
             <div class="stars">★★★★★</div>
             <p class="testimonial-text">
-                "As a beginner in learning French, Simple French with Hems Inc. has been a lifesaver. The lessons are easy to follow, and the ability to practice with native speakers has been invaluable. Simple French with Hems provided the perfect solution with its comprehensive exam prep. I've already seen a significant improvement in my language skills, and I'm excited about my future career prospects."
+                "As a beginner in learning French, Simple French with Hems Inc. has been a lifesaver. The lessons are easy to follow, and practicing with native speakers has been invaluable."
             </p>
             <p class="author">Sunil, Delhi</p>
             <span class="verified-badge">Verified Buyer</span>
