@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learn French with Hems - Simple French with Hems</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+body {
+    background-color: #000000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: 'Orbitron', sans-serif;
+    overflow: hidden;
+    color: white;
+}
+
+.player-container {
+    background: linear-gradient(135deg, #00ffcc 0%, #ff00ff 100%);
+    border-radius: 35px;
+    box-shadow: 0 20px 40px rgba(0, 255, 255, 0.5), 0 0 50px rgba(255, 0, 255, 0.7);
+    width: 450px;
+    padding: 35px;
+    text-align: center;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    transition: all 1s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.player-container:hover {
+    transform: perspective(800px) translateZ(20px) scale(1.05);
+    box-shadow: 0 30px 60px rgba(0, 255, 255, 0.7), 0 0 80px rgba(255, 0, 255, 1);
+}
+
+.album-cover {
+    position: relative;
+    width: 100%;
+    height: auto;
+}
+
+.album-cover img {
+    width: 100%;
+    height: auto;
+    border-radius: 20px;
+    box-shadow: 0 15px 25px rgba(0, 255, 255, 0.5);
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+}
+
+.album-cover img:hover {
+    transform: rotate(5deg) scale(1.05);
+    box-shadow: 0 25px 35px rgba(255, 0, 255, 0.8), 0 0 50px rgba(0, 255, 255, 1);
+}
+
+.album-cover::before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    border: 3px dashed rgba(255, 255, 255, 0.5);
+    border-radius: 25px;
+    animation: pulse-border 3s infinite ease-in-out;
+}
+
+@keyframes pulse-border {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+}
+
+.song-info h2 {
+    font-size: 26px;
+    margin-top: 25px;
+    text-shadow: 0 0 20px rgba(255, 0, 255, 1);
+}
+
+.song-info p {
+    font-size: 20px;
+    color: #d0e6f6;
+    text-shadow: 0 0 15px rgba(0, 255, 255, 0.7);
+}
+
+.progress-bar {
+    position: relative;
+    width: 100%;
+    height: 10px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 30px 0;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+}
+
+.progress-bar .progress-fill {
+    height: 100%;
+    width: 0;
+    background: linear-gradient(to right, #ff00ff, #00ffcc);
+    transition: width 0.1s ease-in-out;
+    box-shadow: 0 0 15px #ff00ff, 0 0 25px #00ffcc;
+}
+
+.time-display {
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+    color: #ecf0f1;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.controls button {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid #00ffcc;
+    border-radius: 60%;
+    color: #ecf0f1;
+    cursor: pointer;
+    font-size: 30px;
+    padding: 18px;
+    transition: all 0.3s;
+    box-shadow: 0 10px 30px rgba(0, 255, 255, 0.5), 0 0 20px rgba(255, 0, 255, 0.7);
+}
+
+.controls button:hover {
+    background: rgba(0, 255, 204, 0.3);
+    color: #00ffcc;
+    transform: scale(1.2);
+    box-shadow: 0 0 25px #00ffcc, 0 0 40px #ff00ff;
+}
+
+.lyrics {
+    margin-top: 35px;
+    max-height: 150px;
+    overflow-y: scroll;
+    color: #ecf0f1;
+    line-height: 1.8;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 255, 255, 0.4), 0 0 30px rgba(255, 0, 255, 0.6);
+    border: 1px solid #00ffcc;
+}
+
+.lyrics span.current {
+    color: #ff00ff;
+    font-weight: bold;
+    text-shadow: 0 0 20px #00ffcc;
+}
+</style>
+</head>
+<body>
+
+<div class="player-container">
+    <div class="album-cover">
+        <img src="https://yiyang512.github.io/new/cover.jpg" alt="Album Cover">
+    </div>
+    <div class="song-info">
+        <h2>Learn French with Hems</h2>
+        <p>Simple French with Hems</p>
+    </div>
+    <div class="progress-bar">
+        <div class="progress-fill"></div>
+    </div>
+    <div class="time-display">
+        <span id="current-time">0:00</span>
+        <span id="total-duration">0:00</span>
+    </div>
+    <div class="controls">
+        <button onclick="prevTrack()"><i class="fas fa-step-backward"></i></button>
+        <button onclick="togglePlayPause()"><i class="fas fa-play" id="play-pause-icon"></i></button>
+        <button onclick="nextTrack()"><i class="fas fa-step-forward"></i></button>
+    </div>
+    
+</div>
+
+<script>
+const audioElement = document.createElement('audio');
+audioElement.src = 'https://yiyang512.github.io/new/simple.mp3'; // Replace with your song URL
+
+let isPlaying = false;
+let currentLyricIndex = 0;
+
+function togglePlayPause() {
+    if (isPlaying) {
+        audioElement.pause();
+        document.getElementById('play-pause-icon').classList.remove('fa-pause');
+        document.getElementById('play-pause-icon').classList.add('fa-play');
+    } else {
+        audioElement.play()
+            .then(() => {
+                console.log("Audio started playing successfully.");
+            })
+            .catch((error) => {
+                console.error("Error playing audio: ", error);
+            });
+        document.getElementById('play-pause-icon').classList.remove('fa-play');
+        document.getElementById('play-pause-icon').classList.add('fa-pause');
+    }
+    isPlaying = !isPlaying;
+}
+
+function updateProgressBar() {
+    const progressFill = document.querySelector('.progress-fill');
+    const currentTimeDisplay = document.getElementById('current-time');
+    const totalDurationDisplay = document.getElementById('total-duration');
+
+    const duration = audioElement.duration;
+    const currentTime = audioElement.currentTime;
+
+    const percentPlayed = (currentTime / duration) * 100;
+    progressFill.style.width = `${percentPlayed}%`;
+
+    currentTimeDisplay.textContent = formatTime(currentTime);
+    totalDurationDisplay.textContent = formatTime(duration);
+}
+
+function formatTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = Math.floor(seconds % 60).toString().padStart(2, '0');
+    return `${minutes}:${remainingSeconds}`;
+}
+
+function prevTrack() {
+    console.log("Previous track");
+    // Implement previous track logic here
+}
+
+function nextTrack() {
+    console.log("Next track");
+    // Implement next track logic here
+}
+
+audioElement.addEventListener('loadedmetadata', () => {
+    document.getElementById('total-duration').textContent = formatTime(audioElement.duration);
+});
+
+audioElement.addEventListener('timeupdate', updateProgressBar);
+audioElement.addEventListener('ended', () => {
+    nextTrack();
+});
+</script>
+
+</body>
+</html>
