@@ -5,8 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Curious About Your French Level?</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 <style>
+/* General Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Body Styles */
 body {
     background: url('https://yiyang512.github.io/new/dancingcat.jpg') no-repeat center center fixed;
     background-size: cover;
@@ -14,58 +22,45 @@ body {
     justify-content: flex-start;
     align-items: center;
     height: 100vh;
-    margin: 0;
     font-family: 'Poppins', sans-serif;
     color: #ffffff;
-    padding: 40px;
-    box-sizing: border-box;
+    padding: 20px;
 }
 
+/* Container */
 .test-container {
-    margin-left: 150px;
+    margin-left: 100px;
     background: linear-gradient(145deg, #000080, #00004d, #1e90ff);
-    border-radius: 30px;
-    box-shadow: 0 0 0px rgba(0, 0, 0, 0.3);
-    max-width: 700px;
+    border-radius: 20px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    max-width: 600px;
     width: 100%;
-    padding: 60px;
+    padding: 30px;
     text-align: left;
-    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     position: relative;
     overflow: hidden;
-    border: 15px solid rgba(255, 255, 255, 0.2);
+    border: 10px solid rgba(255, 255, 255, 0.2);
 }
 
 .test-container:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 0 0px rgba(75, 0, 130, 1), 0 0 50px rgba(0, 191, 255, 1);
+    transform: translateY(-8px);
+    box-shadow: 0 0 30px rgba(75, 0, 130, 1), 0 0 30px rgba(0, 191, 255, 1);
 }
 
-.test-container::after {
-    content: "";
-    position: absolute;
-    top: -60%;
-    left: -60%;
-    width: 220%;
-    height: 220%;
-    background: radial-gradient(circle, rgba(75, 0, 130, 0.3), rgba(0, 191, 255, 0.2), transparent 70%);
-    transform: rotate(25deg);
-    pointer-events: none;
-}
-
+/* Title */
 h1 {
-    font-size: 40px;
+    font-size: 28px;
     color: #FFD700;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     font-weight: 700;
-    text-shadow: 0 0 0px rgba(75, 0, 130, 0.8), 0 0 0px rgba(0, 191, 255, 0.8);
 }
 
+/* Paragraph */
 p {
-    font-size: 22px;
-    color: #ffffff;
-    line-height: 1.8;
-    margin-bottom: 20px;
+    font-size: 16px;
+    line-height: 1.4;
+    margin-bottom: 10px;
 }
 
 .highlight {
@@ -73,87 +68,84 @@ p {
     font-weight: 600;
 }
 
-.test-details {
-    font-size: 18px;
-    color: #ffffff;
-    margin-bottom: 30px;
-    line-height: 1.6;
-}
-
+/* Test Details */
 .test-details p {
     display: flex;
     align-items: center;
-    margin-bottom: 15px;
-    padding: 15px;
+    margin-bottom: 8px;
+    padding: 8px;
     background: rgba(30, 144, 255, 0.2);
-    border-left: 5px solid #FFD700;
-    border-radius: 12px;
+    border-left: 4px solid #FFD700;
+    border-radius: 8px;
     font-weight: 500;
+    font-size: 14px;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .test-details p i {
-    margin-right: 10px;
+    margin-right: 6px;
     color: #FFD700;
 }
 
+.test-details p:hover {
+    background: rgba(30, 144, 255, 0.3);
+    box-shadow: 0 3px 8px rgba(0, 191, 255, 0.3);
+}
+
+/* Button */
 .test-button {
-    background: linear-gradient(135deg, #8a2be2 50%, #ff69b4 80%, #8a2be2);
+    display: inline-block;
+    background: linear-gradient(135deg, #8a2be2, #ff69b4);
     color: #ffffff;
-    padding: 20px 50px;
-    font-size: 24px;
-    border: none;
-    border-radius: 30px;
+    padding: 12px 30px;
+    font-size: 16px;
+    border-radius: 20px;
     cursor: pointer;
-    transition: all 0.4s ease;
-    box-shadow: 0 0px 0px rgba(75, 0, 130, 0.7), 0 0px 0px rgba(0, 191, 255, 0.7);
-    position: relative;
-    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 191, 255, 0.4);
+    text-decoration: none;
+    text-align: center;
 }
 
 .test-button:hover {
     background: linear-gradient(135deg, #00bfff, #4b0082);
-    transform: translateY(-8px) scale(1.05);
-    box-shadow: 0 0px 0px rgba(75, 0, 130, 0.9), 0 0px 0px rgba(0, 191, 255, 0.9);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(75, 0, 130, 0.6);
 }
 
-.test-button::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -75%;
-    width: 150%;
-    height: 100%;
-    background: linear-gradient(to right, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0) 70%);
-    transform: skewX(-25deg);
-    transition: left 0.75s ease;
+/* Responsive Design */
+@media (max-width: 768px) {
+    .test-container {
+        margin-left: 0;
+        padding: 20px;
+    }
+    h1 {
+        font-size: 24px;
+    }
+    p, .test-details p {
+        font-size: 14px;
+    }
+    .test-button {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
 }
 
-.test-button:hover::before {
-    left: 100%;
+@media (max-width: 480px) {
+    h1 {
+        font-size: 20px;
+    }
+    .test-container {
+        padding: 15px;
+    }
+    .test-details p {
+        font-size: 12px;
+    }
+    .test-button {
+        padding: 8px 16px;
+        font-size: 12px;
+    }
 }
-
-.test-button:active {
-    transform: translateY(2px) scale(0.98);
-    box-shadow: 0 8px 0px rgba(75, 0, 130, 0.6), 0 8px 0px rgba(0, 191, 255, 0.6);
-}
-.test-details p {
-    display: flex;
-    align-items: center;
-    margin-bottom: 15px;
-    padding: 15px;
-    background: rgba(30, 144, 255, 0.2);
-    border-left: 5px solid #FFD700;
-    border-radius: 12px;
-    font-weight: 500;
-    transition: background 0.5s ease, box-shadow 0.5s ease;
-}
-
-.test-details p:hover {
-    background: rgba(30, 144, 255, 0.4); /* Slightly increase opacity for a highlighted effect */
-    box-shadow: 0 4px 15px rgba(0, 191, 255, 0.5); /* Add a subtle glow around the element */
-    transform: scale(1.02); /* Slightly scale up the element */
-}
-
 </style>
 </head>
 <body>
@@ -168,11 +160,8 @@ p {
         <p><i class="fas fa-check-circle"></i> <strong>Results appear instantly – <span class="highlight">no need</span> to wait 3 business days</strong></p>
     </div>
     
-<a href="https://simplefrenchwithhems.com/order?link=3h6ux&pricing_plan=18B184e5zZ" target="_blank" rel="noopener noreferrer" style="text-decoration: none;">
-    <button class="test-button">Take the Test Now</button>
-</a>
+    <a href="https://simplefrenchwithhems.com/order?link=3h6ux&pricing_plan=18B184e5zZ" target="_blank" rel="noopener noreferrer" class="test-button">Take the Test Now</a>
 </div>
-
 
 </body>
 </html>
