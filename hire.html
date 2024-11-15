@@ -1,0 +1,137 @@
+<div class="hiring-promo">
+  <h2>Want Passive Income?</h2>
+  <p>Join us as a affiliate and Earn <strong>up to $200 per order</strong> while gaining valuable experience.</p>
+  <a href="https://www.simplefrenchwithhems.com/apply-internship" class="apply-button">Learn More & Apply</a>
+</div>
+
+<style>
+  body {
+    background-color: #000;
+  }
+
+  .hiring-promo {
+    border: 2px solid #555;
+    padding: 20px;
+    border-radius: 15px;
+    background-color: #111;
+    max-width: 400px;
+    margin: 40px auto;
+    text-align: center;
+    box-shadow: 0 8px 16px rgba(0, 255, 255, 0.3);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #00ffff;
+    transition: transform 0.3s, box-shadow 0.3s;
+    animation: fadeInUp 1s ease-in-out, heartbeat 2s infinite, bling 3s infinite;
+    position: relative;
+  }
+
+  .hiring-promo::after {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    border-radius: 20px;
+    background: linear-gradient(45deg, rgba(255, 215, 0, 0.5), rgba(0, 255, 255, 0.5));
+    filter: blur(8px);
+    opacity: 0.8;
+    z-index: -1;
+    animation: bling 3s infinite alternate;
+  }
+
+  .hiring-promo:hover {
+    transform: scale(1.1) rotate(3deg);
+    box-shadow: 0 15px 30px rgba(0, 255, 255, 0.5);
+    animation: wave 1s infinite alternate;
+  }
+
+  h2 {
+    font-size: 1.6em;
+    color: #00ffff;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    animation: pulse 2s infinite;
+  }
+
+  .apply-button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 20px;
+    background: linear-gradient(135deg, #ff00ff, #00ffff);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1em;
+    transition: background 0.4s, transform 0.3s, box-shadow 0.4s;
+    box-shadow: 0 4px 10px rgba(255, 0, 255, 0.4);
+    animation: bounce 1.5s infinite alternate;
+  }
+
+  .apply-button:hover {
+    background: linear-gradient(135deg, #ff33ff, #33ffff);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(255, 51, 255, 0.6);
+  }
+
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes bounce {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(-10px);
+    }
+  }
+
+  @keyframes heartbeat {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+  }
+
+  @keyframes wave {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(3deg);
+    }
+  }
+
+  @keyframes bling {
+    0% {
+      opacity: 0.7;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+</style>
