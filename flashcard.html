@@ -70,7 +70,7 @@
             align-items: center;
             justify-content: center;
             color: black;
-            font-size: 1.7em;
+            font-size: 1.2em;
             box-shadow: 0 0 10px rgba(0, 255, 255, 0.6), 0 0 20px rgba(255, 20, 147, 0.4); /* Glow effect */
         }
 
@@ -87,6 +87,36 @@
             background-size: 200% 200%; /* To enable the fluid motion effect */
             animation: fluidGradient 5s ease-in-out infinite; /* Apply the animation */
             transform: rotateY(180deg);
+        }
+
+        /* Responsive Design for tablets and smaller screens */
+        @media (max-width: 768px) {
+            .flip-card-container {
+                grid-template-columns: repeat(3, 1fr); /* 3 cards per row */
+                gap: 10px;
+            }
+            .flip-card {
+                width: 120px;
+                height: 120px;
+            }
+            .flip-card-front, .flip-card-back {
+                font-size: 1em;
+            }
+        }
+
+        /* Responsive Design for small mobile devices */
+        @media (max-width: 480px) {
+            .flip-card-container {
+                grid-template-columns: repeat(2, 1fr); /* 2 cards per row */
+                gap: 8px;
+            }
+            .flip-card {
+                width: 100px;
+                height: 100px;
+            }
+            .flip-card-front, .flip-card-back {
+                font-size: 0.9em;
+            }
         }
     </style>
 </head>
