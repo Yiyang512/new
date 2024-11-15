@@ -24,43 +24,50 @@ body {
     height: 100vh;
     font-family: 'Poppins', sans-serif;
     color: #ffffff;
-    padding: 20px;
+    padding: 60px;
 }
 
 /* Container */
 .test-container {
-    margin-left: 30px;
-    background: linear-gradient(145deg, #000033, #000022, #1a1a33); /* Darker box color */
+    margin-left: 80px;
+    background: linear-gradient(145deg, #0c0b4a, #1a0033, #39005b);
     border-radius: 15px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-    max-width: 550px;
+    max-width: 580px;
     width: 100%;
     padding: 20px;
     text-align: left;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
     position: relative;
     overflow: hidden;
-    border: 8px solid rgba(255, 255, 255, 0.2);
+
+    /* Glowing Border */
+    border: 5px solid transparent;
+    border-image: linear-gradient(45deg, #00f5ff, #6a00ff, #ff004d) 1;
+
+    /* Neon Glow */
+    box-shadow: 0 0 20px rgba(255, 0, 127, 0.6), 
+                0 0 30px rgba(148, 0, 211, 0.6), 
+                0 0 40px rgba(0, 191, 255, 0.6);
 }
+
 
 .test-container:hover {
     transform: translateY(-6px);
-    box-shadow: 0 0 25px rgba(75, 0, 130, 1), 0 0 25px rgba(0, 191, 255, 1);
+    box-shadow: 0 0 75px rgba(75, 0, 130, 1), 0 0 75px rgba(0, 191, 255, 1);
 }
 
 /* Title */
 h1 {
-    font-size: 24px;
+    font-size: 26px;
     color: #FFD700;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     font-weight: 700;
 }
 
 /* Paragraph */
 p {
-    font-size: 14px;
-    line-height: 1.3;
-    margin-bottom: 8px;
+    font-size: 16px;
+    line-height: 1.8;
+    margin-bottom: 10px;
 }
 
 .highlight {
@@ -72,13 +79,13 @@ p {
 .test-details p {
     display: flex;
     align-items: center;
-    margin-bottom: 6px;
-    padding: 6px;
+    margin-bottom: 20px;
+    padding: 15px;
     background: rgba(30, 144, 255, 0.2);
     border-left: 4px solid #FFD700;
     border-radius: 6px;
     font-weight: 500;
-    font-size: 12px;
+    font-size: 16px;
     transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -117,17 +124,17 @@ p {
 @media (max-width: 768px) {
     .test-container {
         margin-left: 0;
-        padding: 15px;
+        padding: 25px;
     }
     h1 {
-        font-size: 20px;
+        font-size: 22px;
     }
     p, .test-details p {
-        font-size: 12px;
+        font-size: 15px;
     }
     .test-button {
-        padding: 8px 20px;
-        font-size: 12px;
+        padding: 15px 25px;
+        font-size: 14px;
     }
 }
 
@@ -142,7 +149,7 @@ p {
         font-size: 10px;
     }
     .test-button {
-        padding: 6px 15px;
+        padding: 10px 18px;
         font-size: 11px;
     }
 }
@@ -154,11 +161,13 @@ p {
     <h1>Curious About Your French Level?</h1>
     <p>Take our quick online grammar test to find out your level! Whether you are a <span class="highlight">beginner (A1, A2)</span> or <span class="highlight">intermediate (B1, B2)</span> French user, you can test your French level here and get instant feedback.</p>
     
-    <div class="test-details">
-        <p><i class="fas fa-clock"></i> <strong>The test takes around <span class="highlight">5–15 minutes</span></strong></p>
-        <p><i class="fas fa-list-ul"></i> <strong>All questions are <span class="highlight">multiple choice</span></strong></p>
-        <p><i class="fas fa-check-circle"></i> <strong>Results appear instantly – <span class="highlight">no need</span> to wait 3 business days</strong></p>
-    </div>
+<div class="test-details">
+    <p><i class="fas fa-clock"></i> <span>The test takes around <span class="highlight">5–15 minutes</span></span></p>
+    <p><i class="fas fa-list-ul"></i> <span>All questions are <span class="highlight">multiple choice</span></span></p>
+    <p><i class="fas fa-check-circle"></i> <span>Results appear instantly – <span class="highlight">no need</span> to wait 3 business days</span></p>
+</div>
+
+
     
     <a href="https://simplefrenchwithhems.com/order?link=3h6ux&pricing_plan=18B184e5zZ" target="_blank" rel="noopener noreferrer" class="test-button">Take the Test Now</a>
 </div>
