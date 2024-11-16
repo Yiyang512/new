@@ -3,117 +3,215 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Luxurious Tech Style Promo</title>
+<title>Affiliate Program Card</title>
 <style>
-  body {
-    background: radial-gradient(circle, #1a1a1a, #000);
-    font-family: 'Roboto', sans-serif;
-    height: 100vh;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap'); /* Import Poppins font */
 
-  .hiring-promo {
-    background: linear-gradient(135deg, #1a1a1a, #000);
-    border: 1px solid #bfa67a; /* Golden border */
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5), 0 0 10px rgba(191, 166, 122, 0.3); /* Outer shadow with golden hue */
-    color: #bfa67a; /* Golden text color */
-    max-width: 350px;
-    padding: 25px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-    animation: fadeIn 2s ease-in-out, heartbeat 1.5s ease-in-out infinite; /* Heartbeat animation */
-    transition: transform 0.3s, box-shadow 0.3s;
-  }
-
-  /* Heartbeat Animation */
-  @keyframes heartbeat {
-    0%, 100% {
-      transform: scale(1); /* Normal size */
+    /* Keyframes for One-Side Shine Animation */
+    @keyframes oneSideShine {
+        0% {
+            box-shadow: -10px 0px 20px rgba(255, 255, 255, 0);
+        }
+        50% {
+            box-shadow: -10px 0px 20px rgba(255, 255, 255, 0.8);
+        }
+        100% {
+            box-shadow: -10px 0px 20px rgba(255, 255, 255, 0);
+        }
     }
-    30% {
-      transform: scale(1.05); /* Slightly bigger */
+
+    body {
+        margin: 0;
+        font-family: 'Poppins', sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: #000; /* Pure black background */
+        color: #fff; /* White text for contrast */
     }
-    60% {
-      transform: scale(0.95); /* Slightly smaller */
+
+    .card {
+        width: 400px;
+        border-radius: 15px;
+        background: #fff; /* White background for card */
+        overflow: hidden;
+        font-family: 'Poppins', sans-serif; /* Ensure Poppins is applied */
+        animation: oneSideShine 3s infinite; /* One-side shine animation */
     }
-  }
 
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-
-  .hiring-promo::before {
-    content: '';
-    position: absolute;
-    top: -5%;
-    left: -5%;
-    right: -5%;
-    bottom: -5%;
-    background: linear-gradient(45deg, #bfa67a, #bfa67a, #bfa67a, #bfa67a);
-    z-index: -1;
-    filter: blur(50px);
-    opacity: 0.7;
-    animation: rotate 10s infinite linear alternate; /* Slower rotation */
-  }
-
-  @keyframes rotate {
-    0% {
-      transform: rotate(0deg);
+    .card-header {
+        width: 100%;
+        position: relative;
+        overflow: hidden;
     }
-    100% {
-      transform: rotate(180deg); /* Halfway rotation for back-and-forth effect */
+
+    .card-header img {
+        width: 100%;
+        display: block;
     }
-  }
 
-  .hiring-promo h2 {
-    font-size: 1.8em;
-    color: #bfa67a; /* Golden color */
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    margin-bottom: 15px;
-    font-weight: 900;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-  }
+    .card-body {
+        padding: 15px;
+        color: #000; /* Black text for content */
+    }
 
-  .hiring-promo p {
-    font-size: 1em;
-    line-height: 1.6;
-    margin-bottom: 25px;
-    color: #bfa67a; /* Golden color */
-    font-weight: 300;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-  }
+    .price {
+        display: flex;
+        align-items: baseline;
+        margin-bottom: 10px;
+        justify-content: space-between;
+    }
 
-  .apply-button {
-    background: linear-gradient(135deg, #bfa67a, #8e7c5b); /* Golden gradient */
-    color: #fff;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 1em;
-    padding: 10px 20px;
-    border-radius: 5px;
-    display: inline-block;
-    box-shadow: 0 4px 6px rgba(191, 166, 122, 0.5); /* Shadow with golden hue */
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
+    .price h1 {
+        font-size: 2.5em;
+        color: #FF4500; /* Bold orange for price */
+        margin: 0;
+        font-weight: 600; /* Use Poppins weight for bold text */
+        display: inline-flex;
+        align-items: baseline;
+    }
 
-  .apply-button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 10px rgba(191, 166, 122, 0.7); /* Enhanced golden shadow */
-  }
+    .price h1 span {
+        font-size: 0.3em; /* Smaller font size for "per order" */
+        color: #555; /* Light gray color */
+        margin-left: 5px;
+        font-weight: 400; /* Regular weight for subtle text */
+    }
+
+    .price button {
+        background: linear-gradient(135deg, #FF4500, #FF6347); /* Gradient for button */
+        color: #fff; /* White text for button */
+        padding: 5px 15px;
+        border: none;
+        border-radius: 20px;
+        font-size: 1em;
+        font-weight: 600; /* Bold text for button */
+        cursor: pointer;
+        box-shadow: 0 4px 10px rgba(255, 69, 0, 0.4); /* Subtle glow effect */
+        transition: all 0.3s ease;
+        font-family: 'Poppins', sans-serif; /* Ensure button uses Poppins */
+    }
+
+    .price button:hover {
+        background: linear-gradient(135deg, #FF6347, #FF4500); /* Inverted gradient on hover */
+        transform: translateY(-2px); /* Slight lift on hover */
+        box-shadow: 0 6px 15px rgba(255, 69, 0, 0.5); /* Enhanced glow */
+    }
+
+    .title {
+        font-size: 1.2em;
+        font-weight: 600; /* Bold text for title */
+        margin: 5px 0;
+        color: #000; /* Black text */
+    }
+
+    .subtitle {
+        font-size: 0.9em;
+        color: #888; /* Gray subtitle for description */
+        margin: 10px 0;
+        font-weight: 400; /* Regular weight for subtitles */
+    }
+
+    .details {
+        padding: 10px 0;
+        margin: 10px 0;
+        font-size: 0.9em;
+        color: #444;
+        font-weight: 400; /* Regular weight for details */
+        text-align: left; /* Align text to the left */
+    }
+
+    .details span {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+    }
+
+    .details span::before {
+        content: "•"; /* Add dot before text */
+        color: #00A800; /* Same color as price */
+        margin-right: 2px;
+        font-size: 3.2em;
+        line-height: 0.1; /* Align dot vertically */
+    }
+
+    .footer {
+        display: flex;
+        align-items: center;
+        margin-top: 10px;
+    }
+
+    .footer img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+
+    .footer div {
+        line-height: 1.2;
+    }
+
+    .footer div p {
+        margin: 0;
+        font-size: 0.9em;
+        font-weight: 400; /* Regular weight for text */
+    }
+
+    .footer div p.name {
+        font-weight: 600; /* Bold weight for name */
+        color: #000; /* Black for name */
+    }
+
+    .footer div p.email {
+        font-size: 0.8em;
+        color: #888; /* Gray for email */
+    }
 </style>
 </head>
 <body>
-  <div class="hiring-promo">
-    <h2>Want Passive Income?</h2>
-    <p>Join us as an affiliate and Earn <strong>up to $200 per order</strong> while gaining valuable experience.</p>
-    <a href="https://payhip.com/auth/register/af64bd581e7e723" class="apply-button">Learn More & Apply</a>
-  </div>
+
+<div class="card">
+    <!-- Header with Image -->
+    <div class="card-header">
+        <img src="https://yiyang512.github.io/new/mountain.jpg" alt="Affiliate Program">
+    </div>
+
+     <!-- Card Body -->
+    <div class="card-body">
+        <!-- Price Section -->
+        <div class="price">
+            <h1>$200<span>per order</span></h1>
+            <a href="https://payhip.com/auth/register/af64bd581e7e723" target="_blank">
+                <button>Register Now!</button>
+            </a>
+        </div>
+
+        <!-- Title -->
+        <p class="title">Affiliate Program - Passive Income</p>
+
+        <!-- Subtitle -->
+        <p class="subtitle">100% Remote, no in-person is required</p>
+
+        <!-- Details Section -->
+        <div class="details">
+            <span>Time Flexible</span>
+            <span>Tax Free</span>
+        </div>
+
+        <!-- Footer Section -->
+        <div class="footer">
+            <img src="https://yiyang512.github.io/new/hems.png" alt="Hems Jay">
+            <div>
+                <p class="name">Hems Jay</p>
+                <p class="email">founder@simplefrenchwithhems.com</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Font Awesome Icons -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </body>
 </html>
