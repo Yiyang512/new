@@ -3,32 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sliding Affiliate Program Cards</title>
+<title>Manual Sliding Affiliate Program Cards</title>
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
-
-    /* Keyframes for Wave Animation */
-    @keyframes wave {
-        0%, 100% {
-            transform: translateY(0);
-        }
-        50% {
-            transform: translateY(-0.5px);
-        }
-    }
-
-    /* Keyframes for Hover Effect */
-    @keyframes hoverEffect {
-        0% {
-            transform: scale(1);
-        }
-        50% {
-            transform: scale(1.02);
-        }
-        100% {
-            transform: scale(1);
-        }
-    }
 
     body {
         margin: 0;
@@ -54,37 +31,22 @@
 
     .carousel {
         display: flex;
-        transition: transform 0.9s ease-in-out;
-        width: 100%;
+        transition: transform 1s ease;
+        cursor: grab;
+    }
+
+    .carousel:active {
+        cursor: grabbing;
     }
 
     .card {
         width: 400px;
-        border-radius: 35px;
+        border-radius: 20px;
         background: #fff;
         margin: 0 10px;
         overflow: hidden;
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
         flex-shrink: 0;
-        animation: wave 3s infinite ease-in-out; /* Add waving effect */
-        transition: transform 0.3s ease; /* Smooth hover animation */
-    }
-
-    .card:nth-child(1) {
-        animation-delay: 0s; /* Delay for sequence */
-    }
-
-    .card:nth-child(2) {
-        animation-delay: 0.3s; /* Slight delay for the second card */
-    }
-
-    .card:nth-child(3) {
-        animation-delay: 0.6s; /* Slight delay for the third card */
-    }
-
-    .card:hover {
-        animation: hoverEffect 0.6s infinite; /* Hover effect animation */
-        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
     }
 
     .card-header {
@@ -170,7 +132,7 @@
     .details span::before {
         content: '•';
         color: #00A800; /* Green color */
-        font-size: 2.5em;
+        font-size: 1.5em;
         position: absolute;
         left: 0;
     }
@@ -200,34 +162,12 @@
     .footer div p.name {
         font-weight: 700;
     }
-
-    /* Dots (Indicators) */
-    .dots {
-        display: flex;
-        justify-content: center;
-        margin-top: 20px;
-    }
-
-    .dot {
-        width: 12px;
-        height: 12px;
-        margin: 0 5px;
-        background: #ccc;
-        border-radius: 50%;
-        cursor: pointer;
-        transition: background 0.3s ease;
-    }
-
-    .dot.active {
-        background: #FF4500;
-    }
 </style>
 </head>
 <body>
 
 <div class="carousel-container">
     <div class="carousel">
-      
         <!-- Card 1 -->
         <div class="card">
             <div class="card-header">
@@ -253,7 +193,8 @@
                 </div>
             </div>
         </div>
-  <!-- Card 2 -->
+
+        <!-- Card 2 -->
         <div class="card">
             <div class="card-header">
                 <img src="https://yiyang512.github.io/new/mountain.jpg" alt="Affiliate Program">
@@ -280,6 +221,7 @@
                 </div>
             </div>
         </div>
+
         <!-- Card 3 -->
         <div class="card">
             <div class="card-header">
@@ -306,38 +248,61 @@
             </div>
         </div>
     </div>
-
-    <!-- Dots -->
-    <div class="dots">
-        <div class="dot active"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-    </div>
 </div>
 
 <script>
     const carousel = document.querySelector('.carousel');
-    const dots = document.querySelectorAll('.dot');
-
+    let isDragging = false;
+    let startPos = 0;
+    let currentTranslate = 0;
+    let prevTranslate = 0;
+    let animationID;
     let currentIndex = 0;
 
-    function updateCarousel() {
-        const offset = currentIndex * -420; // Card width + margin
-        carousel.style.transform = `translateX(${offset}px)`;
+    const setCarouselPosition = () => {
+        carousel.style.transform = `translateX(${currentTranslate}px)`;
+    };
 
-        dots.forEach((dot, index) => {
-            dot.classList.toggle('active', index === currentIndex);
-        });
-    }
+    const animation = () => {
+        setCarouselPosition();
+        if (isDragging) requestAnimationFrame(animation);
+    };
 
-    dots.forEach((dot, index) => {
-        dot.addEventListener('click', () => {
-            currentIndex = index;
-            updateCarousel();
-        });
-    });
+    const startDrag = (e) => {
+        isDragging = true;
+        startPos = e.pageX || e.touches[0].clientX;
+        animationID = requestAnimationFrame(animation);
+    };
 
-    updateCarousel();
+    const endDrag = () => {
+        isDragging = false;
+        cancelAnimationFrame(animationID);
+
+        const movedBy = currentTranslate - prevTranslate;
+
+        if (movedBy < -100 && currentIndex < 2) currentIndex += 1;
+        if (movedBy > 100 && currentIndex > 0) currentIndex -= 1;
+
+        currentTranslate = currentIndex * -420;
+        prevTranslate = currentTranslate;
+        setCarouselPosition();
+    };
+
+    const drag = (e) => {
+        if (!isDragging) return;
+
+        const currentPosition = e.pageX || e.touches[0].clientX;
+        currentTranslate = prevTranslate + currentPosition - startPos;
+    };
+
+    carousel.addEventListener('mousedown', startDrag);
+    carousel.addEventListener('mouseup', endDrag);
+    carousel.addEventListener('mouseleave', endDrag);
+    carousel.addEventListener('mousemove', drag);
+
+    carousel.addEventListener('touchstart', startDrag);
+    carousel.addEventListener('touchend', endDrag);
+    carousel.addEventListener('touchmove', drag);
 </script>
 
 </body>
