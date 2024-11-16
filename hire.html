@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Manual Sliding Affiliate Program Cards</title>
+<title>Sliding Affiliate Program Cards</title>
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
 
@@ -31,12 +31,9 @@
 
     .carousel {
         display: flex;
-        transition: transform 1s ease;
-        cursor: grab;
-    }
-
-    .carousel:active {
-        cursor: grabbing;
+        transition: transform 0.5s ease-in-out;
+        width: fit-content;
+        position: relative;
     }
 
     .card {
@@ -162,11 +159,40 @@
     .footer div p.name {
         font-weight: 700;
     }
+
+    /* Navigation Buttons */
+    .nav-button {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.5);
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        font-size: 1.2em;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+        z-index: 2;
+    }
+
+    .nav-button:hover {
+        background: rgba(255, 69, 0, 0.7);
+    }
+
+    .prev {
+        left: 0;
+    }
+
+    .next {
+        right: 0;
+    }
 </style>
 </head>
 <body>
 
 <div class="carousel-container">
+    <button class="nav-button prev">❮</button>
     <div class="carousel">
         <!-- Card 1 -->
         <div class="card">
@@ -248,61 +274,29 @@
             </div>
         </div>
     </div>
+    <button class="nav-button next">❯</button>
 </div>
 
 <script>
     const carousel = document.querySelector('.carousel');
-    let isDragging = false;
-    let startPos = 0;
-    let currentTranslate = 0;
-    let prevTranslate = 0;
-    let animationID;
-    let currentIndex = 0;
+    const prevButton = document.querySelector('.prev');
+    const nextButton = document.querySelector('.next');
 
-    const setCarouselPosition = () => {
-        carousel.style.transform = `translateX(${currentTranslate}px)`;
-    };
+    let scrollAmount = 0;
 
-    const animation = () => {
-        setCarouselPosition();
-        if (isDragging) requestAnimationFrame(animation);
-    };
+    prevButton.addEventListener('click', () => {
+        scrollAmount -= 420; // Adjust scroll by card width + margin
+        if (scrollAmount < 0) scrollAmount = 0;
+        carousel.style.transform = `translateX(-${scrollAmount}px)`;
+    });
 
-    const startDrag = (e) => {
-        isDragging = true;
-        startPos = e.pageX || e.touches[0].clientX;
-        animationID = requestAnimationFrame(animation);
-    };
-
-    const endDrag = () => {
-        isDragging = false;
-        cancelAnimationFrame(animationID);
-
-        const movedBy = currentTranslate - prevTranslate;
-
-        if (movedBy < -100 && currentIndex < 2) currentIndex += 1;
-        if (movedBy > 100 && currentIndex > 0) currentIndex -= 1;
-
-        currentTranslate = currentIndex * -420;
-        prevTranslate = currentTranslate;
-        setCarouselPosition();
-    };
-
-    const drag = (e) => {
-        if (!isDragging) return;
-
-        const currentPosition = e.pageX || e.touches[0].clientX;
-        currentTranslate = prevTranslate + currentPosition - startPos;
-    };
-
-    carousel.addEventListener('mousedown', startDrag);
-    carousel.addEventListener('mouseup', endDrag);
-    carousel.addEventListener('mouseleave', endDrag);
-    carousel.addEventListener('mousemove', drag);
-
-    carousel.addEventListener('touchstart', startDrag);
-    carousel.addEventListener('touchend', endDrag);
-    carousel.addEventListener('touchmove', drag);
+    nextButton.addEventListener('click', () => {
+        scrollAmount += 420; // Adjust scroll by card width + margin
+        if (scrollAmount > carousel.scrollWidth - carousel.clientWidth) {
+            scrollAmount = carousel.scrollWidth - carousel.clientWidth;
+        }
+        carousel.style.transform = `translateX(-${scrollAmount}px)`;
+    });
 </script>
 
 </body>
