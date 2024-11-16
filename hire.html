@@ -1,137 +1,119 @@
-<div class="hiring-promo">
-  <h2>Want Passive Income?</h2>
-  <p>Join us as an affiliate and Earn <strong>up to $200 per order</strong> while gaining valuable experience.</p>
-  <a href="https://payhip.com/auth/register/af64bd581e7e723" class="apply-button">Learn More & Apply</a>
-</div>
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luxurious Tech Style Promo</title>
 <style>
   body {
-    background-color: #000;
+    background: radial-gradient(circle, #1a1a1a, #000);
+    font-family: 'Roboto', sans-serif;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .hiring-promo {
-    border: 2px solid #555;
-    padding: 20px;
-    border-radius: 15px;
-    background-color: #111;
-    max-width: 400px;
-    margin: 40px auto;
+    background: linear-gradient(135deg, #1a1a1a, #000);
+    border: 1px solid #bfa67a; /* Golden border */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5), 0 0 10px rgba(191, 166, 122, 0.3); /* Outer shadow with golden hue */
+    color: #bfa67a; /* Golden text color */
+    max-width: 350px;
+    padding: 25px;
     text-align: center;
-    box-shadow: 0 8px 16px rgba(0, 255, 255, 0.3);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #00ffff;
-    transition: transform 0.3s, box-shadow 0.3s;
-    animation: fadeInUp 1s ease-in-out, heartbeat 2s infinite, bling 3s infinite;
     position: relative;
+    overflow: hidden;
+    animation: fadeIn 2s ease-in-out, heartbeat 1.5s ease-in-out infinite; /* Heartbeat animation */
+    transition: transform 0.3s, box-shadow 0.3s;
   }
 
-  .hiring-promo::after {
-    content: "";
-    position: absolute;
-    top: -10px;
-    left: -10px;
-    right: -10px;
-    bottom: -10px;
-    border-radius: 20px;
-    background: linear-gradient(45deg, rgba(255, 215, 0, 0.5), rgba(0, 255, 255, 0.5));
-    filter: blur(8px);
-    opacity: 0.8;
-    z-index: -1;
-    animation: bling 3s infinite alternate;
-  }
-
-  .hiring-promo:hover {
-    transform: scale(1.1) rotate(3deg);
-    box-shadow: 0 15px 30px rgba(0, 255, 255, 0.5);
-    animation: wave 1s infinite alternate;
-  }
-
-  h2 {
-    font-size: 1.6em;
-    color: #00ffff;
-    margin-bottom: 15px;
-    text-transform: uppercase;
-    letter-spacing: 1.2px;
-    animation: pulse 2s infinite;
-  }
-
-  .apply-button {
-    display: inline-block;
-    padding: 10px 20px;
-    margin-top: 20px;
-    background: linear-gradient(135deg, #ff00ff, #00ffff);
-    color: #fff;
-    text-decoration: none;
-    border-radius: 8px;
-    font-weight: bold;
-    font-size: 1em;
-    transition: background 0.4s, transform 0.3s, box-shadow 0.4s;
-    box-shadow: 0 4px 10px rgba(255, 0, 255, 0.4);
-    animation: bounce 1.5s infinite alternate;
-  }
-
-  .apply-button:hover {
-    background: linear-gradient(135deg, #ff33ff, #33ffff);
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(255, 51, 255, 0.6);
-  }
-
-  @keyframes fadeInUp {
-    0% {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes pulse {
-    0% {
-      transform: scale(1);
-    }
-    50% {
-      transform: scale(1.05);
-    }
-    100% {
-      transform: scale(1);
-    }
-  }
-
-  @keyframes bounce {
-    0% {
-      transform: translateY(0);
-    }
-    100% {
-      transform: translateY(-10px);
-    }
-  }
-
+  /* Heartbeat Animation */
   @keyframes heartbeat {
     0%, 100% {
-      transform: scale(1);
+      transform: scale(1); /* Normal size */
     }
-    50% {
-      transform: scale(1.1);
+    30% {
+      transform: scale(1.05); /* Slightly bigger */
+    }
+    60% {
+      transform: scale(0.95); /* Slightly smaller */
     }
   }
 
-  @keyframes wave {
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .hiring-promo::before {
+    content: '';
+    position: absolute;
+    top: -5%;
+    left: -5%;
+    right: -5%;
+    bottom: -5%;
+    background: linear-gradient(45deg, #bfa67a, #bfa67a, #bfa67a, #bfa67a);
+    z-index: -1;
+    filter: blur(50px);
+    opacity: 0.7;
+    animation: rotate 10s infinite linear alternate; /* Slower rotation */
+  }
+
+  @keyframes rotate {
     0% {
       transform: rotate(0deg);
     }
     100% {
-      transform: rotate(3deg);
+      transform: rotate(180deg); /* Halfway rotation for back-and-forth effect */
     }
   }
 
-  @keyframes bling {
-    0% {
-      opacity: 0.7;
-    }
-    100% {
-      opacity: 1;
-    }
+  .hiring-promo h2 {
+    font-size: 1.8em;
+    color: #bfa67a; /* Golden color */
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 15px;
+    font-weight: 900;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  .hiring-promo p {
+    font-size: 1em;
+    line-height: 1.6;
+    margin-bottom: 25px;
+    color: #bfa67a; /* Golden color */
+    font-weight: 300;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  }
+
+  .apply-button {
+    background: linear-gradient(135deg, #bfa67a, #8e7c5b); /* Golden gradient */
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1em;
+    padding: 10px 20px;
+    border-radius: 5px;
+    display: inline-block;
+    box-shadow: 0 4px 6px rgba(191, 166, 122, 0.5); /* Shadow with golden hue */
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .apply-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 10px rgba(191, 166, 122, 0.7); /* Enhanced golden shadow */
   }
 </style>
+</head>
+<body>
+  <div class="hiring-promo">
+    <h2>Want Passive Income?</h2>
+    <p>Join us as an affiliate and Earn <strong>up to $200 per order</strong> while gaining valuable experience.</p>
+    <a href="https://payhip.com/auth/register/af64bd581e7e723" class="apply-button">Learn More & Apply</a>
+  </div>
+</body>
+</html>
