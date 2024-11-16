@@ -5,13 +5,33 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Curious About Your French Level?</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Impact&display=swap" rel="stylesheet">
 <style>
 /* General Reset */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+}
+
+/* Keyframes for Waving Up and Down Effect */
+@keyframes wave-up-down {
+    0%, 100% {
+        transform: translateY(0); /* Start and end at the original position */
+    }
+    50% {
+        transform: translateY(-10px); /* Move up slightly */
+    }
+}
+
+/* Keyframes for Heartbeat Effect */
+@keyframes heartbeat {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
 }
 
 /* Body Styles */
@@ -30,12 +50,13 @@ body {
 .test-container {
     background: #000;
     border-radius: 20px; /* Softer corners */
-    max-width: 600px;
+    max-width: 750px;
     width: 100%;
     padding: 30px;
     text-align: left;
     position: relative;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3); /* Soft shadow for depth */
+    animation: heartbeat 4s infinite; /* Heartbeat effect */
 }
 
 .test-container:hover {
@@ -46,11 +67,14 @@ body {
 
 /* Title */
 h1 {
-    font-size: 28px;
-    color: #FFD700;
+    font-size: 45px; /* Larger font size for impact */
+    color: #fff;
     margin-bottom: 15px;
-    font-weight: 700;
+    font-weight: 900; /* Extra bold for visual strength */
     line-height: 1.5;
+    font-family: 'Impact', 'Arial Black', sans-serif; /* Use Impact or similar font */
+    text-transform: uppercase; /* Uppercase to match the style */
+    animation: wave-up-down 2s infinite; /* Slow waving up and down effect */
 }
 
 /* Paragraph */
@@ -121,7 +145,7 @@ p {
         padding: 25px;
     }
     h1 {
-        font-size: 24px;
+        font-size: 30px;
     }
     p, .test-details p {
         font-size: 15px;
@@ -134,7 +158,7 @@ p {
 
 @media (max-width: 480px) {
     h1 {
-        font-size: 20px;
+        font-size: 24px;
     }
     .test-container {
         padding: 15px;
