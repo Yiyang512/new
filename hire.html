@@ -3,20 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Affiliate Program Card</title>
+<title>Sliding Affiliate Program Cards</title>
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap'); /* Import Poppins font */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
 
-    /* Keyframes for One-Side Shine Animation */
-    @keyframes oneSideShine {
-        0% {
-            box-shadow: -10px 0px 20px rgba(255, 255, 255, 0);
+    /* Keyframes for Wave Animation */
+    @keyframes wave {
+        0%, 100% {
+            transform: translateY(0);
         }
         50% {
-            box-shadow: -10px 0px 20px rgba(255, 255, 255, 0.8);
+            transform: translateY(-10px);
+        }
+    }
+
+    /* Keyframes for Hover Effect */
+    @keyframes hoverEffect {
+        0% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.02);
         }
         100% {
-            box-shadow: -10px 0px 20px rgba(255, 255, 255, 0);
+            transform: scale(1);
         }
     }
 
@@ -27,119 +37,148 @@
         justify-content: center;
         align-items: center;
         height: 100vh;
-        background: #000; /* Pure black background */
-        color: #fff; /* White text for contrast */
+        background: linear-gradient(135deg, #000, #333);
+        overflow: hidden;
+    }
+
+    .carousel-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+        width: 90%;
+        max-width: 1500px;
+    }
+
+    .carousel {
+        display: flex;
+        transition: transform 0.9s ease-in-out;
+        width: 100%;
     }
 
     .card {
         width: 400px;
-        border-radius: 15px;
-        background: #fff; /* White background for card */
+        border-radius: 35px;
+        background: #fff;
+        margin: 0 10px;
         overflow: hidden;
-        font-family: 'Poppins', sans-serif; /* Ensure Poppins is applied */
-        animation: oneSideShine 3s infinite; /* One-side shine animation */
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        flex-shrink: 0;
+        animation: wave 3s infinite ease-in-out; /* Add waving effect */
+        transition: transform 0.3s ease; /* Smooth hover animation */
+    }
+
+    .card:nth-child(1) {
+        animation-delay: 0s; /* Delay for sequence */
+    }
+
+    .card:nth-child(2) {
+        animation-delay: 0.3s; /* Slight delay for the second card */
+    }
+
+    .card:nth-child(3) {
+        animation-delay: 0.6s; /* Slight delay for the third card */
+    }
+
+    .card:hover {
+        animation: hoverEffect 0.6s infinite; /* Hover effect animation */
+        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
     }
 
     .card-header {
         width: 100%;
-        position: relative;
+        height: 200px; /* Fixed height for header images */
         overflow: hidden;
     }
 
     .card-header img {
         width: 100%;
-        display: block;
+        height: 100%;
+        object-fit: cover; /* Ensure images fill the header without distortion */
     }
 
     .card-body {
-        padding: 15px;
-        color: #000; /* Black text for content */
+        padding: 20px;
+        color: #000;
     }
 
     .price {
         display: flex;
         align-items: baseline;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
         justify-content: space-between;
     }
 
     .price h1 {
         font-size: 2.5em;
-        color: #FF4500; /* Bold orange for price */
+        color: #FF4500;
         margin: 0;
-        font-weight: 600; /* Use Poppins weight for bold text */
-        display: inline-flex;
-        align-items: baseline;
+        font-weight: 700;
     }
 
     .price h1 span {
-        font-size: 0.3em; /* Smaller font size for "per order" */
-        color: #555; /* Light gray color */
+        font-size: 0.4em;
+        color: #555;
         margin-left: 5px;
-        font-weight: 400; /* Regular weight for subtle text */
+    }
+
+    .price a {
+        text-decoration: none;
     }
 
     .price button {
-        background: linear-gradient(135deg, #FF4500, #FF6347); /* Gradient for button */
-        color: #fff; /* White text for button */
-        padding: 5px 15px;
+        background: linear-gradient(135deg, #FF4500, #FF6347);
+        color: #fff;
+        padding: 8px 20px;
         border: none;
-        border-radius: 20px;
+        border-radius: 25px;
         font-size: 1em;
-        font-weight: 600; /* Bold text for button */
+        font-weight: 600;
         cursor: pointer;
-        box-shadow: 0 4px 10px rgba(255, 69, 0, 0.4); /* Subtle glow effect */
+        box-shadow: 0 4px 10px rgba(255, 69, 0, 0.4);
         transition: all 0.3s ease;
-        font-family: 'Poppins', sans-serif; /* Ensure button uses Poppins */
     }
 
     .price button:hover {
-        background: linear-gradient(135deg, #FF6347, #FF4500); /* Inverted gradient on hover */
-        transform: translateY(-2px); /* Slight lift on hover */
-        box-shadow: 0 6px 15px rgba(255, 69, 0, 0.5); /* Enhanced glow */
+        background: linear-gradient(135deg, #FF6347, #FF4500);
+        transform: translateY(-3px);
+        box-shadow: 0 6px 15px rgba(255, 69, 0, 0.5);
     }
 
     .title {
         font-size: 1.2em;
-        font-weight: 600; /* Bold text for title */
-        margin: 5px 0;
-        color: #000; /* Black text */
+        font-weight: 700;
+        margin: 10px 0;
     }
 
     .subtitle {
-        font-size: 0.9em;
-        color: #888; /* Gray subtitle for description */
+        font-size: 1em;
+        color: #555;
         margin: 10px 0;
-        font-weight: 400; /* Regular weight for subtitles */
-    }
-
-    .details {
-        padding: 10px 0;
-        margin: 10px 0;
-        font-size: 0.9em;
-        color: #444;
-        font-weight: 400; /* Regular weight for details */
-        text-align: left; /* Align text to the left */
     }
 
     .details span {
         display: flex;
         align-items: center;
-        margin-bottom: 8px;
+        margin-bottom: 5px;
+        position: relative;
+        padding-left: 20px; /* Add padding for the dot */
     }
 
     .details span::before {
-        content: "•"; /* Add dot before text */
-        color: #00A800; /* Same color as price */
-        margin-right: 2px;
-        font-size: 3.2em;
-        line-height: 0.1; /* Align dot vertically */
+        content: '•';
+        color: #00A800; /* Green color */
+        font-size: 2.5em;
+        position: absolute;
+        left: 0;
     }
 
     .footer {
         display: flex;
         align-items: center;
-        margin-top: 10px;
+        margin-top: 15px;
     }
 
     .footer img {
@@ -150,68 +189,156 @@
     }
 
     .footer div {
-        line-height: 1.2;
+        line-height: 1.4;
     }
 
     .footer div p {
         margin: 0;
         font-size: 0.9em;
-        font-weight: 400; /* Regular weight for text */
     }
 
     .footer div p.name {
-        font-weight: 600; /* Bold weight for name */
-        color: #000; /* Black for name */
+        font-weight: 700;
     }
 
-    .footer div p.email {
-        font-size: 0.8em;
-        color: #888; /* Gray for email */
+    /* Dots (Indicators) */
+    .dots {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .dot {
+        width: 12px;
+        height: 12px;
+        margin: 0 5px;
+        background: #ccc;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    .dot.active {
+        background: #FF4500;
     }
 </style>
 </head>
 <body>
 
-<div class="card">
-    <!-- Header with Image -->
-    <div class="card-header">
-        <img src="https://yiyang512.github.io/new/mountain.jpg" alt="Affiliate Program">
-    </div>
-
-     <!-- Card Body -->
-    <div class="card-body">
-        <!-- Price Section -->
-        <div class="price">
-            <h1>$200<span>per order</span></h1>
-            <a href="https://payhip.com/auth/register/af64bd581e7e723" target="_blank">
-                <button>Register Now!</button>
-            </a>
+<div class="carousel-container">
+    <div class="carousel">
+      
+        <!-- Card 1 -->
+        <div class="card">
+            <div class="card-header">
+                <img src="https://yiyang512.github.io/new/sky.jpg" alt="Referral Program">
+            </div>
+            <div class="card-body">
+                <div class="price">
+                    <h1>$150<span>per referral</span></h1>
+                    <a href="https://payhip.com/auth/register/af64bd581e7e723" target="_blank">
+                        <button>Get Started</button>
+                    </a>
+                </div>
+                <p class="title">Referral Program - Extra Earnings</p>
+                <p class="subtitle">Earn extra income by referring friends</p>
+                <div class="details">
+                    <span>Flexible Rewards</span>
+                    <span>Easy to Track</span>
+                </div>
+                <div class="footer">
+                    <div>
+                        <p class="name">- Referral Team</p>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <!-- Title -->
-        <p class="title">Affiliate Program - Passive Income</p>
-
-        <!-- Subtitle -->
-        <p class="subtitle">100% Remote, no in-person is required</p>
-
-        <!-- Details Section -->
-        <div class="details">
-            <span>Time Flexible</span>
-            <span>Tax Free</span>
+  <!-- Card 2 -->
+        <div class="card">
+            <div class="card-header">
+                <img src="https://yiyang512.github.io/new/mountain.jpg" alt="Affiliate Program">
+            </div>
+            <div class="card-body">
+                <div class="price">
+                    <h1>$200<span>per order</span></h1>
+                    <a href="https://payhip.com/auth/register/af64bd581e7e723" target="_blank">
+                        <button>Register Now</button>
+                    </a>
+                </div>
+                <p class="title">Affiliate Program - Passive Income</p>
+                <p class="subtitle">100% Remote, no in-person is required</p>
+                <div class="details">
+                    <span>Time Flexible</span>
+                    <span>Tax Free</span>
+                </div>
+                <div class="footer">
+                    <img src="https://yiyang512.github.io/new/hems.png" alt="Hems Jay">
+                    <div>
+                        <p class="name">Hems Jay</p>
+                        <p class="email">founder@simplefrenchwithhems.com</p>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <!-- Footer Section -->
-        <div class="footer">
-            <img src="https://yiyang512.github.io/new/hems.png" alt="Hems Jay">
-            <div>
-                <p class="name">Hems Jay</p>
-                <p class="email">founder@simplefrenchwithhems.com</p>
+        <!-- Card 3 -->
+        <div class="card">
+            <div class="card-header">
+                <img src="https://yiyang512.github.io/new/tree.png" alt="Partner Program">
+            </div>
+            <div class="card-body">
+                <div class="price">
+                    <h1>$100<span>bonus</span></h1>
+                    <a href="https://payhip.com/auth/register/af64bd581e7e723" target="_blank">
+                        <button>Join Now!</button>
+                    </a>
+                </div>
+                <p class="title">Partner Program - Join Us</p>
+                <p class="subtitle">Unlock exclusive perks as a partner</p>
+                <div class="details">
+                    <span>Exclusive Benefits</span>
+                    <span>Partner Support</span>
+                </div>
+                <div class="footer">
+                    <div>
+                        <p class="name">- Partnership Team</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+
+    <!-- Dots -->
+    <div class="dots">
+        <div class="dot active"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+    </div>
 </div>
 
-<!-- Font Awesome Icons -->
-<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<script>
+    const carousel = document.querySelector('.carousel');
+    const dots = document.querySelectorAll('.dot');
+
+    let currentIndex = 0;
+
+    function updateCarousel() {
+        const offset = currentIndex * -420; // Card width + margin
+        carousel.style.transform = `translateX(${offset}px)`;
+
+        dots.forEach((dot, index) => {
+            dot.classList.toggle('active', index === currentIndex);
+        });
+    }
+
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+            currentIndex = index;
+            updateCarousel();
+        });
+    });
+
+    updateCarousel();
+</script>
+
 </body>
 </html>
