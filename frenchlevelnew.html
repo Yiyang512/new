@@ -16,21 +16,19 @@
 
 /* Body Styles */
 body {
-    background: url('https://yiyang512.github.io/new/dancingcat.jpg') no-repeat center center fixed;
-    background-size: cover;
+    background: #f4f4f4; /* Neutral background color */
     display: flex;
-    justify-content: flex-start;
-    align-items: center;
+    justify-content: flex-start; /* Keep aligned to the left */
+    align-items: flex-start; /* Keep aligned to the top */
     height: 100vh;
     font-family: 'Poppins', sans-serif;
     color: #000;
-    padding: 60px;
+    padding: 20px; /* Reduce padding to remove extra space */
 }
 
 /* Container */
 .test-container {
-    margin-left: 40px;
-    background:  #000;
+    background: #000;
     border-radius: 20px; /* Softer corners */
     max-width: 600px;
     width: 100%;
@@ -120,7 +118,6 @@ p {
 /* Responsive Design */
 @media (max-width: 768px) {
     .test-container {
-        margin-left: 0;
         padding: 25px;
     }
     h1 {
