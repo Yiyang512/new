@@ -30,29 +30,18 @@ body {
 /* Container */
 .test-container {
     margin-left: 40px;
-    background: linear-gradient(145deg, #0c0b4a, #1a0033, #39005b);
+    background: rgba(0, 0, 0, 0.9); /* Semi-transparent black background */
     border-radius: 15px;
-    max-width: 580px;
+    max-width: 600px;
     width: 100%;
     padding: 20px;
     text-align: left;
     position: relative;
     overflow: hidden;
-
-    /* Glowing Border */
-    border: 5px solid transparent;
-    border-image: linear-gradient(45deg, #00f5ff, #6a00ff, #ff004d) 1;
-
-    /* Neon Glow */
-    box-shadow: 0 0 20px rgba(255, 0, 127, 0.6), 
-                0 0 30px rgba(148, 0, 211, 0.6), 
-                0 0 40px rgba(0, 191, 255, 0.6);
 }
 
-
 .test-container:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 0 75px rgba(75, 0, 130, 1), 0 0 75px rgba(0, 191, 255, 1);
+    transform: translateY(-5px);
 }
 
 /* Title */
@@ -79,37 +68,38 @@ p {
 .test-details p {
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
-    padding: 15px;
-    background: rgba(30, 144, 255, 0.2);
-    border-left: 4px solid #FFD700;
+    margin-bottom: 35px;
+    padding: 20px;
+background: linear-gradient(135deg, #4B0082, #FF00FF);
+    border-left: 4px solid rgba(255, 215, 0, 0.8); /* Semi-transparent border */
     border-radius: 6px;
     font-weight: 500;
     font-size: 16px;
-    transition: background 0.3s ease, box-shadow 0.3s ease;
+    transition: background 0.3s ease;
 }
 
 .test-details p i {
-    margin-right: 5px;
+    margin-right: 6px;
+   font-size: 19px;
     color: #FFD700;
 }
 
 .test-details p:hover {
-    background: rgba(30, 144, 255, 0.3);
-    box-shadow: 0 3px 6px rgba(0, 191, 255, 0.3);
+    background: rgba(38, 144, 255, 0.8);
 }
 
 /* Button */
 .test-button {
     display: inline-block;
-    background: linear-gradient(135deg, #8a2be2, #ff69b4);
-    color: #ffffff;
+background: linear-gradient(135deg, #FFD700, #FFFF00);
+
+
+    color: #000;
     padding: 10px 25px;
-    font-size: 14px;
+    font-size: 18px;
     border-radius: 15px;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 3px 8px rgba(0, 191, 255, 0.4);
+    transition: all 0.8s ease;
     text-decoration: none;
     text-align: center;
 }
@@ -117,7 +107,6 @@ p {
 .test-button:hover {
     background: linear-gradient(135deg, #00bfff, #4b0082);
     transform: translateY(-4px);
-    box-shadow: 0 6px 15px rgba(75, 0, 130, 0.6);
 }
 
 /* Responsive Design */
@@ -167,8 +156,6 @@ p {
     <p><i class="fas fa-check-circle"></i> <span>Results appear instantly – <span class="highlight">no need</span> to wait 3 business days</span></p>
 </div>
 
-
-    
     <a href="https://simplefrenchwithhems.com/order?link=3h6ux&pricing_plan=18B184e5zZ" target="_blank" rel="noopener noreferrer" class="test-button">Take the Test Now</a>
 </div>
 
