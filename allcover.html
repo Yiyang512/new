@@ -30,16 +30,36 @@
             width: 100%;
         }
 
-        .course-card {
-            flex: 1 1 calc(16.66% - 20px); /* Adjust width to fit 6 cards */
-            margin: 9px;
-            overflow: hidden;
-            background-color: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            text-align: center;
-            animation: float 2s infinite ease-in-out;
-        }
+.course-card {
+    flex: 1 0 calc(16.66% - 10px); /* Default: 6 cards per row */
+    margin: 5px;
+    min-width: 180px; /* Prevent squeezing */
+    overflow: hidden;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    animation: float 3s infinite ease-in-out;
+}
+
+@media (max-width: 1200px) {
+    .course-card {
+        flex: 1 0 calc(33.33% - 10px); /* 3 cards per row */
+    }
+}
+
+@media (max-width: 768px) {
+    .course-card {
+        flex: 1 0 calc(50% - 10px); /* 2 cards per row */
+    }
+}
+
+@media (max-width: 480px) {
+    .course-card {
+        flex: 1 0 100%; /* 1 card per row */
+    }
+}
+
 
         /* Add staggered animation delays */
         .course-card:nth-child(1) {
