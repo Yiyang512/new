@@ -25,23 +25,19 @@
         }
 
         .carousel-track {
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap; /* Ensures cards wrap to the next row */
+            display: grid;
+            grid-template-columns: repeat(6, 1fr); /* 6 cards per row */
+            gap: 10px; /* Space between cards */
             width: 100%;
         }
 
         .course-card {
-            flex: 1 0 calc(25% - 10px); /* 4 cards per row on large screens */
-            margin: 10px;
-            min-width: 200px; /* Ensure a minimum size */
-            max-width: 300px; /* Allow more space for cards */
-            overflow: hidden;
             background-color: #ffffff;
             border-radius: 20px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
             text-align: center;
             animation: float 3s infinite ease-in-out;
+            overflow: hidden;
         }
 
         .course-header img {
@@ -51,9 +47,9 @@
             border-top-left-radius: 20px;
             border-top-right-radius: 20px;
         }
-    
+
         .course-body {
-            padding: 10px; /* Increased padding for better spacing */
+            padding: 10px;
             text-align: center;
         }
 
@@ -79,9 +75,9 @@
             background: #ff4500;
             color: #fff;
             border: none;
-            font-size: 1rem; /* Larger button font size */
+            font-size: 1rem;
             border-radius: 25px;
-            padding: 10px 20px; /* More padding for larger screens */
+            padding: 10px 20px;
             cursor: pointer;
             transition: all 0.3s ease;
         }
@@ -92,7 +88,7 @@
 
         .course-title {
             font-weight: bold;
-            font-size: 1.2rem; /* Increased title size */
+            font-size: 1.2rem;
             margin: 5px 0;
         }
 
