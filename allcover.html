@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All Cards Floating - Simple French with Hems</title>
+    <title>Simple French with Hems</title>
     <style>
         body {
             font-family: Poppins, sans-serif;
@@ -12,255 +12,141 @@
             margin: 0;
             overflow-x: hidden;
         }
-
-        .carousel-container {
-            position: relative;
-            width: 95%;
-            max-width: 1400px;
+        .section {
+            max-width: 1200px;
             margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+        .course-grid {
             display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
             justify-content: center;
-            align-items: center;
-            background: #000;
+            padding-bottom: 15px;
         }
-
-        .carousel-track {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr); /* 6 cards per row */
-            gap: 10px; /* Space between cards */
-            width: 100%;
-        }
-
         .course-card {
-            background-color: #ffffff;
-            border-radius: 20px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            text-align: center;
-            animation: float 3s infinite ease-in-out;
+            position: relative;
+            border-radius: 10px;
             overflow: hidden;
+            width: calc(33.33% - 30px); /* 3 cards per row */
+            max-width: 150px;
+            transform: scale(0.9);
+            opacity: 0;
+            transition: box-shadow 0.5s ease;
+            box-shadow: 0 0 20px rgba(255, 0, 127, 0.4);
+            animation: popIn 0.6s ease forwards, waving 3s ease-in-out infinite;
+            border: 2px solid transparent;
         }
-
-        .course-header img {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
-        }
-
-        .course-body {
-            padding: 10px;
-            text-align: center;
-        }
-
-        .course-price {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .course-price h1 {
-            font-size: 1.2rem;
-            color: #ff4500;
-        }
-
-        .course-price h1 span {
-            text-decoration: line-through;
-            font-size: 0.8rem;
-            color: #888;
-        }
-
-        .start-button {
-            background: #ff4500;
-            color: #fff;
-            border: none;
-            font-size: 1rem;
-            border-radius: 25px;
-            padding: 10px 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .start-button:hover {
-            background: #ff6347;
-        }
-
-        .course-title {
-            font-weight: bold;
-            font-size: 1.2rem;
-            margin: 5px 0;
-        }
-
-        /* Floating Animation */
-        @keyframes float {
+        @keyframes popIn {
             0% {
-                transform: translateY(0px);
-            }
-            25% {
-                transform: translateY(-5px);
-            }
-            50% {
-                transform: translateY(0px);
-            }
-            75% {
-                transform: translateY(5px);
+                opacity: 0;
+                transform: scale(0.8);
             }
             100% {
-                transform: translateY(0px);
+                opacity: 1;
+                transform: scale(1);
             }
         }
-
- /* Media Queries for Smaller Screens */
-
-        /* Medium Screens (Up to 1200px) */
-        @media (max-width: 1200px) {
+        @keyframes waving {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+        .course-card.visible {
+            box-shadow: 0 0 20px rgba(255, 0, 127, 0.6), 0 0 30px rgba(148, 0, 211, 0.6), 0 0 40px rgba(0, 191, 255, 0.6);
+            border-image: linear-gradient(45deg, #00f5ff, #6a00ff, #ff004d) 1;
+        }
+        .course-card img {
+            width: 100%;
+            height: auto;
+            z-index: 1;
+            position: relative;
+            border-radius: 10px;
+        }
+        .course-info {
+            padding: 10px;
+            font-size: 0.85em;
+            font-weight: bold;
+            color: #ffffff;
+            border-radius: 0 0 10px 10px;
+            z-index: 1;
+            position: relative;
+        }
+        /* Mobile adjustments */
+        @media (max-width: 767px) {
+            .section {
+                padding: 10px;
+            }
             .course-card {
-                flex: 1 0 calc(33.33% - 10px); /* 3 cards per row */
-                max-width: 220px; /* Slightly larger width */
-            }
-            .course-header img {
-                height: 120px; /* Reduce image size */
-            }
-            .course-price h1 {
-                font-size: 1.1rem; /* Slightly smaller text */
-            }
-            .start-button {
-                padding: 4px 15px; /* Adjust button padding */
-                font-size: 0.7rem; /* Adjust font size */
+                width: calc(33.33% - 20px); /* 3 cards per row on mobile */
+                max-width: none;
+                transform: scale(1);
             }
         }
-
-        /* Small Screens (Up to 768px) */
-        @media (max-width: 768px) {
-            .course-card {
-                flex: 1 0 calc(33.33% - 10px); /* 3 cards per row */
-            }
-            .course-header img {
-                height: 100px; /* Smaller image size */
-            }
-            .course-price h1 {
-                font-size: 1rem; /* Smaller text */
-            }
-            .start-button {
-                padding: 3px 12px; /* Smaller button */
-                font-size: 0.6rem; /* Smaller font */
-            }
-        }
-
-      /* Very Small Screens (Up to 480px) */
-@media (max-width: 480px) {
-    .course-card {
-        flex: 1 0 calc(33.33% - 10px); /* 3 cards per row */
-        margin: 5px; /* Adjust spacing between cards */
-    }
-    .course-header img {
-        height: 150px; /* Smaller image size */
-    }
-    .course-price h1 {
-        font-size: 0.8rem; /* Adjust text size */
-    }
-    .start-button {
-        padding: 2px 8px; /* Adjust button padding */
-        font-size: 0.5rem; /* Maintain smaller font size */
-    }
-}
     </style>
 </head>
 <body>
 
-<div class="carousel-container">
-    <div class="carousel-track">
-        <!-- Card 1 -->
-        <div class="course-card">
-            <div class="course-header">
-                <img src="https://yiyang512.github.io/new/threedays.png" alt="French Fundamentals">
+    <div class="section" id="featured-courses">
+        <div class="course-grid">
+            <div class="course-card">
+                <a href="https://simplefrenchwithhems.com/b/freefrench" target="_blank">
+                    <img src="https://yiyang512.github.io/new/threedays.png" alt="French Fundamentals">
+                </a>
+                <div class="course-info"> French Fundamentals - 3 Days Challenge!</div>
             </div>
-            <div class="course-body">
-                <div class="course-price">
-                    <h1>$0 <span>$89.99</span></h1>
-                    <button class="start-button" onclick="window.open('https://simplefrenchwithhems.com/b/freefrench', '_blank')">Start now</button>
-                </div>
-                <div class="course-title">Level A0 - Free Course</div>
-
-
+            <div class="course-card">
+                <a href="https://simplefrenchwithhems.com/b/a1-introduction" target="_blank">
+                    <img src="https://yiyang512.github.io/new/a1.png" alt="Level A1 Complete French Mastery">
+                </a>
+                <div class="course-info"> Level A1 - Complete French Mastery</div>
             </div>
-        </div>
-        <!-- Card 2 -->
-        <div class="course-card">
-            <div class="course-header">
-                <img src="https://yiyang512.github.io/new/a1.png" alt="A1 Mastery">
+            <div class="course-card">
+                <a href="https://simplefrenchwithhems.com/b/a2-french" target="_blank">
+                    <img src="https://yiyang512.github.io/new/a2.png" alt="Level A2 Complete French Mastery">
+                </a>
+                <div class="course-info"> Level A2 - Complete French Mastery</div>
             </div>
-            <div class="course-body">
-                <div class="course-price">
-                    <h1>$399.99 <span>$499.99</span></h1>
-                    <button class="start-button" onclick="window.open('https://simplefrenchwithhems.com/b/a1-introduction', '_blank')">Start now</button>
-                </div>
-                <div class="course-title">Level A1 Officially Start</div>
- 
-
+            <div class="course-card">
+                <a href="https://simplefrenchwithhems.com/b/F21fg" target="_blank">
+                    <img src="https://yiyang512.github.io/new/beginner.png" alt="Beginner's Guide French Quest">
+                </a>
+                <div class="course-info"> Beginner‘s Guide - French Quest</div>
             </div>
-        </div>
-        <!-- Card 3 -->
-        <div class="course-card">
-            <div class="course-header">
-                <img src="https://yiyang512.github.io/new/a2.png" alt="A2 Mastery">
+            <div class="course-card">
+                <a href="https://simplefrenchwithhems.com/vr-game" target="_blank">
+                    <img src="https://yiyang512.github.io/new/vr.png" alt="VR Game - School Pulse">
+                </a>
+                <div class="course-info"> VR Game - School Pulse ™</div>
             </div>
-            <div class="course-body">
-                <div class="course-price">
-                    <h1>$599.99 <span>$699.99</span></h1>
-                    <button class="start-button" onclick="window.open('https://simplefrenchwithhems.com/b/a2-french', '_blank')">Start now</button>
-                </div>
-                <div class="course-title">Level A2 Get Confidence</div>
-            
-            </div>
-        </div>
-        <!-- Card 4 -->
-        <div class="course-card">
-            <div class="course-header">
-                <img src="https://yiyang512.github.io/new/beginner.png" alt="Beginner's Guide">
-            </div>
-            <div class="course-body">
-                <div class="course-price">
-                    <h1>$39.99 <span>$49.99</span></h1>
-                    <button class="start-button" onclick="window.open('https://simplefrenchwithhems.com/b/F21fg', '_blank')">Start now</button>
-                </div>
-                <div class="course-title">Beginner’s Guide</div>
-             
-
-            </div>
-        </div>
-        <!-- Card 5 -->
-        <div class="course-card">
-            <div class="course-header">
-                <img src="https://yiyang512.github.io/new/vr.png" alt="VR Game">
-            </div>
-            <div class="course-body">
-                <div class="course-price">
-                    <h1>$!!! <span>$???.99</span></h1>
-                    <button class="start-button" onclick="window.open('https://simplefrenchwithhems.com/vr-game', '_blank')">Start now</button>
-                </div>
-                <div class="course-title">School Pulse™</div>
-            
-            </div>
-        </div>
-        <!-- Card 6 -->
-        <div class="course-card">
-            <div class="course-header">
-                <img src="https://yiyang512.github.io/new/animation.png" alt="Animated Stories">
-            </div>
-            <div class="course-body">
-                <div class="course-price">
-                    <h1>$54.99 <span>$99.99</span></h1>
-                    <button class="start-button" onclick="window.open('https://simplefrenchwithhems.com/course-features', '_blank')">Start now</button>
-                </div>
-                <div class="course-title">50+ Animated Stories</div>
-            
-                </div>
+            <div class="course-card">
+                <a href="https://simplefrenchwithhems.com/course-features" target="_blank">
+                    <img src="https://yiyang512.github.io/new/animation.png" alt="Animated Stories">
+                </a>
+                <div class="course-info"> Animated Stories</div>
             </div>
         </div>
     </div>
-</div>
 
+    <script>
+        function revealCourses() {
+            const courseCards = document.querySelectorAll('.course-card');
+            courseCards.forEach((card, index) => {
+                const courseTop = card.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                if (courseTop < windowHeight - 50) {
+                    card.style.animationDelay = `${index * 0.2}s`;
+                    card.classList.add('visible');
+                }
+            });
+        }
+
+        revealCourses();
+        window.addEventListener('scroll', revealCourses);
+    </script>
 </body>
 </html>
