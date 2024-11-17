@@ -30,6 +30,7 @@
             width: 100%;
         }
 
+/* Default styles for large screens (6 cards per row) */
 .course-card {
     flex: 1 0 calc(16.66% - 10px); /* Default: 6 cards per row */
     margin: 5px;
@@ -42,23 +43,81 @@
     animation: float 3s infinite ease-in-out;
 }
 
+.course-header img {
+    width: 100%;
+    height: 150px; /* Default height for large screens */
+    object-fit: cover;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.course-body {
+    padding: 10px;
+}
+
+.course-price h1 {
+    font-size: 1rem; /* Default font size */
+}
+
+.start-button {
+    padding: 5px 10px; /* Default button size */
+    font-size: 0.5rem;
+}
+
+/* Media Queries for Smaller Screens */
+
+/* Medium Screens (3 cards per row) */
 @media (max-width: 1200px) {
     .course-card {
         flex: 1 0 calc(33.33% - 10px); /* 3 cards per row */
     }
+    .course-header img {
+        height: 120px; /* Reduce image height */
+    }
+    .course-price h1 {
+        font-size: 0.9rem; /* Slightly smaller text */
+    }
+    .start-button {
+        padding: 4px 8px; /* Smaller button */
+        font-size: 0.9rem;
+    }
 }
 
+/* Small Screens (2 cards per row) */
 @media (max-width: 768px) {
     .course-card {
         flex: 1 0 calc(50% - 10px); /* 2 cards per row */
     }
+    .course-header img {
+        height: 100px; /* Further reduce image height */
+    }
+    .course-price h1 {
+        font-size: 0.8rem; /* Smaller text */
+    }
+    .start-button {
+        padding: 3px 6px; /* Smaller button */
+        font-size: 0.8rem;
+    }
 }
 
+/* Very Small Screens (1 card per row) */
 @media (max-width: 480px) {
     .course-card {
         flex: 1 0 100%; /* 1 card per row */
+        margin: 5px 0; /* Add spacing between cards */
+    }
+    .course-header img {
+        height: 80px; /* Smallest image size */
+    }
+    .course-price h1 {
+        font-size: 0.7rem; /* Smallest text size */
+    }
+    .start-button {
+        padding: 2px 4px; /* Smallest button */
+        font-size: 0.7rem;
     }
 }
+
 
 
         /* Add staggered animation delays */
