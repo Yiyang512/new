@@ -141,13 +141,23 @@
             }
         }
 
-        /* Media Queries for Smaller Screens */
+ /* Media Queries for Smaller Screens */
 
         /* Medium Screens (Up to 1200px) */
         @media (max-width: 1200px) {
             .course-card {
-                flex: 1 0 calc(16.66% - 10px); /* 6 cards per row */
-                max-width: 160px;
+                flex: 1 0 calc(33.33% - 10px); /* 3 cards per row */
+                max-width: 220px; /* Slightly larger width */
+            }
+            .course-header img {
+                height: 120px; /* Reduce image size */
+            }
+            .course-price h1 {
+                font-size: 1.1rem; /* Slightly smaller text */
+            }
+            .start-button {
+                padding: 4px 15px; /* Adjust button padding */
+                font-size: 0.7rem; /* Adjust font size */
             }
         }
 
@@ -157,31 +167,31 @@
                 flex: 1 0 calc(33.33% - 10px); /* 3 cards per row */
             }
             .course-header img {
-                height: 80px; /* Smaller image size */
+                height: 100px; /* Smaller image size */
             }
             .course-price h1 {
-                font-size: 0.7rem; /* Smaller text */
+                font-size: 1rem; /* Smaller text */
             }
             .start-button {
-                padding: 2px 5px; /* Smaller button */
-                font-size: 0.6rem;
+                padding: 3px 12px; /* Smaller button */
+                font-size: 0.6rem; /* Smaller font */
             }
         }
 
         /* Very Small Screens (Up to 480px) */
         @media (max-width: 480px) {
             .course-card {
-                flex: 1 0 100%; /* 1 card per row */
+                flex: 1 0 calc(50% - 10px); /* 2 cards per row */
                 margin: 5px 0; /* Add spacing between cards */
             }
             .course-header img {
                 height: 80px; /* Smallest image size */
             }
             .course-price h1 {
-                font-size: 0.6rem; /* Smallest text size */
+                font-size: 0.9rem; /* Smallest text size */
             }
             .start-button {
-                padding: 2px 4px; /* Smallest button */
+                padding: 2px 10px; /* Smallest button */
                 font-size: 0.5rem;
             }
         }
