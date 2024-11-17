@@ -33,13 +33,13 @@
 
         /* Default styles for large screens (6 cards per row) */
         .course-card {
-            flex: 1 0 calc(16.66% - 10px); /* 6 cards per row */
+            flex: 1 6 calc(16.66% - 10px); /* 6 cards per row */
             margin: 5px;
             min-width: 120px; /* Smaller width */
             max-width: 160px; /* Set max width */
             overflow: hidden;
             background-color: #ffffff;
-            border-radius: 10px;
+            border-radius: 20px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
             text-align: center;
             animation: float 3s infinite ease-in-out;
@@ -54,7 +54,7 @@
         }
 
         .course-body {
-            padding: 10px;
+            padding: 5px;
             text-align: left;
         }
 
@@ -80,7 +80,7 @@
             background: #ff4500;
             color: #fff;
             border: none;
-       font-size: 0.5rem;
+            font-size: 0.5rem;
             border-radius: 25px;
             padding: 5px 25px;
             cursor: pointer;
@@ -146,18 +146,8 @@
         /* Medium Screens (Up to 1200px) */
         @media (max-width: 1200px) {
             .course-card {
-                flex: 1 0 calc(33.33% - 10px); /* 3 cards per row */
-                max-width: 180px; /* Slightly larger cards */
-            }
-            .course-header img {
-                height: 90px; /* Reduce image height */
-            }
-            .course-price h1 {
-                font-size: 0.8rem; /* Smaller text */
-            }
-            .start-button {
-                padding: 3px 6px; /* Smaller button */
-                font-size: 0.7rem;
+                flex: 1 0 calc(16.66% - 10px); /* 6 cards per row */
+                max-width: 160px;
             }
         }
 
