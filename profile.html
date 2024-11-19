@@ -233,58 +233,130 @@
             to { transform: scale(1.05) rotate(360deg); }
         }
 
-        @media (max-width: 1100px) {
-            .profile-container {
-                flex-direction: column;
-                margin: 20px;
-            }
+@media (max-width: 1100px) {
+    .profile-container {
+        flex-direction: column;
+        margin: 10px;
+        padding: 20px;
+    }
 
-            .image-section {
-                flex: 0 0 100px;
-            }
+    .image-section {
+        flex: 0 0 auto;
+        margin-bottom: 20px;
+    }
 
-            .orbit-container {
-                width: 200px;
-                height: 200px;
-            }
+    .orbit-container {
+        width: 300px;
+        height: 300px;
+    }
 
-            .school-logo, .company-logo {
-                width: 60px;
-                height: 60px;
-            }
+    .school-logo, .company-logo {
+        width: 50px;
+        height: 50px;
+    }
 
-            .name {
-                font-size: 1.4em;
-            }
+    .purple-circle {
+        width: 200px;
+        height: 200px;
+    }
 
-            .bio p {
-                font-size: 0.3em;
-            }
-        }
+    .turquoise-circle {
+        width: 180px;
+        height: 180px;
+    }
 
-        @media (max-width: 480px) {
-            .profile-container {
-                padding: 5px;
-            }
+    .yellow-circle {
+        width: 160px;
+        height: 160px;
+    }
 
-            .image-section {
-                flex: 0 0 100px;
-            }
+    .profile-image {
+        width: 150px;
+        height: 150px;
+    }
 
-            .orbit-container {
-                width: 100px;
-                height: 100px;
-            }
+    .name {
+        font-size: 1.8em;
+    }
 
-            .school-logo, .company-logo {
-                width: 30px;
-                height: 30px;
-            }
+    .position {
+        font-size: 1em;
+    }
 
-            .highlights {
-                grid-template-columns: 1fr;
-            }
-        }
+    .bio p {
+        font-size: 0.9em;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-container {
+        margin: 5px;
+        padding: 10px;
+    }
+
+    .image-section {
+        margin-bottom: 15px;
+    }
+
+    .orbit-container {
+        width: 150px;
+        height: 150px;
+    }
+
+    .school-logo, .company-logo {
+        width: 40px;
+        height: 40px;
+    }
+
+    .purple-circle {
+        width: 120px;
+        height: 120px;
+    }
+
+    .turquoise-circle {
+        width: 100px;
+        height: 100px;
+    }
+
+    .yellow-circle {
+        width: 90px;
+        height: 90px;
+    }
+
+    .profile-image {
+        width: 100px;
+        height: 100px;
+    }
+
+    .name {
+        font-size: 1.5em;
+    }
+
+    .position {
+        font-size: 0.9em;
+    }
+
+    .bio p {
+        font-size: 0.8em;
+    }
+
+    .highlights {
+        grid-template-columns: 1fr;
+    }
+
+    .highlight-item {
+        padding: 10px;
+    }
+
+    .highlight-title {
+        font-size: 1em;
+    }
+
+    .highlight-content {
+        font-size: 0.8em;
+    }
+}
+
     </style>
 </head>
 <body>
