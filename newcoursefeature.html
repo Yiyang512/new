@@ -1,27 +1,37 @@
-@media (max-width: 768px) {
-            h1 {
-                font-size: 3rem;
-            }
-            h2 {
-                font-size: 2rem;
-            }
-            p {
-                font-size: 1.1rem;
-            }
-            .section {
-                padding: 20px 10px;
-            }
-            .section img {
-                max-width: 500px;
-            }
-        }<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simple French with Hems - Exploring AI Advancements in Language Learning</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
+        /* Inline Google Fonts */
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://fonts.gstatic.com/s/poppins/v15/pxiEyp8kv8JHgFVrJJfedw.woff2') format('woff2');
+            font-weight: 300;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://fonts.gstatic.com/s/poppins/v15/pxiByp8kv8JHgFVrLDz8Z1xlFQ.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://fonts.gstatic.com/s/poppins/v15/pxiByp8kv8JHgFVrLEj8Z1xlFQ.woff2') format('woff2');
+            font-weight: 600;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://fonts.gstatic.com/s/poppins/v15/pxiByp8kv8JHgFVrFIj8Z1xlFQ.woff2') format('woff2');
+            font-weight: 800;
+            font-style: normal;
+        }
+
+        /* Main Styles */
         body {
             background: #000;
             color: #fff;
@@ -42,7 +52,6 @@
             letter-spacing: 4px;
             text-transform: uppercase;
             text-shadow: 0 0 0px #00bfff, 0 0 0px #008cff;
-
             background: linear-gradient(135deg, #7a00ff, #00bfff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -51,35 +60,32 @@
         h2 {
             font-size: 2.9rem;
             color: #00bfff;
-            text-shadow: 0 0 0px #00bfff, 0 0 0px #008cff;
-            position: relative;
-            overflow: hidden;
+            text-shadow: 0 0 20px #00bfff, 0 0 40px #008cff;
         }
 
         .section {
-            max-width: 1100px;
+            max-width: 1000px;
             margin: 100px auto;
-            padding: 40px 20px;
-            background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(34, 34, 34, 0.9));
+            padding: 20px;
+            background: rgba(34, 34, 34, 0.9);
             border-radius: 20px;
-            box-shadow: 0 0 10px #00bfff, 0 0 10px #7a00ff;
-            position: relative;
-            animation: fadeIn 0.5s ease-in-out forwards;
+            box-shadow: 0 0 10px #00bfff, 0 0 20px #7a00ff;
+            animation: fadeIn 0.8s ease-in-out;
             transition: transform 0.5s, box-shadow 0.5s;
         }
 
         .section:hover {
-            transform: scale(1.09);
-            box-shadow: 0 0 90px #00bfff, 0 0 80px #7a00ff;
+            transform: scale(1.05);
+            box-shadow: 0 0 50px #00bfff, 0 0 50px #7a00ff;
         }
 
         .section img {
             width: 100%;
-            max-width: 1500px;
-            display: block;
+            max-width: 800px;
             margin: 20px auto;
+            display: block;
             border-radius: 10px;
-            box-shadow: 0 0 30px #7a00ff, 0 0 50px #00bfff;
+            box-shadow: 0 0 20px #7a00ff, 0 0 30px #00bfff;
             transition: transform 0.5s;
         }
 
@@ -88,10 +94,9 @@
         }
 
         p {
-            font-size: 1.7rem;
+            font-size: 1.5rem;
             line-height: 1.5;
             text-align: justify;
-            position: relative;
         }
 
         p strong {
@@ -101,22 +106,10 @@
             -webkit-text-fill-color: transparent;
         }
 
-        p::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, #ff79c6, #7a00ff);
-            animation: underlineGrow 1.5s ease-in-out forwards;
-        }
-
         ul {
             margin: 20px;
             padding-left: 40px;
             font-size: 1.5rem;
-            color: #fff;
         }
 
         ul li {
@@ -127,7 +120,6 @@
             color: #7a00ff;
             text-decoration: none;
             border-bottom: 2px solid #00bfff;
-            transition: color 0.1s ease, border-bottom-color 0.1s ease;
         }
 
         a:hover {
@@ -136,70 +128,6 @@
         }
 
         /* Animations */
-        @keyframes glow {
-            from {
-                text-shadow: 0 0 30px #7a00ff, 0 0 60px #5200ff;
-            }
-            to {
-                text-shadow: 0 0 60px #7a00ff, 0 0 90px #5200ff;
-            }
-        }
-
- /* Responsive Design */
-        @media (max-width: 1024px) {
-            h1 {
-                font-size: 3.5rem;
-            }
-            h2 {
-                font-size: 2.2rem;
-            }
-            p {
-                font-size: 1.2rem;
-            }
-            .section {
-                padding: 30px 15px;
-            }
-            .section img {
-                max-width: 600px;
-            }
-        }
-@media (max-width: 768px) {
-            h1 {
-                font-size: 3rem;
-            }
-            h2 {
-                font-size: 2rem;
-            }
-            p {
-                font-size: 1.1rem;
-            }
-            .section {
-                padding: 20px 10px;
-            }
-            .section img {
-                max-width: 500px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            h1 {
-                font-size: 2.5rem;
-            }
-            h2 {
-                font-size: 1.8rem;
-            }
-            p {
-                font-size: 1rem;
-            }
-            .section {
-                padding: 15px 10px;
-            }
-            .section img {
-                max-width: 100%;
-            }
-        }
-
-
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -211,47 +139,30 @@
             }
         }
 
-        @keyframes underlineGrow {
-            from {
-                width: 0;
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 4rem;
             }
-            to {
-                width: 100%;
+            h2 {
+                font-size: 2rem;
             }
-        }
-
-        @keyframes slideUnderline {
-            from {
-                left: -100%;
-            }
-            to {
-                left: 100%;
+            p {
+                font-size: 1.2rem;
             }
         }
 
-        .button {
-            display: inline-block;
-            margin: 20px auto;
-            padding: 15px 30px;
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #fff;
-            text-align: center;
-            background: linear-gradient(90deg, #7a00ff, #00bfff);
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            box-shadow: 0 0 30px #00bfff, 0 0 50px #7a00ff;
-            animation: glow 2s infinite alternate;
-        }
-
-        .button:hover {
-            transform: scale(1.2);
-            box-shadow: 0 0 50px #7a00ff, 0 0 80px #00bfff;
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 3rem;
+            }
+            h2 {
+                font-size: 1.5rem;
+            }
+            p {
+                font-size: 1rem;
+            }
         }
     </style>
-
-
 </head>
 <body>
     <h1>Simple French with Hems™</h1>
@@ -260,33 +171,24 @@
     <div class="section">
         <h2>Grammar Videos</h2>
         <p><strong>Tired of outdated lessons?</strong></p>
-        <p>Our grammar videos are evergreen – meaning they never go out of style! No matter your level, our step-by-step videos break down the trickiest grammar points into easy, digestible chunks. Whether you're a beginner or advanced learner, these lessons are designed to evolve with you, offering value every time you revisit them.</p>
-        <p><strong>What makes it unique?</strong><br>Each video is packed with examples, interactive elements, and real-world applications to make sure you truly understand the concepts.</p>
-        <p><strong>Uncharted Territory:</strong> Your First Course to Master French Grammar</p>
+        <p>Our grammar videos are evergreen – meaning they never go out of style! No matter your level, our step-by-step videos break down the trickiest grammar points into easy, digestible chunks.</p>
         <img src="https://yiyang512.github.io/new/111.png" alt="Grammar Video">
     </div>
 
     <div class="section">
         <h2>Graded Quizzes</h2>
         <p>Quizzes that challenge you—without the stress.</p>
-        <p>Learning is about progress, not perfection. After each lesson, dive into our carefully crafted graded quizzes. They aren't just about memorization—they reinforce what you’ve learned by offering practical, engaging challenges. With instant feedback, you’ll know exactly where you stand and what to focus on next.</p>
-        <p><strong>Bonus:</strong> Track your improvement over time and unlock badges as you master each skill level!</p>
         <img src="https://yiyang512.github.io/new/222.png" alt="Graded Quizzes">
     </div>
 
     <div class="section">
         <h2>Animated Stories</h2>
-        <p>Make French come alive!</p>
-        <p>Imagine learning French grammar with visuals that move and interact with you. Our dynamic animations don’t just tell you about the language—they show you. Abstract concepts become tangible and easy to grasp, making learning fun and immersive. These animations are crafted to keep you engaged and ensure you retain what you've learned longer.</p>
-        <p><strong>Tip:</strong> Watch them as many times as you need—animations are proven to enhance memory retention!</p>
+        <p>Imagine learning French grammar with visuals that move and interact with you.</p>
         <img src="https://yiyang512.github.io/new/333.png" alt="Animated Stories">
     </div>
 
     <div class="section">
         <h2>Vocabulary Books</h2>
-        <p>Unlock the Power of Words</p>
-        <p>Master the essential French vocabulary with our curated collection of vocabulary books. These aren't just lists of words—they’re carefully crafted guides designed to help you retain and use new vocabulary in real-life situations.</p>
-        <p><strong>What's Inside?</strong></p>
         <ul>
             <li>Topic-Based Vocabulary</li>
             <li>Pronunciation Guides</li>
@@ -296,7 +198,7 @@
         <img src="https://yiyang512.github.io/new/444.png" alt="Vocabulary Books">
     </div>
 
-    <div class="section">
+<div class="section">
         <h2>Reading Tests</h2>
         <p>Challenge and improve your reading comprehension skills with our tailored French reading tests. Designed for learners of all levels, these tests feature engaging passages, real-world scenarios, and thought-provoking questions to ensure you fully understand and retain what you read. Track your progress and boost your confidence as you master the art of reading in French!</p>
         <img src="https://yiyang512.github.io/new/555.png" alt="Reading Tests">
@@ -321,22 +223,3 @@
     </div>
 </body>
 </html>
-
-
-        @media (max-width: 480px) {
-            h1 {
-                font-size: 2.5rem;
-            }
-            h2 {
-                font-size: 1.8rem;
-            }
-            p {
-                font-size: 1rem;
-            }
-            .section {
-                padding: 15px 10px;
-            }
-            .section img {
-                max-width: 100%;
-            }
-        }
