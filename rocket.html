@@ -1,0 +1,35 @@
+<!-- Add this to your existing HTML file -->
+
+<!-- Rocket Icon -->
+<div id="rocket"></div>
+
+<style>
+  /* Rocket Styling */
+  #rocket {
+    position: fixed;
+    width: 50px;
+    height: 50px;
+    background: url('https://yiyang512.github.io/new/mouse.png') no-repeat center center;
+    background-size: contain;
+    pointer-events: none; /* Makes sure the rocket doesn't block clicks */
+    z-index: 1000; /* Ensure the rocket is on top of other elements */
+    transform: translate(-50%, -50%); /* Center the rocket on the cursor */
+    transition: transform 0.1s ease-out; /* Smooth movement */
+  }
+</style>
+
+<script>
+  // Rocket Movement Script
+  document.addEventListener('mousemove', (event) => {
+    const rocket = document.getElementById('rocket');
+    const x = event.clientX;
+    const y = event.clientY;
+
+    // Update rocket position to follow mouse
+    rocket.style.transform = `translate(${x - 25}px, ${y - 25}px)`; // Adjust for rocket size
+  });
+</script>
+
+<!-- Notes: -->
+<!-- Replace 'https://example.com/rocket.png' with the actual URL of your rocket image. -->
+<!-- Ensure the image is optimized for size and clarity. -->
