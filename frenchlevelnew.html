@@ -1,192 +1,180 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Curious About Your French Level?</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Impact&display=swap" rel="stylesheet">
-<style>
-/* General Reset */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curious About Your French Level?</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            /* Colors */
+            --gold: #FFD700;
+            --orange: #FFA500;
+            --indigo: #4B0082;
+            --purple: #8A2BE2;
+            --white: #fff;
+            --black: #000;
+            
+            /* Gradients */
+            --gradient-purple: linear-gradient(135deg, var(--indigo), var(--purple));
+            --gradient-gold: linear-gradient(135deg, var(--gold), var(--orange));
+            
+            /* Shadows */
+            --shadow-normal: 0 8px 30px rgba(0, 0, 0, 0.3);
+            --shadow-hover: 0 10px 40px rgba(0, 0, 0, 0.4);
+            
+            /* Transitions */
+            --transition-fast: 0.3s ease;
+        }
 
-/* Keyframes for Waving Up and Down Effect */
-@keyframes wave-up-down {
-    0%, 100% {
-        transform: translateY(0); /* Start and end at the original position */
-    }
-    50% {
-        transform: translateY(-10px); /* Move up slightly */
-    }
-}
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-/* Keyframes for Heartbeat Effect */
-@keyframes heartbeat {
-    0%, 100% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.1);
-    }
-}
+        body {
+            background-color: transparent;
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            min-height: 100vh;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: var(--black);
+            padding: 20px;
+        }
 
-/* Body Styles */
-body {
-    background-color: transparent; /* Transparent background */
-    display: flex;
-    justify-content: flex-start; /* Keep aligned to the left */
-    align-items: flex-start; /* Keep aligned to the top */
-    height: 100vh;
-    font-family: 'Poppins', sans-serif;
-    color: #000;
-    padding: 20px; /* Reduce padding to remove extra space */
-}
+        .test-container {
+            background: var(--black);
+            border-radius: 20px;
+            max-width: 600px;
+            width: 100%;
+            padding: 30px;
+            text-align: left;
+            position: relative;
+            box-shadow: var(--shadow-normal);
+            animation: heartbeat 4s infinite;
+            will-change: transform;
+        }
 
-/* Container */
-.test-container {
-    background: #000;
-    border-radius: 20px; /* Softer corners */
-    max-width: 600px;
-    width: 100%;
-    padding: 30px;
-    text-align: left;
-    position: relative;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3); /* Soft shadow for depth */
-    animation: heartbeat 4s infinite; /* Heartbeat effect */
-}
+        .test-container:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+            transition: var(--transition-fast);
+        }
 
-.test-container:hover {
-    transform: translateY(-5px);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4); /* Enhanced shadow on hover */
-}
+        h1 {
+            font-size: clamp(24px, 5vw, 35px);
+            color: var(--white);
+            margin-bottom: 15px;
+            font-weight: 900;
+            line-height: 1.5;
+            text-transform: uppercase;
+            animation: wave-up-down 2s infinite;
+            will-change: transform;
+        }
 
-/* Title */
-h1 {
-    font-size: 35px; /* Larger font size for impact */
-    color: #fff;
-    margin-bottom: 15px;
-    font-weight: 900; /* Extra bold for visual strength */
-    line-height: 1.5;
-    font-family: 'Impact', 'Arial Black', sans-serif; /* Use Impact or similar font */
-    text-transform: uppercase; /* Uppercase to match the style */
-    animation: wave-up-down 2s infinite; /* Slow waving up and down effect */
-}
+        p {
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            color: #f0f0f0;
+        }
 
-/* Paragraph */
-p {
-    font-size: 16px;
-    line-height: 1.8;
-    margin-bottom: 20px;
-    color: #f0f0f0; /* Softer white for better readability */
-}
+        .highlight {
+            color: var(--gold);
+            font-weight: 600;
+        }
 
-.highlight {
-    color: #FFD700;
-    font-weight: 600;
-}
+        .test-details p {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: var(--gradient-purple);
+            border-left: 5px solid var(--gold);
+            border-radius: 8px;
+            font-weight: 500;
+            color: var(--white);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: var(--transition-fast);
+        }
 
-/* Test Details */
-.test-details p {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-    padding: 15px;
-    background: linear-gradient(135deg, #4B0082, #8A2BE2); /* Cleaner gradient for purple tones */
-    border-left: 5px solid rgba(255, 215, 0, 0.9); /* Bright gold accent */
-    border-radius: 8px;
-    font-weight: 500;
-    font-size: 16px;
-    color: #fff; /* Ensure text is clear on gradient */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
-    transition: all 0.3s ease;
-}
+        .test-details p i {
+            margin-right: 10px;
+            font-size: 18px;
+            color: var(--gold);
+        }
 
-.test-details p i {
-    margin-right: 10px;
-    font-size: 18px;
-    color: #FFD700;
-}
+        .test-details p:hover {
+            transform: translateX(5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
 
-.test-details p:hover {
-    background: linear-gradient(135deg, #6A5ACD, #9370DB); /* Softer hover gradient */
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Slight lift effect */
-}
+        .test-button {
+            display: inline-block;
+            background: var(--gradient-gold);
+            color: var(--black);
+            padding: 12px 30px;
+            font-size: clamp(14px, 2vw, 18px);
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(255, 165, 0, 0.3);
+            transition: var(--transition-fast);
+            will-change: transform;
+        }
 
-/* Button */
-.test-button {
-    display: inline-block;
-    background: linear-gradient(135deg, #FFD700, #FFA500); /* Clean gold gradient */
-    color: #000;
-    padding: 12px 30px;
-    font-size: 18px;
-    border-radius: 20px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-decoration: none;
-    text-align: center;
-    box-shadow: 0 4px 10px rgba(255, 165, 0, 0.3); /* Subtle glow */
-}
+        .test-button:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(255, 165, 0, 0.5);
+            filter: brightness(1.1);
+        }
 
-.test-button:hover {
-    background: linear-gradient(135deg, #FFC107, #FF4500); /* Brighter hover */
-    transform: translateY(-4px);
-    box-shadow: 0 8px 20px rgba(255, 165, 0, 0.5); /* Enhance glow */
-}
+        @keyframes wave-up-down {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    .test-container {
-        padding: 25px;
-    }
-    h1 {
-        font-size: 30px;
-    }
-    p, .test-details p {
-        font-size: 15px;
-    }
-    .test-button {
-        padding: 12px 20px;
-        font-size: 16px;
-    }
-}
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
 
-@media (max-width: 480px) {
-    h1 {
-        font-size: 24px;
-    }
-    .test-container {
-        padding: 15px;
-    }
-    .test-details p {
-        font-size: 14px;
-    }
-    .test-button {
-        padding: 10px 18px;
-        font-size: 14px;
-    }
-}
-</style>
+        @media (prefers-reduced-motion: reduce) {
+            .test-container,
+            h1,
+            .test-button {
+                animation: none;
+                transition: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .test-container { padding: 25px; }
+            .test-details p { font-size: 15px; }
+        }
+    </style>
 </head>
 <body>
+    <div class="test-container">
+        <h1>Curious About Your French Level?</h1>
+        <p>Take our quick online grammar test to find out your level! Whether you are a <span class="highlight">beginner (A1, A2)</span> or <span class="highlight">intermediate (B1, B2)</span> French user, you can test your French level here and get instant feedback.</p>
+        
+        <div class="test-details">
+            <p><i class="fas fa-clock"></i>The test takes around <span class="highlight">5–15 minutes</span></p>
+            <p><i class="fas fa-list-ul"></i>All questions are <span class="highlight">multiple choice</span></p>
+            <p><i class="fas fa-check-circle"></i>Results appear instantly – <span class="highlight">no need</span> to wait 3 business days</p>
+        </div>
 
-<div class="test-container">
-    <h1>Curious About Your French Level?</h1>
-    <p>Take our quick online grammar test to find out your level! Whether you are a <span class="highlight">beginner (A1, A2)</span> or <span class="highlight">intermediate (B1, B2)</span> French user, you can test your French level here and get instant feedback.</p>
-    
-<div class="test-details">
-    <p><i class="fas fa-clock"></i> <span>The test takes around <span class="highlight">5–15 minutes</span></span></p>
-    <p><i class="fas fa-list-ul"></i> <span>All questions are <span class="highlight">multiple choice</span></span></p>
-    <p><i class="fas fa-check-circle"></i> <span>Results appear instantly – <span class="highlight">no need</span> to wait 3 business days</span></p>
-</div>
-
-    <a href="https://simplefrenchwithhems.com/order?link=3h6ux&pricing_plan=18B184e5zZ" target="_blank" rel="noopener noreferrer" class="test-button">Take the Test Now</a>
-</div>
-
+        <a href="https://simplefrenchwithhems.com/order?link=3h6ux&pricing_plan=18B184e5zZ" 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           class="test-button">
+            Take the Test Now
+        </a>
+    </div>
 </body>
 </html>
