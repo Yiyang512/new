@@ -233,129 +233,102 @@
             to { transform: scale(1.05) rotate(360deg); }
         }
 
-@media (max-width: 1100px) {
+@media (max-width: 480px) {
     .profile-container {
         flex-direction: column;
         margin: 10px;
-        padding: 20px;
+        padding: 15px;
+        align-items: center;
     }
 
     .image-section {
-        flex: 0 0 auto;
+        position: relative;
+        width: 100%;
+        max-width: 200px; /* Limit the size to fit within the container */
         margin-bottom: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     .orbit-container {
-        width: 300px;
-        height: 300px;
+        width: 100%;
+        max-width: 150px; /* Scale appropriately for small screens */
+        height: auto;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     .school-logo, .company-logo {
-        width: 50px;
-        height: 50px;
-    }
-
-    .purple-circle {
-        width: 200px;
-        height: 200px;
-    }
-
-    .turquoise-circle {
-        width: 180px;
-        height: 180px;
-    }
-
-    .yellow-circle {
-        width: 160px;
-        height: 160px;
-    }
-
-    .profile-image {
-        width: 150px;
-        height: 150px;
-    }
-
-    .name {
-        font-size: 1.8em;
-    }
-
-    .position {
-        font-size: 1em;
-    }
-
-    .bio p {
-        font-size: 0.9em;
-    }
-}
-
-@media (max-width: 480px) {
-    .profile-container {
-        margin: 5px;
-        padding: 10px;
-    }
-
-    .image-section {
-        margin-bottom: 15px;
-    }
-
-    .orbit-container {
-        width: 150px;
-        height: 150px;
-    }
-
-    .school-logo, .company-logo {
-        width: 40px;
+        width: 40px; /* Scale down logos */
         height: 40px;
+        position: absolute;
+    }
+
+    .school-logo {
+        top: -20px;
+    }
+
+    .company-logo {
+        bottom: -20px;
     }
 
     .purple-circle {
         width: 120px;
         height: 120px;
+        border: 3px solid var(--neon-purple);
     }
 
     .turquoise-circle {
         width: 100px;
         height: 100px;
+        border: 3px solid var(--neon-blue);
     }
 
     .yellow-circle {
-        width: 90px;
-        height: 90px;
+        width: 80px;
+        height: 80px;
+        border: 3px solid var(--neon-yellow);
     }
 
     .profile-image {
         width: 100px;
         height: 100px;
+        border-radius: 50%;
+        z-index: 2;
+        animation: pulseGlow 2s infinite alternate ease-in-out;
+    }
+
+    .content-section {
+        text-align: center; /* Center text for smaller screens */
     }
 
     .name {
-        font-size: 1.5em;
+        font-size: 1.8em; /* Adjust font size */
+        margin: 10px 0;
     }
 
     .position {
-        font-size: 0.9em;
+        font-size: 1em;
     }
 
     .bio p {
-        font-size: 0.8em;
+        font-size: 0.9em;
     }
 
     .highlights {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr; /* Single column for highlights */
+        gap: 15px;
     }
 
     .highlight-item {
         padding: 10px;
-    }
-
-    .highlight-title {
-        font-size: 1em;
-    }
-
-    .highlight-content {
         font-size: 0.8em;
     }
 }
+
 
     </style>
 </head>
