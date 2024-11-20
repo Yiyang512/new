@@ -40,27 +40,21 @@
             pointer-events: none;
         }
 
-        .profile-container {
-            max-width: 1200px;
-            margin: 40px;
-            padding: 30px;
-            display: flex;
-            gap: 40px;
-            background: rgba(0, 0, 0, 0.85);
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            border: 4px solid var(--primary-blue);
-            position: relative;
-            z-index: 1;
-        }
+      .profile-container {
+    display: flex;
+    flex-direction: column; /* Stack vertically for mobile */
+    align-items: center; /* Center elements inside container */
+    justify-content: center; /* Avoid extra space by centering */
+    padding: 0; /* Ensure no padding adds space */
+}
 
-        .image-section {
-            flex: 0 0 400px;
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+.image-section {
+    display: flex;
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+    flex-direction: column; /* Stack elements if needed */
+}
+
 
         .purple-circle, .turquoise-circle, .yellow-circle {
             position: absolute;
