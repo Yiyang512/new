@@ -233,36 +233,54 @@
             to { transform: scale(1.05) rotate(360deg); }
         }
 
-@media (max-width: 480px) {
+@media (max-width: 768px) {
     .profile-container {
+        max-width: 100%;
         flex-direction: column;
-        margin: 10px;
         padding: 15px;
         align-items: center;
     }
 
     .image-section {
-        position: relative;
         width: 100%;
-        max-width: 200px; /* Limit the size to fit within the container */
-        margin-bottom: 20px;
         display: flex;
         justify-content: center;
         align-items: center;
+        margin-bottom: 20px;
     }
 
     .orbit-container {
-        width: 100%;
-        max-width: 150px; /* Scale appropriately for small screens */
-        height: auto;
-        position: relative;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        width: 180px;
+        height: 180px;
+    }
+
+    .purple-circle {
+        width: 140px;
+        height: 140px;
+        border: 3px solid var(--neon-purple);
+    }
+
+    .turquoise-circle {
+        width: 120px;
+        height: 120px;
+        border: 3px solid var(--neon-blue);
+    }
+
+    .yellow-circle {
+        width: 100px;
+        height: 100px;
+        border: 3px solid var(--neon-yellow);
+    }
+
+    .profile-image {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        animation: pulseGlow 2s infinite alternate ease-in-out;
     }
 
     .school-logo, .company-logo {
-        width: 40px; /* Scale down logos */
+        width: 40px;
         height: 40px;
         position: absolute;
     }
@@ -275,57 +293,42 @@
         bottom: -20px;
     }
 
-    .purple-circle {
-        width: 120px;
-        height: 120px;
-        border: 3px solid var(--neon-purple);
-    }
-
-    .turquoise-circle {
-        width: 100px;
-        height: 100px;
-        border: 3px solid var(--neon-blue);
-    }
-
-    .yellow-circle {
-        width: 80px;
-        height: 80px;
-        border: 3px solid var(--neon-yellow);
-    }
-
-    .profile-image {
-        width: 100px;
-        height: 100px;
-        border-radius: 50%;
-        z-index: 2;
-        animation: pulseGlow 2s infinite alternate ease-in-out;
-    }
-
     .content-section {
-        text-align: center; /* Center text for smaller screens */
+        width: 100%;
+        text-align: center;
+        padding: 10px;
     }
 
     .name {
-        font-size: 1.8em; /* Adjust font size */
+        font-size: 18px;
         margin: 10px 0;
     }
 
     .position {
-        font-size: 1em;
+        font-size: 14px;
+        margin: 10px 0;
     }
 
     .bio p {
-        font-size: 0.9em;
+        font-size: 12px;
+        margin: 10px 0;
     }
 
     .highlights {
-        grid-template-columns: 1fr; /* Single column for highlights */
+        grid-template-columns: 1fr;
         gap: 15px;
+        margin: 20px 0;
     }
 
     .highlight-item {
         padding: 10px;
-        font-size: 0.8em;
+        font-size: 12px;
+    }
+
+    .connect-button {
+        font-size: 14px;
+        padding: 8px 20px;
+        border-width: 3px;
     }
 }
 
