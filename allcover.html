@@ -31,32 +31,15 @@
             overflow: hidden;
             width: calc(33.33% - 30px); /* 3 cards per row */
             max-width: 150px;
-            transform: scale(0.9);
-            opacity: 0;
-            transition: box-shadow 0.5s ease;
+            transform: translateY(30px); /* Start slightly below */
+            opacity: 0; /* Start invisible */
+            transition: transform 0.6s ease, opacity 0.6s ease; /* Smooth effect */
             box-shadow: 0 0 20px rgba(255, 0, 127, 0.4);
-            animation: popIn 0.6s ease forwards, waving 3s ease-in-out infinite;
             border: 2px solid transparent;
         }
-        @keyframes popIn {
-            0% {
-                opacity: 0;
-                transform: scale(0.8);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-        @keyframes waving {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-10px);
-            }
-        }
         .course-card.visible {
+            transform: translateY(0); /* Slide into place */
+            opacity: 1; /* Fully visible */
             box-shadow: 0 0 20px rgba(255, 0, 127, 0.6), 0 0 30px rgba(148, 0, 211, 0.6), 0 0 40px rgba(0, 191, 255, 0.6);
             border-image: linear-gradient(45deg, #00f5ff, #6a00ff, #ff004d) 1;
         }
@@ -76,7 +59,6 @@
             z-index: 1;
             position: relative;
         }
-        /* Mobile adjustments */
         @media (max-width: 767px) {
             .section {
                 padding: 10px;
@@ -84,7 +66,6 @@
             .course-card {
                 width: calc(33.33% - 20px); /* 3 cards per row on mobile */
                 max-width: none;
-                transform: scale(1);
             }
         }
     </style>
@@ -133,19 +114,26 @@
     </div>
 
     <script>
+        // Function to reveal course cards on scroll
         function revealCourses() {
             const courseCards = document.querySelectorAll('.course-card');
+            const windowHeight = window.innerHeight;
+
             courseCards.forEach((card, index) => {
                 const courseTop = card.getBoundingClientRect().top;
-                const windowHeight = window.innerHeight;
+
+                // Check if the element is within view
                 if (courseTop < windowHeight - 50) {
-                    card.style.animationDelay = `${index * 0.2}s`;
+                    card.style.transitionDelay = `${index * 0.1}s`; // Stagger effect
                     card.classList.add('visible');
                 }
             });
         }
 
-        revealCourses();
+        // Trigger the reveal on page load and scroll
+        document.addEventListener('DOMContentLoaded', () => {
+            revealCourses(); // Run initially for elements already in view
+        });
         window.addEventListener('scroll', revealCourses);
     </script>
 </body>
