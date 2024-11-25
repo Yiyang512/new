@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple French with Hems - In One Place</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Poppins, sans-serif;
+      background-color: #000; /* Fully black background */
+      color: white;
+    }
+
+    .container {
+      text-align: center;
+      padding: 30px 0;
+    }
+
+    .container h1 {
+      font-size: 2.5rem;
+      color: hsl(225, 100%, 56%);
+      margin: 0 0 5px;
+    }
+
+    .slideshow {
+      max-width: 90%;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .row {
+      position: relative;
+      overflow: hidden;
+      margin: 5px 0;
+      padding: 5px 0;
+    }
+
+    .slides {
+      display: flex;
+      animation: scroll-left 35s linear infinite;
+    }
+
+    .row:nth-child(2) .slides {
+      animation: scroll-right 35s linear infinite;
+    }
+
+    .slide {
+      flex: 0 0 20%; /* Smaller boxes */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      padding: 15px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      text-align: center;
+      border-radius: 15px; /* Rounded corners */
+      background-color: #1a1a2e; /* Retaining original color */
+      color: white;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Soft shadow */
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      margin: 0 10px; /* Increased spacing for better visual separation */
+    }
+
+    .slide:hover {
+      transform: scale(1.05); /* Slight zoom on hover */
+      box-shadow: 0 8px 12px rgba(0, 0, 0, 0.5); /* Enhanced shadow on hover */
+    }
+
+    .slide strong {
+      color: #b3ff00; /* Neon green for title */
+      font-size: 1rem;
+      margin-bottom: 5px;
+    }
+
+    .slide span {
+      color: #e0e0e0; /* Lighter text color for better contrast */
+      font-size: 0.8rem;
+      font-weight: normal;
+    }
+
+    .join-btn {
+      display: inline-block;
+      margin-top: 20px;
+      background-color: #b3ff00;
+      color: #000;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-size: 1rem;
+      transition: all 0.5s ease;
+    }
+
+    .join-btn:hover {
+      background-color: #8ad400;
+    }
+
+    @keyframes scroll-left {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+
+    @keyframes scroll-right {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="slideshow">
+      <div class="row">
+        <div class="slides">
+          <div class="slide">
+            <strong>Immigrants</strong><span>Improve French for PR points</span>
+          </div>
+          <div class="slide">
+            <strong>Students</strong><span>Pass DELF & TEF exams</span>
+          </div>
+          <div class="slide">
+            <strong>Job Seekers</strong><span>Open new career opportunities</span>
+          </div>
+          <div class="slide">
+            <strong>Professionals</strong><span>Enhance workplace communication</span>
+          </div>
+          <div class="slide">
+            <strong>Parents</strong><span>Help children learn French</span>
+          </div>
+          <div class="slide">
+            <strong>Entrepreneurs</strong><span>Grow business in French markets</span>
+          </div>
+          <div class="slide">
+            <strong>Teachers</strong><span>Boost teaching certifications</span>
+          </div>
+          <div class="slide">
+            <strong>Travelers</strong><span>Navigate Quebec with ease</span>
+          </div>
+          <div class="slide">
+            <strong>Retirees</strong><span>Enjoy cultural immersion</span>
+          </div>
+          <div class="slide">
+            <strong>Language Enthusiasts</strong><span>Achieve bilingual dreams</span>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="slides">
+          <div class="slide">
+            <strong>New Canadians</strong><span>Settle in bilingual regions</span>
+          </div>
+          <div class="slide">
+            <strong>University Applicants</strong><span>Fulfill language requirements</span>
+          </div>
+          <div class="slide">
+            <strong>Public Sector Workers</strong><span>Qualify for government jobs</span>
+          </div>
+          <div class="slide">
+            <strong>Healthcare Workers</strong><span>Serve French-speaking patients</span>
+          </div>
+          <div class="slide">
+            <strong>Engineers</strong><span>Expand job prospects in Quebec</span>
+          </div>
+          <div class="slide">
+            <strong>IT Professionals</strong><span>Compete in tech hubs</span>
+          </div>
+          <div class="slide">
+            <strong>Researchers</strong><span>Collaborate in French academia</span>
+          </div>
+          <div class="slide">
+            <strong>Business Owners</strong><span>Engage with French clients</span>
+          </div>
+          <div class="slide">
+            <strong>High School Students</strong><span>Prepare for French diploma</span>
+          </div>
+          <div class="slide">
+            <strong>Global Nomads</strong><span>Thrive in a bilingual world</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
