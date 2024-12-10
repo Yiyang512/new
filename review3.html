@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testimonials - Simple French with Hems</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .testimonial-section {
+            max-width: 1200px;
+            padding: 40px;
+            text-align: center;
+        }
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        .testimonial-card {
+            background-color: #111;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            animation: glow 5s linear infinite, wave 3s ease-in-out infinite;
+            border: 2px solid transparent;
+            transition: transform 0.3s ease;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+        .testimonial-card:nth-child(1) { animation-delay: 0s, 0s; }
+        .testimonial-card:nth-child(2) { animation-delay: 0.5s, 0.5s; }
+        .testimonial-card:nth-child(3) { animation-delay: 1s, 1s; }
+        .testimonial-card:hover {
+            transform: scale(1.05);
+        }
+        .testimonial-card::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(120deg, rgba(0, 170, 255, 0.4), rgba(138, 43, 226, 0.4), rgba(255, 20, 147, 0.4));
+            opacity: 0.7;
+            z-index: -1;
+            animation: shine 3s linear infinite;
+        }
+        .testimonial-card::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #00aaff, #8a2be2, #ff1493, #ff69b4);
+            border-radius: 10px;
+            z-index: -1;
+            animation: border-shine 4s linear infinite;
+        }
+        @keyframes border-shine {
+            0% {
+                opacity: 0.8;
+                box-shadow: 0 0 10px #00aaff, 0 0 20px #8a2be2, 0 0 30px #ff1493, 0 0 40px #ff69b4;
+            }
+            50% {
+                opacity: 1;
+                box-shadow: 0 0 20px #00aaff, 0 0 30px #8a2be2, 0 0 40px #ff1493, 0 0 50px #ff69b4;
+            }
+            100% {
+                opacity: 0.8;
+                box-shadow: 0 0 10px #00aaff, 0 0 20px #8a2be2, 0 0 30px #ff1493, 0 0 40px #ff69b4;
+            }
+        }
+        @keyframes shine {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 15px rgba(255, 255, 255, 0.1); }
+            50% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.2); }
+        }
+        @keyframes wave {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .stars {
+            color: #fff;
+            margin: 10px 0;
+            font-size: 1.2rem;
+        }
+        .testimonial-text {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin: 15px 0;
+            color: #ccc;
+        }
+        .author {
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: #00bfff;
+        }
+        .author::before {
+            content: "💎 ";
+            margin-right: 5px;
+        }
+        @media (max-width: 768px) {
+            .testimonial-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="testimonial-section">
+    <div class="testimonial-grid">
+        <!-- Testimonial 1 -->
+        <div class="testimonial-card">
+            <div class="stars">★★★★★</div>
+            <p class="testimonial-text">
+                "This course transformed my French accent! The tips on pronunciation, especially for the 'r' sounds, were a game-changer. I now feel so much more confident speaking with native speakers!"
+            </p>
+            <p class="author">Emma Davis, Toronto, Canada</p>
+        </div>
+
+        <!-- Testimonial 2 -->
+        <div class="testimonial-card">
+            <div class="stars">★★★★★</div>
+            <p class="testimonial-text">
+                "A fun and interactive approach to mastering pronunciation! The exercises helped me overcome my fear of speaking, and I now feel ready to speak French confidently."
+            </p>
+            <p class="author">Alex Martinez, Barcelona, Spain</p>
+        </div>
+
+        <!-- Testimonial 3 -->
+        <div class="testimonial-card">
+            <div class="stars">★★★★★</div>
+            <p class="testimonial-text">
+                "I was struggling with my accent, but this course has completely changed that. I can roll my 'r's' and speak without hesitation. It’s made a huge difference in my fluency!"
+            </p>
+            <p class="author">Maxime Lefevre, Paris, France</p>
+        </div>
+
+        <!-- Testimonial 4 -->
+        <div class="testimonial-card">
+            <div class="stars">★★★★★</div>
+            <p class="testimonial-text">
+                "The grammar explanations are crystal clear and practical. I finally understand the future anterior tense, and the exercises really cemented my knowledge!"
+            </p>
+            <p class="author">Sophie Nguyen, Vancouver, Canada</p>
+        </div>
+
+        <!-- Testimonial 5 -->
+        <div class="testimonial-card">
+            <div class="stars">★★★★★</div>
+            <p class="testimonial-text">
+                "This course helped me bridge the gap between A2 and B1. The focus on conversational phrases and real-life situations made my learning journey so enjoyable."
+            </p>
+            <p class="author">Javier Torres, Madrid, Spain</p>
+        </div>
+
+        <!-- Testimonial 6 -->
+        <div class="testimonial-card">
+            <div class="stars">★★★★★</div>
+            <p class="testimonial-text">
+                "The vocabulary-building strategies were excellent! I’ve expanded my word bank and can now write essays with ease. Merci beaucoup!"
+            </p>
+            <p class="author">Liam O'Connor, Dublin, Ireland</p>
+        </div>
+
+        <!-- Testimonial 7 -->
+        <div class="testimonial-card">
+            <div class="stars">★★★★★</div>
+            <p class="testimonial-text">
+                "Learning French has never been this engaging. The interactive lessons kept me motivated, and I now feel ready to tackle the B2 level with confidence."
+            </p>
+            <p class="author">Aisha Khan, Dubai, UAE</p>
+        </div>
+
+        <!-- Testimonial 8 -->
+        <div class="testimonial-card">
+            <div class="stars">★★★★★</div>
+            <p class="testimonial-text">
+                "The structured approach to mastering verb conjugations and sentence formation has made all the difference. I can finally express myself without second-guessing!"
+            </p>
+            <p class="author">Mateo Rossi, Rome, Italy</p>
+        </div>
+
+        <!-- Testimonial 9 -->
+        <div class="testimonial-card">
+            <div class="stars">★★★★★</div>
+            <p class="testimonial-text">
+                "The balance of grammar, vocabulary, and speaking practice was perfect. This course gave me the tools to succeed in my French B1 certification exam!"
+            </p>
+            <p class="author">Hanna Schmidt, Berlin, Germany</p>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
