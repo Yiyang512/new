@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Your Loyalty Card</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            margin: 0;
+            padding: 0;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            background: linear-gradient(145deg, #111, #222);
+            border: 1px solid #333;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0, 255, 255, 0.5), 0 5px 10px rgba(255, 20, 147, 0.4);
+            overflow: hidden;
+            max-width: 900px;
+            width: 100%;
+            margin: 20px;
+            position: relative;
+        }
+        .container::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 255, 255, 0.2), transparent);
+            animation: pulse-bg 5s infinite linear;
+        }
+        @keyframes pulse-bg {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        .left-section, .right-section {
+            flex: 1 1 300px;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        .left-section {
+   background: linear-gradient(135deg, #6A00F4, #B620E0, #FF00FF);
+
+
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .left-section img {
+            max-width: 80%;
+            height: auto;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+        .left-section p {
+            font-size: 1.2rem;
+            margin: 10px 0;
+        }
+        .right-section {
+            background-color: #1a1a1a;
+            color: #fff;
+            border-left: 2px solid #444;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-shadow: inset 0 0 10px rgba(0, 255, 255, 0.2);
+        }
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: #00E5FF;
+            text-shadow: 0 0 10px #00E5FF;
+        }
+        p {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            color: #FFFFFF;
+        }
+        .qr-code {
+            margin: 20px auto;
+            display: block;
+            width: 140px;
+            height: 140px;
+            border: 3px solid #00E5FF;
+            border-radius: 15px;
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+        }
+        .wallet-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #000;
+            background: linear-gradient(135deg, #00E5FF, #00BFFF);
+            text-decoration: none;
+            border-radius: 10px;
+            box-shadow: 0 6px 12px rgba(0, 229, 255, 0.6);
+            transition: all 0.3s ease;
+        }
+        .button:hover {
+            background: linear-gradient(135deg, #00BFFF, #00E5FF);
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 229, 255, 0.8);
+        }
+        .wallet-buttons img {
+            height: 50px;
+            transition: transform 0.3s ease;
+        }
+        .wallet-buttons img:hover {
+            transform: scale(1.1);
+        }
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            .right-section {
+                border-left: none;
+                border-top: 2px solid #444;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Left Section -->
+        <div class="left-section">
+            <img src="https://yiyang512.github.io/new/carddd.png" alt="Loyalty Card Preview">
+            <p><strong>Coupon Offer</strong><br>$80.00</p>
+            <p><strong>EXPIRES AT</strong><br>2026/12/7</p>
+        </div>
+
+        <!-- Right Section -->
+        <div class="right-section">
+            <h1>Scan this QR Code to add the pass to your Wallet app</h1>
+            <img src="https://yiyang512.github.io/new/qrcode.png" alt="QR Code" class="qr-code">
+            <p>This QR code is unique to your loyalty pass. Please do not share it with others.</p>
+            <div class="wallet-buttons">
+                <a href="YOUR-APPLE-WALLET-PASS-URL" class="button">
+                    Scan to Add to Apple Wallet
+                </a>
+               
+            </div>
+        </div>
+    </div>
+</body>
+</html>
