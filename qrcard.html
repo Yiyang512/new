@@ -15,7 +15,6 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            overflow: hidden;
         }
         .container {
             display: flex;
@@ -25,7 +24,6 @@
             border: 1px solid #333;
             border-radius: 20px;
             box-shadow: 0 10px 20px rgba(0, 255, 255, 0.5), 0 5px 10px rgba(255, 20, 147, 0.4);
-            overflow: hidden;
             max-width: 900px;
             width: 100%;
             margin: 20px;
@@ -57,9 +55,7 @@
             z-index: 1;
         }
         .left-section {
-   background: linear-gradient(135deg, #6A00F4, #B620E0, #FF00FF);
-
-
+            background: linear-gradient(135deg, #6A00F4, #B620E0, #FF00FF);
             color: #fff;
             display: flex;
             flex-direction: column;
@@ -132,20 +128,29 @@
             transform: scale(1.05);
             box-shadow: 0 8px 16px rgba(0, 229, 255, 0.8);
         }
-        .wallet-buttons img {
-            height: 50px;
-            transition: transform 0.3s ease;
-        }
-        .wallet-buttons img:hover {
-            transform: scale(1.1);
-        }
+        /* Mobile-specific styles */
         @media (max-width: 768px) {
             .container {
                 flex-direction: column;
+                max-width: 100%;
+                margin: 10px;
             }
-            .right-section {
-                border-left: none;
-                border-top: 2px solid #444;
+            .left-section, .right-section {
+                padding: 15px;
+            }
+            .left-section img, .qr-code {
+                max-width: 60%;
+                margin-bottom: 10px;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+            p {
+                font-size: 1rem;
+            }
+            .button {
+                font-size: 1rem;
+                padding: 10px 20px;
             }
         }
     </style>
@@ -168,7 +173,6 @@
                 <a href="YOUR-APPLE-WALLET-PASS-URL" class="button">
                     Scan to Add to Apple Wallet
                 </a>
-               
             </div>
         </div>
     </div>
