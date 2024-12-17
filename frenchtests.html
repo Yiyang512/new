@@ -3,139 +3,163 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>French Stories - Diploma Speaking Test</title>
+    <title>Animated French Stories</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-
+        /* Base styling for the page */
         body {
-            background-color: #000000;
-            color: #ffffff;
-            line-height: 1.6;
-            padding: 0;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: #fff;
+            overflow: hidden;
         }
 
-        .container {
-            max-width: 1100px;
-            margin: 50px auto;
-            padding: 30px 20px;
-            background: linear-gradient(145deg, #0d0d0d, #1f1f1f);
-            border-radius: 16px;
-            box-shadow: 0 8px 20px rgba(0, 242, 255, 0.4);
-            transition: transform 0.3s ease-in-out;
+        /* Main banner container */
+        .banner {
+            position: relative;
+            width: 750px;
+            height: 450px;
+            background-color: #111;
+            border-radius: 20px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease;
+            animation: tilt 5s ease-in-out infinite alternate;
         }
 
-        h1 {
+        /* Tilt animation */
+        @keyframes tilt {
+            0% { transform: rotateX(0deg) rotateY(0deg); }
+            100% { transform: rotateX(10deg) rotateY(-10deg); }
+        }
+
+        /* Multi-layer glowing border */
+        .banner::before, .banner::after {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(120deg, rgba(0, 170, 255, 0.3), rgba(138, 43, 226, 0.3), rgba(255, 20, 147, 0.3));
+            opacity: 0.7;
+            z-index: -1;
+            animation: rotate-bg 12s linear infinite;
+            border-radius: 20px;
+        }
+
+        .banner::after {
+            filter: blur(20px);
+            opacity: 0.5;
+        }
+
+        @keyframes rotate-bg {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* Text Container */
+        .text-container {
             text-align: center;
-            color: #00f6ff;
-            margin-bottom: 15px;
-            font-size: 2.2rem;
+            z-index: 2;
+            text-shadow: 0 0 20px rgba(0, 255, 255, 0.9), 0 0 15px rgba(0, 170, 255, 0.7);
+        }
+
+        /* Main title with animated gradient and shadow */
+        .title {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #e0e0e0;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            font-weight: 600;
-            text-shadow: 0 0 12px rgba(0, 246, 255, 0.6);
+            background: linear-gradient(90deg, #00eaff, #ff69b4, #8a2be2, #00eaff);
+            background-size: 200%;
+            -webkit-background-clip: text;
+            color: transparent;
+            animation: gradient-flow 6s linear infinite, depth-shadow 3s ease-in-out infinite;
         }
 
-        h2 {
-            text-align: center;
-            color: #a8faff;
-            margin-bottom: 20px;
-            font-size: 1.2rem;
-            font-weight: 400;
-            letter-spacing: 1px;
-            text-shadow: 0 0 8px rgba(168, 250, 255, 0.6);
+        @keyframes gradient-flow {
+            0% { background-position: 0%; }
+            100% { background-position: 100%; }
         }
 
-        p {
-            text-align: center;
-            font-size: 0.95rem;
-            margin-bottom: 20px 40px;
-            color: #dcdcdc;
-            line-height: 3;
+        /* Subtitle */
+        .subtitle {
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            color: #8ab4f8;
+            margin-top: 10px;
+            animation: glow-text 2s infinite alternate-reverse;
         }
 
-        .content-box {
-            padding: 20px;
-            margin-top: 20px;
-            background: linear-gradient(135deg, #1a1a1a, #252525);
-            border-left: 4px solid #00e6ff;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 230, 255, 0.3);
-            color: #ffffff;
-            transition: all 0.3s ease-in-out;
+        /* Description text */
+        .description {
+            font-size: 1rem;
+            margin-top: 15px;
+            line-height: 1.5;
+            color: #b0e0ff;
+            max-width: 600px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
         }
 
-        .content-box:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 18px rgba(0, 230, 255, 0.5);
+        @keyframes glow-text {
+            from { text-shadow: 0 0 15px #00eaff, 0 0 20px #8a2be2; }
+            to { text-shadow: 0 0 25px #ff1493, 0 0 30px #00eaff; }
         }
 
-        .content-box strong {
-            color: #00f6ff;
-            font-weight: 500;
+        /* Button styling */
+        .central-button {
+            position: absolute;
+            bottom: 25px;
+            padding: 12px 30px;
+            border: 2px solid #00bfff;
+            border-radius: 10px;
+            color: #00bfff;
+            font-size: 1rem;
+            text-transform: uppercase;
+            text-shadow: 0 0 5px #00bfff;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            animation: button-shimmer 1.5s ease-in-out infinite alternate;
         }
 
-        /* Responsive UI */
-        @media (max-width: 1024px) {
-            .container {
-                padding: 25px 15px;
-            }
-            h1 {
-                font-size: 2rem;
-            }
-            h2 {
-                font-size: 1.1rem;
-            }
-            p {
-                font-size: 0.9rem;
-            }
+        .central-button:hover {
+            background: #00bfff;
+            color: #000;
+            transform: scale(1.05);
         }
 
-        @media (max-width: 768px) {
-            .container {
-                padding: 20px 12px;
-            }
-            h1 {
-                font-size: 1.8rem;
-            }
-            h2 {
-                font-size: 1rem;
-            }
-            p {
-                font-size: 0.85rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .container {
-                padding: 15px 10px;
-                border-radius: 10px;
-            }
-            h1 {
-                font-size: 1.6rem;
-                letter-spacing: 1px;
-            }
-            h2 {
-                font-size: 0.9rem;
-            }
-            .content-box {
-                padding: 15px;
-            }
-            p {
-                font-size: 0.8rem;
-            }
+        @keyframes button-shimmer {
+            0% { box-shadow: 0 0 10px #00eaff; }
+            100% { box-shadow: 0 0 20px #ff69b4; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Animated French Stories</h1>
-        <h2>Your French Journey, Brought to Life</h2>
-        <p>Explore engaging stories that make practical French come alive, from daily conversations to exam preparation!<p>
+
+<div class="banner">
+    <div class="text-container">
+        <h1 class="title">Animated French Stories</h1>
+        <p class="subtitle">Your French Journey, Brought to Life!</p>
+        <p class="description">
+            Explore engaging stories that make practical French come alive, 
+            from daily conversations to exam preparation!
+        </p>
     </div>
+    <div class="central-button">Start Learning Below</div>
+</div>
+
 </body>
 </html>
+
+
