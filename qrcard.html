@@ -19,14 +19,13 @@
         }
         .container {
             display: flex;
-            flex-wrap: wrap;
             justify-content: center;
             background: linear-gradient(145deg, #111, #222);
             border: 1px solid #333;
             border-radius: 20px;
             box-shadow: 0 10px 20px rgba(0, 255, 255, 0.5), 0 5px 10px rgba(255, 20, 147, 0.4);
             overflow: hidden;
-            max-width: 1400px;
+            max-width: 800px;
             width: 100%;
             margin: 30px;
             position: relative;
@@ -49,62 +48,34 @@
                 transform: rotate(360deg);
             }
         }
-        .left-section, .right-section {
-            flex: 1 1 300px;
+        .right-section {
+            flex: 1;
             padding: 20px;
             text-align: center;
-            position: relative;
-            z-index: 1;
-        }
-        .left-section {
-  background: linear-gradient(135deg, 
-    rgba(106, 0, 244, 0.05), 
-    rgba(182, 32, 224, 0.05), 
-    rgba(255, 0, 255, 0.05));
-
-
-            color: #fff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-        .left-section img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 15px;
-            margin-bottom: 15px;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-        }
-        .left-section p {
-            font-size: 1.2rem;
-            margin: 10px 0;
-        }
-        .right-section {
             background-color: #1a1a1a;
             color: #fff;
-            border-left: 2px solid #444;
             display: flex;
             flex-direction: column;
             justify-content: center;
             box-shadow: inset 0 0 10px rgba(0, 255, 255, 0.2);
+            max-width: 500px;
         }
         h1 {
-            font-size: 2rem;
+            font-size: 1.8rem;
             margin-bottom: 15px;
             color: #00E5FF;
             text-shadow: 0 0 10px #00E5FF;
         }
         p {
-            font-size: 1.1rem;
+            font-size: 1rem;
             margin-bottom: 15px;
             color: #FFFFFF;
         }
         .qr-code {
             margin: 20px auto;
             display: block;
-            width: 140px;
-            height: 140px;
+            width: 120px;
+            height: 120px;
             border: 3px solid #00E5FF;
             border-radius: 15px;
             box-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
@@ -120,8 +91,8 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 12px 24px;
-            font-size: 1.1rem;
+            padding: 10px 20px;
+            font-size: 1rem;
             font-weight: bold;
             color: #000;
             background: linear-gradient(135deg, #00E5FF, #00BFFF);
@@ -135,87 +106,19 @@
             transform: scale(1.05);
             box-shadow: 0 8px 16px rgba(0, 229, 255, 0.8);
         }
-        .wallet-buttons img {
-            height: 50px;
-            transition: transform 0.3s ease;
-        }
-        .wallet-buttons img:hover {
-            transform: scale(1.1);
-        }
-               @media (max-width: 480px) {
-            body {
-                font-size: 0.9rem;
-                overflow-y: auto;
-            }
-            .container {
-                margin: 10px;
-                box-shadow: none;
-                border-radius: 10px;
-            }
-            .left-section, .right-section {
-                padding: 10px;
-            }
-            .left-section img {
-                max-width: 90%;
-                margin-bottom: 10px;
-            }
-            .right-section h1 {
-                font-size: 1.5rem;
-            }
-            .qr-code {
-                width: 100px;
-                height: 100px;
-            }
-            .button {
-                padding: 10px 16px;
-                font-size: 1rem;
-            }
-            .wallet-buttons img {
-                height: 40px;
-            }
-        }
-        @media (min-width: 1200px) {
-            .container {
-                max-width: 1100px;
-            }
-            .left-section img {
-                max-width: 70%;
-            }
-            .right-section h1 {
-                font-size: 2.5rem;
-            }
-            .qr-code {
-                width: 160px;
-                height: 160px;
-            }
-            .button {
-                font-size: 1.2rem;
-                padding: 14px 28px;
-            }
-        }
-
- 
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Left Section -->
-        <div class="left-section">
-            <img src="https://yiyang512.github.io/new/carddd.png" alt="Loyalty Card Preview">
-            <p><strong>Offer</strong><br>$80.00 OFF at Checkout</p>
-            <p><strong>EXPIRES AT</strong><br>2026/12/7</p>
-        </div>
-
         <!-- Right Section -->
         <div class="right-section">
-            <h1>Scan this QR Code to add loyalty pass to Wallet app</h1>
+            <h1>Scan this QR Code to add our loyalty pass to Wallet app</h1>
             <img src="https://yiyang512.github.io/new/qrcode.png" alt="QR Code" class="qr-code">
             <p>This QR code is unique to your loyalty pass. Please do not share it with others.</p>
             <div class="wallet-buttons">
                 <a href="YOUR-APPLE-WALLET-PASS-URL" class="button">
                     Scan to Add to Apple Wallet
                 </a>
-               
             </div>
         </div>
     </div>
