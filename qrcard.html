@@ -26,15 +26,15 @@
             border-radius: 20px;
             box-shadow: 0 10px 20px rgba(0, 255, 255, 0.5), 0 5px 10px rgba(255, 20, 147, 0.4);
             overflow: hidden;
-            max-width: 900px;
+            max-width: 1400px;
             width: 100%;
-            margin: 20px;
+            margin: 30px;
             position: relative;
         }
         .container::before {
             content: "";
             position: absolute;
-            top: -50%;
+            top: -100%;
             left: -50%;
             width: 200%;
             height: 200%;
@@ -57,7 +57,10 @@
             z-index: 1;
         }
         .left-section {
-   background: linear-gradient(135deg, #6A00F4, #B620E0, #FF00FF);
+  background: linear-gradient(135deg, 
+    rgba(106, 0, 244, 0.05), 
+    rgba(182, 32, 224, 0.05), 
+    rgba(255, 0, 255, 0.05));
 
 
             color: #fff;
@@ -67,7 +70,7 @@
             justify-content: center;
         }
         .left-section img {
-            max-width: 80%;
+            max-width: 100%;
             height: auto;
             border-radius: 15px;
             margin-bottom: 15px;
@@ -199,13 +202,13 @@
         <!-- Left Section -->
         <div class="left-section">
             <img src="https://yiyang512.github.io/new/carddd.png" alt="Loyalty Card Preview">
-            <p><strong>Coupon Offer</strong><br>$80.00</p>
+            <p><strong>Offer</strong><br>$80.00 OFF at Checkout</p>
             <p><strong>EXPIRES AT</strong><br>2026/12/7</p>
         </div>
 
         <!-- Right Section -->
         <div class="right-section">
-            <h1>Scan this QR Code to add the pass to your Wallet app</h1>
+            <h1>Scan this QR Code to add loyalty pass to Wallet app</h1>
             <img src="https://yiyang512.github.io/new/qrcode.png" alt="QR Code" class="qr-code">
             <p>This QR code is unique to your loyalty pass. Please do not share it with others.</p>
             <div class="wallet-buttons">
