@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -6,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Curious About Your French Level?</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Impact&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
 /* General Reset */
 * {
@@ -42,7 +41,7 @@ body {
     justify-content: flex-start; /* Keep aligned to the left */
     align-items: flex-start; /* Keep aligned to the top */
     height: 100vh;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Poppins', sans-serif; /* Changed to Poppins */
     color: #000;
     padding: 20px; /* Reduce padding to remove extra space */
 }
@@ -84,11 +83,13 @@ p {
     line-height: 1.8;
     margin-bottom: 20px;
     color: #f0f0f0; /* Softer white for better readability */
+    font-family: 'Poppins', sans-serif; /* Ensuring Poppins is used */
 }
 
 .highlight {
     color: #FFD700;
     font-weight: 600;
+    font-family: 'Poppins', sans-serif; /* Ensuring Poppins is used */
 }
 
 /* Test Details */
@@ -105,17 +106,28 @@ p {
     color: #fff; /* Ensure text is clear on gradient */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
     transition: all 0.3s ease;
+    font-family: 'Poppins', sans-serif; /* Ensuring Poppins is used */
 }
 
-.test-details p i {
-    margin-right: 10px;
-    font-size: 18px;
-    color: #FFD700;
+.test-details p {
+    display: flex;
+    align-items: left;
+    justify-content: left; /* left content horizontally */
+    margin-bottom: 20px;
+    padding: 15px;
+    background: linear-gradient(135deg, #9C27B0, #E91E63); /* Updated gradient from purple to pink */
+    border-radius: 8px; /* Rounded corners */
+    font-weight: 500;
+    font-size: 16px;
+    color: #fff; /* White text color */
+    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5); /* Text shadow for readability */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+    transition: all 0.3s ease; /* Smooth transition for interactions */
 }
 
 .test-details p:hover {
-    background: linear-gradient(135deg, #6A5ACD, #9370DB); /* Softer hover gradient */
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Slight lift effect */
+    background: linear-gradient(135deg, #673AB7, #C2185B); /* Softer hover gradient */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
 }
 
 /* Button */
@@ -132,6 +144,7 @@ p {
     text-decoration: none;
     text-align: center;
     box-shadow: 0 4px 10px rgba(255, 165, 0, 0.3); /* Subtle glow */
+    font-family: 'Poppins', sans-serif; /* Ensuring Poppins is used */
 }
 
 .test-button:hover {
@@ -181,9 +194,9 @@ p {
     <p>Take our quick online grammar test to find out your level! Whether you are a <span class="highlight">beginner (A1, A2)</span> or <span class="highlight">intermediate (B1, B2)</span> French user, you can test your French level here and get instant feedback.</p>
     
 <div class="test-details">
-    <p><i class="fas fa-clock"></i> <span>The test takes around <span class="highlight">5–15 minutes</span></span></p>
-    <p><i class="fas fa-list-ul"></i> <span>All questions are <span class="highlight">multiple choice</span></span></p>
-    <p><i class="fas fa-check-circle"></i> <span>Results appear instantly – <span class="highlight">no need</span> to wait 3 business days</span></p>
+    <p><i class="fas fa-clock"></i> <span> The test takes around <span class="highlight">5–15 minutes</span></span></p>
+    <p><i class="fas fa-list-ul"></i> <span> All questions are <span class="highlight">multiple choice</span></span></p>
+    <p><i class="fas fa-check-circle"></i> <span> Results appear instantly – <span class="highlight">no need</span> to wait 3 business days</span></p>
 </div>
 
     <a href="https://simplefrenchwithhems.com/order?link=3h6ux&pricing_plan=18B184e5zZ" target="_blank" rel="noopener noreferrer" class="test-button">Take the Test Now</a>
