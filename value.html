@@ -78,14 +78,15 @@
             background-color: #1a1a1a;
         }
 
-        .key-highlight {
-            background-color:linear-gradient(45deg, #8a2be2, #ff00ff, #ff69b4);
-            color: #000;
-            font-weight: 700;
-            padding: 5px 10px;
-            border-radius: 5px;
-            display: inline-block;
-        }
+       .key-highlight {
+    background: linear-gradient(45deg, #8a2be2, #ff00ff, #ff69b4); /* Violet-Purple-Pink gradient */
+    color: #fff; /* Text color for contrast */
+    font-weight: 700;
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: inline-block;
+}
+
 
         @media (max-width: 768px) {
             .comparison-table th, .comparison-table td {
@@ -125,7 +126,10 @@
                     <td class="highlight">24/7<br><span class="key-highlight">Full-time support</span></td>
                 </tr>
                 <tr>
-                    <td colspan="3" style="text-align: center; font-size: 3.2rem; font-weight: bold; background-color: #333; color: #39FF14;">Total Value $13,999</td>
+                    <td colspan="3" style="text-align: center; font-size: 3.2rem; font-weight: bold; background: linear-gradient(45deg, #8a2be2, #ff00ff, #ff69b4); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+    Total Value $13,999
+</td>
+
                 </tr>
             </tbody>
         </table>
