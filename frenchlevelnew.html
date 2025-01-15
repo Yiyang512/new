@@ -1,184 +1,174 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Curious About Your French Level?</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <style>
-        /* General Reset */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Curious About Your French Level?</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+/* General Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-        /* Keyframes for Effects */
-        @keyframes wave-up-down {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-10px);
-            }
-        }
+/* Keyframes for Waving Up and Down Effect */
+@keyframes wave-up-down {
+    0%, 100% {
+        transform: translateY(0); /* Start and end at the original position */
+    }
+    50% {
+        transform: translateY(-10px); /* Move up slightly */
+    }
+}
 
-        @keyframes heartbeat {
-            0%, 100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.1);
-            }
-        }
+/* Body Styles */
+body {
+    background-color: transparent; /* Transparent background */
+    display: flex;
+    justify-content: flex-start; /* Keep aligned to the left */
+    align-items: flex-start; /* Keep aligned to the top */
+    height: 100vh;
+    font-family: 'Poppins', sans-serif;
+    color: #000;
+    padding: 20px;
+}
 
-        /* Body Styles */
-        body {
-            background-color: transparent;
-            display: flex;
-            justify-content: flex-start;
-            align-items: flex-start;
-            height: 100vh;
-            font-family: 'Poppins', sans-serif;
-            color: #000;
-            padding: 20px;
-        }
+/* Container */
+.test-container {
+    background: #6A0DAD; /* Violet-VR color */
+    border-radius: 20px;
+    max-width: 600px;
+    width: 100%;
+    padding: 30px;
+    text-align: left;
+    position: relative;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    animation: heartbeat 4s infinite;
+    margin-top: 20px; /* Space below the title */
+}
 
-        /* Test Container */
-        .test-container {
-            background: linear-gradient(135deg, #6a1b9a, #d81b60);
-            border-radius: 20px;
-            max-width: 600px;
-            width: 100%;
-            padding: 30px;
-            text-align: left;
-            position: relative;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-            animation: heartbeat 4s infinite;
-        }
+.test-container:hover {
+    transform: translateY(-5px);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
 
-        .test-container:hover {
-            transform: translateY(-5px);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
-        }
+/* Title */
+h1 {
+    font-size: 35px;
+    color: #000; /* Adjusted color for contrast */
+    font-weight: 900;
+    line-height: 1.5;
+    font-family: 'Impact', 'Arial Black', sans-serif;
+    text-transform: uppercase;
+    animation: wave-up-down 2s infinite;
+    margin-bottom: 10px; /* Adjust spacing below the title */
+}
 
-        /* Title */
-        h1 {
-            font-size: 35px;
-            color: #fff;
-            margin-bottom: 15px;
-            font-weight: 900;
-            line-height: 1.5;
-            font-family: 'Impact', 'Arial Black', sans-serif;
-            text-transform: uppercase;
-            animation: wave-up-down 2s infinite;
-        }
+/* Paragraph */
+p {
+    font-size: 16px;
+    line-height: 1.8;
+    margin-bottom: 20px;
+    color: #f0f0f0;
+}
 
-        /* Paragraph */
-        p {
-            font-size: 16px;
-            line-height: 1.8;
-            margin-bottom: 20px;
-            color: #f0f0f0;
-            font-family: 'Poppins', sans-serif;
-        }
+.highlight {
+    color: #FFD700;
+    font-weight: 600;
+}
 
-        .highlight {
-            color: #FFD700;
-            font-weight: 600;
-        }
+.test-details p {
+    display: flex;
+    align-items: left;
+    justify-content: left;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: linear-gradient(135deg, #9C27B0, #E91E63);
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 16px;
+    color: #fff;
+    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
 
-        /* Test Details */
-        .test-details p {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-            padding: 15px;
-            background: linear-gradient(135deg, #9c27b0, #e91e63);
-            border-left: 5px solid rgba(255, 215, 0, 0.9);
-            border-radius: 8px;
-            font-weight: 500;
-            font-size: 16px;
-            color: #fff;
-            text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
-        }
+.test-details p:hover {
+    background: linear-gradient(135deg, #673AB7, #C2185B);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
 
-        .test-details p:hover {
-            background: linear-gradient(135deg, #673ab7, #c2185b);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-        }
+/* Button */
+.test-button {
+    display: inline-block;
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    color: #000;
+    padding: 12px 30px;
+    font-size: 18px;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(255, 165, 0, 0.3);
+}
 
-        /* Button */
-        .test-button {
-            display: inline-block;
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            color: #000;
-            padding: 12px 30px;
-            font-size: 18px;
-            border-radius: 20px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            text-align: center;
-            box-shadow: 0 4px 10px rgba(255, 165, 0, 0.3);
-        }
+.test-button:hover {
+    background: linear-gradient(135deg, #FFC107, #FF4500);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(255, 165, 0, 0.5);
+}
 
-        .test-button:hover {
-            background: linear-gradient(135deg, #FFC107, #FF4500);
-            transform: translateY(-4px);
-            box-shadow: 0 8px 20px rgba(255, 165, 0, 0.5);
-        }
+/* Responsive Design */
+@media (max-width: 768px) {
+    .test-container {
+        padding: 25px;
+    }
+    h1 {
+        font-size: 30px;
+    }
+    p, .test-details p {
+        font-size: 15px;
+    }
+    .test-button {
+        padding: 12px 20px;
+        font-size: 16px;
+    }
+}
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .test-container {
-                padding: 25px;
-            }
-            h1 {
-                font-size: 30px;
-            }
-            p, .test-details p {
-                font-size: 15px;
-            }
-            .test-button {
-                padding: 12px 20px;
-                font-size: 16px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            h1 {
-                font-size: 24px;
-            }
-            .test-container {
-                padding: 15px;
-            }
-            .test-details p {
-                font-size: 14px;
-            }
-            .test-button {
-                padding: 10px 18px;
-                font-size: 14px;
-            }
-        }
-    </style>
+@media (max-width: 480px) {
+    h1 {
+        font-size: 24px;
+    }
+    .test-container {
+        padding: 15px;
+    }
+    .test-details p {
+        font-size: 14px;
+    }
+    .test-button {
+        padding: 10px 18px;
+        font-size: 14px;
+    }
+}
+</style>
 </head>
 <body>
 
+
 <div class="test-container">
-    <h1>Curious About Your French Level?</h1>
-    <p>Take our quick online grammar test to find out your level! Whether you are a <span class="highlight">beginner (A1, A2)</span> or <span class="highlight">intermediate (B1, B2)</span>, you can test your French level here and get instant feedback.</p>
+    <p>Curious About Your French Level? Take our quick online grammar test to find out your level! Whether you are a <span class="highlight">beginner (A1, A2)</span> or <span class="highlight">intermediate (B1, B2)</span> French user, you can test your French level here and get instant feedback.</p>
     
-    <div class="test-details">
-        <p><i class="fas fa-clock"></i> The test takes around <span class="highlight">5–15 minutes</span></p>
-        <p><i class="fas fa-list-ul"></i> All questions are <span class="highlight">multiple choice</span></p>
-        <p><i class="fas fa-check-circle"></i> Results appear instantly – <span class="highlight">no need</span> to wait 3 business days</p>
-    </div>
+<div class="test-details">
+    <p><i class="fas fa-clock"></i> <span> The test takes around <span class="highlight">5–15 minutes</span></span></p>
+    <p><i class="fas fa-list-ul"></i> <span> All questions are <span class="highlight">multiple choice</span></span></p>
+    <p><i class="fas fa-check-circle"></i> <span> Results appear instantly – <span class="highlight">no need</span> to wait 3 business days</span></p>
+</div>
 
     <a href="https://simplefrenchwithhems.com/order?link=3h6ux&pricing_plan=18B184e5zZ" target="_blank" rel="noopener noreferrer" class="test-button">Take the Test Now</a>
 </div>
