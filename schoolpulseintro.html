@@ -41,8 +41,8 @@
             display: flex;
             align-items: center;
             position: relative;
-            width: 100%;
-            max-width: 1200px;
+            width: 90%;
+            max-width: 1000px;
             background: rgba(0, 0, 0, 0.8);
             padding: 8px;
             border-radius: 55px;
@@ -155,6 +155,30 @@ opacity: 1;
 word-wrap: break-word;
     overflow-wrap: break-word;
             text-align: center;
+        }
+ @media screen and (max-width: 768px) {
+            .team-container {
+                flex-direction: column;
+                text-align: center;
+                padding: 20px;
+            }
+
+            .team-sidebar {
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 10px;
+            }
+
+            .team-member {
+                width: 70px;
+                height: 70px;
+            }
+
+            .instruction {
+                font-size: 16px;
+                letter-spacing: 1px;
+            }
         }
     </style>
 </head>
