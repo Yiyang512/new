@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <title>School Pulse - Meet the Team</title>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes backgroundGlow {
+            0% { box-shadow: 0px 0px 5px rgba(0, 255, 255, 0.5); }
+            50% { box-shadow: 0px 0px 20px rgba(0, 255, 255, 0.8); }
+            100% { box-shadow: 0px 0px 5px rgba(0, 255, 255, 0.5); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #000;
+    margin: 0;
+    font-family: 'Poppins', Arial, sans-serif;
+    color: #0ff;
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+
+        .team-container {
+            display: flex;
+            align-items: center;
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 8px;
+            border-radius: 55px;
+            animation: backgroundGlow 0.7s infinite alternate ease-in-out;
+        }
+
+        .team-sidebar {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+@keyframes slideInSidebar {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.team-sidebar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    animation: slideInSidebar 1s ease-out;
+}
+
+
+        .team-member {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background-size: cover;
+            background-position: center;
+            filter: grayscale(100%);
+            transition: filter 0.3s, transform 0.5s ease-in-out;
+            border: 2.5px solid #0ff;
+            cursor: pointer;
+        }
+
+        .team-member:hover {
+            filter: grayscale(10%);
+            transform: scale(1.8);
+        }
+
+        .team-details {
+            flex: 1;
+	flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.9);
+            border-radius: 25px;
+            opacity: 1;
+            transition: opacity 0.7s ease-in-out;
+            min-height: auto;
+            overflow: visible;
+        }
+
+        .team-details.show {
+            opacity: 1;
+        }
+
+        .instruction {
+            font-size: 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 14px;
+            color: #0ff;
+            text-align: center;
+            margin-bottom: 20px;
+            animation: fadeIn 2s ease-in-out 1s forwards, pulse 1.5s infinite alternate ease-in-out;
+            text-shadow: 0px 0px 45px rgba(0, 255, 255, 0.8);
+            cursor: pointer;
+            transition: opacity 0.5s ease-in-out, visibility 0.2s ease-in-out;
+        }
+
+        .hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .team-details img {
+            width: 700px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            opacity: 0;
+            transform: scale(0.7);
+            transition: opacity 1.2s ease-in-out, transform 1.2s ease-in-out;
+        }
+
+        .team-details.show img, .team-details.show h2, .team-details.show p {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .team-details p {
+            max-width: 80%;
+opacity: 1;
+    transition: opacity 2.7s ease-in-out;
+            font-size: 18px;
+            line-height: 1.5;
+word-wrap: break-word;
+    overflow-wrap: break-word;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="team-container">
+        <div class="team-sidebar">
+            <div class="team-member" style="background-image: url('https://yiyang512.github.io/new/1111.avif');" data-name="Pierre" data-desc="YOU, the main character!" data-image="https://yiyang512.github.io/new/1111.avif"></div>
+            <div class="team-member" style="background-image: url('https://yiyang512.github.io/new/2222.avif');" data-name="Lily" data-desc="Lily is your friendly, AI-powered assistant who’s here to help you succeed in your French learning journey. She assigns tests, monitors your progress, follows you through tasks, and offers hints when you’re stuck. You can even talk to Lily for guidance or just to chat! With Lily by your side, learning French becomes an interactive, supportive, and engaging experience." data-image="https://yiyang512.github.io/new/2222.avif"></div>
+            <div class="team-member" style="background-image: url('https://yiyang512.github.io/new/3333.avif');" data-name="Dush" data-desc="Dush is your adorable, loyal companion." data-image="https://yiyang512.github.io/new/3333.avif"></div>
+            <div class="team-member" style="background-image: url('https://yiyang512.github.io/new/4444.avif');" data-name="Mom" data-desc="Mum is always watching to ensure you stay on track! She monitors your progress, makes sure you complete tasks on time, and warns you when you make mistakes. Keep an eye out, as Mum will push you to stay focused and get things done — just like in real life!" data-image="https://yiyang512.github.io/new/4444.avif"></div>
+            <div class="team-member" style="background-image: url('https://yiyang512.github.io/new/5555.avif');" data-name="Clavhem" data-desc="Looming in the shadows is Clavhem, a mysterious figure that presents a constant sense of danger. You’ll need to stay sharp and avoid crossing paths with this intimidating presence as you complete your tasks and navigate through challenges. The Big Boss adds a thrilling layer of suspense to your journey." data-image="https://yiyang512.github.io/new/5555.avif"></div>
+            <div class="team-member" style="background-image: url('https://yiyang512.github.io/new/6666.avif');" data-name="A Dangerous Adversary" data-desc="The Fighter is a formidable foe who brings another layer of danger to your journey." data-image="https://yiyang512.github.io/new/6666.avif"></div>
+        </div>
+        <div class="team-details" id="teamDetails">
+            <div class="instruction" id="instruction">Check our crew by putting your mouse on the left pics...</div>
+            <img id="charImage" src="" alt="Character Image">
+            <h2 id="charName"></h2>
+            <p id="charDesc"></p>
+        </div>
+    </div>
+    <script>
+        document.querySelectorAll('.team-member').forEach(member => {
+            member.addEventListener('mouseover', function() {
+                document.getElementById('instruction').classList.add('hidden');
+                document.getElementById('teamDetails').classList.add('show');
+                document.getElementById('charImage').src = this.getAttribute('data-image');
+                document.getElementById('charName').textContent = this.getAttribute('data-name');
+                document.getElementById('charDesc').textContent = this.getAttribute('data-desc');
+            });
+        });
+    </script>
+</body>
+</html>
