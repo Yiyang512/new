@@ -4,6 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Highlights</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
     <style>
         body {
             display: flex;
@@ -11,7 +12,7 @@
             align-items: start;
             background-color: #000;
             color: #fff;
-            font-family: 'Kanit', sans-serif;
+  font-family: 'Audiowide', cursive;
             height: auto;
             margin: 0;
             padding: 0;
@@ -27,7 +28,7 @@
             margin: 0 auto;
         }
         .box {
-            background-color: #000;
+            background-color: transparent;
             padding: 20px;
             text-align: center;
             border-radius: 20px;
@@ -42,7 +43,8 @@
         }
         .box:hover {
             transform: scale(1.1);
-            box-shadow: 0 0 20px rgba(0, 245, 255, 0.6), 0 0 25px rgba(106, 0, 255, 0.6), 0 0 30px rgba(255, 0, 77, 0.6);
+           background: linear-gradient(90deg, #57a29a, #57a29a, #57a29a, #57a29a);
+
         }
         .box::before {
             content: "";
@@ -52,7 +54,8 @@
             right: -2px;
             bottom: -2px;
             border-radius: 20px;
-            background: linear-gradient(45deg, #00f5ff, #6a00ff, #ff004d, #00f5ff);
+          background: linear-gradient(90deg, #57a29a, #57a29a, #57a29a, #57a29a);
+
             z-index: -1;
             padding: 2px;
             mask-composite: exclude;
@@ -103,21 +106,21 @@
             font-size: 50px;
             font-weight: 700;
             margin: 0;
-            color: #FFD700;
+            color: #00ff66;
             letter-spacing: -1px;
             animation: fancyAnimation 4s infinite ease-in-out;
             text-shadow: 
-                1px 1px 0 #FF8C00,
-                2px 2px 0 #FF8C00,
-                3px 3px 0 #FF00FF,
-                4px 4px 0 #7F00FF,
-                5px 5px 0 #9400D3,
+                1px 1px 0 #000,
+                2px 2px 0 #000,
+                3px 3px 0 #000,
+                4px 4px 0 #100d2e,
+                5px 5px 0 #100d2e,
                 6px 6px 8px rgba(0, 0, 0, 0.5);
         }
 
         .box p {
             font-size: 16px;
-            color: #FFFFFF;
+            color: #00ff66;
             margin: 5px 0 0;
             letter-spacing: -0.5px;
             font-weight: 400;
