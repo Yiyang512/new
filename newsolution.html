@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>We Are Different</title>
+    <style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', Arial, sans-serif; /* Updated font to Poppins */
+}
+
+        body {
+            background-color: #000000; /* Slightly lighter black for better contrast */
+            color: white;
+            text-align: center;
+            padding: 40px 20px; /* Increased padding for better spacing */
+        }
+
+        h1 {
+            font-size: 2.2em; /* Slightly larger for emphasis */
+            margin-bottom: 30px;
+            font-weight: 700; /* Bold for better visibility */
+        }
+
+        h2 {
+            font-size: 1.5em; /* Slightly larger for better hierarchy */
+            font-weight: 600; /* Semi-bold for emphasis */
+            margin-bottom: 10px;
+        }
+
+        .highlight {
+            color: #33ff33; /* Coral color for highlights */
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px; /* Increased gap for better spacing */
+            justify-content: center;
+            max-width: 1200px;
+            margin: auto;
+            opacity: 0;
+            animation: fadeIn 0.5s forwards ease-in-out; /* Slower animation for smoother effect */
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .box {
+            background-color: #000; /* Darker background for contrast */
+        border: 2px solid #D4AF37; /* Subtle neo-gold border */
+
+            padding: 20px; /* Reduced padding for compactness */
+            text-align: left;
+            border-radius: 35px; /* Slightly rounded corners */
+            box-shadow: 0 4px 15px rgba(255, 105, 180, 0.2); /* Softer shadow */
+            min-height: 240px; /* Reduced height for compactness */
+            font-size: 0.85em; /* Slightly larger font for readability */
+            line-height: 1.4; /* Improved line spacing */
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .box:hover {
+            transform: scale(1.03); /* Subtler hover effect */
+            box-shadow: 0 6px 20px rgba(255, 105, 180, 0.3); /* Enhanced shadow on hover */
+        }
+
+        .box p {
+            margin-bottom: 12px;
+            color: #ddd; /* Lighter text for better readability */
+        }
+
+        .box p + p {
+            margin-top: 15px;
+        }
+
+        .highlight-text {
+            background-color: #33ff33; /* Softer green for highlights */
+            color: black; /* White text for better contrast */
+            padding: 4px 8px; /* Increased padding for better visibility */
+            display: inline-block;
+            font-size: 1.1em; /* Slightly larger font */
+            line-height: 1.3;
+            border-radius: 4px; /* Rounded corners for highlights */
+        }
+
+        a {
+            color: #F750AB; /* Coral color for links */
+            text-decoration: none;
+            font-weight: 600; /* Semi-bold for emphasis */
+            display: inline-block;
+            border-bottom: 2px solid #F750AB; /* Matching underline */
+            padding-bottom: 2px;
+            margin-top: 15px;
+            font-size: 0.95em; /* Slightly larger font */
+            transition: color 0.3s ease, border-color 0.3s ease;
+        }
+
+        a:hover {
+            color: #F750AB; /* Darker coral on hover */
+            border-color: #F750AB; /* Matching underline on hover */
+        }
+
+        .icon img {
+            width: 50px; /* Slightly smaller icons */
+            height: auto;
+            margin-bottom: 15px; /* Added spacing below icons */
+        }
+
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: repeat(2, 1fr); /* Two columns for tablets */
+            }
+            h1 {
+                font-size: 2em; /* Adjusted font size for tablets */
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                grid-template-columns: repeat(1, 1fr); /* Single column for mobile */
+            }
+            h1 {
+                font-size: 1.8em; /* Adjusted font size for mobile */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="box">
+            <div class="icon"><img src="https://yiyang512.github.io/new/21.png" alt="Icon for French Students" /></div>
+            <h2>Ace Your French Exams</h2>
+            <p><span class="highlight-text">Each of our videos requires a <b>>90%</b> quiz score to pass, ensuring mastery before moving on.</span></p>
+            We make sure that you mastery at every step.
+        </div>
+        <div class="box">
+            <div class="icon"><img src="https://yiyang512.github.io/new/22.png" alt="Icon for Immigrants" /></div>
+            <h2>Chat with a Native for FREE</h2>
+            <p><span class="highlight-text">Complete our A0 3-Day French Challenge to unlock a <b>30-minute</b> session with a native speaker.</span></p>
+            <p>Immersing you in real conversation.
+        </div>
+        <div class="box">
+            <div class="icon"><img src="https://yiyang512.github.io/new/23.png" alt="Icon for Homeschoolers" /></div>
+            <h2>Real Exam-Based Quizzes</h2>
+            <p><span class="highlight-text">We prepare you with <i>5000+</I> exam-style quizzes with <b>answers</b> and <b>instant live feedback</b>.</span></p>
+            <p>Boost your results through realistic simulations.<p>
+        </div>
+    </div>
+</body>
+</html>
