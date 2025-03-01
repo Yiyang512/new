@@ -121,56 +121,23 @@
             margin-bottom: 15px; /* Added spacing below icons */
         }
 
-@media (max-width: 900px) {
-    .container {
-        grid-template-columns: repeat(2, 1fr);
-        transform: scale(0.95);
-        transform-origin: top center;
-    }
-    h1 {
-        font-size: 2em;
-    }
-    .box {
-        font-size: 0.8em;
-        padding: 18px;
-        min-height: 220px;
-    }
-    .icon img {
-        width: 45px;
-    }
-}
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: repeat(2, 1fr); /* Two columns for tablets */
+            }
+            h1 {
+                font-size: 2em; /* Adjusted font size for tablets */
+            }
+        }
 
-@media (max-width: 600px) {
-    body {
-        padding: 30px 15px;
-    }
-    .container {
-        grid-template-columns: 1fr;
-        transform: scale(0.9);
-        transform-origin: top center;
-        gap: 15px;
-    }
-    h1 {
-        font-size: 1.7em;
-        margin-bottom: 25px;
-    }
-    .box {
-        font-size: 0.75em;
-        padding: 15px;
-        min-height: 200px;
-    }
-    .icon img {
-        width: 40px;
-        margin-bottom: 12px;
-    }
-    .highlight-text {
-        font-size: 1em;
-        padding: 3px 6px;
-    }
-    a {
-        font-size: 0.9em;
-    }
-}
+        @media (max-width: 600px) {
+            .container {
+                grid-template-columns: repeat(1, 1fr); /* Single column for mobile */
+            }
+            h1 {
+                font-size: 1.8em; /* Adjusted font size for mobile */
+            }
+        }
     </style>
 </head>
 <body>
