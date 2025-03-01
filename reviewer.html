@@ -133,41 +133,66 @@
             font-weight: bold;
         }
 
-     /* Media Query for Small Screens */
+ /* Media Query for Small Screens */
 @media (max-width: 767px) {
     .testimonial-section {
-        padding: 20px;
+        padding: 15px;
         width: 100%;
     }
     
     .testimonial-grid {
-        grid-template-columns: 1fr !important; /* Force single column */
-        gap: 15px;
+        grid-template-columns: 1fr !important;
+        gap: 12px;
     }
     
     .testimonial-card {
-        width: 100% !important; /* Full width cards */
-        max-width: 100% !important;
-        margin: 0;
-        padding: 20px;
+        width: 100% !important;
+        max-width: 400px !important; /* Maximum card width */
+        margin: 0 auto;
+        padding: 15px;
+        transform: scale(0.98); /* Slightly reduce card size */
     }
     
     .testimonial-text {
-        font-size: 1rem; /* Larger text for mobile */
-        line-height: 1.6;
+        font-size: 0.9rem; /* Slightly smaller text */
+        line-height: 1.5;
+        margin: 10px 0;
+    }
+    
+    .stars {
+        font-size: 1rem; /* Smaller stars */
+        margin: 8px 0;
     }
     
     .author {
-        font-size: 0.95rem;
+        font-size: 0.85rem;
+        margin: 8px 0;
     }
     
     .verified-badge {
-        font-size: 0.8rem;
-        padding: 4px 8px;
+        font-size: 0.75rem;
+        padding: 3px 6px;
+        margin-top: 6px;
     }
     
-    /* Adjust animation delays for better mobile performance */
+    /* Reduce animation intensity */
+    .testimonial-card:hover {
+        transform: scale(0.99);
+    }
+    
+    .testimonial-card::before,
+    .testimonial-card::after {
+        animation: none; /* Disable complex animations on mobile */
+    }
+    
+    /* Simplify main animations */
+    @keyframes wave {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-3px); }
+    }
+    
     .testimonial-card:nth-child(n) {
+        animation: glow 5s linear infinite, wave 3s ease-in-out infinite !important;
         animation-delay: 0s, 0s !important;
     }
 }
