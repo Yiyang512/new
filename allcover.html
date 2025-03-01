@@ -5,136 +5,170 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simple French with Hems</title>
     <style>
+        :root {
+            --primary-accent: #FF007F;
+            --secondary-accent: #6A00FF;
+            --tertiary-accent: #00F5FF;
+            --text-light: #FFFFFF;
+        }
+
         body {
-            font-family: Poppins, sans-serif;
-            background-color: #000000;
-            color: #333;
+            font-family: 'Poppins', sans-serif;
+            background: #000000;
+            color: var(--text-light);
             margin: 0;
-            overflow-x: hidden;
+            overflow-x: auto;
         }
+
         .section {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            text-align: center;
+            min-width: fit-content;
+            padding: 0.2rem 1rem;
         }
+
         .course-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            justify-content: center;
-            padding-bottom: 15px;
+            display: grid;
+            grid-auto-flow: column;
+            grid-auto-columns: minmax(150px, 2fr);
+            gap: 0.3rem;
+            padding: 0.8rem 0.8rem;
+            overflow-x: auto;
         }
+
         .course-card {
-            position: relative;
-            border-radius: 10px;
+            width: 210px;
+	    height: 290px;
+            border-radius: 16px;
             overflow: hidden;
-            width: calc(33.33% - 30px); /* 3 cards per row */
-            max-width: 150px;
-            transform: translateY(30px); /* Start slightly below */
-            opacity: 0; /* Start invisible */
-            transition: transform 0.6s ease, opacity 0.6s ease; /* Smooth effect */
-            box-shadow: 0 0 20px rgba(255, 0, 127, 0.4);
-            border: 2px solid transparent;
+            transform: translateY(50px);
+            opacity: 0;
+            transition: transform 1.6s ease, opacity 0.6s ease;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            border: 1.5px solid rgba(255, 255, 255, 0.1);
+            flex-shrink: 0;
         }
+
         .course-card.visible {
-            transform: translateY(0); /* Slide into place */
-            opacity: 1; /* Fully visible */
-            box-shadow: 0 0 20px rgba(255, 0, 127, 0.6), 0 0 30px rgba(148, 0, 211, 0.6), 0 0 40px rgba(0, 191, 255, 0.6);
-            border-image: linear-gradient(45deg, #00f5ff, #6a00ff, #ff004d) 1;
+            transform: translateY(0);
+            opacity: 1;
         }
+
+        .course-card:hover {
+            box-shadow: 0 8px 32px rgba(255, 0, 127, 0.25),
+                        0 0 24px rgba(106, 0, 255, 0.2),
+                        0 0 12px rgba(0, 245, 255, 0.15);
+            transform: translateY(-5px);
+        }
+
         .course-card img {
             width: 100%;
-            height: auto;
-            z-index: 1;
-            position: relative;
-            border-radius: 10px;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
         }
+
         .course-info {
-            padding: 10px;
-            font-size: 0.85em;
-            font-weight: bold;
-            color: #ffffff;
-            border-radius: 0 0 10px 10px;
-            z-index: 1;
-            position: relative;
+            padding: 1.5rem;
+            text-align: center;
+            font-weight: 600;
+            background: linear-gradient(45deg, rgba(255, 0, 127, 0.1), rgba(106, 0, 255, 0.1));
         }
-        @media (max-width: 767px) {
-            .section {
-                padding: 10px;
+
+        @media (max-width: 768px) {
+            .course-grid {
+                grid-auto-columns: minmax(220px, 1fr);
+                gap: 1.5rem;
+                padding: 1rem;
             }
+            
             .course-card {
-                width: calc(33.33% - 20px); /* 3 cards per row on mobile */
-                max-width: none;
+                width: 220px;
             }
         }
     </style>
 </head>
 <body>
-
     <div class="section" id="featured-courses">
+        <div class="section-header">
+        </div>
         <div class="course-grid">
             <div class="course-card">
-                <a href="https://simplefrenchwithhems.com/b/freefrench" target="_blank">
-                    <img src="https://yiyang512.github.io/new/threedays.png" alt="French Fundamentals">
+                <a href="https://simplefrenchwithhems.com/b/freefrench" target="_blank" rel="noopener noreferrer">
+                    <img src="https://yiyang512.github.io/new/threedays.png" alt="French Fundamentals" loading="lazy">
                 </a>
-                <div class="course-info"> French Fundamentals - 3 Days Challenge!</div>
+                <div class="course-info">Level A0 - Complete French Mastery</div>
             </div>
             <div class="course-card">
-                <a href="https://simplefrenchwithhems.com/b/a1-introduction" target="_blank">
-                    <img src="https://yiyang512.github.io/new/a1.png" alt="Level A1 Complete French Mastery">
+                <a href="https://simplefrenchwithhems.com/b/a1-introduction" target="_blank" rel="noopener noreferrer">
+                    <img src="https://yiyang512.github.io/new/a1.png" alt="Level A1 Complete French Mastery" loading="lazy">
                 </a>
-                <div class="course-info"> Level A1 - Complete French Mastery</div>
+                <div class="course-info">Level A1 - Complete French Mastery</div>
             </div>
             <div class="course-card">
-                <a href="https://simplefrenchwithhems.com/b/a2-french" target="_blank">
-                    <img src="https://yiyang512.github.io/new/a2.png" alt="Level A2 Complete French Mastery">
+                <a href="https://simplefrenchwithhems.com/b/a2-french" target="_blank" rel="noopener noreferrer">
+                    <img src="https://yiyang512.github.io/new/a2.png" alt="Level A2 Complete French Mastery" loading="lazy">
                 </a>
-                <div class="course-info"> Level A2 - Complete French Mastery</div>
+                <div class="course-info">Level A2 - Complete French Mastery</div>
             </div>
             <div class="course-card">
-                <a href="https://simplefrenchwithhems.com/b/F21fg" target="_blank">
-                    <img src="https://yiyang512.github.io/new/beginner.png" alt="Beginner's Guide French Quest">
+                <a href="https://simplefrenchwithhems.com/b/F21fg" target="_blank" rel="noopener noreferrer">
+                    <img src="https://yiyang512.github.io/new/beginner.png" alt="Beginner's Guide French Quest" loading="lazy">
                 </a>
-                <div class="course-info"> Beginner‘s Guide - French Quest</div>
+                <div class="course-info">Beginner‘s Guide - French Quest</div>
             </div>
             <div class="course-card">
-                <a href="https://simplefrenchwithhems.com/vr-game" target="_blank">
-                    <img src="https://yiyang512.github.io/new/vr.png" alt="VR Game - School Pulse">
+                <a href="https://simplefrenchwithhems.com/vr-game" target="_blank" rel="noopener noreferrer">
+                    <img src="https://yiyang512.github.io/new/vr.png" alt="VR Game - School Pulse" loading="lazy">
                 </a>
-                <div class="course-info"> VR Game - School Pulse ™</div>
+                <div class="course-info">VR Game - School Pulse ™</div>
             </div>
             <div class="course-card">
-                <a href="https://simplefrenchwithhems.com/course-features" target="_blank">
-                    <img src="https://yiyang512.github.io/new/animation.png" alt="Animated Stories">
+                <a href="https://simplefrenchwithhems.com/course-features" target="_blank" rel="noopener noreferrer">
+                    <img src="https://yiyang512.github.io/new/animation.png" alt="Animated Stories" loading="lazy">
                 </a>
-                <div class="course-info"> Animated Stories</div>
+                <div class="course-info">French Animated Stories</div>
             </div>
         </div>
     </div>
 
     <script>
-        // Function to reveal course cards on scroll
-        function revealCourses() {
-            const courseCards = document.querySelectorAll('.course-card');
-            const windowHeight = window.innerHeight;
-
-            courseCards.forEach((card, index) => {
-                const courseTop = card.getBoundingClientRect().top;
-
-                // Check if the element is within view
-                if (courseTop < windowHeight - 50) {
-                    card.style.transitionDelay = `${index * 0.1}s`; // Stagger effect
-                    card.classList.add('visible');
+        // Modern Intersection Observer implementation
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
                 }
             });
-        }
-
-        // Trigger the reveal on page load and scroll
-        document.addEventListener('DOMContentLoaded', () => {
-            revealCourses(); // Run initially for elements already in view
+        }, {
+            rootMargin: '0px',
+            threshold: 0.1
         });
-        window.addEventListener('scroll', revealCourses);
+
+        // Observe all course cards
+        document.querySelectorAll('.course-card').forEach(card => {
+            observer.observe(card);
+        });
+
+        // Image error handling
+        document.querySelectorAll('img').forEach(img => {
+            img.onerror = function() {
+                this.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                this.alt = 'Image failed to load';
+                this.parentElement.style.pointerEvents = 'none';
+            };
+        });
+
+        // Add hover effect for mobile compatibility
+        document.querySelectorAll('.course-card').forEach(card => {
+            card.addEventListener('touchstart', function() {
+                this.classList.add('hover-effect');
+            });
+            
+            card.addEventListener('touchend', function() {
+                setTimeout(() => this.classList.remove('hover-effect'), 100);
+            });
+        });
     </script>
 </body>
 </html>
