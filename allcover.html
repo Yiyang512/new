@@ -74,15 +74,29 @@
             background: linear-gradient(45deg, rgba(255, 0, 127, 0.1), rgba(106, 0, 255, 0.1));
         }
 
-        @media (max-width: 768px) {
-            .course-grid {
-                grid-auto-columns: minmax(220px, 1fr);
-                gap: 1.5rem;
-                padding: 1rem;
-            }
-            
-            .course-card {
-                width: 220px;
+       @media (max-width: 768px) {
+    .course-grid {
+        grid-auto-flow: row;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 1rem;
+        padding: 1rem;
+        overflow-x: hidden;
+        justify-content: center;
+    }
+    
+    .course-card {
+        width: 100%;
+        max-width: 180px;
+        margin: 0 auto;
+    }
+
+    .course-card img {
+        height: 120px;
+    }
+
+    .course-info {
+        font-size: 0.8em;
+        padding: 0.8rem;
             }
         }
     </style>
