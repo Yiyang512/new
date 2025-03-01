@@ -22,7 +22,7 @@
         height: 100vh;
         margin: 0;
 font-family: 'Audiowide', cursive;
-        color: #fff;
+         color: #fff; /* Neon green */
         padding-left: 4vw;
         font-size: 10vw; /* Large and visible */
         line-height: 1.2; /* Good spacing */
@@ -43,7 +43,8 @@ font-family: 'Audiowide', cursive;
       position: relative;
       display: inline-block;
       font-weight: 900;
-      background: linear-gradient(90deg, #00f5ff, #0077ff, #6a00ff, #ff004d);
+background: linear-gradient(90deg, #00ff66, #00f5ff, #99ff00, #ccff33);
+
       background-clip: text;
       -webkit-background-clip: text;
       color: transparent;
@@ -71,14 +72,14 @@ font-family: 'Audiowide', cursive;
     }
 
     .line::before {
-      color: #ff004d;
+      color: #00ff66;
       left: 2px;
       text-shadow: -6px 0 #00f5ff;
       clip-path: inset(0 10% 10% 0);
     }
 
     .line::after {
-      color: #00f5ff;
+      color: #00ff66;
       left: -2px;
       text-shadow: -2px 0 #ff004d;
       clip-path: inset(10% 0 0 10%);
