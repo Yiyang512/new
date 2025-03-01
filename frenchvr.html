@@ -5,20 +5,31 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VR French School - Glitch, Typewriter, and Heartbeat Animation</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap" rel="stylesheet">
-  <style>
+  
+<link href="https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+
+<style>
     /* Basic styling for the body */
     body {
-      background-color: transparent;
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      font-family: 'Montserrat', sans-serif;
-      color: #fff;
-      padding-left: 4vw;
+        background-color: transparent;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+font-family: 'Audiowide', cursive;
+        color: #fff;
+        padding-left: 4vw;
+        font-size: 10vw; /* Large and visible */
+        line-height: 1.2; /* Good spacing */
+        letter-spacing: 2px; /* Futuristic effect */
+        text-transform: uppercase; /* Makes it look more VR-like */
     }
+
 
     /* Container styling */
     .container {
@@ -31,7 +42,7 @@
     .line {
       position: relative;
       display: inline-block;
-      font-weight: 700;
+      font-weight: 900;
       background: linear-gradient(90deg, #00f5ff, #0077ff, #6a00ff, #ff004d);
       background-clip: text;
       -webkit-background-clip: text;
@@ -41,7 +52,7 @@
       opacity: 0;
       overflow: hidden;
       white-space: nowrap;
-      animation: typewriter 1s steps(30) forwards, glitch 0.3s infinite alternate ease-in-out 8s, heartbeat 7s ease-in-out infinite 3s;
+      animation: typewriter 1.5s steps(30) forwards, glitch 0.01s infinite alternate ease-in-out 2s, heartbeat 4s ease-in-out infinite 5s;
     }
 
     /* Cloned text layers for additional glitch effect */
@@ -56,13 +67,13 @@
       color: transparent;
       opacity: 0.5;
       clip-path: inset(10%);
-      animation: glitch-anim 4s infinite alternate ease-in-out 3s;
+      animation: glitch-anim 1.3s infinite alternate ease-in-out 0.01s;
     }
 
     .line::before {
       color: #ff004d;
       left: 2px;
-      text-shadow: -2px 0 #00f5ff;
+      text-shadow: -6px 0 #00f5ff;
       clip-path: inset(0 10% 10% 0);
     }
 
@@ -78,9 +89,9 @@
     .line:nth-child(2) { animation-delay: 2s; font-size: 9vw; line-height: 1.1; }
     .line:nth-child(3) { animation-delay: 3s; font-size: 8vw; line-height: 1.1; }
     .line:nth-child(4) { animation-delay: 4s; font-size: 4.5vw; }
-    .line:nth-child(5) { animation-delay: 5s; font-size: 4.5vw; }
+    .line:nth-child(5) { animation-delay: 5s; font-size: 3.5vw; }
     .line:nth-child(6) { animation-delay: 6s; font-size: 2.5vw; font-weight: 400; font-style: italic; }
-    .line:nth-child(7) { animation-delay: 7s; font-size: 2.5vw; font-weight: 400; font-style: italic; }
+    .line:nth-child(7) { animation-delay: 7s; font-size: 1.5vw; font-weight: 400; font-style: italic; }
 
     /* Typewriter effect for each line */
     @keyframes typewriter {
@@ -100,7 +111,7 @@
 
     /* Additional glitch animation */
     @keyframes glitch-anim {
-      0% { clip-path: inset(0% 0% 90% 0); transform: translate(2px, -2px); }
+      0% { clip-path: inset(0% 0% 90% 0); transform: translate(1px, -2px); }
       20% { clip-path: inset(10% 0% 85% 0); transform: translate(-2px, 2px); }
       40% { clip-path: inset(15% 0% 70% 0); transform: translate(2px, -2px); }
       60% { clip-path: inset(20% 0% 50% 0); transform: translate(-2px, 2px); }
@@ -116,26 +127,11 @@
       75% { transform: scale(1.05); }
     }
     
-    /* Arrow styling */
-    .arrow-down {
-      margin-left: 8px;
-      font-size: 2.5vw;
-      color: #00f5ff;
-      animation: bounce 1s infinite, glow 1.5s ease-in-out infinite;
-      position: relative;
-    }
-
-    /* Arrow animations */
-    @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
-    @keyframes glow {
-      0%, 100% { text-shadow: 0 0 8px rgba(255, 0, 77, 0.5), 0 0 20px rgba(255, 0, 77, 0.3), 0 0 30px rgba(255, 0, 77, 0.2); }
-      50% { text-shadow: 0 0 15px rgba(255, 0, 77, 1), 0 0 30px rgba(255, 0, 77, 0.8), 0 0 45px rgba(255, 0, 77, 0.5); }
-    }
 
     /* Media query for smaller mobile devices */
     @media (max-width: 768px) {
-      .line:nth-child(1) { font-size: 6vw; }
-      .line:nth-child(2) { font-size: 10vw; }
+      .line:nth-child(1) { font-size: 10vw; }
+      .line:nth-child(2) { font-size: 14vw; }
       .line:nth-child(3) { font-size: 9vw; }
       .line:nth-child(4) { font-size: 6vw; }
       .line:nth-child(5) { font-size: 6vw; }
@@ -145,8 +141,8 @@
 
     /* Even larger font sizes for very small screens */
     @media (max-width: 480px) {
-      .line:nth-child(1) { font-size: 7vw; }
-      .line:nth-child(2) { font-size: 12vw; }
+      .line:nth-child(1) { font-size: 10vw; }
+      .line:nth-child(2) { font-size: 14vw; }
       .line:nth-child(3) { font-size: 10vw; }
       .line:nth-child(4) { font-size: 7vw; }
       .line:nth-child(5) { font-size: 7vw; }
