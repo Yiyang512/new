@@ -134,14 +134,13 @@
         }
 
         /* Media Query for Small Screens */
-        @media (max-width: 480px) {
-            .testimonial-grid {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 10px;
+       @media (max-width: 767px) {
+            .testimonial-card {
+                padding: 10px;
             }
             .testimonial-card {
-                max-width: 100%;
-                padding: 10px;
+                width: calc(33.33% - 20px); /* 3 cards per row on mobile */
+                max-width: none;
             }
         }
     </style>
