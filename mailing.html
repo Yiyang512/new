@@ -3,54 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Subscribe to Our Events</title>
+    <title>Email Signup</title>
     <style>
-        body { text-align: center; font-family: Arial, sans-serif; padding: 20px; }
-        .signup-btn {
-            background-color: #FF5733;
-            color: white;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            font-size: 18px;
-            cursor: pointer;
+        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+        #popup {
+            display: none; /* Initially hidden */
+            position: fixed; 
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: white; padding: 20px; border-radius: 8px; 
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            z-index: 1000;
         }
+        #popup-overlay {
+            display: none;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+        input[type="email"] { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; }
+        button { background-color: #FF5733; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
     </style>
 </head>
 <body>
-    <h2>Sign Up for Our Upcoming Events</h2>
-    <p>Enter your email below to stay updated!</p>
-    <button class="signup-btn" onclick="openPopup()">Sign Up Now</button>
+
+    <div id="popup-overlay"></div>
+
+    <div id="popup">
+        <h2>Subscribe to Our Newsletter</h2>
+        <p>Enter your email below to stay updated!</p>
+        <form id="email-form">
+            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            <button type="submit">Subscribe</button>
+        </form>
+        <p id="message"></p>
+    </div>
 
     <script>
-        function openPopup() {
-            let popup = window.open("", "popupWindow", "width=500,height=600,scrollbars=yes");
+        // Show the pop-up automatically when the page loads
+        window.onload = function() {
+            document.getElementById("popup").style.display = "block";
+            document.getElementById("popup-overlay").style.display = "block";
+        };
 
-            popup.document.write(`
-                <html>
-                <head>
-                    <title>Subscribe</title>
-                    <script>
-                        (function (s, e, n, d, er) {
-                            s['Sender'] = er;
-                            s[er] = s[er] || function () {
-                                (s[er].q = s[er].q || []).push(arguments)
-                            }, s[er].l = 1 * new Date();
-                            var a = e.createElement(n),
-                                m = e.getElementsByTagName(n)[0];
-                            a.async = 1;
-                            a.src = d;
-                            m.parentNode.insertBefore(a, m)
-                        })(window, document, 'script', 'https://cdn.sender.net/accounts_resources/universal.js', 'sender');
-                        sender('b0ef1aa0837599');
-                    </script>
-                </head>
-                <body style="text-align:center;padding:20px;">
-                    <h2>Subscribe Now</h2>
-                </body>
-                </html>
-            `);
-        }
+        document.getElementById("email-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            let email = document.getElementById("email").value;
+            let scriptURL = "https://script.google.com/macros/s/AKfycbyBPbpZjGiyBqT0aXieNF3eFpAgqzXfT13s5kxtb9wFYSZMpfcJIdWmBJyjnnvzlEufNg/exec"; // Replace with your Google Apps Script URL
+
+            fetch(scriptURL, {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: new URLSearchParams({ email: email })
+            })
+            .then(response => response.text())
+            .then(result => {
+                document.getElementById("message").innerText = "Thank you for subscribing!";
+                
+                // Hide pop-up after submission
+                setTimeout(() => {
+                    document.getElementById("popup").style.display = "none";
+                    document.getElementById("popup-overlay").style.display = "none";
+                }, 2000); // Pop-up disappears after 2 seconds
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                document.getElementById("message").innerText = "Something went wrong, please try again.";
+            });
+        });
     </script>
+
 </body>
 </html>
