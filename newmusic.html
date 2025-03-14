@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simple French with Hems</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+    body {
+        background-color: transparent;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        font-family: Arial, sans-serif;
+    }
+
+    .player-container {
+        background-color: #1e1e2e;
+        border-radius: 12px;
+        padding: 20px;
+        width: 400px;
+        text-align: center;
+        color: white;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .song-info h2 {
+        font-size: 18px;
+        margin: 10px 0;
+        color: #00FF9B;
+    }
+
+    .song-info p {
+        font-size: 14px;
+        color: #b3b3b3;
+    }
+
+    .progress-bar {
+        width: 100%;
+        height: 5px;
+        background: #444;
+        border-radius: 5px;
+        margin: 15px 0;
+        position: relative;
+        cursor: pointer;
+    }
+
+    .progress-bar .progress {
+        height: 100%;
+        width: 0;
+        background: #00ffcc;
+        border-radius: 5px;
+        transition: width 0.2s ease-in-out;
+    }
+
+    .time-display {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        color: #ccc;
+    }
+
+    .controls {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 15px;
+    }
+
+    .controls button {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+        transition: color 0.3s;
+    }
+
+    .controls button:hover {
+        color: #00ffcc;
+    }
+</style>
+</head>
+<body>
+
+<div class="player-container">
+    <div class="song-info">
+        <h2>Simple French with Hems</h2>
+        <p>AI-powered immersive French learning platform.</p>
+    </div>
+
+    <div class="progress-bar" onclick="setProgress(event)">
+        <div class="progress"></div>
+    </div>
+
+    <div class="time-display">
+        <span id="current-time">0:00</span>
+        <span id="total-duration">0:45</span>
+    </div>
+
+    <div class="controls">
+        <button onclick="prevTrack()"><i class="fas fa-step-backward"></i></button>
+        <button onclick="togglePlayPause()"><i class="fas fa-play" id="play-icon"></i></button>
+        <button onclick="nextTrack()"><i class="fas fa-step-forward"></i></button>
+    </div>
+    
+    <audio id="audio" src="https://yiyang512.github.io/new/simple.mp3"></audio>
+</div>
+
+<script>
+    const audio = document.getElementById('audio');
+    const playIcon = document.getElementById('play-icon');
+    const progress = document.querySelector('.progress');
+    const progressBar = document.querySelector('.progress-bar');
+    const currentTimeEl = document.getElementById('current-time');
+    const totalDurationEl = document.getElementById('total-duration');
+
+    function togglePlayPause() {
+        if (audio.paused) {
+            audio.play();
+            playIcon.classList.replace('fa-play', 'fa-pause');
+        } else {
+            audio.pause();
+            playIcon.classList.replace('fa-pause', 'fa-play');
+        }
+    }
+
+    function updateProgressBar() {
+        const progressPercent = (audio.currentTime / audio.duration) * 100;
+        progress.style.width = `${progressPercent}%`;
+        currentTimeEl.textContent = formatTime(audio.currentTime);
+    }
+
+    function setProgress(event) {
+        const clickX = event.offsetX;
+        const width = progressBar.clientWidth;
+        audio.currentTime = (clickX / width) * audio.duration;
+    }
+
+    function formatTime(seconds) {
+        const min = Math.floor(seconds / 60);
+        const sec = Math.floor(seconds % 60).toString().padStart(2, '0');
+        return `${min}:${sec}`;
+    }
+
+    audio.addEventListener('timeupdate', updateProgressBar);
+    audio.addEventListener('loadedmetadata', () => {
+        totalDurationEl.textContent = formatTime(audio.duration);
+    });
+
+    function prevTrack() {
+        audio.currentTime = 0;
+    }
+
+    function nextTrack() {
+        audio.currentTime = 0;
+        audio.pause();
+        playIcon.classList.replace('fa-pause', 'fa-play');
+    }
+</script>
+
+</body>
+</html>
