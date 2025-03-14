@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI-Powered French Writing Board</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+    <title>VR French Writing Board</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         body {
             text-align: center;
-            font-family: 'Orbitron', sans-serif;
-            background-color: transparent;
+            font-family: 'Poppins', sans-serif;
+            background-color: transparent ;
             color: #0ff;
             margin: 0;
             padding: 20px;
@@ -84,14 +84,31 @@
             padding: 3px;
             border-radius: 5px;
             cursor: pointer;
+            position: relative;
+            color: white;
+            font-weight: bold;
+        }
+        .error:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            left: 50%;
+            bottom: 125%;
+            background: #ff4444;
+            color: white;
+            padding: 5px;
+            border-radius: 5px;
+            white-space: nowrap;
+            transform: translateX(-50%);
+            font-size: 14px;
+            box-shadow: 0px 0px 10px #ff4444;
         }
     </style>
 </head>
 <body>
-
-    <h2>AI-Powered French Writing Board</h2>
     <div class="instruction">
-        Après avoir écrit votre phrase, appuyez sur le bouton "Vérifier la Grammaire". Les erreurs seront surlignées en <span style="color:#ff4444;">rouge</span>. Passez la souris sur l'erreur pour voir la correction suggérée.
+        Après avoir écrit votre phrase, appuyez sur le bouton "Vérifier la Grammaire". <br>
+        Les erreurs seront surlignées en <span style="color:#ff4444;">rouge</span>. <br>
+        Passez la souris sur l'erreur pour voir l'explication et la correction suggérée.
     </div>
 
     <div class="editor" contenteditable="true" id="textEditor">
@@ -139,12 +156,19 @@
 
             let result = await response.json();
 
-            // Highlight errors
+            // Highlight errors with tooltips
             let correctedText = text;
+            let errorOffsets = new Set(); // Track offsets to prevent duplicate highlights
             result.matches.forEach(error => {
                 let errorText = text.substring(error.offset, error.offset + error.length);
-                let replacement = `<span class="error" title="${error.message}">${errorText}</span>`;
-                correctedText = correctedText.replace(errorText, replacement);
+
+                // Prevent duplicate replacements
+                if (!errorOffsets.has(error.offset)) {
+                    let correction = error.replacements.length > 0 ? `Correction: ${error.replacements[0].value}` : "Erreur détectée";
+                    let replacement = `<span class="error" data-tooltip="${error.message} | ${correction}">${errorText}</span>`;
+                    correctedText = correctedText.replace(errorText, replacement);
+                    errorOffsets.add(error.offset);
+                }
             });
 
             editor.innerHTML = correctedText;
