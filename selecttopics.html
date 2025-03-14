@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEF/DELF Writing Topics</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            text-align: center;
+            font-family: 'Poppins', sans-serif;
+            background-color: transparent;
+            color: #0ff;
+            margin: 0;
+            padding: 20px;
+        }
+        .instruction {
+            font-size: 16px;
+            margin-bottom: 15px;
+            background: rgba(0, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 10px;
+            max-width: 700px;
+            margin: auto;
+            text-shadow: 0px 0px 5px #0ff;
+        }
+        .topic-box {
+            font-size: 18px;
+            padding: 10px;
+            background: rgba(0, 255, 255, 0.3);
+            border-radius: 10px;
+            margin-bottom: 15px;
+            max-width: 700px;
+            margin: auto;
+            font-weight: bold;
+            color: #fff;
+            box-shadow: 0px 0px 10px #0ff;
+        }
+        select, button {
+            margin: 10px;
+            padding: 10px 15px;
+            font-size: 16px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s ease-in-out;
+            font-family: 'Poppins', sans-serif;
+        }
+        .btn-random {
+            background-color: #ff4444;
+            color: white;
+            box-shadow: 0px 0px 10px #ff4444;
+        }
+        .btn-generate {
+            background-color: #0077ff;
+            color: white;
+            box-shadow: 0px 0px 10px #0077ff;
+        }
+        button:hover {
+            transform: scale(1.1);
+            box-shadow: 0px 0px 20px white;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TEF/DELF Writing Section -->
+    <div class="instruction">Select a TEF/DELF level or generate a random topic.</div>
+
+    <!-- Dropdown for selecting writing level -->
+    <select id="levelSelect">
+        <option value="">Select Level (A1 - C2)</option>
+        <option value="A1">A1 - Beginner</option>
+        <option value="A2">A2 - Elementary</option>
+        <option value="B1">B1 - Intermediate</option>
+        <option value="B2">B2 - Upper Intermediate</option>
+        <option value="C1">C1 - Advanced</option>
+        <option value="C2">C2 - Proficient</option>
+    </select>
+
+    <!-- Buttons for topic generation -->
+    <button class="btn-generate" onclick="generateTopic()">Generate Topic</button>
+    <button class="btn-random" onclick="randomizeTopic()">Randomize Topic</button>
+
+    <!-- Writing topic display -->
+    <div class="topic-box" id="writingTopic">Click "Generate Topic" or "Randomize Topic"</div>
+
+    <script>
+        const topics = {
+            A1: [
+                "Introduce yourself in French.",
+                "Describe your daily routine.",
+                "Write an invitation letter.",
+                "Talk about your family members.",
+                "Describe your favorite hobby.",
+                "Write about your house or apartment.",
+                "Describe your best friend.",
+                "Write about your favorite food.",
+                "Write a short letter to a pen pal.",
+                "Talk about your last weekend.",
+                "Describe your school or workplace.",
+                "Write about a typical day in your life.",
+                "Talk about a recent trip.",
+                "Describe the weather in your country.",
+                "Talk about your favorite holiday.",
+                "Describe a city you want to visit.",
+                "Write about a special event in your life.",
+                "Describe your dream job.",
+                "Write a simple story with past and present tense.",
+                "Write a thank-you letter to a friend."
+            ],
+            A2: [
+                "Write about your last vacation.",
+                "Describe your dream house.",
+                "Book a hotel room in French.",
+                "Describe your favorite movie.",
+                "Write an email to request information about a course.",
+                "Describe your morning routine in detail.",
+                "Write about a shopping experience.",
+                "Talk about an event you attended.",
+                "Write a review of a book you recently read.",
+                "Describe a family celebration.",
+                "Write an apology letter to a friend.",
+                "Describe a famous person you admire.",
+                "Write about a health-related topic.",
+                "Discuss the importance of physical exercise.",
+                "Describe a situation when you had to help someone.",
+                "Write a complaint letter to a company.",
+                "Describe a festival in your country.",
+                "Explain why learning French is useful.",
+                "Talk about your best childhood memory.",
+                "Describe a new skill you recently learned."
+            ],
+            B1: [
+                "Pros and cons of living in a big city.",
+                "Describe a moment when you helped someone.",
+                "Importance of learning French.",
+                "Write about a difficult decision you had to make.",
+                "Describe the education system in your country.",
+                "Discuss whether social media is good or bad.",
+                "Write an article about environmental issues.",
+                "Describe the impact of technology on our daily lives.",
+                "Write an opinion piece about online learning.",
+                "Describe an ideal weekend getaway.",
+                "Talk about an inspiring person in your life.",
+                "Write about a historical event that fascinates you.",
+                "Describe the last restaurant you visited.",
+                "Talk about the pros and cons of working remotely.",
+                "Write an article about climate change.",
+                "Describe a volunteering experience.",
+                "Write a formal email to a company for an internship.",
+                "Debate: Should people work less and have more free time?",
+                "Discuss how sports influence teamwork and discipline.",
+                "Write a short speech about the future of education."
+            ],
+            B2: [
+                "Impact of social media on relationships.",
+                "Write a job application letter.",
+                "Technology makes life better - Agree or disagree?",
+                "Write an article about the pros and cons of globalization.",
+                "Discuss the benefits of studying abroad.",
+                "Explain how cultural diversity enriches societies.",
+                "Write a persuasive letter about animal rights.",
+                "Discuss the role of art in modern society.",
+                "Write a speech about environmental sustainability.",
+                "Discuss the importance of financial literacy.",
+                "Talk about the future of artificial intelligence.",
+                "Write about the impact of tourism on the environment.",
+                "Debate: Should governments regulate unhealthy food?",
+                "Write a cover letter for a French company.",
+                "Discuss how the internet has changed human communication.",
+                "Describe the importance of reading books.",
+                "Debate: Should university be free for all students?",
+                "Explain how sports contribute to social development.",
+                "Write an editorial about gender equality.",
+                "Talk about the advantages and disadvantages of digital banking."
+            ],
+            C1: [
+                "Effects of climate change on the economy.",
+                "Why should students learn multiple languages?",
+                "Ethical implications of AI.",
+                "Analyze the role of media in shaping public opinion.",
+                "Write a critical review of a modern novel.",
+                "Discuss the impact of automation on employment.",
+                "Evaluate the risks and benefits of genetic engineering.",
+                "Debate: Should governments regulate social media platforms?",
+                "Write a policy proposal on urban planning.",
+                "Discuss the ethical responsibilities of large corporations.",
+                "Analyze how globalization has affected local traditions.",
+                "Debate: Should countries invest more in space exploration?",
+                "Write a research paper on the impact of fake news.",
+                "Discuss the influence of pop culture on young generations.",
+                "Talk about the future of electric vehicles.",
+                "Write a philosophical essay on happiness.",
+                "Debate: Should voting be mandatory in all elections?",
+                "Write an analysis on the power of storytelling in history.",
+                "Discuss the relationship between technology and mental health.",
+                "Examine the importance of emotional intelligence in leadership."
+            ],
+            C2: [
+                "Globalization and language diversity.",
+                "The role of literature in society.",
+                "The advantages and disadvantages of free speech.",
+                "Debate: Should there be a universal basic income?",
+                "Discuss how art reflects political movements.",
+                "Analyze the philosophical impact of artificial intelligence.",
+                "Discuss the implications of global economic interdependence.",
+                "Write a theoretical paper on the evolution of human rights.",
+                "Debate: Should scientific research be freely accessible?",
+                "Discuss how philosophy influences scientific discoveries.",
+                "Evaluate the effectiveness of international climate policies.",
+                "Write an analysis of existentialist literature.",
+                "Debate: Is democracy the best form of government?",
+                "Discuss the impact of global pandemics on economies.",
+                "Evaluate the role of censorship in modern media."
+            ]
+        };
+        function generateTopic() {
+            let level = document.getElementById("levelSelect").value;
+            if (!level) {
+                alert("Please select a level first!");
+                return;
+            }
+            const topic = topics[level][Math.floor(Math.random() * topics[level].length)];
+            document.getElementById("writingTopic").innerText = topic;
+        }
+
+        function randomizeTopic() {
+            const levels = Object.keys(topics);
+            const randomLevel = levels[Math.floor(Math.random() * levels.length)];
+            const topic = topics[randomLevel][Math.floor(Math.random() * topics[randomLevel].length)];
+            document.getElementById("writingTopic").innerText = `(Random: ${randomLevel}) ${topic}`;
+        }
+    </script>
+
+</body>
+</html>
