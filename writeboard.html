@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Powered French Writing Board</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+    <style>
+        body {
+            text-align: center;
+            font-family: 'Orbitron', sans-serif;
+            background-color: transparent;
+            color: #0ff;
+            margin: 0;
+            padding: 20px;
+        }
+        h2 {
+            font-size: 28px;
+            text-transform: uppercase;
+            text-shadow: 0px 0px 10px #0ff;
+        }
+        .instruction {
+            font-size: 16px;
+            margin-bottom: 15px;
+            background: rgba(0, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 10px;
+            max-width: 700px;
+            margin: auto;
+            text-shadow: 0px 0px 5px #0ff;
+        }
+        .editor {
+            width: 90%;
+            max-width: 800px;
+            height: 300px;
+            border: 3px solid #0ff;
+            padding: 15px;
+            font-size: 20px;
+            background: rgba(0, 255, 255, 0.1);
+            color: #fff;
+            outline: none;
+            border-radius: 15px;
+            margin: 20px auto;
+            box-shadow: 0px 0px 15px #0ff;
+            transition: 0.3s ease-in-out;
+        }
+        .editor:hover {
+            box-shadow: 0px 0px 25px #0ff;
+        }
+        .controls {
+            margin-top: 15px;
+        }
+        button {
+            margin: 8px;
+            padding: 12px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 10px;
+            transition: 0.3s ease-in-out;
+            font-family: 'Orbitron', sans-serif;
+        }
+        .btn-clear {
+            background-color: #ff4444;
+            color: white;
+            box-shadow: 0px 0px 10px #ff4444;
+        }
+        .btn-download {
+            background-color: #44ff44;
+            color: black;
+            box-shadow: 0px 0px 10px #44ff44;
+        }
+        .btn-check {
+            background-color: #0077ff;
+            color: white;
+            box-shadow: 0px 0px 10px #0077ff;
+        }
+        button:hover {
+            transform: scale(1.1);
+            box-shadow: 0px 0px 20px white;
+        }
+        .error {
+            background-color: #ff4444;
+            padding: 3px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>AI-Powered French Writing Board</h2>
+    <div class="instruction">
+        Après avoir écrit votre phrase, appuyez sur le bouton "Vérifier la Grammaire". Les erreurs seront surlignées en <span style="color:#ff4444;">rouge</span>. Passez la souris sur l'erreur pour voir la correction suggérée.
+    </div>
+
+    <div class="editor" contenteditable="true" id="textEditor">
+        Tapez votre texte ici...
+    </div>
+
+    <div class="controls">
+        <button class="btn-clear" onclick="clearText()">Effacer</button>
+        <button class="btn-download" onclick="downloadText()">Télécharger</button>
+        <button class="btn-check" onclick="checkGrammar()">Vérifier la Grammaire</button>
+    </div>
+
+    <script>
+        function clearText() {
+            document.getElementById('textEditor').innerHTML = "";
+        }
+
+        function downloadText() {
+            let text = document.getElementById('textEditor').innerText;
+            let blob = new Blob([text], { type: "text/plain" });
+            let link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "french-text.txt";
+            link.click();
+        }
+
+        async function checkGrammar() {
+            let editor = document.getElementById('textEditor');
+            let text = editor.innerText;
+
+            if (text.trim() === "") {
+                alert("Veuillez écrire quelque chose avant de vérifier la grammaire.");
+                return;
+            }
+
+            let url = "https://api.languagetool.org/v2/check";
+            let params = new URLSearchParams();
+            params.append("text", text);
+            params.append("language", "fr");
+
+            let response = await fetch(url, {
+                method: "POST",
+                body: params
+            });
+
+            let result = await response.json();
+
+            // Highlight errors
+            let correctedText = text;
+            result.matches.forEach(error => {
+                let errorText = text.substring(error.offset, error.offset + error.length);
+                let replacement = `<span class="error" title="${error.message}">${errorText}</span>`;
+                correctedText = correctedText.replace(errorText, replacement);
+            });
+
+            editor.innerHTML = correctedText;
+        }
+    </script>
+
+</body>
+</html>
