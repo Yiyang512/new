@@ -9,7 +9,7 @@
         body {
             text-align: center;
             font-family: 'Poppins', sans-serif;
-            background-color: transparent ;
+            background-color: transparent;
             color: #0ff;
             margin: 0;
             padding: 20px;
@@ -37,7 +37,7 @@
             padding: 15px;
             font-size: 20px;
             background: rgba(0, 255, 255, 0.1);
-            color: #fff;
+            color: white !important; /* Fix text color */
             outline: none;
             border-radius: 15px;
             margin: 20px auto;
@@ -46,6 +46,9 @@
         }
         .editor:hover {
             box-shadow: 0px 0px 25px #0ff;
+        }
+        .editor * {
+            color: white !important; /* Ensure text inside remains white */
         }
         .controls {
             margin-top: 15px;
@@ -122,6 +125,11 @@
     </div>
 
     <script>
+        // Fix text color using JavaScript
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById("textEditor").style.color = "white";
+        });
+
         function clearText() {
             document.getElementById('textEditor').innerHTML = "";
         }
