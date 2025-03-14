@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,7 +37,7 @@
             padding: 15px;
             font-size: 20px;
             background: rgba(0, 255, 255, 0.1);
-            color: white !important; /* Fix text color */
+            color: white !important;
             outline: none;
             border-radius: 15px;
             margin: 20px auto;
@@ -48,7 +48,7 @@
             box-shadow: 0px 0px 25px #0ff;
         }
         .editor * {
-            color: white !important; /* Ensure text inside remains white */
+            color: white !important;
         }
         .controls {
             margin-top: 15px;
@@ -109,23 +109,22 @@
 </head>
 <body>
     <div class="instruction">
-        Après avoir écrit votre phrase, appuyez sur le bouton "Vérifier la Grammaire". <br>
-        Les erreurs seront surlignées en <span style="color:#ff4444;">rouge</span>. <br>
-        Passez la souris sur l'erreur pour voir l'explication et la correction suggérée.
+        After writing your sentence, click the "Check Grammar" button. <br>
+        Errors will be highlighted in <span style="color:#ff4444;">red</span>. <br>
+        Hover over the error to see an explanation and the suggested correction.
     </div>
 
     <div class="editor" contenteditable="true" id="textEditor">
-        Tapez votre texte ici...
+        Type your text here...
     </div>
 
     <div class="controls">
-        <button class="btn-clear" onclick="clearText()">Effacer</button>
-        <button class="btn-download" onclick="downloadText()">Télécharger</button>
-        <button class="btn-check" onclick="checkGrammar()">Vérifier la Grammaire</button>
+        <button class="btn-clear" onclick="clearText()">Clear</button>
+        <button class="btn-download" onclick="downloadText()">Download</button>
+        <button class="btn-check" onclick="checkGrammar()">Check Grammar</button>
     </div>
 
     <script>
-        // Fix text color using JavaScript
         document.addEventListener("DOMContentLoaded", function() {
             document.getElementById("textEditor").style.color = "white";
         });
@@ -148,7 +147,7 @@
             let text = editor.innerText;
 
             if (text.trim() === "") {
-                alert("Veuillez écrire quelque chose avant de vérifier la grammaire.");
+                alert("Please write something before checking the grammar.");
                 return;
             }
 
@@ -164,15 +163,13 @@
 
             let result = await response.json();
 
-            // Highlight errors with tooltips
             let correctedText = text;
-            let errorOffsets = new Set(); // Track offsets to prevent duplicate highlights
+            let errorOffsets = new Set();
             result.matches.forEach(error => {
                 let errorText = text.substring(error.offset, error.offset + error.length);
 
-                // Prevent duplicate replacements
                 if (!errorOffsets.has(error.offset)) {
-                    let correction = error.replacements.length > 0 ? `Correction: ${error.replacements[0].value}` : "Erreur détectée";
+                    let correction = error.replacements.length > 0 ? `Correction: ${error.replacements[0].value}` : "Detected Error";
                     let replacement = `<span class="error" data-tooltip="${error.message} | ${correction}">${errorText}</span>`;
                     correctedText = correctedText.replace(errorText, replacement);
                     errorOffsets.add(error.offset);
