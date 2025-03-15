@@ -9,86 +9,91 @@
         body {
             text-align: center;
             font-family: 'Poppins', sans-serif;
-            background-color: transparent;
-            color: #0ff;
+            background-color: #0a0a0a;
+            color: #00FF99;
             margin: 0;
             padding: 20px;
         }
-        .instruction {
-            font-size: 16px;
-            margin-bottom: 15px;
-            background: rgba(0, 255, 255, 0.2);
-            padding: 10px;
-            border-radius: 10px;
-            max-width: 700px;
+        .container {
+            max-width: 800px;
             margin: auto;
-            text-shadow: 0px 0px 5px #0ff;
+            padding: 20px;
+            border-radius: 15px;
+            background: #121212;
+            box-shadow: 0px 0px 20px rgba(0, 255, 153, 0.6);
+        }
+        .instruction {
+            font-size: 22px;
+            margin-bottom: 20px;
+            background: rgba(0, 255, 153, 0.2);
+            padding: 15px;
+            border-radius: 15px;
+            text-shadow: 0px 0px 12px #00FF99;
+            font-weight: bold;
         }
         .topic-box {
-            font-size: 18px;
-            padding: 10px;
-            background: rgba(0, 255, 255, 0.3);
-            border-radius: 10px;
-            margin-bottom: 15px;
-            max-width: 700px;
-            margin: auto;
+            font-size: 22px;
+            padding: 20px;
+            background: rgba(0, 255, 153, 0.3);
+            border-radius: 15px;
+            margin-bottom: 20px;
             font-weight: bold;
-            color: #fff;
-            box-shadow: 0px 0px 10px #0ff;
+            box-shadow: 0px 0px 18px #00FF99;
+            text-align: center;
+            animation: glow 1.5s infinite alternate;
+        }
+        @keyframes glow {
+            from { box-shadow: 0px 0px 18px #00FF99; }
+            to { box-shadow: 0px 0px 30px #00FF99; }
         }
         select, button {
-            margin: 10px;
-            padding: 10px 15px;
-            font-size: 16px;
-            border-radius: 10px;
+            margin: 12px;
+            padding: 14px 20px;
+            font-size: 18px;
+            border-radius: 15px;
             border: none;
             cursor: pointer;
             transition: 0.3s ease-in-out;
             font-family: 'Poppins', sans-serif;
         }
         .btn-random {
-            background-color: #ff4444;
+            background-color: #FF4444;
             color: white;
-            box-shadow: 0px 0px 10px #ff4444;
+            font-weight: bold;
+            box-shadow: 0px 0px 18px #FF4444;
         }
         .btn-generate {
-            background-color: #0077ff;
-            color: white;
-            box-shadow: 0px 0px 10px #0077ff;
+            background-color: #00FF99;
+            color: black;
+            font-weight: bold;
+            box-shadow: 0px 0px 18px #00FF99;
         }
         button:hover {
             transform: scale(1.1);
-            box-shadow: 0px 0px 20px white;
+            box-shadow: 0px 0px 25px white;
         }
     </style>
 </head>
 <body>
-
-    <!-- TEF/DELF Writing Section -->
-    <div class="instruction">Select a TEF/DELF level or generate a random topic.</div>
-
-    <!-- Dropdown for selecting writing level -->
-    <select id="levelSelect">
-        <option value="">Select Level (A1 - C2)</option>
-        <option value="A1">A1 - Beginner</option>
-        <option value="A2">A2 - Elementary</option>
-        <option value="B1">B1 - Intermediate</option>
-        <option value="B2">B2 - Upper Intermediate</option>
-        <option value="C1">C1 - Advanced</option>
-        <option value="C2">C2 - Proficient</option>
-    </select>
-
-    <!-- Buttons for topic generation -->
-    <button class="btn-generate" onclick="generateTopic()">Generate Topic</button>
-    <button class="btn-random" onclick="randomizeTopic()">Randomize Topic</button>
-
-    <!-- Writing topic display -->
-    <div class="topic-box" id="writingTopic">Click "Generate Topic" or "Randomize Topic"</div>
-
+    <div class="container">
+        <div class="instruction">Select a TEF/DELF level or generate a random topic.</div>
+        <select id="levelSelect">
+            <option value="">Select Level (A1 - C2)</option>
+            <option value="A1">A1 - Beginner</option>
+            <option value="A2">A2 - Elementary</option>
+            <option value="B1">B1 - Intermediate</option>
+            <option value="B2">B2 - Upper Intermediate</option>
+            <option value="C1">C1 - Advanced</option>
+            <option value="C2">C2 - Proficient</option>
+        </select>
+        <button class="btn-generate" onclick="generateTopic()">Generate Topic</button>
+        <button class="btn-random" onclick="randomizeTopic()">Randomize Topic</button>
+        <div class="topic-box" id="writingTopic">Click "Generate Topic" or "Randomize Topic"</div>
+    </div>
     <script>
         const topics = {
             A1: [
-                "Introduce yourself in French.",
+               "Introduce yourself in French.",
                 "Describe your daily routine.",
                 "Write an invitation letter.",
                 "Talk about your family members.",
@@ -110,7 +115,7 @@
                 "Write a thank-you letter to a friend."
             ],
             A2: [
-                "Write about your last vacation.",
+               "Write about your last vacation.",
                 "Describe your dream house.",
                 "Book a hotel room in French.",
                 "Describe your favorite movie.",
@@ -132,7 +137,7 @@
                 "Describe a new skill you recently learned."
             ],
             B1: [
-                "Pros and cons of living in a big city.",
+                 "Pros and cons of living in a big city.",
                 "Describe a moment when you helped someone.",
                 "Importance of learning French.",
                 "Write about a difficult decision you had to make.",
@@ -176,7 +181,7 @@
                 "Talk about the advantages and disadvantages of digital banking."
             ],
             C1: [
-                "Effects of climate change on the economy.",
+               "Effects of climate change on the economy.",
                 "Why should students learn multiple languages?",
                 "Ethical implications of AI.",
                 "Analyze the role of media in shaping public opinion.",
@@ -198,7 +203,7 @@
                 "Examine the importance of emotional intelligence in leadership."
             ],
             C2: [
-                "Globalization and language diversity.",
+                 "Globalization and language diversity.",
                 "The role of literature in society.",
                 "The advantages and disadvantages of free speech.",
                 "Debate: Should there be a universal basic income?",
@@ -215,23 +220,23 @@
                 "Evaluate the role of censorship in modern media."
             ]
         };
+
         function generateTopic() {
             let level = document.getElementById("levelSelect").value;
             if (!level) {
                 alert("Please select a level first!");
                 return;
             }
-            const topic = topics[level][Math.floor(Math.random() * topics[level].length)];
-            document.getElementById("writingTopic").innerText = topic;
+            let topic = topics[level][Math.floor(Math.random() * topics[level].length)];
+            document.getElementById("writingTopic").innerText = `(${level}) ${topic}`;
         }
 
         function randomizeTopic() {
-            const levels = Object.keys(topics);
-            const randomLevel = levels[Math.floor(Math.random() * levels.length)];
-            const topic = topics[randomLevel][Math.floor(Math.random() * topics[randomLevel].length)];
-            document.getElementById("writingTopic").innerText = `(Random: ${randomLevel}) ${topic}`;
+            let levels = Object.keys(topics);
+            let randomLevel = levels[Math.floor(Math.random() * levels.length)];
+            let topic = topics[randomLevel][Math.floor(Math.random() * topics[randomLevel].length)];
+            document.getElementById("writingTopic").innerText = `(${randomLevel}) ${topic}`;
         }
     </script>
-
 </body>
 </html>
