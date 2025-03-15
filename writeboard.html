@@ -31,7 +31,8 @@
             font-weight: bold;
             box-shadow: 0px 0px 15px #00FF99;
         }
-        .editor {
+        
+.editor {
             width: 90%;
             max-width: 800px;
             height: 1300px;
@@ -42,11 +43,15 @@
             color: white !important;
             outline: none;
             border-radius: 15px;
-            margin: 20px auto;
+            margin: 80px auto;
             box-shadow: 0px 0px 15px #00FF99;
             transition: 0.3s ease-in-out;
             overflow-y: auto;
         }
+
+
+
+
         .editor:hover {
             box-shadow: 0px 0px 25px #00FF99;
         }
@@ -81,30 +86,10 @@
             transform: scale(1.1);
             box-shadow: 0px 0px 25px white;
         }
-        .error {
-            background-color: #FF4444;
-            padding: 3px;
-            border-radius: 5px;
-            cursor: pointer;
-            position: relative;
-            color: white;
-            font-weight: bold;
-            box-shadow: 0px 0px 10px #FF4444;
-        }
-        .error:hover::after {
-            content: attr(data-tooltip);
-            position: absolute;
-            left: 50%;
-            bottom: 125%;
-            background: #FF4444;
-            color: white;
-            padding: 5px;
-            border-radius: 5px;
-            white-space: nowrap;
-            transform: translateX(-50%);
-            font-size: 14px;
-            box-shadow: 0px 0px 10px #FF4444;
-        }
+      
+ .error { background: #FF4444; padding: 3px; border-radius: 5px; cursor: pointer; position: relative; color: white; font-weight: bold; box-shadow: 0px 0px 10px #FF4444; }
+.error:hover::after { content: attr(data-tooltip); position: absolute; left: 50%; bottom: 125%; background: #FF4444; color: white; padding: 5px; border-radius: 5px; white-space: nowrap; transform: translateX(-50%); font-size: 7px; box-shadow: 0px 0px 10px #FF4444; }
+
         /* 📱 Responsive Adjustments */
         @media screen and (max-width: 768px) {
             .instruction {
