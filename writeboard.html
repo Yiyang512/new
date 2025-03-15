@@ -10,42 +10,45 @@
             text-align: center;
             font-family: 'Poppins', sans-serif;
             background-color: transparent;
-            color: #0ff;
+            color: #00FF99;
             margin: 0;
             padding: 20px;
         }
         h2 {
             font-size: 28px;
             text-transform: uppercase;
-            text-shadow: 0px 0px 10px #0ff;
+            text-shadow: 0px 0px 10px #00FF99;
         }
         .instruction {
-            font-size: 16px;
+            font-size: 18px;
             margin-bottom: 15px;
-            background: rgba(0, 255, 255, 0.2);
-            padding: 10px;
-            border-radius: 10px;
-            max-width: 700px;
+            background: rgba(0, 255, 153, 0.2);
+            padding: 15px;
+            border-radius: 15px;
+            max-width: 750px;
             margin: auto;
-            text-shadow: 0px 0px 5px #0ff;
+            text-shadow: 0px 0px 8px #00FF99;
+            font-weight: bold;
+            box-shadow: 0px 0px 15px #00FF99;
         }
         .editor {
             width: 90%;
             max-width: 800px;
-            height: 300px;
-            border: 3px solid #0ff;
-            padding: 15px;
+            height: 1300px;
+            border: 3px solid #00FF99;
+            padding: 55px;
             font-size: 20px;
-            background: rgba(0, 255, 255, 0.1);
+            background: rgba(0, 255, 153, 0.1);
             color: white !important;
             outline: none;
             border-radius: 15px;
             margin: 20px auto;
-            box-shadow: 0px 0px 15px #0ff;
+            box-shadow: 0px 0px 15px #00FF99;
             transition: 0.3s ease-in-out;
+            overflow-y: auto;
         }
         .editor:hover {
-            box-shadow: 0px 0px 25px #0ff;
+            box-shadow: 0px 0px 25px #00FF99;
         }
         .editor * {
             color: white !important;
@@ -54,68 +57,81 @@
             margin-top: 15px;
         }
         button {
-            margin: 8px;
-            padding: 12px 20px;
-            font-size: 16px;
+            margin: 10px;
+            padding: 14px 22px;
+            font-size: 18px;
             cursor: pointer;
             border: none;
-            border-radius: 10px;
+            border-radius: 15px;
             transition: 0.3s ease-in-out;
-            font-family: 'Orbitron', sans-serif;
+            font-family: 'Poppins', sans-serif;
+            font-weight: bold;
         }
         .btn-clear {
-            background-color: #ff4444;
+            background-color: #FF4444;
             color: white;
-            box-shadow: 0px 0px 10px #ff4444;
-        }
-        .btn-download {
-            background-color: #44ff44;
-            color: black;
-            box-shadow: 0px 0px 10px #44ff44;
+            box-shadow: 0px 0px 18px #FF4444;
         }
         .btn-check {
-            background-color: #0077ff;
-            color: white;
-            box-shadow: 0px 0px 10px #0077ff;
+            background-color: #00FF99;
+            color: black;
+            box-shadow: 0px 0px 18px #00FF99;
         }
         button:hover {
             transform: scale(1.1);
-            box-shadow: 0px 0px 20px white;
+            box-shadow: 0px 0px 25px white;
         }
         .error {
-            background-color: #ff4444;
+            background-color: #FF4444;
             padding: 3px;
             border-radius: 5px;
             cursor: pointer;
             position: relative;
             color: white;
             font-weight: bold;
+            box-shadow: 0px 0px 10px #FF4444;
         }
         .error:hover::after {
             content: attr(data-tooltip);
             position: absolute;
             left: 50%;
             bottom: 125%;
-            background: #ff4444;
+            background: #FF4444;
             color: white;
             padding: 5px;
             border-radius: 5px;
             white-space: nowrap;
             transform: translateX(-50%);
             font-size: 14px;
-            box-shadow: 0px 0px 10px #ff4444;
+            box-shadow: 0px 0px 10px #FF4444;
+        }
+        /* 📱 Responsive Adjustments */
+        @media screen and (max-width: 768px) {
+            .instruction {
+                font-size: 16px;
+                padding: 12px;
+                max-width: 90%;
+            }
+            .editor {
+                font-size: 18px;
+                height: 280px;
+            }
+            button {
+                font-size: 16px;
+                padding: 12px 18px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="instruction">
         After writing your sentence, click the "Check Grammar" button. <br>
-        Errors will be highlighted in <span style="color:#ff4444;">red</span>. <br>
+        Errors will be highlighted in <span style="color:#FF4444;">red</span>. <br>
         Hover over the error to see an explanation and the suggested correction.
     </div>
 
     <div class="editor" contenteditable="true" id="textEditor">
-        Type your text here...
+        Type your text in French here...
     </div>
 
     <div class="controls">
@@ -130,15 +146,6 @@
 
         function clearText() {
             document.getElementById('textEditor').innerHTML = "";
-        }
-
-        function downloadText() {
-            let text = document.getElementById('textEditor').innerText;
-            let blob = new Blob([text], { type: "text/plain" });
-            let link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
-            link.download = "french-text.txt";
-            link.click();
         }
 
         async function checkGrammar() {
