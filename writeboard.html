@@ -137,10 +137,20 @@
             let editor = document.getElementById('textEditor');
             let text = editor.innerText;
 
-            if (text.trim() === "") {
-                alert("Please write something before checking the grammar.");
-                return;
-            }
+       if (text.trim() === "") {
+    let warningBox = document.getElementById("grammar-warning");
+    if (!warningBox) {
+        warningBox = document.createElement("p");
+        warningBox.id = "grammar-warning";
+        warningBox.style.color = "#FF4444";
+        warningBox.style.fontWeight = "bold";
+        warningBox.style.textShadow = "0px 0px 5px red";
+        warningBox.innerText = "⚠️ Please write something before checking the grammar.";
+        document.body.insertBefore(warningBox, document.body.firstChild);
+    }
+    warningBox.innerText = "⚠️ Please write something before checking the grammar.";
+    return;
+}
 
             let url = "https://api.languagetool.org/v2/check";
             let params = new URLSearchParams();
