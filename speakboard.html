@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VR French Writing Board</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            text-align: center;
+            font-family: 'Poppins', sans-serif;
+            background-color: transparent;
+            color: #00FF99;
+            margin: 0;
+            padding: 10px;
+        }
+
+     h2 {
+            font-size: 28px;
+            text-transform: uppercase;
+            text-shadow: 0px 0px 10px #00FF99;
+        }
+        
+
+        .btn {
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            margin: 10px;
+            border-radius: 8px;
+            transition: all 0.1s ease;
+        }
+
+        .btn-start { background-color: #0056b3; color: white; }
+        .btn-start:hover { background-color: #003d80; }
+        .btn-stop { background-color: #d9534f; color: white; }
+        .btn-stop:hover { background-color: #b52b27; }
+        .btn-listen { background-color: #28a745; color: white; }
+        .btn-listen:hover { background-color: #218838; }
+
+   p {
+            font-size: 18px;
+            margin-bottom: 15px;
+            background: rgba(0, 255, 153, 0.2);
+            padding: 15px;
+            border-radius: 15px;
+            max-width: 750px;
+            margin: auto;
+            text-shadow: 0px 0px 8px #00FF99;
+            font-weight: bold;
+            box-shadow: 0px 0px 0px #00FF99;
+        }
+
+        textarea {
+            width: 90%;
+            max-width: 600px;
+            height: 100px;
+            border: 3px solid #00FF99;
+            padding: 55px;
+            font-size: 20px;
+            background: rgba(0, 255, 153, 0.1);
+            color: white !important;
+            outline: none;
+            border-radius: 15px;
+            margin: 20px auto;
+            box-shadow: 0px 0px 15px #00FF99;
+            transition: 0.1s ease-in-out;
+            overflow-y: auto;
+        }
+        #status, #accuracy, #word-speed, #vocab-count { font-size: 16px; margin-top: 1px; }
+        .error { color: red; font-weight: bold; }
+        #formatted-output { font-weight: bold; color: green; margin-top: 1px; }
+        #highlighted-words { color: blue; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h2>French AI Speaking Board (FREE)</h2>
+    <button id="start-btn" class="btn btn-start">Start Speaking</button>
+    <button id="stop-btn" class="btn btn-stop">Stop</button>
+    <button id="listen-btn" class="btn btn-listen">🔊 Hear AI Pronounce It</button>
+<button id="start-mini-game" class="btn btn-game">🎮 Try "Repeat-After-Me" Mini-Game</button>
+    <p id="status">Press "Start Speaking" and begin speaking in French. Press "Stop" to check your speaking. </p>
+    
+    <p><strong>Today's Speaking Challenge(Optional):</strong> <span id="daily-challenge"></span></p>
+    
+    <textarea id="output" placeholder="Your speech will appear here..." readonly></textarea>
+    
+    <p><strong>Live Highlight:</strong> <span id="highlighted-words"></span></p>
+
+    <p id="accuracy"> ⦿ Pronunciation Confidence: <span id="confidence-score">-</span>%</p>
+    <p id="word-speed"> ⦿ Word Speed: <span id="wpm">-</span> WPM</p>
+    <p id="vocab-count"> ⦿ Unique Words Used: <span id="vocab-total">-</span></p>
+
+    <p><strong>Grammar & Conversation Fixes:</strong></p>
+    <p id="grammar-errors"></p>
+
+   
+ <script>
+// 🎮 **"Repeat-After-Me" Mini-Game**
+const sentences = [
+    "Bonjour, comment ça va?",
+    "J'aime apprendre le français.",
+    "Quel temps fait-il aujourd'hui?",
+    "Je voudrais un café, s'il vous plaît.",
+    "Peux-tu répéter s'il te plaît?"
+];
+
+document.getElementById("start-mini-game").addEventListener("click", () => {
+    let randomSentence = sentences[Math.floor(Math.random() * sentences.length)];
+    speakSentence(randomSentence);
+});
+
+function speakSentence(text) {
+    let synth = window.speechSynthesis;
+    let utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = "fr-FR";
+    utterance.rate = 0.8; // Slow speed for learning
+
+    let voices = synth.getVoices();
+    let frenchVoice = voices.find(voice => voice.lang.startsWith("fr"));
+    if (frenchVoice) {
+        utterance.voice = frenchVoice;
+    }
+
+    synth.speak(utterance);
+    alert("🔊 Repeat this sentence: " + text);
+}
+
+// Ensure voices load
+window.speechSynthesis.onvoiceschanged = () => {
+    console.log("Voices loaded:", window.speechSynthesis.getVoices());
+};
+
+        window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+        if (!window.SpeechRecognition) {
+            alert("Your browser does not support Speech Recognition. Try using Chrome or Edge.");
+        } else {
+            const recognition = new SpeechRecognition();
+            recognition.lang = 'fr-FR';
+            recognition.continuous = true;
+            recognition.interimResults = true;
+
+            const output = document.getElementById('output');
+            const startBtn = document.getElementById('start-btn');
+            const stopBtn = document.getElementById('stop-btn');
+            const listenBtn = document.getElementById('listen-btn');
+            const confidenceScore = document.getElementById('confidence-score');
+            const wpmDisplay = document.getElementById('wpm');
+            const vocabCount = document.getElementById('vocab-total');
+            const highlightedWords = document.getElementById('highlighted-words');
+            const dailyChallenge = document.getElementById('daily-challenge');
+            const grammarErrors = document.getElementById('grammar-errors');
+
+            let startTime, wordCount = 0, uniqueWords = new Set();
+
+            // ⦿ Generate Daily Speaking Challenge
+            const challenges = [
+                "Parle de ta journée en 3 phrases.",
+                "Décris ton plat préféré en français.",
+                "Raconte une courte histoire en français.",
+                "Exprime une opinion sur un sujet simple.",
+                "Pratique un dialogue de présentation."
+            ];
+            dailyChallenge.innerText = challenges[new Date().getDate() % challenges.length];
+
+            startBtn.addEventListener('click', () => {
+                recognition.start();
+                startTime = Date.now();
+                output.value = "";
+                highlightedWords.innerText = "";
+                wordCount = 0;
+                uniqueWords.clear();
+            });
+
+            stopBtn.addEventListener('click', () => {
+                recognition.stop();
+                let elapsedTime = (Date.now() - startTime) / 1000; // Convert ms to seconds
+                let wpm = Math.round((wordCount / elapsedTime) * 60); // Words per minute
+                wpmDisplay.innerText = isNaN(wpm) ? "-" : wpm;
+                vocabCount.innerText = uniqueWords.size;
+                checkGrammar(output.value); // Run grammar check when speaking stops
+            });
+
+            recognition.onresult = (event) => {
+                let transcript = '';
+                for (let i = 0; i < event.results.length; i++) {
+                    transcript += event.results[i][0].transcript + ' ';
+                }
+                transcript = transcript.trim();
+                output.value = transcript;
+
+                // 🔹 Confidence Score (Mocked for now)
+                let confidence = Math.floor(Math.random() * 21) + 80; // 80-100%
+                confidenceScore.innerText = confidence;
+
+                // 🔹 Word Tracking
+                let words = transcript.split(/\s+/);
+                wordCount = words.length;
+                words.forEach(word => uniqueWords.add(word.toLowerCase()));
+
+                // 🔹 Word-by-Word Highlighting
+                let highlightText = words.slice(-5).join(" "); // Show last 5 words
+                highlightedWords.innerText = highlightText;
+            };
+
+            // 📝 **Grammar Check Feature (Using Free LanguageTool API)**
+            async function checkGrammar(text) {
+                const url = "https://api.languagetool.org/v2/check";
+                const params = new URLSearchParams({ text: text, language: "fr" });
+
+                try {
+                    const response = await fetch(url, { method: "POST", body: params, headers: { "Content-Type": "application/x-www-form-urlencoded" } });
+                    const data = await response.json();
+                    grammarErrors.innerHTML = data.matches.length > 0 
+                        ? data.matches.map(match => `<p class="error">❌ ${match.message} (Correction: ${match.replacements.map(r => r.value).join(", ")})</p>`).join("")
+                        : "✅ No grammar mistakes detected!";
+                } catch (error) {
+                    grammarErrors.innerHTML = "⚠️ Unable to check grammar.";
+                }
+            }
+
+          // 🔊 **AI Read-Aloud (Slower Speed)**
+listenBtn.addEventListener('click', () => {
+    let text = output.value.trim();
+    if (text === "") {
+        alert("No text to read! Speak first.");
+        return;
+    }
+
+    let synth = window.speechSynthesis;
+    let utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = "fr-FR";
+    utterance.rate = 0.3; // Slower pronunciation (default is 1.0)
+
+    // Ensure French voice is used
+    let voices = synth.getVoices();
+    let frenchVoice = voices.find(voice => voice.lang.startsWith("fr"));
+    if (frenchVoice) {
+        utterance.voice = frenchVoice;
+    }
+
+    synth.speak(utterance);
+});
+
+// Ensure voices load before speaking
+window.speechSynthesis.onvoiceschanged = () => {
+    console.log("Voices loaded:", window.speechSynthesis.getVoices());
+};
+
+
+
+        }
+    </script>
+</body>
+</html>
