@@ -238,15 +238,35 @@
             ]
         };
 
-        function generateTopic() {
-            let level = document.getElementById("levelSelect").value;
-            if (!level) {
-                alert("Please select a level first!");
-                return;
-            }
-            let topic = topics[level][Math.floor(Math.random() * topics[level].length)];
-            document.getElementById("writingTopic").innerText = `(${level}) ${topic}`;
+      function generateTopic() {
+    let level = document.getElementById("levelSelect").value;
+    
+    let warningBox = document.getElementById("topic-warning");
+
+    if (!level) {
+        if (!warningBox) {
+            warningBox = document.createElement("p");
+            warningBox.id = "topic-warning";
+            warningBox.style.color = "#FF4444";
+            warningBox.style.fontWeight = "bold";
+            warningBox.style.textShadow = "0px 0px 5px red";
+            warningBox.style.textAlign = "center";
+            warningBox.innerText = "⚠️ Please select a level first!";
+            document.body.insertBefore(warningBox, document.body.firstChild);
         }
+        warningBox.innerText = "⚠️ Please select a level first!";
+        return;
+    }
+
+    // If level is selected, remove the warning message (if it exists)
+    if (warningBox) {
+        warningBox.remove();
+    }
+
+    let topic = topics[level][Math.floor(Math.random() * topics[level].length)];
+    document.getElementById("writingTopic").innerText = `(${level}) ${topic}`;
+}
+
 
         function randomizeTopic() {
             let levels = Object.keys(topics);
