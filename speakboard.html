@@ -100,12 +100,58 @@
  <script>
 // 🎮 **"Repeat-After-Me" Mini-Game**
 const sentences = [
+    // Beginner (A1 - A2)
     "Bonjour, comment ça va?",
     "J'aime apprendre le français.",
     "Quel temps fait-il aujourd'hui?",
     "Je voudrais un café, s'il vous plaît.",
-    "Peux-tu répéter s'il te plaît?"
+    "Peux-tu répéter s'il te plaît?",
+    "Où est la bibliothèque?",
+    "Je suis étudiant en français.",
+    "Quelle est ta couleur préférée?",
+    "À quelle heure est le cours?",
+    "As-tu un animal de compagnie?",
+    "Je vais au marché acheter des légumes.",
+    "Est-ce que tu aimes la musique?",
+    "Nous allons à la plage demain.",
+    "Excusez-moi, où sont les toilettes?",
+    "Je prends le bus tous les matins.",
+
+    // Intermediate (B1)
+    "J'aime voyager et découvrir de nouveaux endroits.",
+    "Peux-tu me recommander un bon restaurant?",
+    "Il fait froid aujourd'hui, prends un manteau.",
+    "Je dois étudier car j'ai un examen demain.",
+    "Est-ce que tu veux aller au cinéma ce soir?",
+    "Je préfère le thé au café.",
+    "La France est un beau pays avec beaucoup d'histoire.",
+    "Il faut pratiquer tous les jours pour progresser.",
+    "J'adore regarder des films en version originale.",
+    "Est-ce que tu as déjà visité Paris?",
+    "J'habite dans une grande ville avec beaucoup de magasins.",
+    "Nous devons réserver une table pour ce soir.",
+    "Je suis fatigué, je vais me coucher tôt.",
+    "Quel est ton plat préféré?",
+    "Je vais faire les courses au supermarché.",
+
+    // Advanced (B2 - C1)
+    "Si j'avais plus de temps, j'apprendrais une troisième langue.",
+    "Il est important de comprendre les différentes cultures du monde.",
+    "L'apprentissage d'une langue demande du temps et de la patience.",
+    "Que ferais-tu si tu gagnais à la loterie?",
+    "Nous devrions discuter de ce problème en détail.",
+    "Les nouvelles technologies changent notre façon de communiquer.",
+    "Il faut du courage pour parler une langue étrangère en public.",
+    "Le changement climatique est un sujet crucial de notre époque.",
+    "Je suis convaincu que voyager est la meilleure façon d'apprendre une langue.",
+    "Certains pensent que l'intelligence artificielle remplacera certains emplois.",
+    "L'éducation est la clé du succès dans la vie.",
+    "Pourquoi certaines personnes ont peur de parler en public?",
+    "Si j'étais président, je changerais beaucoup de lois.",
+    "Le sport est essentiel pour une vie saine et équilibrée.",
+    "L'impact des réseaux sociaux sur notre société est énorme."
 ];
+
 
 document.getElementById("start-mini-game").addEventListener("click", () => {
     let randomSentence = sentences[Math.floor(Math.random() * sentences.length)];
@@ -116,7 +162,7 @@ function speakSentence(text) {
     let synth = window.speechSynthesis;
     let utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = "fr-FR";
-    utterance.rate = 0.8; // Slow speed for learning
+    utterance.rate = 0.4; // Slow speed for learning
 
     let voices = synth.getVoices();
     let frenchVoice = voices.find(voice => voice.lang.startsWith("fr"));
@@ -125,8 +171,11 @@ function speakSentence(text) {
     }
 
     synth.speak(utterance);
-    alert("🔊 Repeat this sentence: " + text);
+
+    // ✅ Display the sentence inside the page instead of an alert popup
+    document.getElementById("status").innerText = "🔊 Repeat this sentence: " + text;
 }
+
 
 // Ensure voices load
 window.speechSynthesis.onvoiceschanged = () => {
@@ -202,7 +251,7 @@ window.speechSynthesis.onvoiceschanged = () => {
                 words.forEach(word => uniqueWords.add(word.toLowerCase()));
 
                 // 🔹 Word-by-Word Highlighting
-                let highlightText = words.slice(-5).join(" "); // Show last 5 words
+                let highlightText = words.slice(-40).join(" "); // Show last 5 words
                 highlightedWords.innerText = highlightText;
             };
 
@@ -226,7 +275,8 @@ window.speechSynthesis.onvoiceschanged = () => {
 listenBtn.addEventListener('click', () => {
     let text = output.value.trim();
     if (text === "") {
-        alert("No text to read! Speak first.");
+document.getElementById("status").innerText = "⚠️ No text detected! Speak first.";
+
         return;
     }
 
