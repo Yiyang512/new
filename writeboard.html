@@ -6,6 +6,7 @@
     <title>VR French Writing Board</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
+        /* Update body styles */
         body {
             text-align: center;
             font-family: 'Poppins', sans-serif;
@@ -14,6 +15,7 @@
             margin: 0;
             padding: 20px;
         }
+
         h2 {
             font-size: 28px;
             text-transform: uppercase;
@@ -106,6 +108,40 @@
                 padding: 12px 18px;
             }
         }
+
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 8px;
+            font-size: 14px;
+            transform: translateX(200%);
+            transition: transform 0.3s ease-in-out;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background: rgba(0, 255, 153, 0.9);
+            color: black;
+            box-shadow: 0 0 15px rgba(0, 255, 153, 0.5);
+        }
+
+        .notification.error {
+            background: rgba(255, 68, 68, 0.9);
+            color: white;
+            box-shadow: 0 0 15px rgba(255, 68, 68, 0.5);
+        }
+
+        .notification.info {
+            background: rgba(0, 149, 255, 0.9);
+            color: white;
+            box-shadow: 0 0 15px rgba(0, 149, 255, 0.5);
+        }
     </style>
 </head>
 <body>
@@ -137,49 +173,75 @@
             let editor = document.getElementById('textEditor');
             let text = editor.innerText;
 
-       if (text.trim() === "") {
-    let warningBox = document.getElementById("grammar-warning");
-    if (!warningBox) {
-        warningBox = document.createElement("p");
-        warningBox.id = "grammar-warning";
-        warningBox.style.color = "#FF4444";
-        warningBox.style.fontWeight = "bold";
-        warningBox.style.textShadow = "0px 0px 5px red";
-        warningBox.innerText = "⚠️ Please write something before checking the grammar.";
-        document.body.insertBefore(warningBox, document.body.firstChild);
-    }
-    warningBox.innerText = "⚠️ Please write something before checking the grammar.";
-    return;
-}
-
-            let url = "https://api.languagetool.org/v2/check";
-            let params = new URLSearchParams();
-            params.append("text", text);
-            params.append("language", "fr");
-
-            let response = await fetch(url, {
-                method: "POST",
-                body: params
-            });
-
-            let result = await response.json();
-
-            let correctedText = text;
-            let errorOffsets = new Set();
-            result.matches.forEach(error => {
-                let errorText = text.substring(error.offset, error.offset + error.length);
-
-                if (!errorOffsets.has(error.offset)) {
-                    let correction = error.replacements.length > 0 ? `Correction: ${error.replacements[0].value}` : "Detected Error";
-                    let replacement = `<span class="error" data-tooltip="${error.message} | ${correction}">${errorText}</span>`;
-                    correctedText = correctedText.replace(errorText, replacement);
-                    errorOffsets.add(error.offset);
+            try {
+                if (text.trim() === "" || text === "Type your text in French here...") {
+                    showNotification("⚠️ Please write something before checking the grammar.", "error");
+                    return;
                 }
-            });
 
-            editor.innerHTML = correctedText;
+                showNotification("Checking grammar...", "info");
+
+                let url = "https://api.languagetool.org/v2/check";
+                let params = new URLSearchParams();
+                params.append("text", text);
+                params.append("language", "fr");
+
+                let response = await fetch(url, {
+                    method: "POST",
+                    body: params
+                });
+
+                if (!response.ok) {
+                    throw new Error('Grammar check failed');
+                }
+
+                let result = await response.json();
+                
+                if (result.matches.length === 0) {
+                    showNotification("✅ No grammar mistakes found!", "success");
+                    return;
+                }
+
+                // Process errors and show corrections
+                let correctedText = text;
+                let errorOffsets = new Set();
+                result.matches.forEach(error => {
+                    let errorText = text.substring(error.offset, error.offset + error.length);
+                    if (!errorOffsets.has(error.offset)) {
+                        let correction = error.replacements.length > 0 ? 
+                            `Correction: ${error.replacements[0].value}` : "Detected Error";
+                        let replacement = `<span class="error" data-tooltip="${error.message} | ${correction}">${errorText}</span>`;
+                        correctedText = correctedText.replace(errorText, replacement);
+                        errorOffsets.add(error.offset);
+                    }
+                });
+
+                editor.innerHTML = correctedText;
+                showNotification(`Found ${result.matches.length} potential improvements`, "warning");
+
+            } catch (error) {
+                showNotification("⚠️ Error checking grammar. Please try again.", "error");
+                console.error('Grammar check error:', error);
+            }
+        }
+
+        // Add notification system
+        function showNotification(message, type) {
+            let notification = document.getElementById('notification');
+            if (!notification) {
+                notification = document.createElement('div');
+                notification.id = 'notification';
+                document.body.appendChild(notification);
+            }
+
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            notification.classList.add('show');
+
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 5000);
         }
     </script>
-
 </body>
 </html>
