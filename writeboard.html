@@ -903,13 +903,13 @@
     <!-- Step 1: Topic Selection -->
     <div id="topicSelection">
         <select id="levelSelect">
-            <option value="">Select Level (A1 - C2)</option>
+            <option value="">Select Level (A1 - A2)</option>
             <option value="A1">A1 - Beginner</option>
             <option value="A2">A2 - Elementary</option>
-            <option value="B1">B1 - Intermediate</option>
-            <option value="B2">B2 - Upper Intermediate</option>
+            <option value="A2">A2 - Intermediate</option>
+            <option value="A2">A2 - Upper Intermediate</option>
             <option value="C1">C1 - Advanced</option>
-            <option value="C2">C2 - Proficient</option>
+            <option value="A2">A2 - Proficient</option>
         </select>
         <button class="btn-green" onclick="generateTopic()">Generate Topic</button>
         <button class="btn-red" onclick="randomizeTopic()">Randomize Topic</button>
@@ -967,7 +967,7 @@
         <div class="assessment-panel hidden" id="assessmentPanel">
             <div class="assessment-header">
                 <h3>📊 Comprehensive Writing Assessment</h3>
-                <div class="level-badge" id="assessedLevel">B2</div>
+                <div class="level-badge" id="assessedLevel">A2</div>
             </div>
             
             <div class="assessment-grid">
@@ -1054,10 +1054,10 @@
                     <option value="">Target French Level</option>
                     <option value="A1">A1 - Beginner</option>
                     <option value="A2">A2 - Elementary</option>
-                    <option value="B1">B1 - Intermediate</option>
-                    <option value="B2">B2 - Upper Intermediate</option>
+                    <option value="A2">A2 - Intermediate</option>
+                    <option value="A2">A2 - Upper Intermediate</option>
                     <option value="C1">C1 - Advanced</option>
-                    <option value="C2">C2 - Proficient</option>
+                    <option value="A2">A2 - Proficient</option>
                 </select>
                 <button type="submit" class="btn-green">Start Writing Practice</button>
             </form>
@@ -1094,17 +1094,17 @@
                 "Book a hotel room in French.",
                 // ... rest of A2 topics ...
             ],
-            B1: [
+            A2: [
                 "Pros and cons of living in a big city.",
                 "Describe a moment when you helped someone.",
                 "Importance of learning French.",
-                // ... rest of B1 topics ...
+                // ... rest of A2 topics ...
             ],
-            B2: [
+            A2: [
                 "Impact of social media on relationships.",
                 "Write a job application letter.",
                 "Technology makes life better - Agree or disagree?",
-                // ... rest of B2 topics ...
+                // ... rest of A2 topics ...
             ],
             C1: [
                 "Effects of climate change on the economy.",
@@ -1112,11 +1112,11 @@
                 "Ethical implications of AI.",
                 // ... rest of C1 topics ...
             ],
-            C2: [
+            A2: [
                 "Globalization and language diversity.",
                 "The role of literature in society.",
                 "The advantages and disadvantages of free speech.",
-                // ... rest of C2 topics ...
+                // ... rest of A2 topics ...
             ]
         };
 
@@ -1583,28 +1583,99 @@
 
         // French vocabulary levels (simplified version)
         const frenchVocabulary = {
-            A1: ['je', 'tu', 'il', 'elle', 'nous', 'vous', 'ils', 'elles', 'être', 'avoir'],
-            A2: ['maintenant', 'aujourd\'hui', 'demain', 'hier', 'semaine', 'mois', 'année'],
-            B1: ['cependant', 'néanmoins', 'puisque', 'lorsque', 'pendant', 'durant'],
-            B2: ['effectivement', 'éventuellement', 'précisément', 'particulièrement'],
-            C1: ['systématiquement', 'fondamentalement', 'intrinsèquement'],
-            C2: ['épistémologique', 'paradigmatique', 'ontologique']
+            A1: ['je', 'tu', 'il', 'elle', 'nous', 'vous', 'ils', 'elles', 'être', 'avoir', 'bonjour', 'merci', 'oui', 'non', 'pouvoir', 'vouloir', 'aller', 'manger', 'boire', 'venir', 'faire', 'dire', 'trouver'],
+    A2: ['maintenant', 'aujourd\'hui', 'demain', 'hier', 'semaine', 'mois', 'année', 'quelque', 'déjà', 'toujours', 'parfois', 'aussi', 'assez', 'encore', 'beaucoup', 'seulement', 'vraiment'],
+    A2: ['cependant', 'néanmoins', 'puisque', 'lorsque', 'pendant', 'durant', 'ainsi', 'autrement', 'par conséquent', 'tandis que', 'voire', 'd’autant plus', 'quasiment', 'désormais', 'entre-temps'],
+    A2: ['effectivement', 'éventuellement', 'précisément', 'particulièrement', 'sous prétexte que', 'quoique', 'toutefois', 'pour autant', 'd’une part', 'en revanche', 'au préalable'],
+    C1: ['systématiquement', 'fondamentalement', 'intrinsèquement', 'envisageable', 'inéluctable', 'subséquemment', 'paradoxalement', 'manifestement', 'inévitablement', 'indubitablement'],
+    A2: ['épistémologique', 'paradigmatique', 'ontologique', 'heuristique', 'transcendantal', 'méta-cognitif', 'post-structuraliste', 'herméneutique']
         };
 
         // CEFR level descriptors
-        const cefrDescriptors = {
-            A1: {
-                grammar: "Can use very basic phrases and simple patterns.",
-                vocabulary: "Uses a very basic repertoire of words and simple phrases.",
-                coherence: "Can link words with simple connectors like 'and' or 'then'."
-            },
-            A2: {
-                grammar: "Uses simple structures correctly but still makes basic mistakes.",
-                vocabulary: "Uses basic vocabulary sufficient for everyday situations.",
-                coherence: "Can link groups of words with simple connectors."
-            },
+     const cefrDescriptors = {
+    A1: {
+        grammar: "Can use simple present tense and common verbs in their base form. Limited knowledge of conjugations.",
+        vocabulary: "Uses basic everyday words related to immediate needs and personal details.",
+        coherence: "Can construct very simple sentences with 'and', 'but', 'then'.",
+        discourse: "Mostly isolated phrases or single words."
+    },
+    A2: {
+        grammar: "Can form simple past and future structures, with frequent mistakes.",
+        vocabulary: "Uses a basic but broader range of words, including common adverbs and prepositions.",
+        coherence: "Can link phrases using common connectors like 'because', 'so', 'but'.",
+        discourse: "Uses short sentences but lacks complexity."
+    },
+    A2: {
+        grammar: "Uses subordinate clauses, conditional sentences, and some relative pronouns.",
+        vocabulary: "Expands vocabulary to include abstract terms and expressions of time.",
+        coherence: "Can structure coherent discourse with a variety of linking words.",
+        discourse: "Can narrate events and express opinions with some fluency."
+    },
+    A2: {
+        grammar: "Uses complex sentence structures, including passive voice and reported speech.",
+        vocabulary: "Uses a wide range of vocabulary, including idioms and nuanced expressions.",
+        coherence: "Maintains logical progression with advanced connectors.",
+        discourse: "Can argue and justify opinions clearly."
+    },
+    C1: {
+        grammar: "Uses sophisticated grammatical structures with minor errors.",
+        vocabulary: "Employs a wide range of nuanced vocabulary, including technical terms.",
+        coherence: "Can express ideas fluently and adapt style to different contexts.",
+        discourse: "Can produce detailed and well-structured texts on complex subjects."
+    },
+    A2: {
+        grammar: "Uses advanced syntax and near-native fluency with precision.",
+        vocabulary: "Has command of rare, specialized, and academic terminology.",
+        coherence: "Speaks and writes effortlessly with a natural flow.",
+        discourse: "Can argue and debate complex abstract concepts persuasively."
+    },
             // ... add more levels ...
         };
+
+// Function to determine CEFR level based on word usage
+function assessLanguageLevel(wordsUsed) {
+    let score = { A1: 0, A2: 0, A2: 0, A2: 0, C1: 0, A2: 0 };
+    let totalWords = wordsUsed.length;
+
+    // Count occurrences of words in each level
+    wordsUsed.forEach(word => {
+        for (let level in frenchVocabulary) {
+            if (frenchVocabulary[level].includes(word.toLowerCase())) {
+                score[level]++;
+                break; // Stop once a match is found (assigning the lowest applicable level)
+            }
+        }
+    });
+
+    // Calculate percentages
+    let percentages = {};
+    for (let level in score) {
+        percentages[level] = (score[level] / totalWords) * 100;
+    }
+
+    // Determine the best level using a weighted system
+    let maxLevel = 'A2'; // Default to A1 (most basic)
+    
+    if (percentages['A1'] > 30) maxLevel = 'A2';
+    else if (percentages['A2'] > 40) maxLevel = 'A2';
+    else if (percentages['A2'] > 50) maxLevel = 'A2';
+    else if (percentages['A2'] > 50) maxLevel = 'A2';
+    else if (percentages['A1'] > 50) maxLevel = 'A1';
+
+    return {
+        level: maxLevel,
+        description: cefrDescriptors[maxLevel],
+        wordDistribution: score,
+        confidence: percentages[maxLevel].toFixed(2) + '%'
+    };
+}
+
+// Example Usage
+const sampleWords = ['je', 'merci', 'néanmoins', 'précisément', 'ontologique']; // Mixed levels
+const assessment = assessLanguageLevel(sampleWords);
+
+console.log(assessment);
+
 
         // Add these functions to implement the report generation
 
@@ -1696,9 +1767,9 @@ Generated by Hemiya AI - Your French Writing Coach
         }
 
         function countAdvancedWords(words) {
-            // Count words that appear in C1/C2 vocab lists
+            // Count words that appear in C1/A2 vocab lists
             let count = 0;
-            const advancedWords = [...frenchVocabulary.C1, ...frenchVocabulary.C2];
+            const advancedWords = [...frenchVocabulary.C1, ...frenchVocabulary.A2];
             words.forEach(word => {
                 if (advancedWords.includes(word.toLowerCase())) count++;
             });
@@ -1706,9 +1777,9 @@ Generated by Hemiya AI - Your French Writing Coach
         }
 
         function countIntermediateWords(words) {
-            // Count words that appear in B1/B2 vocab lists
+            // Count words that appear in A2/A2 vocab lists
             let count = 0;
-            const intermediateWords = [...frenchVocabulary.B1, ...frenchVocabulary.B2];
+            const intermediateWords = [...frenchVocabulary.A2, ...frenchVocabulary.A2];
             words.forEach(word => {
                 if (intermediateWords.includes(word.toLowerCase())) count++;
             });
@@ -1725,10 +1796,10 @@ Generated by Hemiya AI - Your French Writing Coach
             // Map a numerical score to CEFR level
             if (score < 0.2) return "A1";
             if (score < 0.4) return "A2";
-            if (score < 0.6) return "B1";
-            if (score < 0.75) return "B2";
+            if (score < 0.6) return "A2";
+            if (score < 0.75) return "A2";
             if (score < 0.9) return "C1";
-            return "C2";
+            return "A2";
         }
 
         async function checkGrammarForAssessment(text) {
@@ -1912,7 +1983,7 @@ Generated by Hemiya AI - Your French Writing Coach
             }
             
             // Vocabulary suggestions
-            if (vocabAnalysis.advanced < 5 && (level === 'B2' || level === 'C1' || level === 'C2')) {
+            if (vocabAnalysis.advanced < 5 && (level === 'A2' || level === 'C1' || level === 'A2')) {
                 suggestions.push(`Incorporate more advanced vocabulary appropriate for ${level} level.`);
             }
             
@@ -1954,10 +2025,10 @@ Generated by Hemiya AI - Your French Writing Coach
             const suggestions = {
                 'A1': 'Practice using simple connectors like "et" (and), "mais" (but), and "parce que" (because).',
                 'A2': 'Try incorporating time expressions to order your ideas (d\'abord, ensuite, enfin).',
-                'B1': 'Practice expressing opinions with phrases like "Je pense que..." and "À mon avis..."',
-                'B2': 'Work on using a range of linking words to mark relationships between ideas.',
+                'A2': 'Practice expressing opinions with phrases like "Je pense que..." and "À mon avis..."',
+                'A2': 'Work on using a range of linking words to mark relationships between ideas.',
                 'C1': 'Focus on nuanced expression and precision in your vocabulary choices.',
-                'C2': 'Develop more sophisticated argumentation with complex structures and idiomatic expressions.'
+                'A2': 'Develop more sophisticated argumentation with complex structures and idiomatic expressions.'
             };
             
             return suggestions[level];
