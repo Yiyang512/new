@@ -3,183 +3,824 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VR French Writing Board</title>
+    <title>TEF/DELF Speaking Test</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <style>
+        /* Add Poppins font import if not already present */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+        /* Update the root styles */
+        :root {
+            --primary-color: #00FF99;
+            --bg-color: #121212;
+            --text-color: #00FF99;
+            --card-bg: rgba(0, 255, 153, 0.2);
+            --font-family: 'Poppins', sans-serif;
+        }
+
+        /* Add universal font-family */
+        * {
+            font-family: var(--font-family);
+        }
+
         body {
             text-align: center;
-            font-family: 'Poppins', sans-serif;
-            background-color: transparent;
-            color: #00FF99;
-            margin: 0;
+            font-family: var(--font-family);
+            background-color: var(--bg-color);
+            color: var(--text-color);
             padding: 20px;
         }
         h2 {
             font-size: 28px;
-            text-transform: uppercase;
             text-shadow: 0px 0px 10px #00FF99;
+            font-weight: 600;
         }
-        .instruction {
-            font-size: 18px;
-            margin-bottom: 15px;
-            background: rgba(0, 255, 153, 0.2);
-            padding: 15px;
-            border-radius: 15px;
-            max-width: 750px;
-            margin: auto;
-            text-shadow: 0px 0px 8px #00FF99;
-            font-weight: bold;
-            box-shadow: 0px 0px 15px #00FF99;
-        }
-        
-.editor {
+        .test-container {
             width: 90%;
-            max-width: 800px;
-            height: 1300px;
-            border: 3px solid #00FF99;
-            padding: 55px;
-            font-size: 20px;
-            background: rgba(0, 255, 153, 0.1);
-            color: white !important;
-            outline: none;
-            border-radius: 15px;
-            margin: 80px auto;
+            max-width: 700px;
+            margin: auto;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 10px;
             box-shadow: 0px 0px 15px #00FF99;
-            transition: 0.3s ease-in-out;
-            overflow-y: auto;
+            text-align: center;
+            position: relative;
         }
-
-
-
-
-        .editor:hover {
-            box-shadow: 0px 0px 25px #00FF99;
+        video {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px #00FF99;
         }
-        .editor * {
-            color: white !important;
-        }
-        .controls {
-            margin-top: 15px;
+        .overlay-text {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            padding: 10px;
+            background: rgba(0, 255, 153, 0.8);
+            border-radius: 5px;
+            font-size: 18px;
+            color: black;
+            font-weight: bold;
         }
         button {
-            margin: 10px;
-            padding: 14px 22px;
+            padding: 12px 20px;
             font-size: 18px;
-            cursor: pointer;
+            font-weight: 500;
             border: none;
-            border-radius: 15px;
+            border-radius: 10px;
+            cursor: pointer;
             transition: 0.3s ease-in-out;
-            font-family: 'Poppins', sans-serif;
+            font-family: var(--font-family);
+            margin: 10px;
+        }
+        .btn-green { background-color: #00FF99; color: black; box-shadow: 0px 0px 15px #00FF99; }
+        .btn-red { background-color: #FF4444; color: white; box-shadow: 0px 0px 15px #FF4444; }
+        .btn-blue { background-color: #0056b3; color: white; box-shadow: 0px 0px 15px #0056b3; }
+        button:hover { transform: scale(1.1); box-shadow: 0px 0px 20px white; }
+        #timer {
+            font-size: 24px;
             font-weight: bold;
+            color: #00FF99;
+            margin: 10px 0;
+            text-shadow: 0px 0px 10px #00FF99;
         }
-        .btn-clear {
-            background-color: #FF4444;
-            color: white;
-            box-shadow: 0px 0px 18px #FF4444;
+        .level-selector {
+            margin: 20px 0;
         }
-        .btn-check {
-            background-color: #00FF99;
-            color: black;
-            box-shadow: 0px 0px 18px #00FF99;
+        .level-selector button {
+            margin: 0 5px;
+            padding: 8px 15px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
-        button:hover {
+        .level-selector button.active {
             transform: scale(1.1);
-            box-shadow: 0px 0px 25px white;
+            box-shadow: 0px 0px 15px #00FF99;
         }
-      
- .error { background: #FF4444; padding: 3px; border-radius: 5px; cursor: pointer; position: relative; color: white; font-weight: bold; box-shadow: 0px 0px 10px #FF4444; }
-.error:hover::after { content: attr(data-tooltip); position: absolute; left: 50%; bottom: 125%; background: #FF4444; color: white; padding: 5px; border-radius: 5px; white-space: nowrap; transform: translateX(-50%); font-size: 9px; box-shadow: 0px 0px 10px #FF4444; }
-
-        /* 📱 Responsive Adjustments */
-        @media screen and (max-width: 768px) {
-            .instruction {
-                font-size: 16px;
-                padding: 12px;
-                max-width: 90%;
+        .error {
+            color: #FF4444;
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        .success {
+            color: #00FF99;
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        @keyframes flash {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); box-shadow: 0px 0px 20px #00FF99; }
+            100% { transform: scale(1); }
+        }
+        .controls-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            width: 90%;
+            max-width: 700px;
+            margin: 20px auto;
+        }
+        .main-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .recording-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .level-result {
+            font-size: 24px;
+            font-weight: 600;
+            color: #00FF99;
+            margin: 15px 0;
+        }
+        .assessment-details {
+            background: rgba(0, 255, 153, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .contact-form {
+            background: #1a1a1a;
+            border-radius: 15px;
+            box-shadow: 0 0 20px var(--primary-color);
+            width: 85%;
+            max-width: 500px;
+            padding: 30px;
+            margin: 15px;
+        }
+        .contact-form h2 {
+            font-size: 22px;
+            margin-bottom: 8px;
+        }
+        .contact-form p {
+            font-size: 13px;
+            margin-bottom: 15px;
+        }
+        .contact-form form {
+            gap: 12px;
+        }
+        .form-group {
+            gap: 4px;
+        }
+        .form-group label {
+            color: var(--primary-color);
+            font-size: 14px;
+            font-weight: 400;
+            text-align: left;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 8px;
+            font-size: 13px;
+            width: 100%;
+            border: 1px solid rgba(0, 255, 153, 0.2);
+            border-radius: 8px;
+            background: #2a2a2a;
+            color: var(--primary-color);
+            font-family: var(--font-family);
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+        .contact-form button[type="submit"] {
+            margin-top: 12px;
+            padding: 10px;
+            font-size: 16px;
+        }
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 255, 153, 0.2);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            z-index: 1001;
+        }
+        @media (max-width: 768px) {
+            .contact-form {
+                width: 90%;
+                padding: 20px;
+                margin: 8px;
             }
-            .editor {
-                font-size: 18px;
-                height: 280px;
-            }
-            button {
-                font-size: 16px;
-                padding: 12px 18px;
-            }
+        }
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 255, 153, 0.9);
+            color: black;
+            padding: 15px 25px;
+            border-radius: 8px;
+            font-size: 14px;
+            box-shadow: 0 0 15px rgba(0, 255, 153, 0.5);
+            transform: translateX(200%);
+            transition: transform 0.3s ease-in-out;
+            z-index: 1000;
+        }
+        .notification.show {
+            transform: translateX(0);
+        }
+        .hidden {
+            display: none !important;
         }
     </style>
 </head>
 <body>
-    <div class="instruction">
-        After writing your sentence, click the "Check Grammar" button. <br>
-        Errors will be highlighted in <span style="color:#FF4444;">red</span>. <br>
-        Hover over the error to see an explanation and the suggested correction.
+    <h2>Select your level and start speaking</h2>
+    
+    <div class="level-selector">
+        <button onclick="setLevel('beginner')" class="btn-green">Débutant</button>
+        <button onclick="setLevel('intermediate')" class="btn-blue">Intermédiaire</button>
+        <button onclick="setLevel('advanced')" class="btn-red">Avancé</button>
+    </div>
+    <div id="timer">⏳ Prep: 0:00</div>
+    
+    <p>Click "Generate Question" to start. Speak while watching yourself.</p>
+
+    <button class="btn-green" onclick="generateNewQuestion()">Generate Question</button>
+    <button class="btn-blue" id="toggle-camera">Turn Off Camera</button>
+    <button class="btn-blue" id="mute-btn">🔇 Mute</button>
+
+    <div class="test-container">
+        <video id="video" autoplay></video>
+        <div class="overlay-text" id="live-caption">Your speech will appear here...</div>
     </div>
 
-    <div class="editor" contenteditable="true" id="textEditor">
-        Type your text in French here...
+    <div class="controls-container">
+        <div class="main-controls">
+            <button id="start-btn" class="btn-green">Start Speaking</button>
+            <button id="stop-btn" class="btn-red">Stop</button>
+        </div>
+        <div class="recording-controls">
+            <button id="start-record" class="btn-green">🔴 Start Recording</button>
+            <button id="stop-record" class="btn-red">Stop & Download</button>
+        </div>
     </div>
 
-    <div class="controls">
-        <button class="btn-clear" onclick="clearText()">Clear</button>
-        <button class="btn-check" onclick="checkGrammar()">Check Grammar</button>
+    <div id="speaking-assessment"></div>
+
+    <p><strong>Grammar & Conversation Fixes:</strong></p>
+    <p id="grammar-errors"></p>
+
+    <div id="contactOverlay" class="overlay">
+        <div class="contact-form">
+            <h2>Welcome to TEF/DELF French Speaking Practice</h2>
+            <p>Please enter your contact information to begin:</p>
+            <form id="contactForm">
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Your Email</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="level">Current Level</label>
+                    <select id="level" required>
+                        <option value="">Select Your Current Level</option>
+                        <option value="A1">A1 Beginner</option>
+                        <option value="A2">A2 Elementary</option>
+                        <option value="B1">B1 Intermediate</option>
+                        <option value="B2">B2 Upper Intermediate</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number (optional)</label>
+                    <input type="tel" id="phone">
+                </div>
+                <div class="form-group full-width">
+                    <label for="exam_type">Target Exam / Learning Purpose</label>
+                    <select id="exam_type" required>
+                        <option value="">Select Your Target Exam / Learning Purpose</option>
+                        <option value="TEF">TEF Exam</option>
+                        <option value="DELF">DELF Exam</option>
+                        <option value="TCF">TCF Exam</option>
+                        <option value="hobby">No exam - Learning for fun/hobby</option>
+                        <option value="work">For job opportunities in French-speaking countries</option>
+                        <option value="business">For business/professional communication</option>
+                        <option value="travel">For travel and cultural experiences</option>
+                        <option value="immigration">For immigration purposes (without specific exam)</option>
+                        <option value="academic">For academic studies in French</option>
+                        <option value="family">To communicate with French-speaking family/friends</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="target_date">Target Exam Date (optional)</label>
+                    <input type="date" id="target_date">
+                </div>
+                <div class="form-group full-width">
+                    <label for="goals">Your French learning goals...</label>
+                    <textarea id="goals" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn-green">Start Practice</button>
+            </form>
+        </div>
     </div>
+
+    <button id="theme-toggle" class="theme-toggle">
+        <span class="light">☀️</span>
+        <span class="dark">🌙</span>
+    </button>
+
+    <div class="progress-bar">
+        <div class="progress-fill"></div>
+    </div>
+
+    <div id="notification" class="notification"></div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            document.getElementById("textEditor").style.color = "white";
-        });
+        let mediaRecorder;
+        let recordedChunks = [];
+        let stream;
+        let isMuted = false;
+        let isCameraOn = true;
+        let timer;
+        let timeLeft;
+        let currentLevel = 'intermediate';
 
-        function clearText() {
-            document.getElementById('textEditor').innerHTML = "";
+        const tefQuestions = {
+            beginner: [
+                { fr: "Décrivez votre routine quotidienne.", en: "Describe your daily routine." },
+                { fr: "Parlez-moi de votre famille.", en: "Tell me about your family." },
+                { fr: "Quels sont vos loisirs préférés?", en: "What are your favorite hobbies?" },
+                { fr: "Décrivez votre ville.", en: "Describe your city." },
+                { fr: "Quel temps fait-il aujourd'hui?", en: "How's the weather today?" }
+            ],
+            intermediate: [
+                { fr: "Que pensez-vous des réseaux sociaux?", en: "What do you think about social media?" },
+                { fr: "Faut-il interdire les voitures en centre-ville?", en: "Should cars be banned in city centers?" },
+                { fr: "Les jeunes devraient-ils apprendre plusieurs langues?", en: "Should young people learn multiple languages?" },
+                { fr: "Le télétravail est-il l'avenir?", en: "Is remote work the future?" },
+                { fr: "Comment protéger l'environnement?", en: "How can we protect the environment?" }
+            ],
+            advanced: [
+                { fr: "Quelles solutions proposez-vous pour réduire les inégalités sociales?", en: "What solutions do you propose to reduce social inequalities?" },
+                { fr: "Comment la technologie influence-t-elle notre façon de penser?", en: "How does technology influence our way of thinking?" },
+                { fr: "Quel est l'impact de la mondialisation sur les cultures locales?", en: "What is the impact of globalization on local cultures?" },
+                { fr: "Comment concilier croissance économique et protection de l'environnement?", en: "How can we reconcile economic growth and environmental protection?" },
+                { fr: "Discutez des enjeux éthiques de l'intelligence artificielle.", en: "Discuss the ethical issues of artificial intelligence." }
+            ]
+        };
+
+        const sounds = {
+            countdown: new Audio('https://www.soundjay.com/clock/sounds/clock-ticking-2.mp3'),
+            startSpeak: new Audio('https://www.soundjay.com/button/sounds/button-09.mp3'),
+            timeUp: new Audio('https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3'),
+            success: new Audio('https://www.soundjay.com/misc/sounds/success-fanfare-trumpets-6.mp3')
+        };
+
+        function setLevel(level) {
+            currentLevel = level;
+            document.querySelectorAll('.level-selector button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
         }
 
-        async function checkGrammar() {
-            let editor = document.getElementById('textEditor');
-            let text = editor.innerText;
+        function startTimer(duration) {
+            clearInterval(timer);
+            timeLeft = 60; // 1 minute prep time
+            let isPreparationTime = true;
+            updateTimerDisplay(true);
+            
+            // Start ticking sound
+            sounds.countdown.loop = true;
+            sounds.countdown.play();
+            
+            timer = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay(isPreparationTime);
+                
+                if (timeLeft <= 0) {
+                    if (isPreparationTime) {
+                        // Switch to speaking time
+                        timeLeft = duration;
+                        isPreparationTime = false;
+                        sounds.countdown.pause(); // Stop countdown sound
+                        sounds.timeUp.play(); // Play bell sound
+                        document.getElementById('live-caption').innerHTML += '<br>⏰ Preparation time is over! Click "Start Speaking" to begin.';
+                        // Flash the start speaking button
+                        const startBtn = document.getElementById('start-btn');
+                        startBtn.style.animation = 'flash 1s infinite';
+                    } else {
+                        clearInterval(timer);
+                        sounds.timeUp.play(); // Play bell sound again
+                        document.getElementById('live-caption').innerHTML += '<br>⏰ Temps écoulé!';
+                        recognition.stop();
+                        document.getElementById('start-btn').style.animation = '';
+                    }
+                }
+            }, 1000);
+        }
 
-       if (text.trim() === "") {
-    let warningBox = document.getElementById("grammar-warning");
-    if (!warningBox) {
-        warningBox = document.createElement("p");
-        warningBox.id = "grammar-warning";
-        warningBox.style.color = "#FF4444";
-        warningBox.style.fontWeight = "bold";
-        warningBox.style.textShadow = "0px 0px 5px red";
-        warningBox.innerText = "⚠️ Please write something before checking the grammar.";
-        document.body.insertBefore(warningBox, document.body.firstChild);
-    }
-    warningBox.innerText = "⚠️ Please write something before checking the grammar.";
-    return;
-}
+        function updateTimerDisplay(isPreparationTime) {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            const timerElement = document.getElementById('timer');
+            timerElement.textContent = `${isPreparationTime ? '⏳ Prep: ' : '🎤 Speaking: '}${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
 
-            let url = "https://api.languagetool.org/v2/check";
-            let params = new URLSearchParams();
-            params.append("text", text);
-            params.append("language", "fr");
+        function addCSS() {
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes flash {
+                    0% { transform: scale(1); }
+                    50% { transform: scale(1.1); box-shadow: 0px 0px 20px #00FF99; }
+                    100% { transform: scale(1); }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+        addCSS();
 
-            let response = await fetch(url, {
-                method: "POST",
-                body: params
+        function generateNewQuestion() {
+            // Stop any playing sounds
+            Object.values(sounds).forEach(sound => {
+                sound.pause();
+                sound.currentTime = 0;
+            });
+            
+            const questions = tefQuestions[currentLevel];
+            const randomIndex = Math.floor(Math.random() * questions.length);
+            const question = questions[randomIndex];
+            
+            document.getElementById("live-caption").innerHTML = 
+                `<strong>Niveau: ${currentLevel.toUpperCase()}</strong><br>
+                ❓ ${question.fr}<br>
+                🇬🇧 ${question.en}<br>
+                ⏳ You have 1 minute to prepare your answer...`;
+
+            // Reset any existing animation on the start button
+            document.getElementById('start-btn').style.animation = '';
+
+            // Read the question in French
+            let synth = window.speechSynthesis;
+            let frenchUtterance = new SpeechSynthesisUtterance(question.fr);
+            frenchUtterance.lang = "fr-FR";
+            frenchUtterance.rate = 0.8;
+            
+            // Read the question in English after French
+            let englishUtterance = new SpeechSynthesisUtterance(question.en);
+            englishUtterance.lang = "en-US";
+            englishUtterance.rate = 0.8;
+            
+            // Queue both utterances
+            synth.speak(frenchUtterance);
+            frenchUtterance.onend = () => {
+                setTimeout(() => {
+                    synth.speak(englishUtterance);
+                }, 500);
+            };
+
+            startTimer(180); // 3 minutes for speaking time after prep
+        }
+
+        // Speech-to-Text with Grammar Check
+        window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (window.SpeechRecognition) {
+            const recognition = new SpeechRecognition();
+            recognition.lang = 'fr-FR';
+            recognition.continuous = true;
+            recognition.interimResults = true;
+
+            const liveCaption = document.getElementById('live-caption');
+            document.getElementById('start-btn').addEventListener('click', () => {
+                recognition.start();
+                liveCaption.innerText = "🎤 Listening...";
+                sounds.startSpeak.play(); // Play beep sound when starting to speak
+            });
+            document.getElementById('stop-btn').addEventListener('click', () => {
+                recognition.stop();
+                sounds.countdown.pause(); // Ensure countdown sound is stopped
+                const transcript = document.getElementById('live-caption').innerText;
+                // Show final assessment
+                assessSpeaking(transcript);
+                sounds.success.play(); // Play success sound when assessment is shown
             });
 
-            let result = await response.json();
+            recognition.onresult = (event) => {
+                let transcript = Array.from(event.results).map(result => result[0].transcript).join(" ");
+                liveCaption.innerText = transcript;
+                checkGrammar(transcript);
+                // Only update word count while speaking
+                const words = transcript.split(' ').length;
+                document.getElementById('speaking-assessment').innerHTML = `
+                    <h3>Speaking Progress</h3>
+                    <p>Words Spoken: ${words}</p>
+                `;
+            };
+        }
 
-            let correctedText = text;
-            let errorOffsets = new Set();
-            result.matches.forEach(error => {
-                let errorText = text.substring(error.offset, error.offset + error.length);
+        // Grammar Check Feature
+        async function checkGrammar(text) {
+            const url = "https://api.languagetool.org/v2/check";
+            const params = new URLSearchParams({ text: text, language: "fr" });
 
-                if (!errorOffsets.has(error.offset)) {
-                    let correction = error.replacements.length > 0 ? `Correction: ${error.replacements[0].value}` : "Detected Error";
-                    let replacement = `<span class="error" data-tooltip="${error.message} | ${correction}">${errorText}</span>`;
-                    correctedText = correctedText.replace(errorText, replacement);
-                    errorOffsets.add(error.offset);
+            try {
+                const response = await fetch(url, { method: "POST", body: params, headers: { "Content-Type": "application/x-www-form-urlencoded" } });
+                const data = await response.json();
+                document.getElementById("grammar-errors").innerHTML = data.matches.length > 0 
+                    ? data.matches.map(match => `<p class="error">❌ ${match.message} (Correction: ${match.replacements.map(r => r.value).join(", ")})</p>`).join("")
+                    : "✅ No grammar mistakes detected!";
+            } catch (error) {
+                document.getElementById("grammar-errors").innerHTML = "⚠️ Unable to check grammar.";
+            }
+        }
+
+        // Speaking Assessment
+        async function assessSpeaking(transcript) {
+            // Basic assessment criteria
+            const criteria = {
+                A1: {
+                    minWords: 20,
+                    maxPause: 5,
+                    basicPhrases: ["je suis", "j'ai", "je veux", "c'est", "il y a"],
+                    score: 0
+                },
+                A2: {
+                    minWords: 40,
+                    maxPause: 4,
+                    complexPhrases: ["parce que", "quand", "mais", "ou"],
+                    score: 0
+                },
+                B1: {
+                    minWords: 60,
+                    maxPause: 3,
+                    advancedPhrases: ["cependant", "néanmoins", "donc", "ainsi"],
+                    score: 0
+                },
+                B2: {
+                    minWords: 80,
+                    maxPause: 2,
+                    sophisticatedPhrases: ["en revanche", "par conséquent", "en effet", "d'ailleurs"],
+                    score: 0
+                }
+            };
+
+            const words = transcript.split(' ').length;
+            const pauses = (transcript.match(/\.\.\./g) || []).length;
+            const transcriptLower = transcript.toLowerCase();
+
+            // Calculate scores for each level
+            Object.entries(criteria).forEach(([level, data]) => {
+                // Word count score (0-4 points)
+                if (words >= data.minWords) {
+                    data.score += 4;
+                }
+                
+                // Pause penalty (0-2 points)
+                if (pauses <= data.maxPause) {
+                    data.score += 2;
+                }
+                
+                // Phrase usage score (0-4 points)
+                const phrases = data.basicPhrases || data.complexPhrases || 
+                               data.advancedPhrases || data.sophisticatedPhrases;
+                
+                phrases.forEach(phrase => {
+                    if (transcriptLower.includes(phrase.toLowerCase())) {
+                        data.score += 1;
+                    }
+                });
+            });
+
+            // Determine the level
+            let finalLevel = 'A1';
+            let maxScore = criteria.A1.score;
+
+            Object.entries(criteria).forEach(([level, data]) => {
+                if (data.score > maxScore) {
+                    maxScore = data.score;
+                    finalLevel = level;
                 }
             });
 
-            editor.innerHTML = correctedText;
+            // Always show the final assessment
+            const assessmentDiv = document.getElementById('speaking-assessment');
+            assessmentDiv.innerHTML = `
+                <h3>Final Speaking Assessment</h3>
+                <p class="level-result">Estimated Level: ${finalLevel}</p>
+                <p>Total Words: ${words}</p>
+                <p>Fluency Score: ${maxScore}/10</p>
+                <div class="assessment-details">
+                    <p>💡 Tips for improvement:</p>
+                    ${getFeedback(finalLevel)}
+                    <p>Detailed Analysis:</p>
+                    <ul>
+                        <li>Word Count: ${words} words</li>
+                        <li>Pauses: ${pauses}</li>
+                        <li>Vocabulary Range: ${getVocabFeedback(maxScore)}</li>
+                    </ul>
+                </div>
+            `;
+        }
+
+        // Add this helper function for vocabulary feedback
+        function getVocabFeedback(score) {
+            if (score <= 3) return "Basic vocabulary - focus on everyday expressions";
+            if (score <= 5) return "Good basic vocabulary - try adding more connecting words";
+            if (score <= 7) return "Strong vocabulary - continue adding advanced expressions";
+            return "Excellent vocabulary range - maintain this level";
+        }
+
+        function getFeedback(level) {
+            const feedback = {
+                'A1': 'Try using more basic connecting words and longer sentences.',
+                'A2': 'Practice using more complex sentence structures and time expressions.',
+                'B1': 'Incorporate more advanced vocabulary and opinion expressions.',
+                'B2': 'Focus on nuanced arguments and sophisticated connecting phrases.'
+            };
+            return feedback[level];
+        }
+
+        // Recording + Camera Fixes
+        navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+            .then(s => {
+                stream = s;
+                const videoElement = document.getElementById('video');
+                videoElement.srcObject = stream;
+                videoElement.muted = true;
+                mediaRecorder = new MediaRecorder(stream, { mimeType: "video/webm" });
+
+                document.getElementById('start-record').addEventListener('click', () => {
+                    recordedChunks = [];
+                    mediaRecorder.start();
+                });
+
+                document.getElementById('stop-record').addEventListener('click', () => {
+                    mediaRecorder.stop();
+                    mediaRecorder.ondataavailable = event => recordedChunks.push(event.data);
+                    mediaRecorder.onstop = () => {
+                        let blob = new Blob(recordedChunks, { type: 'video/webm' });
+                        let a = document.createElement('a');
+                        a.href = URL.createObjectURL(blob);
+                        a.download = 'tef-delf-test.webm';
+                        a.click();
+                    };
+                });
+
+                document.getElementById('toggle-camera').addEventListener('click', () => {
+                    stream.getVideoTracks()[0].enabled = !stream.getVideoTracks()[0].enabled;
+                });
+
+                document.getElementById('mute-btn').addEventListener('click', () => {
+                    stream.getAudioTracks()[0].enabled = !stream.getAudioTracks()[0].enabled;
+                });
+            });
+
+        // EmailJS initialization
+        (function(){
+            emailjs.init("_KKm93NyfWfCIx2nC");
+        })();
+
+        // Contact form handling
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const contactData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                level: document.getElementById('level').value,
+                phone: document.getElementById('phone').value,
+                exam_type: document.getElementById('exam_type').value,
+                target_date: document.getElementById('target_date').value,
+                goals: document.getElementById('goals').value,
+                date: new Date().toLocaleString()
+            };
+
+            // Store contact info in localStorage
+            localStorage.setItem('userContact', JSON.stringify(contactData));
+
+            // Send email notification
+            emailjs.send("service_fr7pas9", "template_qk5xq0o", {
+                name: contactData.name,
+                time: contactData.date,
+                message: `Email: ${contactData.email}
+Current Level: ${contactData.level}
+Target Exam: ${contactData.exam_type}
+Target Date: ${contactData.target_date || 'Not specified'}
+Phone: ${contactData.phone || 'Not provided'}
+Learning Goals: ${contactData.goals || 'Not specified'}
+
+Registration Time: ${contactData.date}
+Browser: ${navigator.userAgent}
+Screen Size: ${window.innerWidth}x${window.innerHeight}`
+            })
+            .then(function() {
+                // Hide the overlay immediately
+                document.getElementById('contactOverlay').style.display = 'none';
+                
+                // Show notification
+                const notification = document.getElementById('notification');
+                notification.textContent = `Welcome ${contactData.name}! You can now start your practice. We'll send you study tips tomorrow!`;
+                notification.classList.add('show');
+                
+                // Hide notification after 5 seconds
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 5000);
+            }, function(error) {
+                console.error('Email sending failed:', error);
+                // Still hide the overlay on error
+                document.getElementById('contactOverlay').style.display = 'none';
+                
+                // Show error notification
+                const notification = document.getElementById('notification');
+                notification.textContent = 'Welcome! You can start your practice now.';
+                notification.style.background = 'rgba(255, 68, 68, 0.9)';
+                notification.classList.add('show');
+                
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 5000);
+            });
+
+            trackLead(contactData);
+        });
+
+        // Check if user has already registered
+        window.addEventListener('load', function() {
+            const userContact = localStorage.getItem('userContact');
+            if (userContact) {
+                document.getElementById('contactOverlay').classList.add('hidden');
+            }
+        });
+
+        function trackLead(contactData) {
+            // Basic analytics
+            const analytics = {
+                timestamp: new Date().toISOString(),
+                user: {
+                    level: contactData.level,
+                    exam: contactData.exam_type,
+                    hasPhone: !!contactData.phone,
+                    hasGoals: !!contactData.goals,
+                    browser: navigator.userAgent,
+                    screen: `${window.innerWidth}x${window.innerHeight}`,
+                    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+                }
+            };
+            
+            // Store analytics
+            let allLeads = JSON.parse(localStorage.getItem('leads') || '[]');
+            allLeads.push(analytics);
+            localStorage.setItem('leads', JSON.stringify(allLeads));
+        }
+
+        // Theme toggle
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            document.body.classList.toggle('light-theme');
+        });
+
+        // Progress bar update
+        function updateProgress(current, total) {
+            const progress = (current / total) * 100;
+            document.querySelector('.progress-fill').style.width = `${progress}%`;
+        }
+
+        // Add loading states
+        function setLoading(element, isLoading) {
+            if (isLoading) {
+                element.classList.add('loading');
+                element.disabled = true;
+            } else {
+                element.classList.remove('loading');
+                element.disabled = false;
+            }
         }
     </script>
-
 </body>
-</html>
+</html> 
