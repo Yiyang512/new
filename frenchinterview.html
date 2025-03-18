@@ -405,6 +405,53 @@
                 text-align: center;
             }
         }
+        .troubleshoot-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+        .troubleshoot-btn {
+            background: rgba(0, 255, 153, 0.1);
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        .troubleshoot-btn:hover {
+            background: rgba(0, 255, 153, 0.2);
+            box-shadow: 0 0 15px rgba(0, 255, 153, 0.3);
+        }
+        .troubleshoot-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .troubleshoot-item {
+            background: rgba(0, 255, 153, 0.1);
+            border: 1px solid rgba(0, 255, 153, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: left;
+        }
+        .troubleshoot-item h3 {
+            color: var(--primary-color);
+            margin-top: 0;
+            font-size: 18px;
+        }
+        .troubleshoot-item ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .troubleshoot-item li {
+            margin: 10px 0;
+            font-size: 14px;
+            line-height: 1.4;
+        }
     </style>
 </head>
 <body>
@@ -421,6 +468,48 @@
                 <div class="feature">⦿ Grammar correction as you speak</div>
                 <div class="feature">⦿ Video recording for self-review</div>
                 <div class="feature">⦿ Exam-style timing & preparation</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="troubleshoot-container">
+        <button class="troubleshoot-btn" onclick="toggleTroubleshoot()">
+            ⚙️ Need Help? Click here for troubleshooting
+        </button>
+        <div id="troubleshoot-content" class="hidden">
+            <div class="troubleshoot-grid">
+                <div class="troubleshoot-item">
+                    <h3>🎥 Camera Issues</h3>
+                    <ul>
+                        <li>Using browsers other than Chrome? Camera toggle might not work - please turn off camera manually in browser settings</li>
+                        <li>Camera not showing? Click the camera icon in your browser's address bar and allow access</li>
+                        <li>Still having issues? Try refreshing the page or checking your device's camera settings</li>
+                    </ul>
+                </div>
+                <div class="troubleshoot-item">
+                    <h3>🎤 Microphone Issues</h3>
+                    <ul>
+                        <li>Speech not being recognized? Make sure you've allowed microphone access</li>
+                        <li>Click the microphone icon in your browser's address bar to check permissions</li>
+                        <li>Speaking but no text appears? Make sure you're speaking clearly and in French</li>
+                    </ul>
+                </div>
+                <div class="troubleshoot-item">
+                    <h3>⚡ Performance Tips</h3>
+                    <ul>
+                        <li>For best results, use Google Chrome browser</li>
+                        <li>Ensure you have a stable internet connection</li>
+                        <li>Close other tabs and applications for better performance</li>
+                    </ul>
+                </div>
+                <div class="troubleshoot-item">
+                    <h3>📝 Practice Tips</h3>
+                    <ul>
+                        <li>Use headphones to hear yourself better</li>
+                        <li>Position yourself in a quiet environment</li>
+                        <li>Speak clearly and at a normal pace</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
@@ -995,6 +1084,33 @@ Screen Size: ${window.innerWidth}x${window.innerHeight}`
                 element.classList.remove('loading');
                 element.disabled = false;
             }
+        }
+
+        function toggleTroubleshoot() {
+            const content = document.getElementById('troubleshoot-content');
+            content.classList.toggle('hidden');
+        }
+
+        // Add this to your existing window.onload or DOMContentLoaded event
+        window.addEventListener('DOMContentLoaded', (event) => {
+            // Check for permissions on page load
+            checkMediaPermissions();
+        });
+
+        function checkMediaPermissions() {
+            navigator.permissions.query({name: 'camera'})
+                .then(permissionStatus => {
+                    if (permissionStatus.state === 'denied') {
+                        showNotification("⚠️ Please enable camera access to use all features", "error");
+                    }
+                });
+            
+            navigator.permissions.query({name: 'microphone'})
+                .then(permissionStatus => {
+                    if (permissionStatus.state === 'denied') {
+                        showNotification("⚠️ Please enable microphone access for speech recognition", "error");
+                    }
+                });
         }
     </script>
 </body>
