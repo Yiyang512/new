@@ -368,6 +368,43 @@
                 grid-template-columns: 1fr;
             }
         }
+        .contact-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        .contact-header .ai-avatar {
+            flex-shrink: 0;
+        }
+        .contact-header .ai-avatar img {
+            width: 80px;
+            height: 80px;
+            border-radius: 40px;
+            border: 2px solid var(--primary-color);
+            box-shadow: 0 0 15px var(--primary-color);
+        }
+        .contact-header .header-text {
+            text-align: left;
+        }
+        .contact-header h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .contact-header p {
+            margin: 10px 0 0;
+            opacity: 0.8;
+        }
+        @media (max-width: 768px) {
+            .contact-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            .contact-header .header-text {
+                text-align: center;
+            }
+        }
     </style>
 </head>
 <body>
@@ -395,6 +432,17 @@
         <button onclick="setLevel('intermediate')" class="btn-blue">Intermédiaire</button>
         <button onclick="setLevel('advanced')" class="btn-red">Avancé</button>
     </div>
+
+    <div id="question-box" class="intro-container" style="display: none;">
+        <div class="ai-avatar">
+            <img src="https://yiyang512.github.io/new/hemiya.jpg" alt="Hemiya AI" class="avatar-img">
+        </div>
+        <div class="intro-text">
+            <h3 id="question-text" style="color: var(--primary-color);">Your question will appear here...</h3>
+            <p id="question-translation" style="font-style: italic;">Translation will appear here...</p>
+        </div>
+    </div>
+
     <div id="timer">⏳ Prep: 0:00</div>
     
     <p>Click "Generate Question" to start. Speak while watching yourself.</p>
@@ -426,8 +474,15 @@
 
     <div id="contactOverlay" class="overlay">
         <div class="contact-form">
-            <h2>Welcome to TEF/DELF French Speaking Practice</h2>
-            <p>Please enter your contact information to begin:</p>
+            <div class="contact-header">
+                <div class="ai-avatar">
+                    <img src="https://yiyang512.github.io/new/hemiya.jpg" alt="Hemiya AI" class="avatar-img">
+                </div>
+                <div class="header-text">
+                    <h2>Welcome to TEF/DELF French Speaking Practice</h2>
+                    <p>Please enter your contact information to begin:</p>
+                </div>
+            </div>
             <form id="contactForm">
                 <div class="form-group">
                     <label for="name">Your Name</label>
@@ -597,45 +652,35 @@
         addCSS();
 
         function generateNewQuestion() {
-            // Stop any playing sounds
-            Object.values(sounds).forEach(sound => {
-                sound.pause();
-                sound.currentTime = 0;
-            });
-            
             const questions = tefQuestions[currentLevel];
-            const randomIndex = Math.floor(Math.random() * questions.length);
-            const question = questions[randomIndex];
+            const question = questions[Math.floor(Math.random() * questions.length)];
             
-            document.getElementById("live-caption").innerHTML = 
-                `<strong>Niveau: ${currentLevel.toUpperCase()}</strong><br>
-                ❓ ${question.fr}<br>
-                🇬🇧 ${question.en}<br>
-                ⏳ You have 1 minute to prepare your answer...`;
-
-            // Reset any existing animation on the start button
-            document.getElementById('start-btn').style.animation = '';
-
-            // Read the question in French
+            // Show the question box
+            document.getElementById('question-box').style.display = 'flex';
+            
+            // Update the question text
+            document.getElementById('question-text').textContent = question.fr;
+            document.getElementById('question-translation').textContent = question.en;
+            
+            // Start the timer and read the question
+            startTimer(60); // 1 minute prep time
+            
+            // Read the question in French and English
             let synth = window.speechSynthesis;
             let frenchUtterance = new SpeechSynthesisUtterance(question.fr);
             frenchUtterance.lang = "fr-FR";
             frenchUtterance.rate = 0.8;
             
-            // Read the question in English after French
             let englishUtterance = new SpeechSynthesisUtterance(question.en);
             englishUtterance.lang = "en-US";
             englishUtterance.rate = 0.8;
             
-            // Queue both utterances
             synth.speak(frenchUtterance);
             frenchUtterance.onend = () => {
                 setTimeout(() => {
                     synth.speak(englishUtterance);
                 }, 500);
             };
-
-            startTimer(180); // 3 minutes for speaking time after prep
         }
 
         // Speech-to-Text with Grammar Check
