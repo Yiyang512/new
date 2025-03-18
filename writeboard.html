@@ -30,7 +30,32 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            border: 2px solid var(--primary-color);
+            border-radius: 20px;
+            box-shadow: 0 0 30px var(--primary-color);
+            position: relative;
         }
+
+        /* Add this new class for the outer glow effect */
+        body::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border-radius: 22px;
+            background: linear-gradient(45deg, 
+                var(--primary-color) 0%, 
+                transparent 50%,
+                var(--primary-color) 100%
+            );
+            z-index: -1;
+            animation: borderGlow 3s ease-in-out infinite;
+        }
+
         h2 {
             font-size: 28px;
             text-shadow: 0px 0px 10px #00FF99;
@@ -167,6 +192,29 @@
             max-width: 600px;
             padding: 40px;
             margin: 20px;
+            border: 2px solid var(--primary-color);
+            position: relative;
+        }
+        .contact-form::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border-radius: 16px;
+            background: linear-gradient(45deg, 
+                var(--primary-color) 0%, 
+                transparent 50%,
+                var(--primary-color) 100%
+            );
+            z-index: -1;
+            animation: borderGlow 3s ease-in-out infinite;
+        }
+        @keyframes borderGlow {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
         }
         .contact-form h2 {
             font-size: 24px;
