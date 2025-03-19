@@ -1,0 +1,1928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hemiya AI Assistant</title>
+    <style>
+        :root {
+            --primary-color: #00ff9d;
+            --primary-dark: #00cc7a;
+            --primary-light: #7affce;
+            --accent-color: #00ff9d;
+            --bg-color: #000000;
+            --text-dark: #e6f1ff;
+            --text-light: #fff;
+            --message-user: rgba(0, 255, 157, 0.1);
+            --message-bot: rgba(0, 255, 157, 0.15);
+            --animation-timing: cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-color);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background: radial-gradient(circle at center, rgba(0, 255, 157, 0.2) 0%, rgba(0, 0, 0, 0.95) 70%);
+        }
+
+        .star {
+            position: absolute;
+            background: #00ff9d;
+            border-radius: 50%;
+            animation: twinkle 2s infinite;
+            opacity: 0.5;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
+        }
+
+        .app-container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .hemiya-container {
+            position: absolute;
+    top: 50%;
+    left: 80;
+    transform: translateY(-50%);
+            width: 400px;
+            height: 400px;
+            top: 50%;
+            left: 40%;
+            transform: translate(-50%, -50%);
+            cursor: move;
+            transition: transform 0.1s var(--animation-timing);
+            z-index: 200;
+            animation: wander 1s infinite ease-in-out;
+        }
+
+        @keyframes wander {
+            0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
+            25% { transform: translate(-40%, -45%) rotate(5deg); }
+            50% { transform: translate(-60%, -55%) rotate(-5deg); }
+            75% { transform: translate(-45%, -60%) rotate(3deg); }
+        }
+
+        .hemiya {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background: linear-gradient(145deg, #32CD32, #228B22);
+            border-radius: 50%;
+            box-shadow: 
+                inset -10px -10px 20px rgba(0, 0, 0, 0.3),
+                inset 10px 10px 20px rgba(255, 255, 255, 0.2),
+                0 0 50px rgba(0, 255, 157, 0.4);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hemiya::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 0%;
+            background: linear-gradient(145deg, #3CB371, #2E8B57);
+            border-radius: 50% 50% 60% 60%;
+            z-index: 1;
+        }
+
+        .hemiya-ears {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 10;
+            left: 0;
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        .hemiya-ear {
+            position: absolute;
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(145deg, #00ff9d, #00cc7a);
+            border-radius: 50%;
+            box-shadow: 
+                inset -2px -2px 4px rgba(0, 0, 0, 0.3),
+                inset 2px 2px 4px rgba(255, 255, 255, 0.2),
+                0 0 15px rgba(0, 255, 157, 0.4);
+            transition: transform 0.3s var(--animation-timing);
+        }
+
+        .hemiya-ear::after {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 255, 157, 0.3);
+            border-radius: 50%;
+            box-shadow: inset 0 0 8px rgba(0, 255, 157, 0.6);
+        }
+
+        .hemiya-ear.left {
+            top: 50%;
+            left: -40px;
+            transform: translateY(-50%);
+            animation: pulseLeft 4s infinite;
+        }
+
+        .hemiya-ear.right {
+            top: 50%;
+            right: -40px;
+            transform: translateY(-50%);
+            animation: pulseRight 4s infinite;
+        }
+
+        @keyframes pulseLeft {
+            0%, 100% { transform: translateY(-50%) scale(1); }
+            50% { transform: translateY(-50%) scale(1.1); }
+        }
+
+        @keyframes pulseRight {
+            0%, 100% { transform: translateY(-50%) scale(1); }
+            50% { transform: translateY(-50%) scale(1.1); }
+        }
+
+        .speaking .hemiya-ear.left {
+            animation: speakingPulseLeft 0.5s infinite alternate;
+        }
+
+        .speaking .hemiya-ear.right {
+            animation: speakingPulseRight 0.5s infinite alternate;
+        }
+
+        @keyframes speakingPulseLeft {
+            0% { transform: translateY(-50%) scale(1); box-shadow: 0 0 15px rgba(0, 255, 157, 0.4); }
+            100% { transform: translateY(-50%) scale(1.2); box-shadow: 0 0 25px rgba(0, 255, 157, 0.6); }
+        }
+
+        @keyframes speakingPulseRight {
+            0% { transform: translateY(-50%) scale(1); box-shadow: 0 0 15px rgba(0, 255, 157, 0.4); }
+            100% { transform: translateY(-50%) scale(1.2); box-shadow: 0 0 25px rgba(0, 255, 157, 0.6); }
+        }
+
+        .hemiya-face {
+            position: relative;
+            width: 70%;
+            height: 60%;
+            background: #111;
+            border-radius: 105px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            box-shadow: 
+                inset 0 0 15px rgba(0, 255, 157, 0.3),
+                0 0 20px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .hemiya-eyes {
+            position: relative;
+            width: 80%;
+            height: 30px;
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            transition: all 0.4s ease;
+        }
+
+        .hemiya-eye {
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(145deg, #000000, #00cc7a);
+            border-radius: 50%;
+            position: relative;
+            animation: blink 4s infinite;
+            box-shadow: 0 0 35px rgba(0, 255, 157, 0.4);
+            transition: all 0.1s ease;
+            transform-origin: center;
+        }
+
+        .hemiya-eye::after {
+            content: '';
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            background: #111;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: inset 0 0 1px rgba(0, 255, 157, 0.4);
+            animation: eyeMove 1s ease-in-out infinite;
+        }
+
+        .hemiya-eye::before {
+            content: '';
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: rgba(0, 255, 157, 0.8);
+            border-radius: 50%;
+            top: 25%;
+            left: 25%;
+            z-index: 2;
+        }
+
+        .hemiya-mouth {
+            width: 82px;
+            height: 86px;
+            border: 2px solid #00ff9d;
+            border-radius: 50px;
+            position: relative;
+            transition: all 0.1s ease;
+            box-shadow: 0 0 1px rgba(0, 255, 157, 0.4);
+            background: transparent;
+            transform: translateY(2px);
+        }
+
+        /* Expressions */
+        .hemiya.happy .hemiya-mouth, .hemiya .hemiya-mouth {
+            width: 84px;
+            height: 80px;
+            border-radius: 0 0 5px 5px;
+            border-top: 0;
+            border-color: #00ff9d;
+            transform: translateY(-1px);
+        }
+
+        @keyframes eyeMove {
+            0%, 100% { transform: translate(-50%, -50%); }
+            25% { transform: translate(-60%, -50%) scale(0.95); }
+            75% { transform: translate(-40%, -50%) scale(0.95); }
+        }
+
+        @keyframes blink {
+            0%, 48%, 52%, 100% { transform: scaleY(1); }
+            50% { transform: scaleY(0.1); }
+        }
+
+        .speaking .hemiya-mouth {
+            animation: gentleSpeak 0.6s infinite alternate;
+        }
+
+        @keyframes gentleSpeak {
+            0% { height: 16px; width: 42px; }
+            100% { height: 20px; width: 44px; }
+        }
+
+        .hemiya:hover .hemiya-eye {
+            transform: scale(1.1);
+        }
+
+        .hemiya:hover .hemiya-mouth {
+            transform: translateY(-2px) scale(1.05);
+        }
+
+        .hemiya-face {
+            position: relative;
+            width: 70%;
+            height: 60%;
+            background: #111;
+            border-radius: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            box-shadow: 
+                inset 0 0 10px rgba(0, 255, 157, 0.2),
+                0 0 10px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .hemiya-eyes {
+            position: relative;
+            width: 80%;
+            height: 30px;
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 15px;
+            transition: all 0.1s ease;
+        }
+
+        .hemiya-eye {
+            width: 25px;
+            height: 25px;
+            background: #00ff9d;
+            border-radius: 50%;
+            position: relative;
+            animation: blink 4s infinite;
+            box-shadow: 0 0 15px rgba(0, 255, 157, 0.6);
+            transition: all 0.3s ease;
+        }
+
+        .hemiya-eye::after {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: eyeMove 3s infinite;
+        }
+
+        .hemiya-mouth {
+            width: 40px;
+            height: 20px;
+            background: transparent;
+            border: 4px solid #00ff9d;
+            border-radius: 0 0 50px 50px;
+            border-top: 0;
+            position: relative;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 255, 157, 0.4);
+        }
+
+        /* Expressions */
+        .hemiya.happy .hemiya-mouth, .hemiya .hemiya-mouth {
+            width: 45px;
+            height: 25px;
+            border-width: 4px;
+            border-radius: 0 0 50px 50px;
+            border-top: 0;
+            transform: translateY(-5px);
+        }
+
+        @keyframes eyeMove {
+            0%, 100% { transform: translate(-50%, -50%); }
+            25% { transform: translate(-70%, -50%); }
+            75% { transform: translate(-30%, -50%); }
+        }
+
+        .hemiya.thinking .hemiya-mouth {
+            width: 25px;
+            height: 8px;
+            border: 4px solid #00ff9d;
+            border-radius: 20px;
+            transform: translateY(5px) rotate(15deg);
+        }
+
+        .hemiya.surprised .hemiya-eyes .hemiya-eye {
+            height: 30px;
+            width: 30px;
+            animation: none;
+        }
+
+        .hemiya.surprised .hemiya-mouth {
+            height: 30px;
+            width: 30px;
+            border: 4px solid #00ff9d;
+            border-radius: 50%;
+        }
+
+        .hemiya.confused .hemiya-eyes {
+            transform: rotate(-5deg);
+        }
+
+        .hemiya.confused .hemiya-mouth {
+            width: 30px;
+            border: 4px solid #00ff9d;
+            border-radius: 20px;
+            transform: rotate(-10deg);
+        }
+
+        .speaking .hemiya-mouth {
+            animation: speak 0.5s infinite alternate;
+        }
+
+        @keyframes speak {
+            0% { height: 20px; width: 40px; }
+            100% { height: 25px; width: 45px; }
+        }
+
+        @keyframes blink {
+            0%, 48%, 52%, 100% { transform: scaleY(1); opacity: 1; }
+            50% { transform: scaleY(0.1); opacity: 0.8; }
+        }
+
+        @keyframes speak {
+            0% { height: 10px; width: 30px; }
+            100% { height: 15px; width: 35px; }
+        }
+
+        .hemiya-container:hover {
+            animation-play-state: paused;
+        }
+
+        .hemiya.dragging {
+            animation: none;
+        }
+
+        /* AI Badge */
+        .hemiya::after {
+            content: 'AI';
+            position: absolute;
+            bottom: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #00ff9d;
+            color: #111;
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-size: 50px;
+            font-weight: bold;
+            z-index: 2;
+            box-shadow: 0 0 10px rgba(0, 255, 157, 0.4);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(-50%, -50%); }
+            50% { transform: translate(-50%, -60%); }
+        }
+
+        @keyframes blink {
+            0%, 48%, 52%, 100% { transform: scaleY(1); opacity: 1; }
+            50% { transform: scaleY(0.1); opacity: 0.8; }
+        }
+
+        @keyframes speak {
+            0% { height: 10px; width: 30px; }
+            100% { height: 15px; width: 35px; }
+        }
+
+        .hemiya-container:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        .chat-container {
+            position: fixed;
+            top: 50%;
+            left: 55%;
+            width: 400px;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 
+                0 8px 32px rgba(0, 255, 157, 0.2),
+                0 0 0 1px rgba(0, 255, 157, 0.1);
+            z-index: 10;
+            transform: translateY(-50%);
+            transition: all 0.3s var(--animation-timing);
+        }
+
+        /* Chat bubble pointer with enhanced design */
+        .chat-container::before {
+            content: '';
+            position: absolute;
+            left: -12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            background: rgba(0, 0, 0, 0.95);
+            border-radius: 4px;
+            transform-origin: center;
+            transform: translateY(-50%) rotate(45deg);
+            box-shadow: 
+                -3px 3px 12px rgba(0, 255, 157, 0.1),
+                inset 0 0 0 1px rgba(0, 255, 157, 0.1);
+            z-index: -1;
+        }
+
+        .message {
+            margin-bottom: 16px;
+            padding: 12px 16px;
+            border-radius: 18px;
+            max-width: 85%;
+            word-wrap: break-word;
+            position: relative;
+            animation: fadeIn 0.3s ease-out;
+            line-height: 1.5;
+            font-size: 15px;
+            transition: all 0.2s ease;
+        }
+
+        .user-message {
+            background: linear-gradient(135deg, rgba(0, 255, 157, 0.15), rgba(0, 255, 157, 0.1));
+            margin-left: auto;
+            color: var(--text-light);
+            border-radius: 18px 18px 4px 18px;
+            box-shadow: 
+                0 2px 8px rgba(0, 255, 157, 0.1),
+                inset 0 0 0 1px rgba(0, 255, 157, 0.1);
+        }
+
+        .bot-message {
+            background: linear-gradient(135deg, rgba(0, 255, 157, 0.2), rgba(0, 255, 157, 0.15));
+            margin-right: auto;
+            color: var(--text-light);
+            border-radius: 18px 18px 18px 4px;
+            box-shadow: 
+                0 2px 8px rgba(0, 255, 157, 0.15),
+                inset 0 0 0 1px rgba(0, 255, 157, 0.15);
+        }
+
+        .message:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 4px 12px rgba(0, 255, 157, 0.2),
+                inset 0 0 0 1px rgba(0, 255, 157, 0.2);
+        }
+
+        .message-time {
+            font-size: 12px;
+            opacity: 0.7;
+            margin-top: 6px;
+            text-align: right;
+        }
+
+        .chat-messages {
+            max-height: 350px;
+            overflow-y: auto;
+            padding: 20px;
+            scroll-behavior: smooth;
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: rgba(0, 255, 157, 0.05);
+            border-radius: 3px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: rgba(0, 255, 157, 0.2);
+            border-radius: 3px;
+            transition: all 0.3s;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 255, 157, 0.3);
+        }
+
+        .suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 15px 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-top: 1px solid rgba(0, 255, 157, 0.1);
+        }
+
+        .suggestion-chip {
+            background: rgba(0, 255, 157, 0.1);
+            border: 1px solid rgba(0, 255, 157, 0.2);
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 13px;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: all 0.3s var(--animation-timing);
+            white-space: nowrap;
+        }
+
+        .suggestion-chip:hover {
+            background: rgba(0, 255, 157, 0.2);
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 255, 157, 0.2);
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 15px 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-top: 1px solid rgba(0, 255, 157, 0.1);
+            border-radius: 0 0 20px 20px;
+            position: relative;
+        }
+
+        #message-input {
+            flex: 1;
+            padding: 12px 20px;
+            background: rgba(0, 255, 157, 0.1);
+            border: 1px solid rgba(0, 255, 157, 0.2);
+            border-radius: 25px;
+            color: var(--text-light);
+            outline: none;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+
+        #message-input:focus {
+            background: rgba(0, 255, 157, 0.15);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 20px rgba(0, 255, 157, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .input-buttons {
+            display: flex;
+            gap: 12px;
+            margin-left: 12px;
+        }
+
+        #send-button, #voice-button {
+            width: 44px;
+            height: 44px;
+            border: none;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: black;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s var(--animation-timing);
+            font-size: 18px;
+            box-shadow: 0 4px 15px rgba(0, 255, 157, 0.3);
+        }
+
+        #send-button:hover, #voice-button:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 6px 20px rgba(0, 255, 157, 0.4);
+        }
+
+        .chat-header {
+            padding: 15px 20px;
+            background: rgba(0, 255, 157, 0.1);
+            color: var(--primary-color);
+            font-size: 1.1em;
+            font-weight: 500;
+            border-radius: 20px 20px 0 0;
+            border-bottom: 1px solid rgba(0, 255, 157, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .header-button {
+            background: rgba(0, 255, 157, 0.1);
+            border: 1px solid rgba(0, 255, 157, 0.2);
+            color: var(--primary-color);
+            padding: 6px 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s var(--animation-timing);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .header-button:hover {
+            background: rgba(0, 255, 157, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 255, 157, 0.2);
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            display: none;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Voice settings panel */
+        .voice-settings {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 280px;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 8px 32px rgba(0, 255, 157, 0.2);
+            border: 1px solid rgba(0, 255, 157, 0.2);
+            z-index: 50;
+            color: var(--text-light);
+        }
+        
+        .voice-settings-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--primary-color);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .voice-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        
+        .voice-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 20px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.2);
+            transition: .4s;
+            border-radius: 20px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 2px;
+            bottom: 2px;
+            background: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .toggle-slider {
+            background: var(--primary-color);
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(20px);
+        }
+        
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        
+        .volume-slider {
+            flex: 1;
+            height: 4px;
+            -webkit-appearance: none;
+            background: rgba(255, 255, 255, 0.2);
+            outline: none;
+            border-radius: 5px;
+        }
+        
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 12px;
+            height: 12px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        .volume-slider::-moz-range-thumb {
+            width: 12px;
+            height: 12px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        .voice-selector {
+            margin-top: 10px;
+        }
+        
+        .voice-selector select {
+            width: 100%;
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+            font-size: 14px;
+            outline: none;
+        }
+        
+        .voice-selector select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 15px rgba(0, 255, 157, 0.3);
+        }
+        
+        .voice-option-group {
+            margin-top: 10px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .voice-option {
+            font-size: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 4px 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+        }
+        
+        .voice-option:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .voice-option.active {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    <div class="app-container">
+        <div class="hemiya-container" id="hemiya-container">
+            <div class="hemiya" id="hemiya">
+                <div class="hemiya-ears">
+                    <div class="hemiya-ear left"></div>
+                    <div class="hemiya-ear right"></div>
+                </div>
+                <div class="hemiya-face">
+                    <div class="hemiya-eyes">
+                        <div class="hemiya-eye"></div>
+                        <div class="hemiya-eye"></div>
+                    </div>
+                    <div class="hemiya-mouth"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="voice-settings">
+            <div class="voice-settings-title">
+                <span>Voice Settings</span>
+                <span class="status-indicator">Online</span>
+            </div>
+            <div class="voice-controls">
+                <div class="voice-toggle">
+                    <span>Speech:</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="speech-toggle" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="volume-control">
+                <span>🔊</span>
+                <input type="range" min="0" max="1" step="0.1" value="0.8" class="volume-slider" id="volume-slider">
+            </div>
+            <div class="voice-selector">
+                <select id="voice-select">
+                    <option value="auto">Auto-select best voice</option>
+                    <!-- Voice options will be populated by JavaScript -->
+                </select>
+            </div>
+            <div class="voice-option-group">
+                <button class="voice-option active" data-quality="high">High Quality</button>
+                <button class="voice-option" data-quality="normal">Normal</button>
+                <button class="voice-option active" data-language="en">English</button>
+                <button class="voice-option" data-language="fr">French</button>
+            </div>
+        </div>
+
+        <div class="chat-container">
+            <div class="chat-header">
+                <span>Hemiya AI Assistant</span>
+                <div class="header-actions">
+                    <button class="header-button" title="Clear Chat">Clear</button>
+                    <button class="header-button" title="Settings">Settings</button>
+                </div>
+            </div>
+            <div class="chat-messages" id="chat-messages">
+                <div class="message bot-message">
+                    Bonjour! I'm Hemiya, your AI assistant. How can I help you today?
+                    <div class="message-time">Now</div>
+                </div>
+            </div>
+            <div class="suggestions">
+                <div class="suggestion-chip">How do I say hello in French?</div>
+                <div class="suggestion-chip">Help with verb conjugation</div>
+                <div class="suggestion-chip">Common French phrases</div>
+                <div class="suggestion-chip">French pronunciation tips</div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="message-input" placeholder="Type your message...">
+                <div class="input-buttons">
+                    <button id="voice-button" title="Voice Input">🎤</button>
+                    <button id="send-button" title="Send">➤</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="notification" id="notification"></div>
+
+    <script>
+        // Create stars background
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.width = Math.random() * 3 + 'px';
+                star.style.height = star.style.width;
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 2 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Hemiya movement
+        let hemiyaContainer = document.getElementById('hemiya-container');
+        let isDragging = false;
+        let currentX;
+        let currentY;
+        let initialX;
+        let initialY;
+        let xOffset = 0;
+        let yOffset = 0;
+
+        function dragStart(e) {
+            initialX = e.clientX - xOffset;
+            initialY = e.clientY - yOffset;
+
+            if (e.target === hemiyaContainer) {
+                isDragging = true;
+                hemiyaContainer.style.animation = 'none';
+                document.getElementById('hemiya').classList.add('dragging');
+                setExpression('surprised', 500);
+            }
+        }
+
+        function dragEnd() {
+            initialX = currentX;
+            initialY = currentY;
+            isDragging = false;
+            hemiyaContainer.style.animation = 'wander 20s infinite ease-in-out';
+            document.getElementById('hemiya').classList.remove('dragging');
+            setExpression('happy', 1000);
+        }
+
+        function drag(e) {
+            if (isDragging) {
+                e.preventDefault();
+                currentX = e.clientX - initialX;
+                currentY = e.clientY - initialY;
+
+                xOffset = currentX;
+                yOffset = currentY;
+
+                setTranslate(currentX, currentY, hemiyaContainer);
+            }
+        }
+
+        function setTranslate(xPos, yPos, el) {
+            el.style.transform = `translate3d(${xPos}px, ${yPos}px, 0)`;
+        }
+
+        // Add floating animation
+        function addFloatingAnimation() {
+            hemiyaContainer.style.animation = 'float 3s ease-in-out infinite';
+        }
+
+        // Event listeners for dragging
+        hemiyaContainer.addEventListener('mousedown', dragStart);
+        document.addEventListener('mousemove', drag);
+        document.addEventListener('mouseup', dragEnd);
+        document.addEventListener('mouseleave', dragEnd);
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            createStars();
+            addFloatingAnimation();
+            setupSpeechRecognition();
+            
+            // Initialize speech synthesis and populate voice select
+            setTimeout(() => {
+                availableVoices = speechSynthesis.getVoices();
+                populateVoiceList();
+            }, 100);
+            
+            // When voices change (like when they finish loading)
+            speechSynthesis.onvoiceschanged = () => {
+                availableVoices = speechSynthesis.getVoices();
+                populateVoiceList();
+                console.log("Voices loaded:", availableVoices.length);
+            };
+        });
+
+        // DOM elements
+        const chatMessages = document.getElementById('chat-messages');
+        const messageInput = document.getElementById('message-input');
+        const sendButton = document.getElementById('send-button');
+        const voiceButton = document.getElementById('voice-button');
+        const notification = document.getElementById('notification');
+        const avatarContainer = document.querySelector('.avatar-container');
+        const suggestions = document.querySelectorAll('.suggestion-chip');
+        const clearButton = document.querySelector('.header-button[title="Clear Chat"]');
+        const speechToggle = document.getElementById('speech-toggle');
+        const volumeSlider = document.getElementById('volume-slider');
+        const voiceSelect = document.getElementById('voice-select');
+        const voiceOptions = document.querySelectorAll('.voice-option');
+
+        // Initialize variables
+        let recognition = null;
+        let isListening = false;
+        let speechSynthesis = window.speechSynthesis;
+        let isSpeaking = false;
+        let speechEnabled = true;
+        let speechVolume = 0.8;
+        let voiceQuality = 'high';
+        let preferredLanguage = 'auto';
+        let availableVoices = [];
+        let selectedVoiceURI = 'auto';
+
+        // Voice categorization
+        const premiumVoiceKeywords = ['premium', 'enhanced', 'neural', 'wavenet', 'natural', 'plus'];
+        const femaleVoiceKeywords = ['female', 'woman', 'girl', 'samantha', 'victoria', 'fiona', 'ava', 'joanna', 'siri', 'lisa', 'karen', 'catherine', 'sophia'];
+
+        // Show notification
+        function showNotification(message, duration = 3000) {
+            notification.textContent = message;
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, duration);
+        }
+
+        // Format time
+        function formatTime() {
+            const now = new Date();
+            return now.getHours().toString().padStart(2, '0') + ':' + 
+                  now.getMinutes().toString().padStart(2, '0');
+        }
+
+        // Add a message to the chat
+        function addMessage(text, isUser) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message');
+            messageDiv.classList.add(isUser ? 'user-message' : 'bot-message');
+            
+            messageDiv.textContent = text;
+            
+            const timeDiv = document.createElement('div');
+            timeDiv.classList.add('message-time');
+            timeDiv.textContent = formatTime();
+            messageDiv.appendChild(timeDiv);
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            // If bot message, animate hemiya and speak if enabled
+            if (!isUser) {
+                const hemiyaElement = document.getElementById('hemiya');
+                hemiyaElement.classList.add('speaking');
+                
+                if (speechEnabled) {
+                    speakText(text);
+                }
+                
+                setTimeout(() => {
+                    if (!isSpeaking) {
+                        hemiyaElement.classList.remove('speaking');
+                    }
+                }, text.length * 50 + 1000);
+            }
+        }
+        
+        // Text-to-speech function
+        function speakText(text) {
+            // Cancel any ongoing speech
+            speechSynthesis.cancel();
+            
+            // Determine if this is a mixed language message with distinct parts
+            const hasMixedContent = containsMixedLanguage(text);
+            
+            if (hasMixedContent) {
+                // Handle mixed language content by splitting and using separate utterances
+                speakMixedContent(text);
+                return;
+            }
+            
+            // For single language content, use the standard approach
+            speakSingleLanguageContent(text);
+        }
+        
+        // Speak text with a single language (either entirely English or entirely French)
+        function speakSingleLanguageContent(text) {
+            // Create a new utterance
+            const utterance = new SpeechSynthesisUtterance(text);
+            
+            // Check for significant French content
+            const isFrenchContent = detectFrenchContent(text);
+            
+            // Get available voices
+            availableVoices = speechSynthesis.getVoices();
+            
+            // Select voice based on content language and user preferences
+            let selectedVoice = findBestVoice(isFrenchContent);
+            
+            // Apply the selected voice
+            if (selectedVoice) {
+                console.log(`Using voice: ${selectedVoice.name} (${selectedVoice.lang})`);
+                utterance.voice = selectedVoice;
+            }
+            
+            // Set language tag based on content
+            if (isFrenchContent) {
+                // Use French for French content
+                utterance.lang = selectedVoice && selectedVoice.lang.startsWith('fr') 
+                    ? selectedVoice.lang : 'fr-FR';
+                utterance.rate = 0.9; // Slower for clearer French pronunciation
+            } else {
+                // Default to English
+                utterance.lang = selectedVoice ? selectedVoice.lang : 'en-US';
+                utterance.rate = 0.95; // Slightly slower for clarity
+            }
+            
+            // Set volume from user settings
+            utterance.volume = speechVolume;
+            utterance.pitch = 1.0;
+            
+            // Improve pronunciation if needed
+            if (isFrenchContent && preferredLanguage !== 'fr') {
+                const processedText = improveFrenchPronunciation(text);
+                if (processedText !== text) {
+                    console.log("Modified text for better pronunciation:", processedText);
+                    utterance.text = processedText;
+                }
+            }
+            
+            // Set event handlers
+            attachUtteranceEventHandlers(utterance);
+            
+            // Speak the text
+            setTimeout(() => {
+                speechSynthesis.speak(utterance);
+            }, 50);
+        }
+        
+        // Handle text with mixed language content (English and French in the same message)
+        function speakMixedContent(text) {
+            // Extract parts that need to be spoken differently
+            const parts = extractLanguageParts(text);
+            
+            // Create a queue of utterances
+            const utteranceQueue = [];
+            let delay = 50;
+            
+            // Process each part with the appropriate voice and language
+            parts.forEach(part => {
+                const utterance = new SpeechSynthesisUtterance(part.text);
+                
+                // Find appropriate voice
+                const selectedVoice = findBestVoice(part.isFrench);
+                if (selectedVoice) {
+                    utterance.voice = selectedVoice;
+                }
+                
+                // Set language
+                utterance.lang = part.isFrench ? 'fr-FR' : 'en-US';
+                
+                // Set rate based on language
+                utterance.rate = part.isFrench ? 0.9 : 0.95;
+                
+                // Set volume
+                utterance.volume = speechVolume;
+                utterance.pitch = 1.0;
+                
+                // Improve pronunciation if needed
+                if (part.isFrench && preferredLanguage !== 'fr') {
+                    const processedText = improveFrenchPronunciation(part.text);
+                    if (processedText !== part.text) {
+                        utterance.text = processedText;
+                    }
+                }
+                
+                // For all but the first utterance, wait for the previous one to finish
+                if (utteranceQueue.length === 0) {
+                    // First utterance gets standard event handlers
+                    attachUtteranceEventHandlers(utterance);
+                } else {
+                    // Subsequent utterances only need to keep the speaking state active
+                    utterance.onstart = () => {
+                        isSpeaking = true;
+                        const hemiyaElement = document.getElementById('hemiya');
+                        hemiyaElement.classList.add('speaking');
+                    };
+                    
+                    utterance.onend = () => {
+                        // Only mark as done speaking if this is the last utterance
+                        if (utterance === utteranceQueue[utteranceQueue.length - 1]) {
+                            isSpeaking = false;
+                            const hemiyaElement = document.getElementById('hemiya');
+                            hemiyaElement.classList.remove('speaking');
+                        }
+                    };
+                    
+                    utterance.onerror = () => {
+                        // If any utterance fails, stop the speaking state
+                        isSpeaking = false;
+                        const hemiyaElement = document.getElementById('hemiya');
+                        hemiyaElement.classList.remove('speaking');
+                    };
+                }
+                
+                utteranceQueue.push(utterance);
+            });
+            
+            // Speak each utterance in sequence
+            utteranceQueue.forEach((utterance, index) => {
+                setTimeout(() => {
+                    speechSynthesis.speak(utterance);
+                }, delay + (index * 100)); // Add increasing delay for each part
+            });
+        }
+        
+        // Attach standard event handlers to an utterance
+        function attachUtteranceEventHandlers(utterance) {
+            utterance.onstart = () => {
+                isSpeaking = true;
+                const hemiyaElement = document.getElementById('hemiya');
+                hemiyaElement.classList.add('speaking');
+                console.log('Speech started');
+            };
+            
+            utterance.onend = () => {
+                isSpeaking = false;
+                const hemiyaElement = document.getElementById('hemiya');
+                hemiyaElement.classList.remove('speaking');
+                console.log('Speech ended');
+            };
+            
+            utterance.onerror = (event) => {
+                console.error('Speech error:', event);
+                isSpeaking = false;
+                const hemiyaElement = document.getElementById('hemiya');
+                hemiyaElement.classList.remove('speaking');
+            };
+        }
+        
+        // Detect if text contains significant French content
+        function detectFrenchContent(text) {
+            // Match common French words or phrases
+            const frenchPattern = /bonjour|merci|français|je suis|comment|puis-je|appelle|aujourd'hui|enchanté|faire|votre|s'il vous plaît|au revoir|ça va|mon|ma|parle|parlez/i;
+            
+            // Check if the text contains more French words than English
+            const lowerText = text.toLowerCase();
+            
+            // If text contains parentheses with translations, it's likely a French phrase explained in English
+            if (lowerText.includes('(') && lowerText.includes(')')) {
+                const beforeParenthesis = lowerText.split('(')[0].trim();
+                if (frenchPattern.test(beforeParenthesis)) {
+                    return true;
+                }
+            }
+            
+            // Otherwise just check for French patterns
+            return frenchPattern.test(lowerText);
+        }
+        
+        // Determine if text contains both English and French that should be spoken separately
+        function containsMixedLanguage(text) {
+            // Check for the pattern: "French phrase (English translation)"
+            const translationPattern = /(.*?)\s*\((.*?)\)/;
+            if (translationPattern.test(text)) {
+                return true;
+            }
+            
+            // Check for language switches marked with quotes
+            if ((text.includes('"') || text.includes("'") || text.includes("'")) && 
+                detectFrenchContent(text)) {
+                return true;
+            }
+            
+            return false;
+        }
+        
+        // Extract parts that should be spoken in different languages
+        function extractLanguageParts(text) {
+            const parts = [];
+            
+            // Check for parenthetical translations first - the most common pattern
+            const translationMatch = text.match(/(.*?)\s*\((.*?)\)/);
+            if (translationMatch) {
+                const frenchPhrase = translationMatch[1].trim();
+                const englishTranslation = translationMatch[2].trim();
+                
+                // Add the French part
+                parts.push({ text: frenchPhrase, isFrench: true });
+                
+                // Add a short pause using an empty utterance
+                parts.push({ text: ", ", isFrench: false });
+                
+                // Add the English translation
+                parts.push({ text: "which means: " + englishTranslation, isFrench: false });
+                
+                return parts;
+            }
+            
+            // If no parentheses, try to split by quoted sections
+            const quotedTextMatches = text.match(/["'](.*?)["']/g);
+            if (quotedTextMatches) {
+                let currentText = text;
+                
+                // Process each quoted section
+                quotedTextMatches.forEach(match => {
+                    const cleanMatch = match.replace(/["']/g, '');
+                    const isFrenchQuote = detectFrenchContent(cleanMatch);
+                    
+                    // Split the text at this quoted section
+                    const parts = currentText.split(match, 2);
+                    
+                    if (parts[0].trim()) {
+                        // Add text before the quote
+                        const isBeforeFrench = detectFrenchContent(parts[0]);
+                        parts.push({ text: parts[0].trim(), isFrench: isBeforeFrench });
+                    }
+                    
+                    // Add the quoted text
+                    parts.push({ text: cleanMatch, isFrench: isFrenchQuote });
+                    
+                    // Update remaining text to process
+                    currentText = parts.length > 1 ? parts[1] : '';
+                });
+                
+                // Add any remaining text
+                if (currentText.trim()) {
+                    const isRemainingFrench = detectFrenchContent(currentText);
+                    parts.push({ text: currentText.trim(), isFrench: isRemainingFrench });
+                }
+                
+                return parts;
+            }
+            
+            // If we couldn't split it, treat it as a single part
+            // Default to treating it as English unless it has significant French content
+            const isFrench = detectFrenchContent(text);
+            parts.push({ text: text, isFrench: isFrench });
+            
+            return parts;
+        }
+        
+        // Improve pronunciation of French text
+        function improveFrenchPronunciation(text) {
+            // Apply phonetic replacements to help English voices pronounce French better
+            return text
+                .replace(/\bbonjour\b/gi, "bon-zhoor")
+                .replace(/\bmerci\b/gi, "mehr-see")
+                .replace(/\bau revoir\b/gi, "oh ruh-vwar")
+                .replace(/\bs'il vous plaît\b/gi, "seel voo pleh")
+                .replace(/\bje m'appelle\b/gi, "zhuh ma-pell")
+                .replace(/\benchanté\b/gi, "on-shon-tay")
+                .replace(/\bcomment ça va\b/gi, "coh-mahn sah vah")
+                .replace(/\bcomment allez-vous\b/gi, "coh-mahn talley voo")
+                .replace(/\bje suis\b/gi, "zhuh swee")
+                .replace(/\bpuis-je\b/gi, "pwee-zhuh")
+                .replace(/\bfaites\b/gi, "fet")
+                .replace(/\bmaison\b/gi, "may-zon")
+                .replace(/\bfamille\b/gi, "fam-ee-y")
+                .replace(/\bécole\b/gi, "ay-kol")
+                .replace(/\bbien\b/gi, "bee-en")
+                .replace(/\boui\b/gi, "wee");
+        }
+        
+        // Find the best voice based on content language and quality preferences
+        function findBestVoice(isFrenchContent) {
+            // If a specific voice is selected by URI, find and use it
+            if (selectedVoiceURI !== 'auto') {
+                const specificVoice = availableVoices.find(v => v.voiceURI === selectedVoiceURI);
+                if (specificVoice) return specificVoice;
+            }
+            
+            // Filter voices by content's language when in auto mode
+            let languageFilteredVoices;
+            
+            if (preferredLanguage === 'auto') {
+                // Auto mode: use language appropriate for content
+                if (isFrenchContent) {
+                    // For French content, try French voices first
+                    languageFilteredVoices = availableVoices.filter(v => 
+                        v.lang.startsWith('fr') || v.name.toLowerCase().includes('french'));
+                    
+                    // If no French voices, use any voice
+                    if (languageFilteredVoices.length === 0) {
+                        languageFilteredVoices = availableVoices;
+                    }
+                } else {
+                    // For English content, prefer English voices
+                    languageFilteredVoices = availableVoices.filter(v => 
+                        v.lang.startsWith('en') || v.name.toLowerCase().includes('english'));
+                    
+                    // If no English voices, use any voice
+                    if (languageFilteredVoices.length === 0) {
+                        languageFilteredVoices = availableVoices;
+                    }
+                }
+            } else if (preferredLanguage === 'fr') {
+                // French mode: always use French voices when available
+                languageFilteredVoices = availableVoices.filter(v => 
+                    v.lang.startsWith('fr') || v.name.toLowerCase().includes('french'));
+                
+                // Fall back to any voice if no French voices
+                if (languageFilteredVoices.length === 0) {
+                    languageFilteredVoices = availableVoices;
+                }
+            } else {
+                // English mode: always use English voices when available
+                languageFilteredVoices = availableVoices.filter(v => 
+                    v.lang.startsWith('en') || v.name.toLowerCase().includes('english'));
+                    
+                // Fall back to any voice if no English voices
+                if (languageFilteredVoices.length === 0) {
+                    languageFilteredVoices = availableVoices;
+                }
+            }
+            
+            // Further filter by quality if desired and if we have enough voices
+            if (voiceQuality === 'high' && languageFilteredVoices.length > 1) {
+                // Look for premium/enhanced voices
+                const highQualityVoices = languageFilteredVoices.filter(voice => 
+                    premiumVoiceKeywords.some(keyword => 
+                        voice.name.toLowerCase().includes(keyword))
+                );
+                
+                if (highQualityVoices.length > 0) {
+                    // Within high quality voices, prefer female voices
+                    const femaleHighQualityVoices = highQualityVoices.filter(voice =>
+                        femaleVoiceKeywords.some(keyword => 
+                            voice.name.toLowerCase().includes(keyword))
+                    );
+                    
+                    if (femaleHighQualityVoices.length > 0) {
+                        return femaleHighQualityVoices[0];
+                    }
+                    return highQualityVoices[0];
+                }
+            }
+            
+            // If we still have multiple voices, prefer female voices
+            if (languageFilteredVoices.length > 1) {
+                const femaleVoices = languageFilteredVoices.filter(voice =>
+                    femaleVoiceKeywords.some(keyword => 
+                        voice.name.toLowerCase().includes(keyword))
+                );
+                
+                if (femaleVoices.length > 0) {
+                    return femaleVoices[0];
+                }
+            }
+            
+            // Default to first filtered voice
+            if (languageFilteredVoices.length > 0) {
+                return languageFilteredVoices[0];
+            }
+            
+            // Last resort: just use the first available voice
+            return availableVoices.length > 0 ? availableVoices[0] : null;
+        }
+
+        // Process user message and get bot response
+        function processMessage(text) {
+            addMessage(text, true);
+            
+            // Enhanced response logic for more comprehensive answers
+            let response = "";
+            const lowerText = text.toLowerCase();
+            
+            // Greeting patterns
+            if (lowerText.match(/\b(hello|hi|hey|bonjour|salut)\b/i)) {
+                const greetings = [
+                    "Bonjour! Comment puis-je vous aider avec le français aujourd'hui? (Hello! How can I help you with French today?)",
+                    "Salut! Je suis ravi de vous aider avec votre apprentissage du français. (Hi! I'm delighted to help you with your French learning.)",
+                    "Bonjour! Qu'est-ce que vous voulez apprendre en français aujourd'hui? (Hello! What would you like to learn in French today?)"
+                ];
+                response = greetings[Math.floor(Math.random() * greetings.length)];
+            }
+            // How are you patterns
+            else if (lowerText.match(/\b(how are you|comment ça va|comment allez-vous|ça va)\b/i)) {
+                response = "Je vais très bien, merci de demander! Et vous, comment allez-vous? (I'm doing very well, thank you for asking! And you, how are you doing?) In French, you can ask 'Comment ça va?' informally or 'Comment allez-vous?' formally.";
+            }
+            // Grammar topics
+            else if (lowerText.includes('grammar') || lowerText.includes('grammaire')) {
+                if (lowerText.includes('verb') || lowerText.includes('conjugation') || lowerText.includes('tense')) {
+                    response = "French verb conjugation depends on the verb group (-er, -ir, -re), tense, mood, and the subject. For example, the present tense of 'parler' (to speak):\n\nJe parle (I speak)\nTu parles (You speak)\nIl/Elle parle (He/She speaks)\nNous parlons (We speak)\nVous parlez (You speak - plural/formal)\nIls/Elles parlent (They speak)\n\nWould you like me to explain a specific tense or verb group?";
+                } else if (lowerText.includes('gender') || lowerText.includes('masculine') || lowerText.includes('feminine')) {
+                    response = "In French, every noun has a grammatical gender (masculine or feminine). This affects articles, adjectives, and some pronouns.\n\nMasculine nouns use 'le/un': le livre (the book), un stylo (a pen)\nFeminine nouns use 'la/une': la table (the table), une chaise (a chair)\n\nSome patterns can help predict gender: nouns ending in -eau, -age tend to be masculine; nouns ending in -tion, -sion, -té tend to be feminine. But there are many exceptions!";
+                } else if (lowerText.includes('article') || lowerText.includes('the') || lowerText.includes('a')) {
+                    response = "French has several types of articles:\n\nDefinite articles (the): le (masc.), la (fem.), les (plural)\nIndefinite articles (a/an): un (masc.), une (fem.), des (plural)\nPartitive articles (some): du (masc.), de la (fem.), des (plural)\n\nExamples:\nLe chat (the cat), La maison (the house), Les livres (the books)\nUn chat (a cat), Une maison (a house), Des livres (some books)";
+                } else {
+                    response = "La grammaire française inclut plusieurs aspects importants comme les genres (masculin/féminin), les articles (le, la, les, un, une, des), la conjugaison des verbes, les temps, et la syntaxe. Quel aspect vous intéresse particulièrement? (French grammar includes several important aspects such as genders (masculine/feminine), articles, verb conjugation, tenses, and syntax. Which aspect interests you specifically?)";
+                }
+            }
+            // Vocabulary topics
+            else if (lowerText.includes('vocabulary') || lowerText.includes('word') || lowerText.includes('vocabulaire')) {
+                if (lowerText.includes('food') || lowerText.includes('eat') || lowerText.includes('restaurant')) {
+                    response = "Voici du vocabulaire français utile pour la nourriture:\n\n🍞 Le pain - bread\n🧀 Le fromage - cheese\n🍷 Le vin - wine\n🥩 La viande - meat\n🐟 Le poisson - fish\n🥗 La salade - salad\n🍎 Les fruits - fruits\n🥦 Les légumes - vegetables\n\nAu restaurant, vous pouvez dire: 'Je voudrais...' (I would like...) ou 'L'addition, s'il vous plaît' (The bill, please)";
+                } else if (lowerText.includes('travel') || lowerText.includes('transportation') || lowerText.includes('direction')) {
+                    response = "Vocabulaire utile pour voyager en France:\n\n🚆 Le train - train\n🚇 Le métro - subway\n🚌 Le bus - bus\n🚕 Le taxi - taxi\n🏨 L'hôtel - hotel\n🛣️ La rue - street\n🗺️ La carte - map\n\nQuestions utiles:\n'Où est...?' (Where is...?)\n'Comment aller à...?' (How to go to...?)\n'Combien coûte...?' (How much is...?)";
+                } else if (lowerText.includes('number') || lowerText.includes('count')) {
+                    response = "Les nombres en français:\n\n1 - un/une\n2 - deux\n3 - trois\n4 - quatre\n5 - cinq\n6 - six\n7 - sept\n8 - huit\n9 - neuf\n10 - dix\n11 - onze\n12 - douze\n13 - treize\n14 - quatorze\n15 - quinze\n16 - seize\n17 - dix-sept\n18 - dix-huit\n19 - dix-neuf\n20 - vingt\n30 - trente\n40 - quarante\n50 - cinquante\n60 - soixante\n70 - soixante-dix\n80 - quatre-vingts\n90 - quatre-vingt-dix\n100 - cent";
+                } else {
+                    response = "Pour enrichir votre vocabulaire français, je recommande d'apprendre par thèmes: la nourriture, les voyages, la famille, les loisirs, etc. Quel domaine de vocabulaire vous intéresse? (To enrich your French vocabulary, I recommend learning by themes: food, travel, family, hobbies, etc. Which vocabulary area interests you?)";
+                }
+            }
+            // Pronunciation topics
+            else if (lowerText.includes('pronunciation') || lowerText.includes('accent') || lowerText.includes('pronounce')) {
+                if (lowerText.includes('r') || lowerText.includes('r sound')) {
+                    response = "The French 'R' sound is quite distinctive. It's pronounced at the back of the throat (uvular) with slight friction. Try to gargle slightly without water and sustain that position. Practice with words like:\n\n'Rouge' (red) - [ʁuʒ]\n'Paris' - [paʁi]\n'Merci' (thank you) - [mɛʁsi]\n\nStart slowly and listen to native speakers to get the right sound.";
+                } else if (lowerText.includes('nasal') || lowerText.includes('nasals')) {
+                    response = "French has four nasal vowel sounds, made by allowing air to flow through both nose and mouth:\n\n1. 'in/ain/ein' as in 'vin' (wine) or 'pain' (bread) - [ɛ̃]\n2. 'an/en' as in 'enfant' (child) or 'dans' (in) - [ɑ̃]\n3. 'on' as in 'bon' (good) - [ɔ̃]\n4. 'un' as in 'un' (one) - [œ̃]\n\nTo practice, try to feel the vibration in your nose when you pronounce these sounds.";
+                } else if (lowerText.includes('silent') || lowerText.includes('mute')) {
+                    response = "French has many silent letters, especially at the end of words:\n\n- Final consonants are often silent: 'petit' (small) - the 't' is silent\n- Final 'e' is often silent or reduced: 'table' - the 'e' is very light\n- The 'h' is always silent: 'hôtel' sounds like 'otel'\n- In plural forms, the final 's' is silent: 'les chats' - the 's' is silent\n\nHowever, if the next word begins with a vowel, some silent consonants are pronounced in a process called 'liaison'.";
+                } else {
+                    response = "La prononciation française a plusieurs particularités: les voyelles nasales (on, an, in), le 'r' roulé, les lettres muettes, les liaisons entre les mots. Quel aspect de la prononciation vous pose problème? (French pronunciation has several particularities: nasal vowels, the rolled 'r', silent letters, liaisons between words. Which aspect of pronunciation causes you difficulty?)";
+                }
+            }
+            // Common phrases
+            else if (lowerText.includes('phrase') || lowerText.includes('expression') || lowerText.includes('idiom')) {
+                response = "Voici quelques expressions françaises utiles:\n\n🗣️ Expressions de base:\nBonjour - Hello/Good day\nAu revoir - Goodbye\nS'il vous plaît - Please\nMerci - Thank you\nDe rien - You're welcome\nExcusez-moi - Excuse me\n\n🤔 Expressions idiomatiques:\nAvoir la pêche - To be energetic/in good form\nAvoir le cafard - To be depressed\nIl pleut des cordes - It's raining cats and dogs\nÊtre au bout du rouleau - To be at the end of one's rope\nC'est pas la mer à boire - It's not that difficult";
+            }
+            // Conversation practice
+            else if (lowerText.includes('conversation') || lowerText.includes('practice') || lowerText.includes('dialog')) {
+                response = "Voici un petit dialogue en français (Here's a short dialog in French):\n\n- Bonjour! Comment allez-vous? (Hello! How are you?)\n- Je vais bien, merci. Et vous? (I'm well, thank you. And you?)\n- Très bien, merci. Vous êtes d'où? (Very well, thanks. Where are you from?)\n- Je suis de [votre pays]. Et vous? (I'm from [your country]. And you?)\n- Je suis français. Vous parlez très bien français! (I'm French. You speak French very well!)\n- Merci beaucoup! J'apprends depuis [durée]. (Thank you very much! I've been learning for [duration].)\n\nPour pratiquer, essayez de répondre à ces questions en français! (To practice, try answering these questions in French!)";
+            }
+            // Say something in French
+            else if (lowerText.includes('say something') || lowerText.match(/\bspeak\b/i) || lowerText.match(/\btalk\b/i)) {
+                const frenchPhrases = [
+                    "Bonjour! Je m'appelle Hemiya. Je suis votre assistant pour apprendre le français. Comment puis-je vous aider aujourd'hui?",
+                    "La France est célèbre pour sa cuisine, son art, sa mode, et bien sûr, sa langue magnifique. Saviez-vous que le français est parlé par plus de 300 millions de personnes dans le monde?",
+                    "Si vous visitez Paris, n'oubliez pas de voir la Tour Eiffel, le musée du Louvre, et de vous promener le long de la Seine. C'est une ville magique!",
+                    "En français, nous avons beaucoup d'expressions avec des animaux: être un mouton (suivre les autres), avoir une mémoire d'éléphant (très bonne mémoire), ou être rusé comme un renard (être très intelligent).",
+                    "La poésie française est très belle. Comme a dit Paul Éluard: 'La terre est bleue comme une orange.' N'est-ce pas une belle métaphore?"
+                ];
+                response = frenchPhrases[Math.floor(Math.random() * frenchPhrases.length)];
+            }
+            // Help me with/Tell me about
+            else if (lowerText.match(/\bhelp\s+(?:me|with)\b/i) || lowerText.match(/\btell\s+(?:me|about)\b/i) || lowerText.match(/\bexplain\b/i)) {
+                if (lowerText.includes('subjunctive') || lowerText.includes('subjonctif')) {
+                    response = "Le subjonctif en français est un mode verbal qui exprime le doute, la possibilité, le souhait ou l'obligation. On l'utilise après certaines expressions comme:\n\n- Il faut que (it's necessary that)\n- Je veux que (I want that)\n- Je souhaite que (I wish that)\n- Bien que (although)\n\nExemple: 'Il faut que tu sois à l'heure' (You must be on time).\nForme: Pour la plupart des verbes, on prend la 3ème personne pluriel de l'indicatif présent (ils/elles), on enlève -ent, et on ajoute les terminaisons du subjonctif: -e, -es, -e, -ions, -iez, -ent.";
+                } else if (lowerText.includes('past') && (lowerText.includes('tense') || lowerText.includes('passé'))) {
+                    response = "Le français a plusieurs temps du passé:\n\n1. Le passé composé (most common): action completed in the past\n   J'ai parlé (I spoke/I have spoken)\n\n2. L'imparfait: ongoing or habitual past actions\n   Je parlais (I was speaking/I used to speak)\n\n3. Le passé simple: literary past tense, rarely used in speech\n   Je parlai (I spoke)\n\n4. Le plus-que-parfait: action that happened before another past action\n   J'avais parlé (I had spoken)\n\nLequel voulez-vous approfondir?";
+                } else if (lowerText.includes('future') || lowerText.includes('futur')) {
+                    response = "Le futur en français:\n\n1. Le futur simple: describes actions that will happen\n   Je parlerai (I will speak)\n   Formation: infinitive + ai, as, a, ons, ez, ont\n\n2. Le futur proche: describes actions in the near future\n   Je vais parler (I am going to speak)\n   Formation: aller (conjugated) + infinitive\n\n3. Le futur antérieur: action that will be completed before another future action\n   J'aurai parlé (I will have spoken)\n   Formation: avoir/être in future + past participle";
+                } else {
+                    response = "Je serais ravi de vous aider avec le français! Je peux vous expliquer la grammaire, enrichir votre vocabulaire, améliorer votre prononciation, ou vous apprendre des expressions courantes. Pourriez-vous préciser ce que vous aimeriez apprendre? (I'd be delighted to help you with French! I can explain grammar, enrich your vocabulary, improve your pronunciation, or teach you common expressions. Could you specify what you'd like to learn?)";
+                }
+            }
+            // Thank you
+            else if (lowerText.match(/\b(thank|thanks|merci)\b/i)) {
+                const thankResponses = [
+                    "De rien! (You're welcome!) N'hésitez pas à me poser d'autres questions.",
+                    "Je vous en prie! (You're welcome!) C'est un plaisir de vous aider.",
+                    "Avec plaisir! (My pleasure!) N'oubliez pas de pratiquer régulièrement."
+                ];
+                response = thankResponses[Math.floor(Math.random() * thankResponses.length)];
+            }
+            // Goodbye
+            else if (lowerText.match(/\b(bye|goodbye|au revoir|adieu|à bientôt)\b/i)) {
+                const byeResponses = [
+                    "Au revoir! À bientôt! (Goodbye! See you soon!)",
+                    "À la prochaine! Continuez à pratiquer votre français! (Until next time! Keep practicing your French!)",
+                    "Bonne journée! N'hésitez pas à revenir pour plus de pratique! (Have a good day! Don't hesitate to come back for more practice!)"
+                ];
+                response = byeResponses[Math.floor(Math.random() * byeResponses.length)];
+            }
+            // Can you hear me
+            else if (lowerText.includes('hear me') || lowerText.includes('listening')) {
+                response = "Oui, je vous entends parfaitement! Je suis prêt à vous aider avec le français. (Yes, I can hear you perfectly! I'm ready to help you with French.)";
+            }
+            // Default response for unrecognized inputs
+            else {
+                const defaultResponses = [
+                    "Intéressant! Pour mieux vous aider avec le français, pourriez-vous préciser votre question? Je peux vous aider avec la grammaire, le vocabulaire, la prononciation, ou la culture française.",
+                    "Je ne suis pas sûr de comprendre complètement. Pourriez-vous reformuler votre question en parlant spécifiquement de ce que vous voulez apprendre en français?",
+                    "Le français est une langue fascinante! Pour vous aider efficacement, dites-moi si vous voulez en savoir plus sur la grammaire, le vocabulaire, la prononciation, ou peut-être des expressions idiomatiques?"
+                ];
+                response = defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
+            }
+            
+            // Add bot response after a slight delay
+            setTimeout(() => {
+                addMessage(response, false);
+            }, 500);
+        }
+
+        // Set up speech recognition
+        function setupSpeechRecognition() {
+            try {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                if (!SpeechRecognition) {
+                    showNotification("Speech recognition not supported in this browser");
+                    return false;
+                }
+                
+                recognition = new SpeechRecognition();
+                recognition.continuous = false;
+                recognition.interimResults = false;
+                recognition.lang = 'en-US';
+                
+                recognition.onstart = function() {
+                    console.log("Speech recognition started");
+                    isListening = true;
+                    voiceButton.classList.add('recording');
+                    document.querySelector('.status-indicator').textContent = 'Listening...';
+                    showNotification("Listening...");
+                };
+                
+                recognition.onresult = function(event) {
+                    const transcript = event.results[0][0].transcript;
+                    console.log("Recognized speech:", transcript);
+                    messageInput.value = transcript;
+                    processMessage(transcript);
+                };
+                
+                recognition.onerror = function(event) {
+                    console.error("Speech recognition error:", event.error);
+                    isListening = false;
+                    voiceButton.classList.remove('recording');
+                    document.querySelector('.status-indicator').textContent = 'Online';
+                    
+                    if (event.error === 'not-allowed') {
+                        showNotification("Please allow microphone access");
+                    } else if (event.error === 'no-speech') {
+                        showNotification("No speech detected. Please try again.");
+                    } else {
+                        showNotification("Speech recognition error: " + event.error);
+                    }
+                };
+                
+                recognition.onend = function() {
+                    console.log("Speech recognition ended");
+                    isListening = false;
+                    voiceButton.classList.remove('recording');
+                    document.querySelector('.status-indicator').textContent = 'Online';
+                };
+                
+                return true;
+            } catch (error) {
+                console.error("Error setting up speech recognition:", error);
+                showNotification("Error setting up speech recognition");
+                return false;
+            }
+        }
+
+        // Toggle speech recognition
+        function toggleSpeechRecognition() {
+            if (!recognition && !setupSpeechRecognition()) {
+                return;
+            }
+            
+            if (isListening) {
+                recognition.stop();
+            } else {
+                try {
+                    recognition.start();
+                } catch (error) {
+                    console.error("Error starting speech recognition:", error);
+                    
+                    // If recognition is in an invalid state, reset it
+                    if (error.name === 'InvalidStateError') {
+                        recognition = null;
+                        setupSpeechRecognition();
+                        setTimeout(() => {
+                            try {
+                                recognition.start();
+                            } catch (e) {
+                                showNotification("Failed to start listening. Please try again.");
+                            }
+                        }, 100);
+                    } else {
+                        showNotification("Error starting speech recognition");
+                    }
+                }
+            }
+        }
+
+        // Clear chat (except first message)
+        function clearChat() {
+            const firstMessage = chatMessages.firstElementChild;
+            chatMessages.innerHTML = '';
+            chatMessages.appendChild(firstMessage);
+            showNotification("Chat cleared");
+        }
+
+        // Event listeners
+        sendButton.addEventListener('click', () => {
+            const message = messageInput.value.trim();
+            if (message) {
+                processMessage(message);
+                messageInput.value = '';
+            }
+        });
+
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const message = messageInput.value.trim();
+                if (message) {
+                    processMessage(message);
+                    messageInput.value = '';
+                }
+            }
+        });
+
+        voiceButton.addEventListener('click', toggleSpeechRecognition);
+
+        clearButton.addEventListener('click', clearChat);
+
+        // Suggestion chips
+        suggestions.forEach(chip => {
+            chip.addEventListener('click', () => {
+                const suggestion = chip.textContent;
+                messageInput.value = suggestion;
+                processMessage(suggestion);
+                messageInput.value = '';
+            });
+        });
+
+        // Speech toggle event listener
+        speechToggle.addEventListener('change', (e) => {
+            speechEnabled = e.target.checked;
+            if (speechEnabled) {
+                showNotification("Speech enabled");
+            } else {
+                showNotification("Speech disabled");
+                speechSynthesis.cancel(); // Stop any ongoing speech
+                avatarContainer.classList.remove('speaking');
+            }
+        });
+        
+        // Volume slider event listener
+        volumeSlider.addEventListener('input', (e) => {
+            speechVolume = parseFloat(e.target.value);
+        });
+        
+        // Voice selector event listener
+        voiceSelect.addEventListener('change', (e) => {
+            selectedVoiceURI = e.target.value;
+            console.log("Selected voice:", selectedVoiceURI);
+            
+            // Provide immediate feedback by reading a test phrase
+            if (selectedVoiceURI !== 'auto' && speechEnabled) {
+                const voice = availableVoices.find(v => v.voiceURI === selectedVoiceURI);
+                if (voice) {
+                    if (voice.lang.startsWith('fr')) {
+                        setTimeout(() => speakText("Bonjour, je m'appelle Hemiya."), 100);
+                    } else {
+                        setTimeout(() => speakText("Hello, I'm Hemiya."), 100);
+                    }
+                }
+            }
+        });
+        
+        // Voice option buttons
+        voiceOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                // Handle quality options
+                if (option.dataset.quality) {
+                    // Remove active class from other quality buttons
+                    document.querySelectorAll('.voice-option[data-quality]').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    
+                    // Set active class and update quality preference
+                    option.classList.add('active');
+                    voiceQuality = option.dataset.quality;
+                    console.log("Voice quality set to:", voiceQuality);
+                }
+                
+                // Handle language options
+                if (option.dataset.language) {
+                    // Remove active class from other language buttons
+                    document.querySelectorAll('.voice-option[data-language]').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    
+                    // Set active class and update language preference
+                    option.classList.add('active');
+                    preferredLanguage = option.dataset.language;
+                    console.log("Preferred language set to:", preferredLanguage);
+                    
+                    // Provide immediate feedback by reading a test phrase
+                    if (speechEnabled) {
+                        if (preferredLanguage === 'fr') {
+                            setTimeout(() => speakText("Bonjour, je m'appelle Hemiya."), 100);
+                        } else if (preferredLanguage === 'en') {
+                            setTimeout(() => speakText("Hello, I'm Hemiya."), 100);
+                        }
+                    }
+                }
+            });
+        });
+
+        // Populate voice selection dropdown
+        function populateVoiceList() {
+            const voiceSelect = document.getElementById('voice-select');
+            
+            // Clear existing options except the first one
+            while (voiceSelect.options.length > 1) {
+                voiceSelect.remove(1);
+            }
+            
+            // Add available voices to the select
+            availableVoices.forEach(voice => {
+                const option = document.createElement('option');
+                const label = voice.name + ' (' + voice.lang + ')';
+                option.textContent = label;
+                option.setAttribute('value', voice.voiceURI);
+                
+                // Mark premium/high-quality voices
+                if (premiumVoiceKeywords.some(keyword => voice.name.toLowerCase().includes(keyword))) {
+                    option.textContent += ' ★';
+                }
+                
+                voiceSelect.appendChild(option);
+            });
+        }
+
+        // Function to initialize speech synthesis
+        function initSpeechSynthesis() {
+            if (typeof speechSynthesis === 'undefined') {
+                console.error("Speech synthesis not supported");
+                showNotification("Speech synthesis not supported in this browser");
+                return false;
+            }
+            
+            // Try to get voices immediately (works in some browsers)
+            availableVoices = speechSynthesis.getVoices();
+            
+            // If voices are available, populate the dropdown
+            if (availableVoices.length > 0) {
+                populateVoiceList();
+            }
+            
+            return true;
+        }
+    </script>
+</body>
+</html> 
