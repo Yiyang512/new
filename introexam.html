@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional TEF/DELF Exam Preparation Guide</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <style>
+        :root {
+            --dark-bg: #001a00;          /* Very dark green from image */
+            --neon-green: #39FF14;       /* Bright green accent from image */
+            --card-bg: rgba(0, 26, 0, 0.95);
+            --text-color: #ffffff;
+            --border-color: #39FF14;
+            --neon-green-dim: rgba(57, 255, 20, 0.1);
+            --neon-glow: none;              /* Remove the glow effect */
+            --primary: #00e676;            /* Neon green */
+            --primary-light: #66ffa6;      /* Lighter neon green */
+            --primary-dark: #00b248;       /* Darker neon green */
+            --secondary: #14b8a6;          /* Teal accent */
+            --secondary-light: #5eead4;    /* Light teal */
+            --secondary-dark: #0f766e;     /* Dark teal */
+            --text-light: #f8fafc;         /* Off-white for readability */
+            --text-dark: #0f172a;          /* Very dark blue for contrast */
+            --background: #ecfdf5;         /* Light green background */
+            --correct: #22c55e;            /* Success green */
+            --incorrect: #ef4444;          /* Error red */
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-color);
+            line-height: 1.8;
+            padding: 40px 20px;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            display: none;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(57, 255, 20, 0.2);
+        }
+        
+        h1 {
+            color: var(--text-color);
+            font-size: 2.5rem;
+            text-align: center;
+            margin: 1.5rem 0;
+            text-shadow: none;
+            animation: none;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        
+        .intro {
+            text-align: center;
+            color: var(--neon-green);
+            margin-bottom: 3rem;
+            text-shadow: 0 0 5px var(--neon-green);
+            font-size: 1.2rem;
+        }
+        
+        .score-display {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--card-bg);
+            border: 1px solid rgba(57, 255, 20, 0.2);
+            padding: 12px 20px;
+            border-radius: 6px;
+            color: var(--text-color);
+            font-weight: 500;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .quiz-card {
+            background: rgba(0, 26, 0, 0.95);
+            border: 1px solid rgba(57, 255, 20, 0.2);
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .question {
+            font-size: 1.25rem;
+            margin: 1.5rem 0;
+            color: var(--text-color);
+            text-shadow: none;
+            font-weight: 500;
+        }
+        
+        .answer {
+            background: rgba(0, 26, 0, 0.95);
+            border: 1px solid rgba(57, 255, 20, 0.2);
+            color: var(--text-color);
+            padding: 1.25rem;
+            margin: 0.75rem 0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .answer:hover {
+            background: rgba(57, 255, 20, 0.1);
+            box-shadow: none;
+            transform: none;
+        }
+        
+        #result {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            border-radius: 6px;
+            background: var(--card-bg);
+            border: 1px solid rgba(57, 255, 20, 0.2);
+            color: var(--text-color);
+        }
+        
+        .progress-bar {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 2px;
+            overflow: hidden;
+            margin: 1.5rem 0;
+        }
+        
+        .progress {
+            background: var(--neon-green);
+            box-shadow: none;
+        }
+
+        /* Floating particles background */
+        .particles {
+            display: none;
+        }
+
+        /* Enhanced button styles */
+        .continue-btn {
+            background: var(--neon-green);
+            border: none;
+            color: var(--dark-bg);
+            padding: 10px 24px;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 16px;
+        }
+
+        .continue-btn:hover {
+            background: rgba(57, 255, 20, 0.8);
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Question number badge */
+        .question-number {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            background: var(--neon-green);
+            color: var(--dark-bg);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            box-shadow: none;
+            font-size: 0.9rem;
+        }
+
+        /* Enhanced quiz card */
+        .quiz-card {
+            position: relative;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .quiz-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 30px var(--neon-green-dim);
+        }
+
+        /* Answer option enhancements */
+        .answer {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .answer::before {
+            content: '';
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--neon-green);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .answer:hover::before {
+            background: var(--neon-green);
+            box-shadow: 0 0 10px var(--neon-green);
+        }
+
+        /* Progress bar enhancement */
+        .progress-bar {
+            height: 6px;
+            background: rgba(0, 255, 102, 0.1);
+            border: none;
+            overflow: visible;
+        }
+
+        .progress {
+            position: relative;
+            border-radius: 3px;
+        }
+
+        .progress::after {
+            content: '';
+            position: absolute;
+            right: -3px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            background: var(--neon-green);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--neon-green);
+        }
+
+        /* Result animation */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        #result {
+            animation: slideIn 0.5s ease forwards;
+        }
+
+        /* Score display enhancement */
+        .score-display {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            backdrop-filter: blur(5px);
+        }
+
+        .score-display::before {
+            content: '🎯';
+            font-size: 1.2rem;
+        }
+
+        /* Fun fact styling */
+        .fun-fact {
+            background: rgba(0, 26, 0, 0.95);
+            padding: 1rem;
+            border-radius: 6px;
+            margin-top: 1rem;
+            border-left: 3px solid var(--neon-green);
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <h1>TEF/DELF Certification Guide</h1>
+        <p class="intro">Master the format, requirements, and strategies for success on these internationally recognized French proficiency examinations</p>
+    </div>
+</header>
+
+<div class="container">
+    <div class="score-display" id="scoreDisplay">Score: 0/0</div>
+
+    <div class="quiz-card">
+        <div class="progress-bar">
+            <div class="progress" id="progressBar"></div>
+        </div>
+        
+        <div class="question">
+            <p>What are the four key competencies tested in TEF/DELF exams?</p>
+        </div>
+        
+        <div class="answer" onclick="checkAnswer(0)">Grammar, Vocabulary, and Pronunciation</div>
+        <div class="answer" onclick="checkAnswer(1)">Only Speaking and Writing</div>
+        <div class="answer" onclick="checkAnswer(2)">Reading, Listening, Speaking, and Writing</div>
+        <div class="answer" onclick="checkAnswer(3)">Translation and Cultural Knowledge</div>
+    </div>
+
+    <div id="result"></div>
+</div>
+
+<div class="particles" id="particles"></div>
+
+<script>
+    const quizData = [
+        {
+            question: "What are the four key competencies tested in TEF/DELF exams?",
+            options: [
+                "Grammar, Vocabulary, and Pronunciation",
+                "Only Speaking and Writing",
+                "Reading, Listening, Speaking, and Writing",
+                "Translation and Cultural Knowledge"
+            ],
+            correctIndex: 2,
+            explanation: "The TEF and DELF exams comprehensively test all four major language competencies: Reading Comprehension (Compréhension écrite), Listening Comprehension (Compréhension orale), Speaking Skills (Expression orale), and Writing Skills (Expression écrite).",
+            funFact: "These four competencies align with the Common European Framework of Reference for Languages (CEFR)!"
+        },
+        {
+            question: "What is the minimum DELF level typically required for admission to French universities?",
+            options: [
+                "DELF A1",
+                "DELF A2",
+                "DELF B1",
+                "DELF B2"
+            ],
+            correctIndex: 3,
+            explanation: "DELF B2 is the minimum level typically required for university admission in France. This level demonstrates that you can understand complex texts and interact with a degree of fluency.",
+            funFact: "Some specialized programs might require the higher C1 level, particularly for certain fields like literature or journalism."
+        },
+        {
+            question: "How long is a TEF certificate valid?",
+            options: [
+                "5 years",
+                "2 years",
+                "Lifetime",
+                "1 year"
+            ],
+            correctIndex: 1,
+            explanation: "TEF certificates are valid for 2 years from the date of examination. This is particularly important for immigration and academic purposes.",
+            funFact: "Unlike TEF, DELF certificates have lifetime validity!"
+        },
+        {
+            question: "What is the format of the DELF B2 oral examination?",
+            options: [
+                "20 minutes preparation + 20 minutes presentation and discussion",
+                "No preparation + 15 minutes speaking",
+                "10 minutes preparation + 10 minutes presentation",
+                "30 minutes preparation + 10 minutes presentation"
+            ],
+            correctIndex: 0,
+            explanation: "The DELF B2 oral exam consists of 20 minutes preparation time followed by 20 minutes of presentation and discussion with the examiner.",
+            funFact: "The oral exam is evaluated by two examiners: one who interacts with you and another who observes!"
+        },
+        {
+            question: "Which scoring system does TEF use?",
+            options: [
+                "Percentage system (0-100%)",
+                "Pass/Fail system",
+                "0-699 points scale",
+                "A1 to C2 letters only"
+            ],
+            correctIndex: 2,
+            explanation: "TEF uses a point-based scoring system from 0 to 699, which correlates to CEFR levels (A1 through C2).",
+            funFact: "For Canadian immigration, specific TEF scores are mapped to Canadian Language Benchmark (CLB) levels!"
+        },
+        {
+            question: "What is the passing score requirement for TEF Canada for Express Entry immigration?",
+            options: [
+                "CLB 7 (Reading: 342-374, Listening: 298-315, Speaking: 226-270, Writing: 309-348)",
+                "CLB 5 (Reading: 235-270, Listening: 180-216, Speaking: 181-225, Writing: 225-270)",
+                "CLB 9 (Reading: 398-432, Listening: 316-348, Speaking: 271-309, Writing: 349-370)",
+                "No minimum requirement"
+            ],
+            correctIndex: 0,
+            explanation: "For Express Entry immigration to Canada, candidates typically need a minimum of CLB 7 in all four competencies. The TEF scores must meet specific ranges for each skill.",
+            funFact: "Higher language scores can significantly boost your Comprehensive Ranking System (CRS) points for Canadian immigration!"
+        },
+        {
+            question: "What is the main difference between DELF and DALF certifications?",
+            options: [
+                "DELF covers levels A1 to B2, while DALF covers C1 and C2",
+                "DELF is for students, DALF is for professionals",
+                "DELF is easier than DALF",
+                "There is no difference"
+            ],
+            correctIndex: 0,
+            explanation: "DELF (Diplôme d'études en langue française) covers basic to independent user levels (A1-B2), while DALF (Diplôme approfondi de langue française) certifies advanced proficiency (C1-C2).",
+            funFact: "The DALF C2 level indicates mastery equivalent to that of a native French speaker in academic contexts!"
+        },
+        {
+            question: "How much time is given for the written production section of DELF B2?",
+            options: [
+                "30 minutes",
+                "2 hours",
+                "1 hour",
+                "45 minutes"
+            ],
+            correctIndex: 1,
+            explanation: "The DELF B2 written production section allows 2 hours for candidates to complete two writing tasks: an argumentative essay and a formal letter.",
+            funFact: "The B2 writing tasks often involve analyzing opposing viewpoints and presenting a well-structured argument!"
+        },
+        {
+            question: "Which of these is NOT a topic typically covered in TEF Canada?",
+            options: [
+                "French literature analysis",
+                "Professional situations",
+                "Current events",
+                "Daily life scenarios"
+            ],
+            correctIndex: 0,
+            explanation: "TEF Canada focuses on practical language use in professional, academic, and daily life contexts. Literary analysis is not part of the examination.",
+            funFact: "TEF Canada is specifically designed to assess language skills needed for successful integration into Canadian society and workplace!"
+        },
+        {
+            question: "What is the maximum score possible on the TEF listening comprehension section?",
+            options: [
+                "699 points",
+                "500 points",
+                "360 points",
+                "450 points"
+            ],
+            correctIndex: 2,
+            explanation: "The TEF listening comprehension section is scored out of 360 points, with different score ranges corresponding to CEFR levels.",
+            funFact: "The listening section includes various accents from different French-speaking regions!"
+        },
+        {
+            question: "How soon can you retake the DELF exam if you don't pass?",
+            options: [
+                "Immediately",
+                "After 1 year",
+                "After 6 months",
+                "After 3 months"
+            ],
+            correctIndex: 3,
+            explanation: "There is a mandatory 3-month waiting period before retaking a DELF exam at the same level if you don't pass.",
+            funFact: "You can, however, register for a different DELF level exam without waiting!"
+        },
+        {
+            question: "What unique feature distinguishes the TEF Quebec from TEF Canada?",
+            options: [
+                "Different scoring ranges for immigration purposes",
+                "Additional cultural knowledge section",
+                "Longer examination time",
+                "Different difficulty level"
+            ],
+            correctIndex: 0,
+            explanation: "TEF Quebec uses different score ranges aligned with Quebec's immigration requirements, while TEF Canada's scores are mapped to Canadian Language Benchmark (CLB) levels.",
+            funFact: "Quebec has its own immigration system separate from the rest of Canada, hence the different language requirements!"
+        },
+        {
+            question: "Which type of text is NOT typically included in the DELF B2 reading comprehension?",
+            options: [
+                "News articles",
+                "Literary texts",
+                "Scientific papers",
+                "Children's stories"
+            ],
+            correctIndex: 3,
+            explanation: "DELF B2 reading comprehension focuses on complex texts like news articles, literary texts, and scientific papers. Children's stories are too simple for B2 level.",
+            funFact: "The B2 reading texts often include authentic materials from French newspapers and magazines!"
+        },
+        {
+            question: "What is the duration of the TEF Canada listening test?",
+            options: [
+                "45 minutes",
+                "60 minutes",
+                "35 minutes",
+                "40 minutes"
+            ],
+            correctIndex: 2,
+            explanation: "The TEF Canada listening test lasts approximately 35 minutes and includes various audio segments with increasing difficulty.",
+            funFact: "The listening test includes both monologues and dialogues with different French accents!"
+        }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    function displayQuestion() {
+        const questionData = quizData[currentQuestion];
+        const quizCard = document.querySelector('.quiz-card');
+        
+        quizCard.innerHTML = `
+            <div class="progress-bar">
+                <div class="progress" style="width: ${(currentQuestion + 1) / quizData.length * 100}%"></div>
+            </div>
+            
+            <div class="question">
+                <p>${questionData.question}</p>
+            </div>
+            
+            ${questionData.options.map((option, index) => `
+                <div class="answer" onclick="checkAnswer(${index})">${option}</div>
+            `).join('')}
+        `;
+
+        const questionNumber = document.createElement('div');
+        questionNumber.className = 'question-number';
+        questionNumber.textContent = `${currentQuestion + 1}/${quizData.length}`;
+        document.querySelector('.quiz-card').appendChild(questionNumber);
+    }
+
+    function checkAnswer(selected) {
+        const questionData = quizData[currentQuestion];
+        const result = document.getElementById('result');
+        result.style.display = 'block';
+        
+        if (selected === questionData.correctIndex) {
+            score++;
+            result.innerHTML = `
+                <h3>Correct! 🎉</h3>
+                <p>${questionData.explanation}</p>
+                <div class="fun-fact">
+                    <strong>Expert Insight:</strong> ${questionData.funFact}
+                </div>
+            `;
+            
+            // Automatically proceed to next question after 1.5 seconds
+            setTimeout(() => {
+                if (currentQuestion < quizData.length - 1) {
+                    currentQuestion++;
+                    displayQuestion();
+                    result.style.display = 'none';
+                } else {
+                    showFinalResults();
+                }
+                updateScore();
+            }, 1500);
+        } else {
+            result.innerHTML = `
+                <h3>Not quite right</h3>
+                <p>The correct answer is: ${questionData.options[questionData.correctIndex]}</p>
+                <p>${questionData.explanation}</p>
+                <button class="continue-btn" onclick="nextQuestion()">Next Question</button>
+            `;
+        }
+        
+        updateScore();
+    }
+
+    function nextQuestion() {
+        if (currentQuestion < quizData.length - 1) {
+            currentQuestion++;
+            displayQuestion();
+            document.getElementById('result').style.display = 'none';
+        } else {
+            showFinalResults();
+        }
+    }
+
+    function showFinalResults() {
+        const container = document.querySelector('.container');
+        const percentage = (score / quizData.length) * 100;
+        
+        container.innerHTML = `
+            <h1>Quiz Complete!</h1>
+            <div class="quiz-card">
+                <h2 style="color: var(--neon-green); text-align: center; margin-bottom: 20px;">
+                    Your Score: ${score}/${quizData.length} (${percentage}%)
+                </h2>
+                <p style="text-align: center; margin-bottom: 20px;">
+                    ${percentage >= 80 ? 'Excellent! You\'re well-prepared for your TEF/DELF exam!' :
+                    percentage >= 60 ? 'Good job! Keep studying to improve your score.' :
+                    'Keep practicing! Review the material and try again.'}
+                </p>
+                <button class="continue-btn" onclick="restartQuiz()">Restart Quiz</button>
+            </div>
+        `;
+    }
+
+    function restartQuiz() {
+        currentQuestion = 0;
+        score = 0;
+        displayQuestion();
+        updateScore();
+    }
+
+    function updateScore() {
+        const scoreDisplay = document.getElementById('scoreDisplay');
+        scoreDisplay.textContent = `Score: ${score}/${quizData.length}`;
+    }
+
+    // Initialize the quiz
+    window.onload = () => {
+        displayQuestion();
+        updateScore();
+    };
+
+    // Create floating particles
+    function createParticles() {
+        const particlesContainer = document.getElementById('particles');
+        const particleCount = 30;
+
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + 'vw';
+            particle.style.animationDelay = Math.random() * 15 + 's';
+            particle.style.animationDuration = (Math.random() * 5 + 10) + 's';
+            particlesContainer.appendChild(particle);
+        }
+    }
+
+    // Initialize particles
+    window.addEventListener('load', createParticles);
+</script>
+
+</body>
+</html>
