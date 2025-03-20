@@ -1,0 +1,1893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hemiya AI Writing Assistant</title>
+    <style>
+        :root {
+            --primary-color: #00ff9d;
+            --primary-dark: #00cc7a;
+            --primary-light: #7affce;
+            --accent-color: #00ff9d;
+            --bg-color: #001102;
+            --text-dark: #e6f1ff;
+            --text-light: #fff;
+            --message-user: rgba(0, 255, 157, 0.1);
+            --message-bot: rgba(0, 255, 157, 0.15);
+            --animation-timing: cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-color);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background: radial-gradient(circle at center, rgba(0, 255, 157, 0.2) 0%, rgba(0, 0, 0, 0.95) 70%);
+        }
+
+        .star {
+            position: absolute;
+            background: #00ff9d;
+            border-radius: 50%;
+            animation: twinkle 2s infinite;
+            opacity: 0.5;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
+        }
+
+        .app-container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .hemiya-container {
+            position: absolute;
+    top: 50%;
+    left: 80;
+    transform: translateY(-50%);
+            width: 250px;
+            height: 250px;
+            top: 50%;
+            left: 40%;
+            transform: translate(-50%, -50%);
+            cursor: move;
+            transition: transform 0.1s var(--animation-timing);
+            z-index: 200;
+            animation: wander 1s infinite ease-in-out;
+        }
+
+        @keyframes wander {
+            0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
+            25% { transform: translate(-40%, -45%) rotate(5deg); }
+            50% { transform: translate(-60%, -55%) rotate(-5deg); }
+            75% { transform: translate(-45%, -60%) rotate(3deg); }
+        }
+
+        .hemiya {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background: linear-gradient(145deg, #4eda83, #2ebd5f);  /* Softer green gradient */
+            border-radius: 50%;
+            box-shadow: 
+                inset -10px -10px 20px rgba(0, 0, 0, 0.2),
+                inset 10px 10px 20px rgba(255, 255, 255, 0.3),
+                0 0 50px rgba(0, 255, 157, 0.4);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hemiya::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 0%;
+            background: linear-gradient(145deg, #3CB371, #2E8B57);
+            border-radius: 50% 50% 60% 60%;
+            z-index: 1;
+        }
+
+        .hemiya-ears {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 10;
+            left: 0;
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        .hemiya-ear {
+            position: absolute;
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(145deg, #00ff9d, #00cc7a);
+            border-radius: 50%;
+            box-shadow: 
+                inset -2px -2px 4px rgba(0, 0, 0, 0.3),
+                inset 2px 2px 4px rgba(255, 255, 255, 0.2),
+                0 0 15px rgba(0, 255, 157, 0.4);
+            transition: transform 0.3s var(--animation-timing);
+        }
+
+        .hemiya-ear::after {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 255, 157, 0.3);
+            border-radius: 50%;
+            box-shadow: inset 0 0 8px rgba(0, 255, 157, 0.6);
+        }
+
+        .hemiya-ear.left {
+            top: 50%;
+            left: -40px;
+            transform: translateY(-50%);
+            animation: pulseLeft 4s infinite;
+        }
+
+        .hemiya-ear.right {
+            top: 50%;
+            right: -40px;
+            transform: translateY(-50%);
+            animation: pulseRight 4s infinite;
+        }
+
+        @keyframes pulseLeft {
+            0%, 100% { transform: translateY(-50%) scale(1) rotate(-5deg); }
+            50% { transform: translateY(-50%) scale(1.1) rotate(0deg); }
+        }
+
+        @keyframes pulseRight {
+            0%, 100% { transform: translateY(-50%) scale(1) rotate(5deg); }
+            50% { transform: translateY(-50%) scale(1.1) rotate(0deg); }
+        }
+
+        .speaking .hemiya-ear.left {
+            animation: speakingPulseLeft 0.5s infinite alternate;
+        }
+
+        .speaking .hemiya-ear.right {
+            animation: speakingPulseRight 0.5s infinite alternate;
+        }
+
+        @keyframes speakingPulseLeft {
+            0% { transform: translateY(-50%) scale(1); box-shadow: 0 0 15px rgba(0, 255, 157, 0.4); }
+            100% { transform: translateY(-50%) scale(1.2); box-shadow: 0 0 25px rgba(0, 255, 157, 0.6); }
+        }
+
+        @keyframes speakingPulseRight {
+            0% { transform: translateY(-50%) scale(1); box-shadow: 0 0 15px rgba(0, 255, 157, 0.4); }
+            100% { transform: translateY(-50%) scale(1.2); box-shadow: 0 0 25px rgba(0, 255, 157, 0.6); }
+        }
+
+        .hemiya-face {
+            position: relative;
+            width: 65%;
+            height: 55%;
+            background: #000000;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            box-shadow: 
+                inset 0 0 20px rgba(0, 255, 157, 0.2),
+                0 0 30px rgba(0, 255, 157, 0.3);
+            overflow: hidden;
+        }
+
+        .hemiya-eyes {
+            position: relative;
+            width: 85%;
+            height: 45px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 0;
+            animation: floatEyes 3s infinite ease-in-out;
+        }
+
+        .hemiya-eye {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(145deg, #00ff9d, #00cc7a);
+            border-radius: 50%;
+            position: relative;
+            box-shadow: 
+                0 0 25px rgba(0, 255, 157, 0.8),
+                0 0 35px rgba(0, 255, 157, 0.4),
+                0 0 45px rgba(0, 255, 157, 0.2);
+            animation: kawaiiBlink 4s infinite;
+            overflow: hidden;
+        }
+
+        .hemiya-eye::before {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            background: #000000;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .hemiya-eye::after {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 50%;
+            top: 20%;
+            left: 20%;
+            box-shadow: 
+                -15px -15px 0 -5px rgba(255, 255, 255, 0.4),
+                15px 15px 0 -5px rgba(255, 255, 255, 0.3);
+            animation: shineEffect 3s infinite ease-in-out;
+        }
+
+        @keyframes floatEyes {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-2px); }
+        }
+
+        @keyframes kawaiiBlink {
+            0%, 45%, 55%, 100% { transform: scaleY(1); }
+            50% { transform: scaleY(0.3); }
+        }
+
+        @keyframes shineEffect {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(5deg); }
+        }
+
+        .hemiya-mouth {
+            width: 40px;
+            height: 20px;
+            background: transparent;
+            border: 4px solid #00ff9d;
+            border-radius: 0 0 50px 50px;
+            border-top: 0;
+            position: relative;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 255, 157, 0.4);
+        }
+
+        /* Expressions */
+        .hemiya.happy .hemiya-mouth, .hemiya .hemiya-mouth {
+            width: 45px;
+            height: 25px;
+            border-width: 4px;
+            border-radius: 0 0 50px 50px;
+            border-top: 0;
+            transform: translateY(-5px);
+        }
+
+        @keyframes eyeMove {
+            0%, 100% { transform: translate(-50%, -50%); }
+            25% { transform: translate(-70%, -50%); }
+            75% { transform: translate(-30%, -50%); }
+        }
+
+        .hemiya.thinking .hemiya-mouth {
+            width: 25px;
+            height: 8px;
+            border: 4px solid #00ff9d;
+            border-radius: 20px;
+            transform: translateY(5px) rotate(15deg);
+        }
+
+        .hemiya.surprised .hemiya-eyes .hemiya-eye {
+            height: 30px;
+            width: 30px;
+            animation: none;
+        }
+
+        .hemiya.surprised .hemiya-mouth {
+            height: 30px;
+            width: 30px;
+            border: 4px solid #00ff9d;
+            border-radius: 50%;
+        }
+
+        .hemiya.confused .hemiya-eyes {
+            transform: rotate(-5deg);
+        }
+
+        .hemiya.confused .hemiya-mouth {
+            width: 30px;
+            border: 4px solid #00ff9d;
+            border-radius: 20px;
+            transform: rotate(-10deg);
+        }
+
+        .speaking .hemiya-mouth {
+            animation: speak 0.5s infinite alternate;
+        }
+
+        @keyframes speak {
+            0% { height: 20px; width: 40px; }
+            100% { height: 25px; width: 45px; }
+        }
+
+        @keyframes blink {
+            0%, 48%, 52%, 100% { transform: scaleY(1); opacity: 1; }
+            50% { transform: scaleY(0.1); opacity: 0.8; }
+        }
+
+        @keyframes speak {
+            0% { height: 10px; width: 30px; }
+            100% { height: 15px; width: 35px; }
+        }
+
+        .hemiya-container:hover {
+            animation-play-state: paused;
+        }
+
+        .hemiya.dragging {
+            animation: none;
+        }
+
+        /* AI Badge */
+        .hemiya::after {
+            content: 'AI';
+            position: absolute;
+            bottom: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #00ff9d;
+            color: #111;
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-size: 30px;
+            font-weight: bold;
+            z-index: 2;
+            box-shadow: 0 0 10px rgba(0, 255, 157, 0.4);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(-50%, -50%); }
+            50% { transform: translate(-50%, -60%); }
+        }
+
+        @keyframes blink {
+            0%, 48%, 52%, 100% { transform: scaleY(1); opacity: 1; }
+            50% { transform: scaleY(0.1); opacity: 0.8; }
+        }
+
+        @keyframes speak {
+            0% { height: 10px; width: 30px; }
+            100% { height: 15px; width: 35px; }
+        }
+
+        .hemiya-container:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        .chat-container {
+            position: fixed;
+            top: 50%;
+            left: 55%;
+            width: 400px;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 
+                0 8px 32px rgba(0, 255, 157, 0.2),
+                0 0 0 1px rgba(0, 255, 157, 0.1);
+            z-index: 10;
+            transform: translateY(-50%);
+            transition: all 0.3s var(--animation-timing);
+        }
+
+        /* Chat bubble pointer with enhanced design */
+        .chat-container::before {
+            content: '';
+            position: absolute;
+            left: -12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            background: rgba(0, 0, 0, 0.95);
+            border-radius: 4px;
+            transform-origin: center;
+            transform: translateY(-50%) rotate(45deg);
+            box-shadow: 
+                -3px 3px 12px rgba(0, 255, 157, 0.1),
+                inset 0 0 0 1px rgba(0, 255, 157, 0.1);
+            z-index: -1;
+        }
+
+        .message {
+            margin-bottom: 16px;
+            padding: 12px 16px;
+            border-radius: 18px;
+            max-width: 85%;
+            word-wrap: break-word;
+            position: relative;
+            animation: fadeIn 0.3s ease-out;
+            line-height: 1.5;
+            font-size: 15px;
+            transition: all 0.2s ease;
+        }
+
+        .user-message {
+            background: linear-gradient(135deg, rgba(0, 255, 157, 0.15), rgba(0, 255, 157, 0.1));
+            margin-left: auto;
+            color: var(--text-light);
+            border-radius: 18px 18px 4px 18px;
+            box-shadow: 
+                0 2px 8px rgba(0, 255, 157, 0.1),
+                inset 0 0 0 1px rgba(0, 255, 157, 0.1);
+        }
+
+        .bot-message {
+            background: linear-gradient(135deg, rgba(0, 255, 157, 0.2), rgba(0, 255, 157, 0.15));
+            margin-right: auto;
+            color: var(--text-light);
+            border-radius: 18px 18px 18px 4px;
+            box-shadow: 
+                0 2px 8px rgba(0, 255, 157, 0.15),
+                inset 0 0 0 1px rgba(0, 255, 157, 0.15);
+        }
+
+        .message:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 4px 12px rgba(0, 255, 157, 0.2),
+                inset 0 0 0 1px rgba(0, 255, 157, 0.2);
+        }
+
+        .message-time {
+            font-size: 12px;
+            opacity: 0.7;
+            margin-top: 6px;
+            text-align: right;
+        }
+
+        .chat-messages {
+            max-height: 350px;
+            overflow-y: auto;
+            padding: 20px;
+            scroll-behavior: smooth;
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: rgba(0, 255, 157, 0.05);
+            border-radius: 3px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: rgba(0, 255, 157, 0.2);
+            border-radius: 3px;
+            transition: all 0.3s;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 255, 157, 0.3);
+        }
+
+        .suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 15px 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-top: 1px solid rgba(0, 255, 157, 0.1);
+        }
+
+        .suggestion-chip {
+            background: rgba(0, 255, 157, 0.1);
+            border: 1px solid rgba(0, 255, 157, 0.2);
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 13px;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: all 0.3s var(--animation-timing);
+            white-space: nowrap;
+        }
+
+        .suggestion-chip:hover {
+            background: rgba(0, 255, 157, 0.2);
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 255, 157, 0.2);
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 15px 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-top: 1px solid rgba(0, 255, 157, 0.1);
+            border-radius: 0 0 20px 20px;
+            position: relative;
+        }
+
+        #message-input {
+            flex: 1;
+            padding: 12px 20px;
+            background: rgba(0, 255, 157, 0.1);
+            border: 1px solid rgba(0, 255, 157, 0.2);
+            border-radius: 25px;
+            color: var(--text-light);
+            outline: none;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+
+        #message-input:focus {
+            background: rgba(0, 255, 157, 0.15);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 20px rgba(0, 255, 157, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .input-buttons {
+            display: flex;
+            gap: 12px;
+            margin-left: 12px;
+        }
+
+        #send-button, #voice-button {
+            width: 44px;
+            height: 44px;
+            border: none;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: black;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s var(--animation-timing);
+            font-size: 18px;
+            box-shadow: 0 4px 15px rgba(0, 255, 157, 0.3);
+        }
+
+        #send-button:hover, #voice-button:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 6px 20px rgba(0, 255, 157, 0.4);
+        }
+
+        .chat-header {
+            padding: 15px 20px;
+            background: rgba(0, 255, 157, 0.1);
+            color: var(--primary-color);
+            font-size: 1.1em;
+            font-weight: 500;
+            border-radius: 20px 20px 0 0;
+            border-bottom: 1px solid rgba(0, 255, 157, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .header-button {
+            background: rgba(0, 255, 157, 0.1);
+            border: 1px solid rgba(0, 255, 157, 0.2);
+            color: var(--primary-color);
+            padding: 6px 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s var(--animation-timing);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .header-button:hover {
+            background: rgba(0, 255, 157, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 255, 157, 0.2);
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            display: none;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Update the reminder message styles */
+        .reminder-message {
+            position: fixed;
+            bottom: 20px;  /* Changed from top: 85% to bottom: 20px */
+            left: 55%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.95);  /* Match chat container background */
+            border: 1px solid rgba(0, 255, 157, 0.2);
+            padding: 15px 25px;
+            border-radius: 20px;
+            color: var(--primary-color);
+            font-size: 15px;
+            box-shadow: 0 8px 32px rgba(0, 255, 157, 0.2);
+            backdrop-filter: blur(10px);  /* Match chat container blur effect */
+            animation: float 3s infinite alternate;
+            z-index: 10;
+        }
+
+        @keyframes float {
+            from { transform: translateX(-50%) translateY(0); }
+            to { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        /* Voice settings panel */
+        .voice-settings {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 280px;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 8px 32px rgba(0, 255, 157, 0.2);
+            border: 1px solid rgba(0, 255, 157, 0.2);
+            z-index: 50;
+            color: var(--text-light);
+        }
+        
+        .voice-settings-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--primary-color);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .voice-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        
+        .voice-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 20px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.2);
+            transition: .4s;
+            border-radius: 20px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 2px;
+            bottom: 2px;
+            background: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .toggle-slider {
+            background: var(--primary-color);
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(20px);
+        }
+        
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        
+        .volume-slider {
+            flex: 1;
+            height: 4px;
+            -webkit-appearance: none;
+            background: rgba(255, 255, 255, 0.2);
+            outline: none;
+            border-radius: 5px;
+        }
+        
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 12px;
+            height: 12px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        .volume-slider::-moz-range-thumb {
+            width: 12px;
+            height: 12px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        .voice-selector {
+            margin-top: 10px;
+        }
+        
+        .voice-selector select {
+            width: 100%;
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+            font-size: 14px;
+            outline: none;
+        }
+        
+        .voice-selector select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 15px rgba(0, 255, 157, 0.3);
+        }
+        
+        .voice-option-group {
+            margin-top: 10px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .voice-option {
+            font-size: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 4px 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+        }
+        
+        .voice-option:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .voice-option.active {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    <div class="app-container">
+        <div class="hemiya-container" id="hemiya-container">
+            <div class="hemiya" id="hemiya">
+                <div class="hemiya-ears">
+                    <div class="hemiya-ear left"></div>
+                    <div class="hemiya-ear right"></div>
+                </div>
+                <div class="hemiya-face">
+                    <div class="hemiya-eyes">
+                        <div class="hemiya-eye"></div>
+                        <div class="hemiya-eye"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="voice-settings">
+            <div class="voice-settings-title">
+                <span>Voice Settings</span>
+                <span class="status-indicator">Online</span>
+            </div>
+            <div class="voice-controls">
+                <div class="voice-toggle">
+                    <span>Speech:</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="speech-toggle" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="volume-control">
+                <span>🔊</span>
+                <input type="range" min="0" max="1" step="0.1" value="0.8" class="volume-slider" id="volume-slider">
+            </div>
+            <div class="voice-selector">
+                <select id="voice-select">
+                    <option value="auto">Auto-select best voice</option>
+                    <!-- Voice options will be populated by JavaScript -->
+                </select>
+            </div>
+            <div class="voice-option-group">
+                <button class="voice-option active" data-quality="high">High Quality</button>
+                <button class="voice-option" data-quality="normal">Normal</button>
+                <button class="voice-option active" data-language="en">English</button>
+                <button class="voice-option" data-language="fr">French</button>
+            </div>
+        </div>
+
+        <div class="chat-container">
+            <div class="chat-header">
+                <span>Hemiya - AI Writing Assistant</span>
+                <div class="header-actions">
+                    <button class="header-button" title="Clear Chat">Clear</button>
+                </div>
+            </div>
+            <div class="chat-messages" id="chat-messages">
+                <div class="message bot-message">
+                    Bonjour! Je suis votre assistant pour la préparation aux examens DELF/TEF. Comment puis-je vous aider avec votre rédaction aujourd'hui?
+                    <div class="message-time">Now</div>
+                </div>
+            </div>
+            <div class="suggestions">
+                <div class="suggestion-chip">Structure d'essai DELF</div>
+                <div class="suggestion-chip">Connecteurs logiques</div>
+                <div class="suggestion-chip">Exercice pratique</div>
+                <div class="suggestion-chip">Révision de texte</div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="message-input" placeholder="Type your message...">
+                <div class="input-buttons">
+                    <button id="voice-button" title="Voice Input">🎤</button>
+                    <button id="send-button" title="Send">➤</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Adding the reminder message -->
+        <div class="reminder-message">
+            <p>While playing with Hemiya, please try the writing board below for free! ✍️</p>
+        </div>
+    </div>
+
+    <div class="notification" id="notification"></div>
+
+    <script>
+        // Create stars background
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.width = Math.random() * 3 + 'px';
+                star.style.height = star.style.width;
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 2 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Hemiya movement
+        let hemiyaContainer = document.getElementById('hemiya-container');
+        let isDragging = false;
+        let currentX;
+        let currentY;
+        let initialX;
+        let initialY;
+        let xOffset = 0;
+        let yOffset = 0;
+
+        function dragStart(e) {
+            initialX = e.clientX - xOffset;
+            initialY = e.clientY - yOffset;
+
+            if (e.target === hemiyaContainer) {
+                isDragging = true;
+                hemiyaContainer.style.animation = 'none';
+                document.getElementById('hemiya').classList.add('dragging');
+                setExpression('surprised', 500);
+            }
+        }
+
+        function dragEnd() {
+            initialX = currentX;
+            initialY = currentY;
+            isDragging = false;
+            hemiyaContainer.style.animation = 'wander 20s infinite ease-in-out';
+            document.getElementById('hemiya').classList.remove('dragging');
+            setExpression('happy', 1000);
+        }
+
+        function drag(e) {
+            if (isDragging) {
+                e.preventDefault();
+                currentX = e.clientX - initialX;
+                currentY = e.clientY - initialY;
+
+                xOffset = currentX;
+                yOffset = currentY;
+
+                setTranslate(currentX, currentY, hemiyaContainer);
+            }
+        }
+
+        function setTranslate(xPos, yPos, el) {
+            el.style.transform = `translate3d(${xPos}px, ${yPos}px, 0)`;
+        }
+
+        // Add floating animation
+        function addFloatingAnimation() {
+            hemiyaContainer.style.animation = 'float 3s ease-in-out infinite';
+        }
+
+        // Event listeners for dragging
+        hemiyaContainer.addEventListener('mousedown', dragStart);
+        document.addEventListener('mousemove', drag);
+        document.addEventListener('mouseup', dragEnd);
+        document.addEventListener('mouseleave', dragEnd);
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            createStars();
+            addFloatingAnimation();
+            setupSpeechRecognition();
+            
+            // Initialize speech synthesis and populate voice select
+            setTimeout(() => {
+                availableVoices = speechSynthesis.getVoices();
+                populateVoiceList();
+            }, 100);
+            
+            // When voices change (like when they finish loading)
+            speechSynthesis.onvoiceschanged = () => {
+                availableVoices = speechSynthesis.getVoices();
+                populateVoiceList();
+                console.log("Voices loaded:", availableVoices.length);
+            };
+        });
+
+        // DOM elements
+        const chatMessages = document.getElementById('chat-messages');
+        const messageInput = document.getElementById('message-input');
+        const sendButton = document.getElementById('send-button');
+        const voiceButton = document.getElementById('voice-button');
+        const notification = document.getElementById('notification');
+        const avatarContainer = document.querySelector('.avatar-container');
+        const suggestions = document.querySelectorAll('.suggestion-chip');
+        const clearButton = document.querySelector('.header-button[title="Clear Chat"]');
+        const speechToggle = document.getElementById('speech-toggle');
+        const volumeSlider = document.getElementById('volume-slider');
+        const voiceSelect = document.getElementById('voice-select');
+        const voiceOptions = document.querySelectorAll('.voice-option');
+
+        // Initialize variables
+        let recognition = null;
+        let isListening = false;
+        let speechSynthesis = window.speechSynthesis;
+        let isSpeaking = false;
+        let speechEnabled = true;
+        let speechVolume = 0.8;
+        let voiceQuality = 'high';
+        let preferredLanguage = 'auto';
+        let availableVoices = [];
+        let selectedVoiceURI = 'auto';
+
+        // Voice categorization
+        const premiumVoiceKeywords = ['premium', 'enhanced', 'neural', 'wavenet', 'natural', 'plus'];
+        const femaleVoiceKeywords = ['female', 'woman', 'girl', 'samantha', 'victoria', 'fiona', 'ava', 'joanna', 'siri', 'lisa', 'karen', 'catherine', 'sophia'];
+
+        // Show notification
+        function showNotification(message, duration = 3000) {
+            notification.textContent = message;
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, duration);
+        }
+
+        // Format time
+        function formatTime() {
+            const now = new Date();
+            return now.getHours().toString().padStart(2, '0') + ':' + 
+                  now.getMinutes().toString().padStart(2, '0');
+        }
+
+        // Add a message to the chat
+        function addMessage(text, isUser) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message');
+            messageDiv.classList.add(isUser ? 'user-message' : 'bot-message');
+            
+            messageDiv.textContent = text;
+            
+            const timeDiv = document.createElement('div');
+            timeDiv.classList.add('message-time');
+            timeDiv.textContent = formatTime();
+            messageDiv.appendChild(timeDiv);
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            // If bot message, animate hemiya and speak if enabled
+            if (!isUser) {
+                const hemiyaElement = document.getElementById('hemiya');
+                hemiyaElement.classList.add('speaking');
+                
+                if (speechEnabled) {
+                    speakText(text);
+                }
+                
+                setTimeout(() => {
+                    if (!isSpeaking) {
+                        hemiyaElement.classList.remove('speaking');
+                    }
+                }, text.length * 50 + 1000);
+            }
+        }
+        
+        // Text-to-speech function
+        function speakText(text) {
+            // Cancel any ongoing speech
+            speechSynthesis.cancel();
+            
+            // Determine if this is a mixed language message with distinct parts
+            const hasMixedContent = containsMixedLanguage(text);
+            
+            if (hasMixedContent) {
+                // Handle mixed language content by splitting and using separate utterances
+                speakMixedContent(text);
+                return;
+            }
+            
+            // For single language content, use the standard approach
+            speakSingleLanguageContent(text);
+        }
+        
+        // Speak text with a single language (either entirely English or entirely French)
+        function speakSingleLanguageContent(text) {
+            // Create a new utterance
+            const utterance = new SpeechSynthesisUtterance(text);
+            
+            // Check for significant French content
+            const isFrenchContent = detectFrenchContent(text);
+            
+            // Get available voices
+            availableVoices = speechSynthesis.getVoices();
+            
+            // Select voice based on content language and user preferences
+            let selectedVoice = findBestVoice(isFrenchContent);
+            
+            // Apply the selected voice
+            if (selectedVoice) {
+                console.log(`Using voice: ${selectedVoice.name} (${selectedVoice.lang})`);
+                utterance.voice = selectedVoice;
+            }
+            
+            // Set language tag based on content
+            if (isFrenchContent) {
+                // Use French for French content
+                utterance.lang = selectedVoice && selectedVoice.lang.startsWith('fr') 
+                    ? selectedVoice.lang : 'fr-FR';
+                utterance.rate = 0.9; // Slower for clearer French pronunciation
+            } else {
+                // Default to English
+                utterance.lang = selectedVoice ? selectedVoice.lang : 'en-US';
+                utterance.rate = 0.95; // Slightly slower for clarity
+            }
+            
+            // Set volume from user settings
+            utterance.volume = speechVolume;
+            utterance.pitch = 1.0;
+            
+            // Improve pronunciation if needed
+            if (isFrenchContent && preferredLanguage !== 'fr') {
+                const processedText = improveFrenchPronunciation(text);
+                if (processedText !== text) {
+                    console.log("Modified text for better pronunciation:", processedText);
+                    utterance.text = processedText;
+                }
+            }
+            
+            // Set event handlers
+            attachUtteranceEventHandlers(utterance);
+            
+            // Speak the text
+            setTimeout(() => {
+                speechSynthesis.speak(utterance);
+            }, 50);
+        }
+        
+        // Handle text with mixed language content (English and French in the same message)
+        function speakMixedContent(text) {
+            // Extract parts that need to be spoken differently
+            const parts = extractLanguageParts(text);
+            
+            // Create a queue of utterances
+            const utteranceQueue = [];
+            let delay = 50;
+            
+            // Process each part with the appropriate voice and language
+            parts.forEach(part => {
+                const utterance = new SpeechSynthesisUtterance(part.text);
+                
+                // Find appropriate voice
+                const selectedVoice = findBestVoice(part.isFrench);
+                if (selectedVoice) {
+                    utterance.voice = selectedVoice;
+                }
+                
+                // Set language
+                utterance.lang = part.isFrench ? 'fr-FR' : 'en-US';
+                
+                // Set rate based on language
+                utterance.rate = part.isFrench ? 0.9 : 0.95;
+                
+                // Set volume
+                utterance.volume = speechVolume;
+                utterance.pitch = 1.0;
+                
+                // Improve pronunciation if needed
+                if (part.isFrench && preferredLanguage !== 'fr') {
+                    const processedText = improveFrenchPronunciation(part.text);
+                    if (processedText !== part.text) {
+                        utterance.text = processedText;
+                    }
+                }
+                
+                // For all but the first utterance, wait for the previous one to finish
+                if (utteranceQueue.length === 0) {
+                    // First utterance gets standard event handlers
+                    attachUtteranceEventHandlers(utterance);
+                } else {
+                    // Subsequent utterances only need to keep the speaking state active
+                    utterance.onstart = () => {
+                        isSpeaking = true;
+                        const hemiyaElement = document.getElementById('hemiya');
+                        hemiyaElement.classList.add('speaking');
+                    };
+                    
+                    utterance.onend = () => {
+                        // Only mark as done speaking if this is the last utterance
+                        if (utterance === utteranceQueue[utteranceQueue.length - 1]) {
+                            isSpeaking = false;
+                            const hemiyaElement = document.getElementById('hemiya');
+                            hemiyaElement.classList.remove('speaking');
+                        }
+                    };
+                    
+                    utterance.onerror = () => {
+                        // If any utterance fails, stop the speaking state
+                        isSpeaking = false;
+                        const hemiyaElement = document.getElementById('hemiya');
+                        hemiyaElement.classList.remove('speaking');
+                    };
+                }
+                
+                utteranceQueue.push(utterance);
+            });
+            
+            // Speak each utterance in sequence
+            utteranceQueue.forEach((utterance, index) => {
+                setTimeout(() => {
+                    speechSynthesis.speak(utterance);
+                }, delay + (index * 100)); // Add increasing delay for each part
+            });
+        }
+        
+        // Attach standard event handlers to an utterance
+        function attachUtteranceEventHandlers(utterance) {
+            utterance.onstart = () => {
+                isSpeaking = true;
+                const hemiyaElement = document.getElementById('hemiya');
+                hemiyaElement.classList.add('speaking');
+                console.log('Speech started');
+            };
+            
+            utterance.onend = () => {
+                isSpeaking = false;
+                const hemiyaElement = document.getElementById('hemiya');
+                hemiyaElement.classList.remove('speaking');
+                console.log('Speech ended');
+            };
+            
+            utterance.onerror = (event) => {
+                console.error('Speech error:', event);
+                isSpeaking = false;
+                const hemiyaElement = document.getElementById('hemiya');
+                hemiyaElement.classList.remove('speaking');
+            };
+        }
+        
+        // Detect if text contains significant French content
+        function detectFrenchContent(text) {
+            // Match common French words or phrases
+            const frenchPattern = /bonjour|merci|français|je suis|comment|puis-je|appelle|aujourd'hui|enchanté|faire|votre|s'il vous plaît|au revoir|ça va|mon|ma|parle|parlez/i;
+            
+            // Check if the text contains more French words than English
+            const lowerText = text.toLowerCase();
+            
+            // If text contains parentheses with translations, it's likely a French phrase explained in English
+            if (lowerText.includes('(') && lowerText.includes(')')) {
+                const beforeParenthesis = lowerText.split('(')[0].trim();
+                if (frenchPattern.test(beforeParenthesis)) {
+                    return true;
+                }
+            }
+            
+            // Otherwise just check for French patterns
+            return frenchPattern.test(lowerText);
+        }
+        
+        // Determine if text contains both English and French that should be spoken separately
+        function containsMixedLanguage(text) {
+            // Check for the pattern: "French phrase (English translation)"
+            const translationPattern = /(.*?)\s*\((.*?)\)/;
+            if (translationPattern.test(text)) {
+                return true;
+            }
+            
+            // Check for language switches marked with quotes
+            if ((text.includes('"') || text.includes("'") || text.includes("'")) && 
+                detectFrenchContent(text)) {
+                return true;
+            }
+            
+            return false;
+        }
+        
+        // Extract parts that should be spoken in different languages
+        function extractLanguageParts(text) {
+            const parts = [];
+            
+            // Check for parenthetical translations first - the most common pattern
+            const translationMatch = text.match(/(.*?)\s*\((.*?)\)/);
+            if (translationMatch) {
+                const frenchPhrase = translationMatch[1].trim();
+                const englishTranslation = translationMatch[2].trim();
+                
+                // Add the French part
+                parts.push({ text: frenchPhrase, isFrench: true });
+                
+                // Add a short pause using an empty utterance
+                parts.push({ text: ", ", isFrench: false });
+                
+                // Add the English translation
+                parts.push({ text: "which means: " + englishTranslation, isFrench: false });
+                
+                return parts;
+            }
+            
+            // If no parentheses, try to split by quoted sections
+            const quotedTextMatches = text.match(/["'](.*?)["']/g);
+            if (quotedTextMatches) {
+                let currentText = text;
+                
+                // Process each quoted section
+                quotedTextMatches.forEach(match => {
+                    const cleanMatch = match.replace(/["']/g, '');
+                    const isFrenchQuote = detectFrenchContent(cleanMatch);
+                    
+                    // Split the text at this quoted section
+                    const parts = currentText.split(match, 2);
+                    
+                    if (parts[0].trim()) {
+                        // Add text before the quote
+                        const isBeforeFrench = detectFrenchContent(parts[0]);
+                        parts.push({ text: parts[0].trim(), isFrench: isBeforeFrench });
+                    }
+                    
+                    // Add the quoted text
+                    parts.push({ text: cleanMatch, isFrench: isFrenchQuote });
+                    
+                    // Update remaining text to process
+                    currentText = parts.length > 1 ? parts[1] : '';
+                });
+                
+                // Add any remaining text
+                if (currentText.trim()) {
+                    const isRemainingFrench = detectFrenchContent(currentText);
+                    parts.push({ text: currentText.trim(), isFrench: isRemainingFrench });
+                }
+                
+                return parts;
+            }
+            
+            // If we couldn't split it, treat it as a single part
+            // Default to treating it as English unless it has significant French content
+            const isFrench = detectFrenchContent(text);
+            parts.push({ text: text, isFrench: isFrench });
+            
+            return parts;
+        }
+        
+        // Improve pronunciation of French text
+        function improveFrenchPronunciation(text) {
+            // Apply phonetic replacements to help English voices pronounce French better
+            return text
+                .replace(/\bbonjour\b/gi, "bon-zhoor")
+                .replace(/\bmerci\b/gi, "mehr-see")
+                .replace(/\bau revoir\b/gi, "oh ruh-vwar")
+                .replace(/\bs'il vous plaît\b/gi, "seel voo pleh")
+                .replace(/\bje m'appelle\b/gi, "zhuh ma-pell")
+                .replace(/\benchanté\b/gi, "on-shon-tay")
+                .replace(/\bcomment ça va\b/gi, "coh-mahn sah vah")
+                .replace(/\bcomment allez-vous\b/gi, "coh-mahn talley voo")
+                .replace(/\bje suis\b/gi, "zhuh swee")
+                .replace(/\bpuis-je\b/gi, "pwee-zhuh")
+                .replace(/\bfaites\b/gi, "fet")
+                .replace(/\bmaison\b/gi, "may-zon")
+                .replace(/\bfamille\b/gi, "fam-ee-y")
+                .replace(/\bécole\b/gi, "ay-kol")
+                .replace(/\bbien\b/gi, "bee-en")
+                .replace(/\boui\b/gi, "wee");
+        }
+        
+        // Find the best voice based on content language and quality preferences
+        function findBestVoice(isFrenchContent) {
+            // If a specific voice is selected by URI, find and use it
+            if (selectedVoiceURI !== 'auto') {
+                const specificVoice = availableVoices.find(v => v.voiceURI === selectedVoiceURI);
+                if (specificVoice) return specificVoice;
+            }
+            
+            // Filter voices by content's language when in auto mode
+            let languageFilteredVoices;
+            
+            if (preferredLanguage === 'auto') {
+                // Auto mode: use language appropriate for content
+                if (isFrenchContent) {
+                    // For French content, try French voices first
+                    languageFilteredVoices = availableVoices.filter(v => 
+                        v.lang.startsWith('fr') || v.name.toLowerCase().includes('french'));
+                    
+                    // If no French voices, use any voice
+                    if (languageFilteredVoices.length === 0) {
+                        languageFilteredVoices = availableVoices;
+                    }
+                } else {
+                    // For English content, prefer English voices
+                    languageFilteredVoices = availableVoices.filter(v => 
+                        v.lang.startsWith('en') || v.name.toLowerCase().includes('english'));
+                    
+                    // If no English voices, use any voice
+                    if (languageFilteredVoices.length === 0) {
+                        languageFilteredVoices = availableVoices;
+                    }
+                }
+            } else if (preferredLanguage === 'fr') {
+                // French mode: always use French voices when available
+                languageFilteredVoices = availableVoices.filter(v => 
+                    v.lang.startsWith('fr') || v.name.toLowerCase().includes('french'));
+                
+                // Fall back to any voice if no French voices
+                if (languageFilteredVoices.length === 0) {
+                    languageFilteredVoices = availableVoices;
+                }
+            } else {
+                // English mode: always use English voices when available
+                languageFilteredVoices = availableVoices.filter(v => 
+                    v.lang.startsWith('en') || v.name.toLowerCase().includes('english'));
+                    
+                // Fall back to any voice if no English voices
+                if (languageFilteredVoices.length === 0) {
+                    languageFilteredVoices = availableVoices;
+                }
+            }
+            
+            // Further filter by quality if desired and if we have enough voices
+            if (voiceQuality === 'high' && languageFilteredVoices.length > 1) {
+                // Look for premium/enhanced voices
+                const highQualityVoices = languageFilteredVoices.filter(voice => 
+                    premiumVoiceKeywords.some(keyword => 
+                        voice.name.toLowerCase().includes(keyword))
+                );
+                
+                if (highQualityVoices.length > 0) {
+                    // Within high quality voices, prefer female voices
+                    const femaleHighQualityVoices = highQualityVoices.filter(voice =>
+                        femaleVoiceKeywords.some(keyword => 
+                            voice.name.toLowerCase().includes(keyword))
+                    );
+                    
+                    if (femaleHighQualityVoices.length > 0) {
+                        return femaleHighQualityVoices[0];
+                    }
+                    return highQualityVoices[0];
+                }
+            }
+            
+            // If we still have multiple voices, prefer female voices
+            if (languageFilteredVoices.length > 1) {
+                const femaleVoices = languageFilteredVoices.filter(voice =>
+                    femaleVoiceKeywords.some(keyword => 
+                        voice.name.toLowerCase().includes(keyword))
+                );
+                
+                if (femaleVoices.length > 0) {
+                    return femaleVoices[0];
+                }
+            }
+            
+            // Default to first filtered voice
+            if (languageFilteredVoices.length > 0) {
+                return languageFilteredVoices[0];
+            }
+            
+            // Last resort: just use the first available voice
+            return availableVoices.length > 0 ? availableVoices[0] : null;
+        }
+
+        // Process user message and get bot response
+        function processMessage(text) {
+            // Stop any ongoing speech
+            stopSpeaking();
+            
+            addMessage(text, true);
+            
+            // Enhanced response logic for French writing exam preparation
+            let response = "";
+            const lowerText = text.toLowerCase();
+            
+            // Writing exam specific patterns
+            if (lowerText.match(/\b(hello|hi|hey|bonjour|salut)\b/i)) {
+                response = "Bonjour! Je suis votre assistant pour la préparation aux examens DELF/TEF. Je peux vous aider avec:\n\n" +
+                    "1. La structure des essais\n" +
+                    "2. Les connecteurs logiques\n" +
+                    "3. Les formules d'expression\n" +
+                    "4. La révision de texte\n" +
+                    "5. Les exercices pratiques\n\n" +
+                    "Que souhaitez-vous pratiquer aujourd'hui?";
+            }
+            // Essay structure help
+            else if (lowerText.includes('structure') || lowerText.includes('essay') || lowerText.includes('essai')) {
+                response = "Pour un essai DELF/TEF bien structuré, suivez ce modèle:\n\n" +
+                    "📝 INTRODUCTION:\n" +
+                    "- Phrase d'accroche\n" +
+                    "- Présentation du sujet\n" +
+                    "- Annonce du plan\n\n" +
+                    "📝 DÉVELOPPEMENT (2-3 paragraphes):\n" +
+                    "- Une idée principale par paragraphe\n" +
+                    "- Arguments et exemples\n" +
+                    "- Connecteurs logiques\n\n" +
+                    "📝 CONCLUSION:\n" +
+                    "- Synthèse des arguments\n" +
+                    "- Ouverture/perspective\n\n" +
+                    "Voulez-vous des exemples de connecteurs logiques ou des phrases types?";
+            }
+            // Logical connectors
+            else if (lowerText.includes('connecteur') || lowerText.includes('connector') || lowerText.includes('transition')) {
+                response = "Voici des connecteurs logiques essentiels pour votre essai:\n\n" +
+                    "🔄 INTRODUCTION:\n" +
+                    "- Tout d'abord...\n" +
+                    "- Dans un premier temps...\n" +
+                    "- Il est question de...\n\n" +
+                    "➕ ADDITION:\n" +
+                    "- De plus...\n" +
+                    "- En outre...\n" +
+                    "- Par ailleurs...\n\n" +
+                    "⚡ OPPOSITION:\n" +
+                    "- Cependant...\n" +
+                    "- Néanmoins...\n" +
+                    "- En revanche...\n\n" +
+                    "🎯 CONCLUSION:\n" +
+                    "- En conclusion...\n" +
+                    "- Pour conclure...\n" +
+                    "- En définitive...\n\n" +
+                    "Voulez-vous des exemples d'utilisation?";
+            }
+            // Expression formulas
+            else if (lowerText.includes('formula') || lowerText.includes('expression') || lowerText.includes('phrase')) {
+                response = "Expressions utiles pour votre essai DELF/TEF:\n\n" +
+                    "💫 DONNER SON OPINION:\n" +
+                    "- À mon avis...\n" +
+                    "- Je pense/crois que...\n" +
+                    "- Il me semble que...\n\n" +
+                    "📊 ARGUMENTER:\n" +
+                    "- On peut constater que...\n" +
+                    "- Il est évident que...\n" +
+                    "- Les études montrent que...\n\n" +
+                    "🎭 NUANCER:\n" +
+                    "- Certes... mais...\n" +
+                    "- Il est vrai que... néanmoins...\n" +
+                    "- D'un côté... de l'autre...\n\n" +
+                    "Voulez-vous pratiquer avec un sujet spécifique?";
+            }
+            // Practice exercises
+            else if (lowerText.includes('practice') || lowerText.includes('exercice') || lowerText.includes('sujet')) {
+                response = "Voici un sujet d'essai pour pratiquer:\n\n" +
+                    "📝 SUJET: «Les réseaux sociaux ont-ils plus d'avantages ou d'inconvénients pour la société moderne?»\n\n" +
+                    "⏱️ Temps suggéré: 45 minutes\n" +
+                    "📝 Longueur: 250-300 mots\n\n" +
+                    "CONSEILS:\n" +
+                    "1. Faites un plan avant d'écrire\n" +
+                    "2. Utilisez des connecteurs logiques\n" +
+                    "3. Donnez des exemples concrets\n" +
+                    "4. Vérifiez la grammaire et l'orthographe\n\n" +
+                    "Voulez-vous commencer? Je peux vous guider étape par étape.";
+            }
+            // Text revision
+            else if (lowerText.includes('review') || lowerText.includes('révision') || lowerText.includes('correct')) {
+                response = "Pour réviser votre texte, vérifiez:\n\n" +
+                    "✅ STRUCTURE:\n" +
+                    "- Introduction claire?\n" +
+                    "- Paragraphes bien délimités?\n" +
+                    "- Conclusion pertinente?\n\n" +
+                    "✅ LANGUE:\n" +
+                    "- Accords sujet-verbe\n" +
+                    "- Temps verbaux cohérents\n" +
+                    "- Ponctuation correcte\n\n" +
+                    "✅ STYLE:\n" +
+                    "- Registre de langue adapté\n" +
+                    "- Connecteurs logiques variés\n" +
+                    "- Vocabulaire précis\n\n" +
+                    "Collez votre texte et je vous aiderai à le réviser!";
+            }
+            // Help request
+            else if (lowerText.match(/\bhelp\s+(?:me|with)\b/i) || lowerText.match(/\baide\b/i)) {
+                response = "Je peux vous aider avec:\n\n" +
+                    "📝 PRÉPARATION DELF/TEF:\n" +
+                    "1. Structure d'essai\n" +
+                    "2. Connecteurs logiques\n" +
+                    "3. Expressions utiles\n" +
+                    "4. Sujets d'entraînement\n" +
+                    "5. Révision de texte\n\n" +
+                    "Choisissez un aspect et je vous guiderai!";
+            }
+            // Default response
+            else {
+                response = "Pour mieux vous aider dans votre préparation DELF/TEF, précisez si vous souhaitez:\n\n" +
+                    "1. Comprendre la structure d'un essai\n" +
+                    "2. Apprendre des connecteurs logiques\n" +
+                    "3. Voir des formules d'expression\n" +
+                    "4. Faire un exercice pratique\n" +
+                    "5. Réviser un texte\n\n" +
+                    "Que préférez-vous?";
+            }
+            
+            setTimeout(() => {
+                addMessage(response, false);
+            }, 500);
+        }
+
+        // Set up speech recognition
+        function setupSpeechRecognition() {
+            try {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                if (!SpeechRecognition) {
+                    showNotification("Speech recognition not supported in this browser");
+                    return false;
+                }
+                
+                recognition = new SpeechRecognition();
+                recognition.continuous = false;
+                recognition.interimResults = false;
+                recognition.lang = 'en-US';
+                
+                recognition.onstart = function() {
+                    console.log("Speech recognition started");
+                    isListening = true;
+                    voiceButton.classList.add('recording');
+                    document.querySelector('.status-indicator').textContent = 'Listening...';
+                    showNotification("Listening...");
+                };
+                
+                recognition.onresult = function(event) {
+                    const transcript = event.results[0][0].transcript;
+                    console.log("Recognized speech:", transcript);
+                    messageInput.value = transcript;
+                    processMessage(transcript);
+                };
+                
+                recognition.onerror = function(event) {
+                    console.error("Speech recognition error:", event.error);
+                    isListening = false;
+                    voiceButton.classList.remove('recording');
+                    document.querySelector('.status-indicator').textContent = 'Online';
+                    
+                    if (event.error === 'not-allowed') {
+                        showNotification("Please allow microphone access");
+                    } else if (event.error === 'no-speech') {
+                        showNotification("No speech detected. Please try again.");
+                    } else {
+                        showNotification("Speech recognition error: " + event.error);
+                    }
+                };
+                
+                recognition.onend = function() {
+                    console.log("Speech recognition ended");
+                    isListening = false;
+                    voiceButton.classList.remove('recording');
+                    document.querySelector('.status-indicator').textContent = 'Online';
+                };
+                
+                return true;
+            } catch (error) {
+                console.error("Error setting up speech recognition:", error);
+                showNotification("Error setting up speech recognition");
+                return false;
+            }
+        }
+
+        // Toggle speech recognition
+        function toggleSpeechRecognition() {
+            if (!recognition && !setupSpeechRecognition()) {
+                return;
+            }
+            
+            if (isListening) {
+                recognition.stop();
+            } else {
+                try {
+                    recognition.start();
+                } catch (error) {
+                    console.error("Error starting speech recognition:", error);
+                    
+                    // If recognition is in an invalid state, reset it
+                    if (error.name === 'InvalidStateError') {
+                        recognition = null;
+                        setupSpeechRecognition();
+                        setTimeout(() => {
+                            try {
+                                recognition.start();
+                            } catch (e) {
+                                showNotification("Failed to start listening. Please try again.");
+                            }
+                        }, 100);
+                    } else {
+                        showNotification("Error starting speech recognition");
+                    }
+                }
+            }
+        }
+
+        // Clear chat (except first message)
+        function clearChat() {
+            const firstMessage = chatMessages.firstElementChild;
+            chatMessages.innerHTML = '';
+            chatMessages.appendChild(firstMessage);
+            showNotification("Chat cleared");
+        }
+
+        // Event listeners
+        sendButton.addEventListener('click', () => {
+            const message = messageInput.value.trim();
+            if (message) {
+                stopSpeaking();
+                processMessage(message);
+                messageInput.value = '';
+            }
+        });
+
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const message = messageInput.value.trim();
+                if (message) {
+                    stopSpeaking();
+                    processMessage(message);
+                    messageInput.value = '';
+                }
+            }
+        });
+
+        voiceButton.addEventListener('click', () => {
+            stopSpeaking();
+            toggleSpeechRecognition();
+        });
+
+        clearButton.addEventListener('click', clearChat);
+
+        // Suggestion chips
+        suggestions.forEach(chip => {
+            chip.addEventListener('click', () => {
+                stopSpeaking();
+                const suggestion = chip.textContent;
+                messageInput.value = suggestion;
+                processMessage(suggestion);
+                messageInput.value = '';
+            });
+        });
+
+        // Speech toggle event listener
+        speechToggle.addEventListener('change', (e) => {
+            speechEnabled = e.target.checked;
+            if (speechEnabled) {
+                showNotification("Speech enabled");
+            } else {
+                showNotification("Speech disabled");
+                speechSynthesis.cancel(); // Stop any ongoing speech
+                avatarContainer.classList.remove('speaking');
+            }
+        });
+        
+        // Volume slider event listener
+        volumeSlider.addEventListener('input', (e) => {
+            speechVolume = parseFloat(e.target.value);
+        });
+        
+        // Voice selector event listener
+        voiceSelect.addEventListener('change', (e) => {
+            selectedVoiceURI = e.target.value;
+            console.log("Selected voice:", selectedVoiceURI);
+            
+            // Provide immediate feedback by reading a test phrase
+            if (selectedVoiceURI !== 'auto' && speechEnabled) {
+                const voice = availableVoices.find(v => v.voiceURI === selectedVoiceURI);
+                if (voice) {
+                    if (voice.lang.startsWith('fr')) {
+                        setTimeout(() => speakText("Bonjour, je m'appelle Hemiya."), 100);
+                    } else {
+                        setTimeout(() => speakText("Hello, I'm Hemiya."), 100);
+                    }
+                }
+            }
+        });
+        
+        // Voice option buttons
+        voiceOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                // Handle quality options
+                if (option.dataset.quality) {
+                    // Remove active class from other quality buttons
+                    document.querySelectorAll('.voice-option[data-quality]').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    
+                    // Set active class and update quality preference
+                    option.classList.add('active');
+                    voiceQuality = option.dataset.quality;
+                    console.log("Voice quality set to:", voiceQuality);
+                }
+                
+                // Handle language options
+                if (option.dataset.language) {
+                    // Remove active class from other language buttons
+                    document.querySelectorAll('.voice-option[data-language]').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    
+                    // Set active class and update language preference
+                    option.classList.add('active');
+                    preferredLanguage = option.dataset.language;
+                    console.log("Preferred language set to:", preferredLanguage);
+                    
+                    // Provide immediate feedback by reading a test phrase
+                    if (speechEnabled) {
+                        if (preferredLanguage === 'fr') {
+                            setTimeout(() => speakText("Bonjour, je m'appelle Hemiya."), 100);
+                        } else if (preferredLanguage === 'en') {
+                            setTimeout(() => speakText("Hello, I'm Hemiya."), 100);
+                        }
+                    }
+                }
+            });
+        });
+
+        // Populate voice selection dropdown
+        function populateVoiceList() {
+            const voiceSelect = document.getElementById('voice-select');
+            
+            // Clear existing options except the first one
+            while (voiceSelect.options.length > 1) {
+                voiceSelect.remove(1);
+            }
+            
+            // Add available voices to the select
+            availableVoices.forEach(voice => {
+                const option = document.createElement('option');
+                const label = voice.name + ' (' + voice.lang + ')';
+                option.textContent = label;
+                option.setAttribute('value', voice.voiceURI);
+                
+                // Mark premium/high-quality voices
+                if (premiumVoiceKeywords.some(keyword => voice.name.toLowerCase().includes(keyword))) {
+                    option.textContent += ' ★';
+                }
+                
+                voiceSelect.appendChild(option);
+            });
+        }
+
+        // Function to initialize speech synthesis
+        function initSpeechSynthesis() {
+            if (typeof speechSynthesis === 'undefined') {
+                console.error("Speech synthesis not supported");
+                showNotification("Speech synthesis not supported in this browser");
+                return false;
+            }
+            
+            // Try to get voices immediately (works in some browsers)
+            availableVoices = speechSynthesis.getVoices();
+            
+            // If voices are available, populate the dropdown
+            if (availableVoices.length > 0) {
+                populateVoiceList();
+            }
+            
+            return true;
+        }
+
+        // Add this function near the other speech-related functions
+        function stopSpeaking() {
+            if (speechSynthesis.speaking) {
+                speechSynthesis.cancel();
+                isSpeaking = false;
+                const hemiyaElement = document.getElementById('hemiya');
+                hemiyaElement.classList.remove('speaking');
+            }
+        }
+    </script>
+</body>
+</html> 
