@@ -1047,7 +1047,12 @@
 
         // Voice categorization
         const premiumVoiceKeywords = ['premium', 'enhanced', 'neural', 'wavenet', 'natural', 'plus'];
-        const femaleVoiceKeywords = ['female', 'woman', 'girl', 'samantha', 'victoria', 'fiona', 'ava', 'joanna', 'siri', 'lisa', 'karen', 'catherine', 'sophia'];
+
+        // Add preferred voice names for each language
+        const preferredVoices = {
+            en: ['Samantha', 'Karen', 'Alex'],  // Common high-quality English voices
+            fr: ['Amélie', 'Thomas', 'Joanna']  // Common high-quality French voices
+        };
 
         // Show notification
         function showNotification(message, duration = 3000) {
@@ -1397,97 +1402,38 @@
         
         // Find the best voice based on content language and quality preferences
         function findBestVoice(isFrenchContent) {
-            // If a specific voice is selected by URI, find and use it
-            if (selectedVoiceURI !== 'auto') {
-                const specificVoice = availableVoices.find(v => v.voiceURI === selectedVoiceURI);
-                if (specificVoice) return specificVoice;
-            }
+            // Get available voices
+            availableVoices = speechSynthesis.getVoices();
             
-            // Filter voices by content's language when in auto mode
-            let languageFilteredVoices;
+            // Filter voices by language
+            const languageCode = isFrenchContent ? 'fr' : 'en';
+            const preferredNames = preferredVoices[languageCode];
             
-            if (preferredLanguage === 'auto') {
-                // Auto mode: use language appropriate for content
-                if (isFrenchContent) {
-                    // For French content, try French voices first
-                    languageFilteredVoices = availableVoices.filter(v => 
-                        v.lang.startsWith('fr') || v.name.toLowerCase().includes('french'));
-                    
-                    // If no French voices, use any voice
-                    if (languageFilteredVoices.length === 0) {
-                        languageFilteredVoices = availableVoices;
-                    }
-                } else {
-                    // For English content, prefer English voices
-                    languageFilteredVoices = availableVoices.filter(v => 
-                        v.lang.startsWith('en') || v.name.toLowerCase().includes('english'));
-                    
-                    // If no English voices, use any voice
-                    if (languageFilteredVoices.length === 0) {
-                        languageFilteredVoices = availableVoices;
-                    }
-                }
-            } else if (preferredLanguage === 'fr') {
-                // French mode: always use French voices when available
-                languageFilteredVoices = availableVoices.filter(v => 
-                    v.lang.startsWith('fr') || v.name.toLowerCase().includes('french'));
-                
-                // Fall back to any voice if no French voices
-                if (languageFilteredVoices.length === 0) {
-                    languageFilteredVoices = availableVoices;
-                }
-            } else {
-                // English mode: always use English voices when available
-                languageFilteredVoices = availableVoices.filter(v => 
-                    v.lang.startsWith('en') || v.name.toLowerCase().includes('english'));
-                    
-                // Fall back to any voice if no English voices
-                if (languageFilteredVoices.length === 0) {
-                    languageFilteredVoices = availableVoices;
-                }
-            }
+            // First try to find a preferred voice by name
+            let bestVoice = availableVoices.find(voice => 
+                preferredNames.some(name => voice.name.includes(name)) &&
+                voice.lang.startsWith(languageCode)
+            );
             
-            // Further filter by quality if desired and if we have enough voices
-            if (voiceQuality === 'high' && languageFilteredVoices.length > 1) {
-                // Look for premium/enhanced voices
-                const highQualityVoices = languageFilteredVoices.filter(voice => 
+            // If no preferred voice found, look for any premium voice in the correct language
+            if (!bestVoice) {
+                bestVoice = availableVoices.find(voice => 
+                    voice.lang.startsWith(languageCode) &&
                     premiumVoiceKeywords.some(keyword => 
-                        voice.name.toLowerCase().includes(keyword))
+                        voice.name.toLowerCase().includes(keyword)
+                    )
                 );
-                
-                if (highQualityVoices.length > 0) {
-                    // Within high quality voices, prefer female voices
-                    const femaleHighQualityVoices = highQualityVoices.filter(voice =>
-                        femaleVoiceKeywords.some(keyword => 
-                            voice.name.toLowerCase().includes(keyword))
-                    );
-                    
-                    if (femaleHighQualityVoices.length > 0) {
-                        return femaleHighQualityVoices[0];
-                    }
-                    return highQualityVoices[0];
-                }
             }
             
-            // If we still have multiple voices, prefer female voices
-            if (languageFilteredVoices.length > 1) {
-                const femaleVoices = languageFilteredVoices.filter(voice =>
-                    femaleVoiceKeywords.some(keyword => 
-                        voice.name.toLowerCase().includes(keyword))
+            // If still no voice found, use any voice in the correct language
+            if (!bestVoice) {
+                bestVoice = availableVoices.find(voice => 
+                    voice.lang.startsWith(languageCode)
                 );
-                
-                if (femaleVoices.length > 0) {
-                    return femaleVoices[0];
-                }
             }
             
-            // Default to first filtered voice
-            if (languageFilteredVoices.length > 0) {
-                return languageFilteredVoices[0];
-            }
-            
-            // Last resort: just use the first available voice
-            return availableVoices.length > 0 ? availableVoices[0] : null;
+            // Last resort: use the first available voice
+            return bestVoice || availableVoices[0];
         }
 
         // Process user message and get bot response
@@ -1839,25 +1785,32 @@
         function populateVoiceList() {
             const voiceSelect = document.getElementById('voice-select');
             
-            // Clear existing options except the first one
-            while (voiceSelect.options.length > 1) {
-                voiceSelect.remove(1);
+            // Clear existing options
+            voiceSelect.innerHTML = '';
+            
+            // Add auto-select option
+            const autoOption = document.createElement('option');
+            autoOption.value = 'auto';
+            autoOption.textContent = 'Auto-select best voice';
+            voiceSelect.appendChild(autoOption);
+            
+            // Find best English voice
+            const bestEnglishVoice = findBestVoice(false);
+            if (bestEnglishVoice) {
+                const enOption = document.createElement('option');
+                enOption.value = bestEnglishVoice.voiceURI;
+                enOption.textContent = `English: ${bestEnglishVoice.name}`;
+                voiceSelect.appendChild(enOption);
             }
             
-            // Add available voices to the select
-            availableVoices.forEach(voice => {
-                const option = document.createElement('option');
-                const label = voice.name + ' (' + voice.lang + ')';
-                option.textContent = label;
-                option.setAttribute('value', voice.voiceURI);
-                
-                // Mark premium/high-quality voices
-                if (premiumVoiceKeywords.some(keyword => voice.name.toLowerCase().includes(keyword))) {
-                    option.textContent += ' ★';
-                }
-                
-                voiceSelect.appendChild(option);
-            });
+            // Find best French voice
+            const bestFrenchVoice = findBestVoice(true);
+            if (bestFrenchVoice) {
+                const frOption = document.createElement('option');
+                frOption.value = bestFrenchVoice.voiceURI;
+                frOption.textContent = `French: ${bestFrenchVoice.name}`;
+                voiceSelect.appendChild(frOption);
+            }
         }
 
         // Function to initialize speech synthesis
@@ -1888,6 +1841,26 @@
                 hemiyaElement.classList.remove('speaking');
             }
         }
+
+        // Update the voice options UI to show only English/French toggle
+        function updateVoiceOptionGroup() {
+            const voiceOptionGroup = document.querySelector('.voice-option-group');
+            voiceOptionGroup.innerHTML = `
+                <button class="voice-option active" data-language="en">English</button>
+                <button class="voice-option" data-language="fr">French</button>
+            `;
+        }
+
+        // Call this function after voices are loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            // ... existing initialization code ...
+            
+            // Update voice options UI
+            updateVoiceOptionGroup();
+            
+            // Remove quality options since we're always using the best available voice
+            document.querySelectorAll('.voice-option[data-quality]').forEach(btn => btn.remove());
+        });
     </script>
 </body>
 </html> 
