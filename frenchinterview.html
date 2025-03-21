@@ -1031,113 +1031,219 @@
                 showNotification("Camera or microphone access denied. Some features won't work.", "error");
             });
 
-        // Replace the downloadRecording function with this enhanced version
+        // Replace the downloadRecording function with this improved version
         function downloadRecording() {
             if (!recordedChunks.length) {
                 showNotification("No recording data available", "error");
+                console.error("Recording chunks array is empty");
                 return;
             }
             
+            console.log("Recording chunks available:", recordedChunks.length);
+            
             // Create a blob from the recording chunks
             const blob = new Blob(recordedChunks, { type: 'video/webm' });
+            console.log("Blob created, size:", blob.size, "bytes");
             
             // Detect Safari
             const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+            console.log("Browser detected as Safari:", isSafari);
             
             if (isSafari) {
-                // Safari-specific approach
-                console.log("Safari detected, using special download method");
-                showNotification("Safari detected: Preparing your download...", "success");
+                console.log("Using Safari-specific download method");
+                showNotification("Preparing Safari download...", "success");
                 
-                try {
-                    // For Safari: First try creating a video element to play the recording
-                    const videoElement = document.createElement('video');
-                    videoElement.controls = true;
-                    videoElement.autoplay = false;
-                    videoElement.style.maxWidth = "100%";
-                    videoElement.style.marginTop = "20px";
-                    
-                    // Create URL for the video
-                    const videoUrl = URL.createObjectURL(blob);
-                    videoElement.src = videoUrl;
-                    
-                    // Create a download instructions element
-                    const downloadInstructions = document.createElement('div');
-                    downloadInstructions.innerHTML = `
-                        <div style="margin-top: 15px; padding: 10px; background: rgba(0, 255, 153, 0.1); border-radius: 8px; max-width: 700px; margin: 15px auto;">
+                // CRITICAL: First, directly append the video player to the document
+                // This approach ensures the video element appears immediately
+                const testContainer = document.querySelector('.test-container');
+                
+                // Create a direct video container without relying on DOM operations
+                const videoContainerHTML = `
+                    <div id="safariVideoContainer" style="background: rgba(0, 0, 0, 0.8); padding: 30px; border-radius: 10px; max-width: 800px; margin: 20px auto; box-shadow: 0 0 20px rgba(0, 255, 153, 0.5);">
+                        <h3 style="color: #00FF99; margin-top: 0;">Your Recording</h3>
+                        <video id="safariVideo" controls style="max-width: 100%; margin-top: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 255, 153, 0.5);"></video>
+                        <div style="margin-top: 15px; padding: 10px; background: rgba(0, 255, 153, 0.1); border-radius: 8px;">
                             <h3 style="color: #00FF99; margin-top: 0;">Safari Download Instructions</h3>
                             <p>Safari doesn't allow automatic downloads. Please follow these steps:</p>
                             <ol style="text-align: left; padding-left: 20px;">
-                                <li>Right-click or control-click on the video below</li>
+                                <li>Right-click (or control-click) on the video above</li>
                                 <li>Select "Download Video As..." from the menu</li>
                                 <li>Choose a location to save your recording</li>
                             </ol>
-                            <button id="closeVideoBtn" style="margin-top: 10px; padding: 8px 15px; background: #00FF99; color: black; border: none; border-radius: 5px; cursor: pointer;">
+                            <button id="convertToMP4Btn" style="margin-top: 10px; padding: 8px 15px; background: #0077FF; color: white; border: none; border-radius: 5px; cursor: pointer; margin-right: 10px;">
+                                Try Converting to MP4
+                            </button>
+                            <button id="closeVideoBtn" style="margin-top: 10px; padding: 8px 15px; background: #FF4444; color: white; border: none; border-radius: 5px; cursor: pointer;">
                                 Close Video
                             </button>
                         </div>
-                    `;
-                    
-                    // Create container for the video and instructions
-                    const videoContainer = document.createElement('div');
-                    videoContainer.id = "safariVideoContainer";
-                    videoContainer.style.background = "rgba(0, 0, 0, 0.8)";
-                    videoContainer.style.padding = "30px";
-                    videoContainer.style.borderRadius = "10px";
-                    videoContainer.style.maxWidth = "800px";
-                    videoContainer.style.margin = "20px auto";
-                    videoContainer.style.boxShadow = "0 0 20px rgba(0, 255, 153, 0.5)";
-                    
-                    videoContainer.appendChild(videoElement);
-                    videoContainer.appendChild(downloadInstructions);
-                    
-                    // Add the container after the test-container
-                    const testContainer = document.querySelector('.test-container');
-                    testContainer.parentNode.insertBefore(videoContainer, testContainer.nextSibling);
+                    </div>
+                `;
+                
+                // Insert the container after the test container
+                testContainer.insertAdjacentHTML('afterend', videoContainerHTML);
+                console.log("Video container added to DOM");
+                
+                // Get references to the newly created elements
+                const videoElement = document.getElementById('safariVideo');
+                const closeButton = document.getElementById('closeVideoBtn');
+                const convertButton = document.getElementById('convertToMP4Btn');
+                
+                if (!videoElement) {
+                    console.error("Failed to find safariVideo element in DOM after insertion");
+                    showNotification("Error creating video player", "error");
+                    return;
+                }
+                
+                // Create URL for the video
+                try {
+                    const videoUrl = URL.createObjectURL(blob);
+                    console.log("Blob URL created:", videoUrl);
+                    videoElement.src = videoUrl;
+                    console.log("Video source set");
                     
                     // Add event listener for the close button
-                    document.getElementById('closeVideoBtn').addEventListener('click', function() {
-                        videoContainer.remove();
-                        URL.revokeObjectURL(videoUrl);
-                    });
+                    if (closeButton) {
+                        closeButton.addEventListener('click', function() {
+                            const container = document.getElementById('safariVideoContainer');
+                            if (container) {
+                                container.remove();
+                                console.log("Video container removed");
+                            }
+                            URL.revokeObjectURL(videoUrl);
+                            console.log("Video URL revoked");
+                        });
+                    }
                     
-                    // Alternative method: try using the download attribute as well
-                    const downloadLink = document.createElement('a');
-                    downloadLink.href = videoUrl;
-                    downloadLink.download = `french-speaking-practice-${new Date().toISOString().slice(0,19).replace(/:/g,'-')}.webm`;
-                    downloadLink.textContent = "💾 Alternative: Click here to try direct download";
-                    downloadLink.style.display = "block";
-                    downloadLink.style.margin = "10px auto";
-                    downloadLink.style.padding = "8px 15px";
-                    downloadLink.style.background = "rgba(0, 100, 255, 0.3)";
-                    downloadLink.style.color = "white";
-                    downloadLink.style.borderRadius = "5px";
-                    downloadLink.style.textDecoration = "none";
-                    downloadInstructions.appendChild(downloadLink);
+                    // Add event listener for the convert button (alternative approach)
+                    if (convertButton) {
+                        convertButton.addEventListener('click', function() {
+                            try {
+                                console.log("Starting MP4 conversion attempt");
+                                // Use a different approach - open in a new window 
+                                const newWindow = window.open('', '_blank');
+                                if (newWindow) {
+                                    newWindow.document.write(`
+                                        <!DOCTYPE html>
+                                        <html>
+                                        <head>
+                                            <title>Your French Speaking Recording</title>
+                                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                                            <style>
+                                                body { font-family: Arial, sans-serif; margin: 0; padding: 20px; text-align: center; background: #121212; color: white; }
+                                                video { max-width: 100%; margin: 20px auto; border-radius: 8px; }
+                                                .instructions { margin: 20px auto; max-width: 600px; background: rgba(0, 255, 153, 0.1); padding: 15px; border-radius: 8px; text-align: left; }
+                                                h2 { color: #00FF99; }
+                                            </style>
+                                        </head>
+                                        <body>
+                                            <h2>Your French Speaking Recording</h2>
+                                            <video id="video" controls autoplay></video>
+                                            <div class="instructions">
+                                                <h3>How to save this recording:</h3>
+                                                <ol>
+                                                    <li>Right-click (or control-click) on the video above</li>
+                                                    <li>Select "Download Video As..." or "Save Video As..." from the menu</li>
+                                                    <li>Choose a location on your computer to save the file</li>
+                                                </ol>
+                                            </div>
+                                        </body>
+                                        </html>
+                                    `);
+                                    
+                                    // Add the video to the new window
+                                    const newVideoUrl = URL.createObjectURL(blob);
+                                    const newVideo = newWindow.document.getElementById('video');
+                                    if (newVideo) {
+                                        newVideo.src = newVideoUrl;
+                                        console.log("Video opened in new window");
+                                        showNotification("Recording opened in new tab for download", "success");
+                                    }
+                                } else {
+                                    console.error("Failed to open new window, likely blocked by popup blocker");
+                                    showNotification("Popup blocked. Please allow popups for this site.", "error");
+                                }
+                            } catch (e) {
+                                console.error("MP4 conversion attempt failed:", e);
+                                showNotification("Conversion failed. Try right-click download instead.", "error");
+                            }
+                        });
+                    }
                     
-                    showNotification("Recording ready! See below for download instructions", "success");
-                } catch (e) {
-                    console.error("Safari video playback approach failed:", e);
-                    showNotification("Error preparing video for download. Try recording again.", "error");
-                }
-            } else {
-                // For Chrome, Firefox, Edge, etc.
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.style.display = 'none';
-                a.href = url;
-                a.download = `french-speaking-practice-${new Date().toISOString().slice(0,19).replace(/:/g,'-')}.webm`;
-                document.body.appendChild(a);
-                a.click();
-                
+            showNotification("Recording ready! See below for download instructions", "success");
+            
+            // Force scroll to the video container for visibility
+            const container = document.getElementById('safariVideoContainer');
+            if (container) {
                 setTimeout(() => {
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(url);
-                }, 100);
-                
-                showNotification("Your recording has been downloaded!", "success");
+                    container.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 500);
+            }
+            
+        } catch (e) {
+            console.error("Error setting up Safari video playback:", e);
+            showNotification("Error preparing video. Please try recording again.", "error");
+            
+            // Fallback to a more direct approach
+            try {
+                const dataUrl = URL.createObjectURL(blob);
+                window.location.href = dataUrl;
+                console.log("Attempted direct navigation to blob URL as fallback");
+            } catch (e2) {
+                console.error("Direct navigation fallback failed:", e2);
             }
         }
+        
+    } else {
+        // For Chrome, Firefox, Edge, etc.
+        console.log("Using standard download method for non-Safari browser");
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = `french-speaking-practice-${new Date().toISOString().slice(0,19).replace(/:/g,'-')}.webm`;
+        document.body.appendChild(a);
+        a.click();
+        
+        setTimeout(() => {
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }, 100);
+        
+        showNotification("Your recording has been downloaded!", "success");
+    }
+}
+
+// Add a simple helper function to log debug messages visibly on the page if needed
+function debugLog(message, type = 'info') {
+    console.log(`[DEBUG] ${message}`);
+    // Uncomment the following to show debug messages on the page if needed
+    /*
+    const debugContainer = document.getElementById('debug-log') || 
+        (() => {
+            const div = document.createElement('div');
+            div.id = 'debug-log';
+            div.style.position = 'fixed';
+            div.style.bottom = '10px';
+            div.style.left = '10px';
+            div.style.background = 'rgba(0,0,0,0.8)';
+            div.style.color = '#00FF99';
+            div.style.padding = '10px';
+            div.style.borderRadius = '5px';
+            div.style.maxHeight = '200px';
+            div.style.overflow = 'auto';
+            div.style.zIndex = '10000';
+            document.body.appendChild(div);
+            return div;
+        })();
+    
+    const msgEl = document.createElement('div');
+    msgEl.textContent = `${type.toUpperCase()}: ${message}`;
+    msgEl.style.borderBottom = '1px solid rgba(255,255,255,0.2)';
+    msgEl.style.padding = '3px 0';
+    debugContainer.appendChild(msgEl);
+    */
+}
 
         // EmailJS initialization
         (function(){
