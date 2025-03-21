@@ -1,0 +1,3614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>French Grammar Trainer</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <style>
+        :root {
+            --dark-bg: #001a00;          /* Very dark green */
+            --neon-green: #39FF14;       /* Bright green accent */
+            --card-bg: rgba(0, 26, 0, 0.95);
+            --text-color: #ffffff;
+            --border-color: #39FF14;
+            --neon-green-dim: rgba(57, 255, 20, 0.1);
+        }
+
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-color);
+            padding: 40px 20px;
+            line-height: 1.8;
+            min-height: 100vh;
+            max-height: 100vh;
+            overflow-y: auto;
+        }
+
+        .container {
+            max-width: 900px;
+            max-height: calc(100vh - 80px);
+            margin: 0 auto;
+            overflow-y: auto;
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(57, 255, 20, 0.2);
+        }
+
+        h1 {
+            color: var(--neon-green);
+            font-size: 2.5rem;
+            text-align: center;
+            margin: 1.5rem 0;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .question {
+            font-size: 1.25rem;
+            margin: 2rem 0;
+            padding: 2rem;
+            background: rgba(0, 26, 0, 0.95);
+            border: 1px solid rgba(57, 255, 20, 0.2);
+            border-radius: 8px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            max-width: 300px;
+            padding: 12px;
+            margin: 20px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--neon-green);
+            border-radius: 6px;
+            color: var(--text-color);
+            font-size: 1rem;
+            font-family: 'Poppins', Arial, sans-serif;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            box-shadow: 0 0 5px var(--neon-green);
+        }
+
+        button {
+            background: var(--neon-green);
+            color: var(--dark-bg);
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            font-family: 'Poppins', Arial, sans-serif;
+        }
+
+        button:hover {
+            background: rgba(57, 255, 20, 0.8);
+        }
+
+        #result {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            border-radius: 6px;
+            font-size: 1.1rem;
+        }
+
+        #result.correct {
+            background: rgba(57, 255, 20, 0.1);
+            border: 1px solid var(--neon-green);
+        }
+
+        #result.incorrect {
+            background: rgba(255, 99, 71, 0.1);
+            border: 1px solid #ff6347;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .level-selection {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 2rem 0;
+        }
+
+        .level-card {
+            background: rgba(0, 26, 0, 0.95);
+            border: 1px solid rgba(57, 255, 20, 0.2);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .level-card:hover {
+            border-color: var(--neon-green);
+        }
+
+        .level-card h2 {
+            color: var(--neon-green);
+            margin-bottom: 1rem;
+        }
+
+        .score-display {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--card-bg);
+            border: 1px solid rgba(57, 255, 20, 0.2);
+            padding: 12px 20px;
+            border-radius: 6px;
+            color: var(--text-color);
+        }
+
+        .completed {
+            color: var(--neon-green);
+            font-weight: 500;
+            display: block;
+            margin-top: 10px;
+        }
+
+        .high-score {
+            color: var(--text-color);
+            opacity: 0.8;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .example-text {
+            color: rgba(255,255,255,0.7);
+            font-style: italic;
+            font-size: 0.9em;
+            margin-top: 10px;
+            padding: 10px;
+            border-left: 2px solid var(--neon-green);
+        }
+
+        .multiple-choice {
+            margin-top: 20px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .answer-option {
+            background: rgba(57, 255, 20, 0.1);
+            color: var(--text-color);
+            border: 1px solid var(--neon-green);
+            padding: 15px;
+            text-align: left;
+            transition: all 0.2s ease;
+        }
+
+        .answer-option:hover {
+            background: rgba(57, 255, 20, 0.2);
+        }
+
+        .progression-status {
+            margin-top: 15px;
+            font-size: 0.9em;
+        }
+
+        .current-topic {
+            color: var(--neon-green);
+            font-weight: 500;
+        }
+
+        .topic-progress {
+            margin-top: 5px;
+            font-size: 0.8em;
+        }
+
+        .completed-topic {
+            color: var(--text-color);
+            opacity: 0.7;
+        }
+
+        .grammar-reference {
+            padding: 20px;
+        }
+
+        .grammar-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid rgba(57, 255, 20, 0.2);
+            border-radius: 8px;
+        }
+
+        .grammar-section h3 {
+            color: var(--neon-green);
+            margin-bottom: 10px;
+        }
+
+        .grammar-section ul {
+            list-style: none;
+            padding-left: 20px;
+        }
+
+        .grammar-section li {
+            margin: 5px 0;
+        }
+
+        .statistics-dashboard {
+            padding: 20px;
+        }
+
+        .stats-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: rgba(0, 26, 0, 0.95);
+            border: 1px solid rgba(57, 255, 20, 0.2);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-value {
+            color: var(--neon-green);
+            font-size: 2em;
+            margin: 10px 0;
+        }
+
+        .topic-statistics {
+            margin-top: 30px;
+        }
+
+        .topic-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .topic-stat {
+            background: rgba(0, 26, 0, 0.95);
+            border: 1px solid rgba(57, 255, 20, 0.2);
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .progress-bar {
+            background: rgba(57, 255, 20, 0.1);
+            border-radius: 4px;
+            height: 8px;
+            margin-top: 10px;
+        }
+
+        .progress {
+            background: var(--neon-green);
+            border-radius: 4px;
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+
+        .achievement-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(57, 255, 20, 0.1);
+            border: 1px solid var(--neon-green);
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            animation: slideIn 0.3s ease;
+            z-index: 1000;
+        }
+
+        .achievement-icon {
+            font-size: 2em;
+        }
+
+        .weekly-progress {
+            padding: 20px;
+        }
+
+        .progress-graph {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            height: 200px;
+            margin: 20px 0;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(57, 255, 20, 0.2);
+        }
+
+        .daily-progress {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .progress-bar-vertical {
+            width: 30px;
+            height: 150px;
+            background: rgba(57, 255, 20, 0.1);
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .progress-bar-vertical .progress {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background: var(--neon-green);
+            border-radius: 4px;
+            transition: height 0.3s ease;
+        }
+
+        .badges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .badge-card {
+            background: rgba(0, 26, 0, 0.95);
+            border: 1px solid rgba(57, 255, 20, 0.2);
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .badge-icon {
+            font-size: 2em;
+        }
+
+        .badge-info h4 {
+            color: var(--neon-green);
+            margin: 0;
+        }
+
+        .badge-info p {
+            font-size: 0.9em;
+            margin: 5px 0 0 0;
+            opacity: 0.8;
+        }
+
+        .learning-recommendations {
+            padding: 20px;
+        }
+
+        .recommendations-section {
+            margin: 30px 0;
+        }
+
+        .recommendations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .recommendation-item {
+            background: rgba(0, 26, 0, 0.95);
+            border: 1px solid rgba(57, 255, 20, 0.2);
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .recommendation-item.weak {
+            border-color: #ff6347;
+        }
+
+        .recommendation-item.strength {
+            border-color: var(--neon-green);
+        }
+
+        .recommendation-item h4 {
+            color: var(--neon-green);
+            margin: 0 0 10px 0;
+        }
+
+        .practice-button {
+            margin-top: 10px;
+            background: rgba(57, 255, 20, 0.2);
+            color: var(--neon-green);
+        }
+
+        .practice-button:hover {
+            background: rgba(57, 255, 20, 0.3);
+        }
+
+        .study-schedule {
+            padding: 20px;
+        }
+
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .schedule-day {
+            background: rgba(0, 26, 0, 0.95);
+            border: 1px solid rgba(57, 255, 20, 0.2);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .schedule-day.today {
+            border-color: var(--neon-green);
+            box-shadow: 0 0 10px rgba(57, 255, 20, 0.2);
+        }
+
+        .schedule-day.completed {
+            border-color: var(--neon-green);
+            opacity: 0.8;
+        }
+
+        .schedule-day.rest {
+            opacity: 0.6;
+        }
+
+        .topics-list {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .topic-tag {
+            background: rgba(57, 255, 20, 0.1);
+            border: 1px solid var(--neon-green);
+            border-radius: 4px;
+            padding: 2px 6px;
+            font-size: 0.8em;
+        }
+
+        .schedule-settings {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(0, 26, 0, 0.95);
+            border: 1px solid rgba(57, 255, 20, 0.2);
+            border-radius: 8px;
+        }
+
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .setting-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .setting-item input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--neon-green);
+            border-radius: 4px;
+            padding: 8px;
+            color: var(--text-color);
+        }
+
+        .next-session {
+            background: rgba(0, 26, 0, 0.95);
+            border: 1px solid var(--neon-green);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .start-session-btn {
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .in-app-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--neon-green);
+            border-radius: 8px;
+            padding: 15px;
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+            max-width: 300px;
+        }
+
+        .in-app-notification.success {
+            border-color: var(--neon-green);
+        }
+
+        .in-app-notification.warning {
+            border-color: #ffd700;
+        }
+
+        .notification-content {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .notification-message {
+            flex: 1;
+            color: var(--text-color);
+        }
+
+        .close-notification {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            padding: 0 5px;
+            font-size: 1.2em;
+        }
+
+        .close-notification:hover {
+            color: var(--neon-green);
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--neon-green);
+            border-radius: 8px;
+            padding: 15px;
+            z-index: 1000;
+            min-width: 300px;
+            max-width: 400px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .notification.achievement {
+            border-color: #ffd700;
+            background: linear-gradient(45deg, var(--card-bg), rgba(255, 215, 0, 0.1));
+        }
+
+        .notification.streak {
+            border-color: #ff4d4d;
+            background: linear-gradient(45deg, var(--card-bg), rgba(255, 77, 77, 0.1));
+        }
+
+        .notification-content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .notification-icon {
+            font-size: 2em;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .notification-text {
+            flex: 1;
+        }
+
+        .notification-text h4 {
+            color: var(--neon-green);
+            margin: 0 0 5px 0;
+        }
+
+        .notification-text p {
+            margin: 0;
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        .notification-history {
+            padding: 20px;
+        }
+
+        .history-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .notifications-container {
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .notification-group {
+            margin-bottom: 30px;
+        }
+
+        .notification-group h3 {
+            color: var(--neon-green);
+            border-bottom: 1px solid rgba(57, 255, 20, 0.2);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .notification-history-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 15px;
+            margin: 10px 0;
+            background: rgba(0, 26, 0, 0.95);
+            border: 1px solid rgba(57, 255, 20, 0.2);
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .notification-history-item:hover {
+            background: rgba(57, 255, 20, 0.05);
+        }
+
+        .notification-history-item.achievement {
+            border-color: #ffd700;
+        }
+
+        .notification-history-item.streak {
+            border-color: #ff4d4d;
+        }
+
+        .notification-history-item.progress {
+            border-color: #4CAF50;
+        }
+
+        .notification-history-item.mastery {
+            border-color: #9C27B0;
+        }
+
+        .notification-history-item.reminder {
+            border-color: #2196F3;
+        }
+
+        .notification-icon {
+            font-size: 1.5em;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .no-notifications {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            padding: 40px;
+        }
+
+        .notification-content small {
+            display: block;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 5px;
+        }
+
+        .notification-styles {
+            border-color: #9C27B0;
+            background: linear-gradient(45deg, var(--card-bg), rgba(156, 39, 176, 0.1));
+        }
+
+        .summary-styles {
+            border-color: #2196F3;
+            background: linear-gradient(45deg, var(--card-bg), rgba(33, 150, 243, 0.1));
+        }
+
+        .level-up-styles {
+            border-color: #FFC107;
+            background: linear-gradient(45deg, var(--card-bg), rgba(255, 193, 7, 0.1));
+        }
+
+        .consistency-styles {
+            border-color: #FF5722;
+            background: linear-gradient(45deg, var(--card-bg), rgba(255, 87, 34, 0.1));
+        }
+
+        // Add to the existing styles
+        const additionalStyles = `
+            .notification-history-item.milestone {
+                border-color: #9C27B0;
+            }
+
+            .notification-history-item.summary {
+                border-color: #2196F3;
+            }
+
+            .notification-history-item.level-up {
+                border-color: #FFC107;
+            }
+
+            .notification-history-item.consistency {
+                border-color: #FF5722;
+            }
+
+            .search-box {
+                flex: 1;
+                margin-right: 10px;
+            }
+
+            .search-box input {
+                width: 100%;
+                padding: 8px;
+                border: 1px solid var(--neon-green);
+                border-radius: 4px;
+                background: rgba(255, 255, 255, 0.05);
+                color: var(--text-color);
+            }
+
+            .filter-controls select {
+                padding: 8px;
+                border: 1px solid var(--neon-green);
+                border-radius: 4px;
+                background: rgba(255, 255, 255, 0.05);
+                color: var(--text-color);
+                margin-right: 10px;
+            }
+
+            .filter-controls select option {
+                background: var(--dark-bg);
+            }
+        `;
+
+        .notification-preferences {
+            padding: 20px;
+        }
+
+        .preferences-section {
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(0, 26, 0, 0.95);
+            border: 1px solid rgba(57, 255, 20, 0.2);
+            border-radius: 8px;
+        }
+
+        .preferences-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .preference-item {
+            padding: 15px;
+            border: 1px solid rgba(57, 255, 20, 0.2);
+            border-radius: 6px;
+        }
+
+        .preference-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .preference-settings {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toggle-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin: 15px 0;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .analytics-dashboard {
+            padding: 20px;
+        }
+
+        .analytics-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .overview-card {
+            background: rgba(0, 26, 0, 0.95);
+            border: 1px solid rgba(57, 255, 20, 0.2);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .overview-card .stat-value {
+            color: var(--neon-green);
+            font-size: 2em;
+            margin: 10px 0;
+        }
+
+        .analytics-section {
+            margin: 30px 0;
+        }
+
+        .type-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .analytics-card {
+            background: rgba(0, 26, 0, 0.95);
+            border: 1px solid rgba(57, 255, 20, 0.2);
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .analytics-stats {
+            margin-top: 10px;
+        }
+
+        .time-distribution, .weekday-distribution {
+            height: 200px;
+            display: flex;
+            align-items: flex-end;
+            gap: 5px;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(57, 255, 20, 0.2);
+        }
+
+        .time-bar, .weekday-bar {
+            flex: 1;
+            background: rgba(57, 255, 20, 0.2);
+            position: relative;
+            min-width: 30px;
+            transition: height 0.3s ease;
+        }
+
+        .time-label, .weekday-label {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8em;
+            white-space: nowrap;
+        }
+
+        .custom-report {
+            padding: 20px;
+        }
+
+        .report-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(0, 26, 0, 0.95);
+            border: 1px solid rgba(57, 255, 20, 0.2);
+            border-radius: 8px;
+        }
+
+        .date-range {
+            display: flex;
+            gap: 20px;
+        }
+
+        .date-range label {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .date-range input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--neon-green);
+            border-radius: 4px;
+            padding: 8px;
+            color: var(--text-color);
+        }
+
+        .export-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .import-button {
+            background: rgba(57, 255, 20, 0.2);
+            color: var(--neon-green);
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .import-button:hover {
+            background: rgba(57, 255, 20, 0.3);
+        }
+
+        .report-content {
+            margin-top: 20px;
+        }
+
+        .report-section {
+            background: rgba(0, 26, 0, 0.95);
+            border: 1px solid rgba(57, 255, 20, 0.2);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .report-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .summary-card {
+            background: rgba(57, 255, 20, 0.1);
+            border: 1px solid var(--neon-green);
+            border-radius: 6px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .report-detail {
+            margin: 20px 0;
+        }
+
+        .report-detail ul {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0;
+        }
+
+        .report-detail li {
+            padding: 8px;
+            border-bottom: 1px solid rgba(57, 255, 20, 0.1);
+        }
+
+        .share-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .share-content {
+            background: var(--card-bg);
+            border: 1px solid var(--neon-green);
+            border-radius: 8px;
+            padding: 20px;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        .share-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .comparison-report {
+            padding: 20px;
+        }
+
+        .report-selection {
+            display: flex;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .report-picker {
+            flex: 1;
+            background: rgba(0, 26, 0, 0.95);
+            border: 1px solid rgba(57, 255, 20, 0.2);
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .report-picker select {
+            width: 100%;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--neon-green);
+            border-radius: 4px;
+            color: var(--text-color);
+            margin-top: 10px;
+        }
+
+        .comparison-results {
+            margin-top: 20px;
+            background: rgba(0, 26, 0, 0.95);
+            border: 1px solid rgba(57, 255, 20, 0.2);
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .trend-improved {
+            color: var(--neon-green);
+        }
+
+        .trend-declined {
+            color: #ff6347;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>French Grammar Trainer</h1>
+        <p style="text-align: center; color: var(--neon-green); margin-bottom: 2rem;">
+            Choose your level to start practicing French grammar!
+        </p>
+        <div id="quiz-content">
+            <!-- Content will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <script>
+        const quizLevels = {
+            basic: [
+                {
+                    topic: "Articles",
+                    prompt: "Choose the correct article: ___ livre est sur la table.",
+                    answer: "le",
+                    explanation: "Use 'le' for masculine singular nouns. 'Livre' (book) is masculine.",
+                    example: "Le livre est intéressant. (The book is interesting.)"
+                },
+                {
+                    topic: "Gender Agreement",
+                    prompt: "Make this adjective agree: Cette fille est _____ (intelligent).",
+                    answer: "intelligente",
+                    explanation: "Add 'e' to adjectives when describing feminine nouns.",
+                    example: "Marie est intelligente. (Marie is intelligent.)"
+                },
+                {
+                    topic: "Prepositions",
+                    prompt: "Fill in: Je vais _____ Paris.",
+                    answer: "à",
+                    explanation: "Use 'à' for going to cities.",
+                    example: "Je vais à Londres. (I'm going to London.)"
+                },
+                {
+                    topic: "Possessive Adjectives",
+                    prompt: "Complete: ____ père est médecin. (my, masculine)",
+                    answer: "mon",
+                    explanation: "Use 'mon' for masculine singular possessions.",
+                    example: "Mon frère est grand. (My brother is tall.)"
+                },
+                {
+                    topic: "Numbers Agreement",
+                    prompt: "Make plural: Le chat noir → Les chats _____",
+                    answer: "noirs",
+                    explanation: "Add 's' to both noun and adjective in plural form.",
+                    example: "Les chats noirs dorment. (The black cats are sleeping.)"
+                },
+                {
+                    topic: "Partitive Articles",
+                    prompt: "Fill in: Je mange _____ pain.",
+                    answer: "du",
+                    explanation: "Use 'du' (de + le) for masculine singular nouns when expressing a quantity",
+                    example: "Je bois du lait. (I drink some milk.)"
+                },
+                {
+                    topic: "Demonstrative Adjectives",
+                    prompt: "Complete: _____ table est grande. (this/feminine)",
+                    answer: "cette",
+                    explanation: "Use 'cette' for feminine singular nouns",
+                    example: "Cette maison est belle. (This house is beautiful.)"
+                },
+                {
+                    topic: "Adjective Agreement",
+                    prompt: "Make feminine: un garçon _____ (heureux)",
+                    answer: "heureuse",
+                    explanation: "Adjectives ending in -eux become -euse in feminine form",
+                    example: "Elle est heureuse de te voir. (She is happy to see you.)"
+                },
+                {
+                    topic: "Basic Negation",
+                    prompt: "Make negative: Je suis content → Je _____ suis _____ content",
+                    answer: "ne pas",
+                    explanation: "Basic negation uses 'ne...pas' around the conjugated verb",
+                    example: "Je ne mange pas de viande. (I don't eat meat.)"
+                },
+                {
+                    verb: "Danser (to dance)",
+                    tense: "present tense",
+                    prompt: "Conjugate for 'nous' (we)",
+                    answer: "nous dansons",
+                    explanation: "Regular -er verb, 'nous' form ends in 'ons'"
+                },
+                {
+                    verb: "Chanter (to sing)",
+                    tense: "present tense",
+                    prompt: "Conjugate for 'vous' (you plural)",
+                    answer: "vous chantez",
+                    explanation: "Regular -er verb, 'vous' form ends in 'ez'"
+                },
+                {
+                    verb: "Regarder (to watch)",
+                    tense: "present tense",
+                    prompt: "Conjugate for 'ils/elles' (they)",
+                    answer: "ils regardent",
+                    explanation: "Regular -er verb, 'ils/elles' form ends in 'ent'"
+                },
+                {
+                    verb: "Écouter (to listen)",
+                    tense: "present tense",
+                    prompt: "Conjugate for 'je' (I)",
+                    answer: "j'écoute",
+                    explanation: "Regular -er verb with vowel, requires elision"
+                },
+                {
+                    verb: "Habiter (to live)",
+                    tense: "present tense",
+                    prompt: "Conjugate for 'tu' (you)",
+                    answer: "tu habites",
+                    explanation: "Regular -er verb, 'tu' form ends in 'es'"
+                }
+            ],
+            intermediate: [
+                {
+                    topic: "Relative Pronouns",
+                    prompt: "Choose: C'est le livre _____ j'ai lu hier. (que/qui)",
+                    answer: "que",
+                    explanation: "Use 'que' when the relative pronoun is the object of the relative clause.",
+                    example: "C'est le film que j'aime. (It's the movie that I like.)"
+                },
+                {
+                    topic: "Demonstrative Pronouns",
+                    prompt: "Complete: Je préfère _____ de droite. (celui/celle)",
+                    answer: "celui",
+                    explanation: "Use 'celui' for masculine singular objects being pointed out.",
+                    example: "Celui-ci est meilleur. (This one is better.)"
+                },
+                {
+                    topic: "Past Participle Agreement",
+                    prompt: "Agreement: Les lettres que j'ai _____ (écrire)",
+                    answer: "écrites",
+                    explanation: "Past participle agrees with preceding direct object 'lettres' (feminine plural).",
+                    example: "Les pommes que j'ai mangées. (The apples that I ate.)"
+                },
+                {
+                    topic: "Relative Pronouns",
+                    prompt: "Choose: La fille _____ parle français. (who)",
+                    answer: "qui",
+                    explanation: "Use 'qui' when the relative pronoun is the subject of the relative clause",
+                    example: "L'homme qui court est mon père. (The man who is running is my father.)"
+                },
+                {
+                    topic: "Object Pronouns",
+                    prompt: "Replace noun: Je donne le livre à Marie → Je _____ donne le livre.",
+                    answer: "lui",
+                    explanation: "Use 'lui' for indirect objects (to him/her)",
+                    example: "Je lui parle souvent. (I often speak to him/her.)"
+                },
+                {
+                    topic: "Possessive Pronouns",
+                    prompt: "Complete: Ce livre est _____ (mine).",
+                    answer: "le mien",
+                    explanation: "Use 'le mien' for masculine singular possessive pronouns",
+                    example: "Son chat est noir, le mien est blanc. (His cat is black, mine is white.)"
+                },
+                {
+                    verb: "Réfléchir (to think)",
+                    tense: "imparfait",
+                    prompt: "Conjugate for 'je' (I)",
+                    answer: "je réfléchissais",
+                    explanation: "In imparfait, -ir verbs add 'iss' before endings"
+                },
+                {
+                    verb: "Attendre (to wait)",
+                    tense: "passé composé",
+                    prompt: "Conjugate for 'nous' (we)",
+                    answer: "nous avons attendu",
+                    explanation: "Regular -re verb in passé composé"
+                },
+                {
+                    verb: "Partir (to leave)",
+                    tense: "future simple",
+                    prompt: "Conjugate for 'vous' (you)",
+                    answer: "vous partirez",
+                    explanation: "Future simple uses infinitive + endings"
+                },
+                {
+                    verb: "Voir (to see)",
+                    tense: "imparfait",
+                    prompt: "Conjugate for 'tu' (you)",
+                    answer: "tu voyais",
+                    explanation: "Irregular verb in imparfait"
+                },
+                {
+                    verb: "Boire (to drink)",
+                    tense: "passé composé",
+                    prompt: "Conjugate for 'ils' (they)",
+                    answer: "ils ont bu",
+                    explanation: "Irregular past participle 'bu'"
+                }
+            ],
+            advanced: [
+                {
+                    topic: "Subjunctive Mood",
+                    prompt: "Complete: Il faut que tu _____ (faire) tes devoirs.",
+                    answer: "fasses",
+                    explanation: "After 'il faut que', use subjunctive. 'Faire' becomes 'fasses' in subjunctive.",
+                    example: "Il faut que nous soyons patients. (We must be patient.)"
+                },
+                {
+                    topic: "Conditional Perfect",
+                    prompt: "Transform: Si j'avais su, je _____ (venir).",
+                    answer: "serais venu",
+                    explanation: "In conditional perfect, use conditional of être/avoir + past participle.",
+                    example: "Si j'avais su, je serais resté. (If I had known, I would have stayed.)"
+                },
+                {
+                    topic: "Complex Negation",
+                    prompt: "Make negative: J'ai vu quelqu'un → Je n'ai vu _____",
+                    answer: "personne",
+                    explanation: "Replace indefinite pronouns with their negative counterparts.",
+                    example: "Je n'ai rien mangé. (I didn't eat anything.)"
+                },
+                {
+                    topic: "Subjunctive Triggers",
+                    prompt: "Complete: Je veux que tu _____ (prendre) ton temps.",
+                    answer: "prennes",
+                    explanation: "After 'vouloir que', use subjunctive. 'Prendre' becomes 'prennes'",
+                    example: "Il faut que tu viennes maintenant. (You must come now.)"
+                },
+                {
+                    topic: "Double Pronouns",
+                    prompt: "Replace nouns: Je donne le livre à Marie → Je _____ _____ donne.",
+                    answer: "le lui",
+                    explanation: "With double pronouns, direct object comes before indirect object",
+                    example: "Je le lui ai donné. (I gave it to him/her.)"
+                },
+                {
+                    topic: "Gerund",
+                    prompt: "Form gerund: Il parle _____ marchant. (while walking)",
+                    answer: "en",
+                    explanation: "French gerund uses 'en' + present participle",
+                    example: "Elle écoute de la musique en travaillant. (She listens to music while working.)"
+                },
+                {
+                    verb: "Mourir (to die)",
+                    tense: "subjunctive present",
+                    prompt: "Conjugate for 'que je' (that I)",
+                    answer: "que je meure",
+                    explanation: "Irregular subjunctive stem"
+                },
+                {
+                    verb: "Savoir (to know)",
+                    tense: "conditional past",
+                    prompt: "Conjugate for 'vous' (you)",
+                    answer: "vous auriez su",
+                    explanation: "Conditional past with irregular past participle"
+                },
+                {
+                    verb: "Venir (to come)",
+                    tense: "plus-que-parfait",
+                    prompt: "Conjugate for 'elle' (she)",
+                    answer: "elle était venue",
+                    explanation: "Plus-que-parfait with être auxiliary"
+                },
+                {
+                    verb: "Plaire (to please)",
+                    tense: "subjunctive past",
+                    prompt: "Conjugate for 'qu'ils' (that they)",
+                    answer: "qu'ils aient plu",
+                    explanation: "Past subjunctive with irregular past participle"
+                },
+                {
+                    verb: "Résoudre (to resolve)",
+                    tense: "conditional present",
+                    prompt: "Conjugate for 'nous' (we)",
+                    answer: "nous résoudrions",
+                    explanation: "Conditional of irregular -re verb"
+                }
+            ]
+        };
+
+        const userProgress = {
+            basic: { highScore: 0, completed: false },
+            intermediate: { highScore: 0, completed: false },
+            advanced: { highScore: 0, completed: false }
+        };
+
+        let currentLevel = null;
+        let currentQuestion = 0;
+        let score = 0;
+        let missedQuestions = [];
+
+        // Add statistics tracking system
+        const statistics = {
+            totalAnswered: 0,
+            correctAnswers: 0,
+            streakDays: 0,
+            lastPracticeDate: null,
+            dailyGoal: 10,
+            dailyProgress: 0,
+            topicStats: {},
+            
+            initialize() {
+                const saved = localStorage.getItem('grammarStats');
+                if (saved) {
+                    const stats = JSON.parse(saved);
+                    Object.assign(this, stats);
+                }
+                this.checkStreak();
+            },
+            
+            update(topic, isCorrect) {
+                this.totalAnswered++;
+                if (isCorrect) this.correctAnswers++;
+                
+                // Update topic statistics
+                if (!this.topicStats[topic]) {
+                    this.topicStats[topic] = { attempts: 0, correct: 0 };
+                }
+                this.topicStats[topic].attempts++;
+                if (isCorrect) this.topicStats[topic].correct++;
+                
+                // Update daily progress
+                const today = new Date().toDateString();
+                if (this.lastPracticeDate !== today) {
+                    this.dailyProgress = 0;
+                    this.lastPracticeDate = today;
+                }
+                this.dailyProgress++;
+                
+                this.save();
+            },
+            
+            checkStreak() {
+                const today = new Date().toDateString();
+                if (this.lastPracticeDate !== today && 
+                    this.lastPracticeDate !== new Date(Date.now() - 86400000).toDateString()) {
+                    this.streakDays = 0;
+                }
+            },
+            
+            save() {
+                localStorage.setItem('grammarStats', JSON.stringify(this));
+            }
+        };
+
+        // Add achievement and weekly progress tracking system
+        const achievements = {
+            badges: {
+                perfectScore: {
+                    id: 'perfectScore',
+                    name: 'Perfect Score',
+                    description: 'Score 100% on any level',
+                    icon: '🏆',
+                    earned: false
+                },
+                streakMaster: {
+                    id: 'streakMaster',
+                    name: 'Streak Master',
+                    description: 'Maintain a 7-day practice streak',
+                    icon: '🔥',
+                    earned: false
+                },
+                grammarExpert: {
+                    id: 'grammarExpert',
+                    name: 'Grammar Expert',
+                    description: 'Complete all levels with at least 80% accuracy',
+                    icon: '📚',
+                    earned: false
+                },
+                quickLearner: {
+                    id: 'quickLearner',
+                    name: 'Quick Learner',
+                    description: 'Answer 10 questions correctly in under 2 minutes',
+                    icon: '⚡',
+                    earned: false
+                },
+                practiceChampion: {
+                    id: 'practiceChampion',
+                    name: 'Practice Champion',
+                    description: 'Reach your daily goal for 5 consecutive days',
+                    icon: '👑',
+                    earned: false
+                }
+            },
+
+            weeklyProgress: {
+                questions: Array(7).fill(0),
+                accuracy: Array(7).fill(0),
+                dates: Array(7).fill(''),
+                lastUpdate: null
+            },
+
+            initialize() {
+                const saved = localStorage.getItem('grammarAchievements');
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    this.badges = {...this.badges, ...data.badges};
+                    this.weeklyProgress = {...this.weeklyProgress, ...data.weeklyProgress};
+                }
+                this.updateWeeklyProgress();
+            },
+
+            checkAchievements(stats) {
+                // Check for perfect score
+                if (stats.score === stats.total && !this.badges.perfectScore.earned) {
+                    this.badges.perfectScore.earned = true;
+                    notificationSystem.showAchievementNotification(this.badges.perfectScore);
+                }
+
+                // Check for streak master
+                if (statistics.streakDays >= 7 && !this.badges.streakMaster.earned) {
+                    this.badges.streakMaster.earned = true;
+                    notificationSystem.showAchievementNotification(this.badges.streakMaster);
+                }
+
+                // Check for streak milestones
+                if (statistics.streakDays > 0 && statistics.streakDays % 5 === 0) {
+                    notificationSystem.showStreakNotification(statistics.streakDays);
+                }
+
+                // Check for grammar expert
+                const allLevelsCompleted = Object.values(userProgress).every(
+                    level => level.highScore >= 80
+                );
+                if (allLevelsCompleted && !this.badges.grammarExpert.earned) {
+                    this.badges.grammarExpert.earned = true;
+                    notificationSystem.showAchievementNotification(this.badges.grammarExpert);
+                }
+
+                this.save();
+            },
+
+            updateWeeklyProgress() {
+                const today = new Date().toDateString();
+                if (this.weeklyProgress.lastUpdate !== today) {
+                    // Shift arrays to make room for new day
+                    this.weeklyProgress.questions.shift();
+                    this.weeklyProgress.accuracy.shift();
+                    this.weeklyProgress.dates.shift();
+
+                    // Add new day
+                    this.weeklyProgress.questions.push(0);
+                    this.weeklyProgress.accuracy.push(0);
+                    this.weeklyProgress.dates.push(today);
+                    this.weeklyProgress.lastUpdate = today;
+                }
+            },
+
+            showAchievementNotification(badge) {
+                const notification = document.createElement('div');
+                notification.className = 'achievement-notification';
+                notification.innerHTML = `
+                    <div class="achievement-icon">${badge.icon}</div>
+                    <div class="achievement-details">
+                        <h3>${badge.name}</h3>
+                        <p>${badge.description}</p>
+                    </div>
+                `;
+                document.body.appendChild(notification);
+                setTimeout(() => notification.remove(), 3000);
+            },
+
+            save() {
+                localStorage.setItem('grammarAchievements', JSON.stringify({
+                    badges: this.badges,
+                    weeklyProgress: this.weeklyProgress
+                }));
+            }
+        };
+
+        // Add learning path recommendation system
+        const learningPath = {
+            recommendations: {
+                topics: {},
+                nextSteps: [],
+                weakPoints: [],
+                strengths: []
+            },
+
+            initialize() {
+                const saved = localStorage.getItem('grammarLearningPath');
+                if (saved) {
+                    this.recommendations = JSON.parse(saved);
+                }
+            },
+
+            updateRecommendations() {
+                // Analyze topic performance
+                Object.entries(statistics.topicStats).forEach(([topic, stats]) => {
+                    const accuracy = stats.attempts > 0 ? (stats.correct / stats.attempts) * 100 : 0;
+                    this.recommendations.topics[topic] = {
+                        accuracy,
+                        needsPractice: accuracy < 70,
+                        mastered: accuracy >= 90,
+                        attempts: stats.attempts
+                    };
+                });
+
+                // Identify weak points (topics with < 70% accuracy)
+                this.recommendations.weakPoints = Object.entries(this.recommendations.topics)
+                    .filter(([_, stats]) => stats.needsPractice)
+                    .map(([topic, _]) => topic);
+
+                // Identify strengths (topics with >= 90% accuracy)
+                this.recommendations.strengths = Object.entries(this.recommendations.topics)
+                    .filter(([_, stats]) => stats.mastered)
+                    .map(([topic, _]) => topic);
+
+                // Generate next steps recommendations
+                this.generateNextSteps();
+                
+                this.save();
+            },
+
+            generateNextSteps() {
+                this.recommendations.nextSteps = [];
+                
+                // Recommend reviewing weak topics first
+                this.recommendations.weakPoints.forEach(topic => {
+                    this.recommendations.nextSteps.push({
+                        type: 'review',
+                        topic: topic,
+                        priority: 'high',
+                        message: `Review ${topic} - needs improvement`
+                    });
+                });
+
+                // Recommend new topics based on prerequisites
+                const topicPrerequisites = {
+                    'Subjunctive Mood': ['Basic Negation', 'Relative Pronouns'],
+                    'Complex Negation': ['Basic Negation'],
+                    'Double Pronouns': ['Object Pronouns'],
+                    'Past Participle Agreement': ['Gender Agreement', 'Numbers Agreement']
+                };
+
+                Object.entries(topicPrerequisites).forEach(([topic, prerequisites]) => {
+                    const readyToLearn = prerequisites.every(prereq => 
+                        this.recommendations.topics[prereq]?.mastered
+                    );
+                    
+                    if (readyToLearn && !this.recommendations.topics[topic]?.mastered) {
+                        this.recommendations.nextSteps.push({
+                            type: 'new',
+                            topic: topic,
+                            priority: 'medium',
+                            message: `Ready to learn ${topic}`
+                        });
+                    }
+                });
+            },
+
+            save() {
+                localStorage.setItem('grammarLearningPath', JSON.stringify(this.recommendations));
+            }
+        };
+
+        // Add study schedule system
+        const studySchedule = {
+            settings: {
+                weeklyGoal: 5, // days per week
+                dailyTimeGoal: 20, // minutes
+                preferredTime: '18:00', // 24-hour format
+                reminders: true,
+                focusTopics: []
+            },
+
+            schedule: {
+                planned: [],
+                completed: [],
+                nextSession: null
+            },
+
+            initialize() {
+                const saved = localStorage.getItem('grammarStudySchedule');
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    this.settings = {...this.settings, ...data.settings};
+                    this.schedule = {...this.schedule, ...data.schedule};
+                }
+                this.updateSchedule();
+            },
+
+            updateSchedule() {
+                const now = new Date();
+                const weekStart = new Date(now);
+                weekStart.setDate(now.getDate() - now.getDay());
+
+                // Generate schedule for the week
+                this.schedule.planned = Array(7).fill().map((_, i) => {
+                    const date = new Date(weekStart);
+                    date.setDate(weekStart.getDate() + i);
+                    return {
+                        date: date.toISOString().split('T')[0],
+                        planned: i < this.settings.weeklyGoal,
+                        completed: false,
+                        topics: this.getRecommendedTopics()
+                    };
+                });
+
+                // Set next session
+                this.schedule.nextSession = this.getNextSession();
+                
+                this.save();
+            },
+
+            getRecommendedTopics() {
+                // Prioritize weak points and user's focus topics
+                const topics = [
+                    ...learningPath.recommendations.weakPoints,
+                    ...this.settings.focusTopics
+                ].filter((topic, index, self) => self.indexOf(topic) === index);
+
+                return topics.slice(0, 3); // Return top 3 topics
+            },
+
+            getNextSession() {
+                const now = new Date();
+                const today = now.toISOString().split('T')[0];
+                const todaySchedule = this.schedule.planned.find(day => day.date === today);
+
+                if (todaySchedule && !todaySchedule.completed) {
+                    return {
+                        date: today,
+                        time: this.settings.preferredTime,
+                        topics: todaySchedule.topics
+                    };
+                }
+
+                // Find next planned day
+                const nextDay = this.schedule.planned.find(
+                    day => new Date(day.date) > now && day.planned && !day.completed
+                );
+
+                return nextDay ? {
+                    date: nextDay.date,
+                    time: this.settings.preferredTime,
+                    topics: nextDay.topics
+                } : null;
+            },
+
+            markSessionComplete() {
+                const today = new Date().toISOString().split('T')[0];
+                const todaySchedule = this.schedule.planned.find(day => day.date === today);
+                if (todaySchedule) {
+                    todaySchedule.completed = true;
+                    this.schedule.completed.push({
+                        date: today,
+                        topics: todaySchedule.topics,
+                        duration: this.settings.dailyTimeGoal
+                    });
+                }
+                this.save();
+            },
+
+            save() {
+                localStorage.setItem('grammarStudySchedule', JSON.stringify({
+                    settings: this.settings,
+                    schedule: this.schedule
+                }));
+            }
+        };
+
+        // Add notification system
+        const notificationSystem = {
+            initialize() {
+                // Check if browser supports notifications
+                if (!("Notification" in window)) {
+                    console.log("This browser does not support notifications");
+                    return;
+                }
+
+                // Request permission if not already granted
+                if (Notification.permission !== "granted" && Notification.permission !== "denied") {
+                    this.requestPermission();
+                }
+                this.analytics.initialize();
+            },
+
+            requestPermission() {
+                Notification.requestPermission().then(permission => {
+                    if (permission === "granted") {
+                        this.scheduleReminders();
+                    }
+                });
+            },
+
+            scheduleReminders() {
+                if (Notification.permission !== "granted" || !studySchedule.settings.reminders) {
+                    return;
+                }
+
+                // Clear existing reminders
+                if (this.reminderTimeout) {
+                    clearTimeout(this.reminderTimeout);
+                }
+
+                // Schedule next reminder
+                const nextSession = studySchedule.schedule.nextSession;
+                if (nextSession) {
+                    const now = new Date();
+                    const sessionTime = new Date(nextSession.date + 'T' + nextSession.time);
+                    
+                    // Set reminder 15 minutes before session
+                    const reminderTime = new Date(sessionTime.getTime() - 15 * 60000);
+                    
+                    if (reminderTime > now) {
+                        this.reminderTimeout = setTimeout(() => {
+                            this.showNotification(
+                                "Study Reminder",
+                                `Your French study session starts in 15 minutes! Topics: ${nextSession.topics.join(', ')}`
+                            );
+                        }, reminderTime - now);
+                    }
+                }
+            },
+
+            showNotification(title, body) {
+                if (Notification.permission === "granted") {
+                    const notification = new Notification(title, {
+                        body: body,
+                        icon: '/favicon.ico', // Add your favicon path
+                        badge: '/favicon.ico',
+                        vibrate: [200, 100, 200]
+                    });
+
+                    notification.onclick = () => {
+                        window.focus();
+                        notification.close();
+                        showStudySchedule();
+                    };
+                }
+            },
+
+            // Show in-app notification
+            showInAppNotification(message, type = 'info') {
+                const notification = document.createElement('div');
+                notification.className = `in-app-notification ${type}`;
+                notification.innerHTML = `
+                    <div class="notification-content">
+                        <span class="notification-message">${message}</span>
+                        <button class="close-notification" onclick="this.parentElement.parentElement.remove()">×</button>
+                    </div>
+                `;
+                document.body.appendChild(notification);
+
+                // Remove notification after 5 seconds
+                setTimeout(() => notification.remove(), 5000);
+            },
+
+            // Add sound effects for notifications
+            sounds: {
+                achievement: new Audio('data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4LjI5LjEwMAAAAAAAAAAAAAAA//tQwAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAASAAAhIAAABAYICgoMDg4QEhQUFhgYGhweHiAiIiQmJigqKiwuMDA0ODg8QEBCRERGTE5QVFZYXGBkZmhqbnJ2en6ChYWHiYmLjY2PkZGTlZWXmZudoaWprb'),
+                streak: new Audio('data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4LjI5LjEwMAAAAAAAAAAAAAAA//tQwAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAASAAAhIAAABAYICgoMDg4QEhQUFhgYGhweHiAiIiQmJigqKiwuMDA0ODg8QEBCRERGTE5QVFZYXGBkZmhqbnJ2en6ChYWHiYmLjY2PkZGTlZWXmZudoaWprb')
+            },
+
+            // Add notification queue to prevent overlap
+            notificationQueue: [],
+            isShowingNotification: false,
+
+            showAchievementNotification(achievement) {
+                this.queueNotification({
+                    type: 'achievement',
+                    title: `Achievement Unlocked: ${achievement.name}`,
+                    message: achievement.description,
+                    icon: achievement.icon,
+                    duration: 5000
+                });
+
+                // Play achievement sound
+                this.sounds.achievement.play().catch(e => console.log('Sound playback failed'));
+            },
+
+            showStreakNotification(days) {
+                this.queueNotification({
+                    type: 'streak',
+                    title: 'Streak Milestone!',
+                    message: `You've maintained your study streak for ${days} days! 🔥`,
+                    duration: 4000
+                });
+
+                // Play streak sound
+                this.sounds.streak.play().catch(e => console.log('Sound playback failed'));
+            },
+
+            queueNotification(notificationData) {
+                // Add timestamp and store in history
+                const notification = {
+                    ...notificationData,
+                    timestamp: new Date(),
+                    id: Date.now()
+                };
+                
+                // Add style information
+                if (this.notificationStyles[notificationData.type]) {
+                    notification.style = this.notificationStyles[notificationData.type];
+                }
+                
+                this.history.unshift(notification);
+                if (this.history.length > this.maxHistoryLength) {
+                    this.history.pop();
+                }
+                
+                this.saveHistory();
+                this.notificationQueue.push(notification);
+                
+                if (!this.isShowingNotification) {
+                    this.showNextNotification();
+                }
+                this.analytics.trackNotification(notificationData);
+            },
+
+            saveHistory() {
+                localStorage.setItem('notificationHistory', JSON.stringify(this.history));
+            },
+
+            loadHistory() {
+                const saved = localStorage.getItem('notificationHistory');
+                if (saved) {
+                    this.history = JSON.parse(saved);
+                }
+            },
+
+            clearHistory() {
+                this.history = [];
+                this.saveHistory();
+                notificationSystem.showInAppNotification('Notification history cleared', 'success');
+            },
+
+            showNextNotification() {
+                if (this.notificationQueue.length === 0) {
+                    this.isShowingNotification = false;
+                    return;
+                }
+
+                this.isShowingNotification = true;
+                const notification = this.notificationQueue.shift();
+                
+                const notificationElement = document.createElement('div');
+                notificationElement.className = `notification ${notification.type}`;
+                notificationElement.innerHTML = `
+                    <div class="notification-content">
+                        ${notification.icon ? `<div class="notification-icon">${notification.icon}</div>` : ''}
+                        <div class="notification-text">
+                            <h4>${notification.title}</h4>
+                            <p>${notification.message}</p>
+                        </div>
+                        <button class="close-notification" onclick="this.parentElement.parentElement.remove()">×</button>
+                    </div>
+                `;
+
+                document.body.appendChild(notificationElement);
+
+                // Add CSS animation
+                notificationElement.style.animation = 'slideIn 0.3s ease, fadeOut 0.3s ease forwards';
+                notificationElement.style.animationDelay = '0s, ${(notification.duration - 300)}ms';
+
+                setTimeout(() => {
+                    notificationElement.remove();
+                    this.showNextNotification();
+                }, notification.duration);
+            },
+
+            // Add new notification types
+            showDailyGoalNotification(progress, goal) {
+                this.queueNotification({
+                    type: 'progress',
+                    title: 'Daily Goal Progress',
+                    message: `You've completed ${progress}/${goal} questions today! ${progress >= goal ? '🎉 Goal achieved!' : 'Keep going!'}`,
+                    icon: '📊',
+                    duration: 4000
+                });
+            },
+
+            showTopicMasteryNotification(topic, accuracy) {
+                this.queueNotification({
+                    type: 'mastery',
+                    title: 'Topic Mastered!',
+                    message: `You've mastered ${topic} with ${accuracy}% accuracy! 🎓`,
+                    icon: '📚',
+                    duration: 5000
+                });
+            },
+
+            showStudyReminderNotification(nextTopic) {
+                this.queueNotification({
+                    type: 'reminder',
+                    title: 'Time to Study!',
+                    message: `Ready to practice ${nextTopic}? Your brain is waiting! 🧠`,
+                    icon: '⏰',
+                    duration: 6000
+                });
+            },
+
+            showLearningMilestoneNotification(milestone) {
+                this.queueNotification({
+                    type: 'milestone',
+                    title: 'Learning Milestone!',
+                    message: milestone,
+                    icon: '🎯',
+                    duration: 5000
+                });
+            },
+
+            showWeeklySummaryNotification(stats) {
+                this.queueNotification({
+                    type: 'summary',
+                    title: 'Weekly Progress Summary',
+                    message: `Questions: ${stats.questions}, Accuracy: ${stats.accuracy}%, Topics Mastered: ${stats.mastered}`,
+                    icon: '📊',
+                    duration: 6000
+                });
+            },
+
+            showLevelUpNotification(level, accuracy) {
+                this.queueNotification({
+                    type: 'level-up',
+                    title: 'Level Up!',
+                    message: `You've mastered ${level} with ${accuracy}% accuracy! Ready for the next challenge?`,
+                    icon: '⭐',
+                    duration: 5000
+                });
+            },
+
+            showConsistencyNotification(days) {
+                this.queueNotification({
+                    type: 'consistency',
+                    title: 'Consistency Bonus!',
+                    message: `You've practiced ${days} days in a row! Keep up the great work!`,
+                    icon: '🔥',
+                    duration: 4500
+                });
+            },
+
+            // Add CSS classes for new notification types
+            notificationStyles: {
+                milestone: {
+                    borderColor: '#9C27B0',
+                    background: 'linear-gradient(45deg, var(--card-bg), rgba(156, 39, 176, 0.1))'
+                },
+                summary: {
+                    borderColor: '#2196F3',
+                    background: 'linear-gradient(45deg, var(--card-bg), rgba(33, 150, 243, 0.1))'
+                },
+                'level-up': {
+                    borderColor: '#FFC107',
+                    background: 'linear-gradient(45deg, var(--card-bg), rgba(255, 193, 7, 0.1))'
+                },
+                consistency: {
+                    borderColor: '#FF5722',
+                    background: 'linear-gradient(45deg, var(--card-bg), rgba(255, 87, 34, 0.1))'
+                }
+            },
+
+            // Add notification filters
+            filterHistory(type) {
+                return this.history.filter(notification => notification.type === type);
+            },
+
+            // Add notification search
+            searchHistory(query) {
+                query = query.toLowerCase();
+                return this.history.filter(notification => 
+                    notification.title.toLowerCase().includes(query) ||
+                    notification.message.toLowerCase().includes(query)
+                );
+            },
+
+            preferences: {
+                types: {
+                    achievement: { enabled: true, duration: 5000, sound: true },
+                    streak: { enabled: true, duration: 4000, sound: true },
+                    progress: { enabled: true, duration: 4000, sound: false },
+                    mastery: { enabled: true, duration: 5000, sound: true },
+                    reminder: { enabled: true, duration: 6000, sound: true },
+                    milestone: { enabled: true, duration: 5000, sound: true },
+                    summary: { enabled: true, duration: 6000, sound: false },
+                    'level-up': { enabled: true, duration: 5000, sound: true },
+                    consistency: { enabled: true, duration: 4500, sound: true }
+                },
+                sounds: {
+                    achievement: 'success-1',
+                    streak: 'success-2',
+                    milestone: 'achievement',
+                    'level-up': 'level-up',
+                    consistency: 'streak'
+                },
+                volume: 0.5
+            },
+
+            soundEffects: {
+                'success-1': new Audio('data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4LjI5LjEwMAAAAAAAAAAAAAAA//tQwAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAASAAAhIAAABAYICgoMDg4QEhQUFhgYGhweHiAiIiQmJigqKiwuMDA0ODg8QEBCRERGTE5QVFZYXGBkZmhqbnJ2en6ChYWHiYmLjY2PkZGTlZWXmZudoaWprb'),
+                'success-2': new Audio('data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4LjI5LjEwMAAAAAAAAAAAAAAA//tQwAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAASAAAhIAAABAYICgoMDg4QEhQUFhgYGhweHiAiIiQmJigqKiwuMDA0ODg8QEBCRERGTE5QVFZYXGBkZmhqbnJ2en6ChYWHiYmLjY2PkZGTlZWXmZudoaWprb'),
+                'achievement': new Audio('data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4LjI5LjEwMAAAAAAAAAAAAAAA//tQwAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAASAAAhIAAABAYICgoMDg4QEhQUFhgYGhweHiAiIiQmJigqKiwuMDA0ODg8QEBCRERGTE5QVFZYXGBkZmhqbnJ2en6ChYWHiYmLjY2PkZGTlZWXmZudoaWprb'),
+                'level-up': new Audio('data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4LjI5LjEwMAAAAAAAAAAAAAAA//tQwAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAASAAAhIAAABAYICgoMDg4QEhQUFhgYGhweHiAiIiQmJigqKiwuMDA0ODg8QEBCRERGTE5QVFZYXGBkZmhqbnJ2en6ChYWHiYmLjY2PkZGTlZWXmZudoaWprb'),
+                'streak': new Audio('data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4LjI5LjEwMAAAAAAAAAAAAAAA//tQwAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAASAAAhIAAABAYICgoMDg4QEhQUFhgYGhweHiAiIiQmJigqKiwuMDA0ODg8QEBCRERGTE5QVFZYXGBkZmhqbnJ2en6ChYWHiYmLjY2PkZGTlZWXmZudoaWprb')
+            },
+
+            initialize() {
+                // ... existing initialization code ...
+                
+                // Load preferences from localStorage
+                const savedPreferences = localStorage.getItem('notificationPreferences');
+                if (savedPreferences) {
+                    this.preferences = JSON.parse(savedPreferences);
+                }
+                
+                // Initialize sound effects
+                Object.values(this.soundEffects).forEach(audio => {
+                    audio.volume = this.preferences.volume;
+                });
+            },
+
+            queueNotification(notificationData) {
+                const preferences = this.preferences.types[notificationData.type];
+                
+                // Check if this notification type is enabled
+                if (!preferences?.enabled) return;
+                
+                // Add preferences to notification data
+                notificationData.duration = preferences.duration;
+                
+                // ... existing queueNotification code ...
+                
+                // Play sound if enabled for this type
+                if (preferences.sound && this.preferences.sounds[notificationData.type]) {
+                    const soundEffect = this.soundEffects[this.preferences.sounds[notificationData.type]];
+                    soundEffect.play().catch(e => console.log('Sound playback failed'));
+                }
+            },
+
+            showPreferences() {
+                document.getElementById('quiz-content').innerHTML = `
+                    <div class="notification-preferences">
+                        <h2>Notification Preferences</h2>
+                        
+                        <div class="preferences-section">
+                            <h3>Notification Types</h3>
+                            <div class="preferences-grid">
+                                ${Object.entries(this.preferences.types).map(([type, settings]) => `
+                                    <div class="preference-item">
+                                        <div class="preference-header">
+                                            <label class="toggle-label">
+                                                <input type="checkbox" 
+                                                       ${settings.enabled ? 'checked' : ''} 
+                                                       onchange="notificationSystem.updatePreference('${type}', 'enabled', this.checked)">
+                                                ${type.charAt(0).toUpperCase() + type.slice(1)}
+                                            </label>
+                                        </div>
+                                        <div class="preference-settings">
+                                            <label>
+                                                Duration (ms):
+                                                <input type="number" 
+                                                       value="${settings.duration}" 
+                                                       min="1000" 
+                                                       max="10000" 
+                                                       step="500"
+                                                       onchange="notificationSystem.updatePreference('${type}', 'duration', this.value)">
+                                            </label>
+                                            <label>
+                                                <input type="checkbox" 
+                                                       ${settings.sound ? 'checked' : ''} 
+                                                       onchange="notificationSystem.updatePreference('${type}', 'sound', this.checked)">
+                                                Sound
+                                            </label>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                        
+                        <div class="preferences-section">
+                            <h3>Sound Settings</h3>
+                            <div class="volume-control">
+                                <label>
+                                    Volume:
+                                    <input type="range" 
+                                           min="0" 
+                                           max="1" 
+                                           step="0.1" 
+                                           value="${this.preferences.volume}"
+                                           onchange="notificationSystem.updateVolume(this.value)">
+                                </label>
+                                <button onclick="notificationSystem.previewSound('success-1')">
+                                    Test Sound
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="button-group">
+                            <button onclick="notificationSystem.resetPreferences()">
+                                Reset to Defaults
+                            </button>
+                            <button onclick="showLevelSelection()">
+                                Back to Menu
+                            </button>
+                        </div>
+                    </div>
+                `;
+            },
+
+            updatePreference(type, setting, value) {
+                this.preferences.types[type][setting] = value;
+                this.savePreferences();
+                this.showInAppNotification('Preferences updated', 'success');
+            },
+
+            updateVolume(value) {
+                this.preferences.volume = parseFloat(value);
+                Object.values(this.soundEffects).forEach(audio => {
+                    audio.volume = this.preferences.volume;
+                });
+                this.savePreferences();
+                this.showInAppNotification('Volume updated', 'success');
+            },
+
+            previewSound(soundId) {
+                this.soundEffects[soundId].play().catch(e => console.log('Sound playback failed'));
+            },
+
+            resetPreferences() {
+                // Reset to default values
+                this.preferences = {
+                    types: {
+                        achievement: { enabled: true, duration: 5000, sound: true },
+                        streak: { enabled: true, duration: 4000, sound: true },
+                        progress: { enabled: true, duration: 4000, sound: false },
+                        mastery: { enabled: true, duration: 5000, sound: true },
+                        reminder: { enabled: true, duration: 6000, sound: true },
+                        milestone: { enabled: true, duration: 5000, sound: true },
+                        summary: { enabled: true, duration: 6000, sound: false },
+                        'level-up': { enabled: true, duration: 5000, sound: true },
+                        consistency: { enabled: true, duration: 4500, sound: true }
+                    },
+                    sounds: {
+                        achievement: 'success-1',
+                        streak: 'success-2',
+                        milestone: 'achievement',
+                        'level-up': 'level-up',
+                        consistency: 'streak'
+                    },
+                    volume: 0.5
+                };
+                this.savePreferences();
+                this.showPreferences();
+                this.showInAppNotification('Preferences reset to defaults', 'success');
+            },
+
+            savePreferences() {
+                localStorage.setItem('notificationPreferences', JSON.stringify(this.preferences));
+            },
+
+            analytics: {
+                totalShown: 0,
+                byType: {},
+                interactionRates: {},
+                timeDistribution: Array(24).fill(0), // Hour-based distribution
+                weekdayDistribution: Array(7).fill(0),
+                
+                initialize() {
+                    const saved = localStorage.getItem('notificationAnalytics');
+                    if (saved) {
+                        Object.assign(this, JSON.parse(saved));
+                    }
+                },
+
+                trackNotification(notification, interacted = false) {
+                    this.totalShown++;
+                    
+                    // Track by type
+                    if (!this.byType[notification.type]) {
+                        this.byType[notification.type] = { shown: 0, interacted: 0 };
+                    }
+                    this.byType[notification.type].shown++;
+                    if (interacted) {
+                        this.byType[notification.type].interacted++;
+                    }
+
+                    // Track time distribution
+                    const hour = new Date().getHours();
+                    this.timeDistribution[hour]++;
+
+                    // Track weekday distribution
+                    const weekday = new Date().getDay();
+                    this.weekdayDistribution[weekday]++;
+
+                    // Calculate interaction rate
+                    this.interactionRates[notification.type] = 
+                        this.byType[notification.type].interacted / this.byType[notification.type].shown;
+
+                    this.save();
+                },
+
+                save() {
+                    localStorage.setItem('notificationAnalytics', JSON.stringify(this));
+                },
+
+                generateReport(startDate, endDate) {
+                    const start = new Date(startDate);
+                    const end = new Date(endDate);
+                    
+                    // Filter notifications within date range
+                    const relevantNotifications = this.history.filter(n => {
+                        const date = new Date(n.timestamp);
+                        return date >= start && date <= end;
+                    });
+
+                    return {
+                        period: {
+                            start: start.toLocaleDateString(),
+                            end: end.toLocaleDateString()
+                        },
+                        summary: {
+                            total: relevantNotifications.length,
+                            byType: this.calculateTypeDistribution(relevantNotifications),
+                            interactionRate: this.calculateInteractionRate(relevantNotifications),
+                            peakHours: this.calculatePeakHours(relevantNotifications),
+                            mostEffective: this.getMostEffectiveTypes(relevantNotifications)
+                        },
+                        trends: {
+                            daily: this.calculateDailyTrends(relevantNotifications),
+                            weekly: this.calculateWeeklyTrends(relevantNotifications)
+                        }
+                    };
+                },
+
+                calculateTypeDistribution(notifications) {
+                    const distribution = {};
+                    notifications.forEach(n => {
+                        distribution[n.type] = (distribution[n.type] || 0) + 1;
+                    });
+                    return distribution;
+                },
+
+                calculateInteractionRate(notifications) {
+                    const interacted = notifications.filter(n => n.interacted).length;
+                    return notifications.length > 0 ? 
+                        (interacted / notifications.length * 100).toFixed(1) : 0;
+                },
+
+                calculatePeakHours(notifications) {
+                    const hourCounts = Array(24).fill(0);
+                    notifications.forEach(n => {
+                        const hour = new Date(n.timestamp).getHours();
+                        hourCounts[hour]++;
+                    });
+                    
+                    // Return top 3 peak hours
+                    return hourCounts
+                        .map((count, hour) => ({ hour, count }))
+                        .sort((a, b) => b.count - a.count)
+                        .slice(0, 3)
+                        .map(({ hour, count }) => ({
+                            time: `${hour}:00`,
+                            count
+                        }));
+                },
+
+                getMostEffectiveTypes(notifications) {
+                    const typeStats = {};
+                    notifications.forEach(n => {
+                        if (!typeStats[n.type]) {
+                            typeStats[n.type] = { total: 0, interacted: 0 };
+                        }
+                        typeStats[n.type].total++;
+                        if (n.interacted) typeStats[n.type].interacted++;
+                    });
+
+                    return Object.entries(typeStats)
+                        .map(([type, stats]) => ({
+                            type,
+                            effectiveness: (stats.interacted / stats.total * 100).toFixed(1)
+                        }))
+                        .sort((a, b) => b.effectiveness - a.effectiveness)
+                        .slice(0, 3);
+                },
+
+                calculateDailyTrends(notifications) {
+                    const dailyCounts = {};
+                    notifications.forEach(n => {
+                        const date = new Date(n.timestamp).toLocaleDateString();
+                        dailyCounts[date] = (dailyCounts[date] || 0) + 1;
+                    });
+                    return dailyCounts;
+                },
+
+                calculateWeeklyTrends(notifications) {
+                    const weeklyCounts = Array(7).fill(0);
+                    notifications.forEach(n => {
+                        const day = new Date(n.timestamp).getDay();
+                        weeklyCounts[day]++;
+                    });
+                    return weeklyCounts;
+                },
+
+                exportData() {
+                    const exportData = {
+                        analytics: {
+                            totalShown: this.totalShown,
+                            byType: this.byType,
+                            interactionRates: this.interactionRates,
+                            timeDistribution: this.timeDistribution,
+                            weekdayDistribution: this.weekdayDistribution
+                        },
+                        history: notificationSystem.history,
+                        exportDate: new Date().toISOString()
+                    };
+
+                    const blob = new Blob([JSON.stringify(exportData, null, 2)], 
+                        { type: 'application/json' });
+                    const url = URL.createObjectURL(blob);
+                    
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `notification-analytics-${new Date().toISOString().split('T')[0]}.json`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                },
+
+                importData(file) {
+                    return new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            try {
+                                const importedData = JSON.parse(e.target.result);
+                                Object.assign(this, importedData.analytics);
+                                notificationSystem.history = importedData.history;
+                                this.save();
+                                resolve('Data imported successfully');
+                            } catch (error) {
+                                reject('Invalid file format');
+                            }
+                        };
+                        reader.onerror = () => reject('Error reading file');
+                        reader.readAsText(file);
+                    });
+                },
+
+                shareReport(report) {
+                    // Create a shareable link format
+                    const shareData = {
+                        title: 'Notification Analytics Report',
+                        text: `Analytics Report for ${report.period.start} - ${report.period.end}`,
+                        url: window.location.href,
+                        reportData: btoa(JSON.stringify(report)) // Base64 encode report data
+                    };
+
+                    // Check if Web Share API is available
+                    if (navigator.share) {
+                        navigator.share(shareData)
+                            .catch(err => {
+                                console.error('Error sharing:', err);
+                                this.showShareFallback(shareData);
+                            });
+                    } else {
+                        this.showShareFallback(shareData);
+                    }
+                },
+
+                showShareFallback(shareData) {
+                    const modal = document.createElement('div');
+                    modal.className = 'share-modal';
+                    modal.innerHTML = `
+                        <div class="share-content">
+                            <h3>Share Report</h3>
+                            <div class="share-options">
+                                <button onclick="notificationSystem.analytics.copyShareLink('${shareData.reportData}')">
+                                    Copy Share Link
+                                </button>
+                                <button onclick="notificationSystem.analytics.downloadReport('${shareData.reportData}')">
+                                    Download Report
+                                </button>
+                            </div>
+                            <button class="close-modal" onclick="this.parentElement.parentElement.remove()">
+                                Close
+                            </button>
+                        </div>
+                    `;
+                    document.body.appendChild(modal);
+                },
+
+                copyShareLink(reportData) {
+                    const shareUrl = `${window.location.origin}${window.location.pathname}?report=${reportData}`;
+                    navigator.clipboard.writeText(shareUrl)
+                        .then(() => {
+                            notificationSystem.showInAppNotification('Share link copied to clipboard!', 'success');
+                        })
+                        .catch(() => {
+                            notificationSystem.showInAppNotification('Failed to copy share link', 'error');
+                        });
+                },
+
+                downloadReport(reportData) {
+                    const report = JSON.parse(atob(reportData));
+                    const fileName = `analytics-report-${report.period.start}-to-${report.period.end}.json`;
+                    const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
+                    const url = URL.createObjectURL(blob);
+                    
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = fileName;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                },
+
+                compareReports(report1, report2) {
+                    return {
+                        periods: {
+                            report1: report1.period,
+                            report2: report2.period
+                        },
+                        comparison: {
+                            totalNotifications: {
+                                difference: report2.summary.total - report1.summary.total,
+                                percentageChange: ((report2.summary.total - report1.summary.total) / report1.summary.total * 100).toFixed(1)
+                            },
+                            interactionRate: {
+                                difference: (report2.summary.interactionRate - report1.summary.interactionRate).toFixed(1),
+                                trend: report2.summary.interactionRate > report1.summary.interactionRate ? 'improved' : 'declined'
+                            },
+                            typeDistribution: this.compareDistributions(
+                                report1.summary.byType,
+                                report2.summary.byType
+                            ),
+                            peakHours: {
+                                report1: report1.summary.peakHours,
+                                report2: report2.summary.peakHours,
+                                changes: this.comparePeakHours(
+                                    report1.summary.peakHours,
+                                    report2.summary.peakHours
+                                )
+                            }
+                        }
+                    };
+                },
+
+                compareDistributions(dist1, dist2) {
+                    const allTypes = [...new Set([...Object.keys(dist1), ...Object.keys(dist2)])];
+                    return allTypes.map(type => ({
+                        type,
+                        report1: dist1[type] || 0,
+                        report2: dist2[type] || 0,
+                        change: ((dist2[type] || 0) - (dist1[type] || 0))
+                    }));
+                },
+
+                comparePeakHours(peaks1, peaks2) {
+                    return peaks1.map(peak1 => {
+                        const matchingPeak2 = peaks2.find(p => p.time === peak1.time);
+                        return {
+                            time: peak1.time,
+                            report1Count: peak1.count,
+                            report2Count: matchingPeak2 ? matchingPeak2.count : 0,
+                            change: matchingPeak2 ? matchingPeak2.count - peak1.count : -peak1.count
+                        };
+                    });
+                }
+            },
+
+            showComparisonReport() {
+                const reports = this.analytics.getStoredReports();
+                document.getElementById('quiz-content').innerHTML = `
+                    <div class="comparison-report">
+                        <h2>Compare Reports</h2>
+                        
+                        <div class="report-selection">
+                            <div class="report-picker">
+                                <h3>Report 1</h3>
+                                <select id="report1Select">
+                                    ${reports.map(r => `
+                                        <option value="${r.id}">
+                                            ${r.period.start} - ${r.period.end}
+                                        </option>
+                                    `).join('')}
+                                </select>
+                            </div>
+                            
+                            <div class="report-picker">
+                                <h3>Report 2</h3>
+                                <select id="report2Select">
+                                    ${reports.map(r => `
+                                        <option value="${r.id}">
+                                            ${r.period.start} - ${r.period.end}
+                                        </option>
+                                    `).join('')}
+                                </select>
+                            </div>
+                        </div>
+
+                        <button onclick="notificationSystem.compareSelectedReports()">
+                            Compare Reports
+                        </button>
+                        
+                        <div id="comparisonResults" class="comparison-results"></div>
+                        
+                        <button onclick="notificationSystem.showCustomReport()">
+                            Back to Custom Report
+                        </button>
+                    </div>
+                `;
+            },
+
+            compareSelectedReports() {
+                const report1Id = document.getElementById('report1Select').value;
+                const report2Id = document.getElementById('report2Select').value;
+                
+                const report1 = this.analytics.getStoredReports().find(r => r.id === report1Id);
+                const report2 = this.analytics.getStoredReports().find(r => r.id === report2Id);
+                
+                const comparison = this.analytics.compareReports(report1, report2);
+                this.displayComparison(comparison);
+            }
+        };
+
+        // Add this right after the notificationSystem object definition
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize notification system
+            notificationSystem.initialize();
+            
+            // Add event listeners for notification controls
+            document.body.addEventListener('click', (e) => {
+                if (e.target.matches('.notification-settings-btn')) {
+                    notificationSystem.showNotificationSettings();
+                } else if (e.target.matches('.analytics-btn')) {
+                    notificationSystem.showAnalyticsDashboard();
+                } else if (e.target.matches('.custom-report-btn')) {
+                    notificationSystem.showCustomReport();
+                } else if (e.target.matches('.test-sound-btn')) {
+                    notificationSystem.playNotificationSound();
+                }
+            });
+        });
+
+        function showLevelSelection() {
+            loadProgress();
+            updateDifficultyProgression();
+            
+            const content = `
+                <div class="level-selection">
+                    ${Object.entries(quizLevels).map(([level, questions]) => `
+                        <div class="level-card" onclick="startQuiz('${level}')">
+                            <h2>${level.charAt(0).toUpperCase() + level.slice(1)}</h2>
+                            <p>${getLevelDescription(level)}</p>
+                            ${userProgress[level].completed ? '<span class="completed">✓ Completed</span>' : ''}
+                            ${userProgress[level].highScore > 0 ? `<p class="high-score">High Score: ${userProgress[level].highScore}%</p>` : ''}
+                            ${showProgressionStatus(level)}
+                    </div>
+                    `).join('')}
+                    </div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <button onclick="showStatisticsDashboard()" 
+                            style="background: rgba(57, 255, 20, 0.2); color: var(--neon-green);">
+                        View Statistics
+                    </button>
+                    <button onclick="showWeeklyProgress()" 
+                            style="background: rgba(57, 255, 20, 0.2); color: var(--neon-green);">
+                        Weekly Progress
+                    </button>
+                    <button onclick="showLearningRecommendations()" 
+                            style="background: rgba(57, 255, 20, 0.2); color: var(--neon-green);">
+                        Learning Path
+                    </button>
+                    <button onclick="showStudySchedule()" 
+                            style="background: rgba(57, 255, 20, 0.2); color: var(--neon-green);">
+                        Study Schedule
+                    </button>
+                    <button onclick="reviewScheduler.showReviewSession()" 
+                            style="background: rgba(57, 255, 20, 0.2); color: var(--neon-green);">
+                        Review Due Questions
+                    </button>
+                    <button onclick="showGrammarReference()"
+                            style="background: rgba(57, 255, 20, 0.2); color: var(--neon-green);">
+                        Grammar Reference
+                    </button>
+                    <button onclick="showNotificationHistory()" 
+                            style="background: rgba(57, 255, 20, 0.2); color: var(--neon-green);">
+                        Notification History
+                    </button>
+                    <button onclick="notificationSystem.showPreferences()" 
+                            style="background: rgba(57, 255, 20, 0.2); color: var(--neon-green);">
+                        Notification Settings
+                    </button>
+                    <button onclick="notificationSystem.showAnalyticsDashboard()" 
+                            style="background: rgba(57, 255, 20, 0.2); color: var(--neon-green);">
+                        Notification Analytics
+                    </button>
+                    <button onclick="notificationSystem.showCustomReport()" 
+                            style="background: rgba(57, 255, 20, 0.2); color: var(--neon-green); margin-top: 20px;">
+                        Generate Custom Report
+                    </button>
+                </div>
+            `;
+            
+            document.getElementById('quiz-content').innerHTML = content;
+            
+            // Add notification controls
+            const controls = `
+                <div class="notification-controls">
+                    <button class="notification-settings-btn">Notification Settings</button>
+                    <button class="analytics-btn">Analytics Dashboard</button>
+                    <button class="custom-report-btn">Custom Report</button>
+                </div>
+            `;
+            
+            document.querySelector('.level-selection').insertAdjacentHTML('afterend', controls);
+        }
+
+        function startQuiz(level) {
+            currentLevel = level;
+            currentQuestion = 0;
+            score = 0;
+            missedQuestions = [];
+            displayQuestion();
+        }
+
+        function displayQuestion() {
+            const questionData = quizLevels[currentLevel][currentQuestion];
+            document.getElementById('quiz-content').innerHTML = `
+                <div class="score-display">Level: ${currentLevel.charAt(0).toUpperCase() + currentLevel.slice(1)} | Score: ${score}/${quizLevels[currentLevel].length}</div>
+                <div class="question">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <button onclick="confirmGoBack()" style="background: rgba(57, 255, 20, 0.2); color: var(--neon-green);">
+                            ← Back to Levels
+                        </button>
+                        <span class="question-number" style="color: var(--neon-green);">
+                            Question ${currentQuestion + 1}/${quizLevels[currentLevel].length}
+                        </span>
+                    </div>
+                    <p><strong>Topic: ${questionData.topic}</strong></p>
+                    <p>${questionData.prompt}</p>
+                    ${questionData.example ? `<p class="example-text">${questionData.example}</p>` : ''}
+                    <input type="text" id="userAnswer" placeholder="Type your answer here">
+                    <div style="display: flex; gap: 10px; margin-top: 10px;">
+                        <button onclick="checkAnswer()">Submit Answer</button>
+                        <button onclick="showHint()" style="background: rgba(57, 255, 20, 0.2); color: var(--neon-green);">Show Hint</button>
+                        <button onclick="showMultipleChoice()" style="background: rgba(57, 255, 20, 0.2); color: var(--neon-green);">Show Options</button>
+                    </div>
+                </div>
+                <div id="result" class="hidden"></div>
+            `;
+            document.getElementById('userAnswer').focus();
+        }
+
+        function confirmGoBack() {
+            currentLevel = null;
+            currentQuestion = 0;
+            score = 0;
+            missedQuestions = [];
+            showLevelSelection();
+        }
+
+        function showHint() {
+            const questionData = quizLevels[currentLevel][currentQuestion];
+            const hint = document.createElement('p');
+            hint.style.color = 'var(--neon-green)';
+            hint.style.marginTop = '10px';
+            hint.textContent = `Hint: ${questionData.explanation}`;
+            document.querySelector('.question').appendChild(hint);
+        }
+
+        function checkAnswer() {
+            const userAnswer = document.getElementById('userAnswer').value.trim().toLowerCase();
+            const questionData = quizLevels[currentLevel][currentQuestion];
+            const result = document.getElementById('result');
+
+            const correct = userAnswer === questionData.answer;
+            statistics.update(questionData.topic, correct);
+            updateSpacedRepetition(`${currentLevel}-${currentQuestion}`, correct);
+
+            if (correct) {
+                score++;
+                result.innerHTML = `
+                    <strong>Correct! 🎉</strong><br>
+                    ${questionData.explanation}
+                `;
+                result.className = 'correct';
+                
+                setTimeout(() => {
+                    if (currentQuestion < quizLevels[currentLevel].length - 1) {
+                        currentQuestion++;
+                        displayQuestion();
+                    } else {
+                        showFinalResults();
+                        saveProgress();
+                    }
+                }, 1500);
+            } else {
+                if (!missedQuestions.includes(currentQuestion)) {
+                    missedQuestions.push(currentQuestion);
+                }
+                
+                result.innerHTML = `
+                    <strong>Not quite right!</strong><br>
+                    The correct answer is '${questionData.answer}'.<br>
+                    ${questionData.explanation}
+                `;
+                result.className = 'incorrect';
+            }
+
+            result.classList.remove('hidden');
+        }
+
+        function showFinalResults() {
+            const percentage = (score / quizLevels[currentLevel].length) * 100;
+            
+            if (percentage > userProgress[currentLevel].highScore) {
+                userProgress[currentLevel].highScore = percentage;
+            }
+            
+            if (percentage >= 80) {
+                userProgress[currentLevel].completed = true;
+            }
+
+            let recommendation = '';
+            if (percentage >= 80) {
+                if (currentLevel === 'basic') {
+                    recommendation = '<button onclick="startQuiz(\'intermediate\')">Try Intermediate Level</button>';
+                } else if (currentLevel === 'intermediate') {
+                    recommendation = '<button onclick="startQuiz(\'advanced\')">Try Advanced Level</button>';
+                }
+            }
+
+            const reviewButton = missedQuestions.length > 0 ? 
+                '<button onclick="startReviewMode()">Review Missed Questions</button>' : '';
+
+            document.getElementById('quiz-content').innerHTML = `
+                <div class="question">
+                    <h2 style="color: var(--neon-green); text-align: center; margin-bottom: 20px;">
+                        ${currentLevel.charAt(0).toUpperCase() + currentLevel.slice(1)} Level Complete!<br>
+                        Your Score: ${score}/${quizLevels[currentLevel].length} (${percentage}%)
+                    </h2>
+                    <p style="text-align: center; margin-bottom: 20px;">
+                        High Score: ${userProgress[currentLevel].highScore}%<br>
+                        ${percentage >= 80 ? 'Excellent! You\'re ready for the next level!' :
+                        percentage >= 60 ? 'Good job! Keep practicing to improve further.' :
+                        'Keep practicing! French grammar takes time to master.'}
+                    </p>
+                    <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                        <button onclick="startQuiz('${currentLevel}')">Retry Level</button>
+                        <button onclick="showLevelSelection()">Choose Different Level</button>
+                        ${recommendation}
+                        ${reviewButton}
+                    </div>
+                </div>
+            `;
+        }
+
+        function startReviewMode() {
+            currentQuestion = 0;
+            const reviewQuestions = missedQuestions.map(index => quizLevels[currentLevel][index]);
+            quizLevels[currentLevel] = reviewQuestions;
+            score = 0;
+            displayQuestion();
+        }
+
+        // Initialize with level selection and update verb data
+        window.onload = () => {
+            statistics.initialize();
+            achievements.initialize();
+            learningPath.initialize();
+            studySchedule.initialize();
+            notificationSystem.initialize();
+            updateVerbData();
+            showLevelSelection();
+        };
+
+        // Keep the Enter key listener
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && document.getElementById('userAnswer')) {
+                checkAnswer();
+            }
+        });
+
+        // Update the verb data to include examples and pronunciation
+        function updateVerbData() {
+            // Add to basic level
+            quizLevels.basic.forEach(q => {
+                if (q.verb === "Parler (to speak)") {
+                    q.example = "Je parle français avec mes amis. (I speak French with my friends.)";
+                } else if (q.verb === "Être (to be)") {
+                    q.example = "Nous sommes étudiants. (We are students.)";
+                }
+                // ... add for other verbs
+            });
+
+            // Add to intermediate level
+            quizLevels.intermediate.forEach(q => {
+                if (q.verb === "Finir (to finish)") {
+                    q.example = "Je finissais mes devoirs quand il est arrivé. (I was finishing my homework when he arrived.)";
+                }
+                // ... add for other verbs
+            });
+        }
+
+        // Add local storage functions
+        function saveProgress() {
+            localStorage.setItem('verbQuizProgress', JSON.stringify(userProgress));
+            localStorage.setItem('verbQuizHighScores', JSON.stringify({
+                basic: userProgress.basic.highScore,
+                intermediate: userProgress.intermediate.highScore,
+                advanced: userProgress.advanced.highScore
+            }));
+        }
+
+        function loadProgress() {
+            const savedProgress = localStorage.getItem('verbQuizProgress');
+            const savedScores = localStorage.getItem('verbQuizHighScores');
+            if (savedProgress) {
+                userProgress = JSON.parse(savedProgress);
+            }
+            if (savedScores) {
+                const scores = JSON.parse(savedScores);
+                Object.keys(scores).forEach(level => {
+                    userProgress[level].highScore = scores[level];
+                });
+            }
+        }
+
+        // Add multiple choice function
+        function showMultipleChoice() {
+            const questionData = quizLevels[currentLevel][currentQuestion];
+            const correctAnswer = questionData.answer;
+            
+            // Generate wrong answers based on common mistakes
+            let options = [correctAnswer];
+            options.push(generateWrongAnswer(questionData));
+            options.push(generateWrongAnswer(questionData));
+            options.push(generateWrongAnswer(questionData));
+            
+            // Shuffle options
+            options = shuffleArray(options);
+
+            const optionsHtml = options.map(option => `
+                <button onclick="checkMultipleChoice('${option}')" class="answer-option">
+                    ${option}
+                </button>
+            `).join('');
+
+            document.querySelector('.question').innerHTML += `
+                <div class="multiple-choice">
+                    <p>Choose the correct answer:</p>
+                    <div class="options-grid">
+                        ${optionsHtml}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Helper function to shuffle array
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Add function to generate wrong answers
+        function generateWrongAnswer(questionData) {
+            const commonMistakes = {
+                // Articles
+                "le": ["la", "les", "un", "ce"],
+                "la": ["le", "les", "une", "cette"],
+                "les": ["le", "la", "des", "ces"],
+                
+                // Adjective agreements
+                "intelligente": ["intelligent", "intelligents", "intelligentes", "intelligentte"],
+                "nouveau livre": ["livre nouveau", "nouvelle livre", "nouveaux livre", "livre nouveux"],
+                
+                // Prepositions
+                "à": ["en", "au", "dans", "sur"],
+                "de l'": ["du", "de la", "des", "le"],
+                
+                // Complex forms
+                "plus que": ["plus de", "plus comme", "plus", "que plus"],
+                "sois": ["es", "soit", "sera", "être"],
+                "rien rien": ["pas quelque chose", "rien quelque chose", "quelque rien", "pas rien"]
+            };
+
+            if (commonMistakes[questionData.answer]) {
+                return commonMistakes[questionData.answer][Math.floor(Math.random() * commonMistakes[questionData.answer].length)];
+            }
+
+            // If no specific mistakes defined, modify the correct answer
+            const answer = questionData.answer;
+            const modifications = [
+                str => str + "s",
+                str => str + "e",
+                str => str.replace(/e$/, ""),
+                str => str.replace(/s$/, "")
+            ];
+            
+            return modifications[Math.floor(Math.random() * modifications.length)](answer);
+        }
+
+        // Add practice mode function
+        function startPracticeMode() {
+            const practiceContent = `
+                <div class="question">
+                    <h2>Practice Mode</h2>
+                    <p>In practice mode, you can see detailed explanations and examples for each question.</p>
+                    <p>Your answers won't be scored, and you can take your time to learn.</p>
+                    <button onclick="startQuiz('${currentLevel}', true)">Start Practice</button>
+                    <button onclick="showLevelSelection()">Back to Levels</button>
+                </div>
+            `;
+            document.getElementById('quiz-content').innerHTML = practiceContent;
+        }
+
+        // Update displayQuestion to show more detailed explanations in practice mode
+        function displayQuestion(practiceMode = false) {
+            const questionData = quizLevels[currentLevel][currentQuestion];
+            const explanationHtml = practiceMode ? `
+                <div class="grammar-rule">
+                    <h3>Grammar Rule:</h3>
+                    <p>${questionData.explanation}</p>
+                    <h3>Example:</h3>
+                    <p class="example-text">${questionData.example}</p>
+                </div>
+            ` : '';
+            
+            document.getElementById('quiz-content').innerHTML = `
+                <div class="score-display">Level: ${currentLevel.charAt(0).toUpperCase() + currentLevel.slice(1)} | Score: ${score}/${quizLevels[currentLevel].length}</div>
+                <div class="question">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <button onclick="confirmGoBack()" style="background: rgba(57, 255, 20, 0.2); color: var(--neon-green);">
+                            ← Back to Levels
+                        </button>
+                        <span class="question-number" style="color: var(--neon-green);">
+                            Question ${currentQuestion + 1}/${quizLevels[currentLevel].length}
+                        </span>
+                    </div>
+                    <p><strong>Topic: ${questionData.topic}</strong></p>
+                    <p>${questionData.prompt}</p>
+                    ${explanationHtml}
+                    <input type="text" id="userAnswer" placeholder="Type your answer here">
+                    <div style="display: flex; gap: 10px; margin-top: 10px;">
+                        <button onclick="checkAnswer()">Submit Answer</button>
+                        <button onclick="showHint()" style="background: rgba(57, 255, 20, 0.2); color: var(--neon-green);">Show Hint</button>
+                        <button onclick="showMultipleChoice()" style="background: rgba(57, 255, 20, 0.2); color: var(--neon-green);">Show Options</button>
+                    </div>
+                </div>
+                <div id="result" class="hidden"></div>
+            `;
+            document.getElementById('userAnswer').focus();
+        }
+
+        // Add grammar reference section
+        function showGrammarReference() {
+            const grammarContent = `
+                <div class="grammar-reference">
+                    <h2>Grammar Reference</h2>
+                    <div class="grammar-section">
+                        <h3>Articles</h3>
+                        <ul>
+                            <li>Definite: le (m), la (f), les (pl)</li>
+                            <li>Indefinite: un (m), une (f), des (pl)</li>
+                            <li>Partitive: du (m), de la (f), de l' (vowel), des (pl)</li>
+                        </ul>
+                    </div>
+                    <div class="grammar-section">
+                        <h3>Adjective Agreement</h3>
+                        <ul>
+                            <li>Add 'e' for feminine</li>
+                            <li>Add 's' for plural</li>
+                            <li>Special cases: -eux → -euse, -f → -ve</li>
+                        </ul>
+                    </div>
+                    <button onclick="showLevelSelection()">Back to Quiz</button>
+                </div>
+            `;
+            document.getElementById('quiz-content').innerHTML = grammarContent;
+        }
+
+        // Add spaced repetition system
+        const spacedRepetition = {
+            intervals: [1, 3, 7, 14, 30], // Days between reviews
+            questions: {}
+        };
+
+        function updateSpacedRepetition(questionId, correct) {
+            const now = Date.now();
+            if (!spacedRepetition.questions[questionId]) {
+                spacedRepetition.questions[questionId] = {
+                    level: 0,
+                    nextReview: now
+                };
+            }
+
+            const question = spacedRepetition.questions[questionId];
+            if (correct) {
+                question.level = Math.min(question.level + 1, spacedRepetition.intervals.length - 1);
+            } else {
+                question.level = Math.max(question.level - 1, 0);
+            }
+
+            const interval = spacedRepetition.intervals[question.level] * 24 * 60 * 60 * 1000; // Convert days to milliseconds
+            question.nextReview = now + interval;
+            
+            localStorage.setItem('spacedRepetition', JSON.stringify(spacedRepetition));
+        }
+
+        // Add review scheduler system
+        const reviewScheduler = {
+            // Add to the existing spacedRepetition object
+            getDueQuestions() {
+                const now = Date.now();
+                const dueQuestions = [];
+                
+                Object.entries(spacedRepetition.questions).forEach(([id, data]) => {
+                    if (data.nextReview <= now) {
+                        const [level, questionIndex] = id.split('-');
+                        dueQuestions.push({
+                            level,
+                            questionIndex: parseInt(questionIndex),
+                            lastInterval: spacedRepetition.intervals[data.level]
+                        });
+                    }
+                });
+                
+                return dueQuestions;
+            },
+            
+            showReviewSession() {
+                const dueQuestions = this.getDueQuestions();
+                if (dueQuestions.length === 0) {
+                    document.getElementById('quiz-content').innerHTML = `
+                        <div class="question">
+                            <h2>No Reviews Due</h2>
+                            <p>Great job! You're all caught up with your reviews.</p>
+                            <button onclick="showLevelSelection()">Back to Levels</button>
+                        </div>
+                    `;
+                    return;
+                }
+
+                document.getElementById('quiz-content').innerHTML = `
+                    <div class="question">
+                        <h2>Review Session</h2>
+                        <p>You have ${dueQuestions.length} questions to review.</p>
+                        <button onclick="startReviewSession()">Start Review</button>
+                        <button onclick="showLevelSelection()">Back to Levels</button>
+                    </div>
+                `;
+            }
+        };
+
+        // Add difficulty progression within levels
+        function updateDifficultyProgression() {
+            const progressionLevels = {
+                basic: ['articles', 'gender', 'numbers', 'prepositions'],
+                intermediate: ['pronouns', 'tenses', 'agreement'],
+                advanced: ['subjunctive', 'conditional', 'complex-structures']
+            };
+
+            // Add progression tracking to userProgress
+            Object.keys(userProgress).forEach(level => {
+                if (!userProgress[level].progression) {
+                    userProgress[level].progression = {
+                        currentTopic: progressionLevels[level][0],
+                        completedTopics: []
+                    };
+                }
+            });
+        }
+
+        function showProgressionStatus(level) {
+            const progression = userProgress[level].progression;
+            return `
+                <div class="progression-status">
+                    <p class="current-topic">Current Topic: ${progression.currentTopic}</p>
+                    <div class="topic-progress">
+                        ${progression.completedTopics.map(topic => 
+                            `<span class="completed-topic">${topic}</span>`
+                        ).join(' → ')}
+                        ${progression.completedTopics.length > 0 ? ' → ' : ''}
+                        <span class="current-topic">${progression.currentTopic}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Add helper function to get level description
+        function getLevelDescription(level) {
+            const descriptions = {
+                basic: "Practice articles, gender agreement, and basic prepositions",
+                intermediate: "Master pronouns, complex prepositions, and tense agreement",
+                advanced: "Challenge yourself with subjunctive, conditional, and complex structures"
+            };
+            return descriptions[level];
+        }
+
+        // Add function to start review session
+        function startReviewSession() {
+            const dueQuestions = reviewScheduler.getDueQuestions();
+            currentLevel = dueQuestions[0].level;
+            currentQuestion = dueQuestions[0].questionIndex;
+            score = 0;
+            missedQuestions = [];
+            displayQuestion(true); // true indicates review mode
+        }
+
+        // Update displayQuestion to handle review mode
+        function displayQuestion(isReview = false) {
+            const questionData = quizLevels[currentLevel][currentQuestion];
+            const reviewInfo = isReview ? `
+                <div class="review-info">
+                    <p>Review Session - Last interval: ${getLastInterval()} days</p>
+                </div>
+            ` : '';
+            
+            document.getElementById('quiz-content').innerHTML = `
+                <div class="score-display">Level: ${currentLevel.charAt(0).toUpperCase() + currentLevel.slice(1)} | Score: ${score}/${quizLevels[currentLevel].length}</div>
+                <div class="question">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <button onclick="confirmGoBack()" style="background: rgba(57, 255, 20, 0.2); color: var(--neon-green);">
+                            ← Back to Levels
+                        </button>
+                        <span class="question-number" style="color: var(--neon-green);">
+                            Question ${currentQuestion + 1}/${quizLevels[currentLevel].length}
+                        </span>
+                    </div>
+                    <p><strong>Topic: ${questionData.topic}</strong></p>
+                    <p>${questionData.prompt}</p>
+                    ${reviewInfo}
+                    ${questionData.example ? `<p class="example-text">${questionData.example}</p>` : ''}
+                    <input type="text" id="userAnswer" placeholder="Type your answer here">
+                    <div style="display: flex; gap: 10px; margin-top: 10px;">
+                        <button onclick="checkAnswer()">Submit Answer</button>
+                        <button onclick="showHint()" style="background: rgba(57, 255, 20, 0.2); color: var(--neon-green);">Show Hint</button>
+                        <button onclick="showMultipleChoice()" style="background: rgba(57, 255, 20, 0.2); color: var(--neon-green);">Show Options</button>
+                    </div>
+                </div>
+                <div id="result" class="hidden"></div>
+            `;
+            document.getElementById('userAnswer').focus();
+        }
+
+        function getLastInterval() {
+            const questionId = `${currentLevel}-${currentQuestion}`;
+            return spacedRepetition.questions[questionId]?.lastInterval || 0;
+        }
+
+        // Add statistics dashboard
+        function showStatisticsDashboard() {
+            const accuracy = statistics.totalAnswered > 0 
+                ? ((statistics.correctAnswers / statistics.totalAnswered) * 100).toFixed(1) 
+                : 0;
+            
+            const topicStats = Object.entries(statistics.topicStats)
+                .map(([topic, stats]) => {
+                    const topicAccuracy = stats.attempts > 0 
+                        ? ((stats.correct / stats.attempts) * 100).toFixed(1) 
+                        : 0;
+                    return `
+                        <div class="topic-stat">
+                            <h4>${topic}</h4>
+                            <p>Accuracy: ${topicAccuracy}%</p>
+                            <p>Attempts: ${stats.attempts}</p>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: ${topicAccuracy}%"></div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+            document.getElementById('quiz-content').innerHTML = `
+                <div class="statistics-dashboard">
+                    <h2>Your Progress</h2>
+                    <div class="stats-overview">
+                        <div class="stat-card">
+                            <h3>Overall Accuracy</h3>
+                            <p class="stat-value">${accuracy}%</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Daily Streak</h3>
+                            <p class="stat-value">${statistics.streakDays} days</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Today's Progress</h3>
+                            <p class="stat-value">${statistics.dailyProgress}/${statistics.dailyGoal}</p>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: ${(statistics.dailyProgress/statistics.dailyGoal)*100}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="topic-statistics">
+                        <h3>Topic Performance</h3>
+                        <div class="topic-grid">
+                            ${topicStats}
+                        </div>
+                    </div>
+                    <button onclick="showLevelSelection()">Back to Levels</button>
+                </div>
+            `;
+        }
+
+        // Add weekly progress report
+        function showWeeklyProgress() {
+            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const today = new Date();
+            const dayLabels = Array(7).fill().map((_, i) => {
+                const date = new Date(today);
+                date.setDate(today.getDate() - (6 - i));
+                return days[date.getDay()];
+            });
+
+            const progressBars = achievements.weeklyProgress.questions.map((questions, i) => {
+                const accuracy = achievements.weeklyProgress.accuracy[i] || 0;
+                return `
+                    <div class="daily-progress">
+                        <div class="day-label">${dayLabels[i]}</div>
+                        <div class="progress-bar-vertical">
+                            <div class="progress" style="height: ${(questions/statistics.dailyGoal)*100}%"></div>
+                        </div>
+                        <div class="progress-label">${questions}/${statistics.dailyGoal}</div>
+                        <div class="accuracy-label">${accuracy.toFixed(1)}%</div>
+                    </div>
+                `;
+            }).join('');
+
+            const earnedBadges = Object.values(achievements.badges)
+                .filter(badge => badge.earned)
+                .map(badge => `
+                    <div class="badge-card">
+                        <div class="badge-icon">${badge.icon}</div>
+                        <div class="badge-info">
+                            <h4>${badge.name}</h4>
+                            <p>${badge.description}</p>
+                        </div>
+                    </div>
+                `).join('');
+
+            document.getElementById('quiz-content').innerHTML = `
+                <div class="weekly-progress">
+                    <h2>Weekly Progress Report</h2>
+                    <div class="progress-graph">
+                        ${progressBars}
+                    </div>
+                    <div class="achievements-section">
+                        <h3>Your Achievements</h3>
+                        <div class="badges-grid">
+                            ${earnedBadges}
+                        </div>
+                    </div>
+                    <button onclick="showLevelSelection()">Back to Levels</button>
+                </div>
+            `;
+        }
+
+        // Add function to show learning recommendations
+        function showLearningRecommendations() {
+            learningPath.updateRecommendations();
+            
+            const weakPointsList = learningPath.recommendations.weakPoints
+                .map(topic => `
+                    <div class="recommendation-item weak">
+                        <h4>${topic}</h4>
+                        <p>Accuracy: ${learningPath.recommendations.topics[topic].accuracy.toFixed(1)}%</p>
+                        <button onclick="startTopicPractice('${topic}')" class="practice-button">
+                            Practice Now
+                        </button>
+                    </div>
+                `).join('');
+
+            const nextStepsList = learningPath.recommendations.nextSteps
+                .map(step => `
+                    <div class="recommendation-item ${step.type}">
+                        <h4>${step.topic}</h4>
+                        <p>${step.message}</p>
+                        <button onclick="startTopicPractice('${step.topic}')" class="practice-button">
+                            ${step.type === 'review' ? 'Review' : 'Start Learning'}
+                        </button>
+                    </div>
+                `).join('');
+
+            const strengthsList = learningPath.recommendations.strengths
+                .map(topic => `
+                    <div class="recommendation-item strength">
+                        <h4>${topic}</h4>
+                        <p>Mastered! (${learningPath.recommendations.topics[topic].accuracy.toFixed(1)}%)</p>
+                    </div>
+                `).join('');
+
+            document.getElementById('quiz-content').innerHTML = `
+                <div class="learning-recommendations">
+                    <h2>Your Learning Path</h2>
+                    
+                    <div class="recommendations-section">
+                        <h3>Recommended Next Steps</h3>
+                        <div class="recommendations-grid">
+                            ${nextStepsList || '<p>Great job! You\'re making good progress.</p>'}
+                        </div>
+                    </div>
+
+                    ${weakPointsList ? `
+                        <div class="recommendations-section">
+                            <h3>Areas to Improve</h3>
+                            <div class="recommendations-grid">
+                                ${weakPointsList}
+                            </div>
+                        </div>
+                    ` : ''}
+
+                    ${strengthsList ? `
+                        <div class="recommendations-section">
+                            <h3>Your Strengths</h3>
+                            <div class="recommendations-grid">
+                                ${strengthsList}
+                            </div>
+                        </div>
+                    ` : ''}
+
+                    <button onclick="showLevelSelection()">Back to Levels</button>
+                </div>
+            `;
+        }
+
+        // Add function to show study schedule
+        function showStudySchedule() {
+            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const today = new Date().toISOString().split('T')[0];
+
+            const scheduleHtml = studySchedule.schedule.planned.map(day => {
+                const isToday = day.date === today;
+                const status = day.completed ? 'completed' : (day.planned ? 'planned' : 'rest');
+                
+                return `
+                    <div class="schedule-day ${status} ${isToday ? 'today' : ''}">
+                        <h4>${days[new Date(day.date).getDay()]}</h4>
+                        <p class="date">${day.date.split('-').slice(1).join('/')}</p>
+                        ${day.planned ? `
+                            <div class="topics-list">
+                                ${day.topics.map(topic => `
+                                    <span class="topic-tag">${topic}</span>
+                                `).join('')}
+                            </div>
+                        ` : '<p class="rest-day">Rest Day</p>'}
+                        ${isToday && day.planned && !day.completed ? `
+                            <button onclick="startScheduledSession()" class="start-session-btn">
+                                Start Session
+                            </button>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+
+            const settingsHtml = `
+                <div class="schedule-settings">
+                    <h3>Study Preferences</h3>
+                    <div class="settings-grid">
+                        <div class="setting-item">
+                            <label for="weeklyGoal">Study Days per Week:</label>
+                            <input type="number" id="weeklyGoal" value="${studySchedule.settings.weeklyGoal}" 
+                                   min="1" max="7" onchange="updateStudySettings('weeklyGoal', this.value)">
+                        </div>
+                        <div class="setting-item">
+                            <label for="dailyTime">Minutes per Session:</label>
+                            <input type="number" id="dailyTime" value="${studySchedule.settings.dailyTimeGoal}"
+                                   min="5" max="120" onchange="updateStudySettings('dailyTimeGoal', this.value)">
+                        </div>
+                        <div class="setting-item">
+                            <label for="preferredTime">Preferred Study Time:</label>
+                            <input type="time" id="preferredTime" value="${studySchedule.settings.preferredTime}"
+                                   onchange="updateStudySettings('preferredTime', this.value)">
+                        </div>
+                        <div class="setting-item">
+                            <label>
+                                <input type="checkbox" ${studySchedule.settings.reminders ? 'checked' : ''}
+                                       onchange="updateStudySettings('reminders', this.checked)">
+                                Enable Reminders
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            const nextSessionHtml = studySchedule.schedule.nextSession ? `
+                <div class="next-session">
+                    <h3>Next Study Session</h3>
+                    <p>
+                        ${new Date(studySchedule.schedule.nextSession.date).toLocaleDateString()} 
+                        at ${studySchedule.schedule.nextSession.time}
+                    </p>
+                    <p>Recommended topics:</p>
+                    <div class="topics-list">
+                        ${studySchedule.schedule.nextSession.topics.map(topic => `
+                            <span class="topic-tag">${topic}</span>
+                        `).join('')}
+                    </div>
+                </div>
+            ` : '';
+
+            document.getElementById('quiz-content').innerHTML = `
+                <div class="study-schedule">
+                    <h2>Your Study Schedule</h2>
+                    ${nextSessionHtml}
+                    <div class="schedule-grid">
+                        ${scheduleHtml}
+                    </div>
+                    ${settingsHtml}
+                    <button onclick="showLevelSelection()">Back to Levels</button>
+                </div>
+            `;
+        }
+
+        // Update study settings
+        function updateStudySettings(setting, value) {
+            studySchedule.settings[setting] = value;
+            studySchedule.updateSchedule();
+            studySchedule.save();
+
+            // Update notifications if reminders setting changed
+            if (setting === 'reminders') {
+                if (value) {
+                    notificationSystem.initialize();
+                } else {
+                    if (notificationSystem.reminderTimeout) {
+                        clearTimeout(notificationSystem.reminderTimeout);
+                    }
+                }
+            }
+
+            // Show confirmation
+            notificationSystem.showInAppNotification('Study settings updated successfully', 'success');
+        }
+
+        function startScheduledSession() {
+            const today = new Date().toISOString().split('T')[0];
+            const todaySchedule = studySchedule.schedule.planned.find(day => day.date === today);
+            
+            if (todaySchedule && !todaySchedule.completed) {
+                // Start session with recommended topics
+                const topics = todaySchedule.topics;
+                
+                // Show session start notification
+                notificationSystem.showInAppNotification(
+                    `Starting study session: ${topics.join(', ')}`,
+                    'success'
+                );
+
+                // Mark session as started
+                todaySchedule.started = true;
+                studySchedule.save();
+
+                // Start practice with first recommended topic
+                startTopicPractice(topics[0]);
+            }
+        }
+
+        // Add function to show notification history
+        function showNotificationHistory() {
+            const formatDate = (date) => {
+                const d = new Date(date);
+                return d.toLocaleDateString() + ' ' + d.toLocaleTimeString();
+            };
+
+            const renderNotifications = (notifications) => {
+                const groupedNotifications = groupByDate(notifications);
+                return Object.entries(groupedNotifications).map(([date, notifications]) => `
+                    <div class="notification-group">
+                        <h3>${date}</h3>
+                        ${notifications.map(notification => `
+                            <div class="notification-history-item ${notification.type}">
+                                <div class="notification-icon">${notification.icon || '📝'}</div>
+                                <div class="notification-content">
+                                    <h4>${notification.title}</h4>
+                                    <p>${notification.message}</p>
+                                    <small>${new Date(notification.timestamp).toLocaleTimeString()}</small>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `).join('');
+            };
+
+            const filterTypes = ['achievement', 'streak', 'progress', 'mastery', 'reminder', 
+                                'milestone', 'summary', 'level-up', 'consistency'];
+
+            document.getElementById('quiz-content').innerHTML = `
+                <div class="notification-history">
+                    <h2>Notification History</h2>
+                    
+                    <div class="history-controls">
+                        <div class="search-box">
+                            <input type="text" id="notificationSearch" 
+                                   placeholder="Search notifications..."
+                                   onkeyup="filterNotifications()">
+                        </div>
+                        
+                        <div class="filter-controls">
+                            <select id="notificationFilter" onchange="filterNotifications()">
+                                <option value="">All Types</option>
+                                ${filterTypes.map(type => 
+                                    `<option value="${type}">${type.charAt(0).toUpperCase() + type.slice(1)}</option>`
+                                ).join('')}
+                            </select>
+                        </div>
+
+                        <button onclick="notificationSystem.clearHistory()" 
+                                style="background: rgba(255, 99, 71, 0.2); color: #ff6347;">
+                            Clear History
+                        </button>
+                        <button onclick="showLevelSelection()">Back to Menu</button>
+                    </div>
+
+                    <div class="notifications-container">
+                        ${notificationSystem.history.length > 0 ? 
+                            renderNotifications(notificationSystem.history) : 
+                            '<p class="no-notifications">No notifications yet</p>'}
+                    </div>
+                </div>
+            `;
+        }
+
+        function filterNotifications() {
+            const searchQuery = document.getElementById('notificationSearch').value;
+            const filterType = document.getElementById('notificationFilter').value;
+            
+            let filteredNotifications = notificationSystem.history;
+            
+            if (searchQuery) {
+                filteredNotifications = notificationSystem.searchHistory(searchQuery);
+            }
+            
+            if (filterType) {
+                filteredNotifications = filteredNotifications.filter(n => n.type === filterType);
+            }
+            
+            const container = document.querySelector('.notifications-container');
+            container.innerHTML = filteredNotifications.length > 0 ? 
+                renderNotifications(filteredNotifications) : 
+                '<p class="no-notifications">No matching notifications found</p>';
+        }
+    </script>
+</body>
+</html>
+
