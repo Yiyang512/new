@@ -941,7 +941,92 @@
             return feedback[level];
         }
 
-        // Replace the camera and recording setup code with this browser-compatible version
+        // Replace the function that checks for media permissions and browser type
+        function checkMediaPermissions() {
+            // First detect if this is Safari
+            const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+            
+            if (isSafari) {
+                // Show notification about Safari limitations
+                showNotification("⚠️ Safari has limited recording support. For best experience, use Chrome.", "warning", 8000);
+                
+                // Add a permanent warning banner for Safari users
+                const controlsContainer = document.querySelector('.controls-container');
+                const safariWarningHTML = `
+                    <div id="safari-warning" style="background: rgba(255, 180, 0, 0.15); border: 1px solid #FFB400; padding: 15px; border-radius: 10px; margin: 20px auto; max-width: 700px; text-align: center;">
+                        <h3 style="color: #FFB400; margin-top: 0;">Safari Browser Detected</h3>
+                        <p>Video recording and downloading is not fully supported in Safari.</p>
+                        <p><strong>For the full experience with video recording:</strong></p>
+                        <a href="https://www.google.com/chrome/" target="_blank" style="display: inline-block; background: #FFB400; color: black; padding: 8px 15px; border-radius: 5px; text-decoration: none; margin-top: 10px; font-weight: bold;">
+                            Download Chrome Browser
+                        </a>
+                    </div>
+                `;
+                
+                // Insert the warning before the controls container
+                controlsContainer.insertAdjacentHTML('beforebegin', safariWarningHTML);
+                
+                // Disable recording buttons
+                const startRecordBtn = document.getElementById('start-record');
+                const stopRecordBtn = document.getElementById('stop-record');
+                
+                // Add "disabled" class and attribute to buttons
+                startRecordBtn.disabled = true;
+                stopRecordBtn.disabled = true;
+                startRecordBtn.style.opacity = "0.5";
+                stopRecordBtn.style.opacity = "0.5";
+                startRecordBtn.title = "Recording not available in Safari - please use Chrome";
+                stopRecordBtn.title = "Recording not available in Safari - please use Chrome";
+                
+                // Update button text to indicate disabled state
+                startRecordBtn.textContent = "🚫 Recording (Safari not supported)";
+            }
+            
+            // Continue with regular permission checks
+            navigator.permissions.query({name: 'camera'})
+                .then(permissionStatus => {
+                    if (permissionStatus.state === 'denied') {
+                        showNotification("⚠️ Please enable camera access to use all features", "error");
+                    }
+                })
+                .catch(err => {
+                    console.log("Camera permission check failed:", err);
+                });
+            
+            navigator.permissions.query({name: 'microphone'})
+                .then(permissionStatus => {
+                    if (permissionStatus.state === 'denied') {
+                        showNotification("⚠️ Please enable microphone access for speech recognition", "error");
+                    }
+                })
+                .catch(err => {
+                    console.log("Microphone permission check failed:", err);
+                });
+        }
+
+        // Enhance the showNotification function to support different durations
+        function showNotification(message, type = 'success', duration = 5000) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            
+            // Set color based on notification type
+            if (type === 'error') {
+                notification.style.background = 'rgba(255, 68, 68, 0.9)';
+            } else if (type === 'warning') {
+                notification.style.background = 'rgba(255, 180, 0, 0.9)';
+            } else {
+                notification.style.background = 'rgba(0, 255, 153, 0.9)';
+            }
+            
+            notification.classList.add('show');
+            
+            // Hide notification after specified duration
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, duration);
+        }
+
+        // Replace the existing MediaRecorder setup with this simplified version
         navigator.mediaDevices.getUserMedia({ video: true, audio: true })
             .then(s => {
                 stream = s;
@@ -949,63 +1034,73 @@
                 videoElement.srcObject = stream;
                 videoElement.muted = true;
                 
-                // Setup MediaRecorder with options that work in Safari
-                const options = {
-                    mimeType: 'video/webm;codecs=vp8,opus',
-                    videoBitsPerSecond: 2500000
-                };
+                // Detect Safari
+                const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
                 
-                // Try to use the preferred MIME type or fall back to a supported one
-                try {
-                    mediaRecorder = new MediaRecorder(stream, options);
-                } catch (e) {
-                    console.warn("MediaRecorder with options failed:", e);
+                // Only set up MediaRecorder for non-Safari browsers
+                if (!isSafari) {
                     try {
-                        // Try without specific options
-                        mediaRecorder = new MediaRecorder(stream);
-                    } catch (e2) {
-                        console.error("MediaRecorder failed:", e2);
-                        showNotification("⚠️ Recording not supported in your browser", "error");
-                        // Disable recording buttons
-                        document.getElementById('start-record').disabled = true;
-                        document.getElementById('stop-record').disabled = true;
+                        // Try to use the preferred MIME type or fall back to a supported one
+                        try {
+                            mediaRecorder = new MediaRecorder(stream, {
+                                mimeType: 'video/webm;codecs=vp8,opus',
+                                videoBitsPerSecond: 2500000
+                            });
+                        } catch (e) {
+                            console.warn("MediaRecorder with options failed:", e);
+                            mediaRecorder = new MediaRecorder(stream);
+                        }
+                        
+                        // Add recording handlers
+                        document.getElementById('start-record').addEventListener('click', () => {
+                            recordedChunks = [];
+                            mediaRecorder.start();
+                            document.getElementById('start-record').textContent = "🔴 Recording...";
+                            showNotification("Recording started", "success");
+                        });
+                        
+                        document.getElementById('stop-record').addEventListener('click', () => {
+                            if (mediaRecorder.state === 'recording') {
+                                mediaRecorder.stop();
+                                document.getElementById('start-record').textContent = "🔴 Start Recording";
+                                showNotification("Preparing download...", "success");
+                            } else {
+                                showNotification("Not currently recording", "error");
+                            }
+                        });
+                        
+                        // Handle recording data
+                        mediaRecorder.ondataavailable = event => {
+                            if (event.data && event.data.size > 0) {
+                                recordedChunks.push(event.data);
+                            }
+                        };
+                        
+                        // Handle recording stop and download (for Chrome/Firefox/Edge)
+                        mediaRecorder.onstop = () => {
+                            const blob = new Blob(recordedChunks, { type: 'video/webm' });
+                            const url = URL.createObjectURL(blob);
+                            const a = document.createElement('a');
+                            a.style.display = 'none';
+                            a.href = url;
+                            a.download = `french-speaking-practice-${new Date().toISOString().slice(0,19).replace(/:/g,'-')}.webm`;
+                            document.body.appendChild(a);
+                            a.click();
+                            
+                            setTimeout(() => {
+                                document.body.removeChild(a);
+                                URL.revokeObjectURL(url);
+                            }, 100);
+                            
+                            showNotification("Your recording has been downloaded!", "success");
+                        };
+                    } catch (e) {
+                        console.error("MediaRecorder setup failed:", e);
+                        showNotification("Recording setup failed. Try refreshing the page.", "error");
                     }
                 }
                 
-                if (mediaRecorder) {
-                    // Add recording handlers
-                    document.getElementById('start-record').addEventListener('click', () => {
-                        recordedChunks = [];
-                        mediaRecorder.start();
-                        document.getElementById('start-record').textContent = "🔴 Recording...";
-                        showNotification("Recording started", "success");
-                    });
-                    
-                    document.getElementById('stop-record').addEventListener('click', () => {
-                        if (mediaRecorder.state === 'recording') {
-                            mediaRecorder.stop();
-                            document.getElementById('start-record').textContent = "🔴 Start Recording";
-                            showNotification("Preparing download...", "success");
-                        } else {
-                            showNotification("Not currently recording", "error");
-                        }
-                    });
-                    
-                    // Handle recording data
-                    mediaRecorder.ondataavailable = event => {
-                        if (event.data && event.data.size > 0) {
-                            recordedChunks.push(event.data);
-                        }
-                    };
-                    
-                    // Handle recording stop and download - with Safari compatibility
-                    mediaRecorder.onstop = () => {
-                        // Create download with browser compatibility handling
-                        downloadRecording();
-                    };
-                }
-                
-                // Toggle camera and mic
+                // Toggle camera and mic (all browsers)
                 document.getElementById('toggle-camera').addEventListener('click', () => {
                     const videoTracks = stream.getVideoTracks();
                     if (videoTracks.length > 0) {
@@ -1030,220 +1125,6 @@
                 console.error("Media error:", err);
                 showNotification("Camera or microphone access denied. Some features won't work.", "error");
             });
-
-        // Replace the downloadRecording function with this improved version
-        function downloadRecording() {
-            if (!recordedChunks.length) {
-                showNotification("No recording data available", "error");
-                console.error("Recording chunks array is empty");
-                return;
-            }
-            
-            console.log("Recording chunks available:", recordedChunks.length);
-            
-            // Create a blob from the recording chunks
-            const blob = new Blob(recordedChunks, { type: 'video/webm' });
-            console.log("Blob created, size:", blob.size, "bytes");
-            
-            // Detect Safari
-            const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-            console.log("Browser detected as Safari:", isSafari);
-            
-            if (isSafari) {
-                console.log("Using Safari-specific download method");
-                showNotification("Preparing Safari download...", "success");
-                
-                // CRITICAL: First, directly append the video player to the document
-                // This approach ensures the video element appears immediately
-                const testContainer = document.querySelector('.test-container');
-                
-                // Create a direct video container without relying on DOM operations
-                const videoContainerHTML = `
-                    <div id="safariVideoContainer" style="background: rgba(0, 0, 0, 0.8); padding: 30px; border-radius: 10px; max-width: 800px; margin: 20px auto; box-shadow: 0 0 20px rgba(0, 255, 153, 0.5);">
-                        <h3 style="color: #00FF99; margin-top: 0;">Your Recording</h3>
-                        <video id="safariVideo" controls style="max-width: 100%; margin-top: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 255, 153, 0.5);"></video>
-                        <div style="margin-top: 15px; padding: 10px; background: rgba(0, 255, 153, 0.1); border-radius: 8px;">
-                            <h3 style="color: #00FF99; margin-top: 0;">Safari Download Instructions</h3>
-                            <p>Safari doesn't allow automatic downloads. Please follow these steps:</p>
-                            <ol style="text-align: left; padding-left: 20px;">
-                                <li>Right-click (or control-click) on the video above</li>
-                                <li>Select "Download Video As..." from the menu</li>
-                                <li>Choose a location to save your recording</li>
-                            </ol>
-                            <button id="convertToMP4Btn" style="margin-top: 10px; padding: 8px 15px; background: #0077FF; color: white; border: none; border-radius: 5px; cursor: pointer; margin-right: 10px;">
-                                Try Converting to MP4
-                            </button>
-                            <button id="closeVideoBtn" style="margin-top: 10px; padding: 8px 15px; background: #FF4444; color: white; border: none; border-radius: 5px; cursor: pointer;">
-                                Close Video
-                            </button>
-                        </div>
-                    </div>
-                `;
-                
-                // Insert the container after the test container
-                testContainer.insertAdjacentHTML('afterend', videoContainerHTML);
-                console.log("Video container added to DOM");
-                
-                // Get references to the newly created elements
-                const videoElement = document.getElementById('safariVideo');
-                const closeButton = document.getElementById('closeVideoBtn');
-                const convertButton = document.getElementById('convertToMP4Btn');
-                
-                if (!videoElement) {
-                    console.error("Failed to find safariVideo element in DOM after insertion");
-                    showNotification("Error creating video player", "error");
-                    return;
-                }
-                
-                // Create URL for the video
-                try {
-                    const videoUrl = URL.createObjectURL(blob);
-                    console.log("Blob URL created:", videoUrl);
-                    videoElement.src = videoUrl;
-                    console.log("Video source set");
-                    
-                    // Add event listener for the close button
-                    if (closeButton) {
-                        closeButton.addEventListener('click', function() {
-                            const container = document.getElementById('safariVideoContainer');
-                            if (container) {
-                                container.remove();
-                                console.log("Video container removed");
-                            }
-                            URL.revokeObjectURL(videoUrl);
-                            console.log("Video URL revoked");
-                        });
-                    }
-                    
-                    // Add event listener for the convert button (alternative approach)
-                    if (convertButton) {
-                        convertButton.addEventListener('click', function() {
-                            try {
-                                console.log("Starting MP4 conversion attempt");
-                                // Use a different approach - open in a new window 
-                                const newWindow = window.open('', '_blank');
-                                if (newWindow) {
-                                    newWindow.document.write(`
-                                        <!DOCTYPE html>
-                                        <html>
-                                        <head>
-                                            <title>Your French Speaking Recording</title>
-                                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                                            <style>
-                                                body { font-family: Arial, sans-serif; margin: 0; padding: 20px; text-align: center; background: #121212; color: white; }
-                                                video { max-width: 100%; margin: 20px auto; border-radius: 8px; }
-                                                .instructions { margin: 20px auto; max-width: 600px; background: rgba(0, 255, 153, 0.1); padding: 15px; border-radius: 8px; text-align: left; }
-                                                h2 { color: #00FF99; }
-                                            </style>
-                                        </head>
-                                        <body>
-                                            <h2>Your French Speaking Recording</h2>
-                                            <video id="video" controls autoplay></video>
-                                            <div class="instructions">
-                                                <h3>How to save this recording:</h3>
-                                                <ol>
-                                                    <li>Right-click (or control-click) on the video above</li>
-                                                    <li>Select "Download Video As..." or "Save Video As..." from the menu</li>
-                                                    <li>Choose a location on your computer to save the file</li>
-                                                </ol>
-                                            </div>
-                                        </body>
-                                        </html>
-                                    `);
-                                    
-                                    // Add the video to the new window
-                                    const newVideoUrl = URL.createObjectURL(blob);
-                                    const newVideo = newWindow.document.getElementById('video');
-                                    if (newVideo) {
-                                        newVideo.src = newVideoUrl;
-                                        console.log("Video opened in new window");
-                                        showNotification("Recording opened in new tab for download", "success");
-                                    }
-                                } else {
-                                    console.error("Failed to open new window, likely blocked by popup blocker");
-                                    showNotification("Popup blocked. Please allow popups for this site.", "error");
-                                }
-                            } catch (e) {
-                                console.error("MP4 conversion attempt failed:", e);
-                                showNotification("Conversion failed. Try right-click download instead.", "error");
-                            }
-                        });
-                    }
-                    
-            showNotification("Recording ready! See below for download instructions", "success");
-            
-            // Force scroll to the video container for visibility
-            const container = document.getElementById('safariVideoContainer');
-            if (container) {
-                setTimeout(() => {
-                    container.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }, 500);
-            }
-            
-        } catch (e) {
-            console.error("Error setting up Safari video playback:", e);
-            showNotification("Error preparing video. Please try recording again.", "error");
-            
-            // Fallback to a more direct approach
-            try {
-                const dataUrl = URL.createObjectURL(blob);
-                window.location.href = dataUrl;
-                console.log("Attempted direct navigation to blob URL as fallback");
-            } catch (e2) {
-                console.error("Direct navigation fallback failed:", e2);
-            }
-        }
-        
-    } else {
-        // For Chrome, Firefox, Edge, etc.
-        console.log("Using standard download method for non-Safari browser");
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.style.display = 'none';
-        a.href = url;
-        a.download = `french-speaking-practice-${new Date().toISOString().slice(0,19).replace(/:/g,'-')}.webm`;
-        document.body.appendChild(a);
-        a.click();
-        
-        setTimeout(() => {
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        }, 100);
-        
-        showNotification("Your recording has been downloaded!", "success");
-    }
-}
-
-// Add a simple helper function to log debug messages visibly on the page if needed
-function debugLog(message, type = 'info') {
-    console.log(`[DEBUG] ${message}`);
-    // Uncomment the following to show debug messages on the page if needed
-    /*
-    const debugContainer = document.getElementById('debug-log') || 
-        (() => {
-            const div = document.createElement('div');
-            div.id = 'debug-log';
-            div.style.position = 'fixed';
-            div.style.bottom = '10px';
-            div.style.left = '10px';
-            div.style.background = 'rgba(0,0,0,0.8)';
-            div.style.color = '#00FF99';
-            div.style.padding = '10px';
-            div.style.borderRadius = '5px';
-            div.style.maxHeight = '200px';
-            div.style.overflow = 'auto';
-            div.style.zIndex = '10000';
-            document.body.appendChild(div);
-            return div;
-        })();
-    
-    const msgEl = document.createElement('div');
-    msgEl.textContent = `${type.toUpperCase()}: ${message}`;
-    msgEl.style.borderBottom = '1px solid rgba(255,255,255,0.2)';
-    msgEl.style.padding = '3px 0';
-    debugContainer.appendChild(msgEl);
-    */
-}
 
         // EmailJS initialization
         (function(){
@@ -1376,22 +1257,6 @@ Screen Size: ${window.innerWidth}x${window.innerHeight}`
             // Check for permissions on page load
             checkMediaPermissions();
         });
-
-        function checkMediaPermissions() {
-            navigator.permissions.query({name: 'camera'})
-                .then(permissionStatus => {
-                    if (permissionStatus.state === 'denied') {
-                        showNotification("⚠️ Please enable camera access to use all features", "error");
-                    }
-                });
-            
-            navigator.permissions.query({name: 'microphone'})
-                .then(permissionStatus => {
-                    if (permissionStatus.state === 'denied') {
-                        showNotification("⚠️ Please enable microphone access for speech recognition", "error");
-                    }
-                });
-        }
     </script>
 </body>
 </html> 
