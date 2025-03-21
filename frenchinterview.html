@@ -941,40 +941,149 @@
             return feedback[level];
         }
 
-        // Recording + Camera Fixes
+        // Replace the camera and recording setup code with this browser-compatible version
         navigator.mediaDevices.getUserMedia({ video: true, audio: true })
             .then(s => {
                 stream = s;
                 const videoElement = document.getElementById('video');
                 videoElement.srcObject = stream;
                 videoElement.muted = true;
-                mediaRecorder = new MediaRecorder(stream, { mimeType: "video/webm" });
-
-                document.getElementById('start-record').addEventListener('click', () => {
-                    recordedChunks = [];
-                    mediaRecorder.start();
-                });
-
-                document.getElementById('stop-record').addEventListener('click', () => {
-                    mediaRecorder.stop();
-                    mediaRecorder.ondataavailable = event => recordedChunks.push(event.data);
-                    mediaRecorder.onstop = () => {
-                        let blob = new Blob(recordedChunks, { type: 'video/webm' });
-                        let a = document.createElement('a');
-                        a.href = URL.createObjectURL(blob);
-                        a.download = 'tef-delf-test.webm';
-                        a.click();
+                
+                // Setup MediaRecorder with options that work in Safari
+                const options = {
+                    mimeType: 'video/webm;codecs=vp8,opus',
+                    videoBitsPerSecond: 2500000
+                };
+                
+                // Try to use the preferred MIME type or fall back to a supported one
+                try {
+                    mediaRecorder = new MediaRecorder(stream, options);
+                } catch (e) {
+                    console.warn("MediaRecorder with options failed:", e);
+                    try {
+                        // Try without specific options
+                        mediaRecorder = new MediaRecorder(stream);
+                    } catch (e2) {
+                        console.error("MediaRecorder failed:", e2);
+                        showNotification("⚠️ Recording not supported in your browser", "error");
+                        // Disable recording buttons
+                        document.getElementById('start-record').disabled = true;
+                        document.getElementById('stop-record').disabled = true;
+                    }
+                }
+                
+                if (mediaRecorder) {
+                    // Add recording handlers
+                    document.getElementById('start-record').addEventListener('click', () => {
+                        recordedChunks = [];
+                        mediaRecorder.start();
+                        document.getElementById('start-record').textContent = "🔴 Recording...";
+                        showNotification("Recording started", "success");
+                    });
+                    
+                    document.getElementById('stop-record').addEventListener('click', () => {
+                        if (mediaRecorder.state === 'recording') {
+                            mediaRecorder.stop();
+                            document.getElementById('start-record').textContent = "🔴 Start Recording";
+                            showNotification("Preparing download...", "success");
+                        } else {
+                            showNotification("Not currently recording", "error");
+                        }
+                    });
+                    
+                    // Handle recording data
+                    mediaRecorder.ondataavailable = event => {
+                        if (event.data && event.data.size > 0) {
+                            recordedChunks.push(event.data);
+                        }
                     };
-                });
-
+                    
+                    // Handle recording stop and download - with Safari compatibility
+                    mediaRecorder.onstop = () => {
+                        // Create download with browser compatibility handling
+                        downloadRecording();
+                    };
+                }
+                
+                // Toggle camera and mic
                 document.getElementById('toggle-camera').addEventListener('click', () => {
-                    stream.getVideoTracks()[0].enabled = !stream.getVideoTracks()[0].enabled;
+                    const videoTracks = stream.getVideoTracks();
+                    if (videoTracks.length > 0) {
+                        const isEnabled = !videoTracks[0].enabled;
+                        videoTracks[0].enabled = isEnabled;
+                        document.getElementById('toggle-camera').textContent = 
+                            isEnabled ? "Turn Off Camera" : "Turn On Camera";
+                    }
                 });
-
+                
                 document.getElementById('mute-btn').addEventListener('click', () => {
-                    stream.getAudioTracks()[0].enabled = !stream.getAudioTracks()[0].enabled;
+                    const audioTracks = stream.getAudioTracks();
+                    if (audioTracks.length > 0) {
+                        const isEnabled = !audioTracks[0].enabled;
+                        audioTracks[0].enabled = isEnabled;
+                        document.getElementById('mute-btn').textContent = 
+                            isEnabled ? "🔇 Mute" : "🔊 Unmute";
+                    }
                 });
+            })
+            .catch(err => {
+                console.error("Media error:", err);
+                showNotification("Camera or microphone access denied. Some features won't work.", "error");
             });
+
+        // Add this new function for cross-browser download support
+        function downloadRecording() {
+            if (!recordedChunks.length) {
+                showNotification("No recording data available", "error");
+                return;
+            }
+            
+            // Create a blob from the recording chunks
+            const blob = new Blob(recordedChunks, { type: 'video/webm' });
+            const blobUrl = URL.createObjectURL(blob);
+            
+            // Get a filename with current date/time
+            const fileName = `french-speaking-practice-${new Date().toISOString().slice(0,19).replace(/:/g,'-')}.webm`;
+            
+            // For Safari: Create a link for direct download with saveAs approach
+            const downloadLink = document.createElement('a');
+            downloadLink.style.display = 'none';
+            downloadLink.href = blobUrl;
+            downloadLink.download = fileName;
+            document.body.appendChild(downloadLink);
+            
+            // Safari-specific handling
+            if (/^((?!chrome|android).)*safari/i.test(navigator.userAgent)) {
+                // For Safari, we need to provide visual feedback
+                showNotification("Safari detected: Click OK when prompted to save the file", "success");
+                
+                // Try window.open approach which sometimes works better in Safari
+                try {
+                    const tab = window.open(blobUrl, '_blank');
+                    if (tab) {
+                        tab.focus();
+                        showNotification("If download doesn't start, right-click the video and select 'Save Video As'", "success");
+                    } else {
+                        // If popup blocked, fall back to direct link click
+                        downloadLink.click();
+                    }
+                } catch (e) {
+                    console.error("Safari download via window.open failed:", e);
+                    downloadLink.click();
+                }
+            } else {
+                // Standard download for other browsers
+                downloadLink.click();
+            }
+            
+            // Clean up
+            setTimeout(() => {
+                document.body.removeChild(downloadLink);
+                URL.revokeObjectURL(blobUrl);
+            }, 100);
+            
+            showNotification("Your recording has been saved!", "success");
+        }
 
         // EmailJS initialization
         (function(){
