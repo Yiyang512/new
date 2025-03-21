@@ -3,14 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TEF/DELF Speaking Test</title>
+    <title>French Writing Practice with Hemiya AI</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <style>
-        /* Add Poppins font import if not already present */
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
-
-        /* Update the root styles */
+        /* Base styles from frenchinterview.html */
         :root {
             --primary-color: #00FF99;
             --bg-color: #121212;
@@ -19,16 +16,15 @@
             --font-family: 'Poppins', sans-serif;
         }
 
-        /* Add universal font-family */
         * {
             font-family: var(--font-family);
         }
 
         body {
             text-align: center;
-            font-family: var(--font-family);
             background-color: var(--bg-color);
             color: var(--text-color);
+            margin: 0;
             padding: 20px;
             max-width: 1200px;
             margin: 0 auto;
@@ -38,7 +34,7 @@
             position: relative;
         }
 
-        /* Add this new class for the outer glow effect */
+        /* Add the glowing border effect */
         body::before {
             content: '';
             position: absolute;
@@ -56,402 +52,30 @@
             animation: borderGlow 3s ease-in-out infinite;
         }
 
-        h2 {
-            font-size: 28px;
-            text-shadow: 0px 0px 10px #00FF99;
-            font-weight: 600;
-        }
-        .test-container {
-            width: 90%;
-            max-width: 700px;
-            margin: auto;
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 15px #00FF99;
-            text-align: center;
-            position: relative;
-        }
-        video {
-            width: 100%;
-            border-radius: 10px;
-            box-shadow: 0px 0px 15px #00FF99;
-        }
-        .overlay-text {
-            position: absolute;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            padding: 10px;
-            background: rgba(0, 255, 153, 0.8);
-            border-radius: 5px;
-            font-size: 18px;
-            color: black;
-            font-weight: bold;
-        }
-        button {
-            padding: 12px 20px;
-            font-size: 18px;
-            font-weight: 500;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: 0.3s ease-in-out;
-            font-family: var(--font-family);
-            margin: 10px;
-        }
-        .btn-green { background-color: #00FF99; color: black; box-shadow: 0px 0px 15px #00FF99; }
-        .btn-red { background-color: #FF4444; color: white; box-shadow: 0px 0px 15px #FF4444; }
-        .btn-blue { background-color: #0056b3; color: white; box-shadow: 0px 0px 15px #0056b3; }
-        button:hover { transform: scale(1.1); box-shadow: 0px 0px 20px white; }
-        #timer {
-            font-size: 24px;
-            font-weight: bold;
-            color: #00FF99;
-            margin: 10px 0;
-            text-shadow: 0px 0px 10px #00FF99;
-        }
-        .level-selector {
+        /* Step indicators */
+        .step-indicator {
+            display: flex;
+            justify-content: center;
             margin: 20px 0;
+            gap: 20px;
         }
-        .level-selector button {
-            margin: 0 5px;
-            padding: 8px 15px;
-            border-radius: 5px;
-            border: none;
-            cursor: pointer;
+
+        .step {
+            padding: 10px 20px;
+            border-radius: 10px;
+            background: var(--card-bg);
+            border: 1px solid var(--primary-color);
+            opacity: 0.7;
             transition: all 0.3s ease;
         }
-        .level-selector button.active {
+
+        .step.active {
+            opacity: 1;
             transform: scale(1.1);
-            box-shadow: 0px 0px 15px #00FF99;
+            box-shadow: 0 0 15px var(--primary-color);
         }
-        .error {
-            color: #FF4444;
-            margin: 5px 0;
-            font-size: 14px;
-        }
-        .success {
-            color: #00FF99;
-            margin: 5px 0;
-            font-size: 14px;
-        }
-        @keyframes flash {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); box-shadow: 0px 0px 20px #00FF99; }
-            100% { transform: scale(1); }
-        }
-        .controls-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            width: 90%;
-            max-width: 700px;
-            margin: 20px auto;
-        }
-        .main-controls {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .recording-controls {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .level-result {
-            font-size: 24px;
-            font-weight: 600;
-            color: #00FF99;
-            margin: 15px 0;
-        }
-        .assessment-details {
-            background: rgba(0, 255, 153, 0.1);
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 15px;
-        }
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(8px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        .contact-form {
-            background: rgba(18, 18, 18, 0.9);
-            border-radius: 20px;
-            width: 90%;
-            max-width: 650px;
-            padding: 40px;
-            box-shadow: 0 0 30px rgba(0, 255, 153, 0.3);
-            position: relative;
-            border: 1px solid rgba(0, 255, 153, 0.2);
-            overflow: hidden;
-        }
-        .form-header {
-            text-align: center;
-            margin-bottom: 30px;
-            position: relative;
-        }
-        .logo-container {
-            position: relative;
-            width: 90px;
-            height: 90px;
-            margin: 0 auto 20px;
-        }
-        .logo-image {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--primary-color);
-            position: relative;
-            z-index: 2;
-        }
-        .logo-glow {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 110%;
-            height: 110%;
-            background: var(--primary-color);
-            border-radius: 50%;
-            filter: blur(12px);
-            opacity: 0.6;
-            animation: pulse 3s ease-in-out infinite;
-            z-index: 1;
-        }
-        .form-header h2 {
-            font-size: 28px;
-            margin: 0 0 8px;
-            color: white;
-            font-weight: 600;
-            text-shadow: 0 0 10px rgba(0, 255, 153, 0.5);
-        }
-        .form-header p {
-            font-size: 16px;
-            margin: 0;
-            color: rgba(255, 255, 255, 0.7);
-        }
-        #contactForm {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            padding: 20px 0;
-        }
-        .input-group {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            margin-bottom: 20px;
-        }
-        .input-container {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        .input-container label {
-            display: block;
-            font-size: 14px;
-            color: var(--primary-color);
-            font-weight: 500;
-            margin: 0;
-        }
-        .input-container input,
-        .input-container select,
-        .input-container textarea {
-            width: 100%;
-            padding: 12px 16px;
-            background: rgba(18, 18, 18, 0.8);
-            border: 1px solid rgba(0, 255, 153, 0.2);
-            border-radius: 10px;
-            color: white;
-            font-size: 15px;
-            transition: all 0.3s;
-            margin: 0;
-        }
-        .input-container input:focus,
-        .input-container select:focus,
-        .input-container textarea:focus {
-            outline: none;
-            background: rgba(0, 255, 153, 0.1);
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 2px rgba(0, 255, 153, 0.2);
-        }
-        .input-container input::placeholder,
-        .input-container textarea::placeholder {
-            color: rgba(255, 255, 255, 0.3);
-        }
-        .input-border {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            height: 2px;
-            width: 0;
-            background: var(--primary-color);
-            transition: width 0.3s ease;
-        }
-        .input-container input:focus ~ .input-border,
-        .input-container select:focus ~ .input-border,
-        .input-container textarea:focus ~ .input-border {
-            width: 100%;
-        }
-        .submit-btn {
-            background: var(--primary-color);
-            color: black;
-            font-size: 16px;
-            font-weight: 600;
-            padding: 16px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            margin-top: 10px;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s;
-            box-shadow: 0 0 15px rgba(0, 255, 153, 0.4);
-        }
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 20px rgba(0, 255, 153, 0.6);
-        }
-        .submit-btn:active {
-            transform: translateY(1px);
-        }
-        .decoration-dot {
-            position: absolute;
-            border-radius: 50%;
-            background: var(--primary-color);
-            opacity: 0.3;
-            z-index: -1;
-        }
-        .dot-1 {
-            width: 200px;
-            height: 200px;
-            top: -100px;
-            right: -100px;
-            filter: blur(60px);
-        }
-        .dot-2 {
-            width: 150px;
-            height: 150px;
-            bottom: -50px;
-            left: -70px;
-            filter: blur(50px);
-        }
-        .dot-3 {
-            width: 100px;
-            height: 100px;
-            bottom: 40%;
-            right: -50px;
-            filter: blur(40px);
-        }
-        .twinkle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: white;
-            border-radius: 50%;
-        }
-        .twinkle-1 {
-            top: 15%;
-            left: 10%;
-            animation: twinkle 4s infinite;
-        }
-        .twinkle-2 {
-            top: 80%;
-            left: 80%;
-            animation: twinkle 6s infinite 1s;
-        }
-        .twinkle-3 {
-            top: 30%;
-            left: 85%;
-            animation: twinkle 5s infinite 2s;
-        }
-        @keyframes pulse {
-            0% { opacity: 0.4; transform: translate(-50%, -50%) scale(1); }
-            50% { opacity: 0.7; transform: translate(-50%, -50%) scale(1.15); }
-            100% { opacity: 0.4; transform: translate(-50%, -50%) scale(1); }
-        }
-        @keyframes twinkle {
-            0% { opacity: 0; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.5); }
-            100% { opacity: 0; transform: scale(1); }
-        }
-        @media (max-width: 768px) {
-            .contact-form {
-                padding: 30px 20px;
-            }
-            .input-group {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-            .form-header h2 {
-                font-size: 24px;
-            }
-            .form-header p {
-                font-size: 14px;
-            }
-        }
-        .theme-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: rgba(0, 255, 153, 0.2);
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            z-index: 1001;
-        }
-        .progress-bar {
-            width: 100%;
-            height: 20px;
-            background-color: #ddd;
-            border-radius: 10px;
-            margin: 20px 0;
-        }
-        .progress-fill {
-            height: 100%;
-            background-color: var(--primary-color);
-            border-radius: 10px;
-            transition: width 0.3s ease;
-        }
-        .notification {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(0, 255, 153, 0.9);
-            color: black;
-            padding: 15px 25px;
-            border-radius: 8px;
-            font-size: 14px;
-            box-shadow: 0 0 15px rgba(0, 255, 153, 0.5);
-            transform: translateX(200%);
-            transition: transform 0.3s ease-in-out;
-            z-index: 1000;
-        }
-        .notification.show {
-            transform: translateX(0);
-        }
-        .hidden {
-            display: none !important;
-        }
+
+        /* Intro container styles */
         .intro-container {
             background: rgba(0, 255, 153, 0.1);
             border-radius: 15px;
@@ -463,12 +87,44 @@
             gap: 30px;
             border: 1px solid var(--primary-color);
             box-shadow: 0 0 20px rgba(0, 255, 153, 0.2);
+            animation: none;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0, 255, 153, 0.3);
+            transition: box-shadow 0.5s ease;
         }
+
+        .intro-container:hover {
+            box-shadow: 0 0 30px rgba(0, 255, 153, 0.5);
+        }
+
         .ai-avatar {
             flex-shrink: 0;
+            animation: float 3s ease-in-out infinite;
             position: relative;
-            cursor: pointer;
         }
+
+        .ai-avatar::before {
+            content: '✨';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            font-size: 24px;
+            animation: sparkle 2s infinite;
+        }
+
+        .ai-avatar::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--primary-color) 0%, transparent 70%);
+            animation: glowRing 3s infinite;
+            z-index: -1;
+        }
+
         .avatar-img {
             width: 120px;
             height: 120px;
@@ -476,1507 +132,2189 @@
             border: 2px solid var(--primary-color);
             box-shadow: 0 0 15px var(--primary-color);
             object-fit: cover;
-        }
-        .intro-text {
-            text-align: left;
-        }
-        .intro-text h1 {
-            font-size: 32px;
-            margin: 0;
-            background: linear-gradient(45deg, var(--primary-color), #00ffcc);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: none;
-        }
-        .intro-text p {
-            font-size: 18px;
-            margin: 10px 0 20px;
-            opacity: 0.9;
-        }
-        .features-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-        }
-        .feature {
-            font-size: 14px;
-            padding: 8px 15px;
-            background: rgba(0, 255, 153, 0.1);
-            border-radius: 8px;
-            border: 1px solid rgba(0, 255, 153, 0.2);
-        }
-        @media (max-width: 768px) {
-            .intro-container {
-                flex-direction: column;
-                text-align: center;
-                padding: 20px;
-            }
-            .intro-text {
-                text-align: center;
-            }
-            .features-list {
-                grid-template-columns: 1fr;
-            }
-        }
-        .contact-header {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            margin-bottom: 25px;
-        }
-        .contact-header .ai-avatar {
-            flex-shrink: 0;
-        }
-        .contact-header .ai-avatar img {
-            width: 80px;
-            height: 80px;
-            border-radius: 40px;
-            border: 2px solid var(--primary-color);
-            box-shadow: 0 0 15px var(--primary-color);
-        }
-        .contact-header .header-text {
-            text-align: left;
-        }
-        .contact-header h2 {
-            margin: 0;
-            font-size: 24px;
-        }
-        .contact-header p {
-            margin: 10px 0 0;
-            opacity: 0.8;
-        }
-        @media (max-width: 768px) {
-            .contact-header {
-                flex-direction: column;
-                text-align: center;
-                gap: 15px;
-            }
-            .contact-header .header-text {
-                text-align: center;
-            }
-        }
-        .troubleshoot-container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 0 20px;
-        }
-        .troubleshoot-btn {
-            background: rgba(0, 255, 153, 0.1);
-            color: var(--primary-color);
-            border: 1px solid var(--primary-color);
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
+            animation: pulse 3s ease-in-out infinite;
             transition: all 0.3s ease;
         }
-        .troubleshoot-btn:hover {
-            background: rgba(0, 255, 153, 0.2);
-            box-shadow: 0 0 15px rgba(0, 255, 153, 0.3);
+
+        .avatar-img:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 
+                0 0 20px var(--primary-color),
+                0 0 40px var(--primary-color),
+                0 0 60px var(--primary-color);
         }
-        .troubleshoot-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-        .troubleshoot-item {
-            background: rgba(0, 255, 153, 0.1);
-            border: 1px solid rgba(0, 255, 153, 0.2);
-            border-radius: 10px;
+
+        /* Topic selection styles */
+        .topic-box {
+            font-size: 22px;
             padding: 20px;
-            text-align: left;
-        }
-        .troubleshoot-item h3 {
-            color: var(--primary-color);
-            margin-top: 0;
-            font-size: 18px;
-        }
-        .troubleshoot-item ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-        }
-        .troubleshoot-item li {
-            margin: 10px 0;
-            font-size: 14px;
-            line-height: 1.4;
-        }
-        .start-note {
-            margin-top: 15px;
-            padding: 8px 16px;
-            background: rgba(0, 255, 153, 0.1);
-            border-radius: 8px;
-            font-size: 14px;
-            border: 1px solid rgba(0, 255, 153, 0.2);
-            display: inline-block;
-        }
-        .form-header {
-            text-align: center;
+            background: rgba(0, 255, 153, 0.3);
+            border-radius: 15px;
             margin-bottom: 20px;
+            font-weight: bold;
+            box-shadow: 0px 0px 18px #00FF99;
+            text-align: center;
+            animation: glow 1.5s infinite alternate;
         }
-        .logo-container {
-            position: relative;
-            margin-bottom: 10px;
-        }
-        .logo-image {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-        .logo-glow {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(0, 255, 153, 0.2) 0%, rgba(0, 255, 153, 0) 70%);
-            transform: scale(1.1);
-            pointer-events: none;
-        }
-        .input-group {
-            display: flex;
-            gap: 10px;
-        }
-        .input-container {
-            flex: 1;
-            position: relative;
-        }
-        .input-border {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: transparent;
-            pointer-events: none;
-        }
-        .submit-btn {
-            width: 100%;
-            padding: 15px;
+
+        /* Writing area styles */
+        .editor {
+            width: 90%;
+            max-width: 800px;
+            height: 400px;
+            border: 3px solid var(--primary-color);
+            padding: 20px;
             font-size: 18px;
-            font-weight: 500;
-            border: none;
+            background: rgba(0, 255, 153, 0.1);
+            color: white !important;
+            outline: none;
+            border-radius: 15px;
+            margin: 20px auto;
+            box-shadow: 0px 0px 15px var(--primary-color);
+            transition: 0.3s ease-in-out;
+        }
+
+        /* Button styles */
+        button {
+            margin: 10px;
+            padding: 12px 20px;
+            font-size: 16px;
             border-radius: 10px;
+            border: none;
             cursor: pointer;
             transition: 0.3s ease-in-out;
+            font-weight: bold;
+        }
+
+        .btn-green {
             background-color: var(--primary-color);
             color: black;
             box-shadow: 0px 0px 15px var(--primary-color);
         }
-        .submit-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0px 0px 20px var(--primary-color);
+
+        .btn-red {
+            background-color: #FF4444;
+            color: white;
+            box-shadow: 0px 0px 15px #FF4444;
         }
-        .decoration-dot {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
+
+        .btn-blue {
+            background-color: #0095ff;
+            color: white;
+            box-shadow: 0px 0px 15px #0095ff;
+        }
+
+        button:hover {
+            transform: scale(1.1);
+            box-shadow: 0px 0px 25px white;
+        }
+
+        /* Contact form overlay */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .contact-form {
+            background: linear-gradient(145deg, #1a1a1a, #2a2a2a);
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 255, 153, 0.25);
+            width: 90%;
+            max-width: 500px;
+            padding: 32px;
+            margin: 20px;
+            border: 2px solid rgba(0, 255, 153, 0.2);
+            position: relative;
+            animation: formSlideIn 0.5s ease-out;
+        }
+
+        .contact-form input,
+        .contact-form select {
+            width: 100%;
+            padding: 14px 16px;
+            margin: 8px 0 20px 0;
+            border-radius: 12px;
+            border: 2px solid rgba(0, 255, 153, 0.2);
+            background: rgba(0, 255, 153, 0.05);
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .contact-form input:focus,
+        .contact-form select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(0, 255, 153, 0.1);
+            background: rgba(0, 255, 153, 0.1);
+        }
+
+        .contact-form input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .contact-form label {
+            display: block;
+            margin-bottom: 6px;
+            color: var(--primary-color);
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .contact-form button[type="submit"] {
+            width: 100%;
+            padding: 16px;
+            margin-top: 24px;
+            border-radius: 12px;
             background: var(--primary-color);
+            color: #000;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
-        .dot-1 { top: 10px; left: 10px; }
-        .dot-2 { top: 10px; right: 10px; }
-        .dot-3 { bottom: 10px; left: 10px; }
-        .twinkle {
+
+        .contact-form button[type="submit"]:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -10px var(--primary-color);
+        }
+
+        .contact-form button[type="submit"]:active {
+            transform: translateY(0);
+        }
+
+        .form-intro {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 32px;
+            padding: 20px;
+            background: rgba(0, 255, 153, 0.05);
+            border-radius: 16px;
+            border: 1px solid rgba(0, 255, 153, 0.1);
+        }
+
+        .intro-message h2 {
+            font-size: 24px;
+            margin-bottom: 8px;
+            background: linear-gradient(45deg, var(--primary-color), #00ffcc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .intro-message p {
+            font-size: 15px;
+            line-height: 1.5;
+            color: rgba(255, 255, 255, 0.8);
+            margin: 0;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .form-group .icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary-color);
+            opacity: 0.7;
+        }
+
+        /* Add animations */
+        @keyframes formSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Add loading state styles */
+        .contact-form button[type="submit"].loading {
+            background: rgba(0, 255, 153, 0.3);
+            pointer-events: none;
+        }
+
+        .contact-form button[type="submit"].loading::after {
+            content: '';
             position: absolute;
             width: 20px;
             height: 20px;
+            border: 2px solid transparent;
+            border-top-color: #000;
             border-radius: 50%;
-            background: var(--primary-color);
-            opacity: 0.5;
+            animation: buttonSpin 1s linear infinite;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
         }
-        .twinkle-1 { top: 10px; left: 10px; }
-        .twinkle-2 { top: 10px; right: 10px; }
-        .twinkle-3 { bottom: 10px; left: 10px; }
-        @keyframes vibrate {
-            0%, 100% { transform: translate(0); }
-            25% { transform: translate(-1px, 1px); }
-            50% { transform: translate(1px, -1px); }
-            75% { transform: translate(-1px, -1px); }
+
+        @keyframes buttonSpin {
+            to {
+                transform: translateY(-50%) rotate(360deg);
+            }
         }
-        .avatar-vibrating {
-            animation: vibrate 0.3s ease-in-out infinite 2s;
-            animation-play-state: running;
-            animation-direction: alternate;
-            animation-delay: 2s;
+
+        /* Required field indicator */
+        .required::after {
+            content: '*';
+            color: var(--primary-color);
+            margin-left: 4px;
         }
-        .ai-avatar:hover .avatar-img {
-            box-shadow: 0 0 25px var(--primary-color);
+
+        /* Field validation styles */
+        .contact-form input:invalid,
+        .contact-form select:invalid {
+            border-color: rgba(255, 68, 68, 0.5);
         }
-        .ai-avatar::after {
-            content: '🔊';
+
+        .contact-form input:invalid:focus,
+        .contact-form select:invalid:focus {
+            border-color: #FF4444;
+            box-shadow: 0 0 0 4px rgba(255, 68, 68, 0.1);
+        }
+
+        /* Add more styles from frenchinterview.html as needed */
+        @keyframes glow {
+            from { box-shadow: 0px 0px 18px #00FF99; }
+            to { box-shadow: 0px 0px 30px #00FF99; }
+        }
+
+        @keyframes borderGlow {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .error {
+            background: #FF4444;
+            padding: 3px;
+            border-radius: 5px;
+            cursor: pointer;
+            position: relative;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0px 0px 10px #FF4444;
+        }
+
+        .error:hover::after {
+            content: attr(data-tooltip);
             position: absolute;
-            bottom: -5px;
-            right: -5px;
-            background: rgba(0, 255, 153, 0.2);
+            left: 50%;
+            bottom: 125%;
+            background: #FF4444;
+            color: white;
             padding: 5px;
-            border-radius: 50%;
+            border-radius: 5px;
+            white-space: nowrap;
+            transform: translateX(-50%);
             font-size: 14px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            box-shadow: 0px 0px 10px #FF4444;
         }
-        .ai-avatar:hover::after {
-            opacity: 1;
+
+        .feedback-message {
+            background: rgba(0, 255, 153, 0.2);
+            color: var(--primary-color);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            text-align: center;
+            font-weight: bold;
+            animation: fadeIn 0.3s ease-in;
+            border: 1px solid var(--primary-color);
+            box-shadow: 0 0 10px var(--primary-color);
         }
-        @keyframes pulse-vibrate {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
-        .avatar-vibrating {
-            animation: pulse-vibrate 1s ease-in-out infinite;
-            animation-play-state: running;
+
+        .topic-warning {
+            color: #FF4444;
+            font-weight: bold;
+            text-shadow: 0px 0px 5px #FF4444;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 10px;
+            background: rgba(255, 68, 68, 0.1);
+            border: 1px solid #FF4444;
+            animation: fadeIn 0.3s ease-in;
         }
-        @keyframes funny-pulse {
-            0% { transform: scale(1) rotate(0deg); filter: brightness(1); }
-            25% { transform: scale(1.08) rotate(-3deg); filter: brightness(1.2); }
-            50% { transform: scale(1.04) rotate(0deg); filter: brightness(1.1); }
-            75% { transform: scale(1.08) rotate(3deg); filter: brightness(1.2); }
-            100% { transform: scale(1) rotate(0deg); filter: brightness(1); }
+
+        .selected-topic-box {
+            width: 90%;
+            max-width: 800px;
+            margin: 0 auto 20px auto;
+            padding: 15px;
+            background: rgba(0, 255, 153, 0.2);
+            border-radius: 15px;
+            border: 2px solid var(--primary-color);
+            box-shadow: 0 0 15px var(--primary-color);
         }
-        .avatar-vibrating {
-            animation: funny-pulse 0.8s ease-in-out infinite;
-            border-radius: 60px;
-            box-shadow: 0 0 20px var(--primary-color), 0 0 40px rgba(0, 255, 153, 0.4);
+
+        .topic-label {
+            font-size: 16px;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+            font-weight: bold;
         }
-        .ai-avatar:hover .avatar-img {
-            transform: scale(1.1) rotate(5deg);
-            box-shadow: 0 0 30px var(--primary-color);
-            transition: all 0.3s ease;
+
+        .topic-text {
+            font-size: 20px;
+            color: white;
+            font-weight: bold;
+            text-shadow: 0 0 10px var(--primary-color);
         }
-        @keyframes super-funny-pulse {
-            0% { transform: scale(1) rotate(0deg); filter: brightness(1) hue-rotate(0deg); }
-            20% { transform: scale(1.1) rotate(-5deg); filter: brightness(1.3) hue-rotate(15deg); }
-            40% { transform: scale(1.05) rotate(0deg); filter: brightness(1.1) hue-rotate(0deg); }
-            60% { transform: scale(1.08) rotate(5deg); filter: brightness(1.2) hue-rotate(-15deg); }
-            80% { transform: scale(1.03) rotate(-2deg); filter: brightness(1.15) hue-rotate(10deg); }
-            100% { transform: scale(1) rotate(0deg); filter: brightness(1) hue-rotate(0deg); }
+
+        .form-intro {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            margin-bottom: 30px;
+            padding: 15px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(0, 255, 153, 0.3);
+            min-height: 110px;
         }
-        .avatar-vibrating {
-            animation: super-funny-pulse 1.2s ease-in-out infinite;
-            border-radius: 60px;
-            box-shadow: 0 0 25px var(--primary-color), 0 0 50px rgba(0, 255, 153, 0.5);
-            transition: all 0.3s ease;
+
+        .ai-avatar-small {
+            flex-shrink: 0;
+            position: relative;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 10px;
+            padding: 5px;
         }
-        /* Add colorful border animation */
-        .avatar-vibrating::before {
+
+        .ai-avatar-small::before {
+            content: '✨';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            font-size: 24px;
+            animation: sparkle 2s infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .ai-avatar-small::after {
             content: '';
             position: absolute;
             top: -5px;
             left: -5px;
             right: -5px;
             bottom: -5px;
-            border-radius: 70px;
-            background: linear-gradient(45deg, #00ff99, #00ffcc, #00ccff, #ff00cc, #ffcc00);
-            background-size: 400% 400%;
-            z-index: -1;
-            animation: gradient-shift 3s ease infinite;
-            opacity: 0.7;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--primary-color) 0%, transparent 70%);
+            animation: glowRing 3s infinite;
+            pointer-events: none;
+            z-index: 1;
         }
-        @keyframes gradient-shift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+
+        .avatar-img-small {
+            width: 80px;
+            height: 80px;
+            border-radius: 40px;
+            border: 2px solid var(--primary-color);
+            box-shadow: 0 0 15px var(--primary-color);
+            object-fit: cover;
+            position: relative;
+            z-index: 2;
         }
-        @keyframes professional-cute-pulse {
-            0% { transform: scale(1) rotate(0deg); filter: brightness(1) saturate(1.2); }
-            20% { transform: scale(1.07) rotate(-2deg); filter: brightness(1.2) saturate(1.5) drop-shadow(0 0 8px var(--primary-color)); }
-            40% { transform: scale(1.04) rotate(1deg); filter: brightness(1.1) saturate(1.2); }
-            60% { transform: scale(1.06) rotate(-1deg); filter: brightness(1.15) saturate(1.4) drop-shadow(0 0 5px var(--primary-color)); }
-            80% { transform: scale(1.03) rotate(2deg); filter: brightness(1.1) saturate(1.3); }
-            100% { transform: scale(1) rotate(0deg); filter: brightness(1) saturate(1.2); }
+
+        .intro-message {
+            flex: 1;
+            min-width: 0;
+            padding-left: 5px;
         }
-        .avatar-vibrating {
-            animation: professional-cute-pulse 1.2s ease-in-out infinite;
-            border-radius: 60px;
-            box-shadow: 0 0 20px var(--primary-color), 0 0 30px rgba(0, 255, 153, 0.3);
-            transition: all 0.3s ease;
-            transform-origin: center 60%;
+
+        .intro-message h2 {
+            color: var(--primary-color);
+            margin: 0 0 10px 0;
+            font-size: 24px;
+            text-shadow: 0 0 10px var(--primary-color);
+            animation: slideIn 0.5s ease-out;
         }
-        /* Professional glowing effect */
-        .avatar-vibrating::before {
-            content: '';
-            position: absolute;
-            top: -4px;
-            left: -4px;
-            right: -4px;
-            bottom: -4px;
-            border-radius: 70px;
-            background: linear-gradient(45deg, 
-                rgba(0, 255, 153, 0.8), 
-                rgba(0, 204, 255, 0.8), 
-                rgba(102, 255, 204, 0.8), 
-                rgba(0, 255, 204, 0.8));
-            background-size: 300% 300%;
-            z-index: -1;
-            animation: subtle-gradient 6s ease infinite;
-            opacity: 0.7;
-            filter: blur(4px);
-        }
-        /* Add cute accent elements */
-        .avatar-vibrating::after {
-            content: '';
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            width: 30px;
-            height: 30px;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%2300FF99"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>');
-            background-size: contain;
-            background-repeat: no-repeat;
-            opacity: 0.9;
-            transform-origin: center;
-            animation: cute-accent 3s ease-in-out infinite;
-        }
-        @keyframes subtle-gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        @keyframes cute-accent {
-            0%, 100% { transform: scale(1) rotate(0deg); }
-            50% { transform: scale(1.2) rotate(15deg); }
-        }
-        /* Special accent for hover state */
-        .ai-avatar:hover .avatar-img {
-            transform: scale(1.08);
-            box-shadow: 0 0 30px var(--primary-color);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        /* Speech bubble design */
-        .speech-bubble {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.95);
-            color: #333;
-            border-radius: 18px;
-            padding: 8px 15px;
+
+        .intro-message p {
+            color: white;
+            margin: 0;
             font-size: 16px;
-            font-weight: 500;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1), 0 0 5px var(--primary-color);
-            z-index: 100;
-            max-width: 200px;
-            text-align: center;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: bubble-appear 0.5s forwards;
+            line-height: 1.4;
+            opacity: 0.9;
+            animation: fadeIn 0.8s ease-out;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
-        .speech-bubble::after {
+
+        .char-limit {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .char-limit-bar {
+            width: 100px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+        }
+
+        .char-limit-fill {
+            height: 100%;
+            background: var(--primary-color);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        .timer-container {
+            width: 90%;
+            max-width: 800px;
+            margin: 0 auto 20px auto;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .timer {
+            background: rgba(0, 255, 153, 0.1);
+            border: 2px solid var(--primary-color);
+            border-radius: 10px;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        #timerDisplay {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+            min-width: 100px;
+        }
+
+        .timer-controls {
+            display: flex;
+            gap: 5px;
+        }
+
+        .btn-small {
+            padding: 5px 10px;
+            font-size: 12px;
+            border-radius: 5px;
+        }
+
+        .timer.warning #timerDisplay {
+            color: #FF4444;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .writing-stats {
+            width: 90%;
+            max-width: 800px;
+            margin: 10px auto;
+            display: flex;
+            justify-content: space-around;
+            color: var(--primary-color);
+            font-size: 14px;
+            background: rgba(0, 255, 153, 0.1);
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid var(--primary-color);
+        }
+
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .icon {
+            font-size: 16px;
+        }
+
+        /* Keyboard shortcuts tooltip */
+        .shortcut-hint {
+            font-size: 12px;
+            opacity: 0.7;
+            margin-top: 5px;
+        }
+
+        /* Add autosave indicator */
+        .autosave-indicator {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0, 255, 153, 0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .autosave-indicator.visible {
+            opacity: 1;
+        }
+
+        /* Add these new animation keyframes after your existing keyframes */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 15px var(--primary-color); }
+            50% { box-shadow: 0 0 25px var(--primary-color); }
+            100% { box-shadow: 0 0 15px var(--primary-color); }
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+            100% { transform: rotate(-5deg); }
+        }
+
+        /* Add animation to the features list */
+        .features-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .feature {
+            padding: 8px;
+            border-radius: 8px;
+            background: rgba(0, 255, 153, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            animation: none;
+        }
+
+        .feature:hover {
+            transform: translateX(5px);
+            background: rgba(0, 255, 153, 0.2);
+            box-shadow: 0 0 10px var(--primary-color);
+        }
+
+        .feature::before {
             content: '';
             position: absolute;
-            bottom: -10px;
-            left: 20%;
-            border-width: 10px 10px 0;
-            border-style: solid;
-            border-color: rgba(255, 255, 255, 0.95) transparent;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(0, 255, 153, 0.2),
+                transparent
+            );
+            transition: 0.5s;
         }
-        @keyframes bubble-appear {
-            to { opacity: 1; transform: translateY(0); }
+
+        .feature:hover::before {
+            left: 100%;
+        }
+
+        /* Add typing animation to the intro text */
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        .intro-text h1 {
+            overflow: hidden;
+            white-space: nowrap;
+            animation: typing 2s steps(40, end);
+            margin: 0 0 15px 0;
+        }
+
+        /* Add a wave animation to the emoji in the greeting */
+        @keyframes wave {
+            0% { transform: rotate(0deg); }
+            20% { transform: rotate(15deg); }
+            40% { transform: rotate(-15deg); }
+            60% { transform: rotate(15deg); }
+            80% { transform: rotate(-15deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        .intro-message h2 span {
+            display: inline-block;
+            animation: wave 2s infinite;
+        }
+
+        /* Add breathing effect to the main container */
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.01); }
+        }
+
+        /* Add dynamic border effect */
+        .intro-container::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, 
+                var(--primary-color),
+                transparent 60%,
+                var(--primary-color)
+            );
+            border-radius: 16px;
+            z-index: -1;
+            animation: none;
+        }
+
+        @keyframes borderRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Add typing cursor effect */
+        .editor:empty::before {
+            content: '|';
+            animation: cursorBlink 1s infinite;
+        }
+
+        @keyframes cursorBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Add particle effects behind the avatar */
+        .particle {
+            position: absolute;
+            pointer-events: none;
+            background: var(--primary-color);
+            border-radius: 50%;
+            opacity: 0.3;
+        }
+
+        /* Add these new keyframes */
+        @keyframes sparkle {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+        }
+
+        @keyframes glowRing {
+            0% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.2; }
+            100% { transform: scale(1); opacity: 0.5; }
+        }
+
+        /* Add pulsing effect to the features */
+        @keyframes featurePulse {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(5px); }
+            100% { transform: translateX(0); }
+        }
+
+        /* Assessment Panel Styles */
+        .assessment-panel {
+            width: 90%;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: rgba(0, 255, 153, 0.1);
+            border-radius: 15px;
+            border: 2px solid var(--primary-color);
+        }
+
+        .assessment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .level-badge {
+            padding: 8px 15px;
+            background: var(--primary-color);
+            color: black;
+            border-radius: 20px;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+
+        .assessment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .assessment-category {
+            padding: 15px;
+            background: rgba(0, 255, 153, 0.05);
+            border-radius: 10px;
+            border: 1px solid var(--primary-color);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            margin: 10px 0;
+            position: relative;
+        }
+
+        .progress {
+            height: 100%;
+            background: var(--primary-color);
+            border-radius: 4px;
+            transition: width 1s ease;
+        }
+
+        .score-label {
+            position: absolute;
+            right: 0;
+            top: -20px;
+            color: var(--primary-color);
+        }
+
+        .details-list {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+
+        .details-list li {
+            margin: 5px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .details-list li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+        }
+
+        .improvement-suggestions {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid var(--primary-color);
+            border-radius: 10px;
+        }
+
+        .vocabulary-analysis {
+            margin: 20px 0;
+        }
+
+        .vocab-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .vocab-level {
+            padding: 8px;
+            background: rgba(0, 255, 153, 0.1);
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .writing-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .metric {
+            padding: 10px;
+            background: rgba(0, 255, 153, 0.05);
+            border-radius: 8px;
+            border: 1px solid var(--primary-color);
+        }
+
+        .metric-label {
+            font-size: 14px;
+            color: var(--primary-color);
+        }
+
+        .metric-value {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        /* Add these new keyframes */
+        @keyframes slideIn {
+            from {
+                transform: translateX(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Add particle effects for the contact form */
+        .form-intro {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
         }
     </style>
 </head>
 <body>
+    <!-- Hemiya AI Introduction -->
     <div class="intro-container">
         <div class="ai-avatar">
             <img src="https://yiyang512.github.io/new/hemiya.jpg" alt="Hemiya AI" class="avatar-img">
         </div>
         <div class="intro-text">
-            <h1>Meet Hemiya - Your AI French Coach 👋</h1>
-            <p>Practice TEF/DELF Speaking with Real-time Feedback</p>
+            <h1>Meet Hemiya - Your AI Writing Coach 📝</h1>
+            <p>Perfect your French writing skills with real-time feedback and corrections</p>
             <div class="features-list">
-                <div class="feature">⦿ Smart Level Assessment (A1-B2)</div>
-                <div class="feature">⦿ Live Speech Recognition & Analysis</div>
-                <div class="feature">⦿ Instant Grammar Corrections</div>
-                <div class="feature">⦿ Self-Review Video Recording</div>
-                <div class="feature">⦿ Exam Format Timer & Preparation</div>
-                <div class="feature">⦿ 100% Private - No Data Stored</div>
+                <div class="feature" style="--i: 1">⦿ Smart Grammar Checking</div>
+                <div class="feature" style="--i: 2">⦿ Vocabulary Suggestions</div>
+                <div class="feature" style="--i: 3">⦿ Style Improvements</div>
+                <div class="feature" style="--i: 4">⦿ Real-time Feedback</div>
+                <div class="feature" style="--i: 5">⦿ TEF/DELF Format Practice</div>
+                <div class="feature" style="--i: 6">⦿ Progress Tracking</div>
             </div>
-            <p class="start-note">Enable camera & microphone for the best experience!</p>
         </div>
     </div>
 
-    <!-- Add this right after the intro-container div -->
-    <audio id="introAudio" preload="auto" style="display: none;">
-        <source src="https://yiyang512.github.io/new/hemiya.mp3" type="audio/mpeg">
+    <!-- Step Indicators -->
+    <div class="step-indicator">
+        <div class="step active" id="step1">Step 1: Choose Level & Topic</div>
+        <div class="step" id="step2">Step 2: Write Your Response</div>
+    </div>
+
+    <!-- Step 1: Topic Selection -->
+    <div id="topicSelection">
+        <select id="levelSelect">
+            <option value="">Select Level (A1 - A2)</option>
+            <option value="A1">A1 - Beginner</option>
+            <option value="A2">A2 - Elementary</option>
+            <option value="A2">B1 - Intermediate</option>
+            <option value="A2">B2 - Upper Intermediate</option>
+            <option value="C1">C1 - Advanced</option>
+            <option value="A2">C2 - Proficient</option>
+        </select>
+        <button class="btn-green" onclick="generateTopic()">Generate Topic</button>
+        <button class="btn-red" onclick="randomizeTopic()">Randomize Topic</button>
+        <div class="topic-box" id="writingTopic">Click "Generate Topic" or "Randomize Topic"</div>
+        <button class="btn-green" onclick="proceedToWriting()">Continue to Writing ➡️</button>
+    </div>
+
+    <!-- Step 2: Writing Board -->
+    <div id="writingBoard" class="hidden">
+        <div class="selected-topic-box">
+            <div class="topic-label">Your Topic:</div>
+            <div id="selectedTopic" class="topic-text"></div>
+        </div>
+        <div class="timer-container">
+            <div class="timer" id="timer">
+                <span id="timerDisplay">30:00</span>
+                <div class="timer-controls">
+                    <button class="btn-small" onclick="startTimer()">Start</button>
+                    <button class="btn-small" onclick="pauseTimer()">Pause</button>
+                    <button class="btn-small" onclick="resetTimer()">Reset</button>
+                </div>
+            </div>
+        </div>
+        <div class="editor" contenteditable="true" id="textEditor">
+            Type your response in French here...
+        </div>
+        <div class="char-limit">
+            <div class="char-limit-bar">
+                <div class="char-limit-fill" id="charLimitFill"></div>
+            </div>
+            <span id="charLimitText">0/500</span>
+        </div>
+        <div class="controls">
+            <button class="btn-red" onclick="clearText()">Clear</button>
+            <button class="btn-green" onclick="checkGrammar()">Check Grammar</button>
+            <button class="btn-blue" onclick="downloadText()">
+                <span class="icon">💾</span> Save as Text
+            </button>
+        </div>
+        <div id="grammar-errors"></div>
+        <div class="writing-stats">
+            <div class="stat">
+                <span class="icon">📝</span>
+                <span id="wordCount">0</span> words
+            </div>
+            <div class="stat">
+                <span class="icon">⌨️</span>
+                <span id="charCount">0</span> characters
+            </div>
+            <div class="stat">
+                <span class="icon">⏱️</span>
+                Est. reading time: <span id="readingTime">0</span> min
+            </div>
+        </div>
+        <div class="assessment-panel hidden" id="assessmentPanel">
+            <div class="assessment-header">
+                <h3>📊 Comprehensive Writing Assessment</h3>
+                <div class="level-badge" id="assessedLevel">A2</div>
+            </div>
+            
+            <div class="assessment-grid">
+                <div class="assessment-category">
+                    <h4>Grammar & Structure</h4>
+                    <div class="progress-bar">
+                        <div class="progress" id="grammarScore"></div>
+                        <span class="score-label">85%</span>
+                    </div>
+                    <ul class="details-list" id="grammarDetails"></ul>
+                </div>
+                
+                <div class="assessment-category">
+                    <h4>Vocabulary Usage</h4>
+                    <div class="progress-bar">
+                        <div class="progress" id="vocabScore"></div>
+                        <span class="score-label">78%</span>
+                    </div>
+                    <ul class="details-list" id="vocabDetails"></ul>
+                </div>
+                
+                <div class="assessment-category">
+                    <h4>Style & Coherence</h4>
+                    <div class="progress-bar">
+                        <div class="progress" id="styleScore"></div>
+                        <span class="score-label">90%</span>
+                    </div>
+                    <ul class="details-list" id="styleDetails"></ul>
+                </div>
+            </div>
+
+            <div class="improvement-suggestions">
+                <h4>🎯 Areas for Improvement</h4>
+                <ul id="improvementList"></ul>
+            </div>
+
+            <div class="vocabulary-analysis">
+                <h4>📚 Vocabulary Analysis</h4>
+                <div class="vocab-chart" id="vocabChart">
+                    <div class="vocab-level">Advanced Words: <span id="advancedCount">12</span></div>
+                    <div class="vocab-level">Intermediate Words: <span id="intermediateCount">25</span></div>
+                    <div class="vocab-level">Basic Words: <span id="basicCount">45</span></div>
+                </div>
+            </div>
+
+            <div class="writing-metrics">
+                <div class="metric">
+                    <span class="metric-label">Sentence Length Variation</span>
+                    <div class="metric-value" id="sentenceLengthVar"></div>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Text Coherence</span>
+                    <div class="metric-value" id="textCoherence"></div>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Expression Diversity</span>
+                    <div class="metric-value" id="expressionDiversity"></div>
+                </div>
+            </div>
+
+            <button class="btn-green" onclick="generateDetailedReport()">
+                📋 Generate Detailed Report
+            </button>
+        </div>
+    </div>
+
+    <!-- Contact Form Overlay -->
+    <div id="contactOverlay" class="overlay hidden">
+        <div class="contact-form">
+            <div class="form-intro">
+                <div class="ai-avatar-small">
+                    <img src="https://yiyang512.github.io/new/hemiya.jpg" alt="Hemiya AI" class="avatar-img-small">
+                </div>
+                <div class="intro-message">
+                    <h2><span>👋</span> Welcome to Hemiya AI</h2>
+                    <p>Let's personalize your French learning experience. Please provide a few details to get started.</p>
+                </div>
+            </div>
+            <form id="contactForm">
+                <div class="form-group">
+                    <label class="required" for="name">Full Name</label>
+                    <input 
+                        type="text" 
+                        id="name" 
+                        placeholder="Enter your name" 
+                        required 
+                        minlength="2"
+                    >
+                </div>
+                
+                <div class="form-group">
+                    <label class="required" for="email">Email Address</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        placeholder="your.email@example.com" 
+                        required
+                    >
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input 
+                        type="tel" 
+                        id="phone" 
+                        placeholder="Optional"
+                        pattern="[0-9+\-\s]+"
+                    >
+                </div>
+                
+                <div class="form-group">
+                    <label class="required" for="targetLevel">Target French Level</label>
+                    <select id="targetLevel" required>
+                        <option value="">Select your target level</option>
+                        <option value="A1">A1 - Beginner</option>
+                        <option value="A2">A2 - Elementary</option>
+                        <option value="B1">B1 - Intermediate</option>
+                        <option value="B2">B2 - Upper Intermediate</option>
+                        <option value="C1">C1 - Advanced</option>
+                        <option value="C2">C2 - Proficient</option>
+                    </select>
+                </div>
+
+                <button type="submit" id="submitBtn">
+                    Start Your French Journey
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add this audio element at the end of body -->
+    <audio id="timerBeep" preload="auto">
+        <source src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" type="audio/mpeg">
     </audio>
 
-    <div class="troubleshoot-container">
-        <button class="troubleshoot-btn" onclick="toggleTroubleshoot()">
-            ⚙️ Need Help? Click here for troubleshooting
-        </button>
-        <div id="troubleshoot-content" class="hidden">
-            <div class="troubleshoot-grid">
-                <div class="troubleshoot-item">
-                    <h3>🎥 Camera Issues</h3>
-                    <ul>
-                        <li>Using browsers other than Chrome? Camera toggle might not work - please turn off camera manually in browser settings</li>
-                        <li>Camera not showing? Click the camera icon in your browser's address bar and allow access</li>
-                        <li>Still having issues? Try refreshing the page or checking your device's camera settings</li>
-                    </ul>
-                </div>
-                <div class="troubleshoot-item">
-                    <h3>🎤 Microphone Issues</h3>
-                    <ul>
-                        <li>Speech not being recognized? Make sure you've allowed microphone access</li>
-                        <li>Click the microphone icon in your browser's address bar to check permissions</li>
-                        <li>Speaking but no text appears? Make sure you're speaking clearly and in French</li>
-                    </ul>
-                </div>
-                <div class="troubleshoot-item">
-                    <h3>⚡ Performance Tips</h3>
-                    <ul>
-                        <li>For best results, use Google Chrome browser</li>
-                        <li>Ensure you have a stable internet connection</li>
-                        <li>Close other tabs and applications for better performance</li>
-                    </ul>
-                </div>
-                <div class="troubleshoot-item">
-                    <h3>📝 Practice Tips</h3>
-                    <ul>
-                        <li>Use headphones to hear yourself better</li>
-                        <li>Position yourself in a quiet environment</li>
-                        <li>Speak clearly and at a normal pace</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+    <!-- Add this near the end of the body -->
+    <div class="autosave-indicator">
+        <span class="icon">💾</span> Auto-saving...
     </div>
-
-    <h2>Select your level and start speaking</h2>
-    
-    <div class="level-selector">
-        <button onclick="setLevel('beginner')" class="btn-green">Débutant</button>
-        <button onclick="setLevel('intermediate')" class="btn-blue">Intermédiaire</button>
-        <button onclick="setLevel('advanced')" class="btn-red">Avancé</button>
-    </div>
-
-    <div id="question-box" class="intro-container" style="display: none;">
-        <div class="ai-avatar">
-            <img src="https://yiyang512.github.io/new/hemiya.jpg" alt="Hemiya AI" class="avatar-img">
-        </div>
-        <div class="intro-text">
-            <h3 id="question-text" style="color: var(--primary-color);">Your question will appear here...</h3>
-            <p id="question-translation" style="font-style: italic;">Translation will appear here...</p>
-        </div>
-    </div>
-
-    <div id="timer">⏳ Prep: 0:00</div>
-    
-    <p>Click "Generate Question" to start. Speak while watching yourself.</p>
-
-    <button class="btn-green" onclick="generateNewQuestion()">Generate Question</button>
-    <button class="btn-blue" id="toggle-camera">Turn Off Camera</button>
-    <button class="btn-blue" id="mute-btn">🔇 Mute</button>
-
-    <div class="test-container">
-        <video id="video" autoplay></video>
-        <div class="overlay-text" id="live-caption">Your speech will appear here...</div>
-    </div>
-
-    <div class="controls-container">
-        <div class="main-controls">
-            <button id="start-btn" class="btn-green">Start Speaking</button>
-            <button id="stop-btn" class="btn-red">Stop</button>
-        </div>
-        <div class="recording-controls">
-            <button id="start-record" class="btn-green">🔴 Start Recording</button>
-            <button id="stop-record" class="btn-red">Stop & Download</button>
-        </div>
-    </div>
-
-    <div id="speaking-assessment"></div>
-
-    <p><strong>Grammar & Conversation Fixes:</strong></p>
-    <p id="grammar-errors"></p>
-
-    <div id="contactOverlay" class="overlay">
-        <div class="contact-form">
-            <div class="form-header">
-                <div class="logo-container">
-                    <img src="https://yiyang512.github.io/new/hemiya.jpg" alt="Hemiya AI" class="logo-image">
-                    <div class="logo-glow"></div>
-                </div>
-                <h2>Welcome to Hemiya AI</h2>
-                <p>Let's personalize your French learning experience</p>
-            </div>
-            
-            <form id="contactForm">
-                <div class="input-group">
-                    <div class="input-container">
-                        <label for="name">Full Name</label>
-                        <input type="text" id="name" required placeholder="Enter your full name">
-                        <div class="input-border"></div>
-                    </div>
-                    
-                    <div class="input-container">
-                        <label for="email">Email Address</label>
-                        <input type="email" id="email" required placeholder="Enter your email address">
-                        <div class="input-border"></div>
-                    </div>
-                </div>
-                
-                <div class="input-group">
-                    <div class="input-container">
-                        <label for="phone">Phone Number (optional)</label>
-                        <input type="tel" id="phone" placeholder="Enter your phone number">
-                        <div class="input-border"></div>
-                    </div>
-                    
-                    <div class="input-container">
-                        <label for="level">Current French Level</label>
-                        <select id="level" required>
-                            <option value="" disabled selected>Select your level</option>
-                            <option value="A1">A1 Beginner</option>
-                            <option value="A2">A2 Elementary</option>
-                            <option value="B1">B1 Intermediate</option>
-                            <option value="B2">B2 Upper Intermediate</option>
-                            <option value="C1">C1 Advanced</option>
-                            <option value="none">Complete Beginner</option>
-                        </select>
-                        <div class="input-border"></div>
-                    </div>
-                </div>
-                
-                <div class="input-container full-width">
-                    <label for="exam_type">Preparing For</label>
-                    <select id="exam_type" required>
-                        <option value="" disabled selected>Select your goal</option>
-                        <option value="TEF">TEF Exam</option>
-                        <option value="DELF">DELF Exam</option>
-                        <option value="TCF">TCF Exam</option>
-                        <option value="hobby">Learning for personal interest</option>
-                        <option value="work">Professional opportunities</option>
-                        <option value="travel">Travel and cultural experiences</option>
-                        <option value="immigration">Immigration purposes</option>
-                        <option value="academic">Academic studies</option>
-                    </select>
-                    <div class="input-border"></div>
-                </div>
-                
-                <div class="input-container full-width">
-                    <label for="goals">Your Learning Goals</label>
-                    <textarea id="goals" rows="3" placeholder="Share what you hope to accomplish with your French..."></textarea>
-                    <div class="input-border"></div>
-                </div>
-                
-                <button type="submit" class="submit-btn">Start Your French Journey</button>
-            </form>
-            
-            <!-- Add decorative elements -->
-            <div class="decoration-dot dot-1"></div>
-            <div class="decoration-dot dot-2"></div>
-            <div class="decoration-dot dot-3"></div>
-            <div class="twinkle twinkle-1"></div>
-            <div class="twinkle twinkle-2"></div>
-            <div class="twinkle twinkle-3"></div>
-        </div>
-    </div>
-
-    <button id="theme-toggle" class="theme-toggle">
-        <span class="light">☀️</span>
-        <span class="dark">🌙</span>
-    </button>
-
-    <div class="progress-bar">
-        <div class="progress-fill"></div>
-    </div>
-
-    <div id="notification" class="notification"></div>
 
     <script>
-        let mediaRecorder;
-        let recordedChunks = [];
-        let stream;
-        let isMuted = false;
-        let isCameraOn = true;
-        let timer;
-        let timeLeft;
-        let currentLevel = 'intermediate';
-
-        const tefQuestions = {
-            beginner: [
-                { fr: "Décrivez votre routine quotidienne.", en: "Describe your daily routine." },
-                { fr: "Parlez-moi de votre famille.", en: "Tell me about your family." },
-                { fr: "Quels sont vos loisirs préférés?", en: "What are your favorite hobbies?" },
-                { fr: "Décrivez votre ville.", en: "Describe your city." },
-                { fr: "Quel temps fait-il aujourd'hui?", en: "How's the weather today?" }
-            ],
-            intermediate: [
-                { fr: "Que pensez-vous des réseaux sociaux?", en: "What do you think about social media?" },
-                { fr: "Faut-il interdire les voitures en centre-ville?", en: "Should cars be banned in city centers?" },
-                { fr: "Les jeunes devraient-ils apprendre plusieurs langues?", en: "Should young people learn multiple languages?" },
-                { fr: "Le télétravail est-il l'avenir?", en: "Is remote work the future?" },
-                { fr: "Comment protéger l'environnement?", en: "How can we protect the environment?" }
-            ],
-            advanced: [
-                { fr: "Quelles solutions proposez-vous pour réduire les inégalités sociales?", en: "What solutions do you propose to reduce social inequalities?" },
-                { fr: "Comment la technologie influence-t-elle notre façon de penser?", en: "How does technology influence our way of thinking?" },
-                { fr: "Quel est l'impact de la mondialisation sur les cultures locales?", en: "What is the impact of globalization on local cultures?" },
-                { fr: "Comment concilier croissance économique et protection de l'environnement?", en: "How can we reconcile economic growth and environmental protection?" },
-                { fr: "Discutez des enjeux éthiques de l'intelligence artificielle.", en: "Discuss the ethical issues of artificial intelligence." }
-            ]
-        };
-
-        const sounds = {
-            countdown: new Audio('https://www.soundjay.com/clock/sounds/clock-ticking-2.mp3'),
-            startSpeak: new Audio('https://www.soundjay.com/button/sounds/button-09.mp3'),
-            timeUp: new Audio('https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3'),
-            success: new Audio('https://www.soundjay.com/misc/sounds/success-fanfare-trumpets-6.mp3')
-        };
-
-        function setLevel(level) {
-            currentLevel = level;
-            document.querySelectorAll('.level-selector button').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-        }
-
-        function startTimer(duration) {
-            clearInterval(timer);
-            timeLeft = 60; // 1 minute prep time
-            let isPreparationTime = true;
-            updateTimerDisplay(true);
-            
-            // Start ticking sound
-            sounds.countdown.loop = true;
-            sounds.countdown.play();
-            
-            timer = setInterval(() => {
-                timeLeft--;
-                updateTimerDisplay(isPreparationTime);
-                
-                if (timeLeft <= 0) {
-                    if (isPreparationTime) {
-                        // Switch to speaking time
-                        timeLeft = duration;
-                        isPreparationTime = false;
-                        sounds.countdown.pause(); // Stop countdown sound
-                        sounds.timeUp.play(); // Play bell sound
-                        document.getElementById('live-caption').innerHTML += '<br>⏰ Preparation time is over! Click "Start Speaking" to begin.';
-                        // Flash the start speaking button
-                        const startBtn = document.getElementById('start-btn');
-                        startBtn.style.animation = 'flash 1s infinite';
-                    } else {
-                        clearInterval(timer);
-                        sounds.timeUp.play(); // Play bell sound again
-                        document.getElementById('live-caption').innerHTML += '<br>⏰ Temps écoulé!';
-                        recognition.stop();
-                        document.getElementById('start-btn').style.animation = '';
-                    }
-                }
-            }, 1000);
-        }
-
-        function updateTimerDisplay(isPreparationTime) {
-            const minutes = Math.floor(timeLeft / 60);
-            const seconds = timeLeft % 60;
-            const timerElement = document.getElementById('timer');
-            timerElement.textContent = `${isPreparationTime ? '⏳ Prep: ' : '🎤 Speaking: '}${minutes}:${seconds.toString().padStart(2, '0')}`;
-        }
-
-        function addCSS() {
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes flash {
-                    0% { transform: scale(1); }
-                    50% { transform: scale(1.1); box-shadow: 0px 0px 20px #00FF99; }
-                    100% { transform: scale(1); }
-                }
-            `;
-            document.head.appendChild(style);
-        }
-        addCSS();
-
-        function generateNewQuestion() {
-            const questions = tefQuestions[currentLevel];
-            const question = questions[Math.floor(Math.random() * questions.length)];
-            
-            // Show the question box
-            document.getElementById('question-box').style.display = 'flex';
-            
-            // Update the question text
-            document.getElementById('question-text').textContent = question.fr;
-            document.getElementById('question-translation').textContent = question.en;
-            
-            // Start the timer and read the question
-            startTimer(60); // 1 minute prep time
-            
-            // Read the question in French and English
-            let synth = window.speechSynthesis;
-            let frenchUtterance = new SpeechSynthesisUtterance(question.fr);
-            frenchUtterance.lang = "fr-FR";
-            frenchUtterance.rate = 0.8;
-            
-            let englishUtterance = new SpeechSynthesisUtterance(question.en);
-            englishUtterance.lang = "en-US";
-            englishUtterance.rate = 0.8;
-            
-            synth.speak(frenchUtterance);
-            frenchUtterance.onend = () => {
-                setTimeout(() => {
-                    synth.speak(englishUtterance);
-                }, 500);
-            };
-        }
-
-        // Speech-to-Text with Grammar Check
-        window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        if (window.SpeechRecognition) {
-            const recognition = new SpeechRecognition();
-            recognition.lang = 'fr-FR';
-            recognition.continuous = true;
-            recognition.interimResults = true;
-
-            const liveCaption = document.getElementById('live-caption');
-            document.getElementById('start-btn').addEventListener('click', () => {
-                recognition.start();
-                liveCaption.innerText = "🎤 Listening...";
-                sounds.startSpeak.play(); // Play beep sound when starting to speak
-            });
-            document.getElementById('stop-btn').addEventListener('click', () => {
-                recognition.stop();
-                sounds.countdown.pause(); // Ensure countdown sound is stopped
-                const transcript = document.getElementById('live-caption').innerText;
-                // Show final assessment
-                assessSpeaking(transcript);
-                sounds.success.play(); // Play success sound when assessment is shown
-            });
-
-            recognition.onresult = (event) => {
-                let transcript = Array.from(event.results).map(result => result[0].transcript).join(" ");
-                liveCaption.innerText = transcript;
-                checkGrammar(transcript);
-                // Only update word count while speaking
-                const words = transcript.split(' ').length;
-                document.getElementById('speaking-assessment').innerHTML = `
-                    <h3>Speaking Progress</h3>
-                    <p>Words Spoken: ${words}</p>
-                `;
-            };
-        }
-
-        // Grammar Check Feature
-        async function checkGrammar(text) {
-            const url = "https://api.languagetool.org/v2/check";
-            const params = new URLSearchParams({ text: text, language: "fr" });
-
-            try {
-                const response = await fetch(url, { method: "POST", body: params, headers: { "Content-Type": "application/x-www-form-urlencoded" } });
-                const data = await response.json();
-                document.getElementById("grammar-errors").innerHTML = data.matches.length > 0 
-                    ? data.matches.map(match => `<p class="error">❌ ${match.message} (Correction: ${match.replacements.map(r => r.value).join(", ")})</p>`).join("")
-                    : "✅ No grammar mistakes detected!";
-            } catch (error) {
-                document.getElementById("grammar-errors").innerHTML = "⚠️ Unable to check grammar.";
-            }
-        }
-
-        // Speaking Assessment
-        async function assessSpeaking(transcript) {
-            // Basic assessment criteria
-            const criteria = {
-                A1: {
-                    minWords: 20,
-                    maxPause: 5,
-                    basicPhrases: ["je suis", "j'ai", "je veux", "c'est", "il y a"],
-                    score: 0
-                },
-                A2: {
-                    minWords: 40,
-                    maxPause: 4,
-                    complexPhrases: ["parce que", "quand", "mais", "ou"],
-                    score: 0
-                },
-                B1: {
-                    minWords: 60,
-                    maxPause: 3,
-                    advancedPhrases: ["cependant", "néanmoins", "donc", "ainsi"],
-                    score: 0
-                },
-                B2: {
-                    minWords: 80,
-                    maxPause: 2,
-                    sophisticatedPhrases: ["en revanche", "par conséquent", "en effet", "d'ailleurs"],
-                    score: 0
-                }
-            };
-
-            const words = transcript.split(' ').length;
-            const pauses = (transcript.match(/\.\.\./g) || []).length;
-            const transcriptLower = transcript.toLowerCase();
-
-            // Calculate scores for each level
-            Object.entries(criteria).forEach(([level, data]) => {
-                // Word count score (0-4 points)
-                if (words >= data.minWords) {
-                    data.score += 4;
-                }
-                
-                // Pause penalty (0-2 points)
-                if (pauses <= data.maxPause) {
-                    data.score += 2;
-                }
-                
-                // Phrase usage score (0-4 points)
-                const phrases = data.basicPhrases || data.complexPhrases || 
-                               data.advancedPhrases || data.sophisticatedPhrases;
-                
-                phrases.forEach(phrase => {
-                    if (transcriptLower.includes(phrase.toLowerCase())) {
-                        data.score += 1;
-                    }
-                });
-            });
-
-            // Determine the level
-            let finalLevel = 'A1';
-            let maxScore = criteria.A1.score;
-
-            Object.entries(criteria).forEach(([level, data]) => {
-                if (data.score > maxScore) {
-                    maxScore = data.score;
-                    finalLevel = level;
-                }
-            });
-
-            // Always show the final assessment
-            const assessmentDiv = document.getElementById('speaking-assessment');
-            assessmentDiv.innerHTML = `
-                <h3>Final Speaking Assessment</h3>
-                <p class="level-result">Estimated Level: ${finalLevel}</p>
-                <p>Total Words: ${words}</p>
-                <p>Fluency Score: ${maxScore}/10</p>
-                <div class="assessment-details">
-                    <p>💡 Tips for improvement:</p>
-                    ${getFeedback(finalLevel)}
-                    <p>Detailed Analysis:</p>
-                    <ul>
-                        <li>Word Count: ${words} words</li>
-                        <li>Pauses: ${pauses}</li>
-                        <li>Vocabulary Range: ${getVocabFeedback(maxScore)}</li>
-                    </ul>
-                </div>
-            `;
-        }
-
-        // Add this helper function for vocabulary feedback
-        function getVocabFeedback(score) {
-            if (score <= 3) return "Basic vocabulary - focus on everyday expressions";
-            if (score <= 5) return "Good basic vocabulary - try adding more connecting words";
-            if (score <= 7) return "Strong vocabulary - continue adding advanced expressions";
-            return "Excellent vocabulary range - maintain this level";
-        }
-
-        function getFeedback(level) {
-            const feedback = {
-                'A1': 'Try using more basic connecting words and longer sentences.',
-                'A2': 'Practice using more complex sentence structures and time expressions.',
-                'B1': 'Incorporate more advanced vocabulary and opinion expressions.',
-                'B2': 'Focus on nuanced arguments and sophisticated connecting phrases.'
-            };
-            return feedback[level];
-        }
-
-        // Replace the function that checks for media permissions and browser type
-        function checkMediaPermissions() {
-            // First detect if this is Safari
-            const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-            
-            if (isSafari) {
-                // Show notification about Safari limitations
-                showNotification("⚠️ Safari has limited recording support. For best experience, use Chrome.", "warning", 8000);
-                
-                // Add a permanent warning banner for Safari users
-                const controlsContainer = document.querySelector('.controls-container');
-                const safariWarningHTML = `
-                    <div id="safari-warning" style="background: rgba(255, 180, 0, 0.15); border: 1px solid #FFB400; padding: 15px; border-radius: 10px; margin: 20px auto; max-width: 700px; text-align: center;">
-                        <h3 style="color: #FFB400; margin-top: 0;">Safari Browser Detected</h3>
-                        <p>Video recording and downloading is not fully supported in Safari.</p>
-                        <p><strong>For the full experience with video recording:</strong></p>
-                        <a href="https://www.google.com/chrome/" target="_blank" style="display: inline-block; background: #FFB400; color: black; padding: 8px 15px; border-radius: 5px; text-decoration: none; margin-top: 10px; font-weight: bold;">
-                            Download Chrome Browser
-                        </a>
-                    </div>
-                `;
-                
-                // Insert the warning before the controls container
-                controlsContainer.insertAdjacentHTML('beforebegin', safariWarningHTML);
-                
-                // Disable recording buttons
-                const startRecordBtn = document.getElementById('start-record');
-                const stopRecordBtn = document.getElementById('stop-record');
-                
-                // Add "disabled" class and attribute to buttons
-                startRecordBtn.disabled = true;
-                stopRecordBtn.disabled = true;
-                startRecordBtn.style.opacity = "0.5";
-                stopRecordBtn.style.opacity = "0.5";
-                startRecordBtn.title = "Recording not available in Safari - please use Chrome";
-                stopRecordBtn.title = "Recording not available in Safari - please use Chrome";
-                
-                // Update button text to indicate disabled state
-                startRecordBtn.textContent = "🚫 Recording (Safari not supported)";
-            }
-            
-            // Continue with regular permission checks
-            navigator.permissions.query({name: 'camera'})
-                .then(permissionStatus => {
-                    if (permissionStatus.state === 'denied') {
-                        showNotification("⚠️ Please enable camera access to use all features", "error");
-                    }
-                })
-                .catch(err => {
-                    console.log("Camera permission check failed:", err);
-                });
-            
-            navigator.permissions.query({name: 'microphone'})
-                .then(permissionStatus => {
-                    if (permissionStatus.state === 'denied') {
-                        showNotification("⚠️ Please enable microphone access for speech recognition", "error");
-                    }
-                })
-                .catch(err => {
-                    console.log("Microphone permission check failed:", err);
-                });
-        }
-
-        // Enhance the showNotification function to support different durations
-        function showNotification(message, type = 'success', duration = 5000) {
-            const notification = document.getElementById('notification');
-            notification.textContent = message;
-            
-            // Set color based on notification type
-            if (type === 'error') {
-                notification.style.background = 'rgba(255, 68, 68, 0.9)';
-            } else if (type === 'warning') {
-                notification.style.background = 'rgba(255, 180, 0, 0.9)';
-            } else {
-                notification.style.background = 'rgba(0, 255, 153, 0.9)';
-            }
-            
-            notification.classList.add('show');
-            
-            // Hide notification after specified duration
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, duration);
-        }
-
-        // Replace the existing MediaRecorder setup with this simplified version
-        navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-            .then(s => {
-                stream = s;
-                const videoElement = document.getElementById('video');
-                videoElement.srcObject = stream;
-                videoElement.muted = true;
-                
-                // Detect Safari
-                const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-                
-                // Only set up MediaRecorder for non-Safari browsers
-                if (!isSafari) {
-                    try {
-                        // Try to use the preferred MIME type or fall back to a supported one
-                        try {
-                            mediaRecorder = new MediaRecorder(stream, {
-                                mimeType: 'video/webm;codecs=vp8,opus',
-                                videoBitsPerSecond: 2500000
-                            });
-                        } catch (e) {
-                            console.warn("MediaRecorder with options failed:", e);
-                            mediaRecorder = new MediaRecorder(stream);
-                        }
-                        
-                        // Add recording handlers
-                        document.getElementById('start-record').addEventListener('click', () => {
-                            recordedChunks = [];
-                            mediaRecorder.start();
-                            document.getElementById('start-record').textContent = "🔴 Recording...";
-                            showNotification("Recording started", "success");
-                        });
-                        
-                        document.getElementById('stop-record').addEventListener('click', () => {
-                            if (mediaRecorder.state === 'recording') {
-                                mediaRecorder.stop();
-                                document.getElementById('start-record').textContent = "🔴 Start Recording";
-                                showNotification("Preparing download...", "success");
-                            } else {
-                                showNotification("Not currently recording", "error");
-                            }
-                        });
-                        
-                        // Handle recording data
-                        mediaRecorder.ondataavailable = event => {
-                            if (event.data && event.data.size > 0) {
-                                recordedChunks.push(event.data);
-                            }
-                        };
-                        
-                        // Handle recording stop and download (for Chrome/Firefox/Edge)
-                        mediaRecorder.onstop = () => {
-                            const blob = new Blob(recordedChunks, { type: 'video/webm' });
-                            const url = URL.createObjectURL(blob);
-                            const a = document.createElement('a');
-                            a.style.display = 'none';
-                            a.href = url;
-                            a.download = `french-speaking-practice-${new Date().toISOString().slice(0,19).replace(/:/g,'-')}.webm`;
-                            document.body.appendChild(a);
-                            a.click();
-                            
-                            setTimeout(() => {
-                                document.body.removeChild(a);
-                                URL.revokeObjectURL(url);
-                            }, 100);
-                            
-                            showNotification("Your recording has been downloaded!", "success");
-                        };
-                    } catch (e) {
-                        console.error("MediaRecorder setup failed:", e);
-                        showNotification("Recording setup failed. Try refreshing the page.", "error");
-                    }
-                }
-                
-                // Toggle camera and mic (all browsers)
-                document.getElementById('toggle-camera').addEventListener('click', () => {
-                    const videoTracks = stream.getVideoTracks();
-                    if (videoTracks.length > 0) {
-                        const isEnabled = !videoTracks[0].enabled;
-                        videoTracks[0].enabled = isEnabled;
-                        document.getElementById('toggle-camera').textContent = 
-                            isEnabled ? "Turn Off Camera" : "Turn On Camera";
-                    }
-                });
-                
-                document.getElementById('mute-btn').addEventListener('click', () => {
-                    const audioTracks = stream.getAudioTracks();
-                    if (audioTracks.length > 0) {
-                        const isEnabled = !audioTracks[0].enabled;
-                        audioTracks[0].enabled = isEnabled;
-                        document.getElementById('mute-btn').textContent = 
-                            isEnabled ? "🔇 Mute" : "🔊 Unmute";
-                    }
-                });
-            })
-            .catch(err => {
-                console.error("Media error:", err);
-                showNotification("Camera or microphone access denied. Some features won't work.", "error");
-            });
-
-        // EmailJS initialization
-        (function(){
+        // Initialize EmailJS
+        (function() {
             emailjs.init("_KKm93NyfWfCIx2nC");
         })();
 
-        // Contact form handling
+        // Topics data
+        const topics = {
+            A1: [
+                "Introduce yourself in French.",
+                "Describe your daily routine.",
+                "Write an invitation letter.",
+                // ... rest of A1 topics ...
+            ],
+            A2: [
+                "Write about your last vacation.",
+                "Describe your dream house.",
+                "Book a hotel room in French.",
+                // ... rest of A2 topics ...
+            ],
+            A2: [
+                "Pros and cons of living in a big city.",
+                "Describe a moment when you helped someone.",
+                "Importance of learning French.",
+                // ... rest of A2 topics ...
+            ],
+            A2: [
+                "Impact of social media on relationships.",
+                "Write a job application letter.",
+                "Technology makes life better - Agree or disagree?",
+                // ... rest of A2 topics ...
+            ],
+            C1: [
+                "Effects of climate change on the economy.",
+                "Why should students learn multiple languages?",
+                "Ethical implications of AI.",
+                // ... rest of C1 topics ...
+            ],
+            A2: [
+                "Globalization and language diversity.",
+                "The role of literature in society.",
+                "The advantages and disadvantages of free speech.",
+                // ... rest of A2 topics ...
+            ]
+        };
+
+        // Show contact form on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('contactOverlay').classList.remove('hidden');
+        });
+
+        // Handle contact form submission
         document.getElementById('contactForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.classList.add('loading');
+            submitBtn.textContent = 'Processing...';
             
-            const contactData = {
+            // Collect form data
+            const formData = {
                 name: document.getElementById('name').value,
                 email: document.getElementById('email').value,
-                level: document.getElementById('level').value,
                 phone: document.getElementById('phone').value,
-                exam_type: document.getElementById('exam_type').value,
-                goals: document.getElementById('goals').value,
-                date: new Date().toLocaleString()
+                targetLevel: document.getElementById('targetLevel').value
             };
-
-            // Store contact info in localStorage
-            localStorage.setItem('userContact', JSON.stringify(contactData));
 
             // Send email notification
             emailjs.send("service_fr7pas9", "template_qk5xq0o", {
-                name: contactData.name,
-                time: contactData.date,
-                message: `Email: ${contactData.email}
-Current Level: ${contactData.level}
-Target Exam: ${contactData.exam_type}
-Phone: ${contactData.phone || 'Not provided'}
-Learning Goals: ${contactData.goals || 'Not specified'}
-
-Registration Time: ${contactData.date}
-Browser: ${navigator.userAgent}
-Screen Size: ${window.innerWidth}x${window.innerHeight}`
+                name: formData.name,
+                time: new Date().toISOString(),
+                message: `
+                    Email: ${formData.email}
+                    Current Level: ${formData.targetLevel}
+                    Phone: ${formData.phone || 'Not provided'}
+                    Registration Time: ${new Date().toISOString()}
+                    Browser: ${navigator.userAgent}
+                    Screen Size: ${window.innerWidth}x${window.innerHeight}
+                `
             })
             .then(function() {
                 // Hide the overlay immediately
                 document.getElementById('contactOverlay').style.display = 'none';
                 
-                // Show notification
-                const notification = document.getElementById('notification');
-                notification.textContent = `Welcome ${contactData.name}! You can now start your practice. We'll send you study tips tomorrow!`;
-                notification.classList.add('show');
+                // Show success notification
+                showNotification(`Welcome ${formData.name}! You can now start your practice.`, 'success');
                 
-                // Hide notification after 5 seconds
-                setTimeout(() => {
-                    notification.classList.remove('show');
-                }, 5000);
-            }, function(error) {
-                console.error('Email sending failed:', error);
-                // Still hide the overlay on error
-                document.getElementById('contactOverlay').style.display = 'none';
+                // Store contact info in localStorage
+                localStorage.setItem('userContact', JSON.stringify(formData));
+                
+                // Remove loading state
+                submitBtn.classList.remove('loading');
+                submitBtn.textContent = 'Start Your French Journey';
+            })
+            .catch(function(error) {
+                console.error('EmailJS error:', error);
+                
+                // Still hide the overlay
+                document.getElementById('contactOverlay').classList.add('hidden');
                 
                 // Show error notification
-                const notification = document.getElementById('notification');
-                notification.textContent = 'Welcome! You can start your practice now.';
-                notification.style.background = 'rgba(255, 68, 68, 0.9)';
-                notification.classList.add('show');
+                showNotification('Welcome! You can start your practice now.', 'error');
                 
-                setTimeout(() => {
-                    notification.classList.remove('show');
-                }, 5000);
+                // Remove loading state
+                submitBtn.classList.remove('loading');
+                submitBtn.textContent = 'Start Your French Journey';
             });
-
-            trackLead(contactData);
         });
 
-        // Check if user has already registered
-        window.addEventListener('load', function() {
-            const userContact = localStorage.getItem('userContact');
-            if (userContact) {
-                document.getElementById('contactOverlay').classList.add('hidden');
+        // Topic generation functions
+        function generateTopic() {
+            const level = document.getElementById('levelSelect').value;
+            const warningDiv = document.getElementById('topic-warning') || document.createElement('div');
+            warningDiv.id = 'topic-warning';
+            warningDiv.className = 'topic-warning';
+            
+            if (!level) {
+                warningDiv.innerText = "⚠️ Please select a level first!";
+                const topicBox = document.getElementById('writingTopic');
+                topicBox.parentNode.insertBefore(warningDiv, topicBox);
+                return;
+            }
+
+            // Remove warning if it exists
+            if (warningDiv.parentNode) {
+                warningDiv.remove();
+            }
+
+            const topic = topics[level][Math.floor(Math.random() * topics[level].length)];
+            document.getElementById('writingTopic').innerText = `(${level}) ${topic}`;
+        }
+
+        function randomizeTopic() {
+            const levels = Object.keys(topics);
+            const randomLevel = levels[Math.floor(Math.random() * levels.length)];
+            const topic = topics[randomLevel][Math.floor(Math.random() * topics[randomLevel].length)];
+            document.getElementById('writingTopic').innerText = `(${randomLevel}) ${topic}`;
+        }
+
+        // Navigation between steps
+        function proceedToWriting() {
+            const topic = document.getElementById('writingTopic').innerText;
+            const warningDiv = document.getElementById('topic-warning') || document.createElement('div');
+            warningDiv.id = 'topic-warning';
+            warningDiv.className = 'topic-warning';
+            
+            if (topic === 'Click "Generate Topic" or "Randomize Topic"') {
+                warningDiv.innerText = "⚠️ Please generate a topic first!";
+                const topicBox = document.getElementById('writingTopic');
+                topicBox.parentNode.insertBefore(warningDiv, topicBox);
+                return;
+            }
+
+            // Remove warning if it exists
+            if (warningDiv.parentNode) {
+                warningDiv.remove();
+            }
+            
+            // Copy the topic to the writing board
+            document.getElementById('selectedTopic').innerText = topic;
+            
+            document.getElementById('topicSelection').classList.add('hidden');
+            document.getElementById('writingBoard').classList.remove('hidden');
+            document.getElementById('step1').classList.remove('active');
+            document.getElementById('step2').classList.add('active');
+            
+            // Add this line to start timer automatically
+            startTimer();
+
+            // Load any saved draft
+            const savedDraft = localStorage.getItem('writingDraft');
+            if (savedDraft) {
+                const draft = JSON.parse(savedDraft);
+                if (draft.topic === topic) {
+                    document.getElementById('textEditor').innerText = draft.text;
+                    updateWritingStats();
+                }
+            }
+        }
+
+        // Writing board functions
+        function clearText() {
+            document.getElementById('textEditor').innerHTML = '';
+        }
+
+        async function checkGrammar() {
+            let editor = document.getElementById('textEditor');
+            let text = editor.innerText;
+            let grammarErrors = document.getElementById('grammar-errors');
+
+            if (text.trim() === '' || text === 'Type your response in French here...') {
+                grammarErrors.innerHTML = `
+                    <div class="feedback-message" style="border-color: #FF4444; box-shadow: 0 0 10px #FF4444;">
+                        Please write something before checking grammar.
+                    </div>`;
+                return;
+            }
+
+            try {
+                // Show checking message
+                grammarErrors.innerHTML = `
+                    <div class="feedback-message">
+                        Checking grammar...
+                    </div>`;
+
+                const response = await fetch('https://api.languagetool.org/v2/check', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams({
+                        'text': text,
+                        'language': 'fr'
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.matches.length === 0) {
+                    const message = "🎉 No grammar mistakes found! Great job!";
+                    grammarErrors.innerHTML = '<div class="feedback-message"></div>';
+                    typeMessage(grammarErrors.querySelector('.feedback-message'), message);
+                    return;
+                }
+
+                let correctedText = text;
+                let offset = 0;
+                
+                data.matches.forEach(match => {
+                    const start = match.offset + offset;
+                    const end = start + match.length;
+                    const errorText = text.substring(match.offset, match.offset + match.length);
+                    const replacement = `<span class="error" data-tooltip="${match.message} | Suggestion: ${match.replacements[0]?.value || 'No suggestion'}">${errorText}</span>`;
+                    correctedText = correctedText.substring(0, start) + replacement + correctedText.substring(end);
+                    offset += replacement.length - match.length;
+                });
+
+                editor.innerHTML = correctedText;
+                grammarErrors.innerHTML = `
+                    <div class="feedback-message">
+                        Found ${data.matches.length} potential improvements. 
+                        Hover over the highlighted text to see suggestions.
+                    </div>`;
+
+            } catch (error) {
+                console.error('Grammar check error:', error);
+                grammarErrors.innerHTML = `
+                    <div class="feedback-message" style="border-color: #FF4444; box-shadow: 0 0 10px #FF4444;">
+                        Error checking grammar. Please try again.
+                    </div>`;
+            }
+
+            // After grammar check is complete, run comprehensive assessment
+            await assessWriting();
+        }
+
+        let timeLeft = 1800; // 30 minutes in seconds
+        let timerId = null;
+        let isTimerRunning = false;
+
+        function startTimer() {
+            if (!isTimerRunning) {
+                isTimerRunning = true;
+                timerId = setInterval(updateTimer, 1000);
+            }
+        }
+
+        function pauseTimer() {
+            isTimerRunning = false;
+            clearInterval(timerId);
+        }
+
+        function resetTimer() {
+            pauseTimer();
+            timeLeft = 1800;
+            updateTimerDisplay();
+            document.getElementById('timer').classList.remove('warning');
+        }
+
+        function updateTimer() {
+            if (timeLeft > 0) {
+                timeLeft--;
+                updateTimerDisplay();
+                
+                // Warning when less than 5 minutes remaining
+                if (timeLeft <= 300) {
+                    document.getElementById('timer').classList.add('warning');
+                    
+                    // Play beep sound every minute when less than 5 minutes
+                    if (timeLeft % 60 === 0) {
+                        playBeep();
+                    }
+                }
+            } else {
+                pauseTimer();
+                playBeep();
+                alert('Time is up!');
+            }
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            const display = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            document.getElementById('timerDisplay').textContent = display;
+        }
+
+        function playBeep() {
+            const beep = document.getElementById('timerBeep');
+            beep.currentTime = 0;
+            beep.play();
+        }
+
+        // Add event listener for page visibility change
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden && isTimerRunning) {
+                // Automatically pause timer when user switches tabs
+                pauseTimer();
             }
         });
 
-        function trackLead(contactData) {
-            // Basic analytics
-            const analytics = {
+        function downloadText() {
+            const topic = document.getElementById('selectedTopic').innerText;
+            const text = document.getElementById('textEditor').innerText;
+            const timestamp = new Date().toLocaleString().replace(/[/:]/g, '-');
+            
+            // Create the content with topic and text
+            const content = `Topic: ${topic}\n\nWritten Response:\n${text}`;
+            
+            // Create blob and download
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `french-writing-${timestamp}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        }
+
+        // Auto-save functionality
+        function autoSave() {
+            const text = document.getElementById('textEditor').innerText;
+            const topic = document.getElementById('selectedTopic').innerText;
+            localStorage.setItem('writingDraft', JSON.stringify({
+                text,
+                topic,
+                timestamp: new Date().toISOString()
+            }));
+            
+            // Show autosave indicator
+            showAutosaveIndicator();
+        }
+
+        function showAutosaveIndicator() {
+            const indicator = document.querySelector('.autosave-indicator');
+            indicator.classList.add('visible');
+            setTimeout(() => {
+                indicator.classList.remove('visible');
+            }, 2000);
+        }
+
+        // Update writing stats
+        function updateWritingStats() {
+            const text = document.getElementById('textEditor').innerText;
+            const words = text.trim().split(/\s+/).filter(word => word.length > 0).length;
+            const chars = text.length;
+            const readingTime = Math.ceil(words / 200); // Average reading speed
+
+            document.getElementById('wordCount').textContent = words;
+            document.getElementById('charCount').textContent = chars;
+            document.getElementById('readingTime').textContent = readingTime;
+        }
+
+        // Add event listeners
+        document.getElementById('textEditor').addEventListener('input', () => {
+            updateWritingStats();
+            // Auto-save after typing stops for 1 second
+            clearTimeout(window.saveTimeout);
+            window.saveTimeout = setTimeout(autoSave, 1000);
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Ctrl/Cmd + S to save
+            if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                e.preventDefault();
+                downloadText();
+            }
+            // Ctrl/Cmd + Enter to check grammar
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                e.preventDefault();
+                checkGrammar();
+            }
+        });
+
+        // Add this function to create typing effect
+        function typeMessage(element, text, speed = 50) {
+            let i = 0;
+            element.innerHTML = '';
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            type();
+        }
+
+        // Add this function to create particles for the contact form
+        function createContactFormParticles() {
+            const formIntro = document.querySelector('.form-intro');
+            const particleContainer = document.createElement('div');
+            particleContainer.className = 'form-particles';
+            formIntro.appendChild(particleContainer);
+
+            for (let i = 0; i < 10; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.width = Math.random() * 3 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                
+                const animation = particle.animate([
+                    { transform: 'translate(0, 0)', opacity: 0.3 },
+                    { transform: `translate(${Math.random() * 30 - 15}px, ${Math.random() * 30 - 15}px)`, opacity: 0 }
+                ], {
+                    duration: Math.random() * 2000 + 1500,
+                    iterations: Infinity
+                });
+                
+                particleContainer.appendChild(particle);
+            }
+        }
+
+        // Comprehensive writing assessment
+        async function assessWriting() {
+            const text = document.getElementById('textEditor').innerText;
+            const assessmentPanel = document.getElementById('assessmentPanel');
+            
+            // Show loading state
+            assessmentPanel.classList.remove('hidden');
+            showLoadingState();
+
+            try {
+                // Analyze text metrics
+                const metrics = analyzeTextMetrics(text);
+                
+                // Analyze vocabulary
+                const vocabAnalysis = analyzeVocabulary(text);
+                
+                // Assess grammar (using existing LanguageTool API)
+                const grammarAnalysis = await checkGrammarForAssessment(text);
+                
+                // Determine CEFR level
+                const level = determineCEFRLevel(metrics, vocabAnalysis, grammarAnalysis);
+                
+                // Update UI with results
+                updateAssessmentUI(metrics, vocabAnalysis, grammarAnalysis, level);
+                
+            } catch (error) {
+                console.error('Assessment error:', error);
+                showAssessmentError();
+            }
+        }
+
+        function analyzeTextMetrics(text) {
+            const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+            const words = text.split(/\s+/).filter(w => w.length > 0);
+            
+            return {
+                averageSentenceLength: words.length / sentences.length,
+                sentenceLengthVariation: calculateVariation(sentences.map(s => s.split(/\s+/).length)),
+                uniqueWordsRatio: new Set(words.map(w => w.toLowerCase())).size / words.length,
+                textLength: words.length,
+                complexSentences: sentences.filter(s => s.includes(',') || s.includes(';')).length / sentences.length
+            };
+        }
+
+        function analyzeVocabulary(text) {
+            // This would connect to a French vocabulary database
+            // For now, we'll use a simplified version
+            const words = text.toLowerCase().split(/\s+/);
+            
+            return {
+                advanced: countAdvancedWords(words),
+                intermediate: countIntermediateWords(words),
+                basic: words.length - (countAdvancedWords(words) + countIntermediateWords(words)),
+                uniqueWords: new Set(words).size,
+                commonPhrases: identifyCommonPhrases(text)
+            };
+        }
+
+        function determineCEFRLevel(metrics, vocab, grammar) {
+            // More sophisticated algorithm to determine CEFR level
+            let baseScore = 0;
+            
+            // Factor in text complexity (0-5 points)
+            baseScore += metrics.complexSentences * 3;
+            baseScore += metrics.uniqueWordsRatio * 2;
+            
+            // Factor in vocabulary range (0-5 points)
+            const vocabRatio = (vocab.advanced + vocab.intermediate) / (vocab.basic || 1);
+            baseScore += Math.min(vocabRatio * 2, 3);
+            baseScore += (vocab.advanced / (vocab.basic || 1)) * 2;
+            
+            // Factor in grammar accuracy (0-5 points)
+            const errorDensity = grammar.errorCount / (metrics.textLength || 1);
+            baseScore -= Math.min(errorDensity * 10, 5);
+            
+            // Normalize score to 0-1 range
+            const normalizedScore = Math.max(0, Math.min(baseScore / 10, 1));
+            
+            // Factor in sentence complexity and variety
+            if (metrics.averageSentenceLength > 15 && metrics.sentenceLengthVariation > 0.3) {
+                normalizedScore += 0.1; // Boost for complex sentences
+            }
+            
+            // Factor in text length - longer texts can demonstrate higher proficiency
+            if (metrics.textLength > 150) {
+                normalizedScore += 0.1;
+            }
+            
+            // Map to CEFR level with expanded ranges
+            if (normalizedScore < 0.25) return "A1";
+            if (normalizedScore < 0.4) return "A2";
+            if (normalizedScore < 0.55) return "B1";
+            if (normalizedScore < 0.7) return "B2";
+            if (normalizedScore < 0.85) return "C1";
+            return "C2";
+        }
+
+        function generateDetailedReport() {
+            const report = {
                 timestamp: new Date().toISOString(),
-                user: {
-                    level: contactData.level,
-                    exam: contactData.exam_type,
-                    hasPhone: !!contactData.phone,
-                    hasGoals: !!contactData.goals,
-                    browser: navigator.userAgent,
-                    screen: `${window.innerWidth}x${window.innerHeight}`,
-                    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+                text: document.getElementById('textEditor').innerText,
+                topic: document.getElementById('selectedTopic').innerText,
+                assessment: {
+                    level: document.getElementById('assessedLevel').innerText,
+                    grammarScore: document.getElementById('grammarScore').style.width,
+                    vocabularyScore: document.getElementById('vocabScore').style.width,
+                    styleScore: document.getElementById('styleScore').style.width,
+                    improvements: Array.from(document.getElementById('improvementList').children)
+                        .map(li => li.innerText)
                 }
             };
+
+            // Create and download PDF report
+            generatePDF(report);
+        }
+
+        // Add this to your checkGrammar function
+        async function checkGrammar() {
+            // ... existing grammar check code ...
             
-            // Store analytics
-            let allLeads = JSON.parse(localStorage.getItem('leads') || '[]');
-            allLeads.push(analytics);
-            localStorage.setItem('leads', JSON.stringify(allLeads));
+            // After grammar check is complete, run comprehensive assessment
+            await assessWriting();
         }
 
-        // Theme toggle
-        document.getElementById('theme-toggle').addEventListener('click', () => {
-            document.body.classList.toggle('light-theme');
-        });
+        // French vocabulary levels (simplified version)
+        const frenchVocabulary = {
+            A1: ['je', 'tu', 'il', 'elle', 'nous', 'vous', 'ils', 'elles', 'être', 'avoir', 'bonjour', 'merci', 'oui', 'non', 'pouvoir', 'vouloir', 'aller', 'manger', 'boire', 'venir', 'faire', 'dire', 'trouver'],
+            A2: ['maintenant', 'aujourd\'hui', 'demain', 'hier', 'semaine', 'mois', 'année', 'quelque', 'déjà', 'toujours', 'parfois', 'aussi', 'assez', 'encore', 'beaucoup', 'seulement', 'vraiment'],
+            B1: ['cependant', 'néanmoins', 'puisque', 'lorsque', 'pendant', 'durant', 'ainsi', 'autrement', 'par conséquent', 'tandis que', 'voire', 'd\'autant plus', 'quasiment', 'désormais', 'entre-temps'],
+            B2: ['effectivement', 'éventuellement', 'précisément', 'particulièrement', 'sous prétexte que', 'quoique', 'toutefois', 'pour autant', 'd\'une part', 'en revanche', 'au préalable'],
+            C1: ['systématiquement', 'fondamentalement', 'intrinsèquement', 'envisageable', 'inéluctable', 'subséquemment', 'paradoxalement', 'manifestement', 'inévitablement', 'indubitablement'],
+            C2: ['épistémologique', 'paradigmatique', 'ontologique', 'heuristique', 'transcendantal', 'méta-cognitif', 'post-structuraliste', 'herméneutique']
+        };
 
-        // Progress bar update
-        function updateProgress(current, total) {
-            const progress = (current / total) * 100;
-            document.querySelector('.progress-fill').style.width = `${progress}%`;
-        }
-
-        // Add loading states
-        function setLoading(element, isLoading) {
-            if (isLoading) {
-                element.classList.add('loading');
-                element.disabled = true;
-            } else {
-                element.classList.remove('loading');
-                element.disabled = false;
+        // CEFR level descriptors
+        const cefrDescriptors = {
+            A1: {
+                grammar: "Can use simple present tense and common verbs in their base form. Limited knowledge of conjugations.",
+                vocabulary: "Uses basic everyday words related to immediate needs and personal details.",
+                coherence: "Can construct very simple sentences with 'and', 'but', 'then'.",
+                discourse: "Mostly isolated phrases or single words."
+            },
+            A2: {
+                grammar: "Can form simple past and future structures, with frequent mistakes.",
+                vocabulary: "Uses a basic but broader range of words, including common adverbs and prepositions.",
+                coherence: "Can link phrases using common connectors like 'because', 'so', 'but'.",
+                discourse: "Uses short sentences but lacks complexity."
+            },
+            B1: {
+                grammar: "Uses subordinate clauses, conditional sentences, and some relative pronouns.",
+                vocabulary: "Expands vocabulary to include abstract terms and expressions of time.",
+                coherence: "Can structure coherent discourse with a variety of linking words.",
+                discourse: "Can narrate events and express opinions with some fluency."
+            },
+            B2: {
+                grammar: "Uses complex sentence structures, including passive voice and reported speech.",
+                vocabulary: "Uses a wide range of vocabulary, including idioms and nuanced expressions.",
+                coherence: "Maintains logical progression with advanced connectors.",
+                discourse: "Can argue and justify opinions clearly."
+            },
+            C1: {
+                grammar: "Uses sophisticated grammatical structures with minor errors.",
+                vocabulary: "Employs a wide range of nuanced vocabulary, including technical terms.",
+                coherence: "Can express ideas fluently and adapt style to different contexts.",
+                discourse: "Can produce detailed and well-structured texts on complex subjects."
+            },
+            C2: {
+                grammar: "Uses advanced syntax and near-native fluency with precision.",
+                vocabulary: "Has command of rare, specialized, and academic terminology.",
+                coherence: "Speaks and writes effortlessly with a natural flow.",
+                discourse: "Can argue and debate complex abstract concepts persuasively."
             }
-        }
+        };
 
-        function toggleTroubleshoot() {
-            const content = document.getElementById('troubleshoot-content');
-            content.classList.toggle('hidden');
-        }
+        // Function to determine CEFR level based on word usage
+        function assessLanguageLevel(wordsUsed) {
+            let score = { A1: 0, A2: 0, B1: 0, B2: 0, C1: 0, C2: 0 };
+            let totalWords = wordsUsed.length;
 
-        // Add this to your existing window.onload or DOMContentLoaded event
-        window.addEventListener('DOMContentLoaded', (event) => {
-            // Check for permissions on page load
-            checkMediaPermissions();
+            // Count occurrences of words in each level
+            wordsUsed.forEach(word => {
+                let matched = false;
+                for (let level of ["C2", "C1", "B2", "B1", "A2", "A1"]) {
+                    if (frenchVocabulary[level] && frenchVocabulary[level].includes(word.toLowerCase())) {
+                        score[level]++;
+                        matched = true;
+                        break; // Stop once a match is found (assigning highest applicable level)
+                    }
+                }
+                
+                // If no match found, default to A1
+                if (!matched) {
+                    score.A1++;
+                }
+            });
+
+            // Calculate percentages
+            let percentages = {};
+            for (let level in score) {
+                percentages[level] = (score[level] / totalWords) * 100;
+            }
+
+            // Determine the best level using a weighted system
+            let maxLevel = 'A1'; // Default to A1 (most basic)
             
-            // Add the intro audio setup
-            setupIntroAudio();
-        });
+            // Using a more nuanced approach to determine level
+            if (percentages['C2'] > 10) maxLevel = 'C2';
+            else if (percentages['C1'] > 15) maxLevel = 'C1';
+            else if (percentages['B2'] > 20) maxLevel = 'B2';
+            else if (percentages['B1'] > 25) maxLevel = 'B1';
+            else if (percentages['A2'] > 30) maxLevel = 'A2';
+            else maxLevel = 'A1';
 
-        // Add this to your existing JavaScript, right before the window.addEventListener('DOMContentLoaded') line
-        function setupIntroAudio() {
-            const introAudio = document.getElementById('introAudio');
-            const avatar = document.querySelector('.ai-avatar');
-            const avatarImg = avatar.querySelector('.avatar-img');
-            let hasPlayedOnce = false;
-            let pulseInterval;
+            return {
+                level: maxLevel,
+                description: cefrDescriptors[maxLevel],
+                wordDistribution: score,
+                confidence: percentages[maxLevel].toFixed(2) + '%'
+            };
+        }
 
-            // Function to handle audio playback and animation
-            function playIntroAudio() {
-                if (introAudio.paused) {
-                    introAudio.play();
-                    startPulsingWithIntervals(avatarImg);
-                } else {
-                    introAudio.pause();
-                    introAudio.currentTime = 0;
-                    avatarImg.classList.remove('avatar-vibrating');
-                    if (pulseInterval) {
-                        clearInterval(pulseInterval);
-                    }
-                }
-            }
+        // Example Usage
+        const sampleWords = ['je', 'merci', 'néanmoins', 'précisément', 'ontologique']; // Mixed levels
+        const assessment = assessLanguageLevel(sampleWords);
 
-            // Function to create pulsing intervals
-            function startPulsingWithIntervals(element) {
-                let pulseCount = 0;
-                let speechBubbleActive = false;
-                
-                // French phrases for more professional speech bubbles
-                const frenchPhrases = [
-                    "Bonjour! 👋",
-                    "Comment ça va?",
-                    "Enchanté(e)!",
-                    "Prêt à pratiquer?",
-                    "Je vous écoute",
-                    "Très bien!",
-                    "Continuez comme ça!",
-                    "Excellent travail!",
-                    "Bonne chance!"
-                ];
-                
-                // Start initial pulse
-                element.classList.add('avatar-vibrating');
-                
-                // Clear any existing interval
-                if (pulseInterval) {
-                    clearInterval(pulseInterval);
-                }
-                
-                // Add delicate sparkle effects around the avatar
-                createSparkleEffects(element.parentNode);
-                
-                // Create a professional yet cute animation pattern
-                pulseInterval = setInterval(() => {
-                    pulseCount++;
-                    
-                    // Create speech bubble occasionally
-                    if (pulseCount % 15 === 0 && !speechBubbleActive) {
-                        speechBubbleActive = true;
-                        
-                        // Create and position speech bubble with French phrase
-                        const phrase = frenchPhrases[Math.floor(Math.random() * frenchPhrases.length)];
-                        createSpeechBubble(element.parentNode, phrase);
-                        
-                        // Hide speech bubble after 3 seconds
-                        setTimeout(() => {
-                            const bubbles = element.parentNode.querySelectorAll('.speech-bubble');
-                            bubbles.forEach(bubble => {
-                                bubble.style.animation = 'bubble-disappear 0.5s forwards';
-                                setTimeout(() => {
-                                    if (bubble.parentNode) {
-                                        bubble.parentNode.removeChild(bubble);
-                                    }
-                                }, 500);
-                            });
-                            speechBubbleActive = false;
-                        }, 3000);
-                    }
-                    
-                    // Add subtle soft bounce every few seconds
-                    if (pulseCount % 10 === 0) {
-                        element.animate([
-                            { transform: 'translateY(0)' },
-                            { transform: 'translateY(-8px)' },
-                            { transform: 'translateY(0)' }
-                        ], {
-                            duration: 1000,
-                            easing: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)'
-                        });
-                        
-                        // Add small sound indicator icon
-                        addSoundIcon(element.parentNode);
-                    }
-                }, 400);
+        console.log(assessment);
 
-                // Function to create a professional speech bubble
-                function createSpeechBubble(container, text) {
-                    const bubble = document.createElement('div');
-                    bubble.className = 'speech-bubble';
-                    bubble.innerHTML = text;
-                    
-                    // Position the bubble nicely above the avatar
-                    Object.assign(bubble.style, {
-                        position: 'absolute',
-                        top: '-70px',
-                        left: '50%',
-                        transform: 'translateX(-50%)'
-                    });
-                    
-                    container.appendChild(bubble);
-                    
-                    // Add CSS for disappearing animation
-                    const style = document.createElement('style');
-                    style.textContent = `
-                        @keyframes bubble-disappear {
-                            from { opacity: 1; transform: translateY(0); }
-                            to { opacity: 0; transform: translateY(-10px); }
-                        }
-                    `;
-                    document.head.appendChild(style);
-                }
-                
-                // Function to add a small sound icon that appears and fades
-                function addSoundIcon(container) {
-                    const soundIcon = document.createElement('div');
-                    soundIcon.innerHTML = '🔊';
-                    
-                    Object.assign(soundIcon.style, {
-                        position: 'absolute',
-                        right: '-15px',
-                        bottom: '10px',
-                        fontSize: '18px',
-                        opacity: '0',
-                        filter: 'drop-shadow(0 0 3px rgba(0,255,153,0.8))',
-                        animation: 'sound-indicator 1.5s ease-in-out'
-                    });
-                    
-                    container.appendChild(soundIcon);
-                    
-                    // Add animation for sound indicator
-                    const style = document.createElement('style');
-                    style.textContent = `
-                        @keyframes sound-indicator {
-                            0% { opacity: 0; transform: scale(0.5); }
-                            20% { opacity: 1; transform: scale(1.2); }
-                            50% { opacity: 1; transform: scale(1); }
-                            80% { opacity: 0.7; transform: scale(1.1); }
-                            100% { opacity: 0; transform: scale(0.8); }
-                        }
-                    `;
-                    document.head.appendChild(style);
-                    
-                    // Remove the sound icon after animation completes
-                    setTimeout(() => {
-                        if (soundIcon.parentNode) {
-                            container.removeChild(soundIcon);
-                        }
-                    }, 1500);
-                }
+        // Add these functions to implement the report generation
 
-                // Create delicate sparkle effects
-                function createSparkleEffects(container) {
-                    // Add a container for sparkles to manage them better
-                    const sparkleContainer = document.createElement('div');
-                    sparkleContainer.className = 'sparkle-container';
-                    
-                    Object.assign(sparkleContainer.style, {
-                        position: 'absolute',
-                        top: '0',
-                        left: '0',
-                        width: '100%',
-                        height: '100%',
-                        pointerEvents: 'none',
-                        zIndex: '5'
-                    });
-                    
-                    container.appendChild(sparkleContainer);
-                    
-                    // Create sparkle animation
-                    const style = document.createElement('style');
-                    style.textContent = `
-                        @keyframes sparkle {
-                            0%, 100% { opacity: 0; transform: scale(0); }
-                            50% { opacity: 1; transform: scale(1); }
-                        }
-                        
-                        .sparkle {
-                            position: absolute;
-                            width: 10px;
-                            height: 10px;
-                            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%2300FF99"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>');
-                            background-size: contain;
-                            background-repeat: no-repeat;
-                            pointer-events: none;
-                        }
-                    `;
-                    document.head.appendChild(style);
-                    
-                    // Create periodic sparkles
-                    const sparkleInterval = setInterval(() => {
-                        if (introAudio.paused) {
-                            clearInterval(sparkleInterval);
-                            return;
-                        }
-                        
-                        const sparkle = document.createElement('div');
-                        sparkle.className = 'sparkle';
-                        
-                        // Random position around the avatar
-                        const angle = Math.random() * Math.PI * 2;
-                        const distance = 50 + Math.random() * 50;
-                        const x = Math.cos(angle) * distance + 60; // center x
-                        const y = Math.sin(angle) * distance + 60; // center y
-                        
-                        Object.assign(sparkle.style, {
-                            left: `${x}px`,
-                            top: `${y}px`,
-                            opacity: '0',
-                            transform: 'scale(0)',
-                            animation: `sparkle ${1 + Math.random()}s ease-in-out`,
-                            filter: 'drop-shadow(0 0 2px rgba(0,255,153,0.8))'
-                        });
-                        
-                        sparkleContainer.appendChild(sparkle);
-                        
-                        // Remove sparkle after animation
-                        setTimeout(() => {
-                            if (sparkle.parentNode) {
-                                sparkleContainer.removeChild(sparkle);
-                            }
-                        }, 2000);
-                    }, 300);
-                    
-                    // Clean up on audio end
-                    introAudio.addEventListener('ended', () => {
-                        clearInterval(sparkleInterval);
-                        if (sparkleContainer.parentNode) {
-                            container.removeChild(sparkleContainer);
-                        }
-                    });
-                }
-
-                // Clean up all effects when audio ends
-                introAudio.addEventListener('ended', () => {
-                    if (pulseInterval) {
-                        clearInterval(pulseInterval);
-                    }
-                    element.classList.remove('avatar-vibrating');
-                    
-                    // Remove all speech bubbles
-                    const allBubbles = document.querySelectorAll('.speech-bubble');
-                    allBubbles.forEach(bubble => {
-                        if (bubble.parentNode) {
-                            bubble.parentNode.removeChild(bubble);
-                        }
-                    });
+        function generatePDF(report) {
+            // Format the report data
+            const reportText = formatReportAsText(report);
+            
+            try {
+                // Create blob with UTF-8 encoding explicitly specified
+                const blob = new Blob([reportText], { 
+                    type: 'text/plain;charset=utf-8' 
                 });
-            }
 
-            // Play automatically once when the page loads
-            if (!hasPlayedOnce) {
-                setTimeout(() => {
-                    playIntroAudio();
-                    hasPlayedOnce = true;
-                }, 1000);
-            }
-
-            // Handle audio ending
-            introAudio.addEventListener('ended', () => {
-                avatarImg.classList.remove('avatar-vibrating');
-                if (pulseInterval) {
-                    clearInterval(pulseInterval);
+                // For Safari compatibility, create a temporary link element
+                const downloadLink = document.createElement('a');
+                
+                // Use a more Safari-friendly way to create the object URL
+                if (window.webkitURL != null) {
+                    // Safari
+                    downloadLink.href = window.webkitURL.createObjectURL(blob);
+                } else {
+                    // Other browsers
+                    downloadLink.href = window.URL.createObjectURL(blob);
                 }
-            });
 
-            // Make avatar clickable for replay
-            avatar.addEventListener('click', () => {
-                playIntroAudio();
+                // Set download attribute with filename
+                const fileName = `french-assessment-${new Date().toISOString().slice(0,10)}.txt`;
+                downloadLink.download = fileName;
+                
+                // Append link, trigger click, and clean up
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                
+                // Clean up after small delay to ensure download starts
+                setTimeout(() => {
+                    document.body.removeChild(downloadLink);
+                    if (window.webkitURL != null) {
+                        window.webkitURL.revokeObjectURL(downloadLink.href);
+                    } else {
+                        window.URL.revokeObjectURL(downloadLink.href);
+                    }
+                }, 100);
+
+                // Show success message
+                const grammarErrors = document.getElementById('grammar-errors');
+                if (grammarErrors) {
+                    grammarErrors.innerHTML = `
+                        <div class="feedback-message">
+                            Your detailed assessment report has been downloaded.
+                        </div>`;
+                }
+            } catch (error) {
+                console.error('Download error:', error);
+                // Show error message
+                const grammarErrors = document.getElementById('grammar-errors');
+                if (grammarErrors) {
+                    grammarErrors.innerHTML = `
+                        <div class="feedback-message" style="border-color: #FF4444; box-shadow: 0 0 10px #FF4444;">
+                            There was an error generating your report. Please try again.
+                        </div>`;
+                }
+            }
+        }
+
+        function formatReportAsText(report) {
+            // Format the report data as a readable text document
+            return `
+=====================================================
+  FRENCH WRITING ASSESSMENT REPORT - HEMIYA AI
+=====================================================
+Date: ${new Date(report.timestamp).toLocaleString()}
+
+TOPIC
+-----
+${report.topic}
+
+CEFR LEVEL ASSESSMENT
+--------------------
+Your writing demonstrates proficiency at: ${report.assessment.level} level
+
+SCORE BREAKDOWN
+--------------
+Grammar & Structure: ${report.assessment.grammarScore}
+Vocabulary Usage: ${report.assessment.vocabularyScore}
+Style & Coherence: ${report.assessment.styleScore}
+
+IMPROVEMENT SUGGESTIONS
+---------------------
+${report.assessment.improvements.map(imp => `• ${imp}`).join('\n')}
+
+WRITING SAMPLE
+-------------
+${report.text}
+
+=====================================================
+Generated by Hemiya AI - Your French Writing Coach
+=====================================================
+`;
+        }
+
+        // Add implementation for these missing functions needed by assessWriting()
+        function showLoadingState() {
+            document.getElementById('grammarScore').style.width = '0%';
+            document.getElementById('vocabScore').style.width = '0%';
+            document.getElementById('styleScore').style.width = '0%';
+            
+            document.getElementById('grammarDetails').innerHTML = '<li>Analyzing grammar patterns...</li>';
+            document.getElementById('vocabDetails').innerHTML = '<li>Evaluating vocabulary usage...</li>';
+            document.getElementById('styleDetails').innerHTML = '<li>Assessing writing style...</li>';
+            
+            document.getElementById('improvementList').innerHTML = '<li>Preparing recommendations...</li>';
+        }
+
+        function showAssessmentError() {
+            document.getElementById('assessmentPanel').innerHTML = `
+                <div class="feedback-message" style="border-color: #FF4444; box-shadow: 0 0 10px #FF4444;">
+                    Error processing assessment. Please try again.
+                </div>`;
+        }
+
+        function calculateVariation(arr) {
+            if (arr.length <= 1) return 0;
+            const mean = arr.reduce((sum, val) => sum + val, 0) / arr.length;
+            const variance = arr.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / arr.length;
+            return Math.sqrt(variance) / mean; // coefficient of variation
+        }
+
+        function countAdvancedWords(words) {
+            // Count words that appear in C1/A2 vocab lists
+            let count = 0;
+            const advancedWords = [...frenchVocabulary.C1, ...frenchVocabulary.A2];
+            words.forEach(word => {
+                if (advancedWords.includes(word.toLowerCase())) count++;
+            });
+            return count;
+        }
+
+        function countIntermediateWords(words) {
+            // Count words that appear in A2/A2 vocab lists
+            let count = 0;
+            const intermediateWords = [...frenchVocabulary.A2, ...frenchVocabulary.A2];
+            words.forEach(word => {
+                if (intermediateWords.includes(word.toLowerCase())) count++;
+            });
+            return count;
+        }
+
+        function identifyCommonPhrases(text) {
+            // This would use n-gram analysis in a real implementation
+            // For now, return placeholder data
+            return ["de temps en temps", "en ce qui concerne", "à mon avis"];
+        }
+
+        function mapScoreToCEFR(score) {
+            // Map a numerical score to CEFR level
+            if (score < 0.2) return "A1";
+            if (score < 0.4) return "A2";
+            if (score < 0.6) return "B1";
+            if (score < 0.75) return "B2";
+            if (score < 0.9) return "C1";
+            return "C2";
+        }
+
+        async function checkGrammarForAssessment(text) {
+            try {
+                const response = await fetch('https://api.languagetool.org/v2/check', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams({
+                        'text': text,
+                        'language': 'fr'
+                    })
+                });
+
+                const data = await response.json();
+                return {
+                    errorCount: data.matches.length,
+                    errors: data.matches.map(match => ({
+                        message: match.message,
+                        replacement: match.replacements[0]?.value || '',
+                        category: match.rule.category.id
+                    }))
+                };
+            } catch (error) {
+                console.error('Grammar check error:', error);
+                return { errorCount: 0, errors: [] };
+            }
+        }
+
+        function updateAssessmentUI(metrics, vocabAnalysis, grammarAnalysis, level) {
+            // Update level badge
+            document.getElementById('assessedLevel').textContent = level;
+            
+            // Calculate scores based on metrics (0-100%)
+            const grammarScore = Math.max(0, Math.min(100, 100 - (grammarAnalysis.errorCount * 5)));
+            const vocabScore = Math.max(0, Math.min(100, 
+                (vocabAnalysis.uniqueWords / metrics.textLength) * 100 + 
+                (vocabAnalysis.advanced / metrics.textLength) * 200
+            ));
+            const styleScore = Math.max(0, Math.min(100,
+                metrics.complexSentences * 50 + 
+                metrics.sentenceLengthVariation * 30 + 
+                Math.min(metrics.averageSentenceLength / 15, 1) * 20
+            ));
+            
+            // Update progress bars with animation
+            animateProgressBar('grammarScore', grammarScore);
+            animateProgressBar('vocabScore', vocabScore);
+            animateProgressBar('styleScore', styleScore);
+            
+            // Update score labels
+            document.querySelectorAll('.score-label')[0].textContent = `${Math.round(grammarScore)}%`;
+            document.querySelectorAll('.score-label')[1].textContent = `${Math.round(vocabScore)}%`;
+            document.querySelectorAll('.score-label')[2].textContent = `${Math.round(styleScore)}%`;
+            
+            // Update details lists
+            updateGrammarDetails(grammarAnalysis);
+            updateVocabDetails(vocabAnalysis);
+            updateStyleDetails(metrics);
+            
+            // Update vocab counts
+            document.getElementById('advancedCount').textContent = vocabAnalysis.advanced;
+            document.getElementById('intermediateCount').textContent = vocabAnalysis.intermediate;
+            document.getElementById('basicCount').textContent = vocabAnalysis.basic;
+            
+            // Update metrics
+            document.getElementById('sentenceLengthVar').textContent = Math.round(metrics.sentenceLengthVariation * 100) / 100;
+            document.getElementById('textCoherence').textContent = Math.round((1 - grammarAnalysis.errorCount / metrics.textLength) * 10) / 10;
+            document.getElementById('expressionDiversity').textContent = Math.round(vocabAnalysis.uniqueWords / metrics.textLength * 10) / 10;
+            
+            // Generate improvement suggestions
+            generateImprovementSuggestions(level, grammarAnalysis, vocabAnalysis, metrics);
+        }
+
+        function animateProgressBar(id, value) {
+            const progressBar = document.getElementById(id);
+            let width = 0;
+            const interval = setInterval(() => {
+                if (width >= value) {
+                    clearInterval(interval);
+                } else {
+                    width += 2;
+                    progressBar.style.width = width + '%';
+                }
+            }, 10);
+        }
+
+        function updateGrammarDetails(grammarAnalysis) {
+            const grammarDetails = document.getElementById('grammarDetails');
+            grammarDetails.innerHTML = '';
+            
+            if (grammarAnalysis.errorCount === 0) {
+                grammarDetails.innerHTML = '<li>No grammatical errors detected. Excellent!</li>';
+                return;
+            }
+            
+            // Group errors by category
+            const categories = {};
+            grammarAnalysis.errors.forEach(error => {
+                if (!categories[error.category]) {
+                    categories[error.category] = 0;
+                }
+                categories[error.category]++;
+            });
+            
+            // Create list items for each category
+            Object.entries(categories).forEach(([category, count]) => {
+                const li = document.createElement('li');
+                li.textContent = `${formatCategoryName(category)}: ${count} ${count === 1 ? 'issue' : 'issues'}`;
+                grammarDetails.appendChild(li);
             });
         }
+
+        function formatCategoryName(category) {
+            // Convert category ID to readable name
+            const names = {
+                'GRAMMAR': 'Grammar',
+                'TYPOS': 'Spelling',
+                'PUNCTUATION': 'Punctuation',
+                'CASING': 'Capitalization',
+                'CONFUSED_WORDS': 'Word confusion',
+                'REDUNDANCY': 'Redundancy',
+                'STYLE': 'Style',
+                'SEMANTICS': 'Semantics'
+            };
+            return names[category] || category;
+        }
+
+        function updateVocabDetails(vocabAnalysis) {
+            const vocabDetails = document.getElementById('vocabDetails');
+            vocabDetails.innerHTML = '';
+            
+            vocabDetails.innerHTML += `<li>Unique words: ${vocabAnalysis.uniqueWords}</li>`;
+            vocabDetails.innerHTML += `<li>Lexical diversity: ${Math.round(vocabAnalysis.uniqueWords / (vocabAnalysis.advanced + vocabAnalysis.intermediate + vocabAnalysis.basic) * 100)}%</li>`;
+            
+            if (vocabAnalysis.commonPhrases.length > 0) {
+                vocabDetails.innerHTML += `<li>Common phrases used: ${vocabAnalysis.commonPhrases.slice(0, 2).join(', ')}</li>`;
+            }
+        }
+
+        function updateStyleDetails(metrics) {
+            const styleDetails = document.getElementById('styleDetails');
+            styleDetails.innerHTML = '';
+            
+            styleDetails.innerHTML += `<li>Average sentence length: ${Math.round(metrics.averageSentenceLength)} words</li>`;
+            styleDetails.innerHTML += `<li>Complex sentences: ${Math.round(metrics.complexSentences * 100)}%</li>`;
+            
+            // Add style feedback based on metrics
+            if (metrics.averageSentenceLength < 5) {
+                styleDetails.innerHTML += `<li>Try using longer, more detailed sentences</li>`;
+            } else if (metrics.averageSentenceLength > 20) {
+                styleDetails.innerHTML += `<li>Consider breaking up some longer sentences</li>`;
+            }
+            
+            if (metrics.sentenceLengthVariation < 0.3) {
+                styleDetails.innerHTML += `<li>Try varying your sentence length to create better rhythm</li>`;
+            }
+        }
+
+        function generateImprovementSuggestions(level, grammarAnalysis, vocabAnalysis, metrics) {
+            const improvementList = document.getElementById('improvementList');
+            improvementList.innerHTML = '';
+            
+            // Generate suggestions based on analysis
+            const suggestions = [];
+            
+            // Grammar suggestions
+            if (grammarAnalysis.errorCount > 0) {
+                const categories = {};
+                grammarAnalysis.errors.forEach(error => {
+                    if (!categories[error.category]) {
+                        categories[error.category] = 0;
+                    }
+                    categories[error.category]++;
+                });
+                
+                // Find most common error category
+                const mostCommonCategory = Object.entries(categories).sort((a, b) => b[1] - a[1])[0];
+                suggestions.push(`Focus on improving your ${formatCategoryName(mostCommonCategory[0]).toLowerCase()} - this was your most common error type.`);
+            }
+            
+            // Vocabulary suggestions
+            if (vocabAnalysis.advanced < 5 && (level === 'A2' || level === 'C1' || level === 'A2')) {
+                suggestions.push(`Incorporate more advanced vocabulary appropriate for ${level} level.`);
+            }
+            
+            if (vocabAnalysis.uniqueWords / (vocabAnalysis.advanced + vocabAnalysis.intermediate + vocabAnalysis.basic) < 0.6) {
+                suggestions.push(`Try to use a wider range of vocabulary rather than repeating the same words.`);
+            }
+            
+            // Style suggestions
+            if (metrics.complexSentences < 0.3 && (level !== 'A1' && level !== 'A2')) {
+                suggestions.push(`Use more complex sentence structures with connecting words and clauses.`);
+            }
+            
+            if (metrics.sentenceLengthVariation < 0.4) {
+                suggestions.push(`Vary your sentence length to create better rhythm and flow in your writing.`);
+            }
+            
+            // Add CEFR-specific suggestions
+            const cefrSuggestion = getCEFRSpecificSuggestion(level);
+            if (cefrSuggestion) {
+                suggestions.push(cefrSuggestion);
+            }
+            
+            // Add suggestions to the list
+            suggestions.forEach(suggestion => {
+                const li = document.createElement('li');
+                li.textContent = suggestion;
+                improvementList.appendChild(li);
+            });
+            
+            // If no suggestions were generated, add a positive message
+            if (suggestions.length === 0) {
+                const li = document.createElement('li');
+                li.textContent = `Your writing is already quite strong for the ${level} level. Keep practicing!`;
+                improvementList.appendChild(li);
+            }
+        }
+
+        function getCEFRSpecificSuggestion(level) {
+            const suggestions = {
+                'A1': 'Practice using simple connectors like "et" (and), "mais" (but), and "parce que" (because).',
+                'A2': 'Try incorporating time expressions to order your ideas (d\'abord, ensuite, enfin).',
+                'B1': 'Practice expressing opinions with phrases like "Je pense que..." and "À mon avis..."',
+                'B2': 'Work on using a range of linking words to mark relationships between ideas.',
+                'C1': 'Focus on nuanced expression and precision in your vocabulary choices.',
+                'C2': 'Develop more sophisticated argumentation with complex structures and idiomatic expressions.'
+            };
+            
+            return suggestions[level];
+        }
+
+        // Add this to your DOMContentLoaded event listener
+        document.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+            createContactFormParticles();
+            // ... existing code ...
+        });
     </script>
 </body>
 </html> 
