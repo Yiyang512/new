@@ -1,0 +1,1493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>French Vocabulary Trainer</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <style>
+        :root {
+            --dark-bg: #001a00;
+            --neon-green: #39FF14;
+            --card-bg: rgba(0, 26, 0, 0.95);
+            --text-color: #ffffff;
+            --border-color: rgba(57, 255, 20, 0.3);
+            --neon-green-dim: rgba(57, 255, 20, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: var(--neon-green);
+            text-align: center;
+            margin: 1.5rem 0;
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+        }
+
+        .level-selection {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 2rem;
+        }
+
+        .level-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .level-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(57, 255, 20, 0.2);
+            border-color: var(--neon-green);
+        }
+
+        .level-card h2 {
+            color: var(--neon-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .level-card p {
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .completed {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--neon-green);
+            color: var(--dark-bg);
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .high-score {
+            font-size: 0.8rem;
+            color: var(--neon-green);
+            margin-bottom: 0;
+        }
+
+        .vocabulary-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-top: 2rem;
+            position: relative;
+        }
+
+        .vocabulary-card h2 {
+            color: var(--neon-green);
+            margin-bottom: 1rem;
+        }
+
+        .score-display {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            color: var(--neon-green);
+        }
+
+        .word-display {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .word {
+            font-size: 2.5rem;
+            color: var(--neon-green);
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 5px rgba(57, 255, 20, 0.5);
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 1.5rem 0;
+        }
+
+        .option {
+            background-color: var(--neon-green-dim);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .option:hover {
+            background-color: rgba(57, 255, 20, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .category-badge {
+            display: inline-block;
+            background-color: var(--neon-green-dim);
+            color: var(--neon-green);
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .pronunciation-btn {
+            background: none;
+            border: 1px solid var(--neon-green);
+            color: var(--neon-green);
+            padding: 8px 15px;
+            border-radius: 30px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .pronunciation-btn:hover {
+            background-color: var(--neon-green-dim);
+        }
+
+        .result {
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 1.5rem;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .correct {
+            background-color: rgba(0, 255, 0, 0.1);
+            border: 1px solid rgba(0, 255, 0, 0.3);
+            color: var(--neon-green);
+        }
+
+        .incorrect {
+            background-color: rgba(255, 0, 0, 0.1);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            color: #ff6b6b;
+        }
+
+        .hint {
+            background-color: rgba(57, 255, 20, 0.05);
+            border: 1px solid rgba(57, 255, 20, 0.1);
+            border-radius: 6px;
+            padding: 1rem;
+            margin-top: 1rem;
+            font-style: italic;
+            opacity: 0.8;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .back-btn {
+            background-color: var(--neon-green-dim);
+            border: none;
+            color: var(--neon-green);
+            padding: 8px 15px;
+            border-radius: 30px;
+            cursor: pointer;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .back-btn:hover {
+            background-color: rgba(57, 255, 20, 0.2);
+        }
+
+        .progress-container {
+            margin-top: 2rem;
+        }
+
+        .progress-bar {
+            height: 8px;
+            width: 100%;
+            background-color: rgba(57, 255, 20, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background-color: var(--neon-green);
+            transition: width 0.3s ease;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 2rem;
+        }
+
+        .stat-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            color: var(--neon-green);
+            margin: 0.5rem 0;
+        }
+
+        @media (max-width: 600px) {
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .level-selection {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="margin-top: 2.5rem;">French Vocabulary Trainer</h1>
+        <p style="text-align: center; color: var(--neon-green); margin-bottom: 2rem;">
+            Master essential French vocabulary through interactive exercises!
+        </p>
+        <div id="pronunciation-notice" style="text-align: center; background: rgba(57, 255, 20, 0.1); border: 1px solid var(--neon-green); padding: 10px; border-radius: 8px; margin-bottom: 20px;">
+            <p style="margin: 0;">💡 <strong>Note:</strong> The pronunciation feature works best in Chrome and Edge browsers. If you don't hear audio, try a different browser.</p>
+        </div>
+        <div id="quiz-content">
+            <!-- Content will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <script>
+        // Vocabulary data structure
+        const vocabularyData = {
+            beginner: [
+                {
+                    word: "Bonjour",
+                    translation: "Hello",
+                    category: "Greetings",
+                    options: ["Hello", "Goodbye", "Good night", "Thank you"],
+                    pronunciation: "bohn-ZHOOR",
+                    hint: "The most common greeting in French, used throughout the day"
+                },
+                {
+                    word: "Merci",
+                    translation: "Thank you",
+                    category: "Polite Expressions",
+                    options: ["Please", "Thank you", "Excuse me", "Sorry"],
+                    pronunciation: "mehr-SEE",
+                    hint: "Used to express gratitude"
+                },
+                {
+                    word: "Oui",
+                    translation: "Yes",
+                    category: "Basic Responses",
+                    options: ["Yes", "No", "Maybe", "Of course"],
+                    pronunciation: "wee",
+                    hint: "Affirmative response"
+                },
+                {
+                    word: "Non",
+                    translation: "No",
+                    category: "Basic Responses",
+                    options: ["Yes", "No", "Maybe", "Never"],
+                    pronunciation: "nohn",
+                    hint: "Negative response"
+                },
+                {
+                    word: "Au revoir",
+                    translation: "Goodbye",
+                    category: "Greetings",
+                    options: ["Hello", "Good morning", "Goodbye", "Good night"],
+                    pronunciation: "oh ruh-VWAHR",
+                    hint: "Used when leaving or ending a conversation"
+                },
+                {
+                    word: "S'il vous plaît",
+                    translation: "Please",
+                    category: "Polite Expressions",
+                    options: ["Please", "Thank you", "You're welcome", "Excuse me"],
+                    pronunciation: "seel voo PLEH",
+                    hint: "Polite way to make a request"
+                },
+                {
+                    word: "Un",
+                    translation: "One",
+                    category: "Numbers",
+                    options: ["One", "Two", "Three", "Four"],
+                    pronunciation: "uhn",
+                    hint: "The first number"
+                },
+                {
+                    word: "Deux",
+                    translation: "Two",
+                    category: "Numbers",
+                    options: ["One", "Two", "Three", "Four"],
+                    pronunciation: "duh",
+                    hint: "The number after one"
+                },
+                {
+                    word: "Trois",
+                    translation: "Three",
+                    category: "Numbers",
+                    options: ["Two", "Three", "Four", "Five"],
+                    pronunciation: "twah",
+                    hint: "Comes after two"
+                },
+                {
+                    word: "Bonsoir",
+                    translation: "Good evening",
+                    category: "Greetings",
+                    options: ["Good morning", "Good afternoon", "Good evening", "Good night"],
+                    pronunciation: "bohn-SWAHR",
+                    hint: "Evening greeting"
+                },
+                {
+                    word: "Madame",
+                    translation: "Mrs.",
+                    category: "Titles",
+                    options: ["Miss", "Mrs.", "Mr.", "Ms."],
+                    pronunciation: "mah-DAM",
+                    hint: "Formal address for a woman"
+                },
+                {
+                    word: "Monsieur",
+                    translation: "Mr.",
+                    category: "Titles",
+                    options: ["Miss", "Mrs.", "Mr.", "Ms."],
+                    pronunciation: "muh-SYUH",
+                    hint: "Formal address for a man"
+                },
+                {
+                    word: "Eau",
+                    translation: "Water",
+                    category: "Food & Drink",
+                    options: ["Water", "Bread", "Milk", "Coffee"],
+                    pronunciation: "oh",
+                    hint: "Essential drink"
+                },
+                {
+                    word: "Pain",
+                    translation: "Bread",
+                    category: "Food & Drink",
+                    options: ["Water", "Bread", "Cheese", "Wine"],
+                    pronunciation: "pan",
+                    hint: "Basic food item, often bought at a bakery"
+                },
+                {
+                    word: "Rouge",
+                    translation: "Red",
+                    category: "Colors",
+                    options: ["Blue", "Green", "Red", "Yellow"],
+                    pronunciation: "roozh",
+                    hint: "Color of blood, strawberries"
+                },
+                {
+                    word: "Bleu",
+                    translation: "Blue",
+                    category: "Colors",
+                    options: ["Blue", "Green", "Red", "Yellow"],
+                    pronunciation: "bluh",
+                    hint: "Color of the sky"
+                },
+                {
+                    word: "Chat",
+                    translation: "Cat",
+                    category: "Animals",
+                    options: ["Dog", "Cat", "Bird", "Fish"],
+                    pronunciation: "shah",
+                    hint: "Common household pet that meows"
+                },
+                {
+                    word: "Chien",
+                    translation: "Dog",
+                    category: "Animals",
+                    options: ["Dog", "Cat", "Bird", "Fish"],
+                    pronunciation: "shee-EHN",
+                    hint: "Man's best friend"
+                },
+                {
+                    word: "Maison",
+                    translation: "House",
+                    category: "Places",
+                    options: ["House", "School", "Store", "Restaurant"],
+                    pronunciation: "meh-ZON",
+                    hint: "Where you live"
+                },
+                {
+                    word: "Voiture",
+                    translation: "Car",
+                    category: "Transportation",
+                    options: ["Bus", "Train", "Car", "Bicycle"],
+                    pronunciation: "vwah-TOOR",
+                    hint: "Common vehicle with four wheels"
+                }
+            ],
+            intermediate: [
+                {
+                    word: "Enchanté",
+                    translation: "Nice to meet you",
+                    category: "Introductions",
+                    options: ["Excuse me", "How are you", "Nice to meet you", "See you later"],
+                    pronunciation: "ahn-shahn-TEY",
+                    hint: "Used when meeting someone for the first time"
+                },
+                {
+                    word: "Boulangerie",
+                    translation: "Bakery",
+                    category: "Places",
+                    options: ["Restaurant", "Bakery", "Grocery store", "Café"],
+                    pronunciation: "boo-lanj-REE",
+                    hint: "Where you buy bread and pastries"
+                },
+                {
+                    word: "S'il vous plaît",
+                    translation: "Please",
+                    category: "Polite Expressions",
+                    options: ["Thank you", "You're welcome", "Please", "Excuse me"],
+                    pronunciation: "seel voo PLEH",
+                    hint: "Formal way to request something politely"
+                },
+                {
+                    word: "Désolé",
+                    translation: "Sorry",
+                    category: "Polite Expressions",
+                    options: ["Thank you", "Sorry", "Excuse me", "Please"],
+                    pronunciation: "day-zo-LAY",
+                    hint: "Used to apologize"
+                },
+                {
+                    word: "Bien sûr",
+                    translation: "Of course",
+                    category: "Responses",
+                    options: ["Maybe", "Never", "Always", "Of course"],
+                    pronunciation: "byen SOOR",
+                    hint: "Expresses certainty or agreement"
+                },
+                {
+                    word: "À bientôt",
+                    translation: "See you soon",
+                    category: "Farewells",
+                    options: ["Goodbye", "See you soon", "See you tomorrow", "See you later"],
+                    pronunciation: "ah bee-en-TOH",
+                    hint: "Used when you expect to see someone again soon"
+                },
+                {
+                    word: "Rendez-vous",
+                    translation: "Appointment",
+                    category: "Time",
+                    options: ["Meeting", "Appointment", "Date", "Schedule"],
+                    pronunciation: "rahn-day-VOO",
+                    hint: "Scheduled meeting time"
+                },
+                {
+                    word: "Pourboire",
+                    translation: "Tip",
+                    category: "Money",
+                    options: ["Change", "Tip", "Discount", "Bill"],
+                    pronunciation: "poor-BWAHR",
+                    hint: "Extra money given for service"
+                },
+                {
+                    word: "Covoiturage",
+                    translation: "Carpooling",
+                    category: "Transportation",
+                    options: ["Taxi", "Bus", "Carpooling", "Rental car"],
+                    pronunciation: "ko-vwah-too-RAHJ",
+                    hint: "Sharing a ride with others"
+                },
+                {
+                    word: "Patrimoine",
+                    translation: "Heritage",
+                    category: "Culture",
+                    options: ["History", "Heritage", "Tradition", "Memory"],
+                    pronunciation: "pah-tree-MWAHN",
+                    hint: "Cultural inheritance from the past"
+                },
+                {
+                    word: "Ambiance",
+                    translation: "Atmosphere",
+                    category: "Environment",
+                    options: ["Weather", "Atmosphere", "Mood", "Climate"],
+                    pronunciation: "ahm-bee-AHNSS",
+                    hint: "The feeling or mood of a place"
+                },
+                {
+                    word: "Fromage",
+                    translation: "Cheese",
+                    category: "Food",
+                    options: ["Bread", "Wine", "Cheese", "Pastry"],
+                    pronunciation: "fro-MAHJ",
+                    hint: "Dairy product that France is famous for"
+                },
+                {
+                    word: "Vigneron",
+                    translation: "Winemaker",
+                    category: "Professions",
+                    options: ["Farmer", "Baker", "Winemaker", "Chef"],
+                    pronunciation: "veen-yuh-ROHN",
+                    hint: "Person who produces wine"
+                },
+                {
+                    word: "Terrasse",
+                    translation: "Terrace",
+                    category: "Places",
+                    options: ["Garden", "Terrace", "Balcony", "Patio"],
+                    pronunciation: "teh-RASS",
+                    hint: "Outdoor seating area at a café"
+                },
+                {
+                    word: "Horaire",
+                    translation: "Schedule",
+                    category: "Time",
+                    options: ["Time", "Date", "Schedule", "Calendar"],
+                    pronunciation: "oh-REHR",
+                    hint: "Timetable of planned activities or events"
+                },
+                {
+                    word: "Reçu",
+                    translation: "Receipt",
+                    category: "Shopping",
+                    options: ["Bill", "Receipt", "Invoice", "Check"],
+                    pronunciation: "ruh-SOO",
+                    hint: "Proof of purchase given after payment"
+                },
+                {
+                    word: "Pluie",
+                    translation: "Rain",
+                    category: "Weather",
+                    options: ["Snow", "Rain", "Wind", "Cloud"],
+                    pronunciation: "plwee",
+                    hint: "Water falling from clouds"
+                },
+                {
+                    word: "Souvenir",
+                    translation: "Memory",
+                    category: "Abstract Concepts",
+                    options: ["Gift", "Memory", "Thought", "Dream"],
+                    pronunciation: "soo-vuh-NEER",
+                    hint: "Something remembered from the past"
+                },
+                {
+                    word: "Ordinateur",
+                    translation: "Computer",
+                    category: "Technology",
+                    options: ["Phone", "Computer", "Tablet", "Television"],
+                    pronunciation: "or-dee-nah-TUHR",
+                    hint: "Electronic device used for work and internet"
+                },
+                {
+                    word: "Fourchette",
+                    translation: "Fork",
+                    category: "Household Items",
+                    options: ["Knife", "Spoon", "Fork", "Plate"],
+                    pronunciation: "foor-SHET",
+                    hint: "Utensil with prongs used for eating"
+                }
+            ],
+            advanced: [
+                {
+                    word: "Rassemblement",
+                    translation: "Gathering",
+                    category: "Events",
+                    options: ["Meeting", "Gathering", "Conference", "Party"],
+                    pronunciation: "rah-sahm-bluh-MAHN",
+                    hint: "Coming together of people for a common purpose"
+                },
+                {
+                    word: "Dépaysement",
+                    translation: "Change of scenery",
+                    category: "Feelings",
+                    options: ["Homesickness", "Happiness", "Depression", "Change of scenery"],
+                    pronunciation: "day-pay-eez-MAHN",
+                    hint: "Feeling of being in a different environment"
+                },
+                {
+                    word: "Quotidien",
+                    translation: "Daily routine",
+                    category: "Time",
+                    options: ["Weekly", "Monthly", "Daily routine", "Yearly"],
+                    pronunciation: "ko-tee-dee-YEN",
+                    hint: "Things that happen every day"
+                },
+                {
+                    word: "Retrouvailles",
+                    translation: "Reunion",
+                    category: "Events",
+                    options: ["Departure", "Meeting", "Reunion", "Farewell"],
+                    pronunciation: "ruh-troo-VYE",
+                    hint: "The joy of seeing someone again after a long time"
+                },
+                {
+                    word: "Flâner",
+                    translation: "To wander",
+                    category: "Actions",
+                    options: ["To walk", "To run", "To wander", "To travel"],
+                    pronunciation: "flah-NAY",
+                    hint: "To stroll without a specific destination"
+                },
+                {
+                    word: "Épanouissement",
+                    translation: "Fulfillment",
+                    category: "Abstract Concepts",
+                    options: ["Achievement", "Happiness", "Fulfillment", "Success"],
+                    pronunciation: "ay-pah-noo-eess-MAHN",
+                    hint: "State of reaching one's full potential"
+                },
+                {
+                    word: "Effervescence",
+                    translation: "Excitement",
+                    category: "Emotions",
+                    options: ["Calmness", "Excitement", "Nervousness", "Enthusiasm"],
+                    pronunciation: "ef-fehr-veh-SAHNS",
+                    hint: "Bubbling energy or excitement"
+                },
+                {
+                    word: "Procrastiner",
+                    translation: "To procrastinate",
+                    category: "Actions",
+                    options: ["To delay", "To procrastinate", "To work", "To rush"],
+                    pronunciation: "pro-krass-tee-NAY",
+                    hint: "To postpone doing something"
+                },
+                {
+                    word: "Pénurie",
+                    translation: "Shortage",
+                    category: "Economics",
+                    options: ["Abundance", "Shortage", "Crisis", "Limitation"],
+                    pronunciation: "pay-noo-REE",
+                    hint: "Lack of something needed"
+                },
+                {
+                    word: "Développement durable",
+                    translation: "Sustainable development",
+                    category: "Environment",
+                    options: ["Economic growth", "Green energy", "Sustainable development", "Conservation"],
+                    pronunciation: "day-vuh-lop-MAHN doo-RAHBL",
+                    hint: "Growth that meets present needs without compromising the future"
+                },
+                {
+                    word: "Confinement",
+                    translation: "Lockdown",
+                    category: "Current Events",
+                    options: ["Freedom", "Restriction", "Lockdown", "Isolation"],
+                    pronunciation: "kon-fin-MAHN",
+                    hint: "Restriction of movement during emergencies"
+                },
+                {
+                    word: "Apprivoiser",
+                    translation: "To tame",
+                    category: "Actions",
+                    options: ["To hunt", "To tame", "To feed", "To train"],
+                    pronunciation: "ah-pree-vwah-ZAY",
+                    hint: "To make wild animals gentle"
+                },
+                {
+                    word: "Chatoiement",
+                    translation: "Shimmer",
+                    category: "Visual",
+                    options: ["Darkness", "Light", "Shimmer", "Shadow"],
+                    pronunciation: "shah-twa-MAHN",
+                    hint: "Gentle, tremulous light"
+                },
+                {
+                    word: "Débrouillard",
+                    translation: "Resourceful",
+                    category: "Personality",
+                    options: ["Honest", "Resourceful", "Lazy", "Creative"],
+                    pronunciation: "day-broo-YAHR",
+                    hint: "Ability to solve problems with limited resources"
+                },
+                {
+                    word: "Lendemain",
+                    translation: "Day after",
+                    category: "Time",
+                    options: ["Yesterday", "Today", "Day after", "Week after"],
+                    pronunciation: "lahn-duh-MAN",
+                    hint: "The day following today"
+                },
+                {
+                    word: "Éphémère",
+                    translation: "Temporary",
+                    category: "Time",
+                    options: ["Eternal", "Permanent", "Temporary", "Brief"],
+                    pronunciation: "ay-fay-MEHR",
+                    hint: "Lasting for a very short time"
+                },
+                {
+                    word: "Envergure",
+                    translation: "Scope",
+                    category: "Abstract Concepts",
+                    options: ["Size", "Scope", "Importance", "Width"],
+                    pronunciation: "ahn-vehr-GOOR",
+                    hint: "Extent or range of a project or concept"
+                },
+                {
+                    word: "Enthousiasmer",
+                    translation: "To excite",
+                    category: "Actions",
+                    options: ["To bore", "To excite", "To calm", "To interest"],
+                    pronunciation: "ahn-too-zee-ass-MAY",
+                    hint: "To cause excitement or enthusiasm"
+                },
+                {
+                    word: "Tergiverser",
+                    translation: "To be evasive",
+                    category: "Communication",
+                    options: ["To be honest", "To be direct", "To be evasive", "To be clear"],
+                    pronunciation: "tehr-zhee-vehr-SAY",
+                    hint: "To avoid giving a direct answer"
+                },
+                {
+                    word: "Mélancolie",
+                    translation: "Melancholy",
+                    category: "Emotions",
+                    options: ["Happiness", "Melancholy", "Excitement", "Anger"],
+                    pronunciation: "may-lahn-ko-LEE",
+                    hint: "Gentle sadness or pensiveness"
+                }
+            ]
+        };
+
+        // User progress tracking
+        let userProgress = {
+            beginner: { completed: false, highScore: 0 },
+            intermediate: { completed: false, highScore: 0 },
+            advanced: { completed: false, highScore: 0 }
+        };
+
+        // Quiz state variables
+        let currentLevel = null;
+        let currentQuestion = 0;
+        let score = 0;
+        let missedQuestions = [];
+
+        // Statistics tracking
+        const statistics = {
+            wordsLearned: 0,
+            correctAnswers: 0,
+            totalAnswers: 0,
+            streak: 0,
+            lastDate: null,
+            categoryStats: {},
+
+            initialize() {
+                const savedStats = localStorage.getItem('vocabTrainerStats');
+                if (savedStats) {
+                    const parsed = JSON.parse(savedStats);
+                    Object.assign(this, parsed);
+                }
+            },
+
+            update(category, correct) {
+                this.totalAnswers++;
+                
+                if (correct) {
+                    this.correctAnswers++;
+                    this.streak++;
+                    
+                    // Check if this is a new word learned
+                    if (!this.categoryStats[category]) {
+                        this.categoryStats[category] = { correct: 0, total: 0 };
+                        this.wordsLearned++;
+                    }
+                } else {
+                    this.streak = 0;
+                }
+
+                // Update category stats
+                if (!this.categoryStats[category]) {
+                    this.categoryStats[category] = { correct: 0, total: 0 };
+                }
+                
+                this.categoryStats[category].total++;
+                if (correct) {
+                    this.categoryStats[category].correct++;
+                }
+
+                // Check streak days
+                const today = new Date().toDateString();
+                if (this.lastDate !== today) {
+                    this.lastDate = today;
+                }
+
+                this.save();
+            },
+
+            save() {
+                localStorage.setItem('vocabTrainerStats', JSON.stringify({
+                    wordsLearned: this.wordsLearned,
+                    correctAnswers: this.correctAnswers,
+                    totalAnswers: this.totalAnswers,
+                    streak: this.streak,
+                    lastDate: this.lastDate,
+                    categoryStats: this.categoryStats
+                }));
+            }
+        };
+
+        // Load user progress from local storage
+        function loadProgress() {
+            const savedProgress = localStorage.getItem('vocabTrainerProgress');
+            if (savedProgress) {
+                userProgress = JSON.parse(savedProgress);
+            }
+        }
+
+        // Save user progress to local storage
+        function saveProgress() {
+            localStorage.setItem('vocabTrainerProgress', JSON.stringify(userProgress));
+        }
+
+        // Show level selection screen
+        function showLevelSelection() {
+            loadProgress();
+            
+            const content = `
+                <div class="level-selection">
+                    ${Object.entries(vocabularyData).map(([level, words]) => `
+                        <div class="level-card" onclick="startQuiz('${level}')">
+                            <h2>${level.charAt(0).toUpperCase() + level.slice(1)}</h2>
+                            <p>${getLevelDescription(level)}</p>
+                            ${userProgress[level].completed ? '<span class="completed">✓ Completed</span>' : ''}
+                            ${userProgress[level].highScore > 0 ? `<p class="high-score">High Score: ${userProgress[level].highScore}%</p>` : ''}
+                        </div>
+                    `).join('')}
+                </div>
+                
+                <div style="text-align: center; margin: 30px 0;">
+                    <button onclick="enableAudio()" style="background-color: var(--neon-green); color: var(--dark-bg); border: none; padding: 12px 25px; border-radius: 30px; font-size: 1rem; cursor: pointer; font-weight: bold;">
+                        Click Here to Enable Audio Pronunciation
+                    </button>
+                    <p style="font-size: 0.8rem; opacity: 0.7; margin-top: 10px;">
+                        Modern browsers require user interaction before allowing audio to play
+                    </p>
+                </div>
+                
+                <div class="progress-container">
+                    <h3 style="color: var(--neon-green); margin-bottom: 10px;">Your Progress</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <p>Words Learned</p>
+                            <div class="stat-value">${statistics.wordsLearned}</div>
+                        </div>
+                        <div class="stat-card">
+                            <p>Accuracy</p>
+                            <div class="stat-value">${statistics.totalAnswers > 0 ? Math.round((statistics.correctAnswers / statistics.totalAnswers) * 100) : 0}%</div>
+                        </div>
+                        <div class="stat-card">
+                            <p>Day Streak</p>
+                            <div class="stat-value">${statistics.streak}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('quiz-content').innerHTML = content;
+        }
+
+        // Get description based on level
+        function getLevelDescription(level) {
+            const descriptions = {
+                beginner: "Essential vocabulary for everyday conversations",
+                intermediate: "Expand your vocabulary with useful phrases and expressions",
+                advanced: "Advanced concepts and nuanced vocabulary for fluent conversations"
+            };
+            return descriptions[level];
+        }
+
+        // Start quiz for selected level
+        function startQuiz(level) {
+            currentLevel = level;
+            currentQuestion = 0;
+            score = 0;
+            missedQuestions = [];
+            displayQuestion();
+        }
+
+        // Initialize an audio context for better audio handling
+        let audioContext;
+        let audioInitialized = false;
+
+        // Initialize audio on first user interaction
+        function initAudio() {
+            if (audioInitialized) return true;
+            
+            try {
+                // Create audio context
+                window.AudioContext = window.AudioContext || window.webkitAudioContext;
+                audioContext = new AudioContext();
+                
+                // Check if audio context is in suspended state (happens in some browsers)
+                if (audioContext.state === 'suspended') {
+                    audioContext.resume();
+                }
+                
+                audioInitialized = true;
+                return true;
+            } catch (e) {
+                console.error("Audio initialization failed:", e);
+                return false;
+            }
+        }
+
+        // Use direct MP3 files with error handling
+        function playWordAudio(word) {
+            // Dictionary of words with pronunciation URLs
+            const pronunciationUrls = {
+                // Basic words
+                "Bonjour": "https://ssl.gstatic.com/dictionary/static/pronunciation/2022-03-02/audio/bo/bonjour_fr_fr.mp3",
+                "Merci": "https://ssl.gstatic.com/dictionary/static/pronunciation/2022-03-02/audio/me/merci_fr_fr.mp3",
+                "Au revoir": "https://ssl.gstatic.com/dictionary/static/pronunciation/2022-03-02/audio/au/au_revoir_fr_fr.mp3",
+                "Oui": "https://ssl.gstatic.com/dictionary/static/pronunciation/2022-03-02/audio/ou/oui_fr_fr.mp3",
+                "Non": "https://ssl.gstatic.com/dictionary/static/pronunciation/2022-03-02/audio/no/non_fr_fr.mp3",
+                
+                // Add more pronunciation URLs for common words
+                // You can add more from services like Forvo, Google Translate, etc.
+            };
+            
+            // Find word in the dictionary (case insensitive)
+            const url = pronunciationUrls[word] || 
+                   pronunciationUrls[word.toLowerCase()] || 
+                   pronunciationUrls[word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()];
+            
+            if (url) {
+                initAudio(); // Initialize audio context
+                
+                // Create and play audio
+                const audio = new Audio(url);
+                
+                // Add visual feedback while loading
+                const statusDiv = document.createElement('div');
+                statusDiv.textContent = 'Loading audio...';
+                statusDiv.style.position = 'fixed';
+                statusDiv.style.bottom = '20px';
+                statusDiv.style.left = '50%';
+                statusDiv.style.transform = 'translateX(-50%)';
+                statusDiv.style.backgroundColor = 'rgba(57, 255, 20, 0.2)';
+                statusDiv.style.border = '1px solid var(--neon-green)';
+                statusDiv.style.borderRadius = '5px';
+                statusDiv.style.padding = '10px 20px';
+                statusDiv.style.zIndex = '1000';
+                document.body.appendChild(statusDiv);
+                
+                // Set up event listeners
+                audio.oncanplaythrough = () => {
+                    statusDiv.textContent = 'Playing pronunciation...';
+                };
+                
+                audio.onended = () => {
+                    document.body.removeChild(statusDiv);
+                };
+                
+                audio.onerror = (e) => {
+                    statusDiv.textContent = 'Error playing audio. Try with headphones or another device.';
+                    console.error("Audio error:", e);
+                    setTimeout(() => {
+                        document.body.removeChild(statusDiv);
+                    }, 3000);
+                };
+                
+                // Actually play the audio
+                audio.play().catch(error => {
+                    console.error("Audio playback error:", error);
+                    statusDiv.textContent = 'Audio blocked. Click anywhere on the page first.';
+                    
+                    // Add click handler to try again
+                    const clickHandler = () => {
+                        audio.play().catch(e => console.error("Retry failed:", e));
+                        document.removeEventListener('click', clickHandler);
+                        document.body.removeChild(statusDiv);
+                    };
+                    
+                    document.addEventListener('click', clickHandler);
+                    
+                    setTimeout(() => {
+                        if (document.body.contains(statusDiv)) {
+                            document.body.removeChild(statusDiv);
+                        }
+                    }, 5000);
+                });
+                
+                return true;
+            }
+            
+            return false;
+        }
+
+        // Modify the pronunciation button to try the fallback first
+        function handlePronunciation(word) {
+            initAudio(); // Make sure audio is initialized
+            
+            // First try playing from our collection of pre-recorded audio files
+            if (!playWordAudio(word)) {
+                // Then try the Google Translate pronunciation API as a fallback
+                const googleTTS = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(word)}&tl=fr&client=tw-ob`;
+                
+                const audio = new Audio(googleTTS);
+                
+                // Show status
+                const statusDiv = document.createElement('div');
+                statusDiv.textContent = 'Loading pronunciation...';
+                statusDiv.style.position = 'fixed';
+                statusDiv.style.bottom = '20px';
+                statusDiv.style.left = '50%';
+                statusDiv.style.transform = 'translateX(-50%)';
+                statusDiv.style.backgroundColor = 'rgba(57, 255, 20, 0.2)';
+                statusDiv.style.border = '1px solid var(--neon-green)';
+                statusDiv.style.borderRadius = '5px';
+                statusDiv.style.padding = '10px 20px';
+                statusDiv.style.zIndex = '1000';
+                document.body.appendChild(statusDiv);
+                
+                // Set up event listeners
+                audio.oncanplaythrough = () => {
+                    statusDiv.textContent = 'Playing pronunciation...';
+                };
+                
+                audio.onended = () => {
+                    document.body.removeChild(statusDiv);
+                };
+                
+                audio.onerror = () => {
+                    // Final fallback: try the built-in speech synthesis
+                    statusDiv.textContent = 'Using speech synthesis...';
+                    
+                    try {
+                        if (window.speechSynthesis) {
+                            const utterance = new SpeechSynthesisUtterance(word);
+                            utterance.lang = 'fr-FR';
+                            
+                            // Make sure we have a French voice if possible
+                            const voices = window.speechSynthesis.getVoices();
+                            const frenchVoice = voices.find(voice => voice.lang.includes('fr'));
+                            if (frenchVoice) {
+                                utterance.voice = frenchVoice;
+                            }
+                            
+                            utterance.onend = () => {
+                                document.body.removeChild(statusDiv);
+                            };
+                            
+                            utterance.onerror = () => {
+                                statusDiv.textContent = 'Pronunciation failed. Try with headphones or check browser settings.';
+                                setTimeout(() => {
+                                    document.body.removeChild(statusDiv);
+                                }, 3000);
+                            };
+                            
+                            window.speechSynthesis.speak(utterance);
+                        } else {
+                            throw new Error("Speech synthesis not available");
+                        }
+                    } catch (e) {
+                        console.error("Speech synthesis error:", e);
+                        statusDiv.textContent = 'Pronunciation not available. Try with Chrome or Edge.';
+                        setTimeout(() => {
+                            document.body.removeChild(statusDiv);
+                        }, 3000);
+                    }
+                };
+                
+                // Try to play the audio
+                audio.play().catch(error => {
+                    console.error("Google TTS error:", error);
+                    
+                    // Try speech synthesis as last resort
+                    statusDiv.textContent = 'Trying speech synthesis...';
+                    
+                    try {
+                        if (window.speechSynthesis) {
+                            const utterance = new SpeechSynthesisUtterance(word);
+                            utterance.lang = 'fr-FR';
+                            
+                            utterance.onend = () => {
+                                document.body.removeChild(statusDiv);
+                            };
+                            
+                            utterance.onerror = () => {
+                                statusDiv.textContent = 'Pronunciation failed. Check browser audio settings.';
+                                setTimeout(() => {
+                                    document.body.removeChild(statusDiv);
+                                }, 3000);
+                            };
+                            
+                            window.speechSynthesis.speak(utterance);
+                        } else {
+                            throw new Error("Speech synthesis not available");
+                        }
+                    } catch (e) {
+                        console.error("Final fallback error:", e);
+                        statusDiv.textContent = 'Pronunciation not available in this browser.';
+                        setTimeout(() => {
+                            document.body.removeChild(statusDiv);
+                        }, 3000);
+                    }
+                });
+            }
+        }
+
+        // Update the display to encourage user interaction first
+        function displayQuestion() {
+            const questionData = vocabularyData[currentLevel][currentQuestion];
+            const progressPercent = ((currentQuestion) / vocabularyData[currentLevel].length) * 100;
+            
+            document.getElementById('quiz-content').innerHTML = `
+                <div class="vocabulary-card">
+                    <button class="back-btn" onclick="showLevelSelection()">← Back to Levels</button>
+                    
+                    <div class="score-display">
+                        Level: ${currentLevel.charAt(0).toUpperCase() + currentLevel.slice(1)} | 
+                        Question ${currentQuestion + 1}/${vocabularyData[currentLevel].length} | 
+                        Score: ${score}
+                    </div>
+                    
+                    <div class="progress-bar">
+                        <div class="progress" style="width: ${progressPercent}%"></div>
+                    </div>
+                    
+                    <div class="word-display">
+                        <span class="category-badge">${questionData.category}</span>
+                        <div class="word">${questionData.word}</div>
+                        <button class="pronunciation-btn" onclick="handlePronunciation('${questionData.word}'); return false;">
+                            🔊 Pronunciation: ${questionData.pronunciation}
+                        </button>
+                        <p style="font-size: 0.75rem; opacity: 0.7; text-align: center; margin-top: 5px;">
+                            Trouble hearing? Click anywhere on the page first, then try the pronunciation button.
+                        </p>
+                    </div>
+                    
+                    <p style="text-align: center; margin-bottom: 1rem;">Select the correct translation:</p>
+                    
+                    <div class="options-grid">
+                        ${questionData.options.map(option => `
+                            <div class="option" onclick="checkAnswer('${option}'); initAudio();">${option}</div>
+                        `).join('')}
+                    </div>
+                    
+                    <button onclick="showHint(); initAudio();" style="background: none; border: none; color: var(--neon-green); text-decoration: underline; display: block; margin: 1rem auto; cursor: pointer;">
+                        Show Hint
+                    </button>
+                    
+                    <div id="hint" class="hint hidden">
+                        ${questionData.hint}
+                    </div>
+                    
+                    <div id="result" class="result hidden"></div>
+                </div>
+            `;
+        }
+
+        // Show hint
+        function showHint() {
+            document.getElementById('hint').classList.remove('hidden');
+        }
+
+        // Check user's answer
+        function checkAnswer(selectedAnswer) {
+            const questionData = vocabularyData[currentLevel][currentQuestion];
+            const result = document.getElementById('result');
+            
+            const correct = selectedAnswer === questionData.translation;
+            
+            // Update statistics
+            statistics.update(questionData.category, correct);
+            
+            if (correct) {
+                score++;
+                result.innerHTML = `
+                    <strong>Correct! 🎉</strong><br>
+                    "${questionData.word}" means "${questionData.translation}"
+                `;
+                result.className = 'result correct';
+                
+                setTimeout(() => {
+                    if (currentQuestion < vocabularyData[currentLevel].length - 1) {
+                        currentQuestion++;
+                        displayQuestion();
+                    } else {
+                        showFinalResults();
+                    }
+                }, 1500);
+            } else {
+                if (!missedQuestions.includes(currentQuestion)) {
+                    missedQuestions.push(currentQuestion);
+                }
+                
+                result.innerHTML = `
+                    <strong>Not quite right!</strong><br>
+                    "${questionData.word}" means "${questionData.translation}"
+                `;
+                result.className = 'result incorrect';
+            }
+            
+            result.classList.remove('hidden');
+        }
+
+        // Show final results
+        function showFinalResults() {
+            const percentage = Math.round((score / vocabularyData[currentLevel].length) * 100);
+            
+            // Update high score if current score is higher
+            if (percentage > userProgress[currentLevel].highScore) {
+                userProgress[currentLevel].highScore = percentage;
+            }
+            
+            // Mark level as completed if score is at least 80%
+            if (percentage >= 80) {
+                userProgress[currentLevel].completed = true;
+            }
+            
+            saveProgress();
+            
+            let resultMessage;
+            if (percentage >= 90) {
+                resultMessage = "Excellent! You've mastered this level!";
+            } else if (percentage >= 70) {
+                resultMessage = "Good job! You're getting proficient!";
+            } else if (percentage >= 50) {
+                resultMessage = "Nice effort! Keep practicing to improve!";
+            } else {
+                resultMessage = "You need more practice with these words.";
+            }
+            
+            document.getElementById('quiz-content').innerHTML = `
+                <div class="vocabulary-card">
+                    <h2 style="text-align: center; margin-bottom: 1.5rem;">Quiz Completed!</h2>
+                    
+                    <div style="text-align: center; margin-bottom: 2rem;">
+                        <div style="font-size: 4rem; color: var(--neon-green); margin-bottom: 0.5rem;">${percentage}%</div>
+                        <p>${resultMessage}</p>
+                    </div>
+                    
+                    <div style="text-align: center; margin-bottom: 2rem;">
+                        <p>You got ${score} out of ${vocabularyData[currentLevel].length} words correct.</p>
+                        ${missedQuestions.length > 0 ? `
+                            <div style="margin-top: 1.5rem;">
+                                <h3 style="color: var(--neon-green); margin-bottom: 1rem;">Words to review:</h3>
+                                <ul style="list-style: none; padding: 0;">
+                                    ${missedQuestions.map(index => {
+                                        const word = vocabularyData[currentLevel][index];
+                                        return `
+                                            <li style="margin-bottom: 0.5rem; padding: 10px; background: rgba(57, 255, 20, 0.05); border-radius: 4px;">
+                                                <strong>${word.word}</strong> = ${word.translation} 
+                                                <button onclick="handlePronunciation('${word.word}')" style="background: none; border: none; color: var(--neon-green); cursor: pointer;">🔊</button>
+                                                <span style="font-size: 0.7rem; opacity: 0.7;">(requires Chrome/Edge)</span>
+                                            </li>
+                                        `;
+                                    }).join('')}
+                                </ul>
+                            </div>
+                        ` : ''}
+                    </div>
+                    
+                    <div style="display: flex; justify-content: center; gap: 15px;">
+                        <button onclick="showLevelSelection()" style="background: var(--neon-green); color: var(--dark-bg); border: none; padding: 10px 20px; border-radius: 30px; cursor: pointer;">
+                            Return to Levels
+                        </button>
+                        <button onclick="retryLevel()" style="background: var(--neon-green-dim); border: 1px solid var(--neon-green); color: var(--neon-green); padding: 10px 20px; border-radius: 30px; cursor: pointer;">
+                            Retry Level
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Retry current level
+        function retryLevel() {
+            currentQuestion = 0;
+            score = 0;
+            missedQuestions = [];
+            displayQuestion();
+        }
+
+        // Replace the confirmGoBack function with a direct navigation function
+        function goBackToLevels() {
+            // Go back directly without confirmation
+            showLevelSelection();
+        }
+
+        // Initialize everything on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            statistics.initialize();
+            showLevelSelection();
+            
+            // Show audio permission message on first visit without overlapping
+            if (!localStorage.getItem('audioPermissionShown')) {
+                // Create a notification about audio
+                const noticeDiv = document.createElement('div');
+                noticeDiv.style.position = 'fixed';
+                noticeDiv.style.top = '20px';
+                noticeDiv.style.left = '50%';
+                noticeDiv.style.transform = 'translateX(-50%)';
+                noticeDiv.style.backgroundColor = 'rgba(0, 26, 0, 0.9)'; // Darker background for better contrast
+                noticeDiv.style.border = '1px solid var(--neon-green)';
+                noticeDiv.style.borderRadius = '8px';
+                noticeDiv.style.padding = '15px 25px';
+                noticeDiv.style.zIndex = '9999'; // Higher z-index to ensure it's on top
+                noticeDiv.style.textAlign = 'center';
+                noticeDiv.style.maxWidth = '90%';
+                noticeDiv.style.boxShadow = '0 0 15px rgba(57, 255, 20, 0.3)';
+                
+                noticeDiv.innerHTML = `
+                    <p style="margin-bottom: 10px;"><strong>💡 Important:</strong> For the best experience with pronunciation:</p>
+                    <p style="margin-bottom: 10px;">Click the "Enable Audio Pronunciation" button below before starting the quiz.</p>
+                    <button onclick="this.parentNode.remove(); localStorage.setItem('audioPermissionShown', 'true');" 
+                            style="background: none; border: 1px solid var(--neon-green); color: var(--neon-green); padding: 5px 10px; border-radius: 20px; cursor: pointer; margin-top: 5px;">
+                        Got it
+                    </button>
+                `;
+                
+                // Delay adding the notification to allow main content to render first
+                setTimeout(() => {
+                    document.body.appendChild(noticeDiv);
+                }, 500);
+            }
+        });
+
+        // Update the enableAudio function to prevent overlapping issues
+        function enableAudio() {
+            // Create a clear visual indicator with higher z-index
+            const permissionModal = document.createElement('div');
+            permissionModal.style.position = 'fixed';
+            permissionModal.style.top = '0';
+            permissionModal.style.left = '0';
+            permissionModal.style.width = '100%';
+            permissionModal.style.height = '100%';
+            permissionModal.style.backgroundColor = 'rgba(0, 0, 0, 0.9)'; // Darker background
+            permissionModal.style.zIndex = '10000'; // Very high z-index to be above everything
+            permissionModal.style.display = 'flex';
+            permissionModal.style.flexDirection = 'column';
+            permissionModal.style.alignItems = 'center';
+            permissionModal.style.justifyContent = 'center';
+            permissionModal.style.color = 'white';
+            permissionModal.style.padding = '20px';
+            permissionModal.style.textAlign = 'center';
+            
+            permissionModal.innerHTML = `
+                <div style="background-color: var(--card-bg); border: 2px solid var(--neon-green); border-radius: 8px; padding: 30px; max-width: 500px;">
+                    <h2 style="color: var(--neon-green); margin-bottom: 20px;">Enable Audio Pronunciation</h2>
+                    <p style="margin-bottom: 20px;">This vocabulary trainer uses audio to help you learn French pronunciation.</p>
+                    <p style="margin-bottom: 30px;">To hear the words, your browser requires you to interact with the page first.</p>
+                    <button id="enableAudioBtn" style="background-color: var(--neon-green); color: var(--dark-bg); border: none; padding: 15px 30px; border-radius: 30px; font-size: 1.1rem; cursor: pointer; font-weight: bold;">Enable Audio Now</button>
+                </div>
+            `;
+            
+            document.body.appendChild(permissionModal);
+            
+            // When the user clicks the button
+            document.getElementById('enableAudioBtn').addEventListener('click', function() {
+                // Create and play a silent audio to unlock audio capabilities
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // Create a silent oscillator
+                const oscillator = audioContext.createOscillator();
+                oscillator.frequency.value = 0; // Silent
+                oscillator.connect(audioContext.destination);
+                oscillator.start(0);
+                oscillator.stop(0.1); // Very brief
+                
+                // Try to play a test sound
+                const testAudio = new Audio('data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4LjI5LjEwMAAAAAAAAAAAAAAA//tQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAACAAAFWgD///////////////////////////////////////////8AAAA8TEFNRTMuMTAwBK8AAAAAAAAAABQgJAaEQQABzAAABVrBX7xfAAAAAAAAAAAAAAAAAAAA');
+                testAudio.volume = 0.01; // Very quiet
+                testAudio.play().then(() => {
+                    console.log("Audio permission granted");
+                    // Remove the modal after successful interaction
+                    document.body.removeChild(permissionModal);
+                    
+                    // Show a success message
+                    const successMessage = document.createElement('div');
+                    successMessage.textContent = 'Audio enabled! You can now hear pronunciations.';
+                    successMessage.style.position = 'fixed';
+                    successMessage.style.bottom = '20px';
+                    successMessage.style.left = '50%';
+                    successMessage.style.transform = 'translateX(-50%)';
+                    successMessage.style.backgroundColor = 'rgba(57, 255, 20, 0.2)';
+                    successMessage.style.border = '1px solid var(--neon-green)';
+                    successMessage.style.borderRadius = '5px';
+                    successMessage.style.padding = '10px 20px';
+                    successMessage.style.zIndex = '1000';
+                    document.body.appendChild(successMessage);
+                    
+                    // Remove success message after a few seconds
+                    setTimeout(() => {
+                        document.body.removeChild(successMessage);
+                    }, 3000);
+                    
+                    // Set global audio initialized flag
+                    audioInitialized = true;
+                }).catch(error => {
+                    // Still having issues
+                    console.error("Audio permission error:", error);
+                    
+                    const errorText = document.createElement('p');
+                    errorText.textContent = "Your browser still blocked audio. Try clicking somewhere else on the page first, or check your browser settings.";
+                    errorText.style.color = "#ff6b6b";
+                    errorText.style.marginTop = "20px";
+                    
+                    document.querySelector('#enableAudioBtn').parentNode.appendChild(errorText);
+                    
+                    // Add a close button
+                    const closeBtn = document.createElement('button');
+                    closeBtn.textContent = "Close";
+                    closeBtn.style.backgroundColor = "#333";
+                    closeBtn.style.color = "white";
+                    closeBtn.style.border = "none";
+                    closeBtn.style.padding = "10px 20px";
+                    closeBtn.style.borderRadius = "30px";
+                    closeBtn.style.marginTop = "20px";
+                    closeBtn.style.cursor = "pointer";
+                    
+                    closeBtn.onclick = function() {
+                        document.body.removeChild(permissionModal);
+                    };
+                    
+                    document.querySelector('#enableAudioBtn').parentNode.appendChild(closeBtn);
+                });
+            });
+        }
+    </script>
+</body>
+</html>
