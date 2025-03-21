@@ -466,6 +466,8 @@
         }
         .ai-avatar {
             flex-shrink: 0;
+            position: relative;
+            cursor: pointer;
         }
         .avatar-img {
             width: 120px;
@@ -689,6 +691,34 @@
         .twinkle-1 { top: 10px; left: 10px; }
         .twinkle-2 { top: 10px; right: 10px; }
         .twinkle-3 { bottom: 10px; left: 10px; }
+        @keyframes vibrate {
+            0% { transform: translate(0); }
+            25% { transform: translate(-2px, 2px); }
+            50% { transform: translate(2px, -2px); }
+            75% { transform: translate(-2px, -2px); }
+            100% { transform: translate(0); }
+        }
+        .avatar-vibrating {
+            animation: vibrate 0.3s ease-in-out infinite;
+        }
+        .ai-avatar:hover .avatar-img {
+            box-shadow: 0 0 25px var(--primary-color);
+        }
+        .ai-avatar::after {
+            content: '🔊';
+            position: absolute;
+            bottom: -5px;
+            right: -5px;
+            background: rgba(0, 255, 153, 0.2);
+            padding: 5px;
+            border-radius: 50%;
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .ai-avatar:hover::after {
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
@@ -710,6 +740,11 @@
             <p class="start-note">Enable camera & microphone for the best experience!</p>
         </div>
     </div>
+
+    <!-- Add this right after the intro-container div -->
+    <audio id="introAudio" preload="auto" style="display: none;">
+        <source src="https://yiyang512.github.io/new/hemiya.mp3" type="audio/mpeg">
+    </audio>
 
     <div class="troubleshoot-container">
         <button class="troubleshoot-btn" onclick="toggleTroubleshoot()">
@@ -1502,7 +1537,49 @@ Screen Size: ${window.innerWidth}x${window.innerHeight}`
         window.addEventListener('DOMContentLoaded', (event) => {
             // Check for permissions on page load
             checkMediaPermissions();
+            
+            // Add the intro audio setup
+            setupIntroAudio();
         });
+
+        // Add this to your existing JavaScript, right before the window.addEventListener('DOMContentLoaded') line
+        function setupIntroAudio() {
+            const introAudio = document.getElementById('introAudio');
+            const avatar = document.querySelector('.ai-avatar');
+            const avatarImg = avatar.querySelector('.avatar-img');
+            let hasPlayedOnce = false;
+
+            // Function to handle audio playback and animation
+            function playIntroAudio() {
+                if (introAudio.paused) {
+                    introAudio.play();
+                    avatarImg.classList.add('avatar-vibrating');
+                } else {
+                    introAudio.pause();
+                    introAudio.currentTime = 0;
+                    avatarImg.classList.remove('avatar-vibrating');
+                }
+            }
+
+            // Play automatically once when the page loads
+            if (!hasPlayedOnce) {
+                // Small delay to ensure better user experience
+                setTimeout(() => {
+                    playIntroAudio();
+                    hasPlayedOnce = true;
+                }, 1000);
+            }
+
+            // Handle audio ending
+            introAudio.addEventListener('ended', () => {
+                avatarImg.classList.remove('avatar-vibrating');
+            });
+
+            // Make avatar clickable for replay
+            avatar.addEventListener('click', () => {
+                playIntroAudio();
+            });
+        }
     </script>
 </body>
 </html> 
