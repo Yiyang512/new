@@ -1031,7 +1031,7 @@
                 showNotification("Camera or microphone access denied. Some features won't work.", "error");
             });
 
-        // Add this new function for cross-browser download support
+        // Replace the downloadRecording function with this enhanced version
         function downloadRecording() {
             if (!recordedChunks.length) {
                 showNotification("No recording data available", "error");
@@ -1040,49 +1040,103 @@
             
             // Create a blob from the recording chunks
             const blob = new Blob(recordedChunks, { type: 'video/webm' });
-            const blobUrl = URL.createObjectURL(blob);
             
-            // Get a filename with current date/time
-            const fileName = `french-speaking-practice-${new Date().toISOString().slice(0,19).replace(/:/g,'-')}.webm`;
+            // Detect Safari
+            const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
             
-            // For Safari: Create a link for direct download with saveAs approach
-            const downloadLink = document.createElement('a');
-            downloadLink.style.display = 'none';
-            downloadLink.href = blobUrl;
-            downloadLink.download = fileName;
-            document.body.appendChild(downloadLink);
-            
-            // Safari-specific handling
-            if (/^((?!chrome|android).)*safari/i.test(navigator.userAgent)) {
-                // For Safari, we need to provide visual feedback
-                showNotification("Safari detected: Click OK when prompted to save the file", "success");
+            if (isSafari) {
+                // Safari-specific approach
+                console.log("Safari detected, using special download method");
+                showNotification("Safari detected: Preparing your download...", "success");
                 
-                // Try window.open approach which sometimes works better in Safari
                 try {
-                    const tab = window.open(blobUrl, '_blank');
-                    if (tab) {
-                        tab.focus();
-                        showNotification("If download doesn't start, right-click the video and select 'Save Video As'", "success");
-                    } else {
-                        // If popup blocked, fall back to direct link click
-                        downloadLink.click();
-                    }
+                    // For Safari: First try creating a video element to play the recording
+                    const videoElement = document.createElement('video');
+                    videoElement.controls = true;
+                    videoElement.autoplay = false;
+                    videoElement.style.maxWidth = "100%";
+                    videoElement.style.marginTop = "20px";
+                    
+                    // Create URL for the video
+                    const videoUrl = URL.createObjectURL(blob);
+                    videoElement.src = videoUrl;
+                    
+                    // Create a download instructions element
+                    const downloadInstructions = document.createElement('div');
+                    downloadInstructions.innerHTML = `
+                        <div style="margin-top: 15px; padding: 10px; background: rgba(0, 255, 153, 0.1); border-radius: 8px; max-width: 700px; margin: 15px auto;">
+                            <h3 style="color: #00FF99; margin-top: 0;">Safari Download Instructions</h3>
+                            <p>Safari doesn't allow automatic downloads. Please follow these steps:</p>
+                            <ol style="text-align: left; padding-left: 20px;">
+                                <li>Right-click or control-click on the video below</li>
+                                <li>Select "Download Video As..." from the menu</li>
+                                <li>Choose a location to save your recording</li>
+                            </ol>
+                            <button id="closeVideoBtn" style="margin-top: 10px; padding: 8px 15px; background: #00FF99; color: black; border: none; border-radius: 5px; cursor: pointer;">
+                                Close Video
+                            </button>
+                        </div>
+                    `;
+                    
+                    // Create container for the video and instructions
+                    const videoContainer = document.createElement('div');
+                    videoContainer.id = "safariVideoContainer";
+                    videoContainer.style.background = "rgba(0, 0, 0, 0.8)";
+                    videoContainer.style.padding = "30px";
+                    videoContainer.style.borderRadius = "10px";
+                    videoContainer.style.maxWidth = "800px";
+                    videoContainer.style.margin = "20px auto";
+                    videoContainer.style.boxShadow = "0 0 20px rgba(0, 255, 153, 0.5)";
+                    
+                    videoContainer.appendChild(videoElement);
+                    videoContainer.appendChild(downloadInstructions);
+                    
+                    // Add the container after the test-container
+                    const testContainer = document.querySelector('.test-container');
+                    testContainer.parentNode.insertBefore(videoContainer, testContainer.nextSibling);
+                    
+                    // Add event listener for the close button
+                    document.getElementById('closeVideoBtn').addEventListener('click', function() {
+                        videoContainer.remove();
+                        URL.revokeObjectURL(videoUrl);
+                    });
+                    
+                    // Alternative method: try using the download attribute as well
+                    const downloadLink = document.createElement('a');
+                    downloadLink.href = videoUrl;
+                    downloadLink.download = `french-speaking-practice-${new Date().toISOString().slice(0,19).replace(/:/g,'-')}.webm`;
+                    downloadLink.textContent = "💾 Alternative: Click here to try direct download";
+                    downloadLink.style.display = "block";
+                    downloadLink.style.margin = "10px auto";
+                    downloadLink.style.padding = "8px 15px";
+                    downloadLink.style.background = "rgba(0, 100, 255, 0.3)";
+                    downloadLink.style.color = "white";
+                    downloadLink.style.borderRadius = "5px";
+                    downloadLink.style.textDecoration = "none";
+                    downloadInstructions.appendChild(downloadLink);
+                    
+                    showNotification("Recording ready! See below for download instructions", "success");
                 } catch (e) {
-                    console.error("Safari download via window.open failed:", e);
-                    downloadLink.click();
+                    console.error("Safari video playback approach failed:", e);
+                    showNotification("Error preparing video for download. Try recording again.", "error");
                 }
             } else {
-                // Standard download for other browsers
-                downloadLink.click();
+                // For Chrome, Firefox, Edge, etc.
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = `french-speaking-practice-${new Date().toISOString().slice(0,19).replace(/:/g,'-')}.webm`;
+                document.body.appendChild(a);
+                a.click();
+                
+                setTimeout(() => {
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }, 100);
+                
+                showNotification("Your recording has been downloaded!", "success");
             }
-            
-            // Clean up
-            setTimeout(() => {
-                document.body.removeChild(downloadLink);
-                URL.revokeObjectURL(blobUrl);
-            }, 100);
-            
-            showNotification("Your recording has been saved!", "success");
         }
 
         // EmailJS initialization
