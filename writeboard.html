@@ -1747,22 +1747,42 @@
         }
 
         function determineCEFRLevel(metrics, vocab, grammar) {
-            // Complex algorithm to determine CEFR level
-            // This would use machine learning in a production environment
-            let score = 0;
+            // More sophisticated algorithm to determine CEFR level
+            let baseScore = 0;
             
-            // Factor in text complexity
-            score += metrics.complexSentences * 2;
-            score += metrics.uniqueWordsRatio * 3;
+            // Factor in text complexity (0-5 points)
+            baseScore += metrics.complexSentences * 3;
+            baseScore += metrics.uniqueWordsRatio * 2;
             
-            // Factor in vocabulary range
-            score += (vocab.advanced / vocab.basic) * 4;
+            // Factor in vocabulary range (0-5 points)
+            const vocabRatio = (vocab.advanced + vocab.intermediate) / (vocab.basic || 1);
+            baseScore += Math.min(vocabRatio * 2, 3);
+            baseScore += (vocab.advanced / (vocab.basic || 1)) * 2;
             
-            // Factor in grammar accuracy
-            score -= (grammar.errorCount / metrics.textLength) * 2;
+            // Factor in grammar accuracy (0-5 points)
+            const errorDensity = grammar.errorCount / (metrics.textLength || 1);
+            baseScore -= Math.min(errorDensity * 10, 5);
             
-            // Map score to CEFR level
-            return mapScoreToCEFR(score);
+            // Normalize score to 0-1 range
+            const normalizedScore = Math.max(0, Math.min(baseScore / 10, 1));
+            
+            // Factor in sentence complexity and variety
+            if (metrics.averageSentenceLength > 15 && metrics.sentenceLengthVariation > 0.3) {
+                normalizedScore += 0.1; // Boost for complex sentences
+            }
+            
+            // Factor in text length - longer texts can demonstrate higher proficiency
+            if (metrics.textLength > 150) {
+                normalizedScore += 0.1;
+            }
+            
+            // Map to CEFR level with expanded ranges
+            if (normalizedScore < 0.25) return "A1";
+            if (normalizedScore < 0.4) return "A2";
+            if (normalizedScore < 0.55) return "B1";
+            if (normalizedScore < 0.7) return "B2";
+            if (normalizedScore < 0.85) return "C1";
+            return "C2";
         }
 
         function generateDetailedReport() {
@@ -1795,98 +1815,105 @@
         // French vocabulary levels (simplified version)
         const frenchVocabulary = {
             A1: ['je', 'tu', 'il', 'elle', 'nous', 'vous', 'ils', 'elles', 'être', 'avoir', 'bonjour', 'merci', 'oui', 'non', 'pouvoir', 'vouloir', 'aller', 'manger', 'boire', 'venir', 'faire', 'dire', 'trouver'],
-    A2: ['maintenant', 'aujourd\'hui', 'demain', 'hier', 'semaine', 'mois', 'année', 'quelque', 'déjà', 'toujours', 'parfois', 'aussi', 'assez', 'encore', 'beaucoup', 'seulement', 'vraiment'],
-    A2: ['cependant', 'néanmoins', 'puisque', 'lorsque', 'pendant', 'durant', 'ainsi', 'autrement', 'par conséquent', 'tandis que', 'voire', 'd\'autant plus', 'quasiment', 'désormais', 'entre-temps'],
-    A2: ['effectivement', 'éventuellement', 'précisément', 'particulièrement', 'sous prétexte que', 'quoique', 'toutefois', 'pour autant', 'd\'une part', 'en revanche', 'au préalable'],
-    C1: ['systématiquement', 'fondamentalement', 'intrinsèquement', 'envisageable', 'inéluctable', 'subséquemment', 'paradoxalement', 'manifestement', 'inévitablement', 'indubitablement'],
-    A2: ['épistémologique', 'paradigmatique', 'ontologique', 'heuristique', 'transcendantal', 'méta-cognitif', 'post-structuraliste', 'herméneutique']
+            A2: ['maintenant', 'aujourd\'hui', 'demain', 'hier', 'semaine', 'mois', 'année', 'quelque', 'déjà', 'toujours', 'parfois', 'aussi', 'assez', 'encore', 'beaucoup', 'seulement', 'vraiment'],
+            B1: ['cependant', 'néanmoins', 'puisque', 'lorsque', 'pendant', 'durant', 'ainsi', 'autrement', 'par conséquent', 'tandis que', 'voire', 'd\'autant plus', 'quasiment', 'désormais', 'entre-temps'],
+            B2: ['effectivement', 'éventuellement', 'précisément', 'particulièrement', 'sous prétexte que', 'quoique', 'toutefois', 'pour autant', 'd\'une part', 'en revanche', 'au préalable'],
+            C1: ['systématiquement', 'fondamentalement', 'intrinsèquement', 'envisageable', 'inéluctable', 'subséquemment', 'paradoxalement', 'manifestement', 'inévitablement', 'indubitablement'],
+            C2: ['épistémologique', 'paradigmatique', 'ontologique', 'heuristique', 'transcendantal', 'méta-cognitif', 'post-structuraliste', 'herméneutique']
         };
 
         // CEFR level descriptors
-     const cefrDescriptors = {
-    A1: {
-        grammar: "Can use simple present tense and common verbs in their base form. Limited knowledge of conjugations.",
-        vocabulary: "Uses basic everyday words related to immediate needs and personal details.",
-        coherence: "Can construct very simple sentences with 'and', 'but', 'then'.",
-        discourse: "Mostly isolated phrases or single words."
-    },
-    A2: {
-        grammar: "Can form simple past and future structures, with frequent mistakes.",
-        vocabulary: "Uses a basic but broader range of words, including common adverbs and prepositions.",
-        coherence: "Can link phrases using common connectors like 'because', 'so', 'but'.",
-        discourse: "Uses short sentences but lacks complexity."
-    },
-    A2: {
-        grammar: "Uses subordinate clauses, conditional sentences, and some relative pronouns.",
-        vocabulary: "Expands vocabulary to include abstract terms and expressions of time.",
-        coherence: "Can structure coherent discourse with a variety of linking words.",
-        discourse: "Can narrate events and express opinions with some fluency."
-    },
-    A2: {
-        grammar: "Uses complex sentence structures, including passive voice and reported speech.",
-        vocabulary: "Uses a wide range of vocabulary, including idioms and nuanced expressions.",
-        coherence: "Maintains logical progression with advanced connectors.",
-        discourse: "Can argue and justify opinions clearly."
-    },
-    C1: {
-        grammar: "Uses sophisticated grammatical structures with minor errors.",
-        vocabulary: "Employs a wide range of nuanced vocabulary, including technical terms.",
-        coherence: "Can express ideas fluently and adapt style to different contexts.",
-        discourse: "Can produce detailed and well-structured texts on complex subjects."
-    },
-    A2: {
-        grammar: "Uses advanced syntax and near-native fluency with precision.",
-        vocabulary: "Has command of rare, specialized, and academic terminology.",
-        coherence: "Speaks and writes effortlessly with a natural flow.",
-        discourse: "Can argue and debate complex abstract concepts persuasively."
-    },
-            // ... add more levels ...
+        const cefrDescriptors = {
+            A1: {
+                grammar: "Can use simple present tense and common verbs in their base form. Limited knowledge of conjugations.",
+                vocabulary: "Uses basic everyday words related to immediate needs and personal details.",
+                coherence: "Can construct very simple sentences with 'and', 'but', 'then'.",
+                discourse: "Mostly isolated phrases or single words."
+            },
+            A2: {
+                grammar: "Can form simple past and future structures, with frequent mistakes.",
+                vocabulary: "Uses a basic but broader range of words, including common adverbs and prepositions.",
+                coherence: "Can link phrases using common connectors like 'because', 'so', 'but'.",
+                discourse: "Uses short sentences but lacks complexity."
+            },
+            B1: {
+                grammar: "Uses subordinate clauses, conditional sentences, and some relative pronouns.",
+                vocabulary: "Expands vocabulary to include abstract terms and expressions of time.",
+                coherence: "Can structure coherent discourse with a variety of linking words.",
+                discourse: "Can narrate events and express opinions with some fluency."
+            },
+            B2: {
+                grammar: "Uses complex sentence structures, including passive voice and reported speech.",
+                vocabulary: "Uses a wide range of vocabulary, including idioms and nuanced expressions.",
+                coherence: "Maintains logical progression with advanced connectors.",
+                discourse: "Can argue and justify opinions clearly."
+            },
+            C1: {
+                grammar: "Uses sophisticated grammatical structures with minor errors.",
+                vocabulary: "Employs a wide range of nuanced vocabulary, including technical terms.",
+                coherence: "Can express ideas fluently and adapt style to different contexts.",
+                discourse: "Can produce detailed and well-structured texts on complex subjects."
+            },
+            C2: {
+                grammar: "Uses advanced syntax and near-native fluency with precision.",
+                vocabulary: "Has command of rare, specialized, and academic terminology.",
+                coherence: "Speaks and writes effortlessly with a natural flow.",
+                discourse: "Can argue and debate complex abstract concepts persuasively."
+            }
         };
 
-// Function to determine CEFR level based on word usage
-function assessLanguageLevel(wordsUsed) {
-    let score = { A1: 0, A2: 0, A2: 0, A2: 0, C1: 0, A2: 0 };
-    let totalWords = wordsUsed.length;
+        // Function to determine CEFR level based on word usage
+        function assessLanguageLevel(wordsUsed) {
+            let score = { A1: 0, A2: 0, B1: 0, B2: 0, C1: 0, C2: 0 };
+            let totalWords = wordsUsed.length;
 
-    // Count occurrences of words in each level
-    wordsUsed.forEach(word => {
-        for (let level in frenchVocabulary) {
-            if (frenchVocabulary[level].includes(word.toLowerCase())) {
-                score[level]++;
-                break; // Stop once a match is found (assigning the lowest applicable level)
+            // Count occurrences of words in each level
+            wordsUsed.forEach(word => {
+                let matched = false;
+                for (let level of ["C2", "C1", "B2", "B1", "A2", "A1"]) {
+                    if (frenchVocabulary[level] && frenchVocabulary[level].includes(word.toLowerCase())) {
+                        score[level]++;
+                        matched = true;
+                        break; // Stop once a match is found (assigning highest applicable level)
+                    }
+                }
+                
+                // If no match found, default to A1
+                if (!matched) {
+                    score.A1++;
+                }
+            });
+
+            // Calculate percentages
+            let percentages = {};
+            for (let level in score) {
+                percentages[level] = (score[level] / totalWords) * 100;
             }
+
+            // Determine the best level using a weighted system
+            let maxLevel = 'A1'; // Default to A1 (most basic)
+            
+            // Using a more nuanced approach to determine level
+            if (percentages['C2'] > 10) maxLevel = 'C2';
+            else if (percentages['C1'] > 15) maxLevel = 'C1';
+            else if (percentages['B2'] > 20) maxLevel = 'B2';
+            else if (percentages['B1'] > 25) maxLevel = 'B1';
+            else if (percentages['A2'] > 30) maxLevel = 'A2';
+            else maxLevel = 'A1';
+
+            return {
+                level: maxLevel,
+                description: cefrDescriptors[maxLevel],
+                wordDistribution: score,
+                confidence: percentages[maxLevel].toFixed(2) + '%'
+            };
         }
-    });
 
-    // Calculate percentages
-    let percentages = {};
-    for (let level in score) {
-        percentages[level] = (score[level] / totalWords) * 100;
-    }
+        // Example Usage
+        const sampleWords = ['je', 'merci', 'néanmoins', 'précisément', 'ontologique']; // Mixed levels
+        const assessment = assessLanguageLevel(sampleWords);
 
-    // Determine the best level using a weighted system
-    let maxLevel = 'A2'; // Default to A1 (most basic)
-    
-    if (percentages['A1'] > 30) maxLevel = 'A2';
-    else if (percentages['A2'] > 40) maxLevel = 'A2';
-    else if (percentages['A2'] > 50) maxLevel = 'A2';
-    else if (percentages['A2'] > 50) maxLevel = 'A2';
-    else if (percentages['A1'] > 50) maxLevel = 'A1';
-
-    return {
-        level: maxLevel,
-        description: cefrDescriptors[maxLevel],
-        wordDistribution: score,
-        confidence: percentages[maxLevel].toFixed(2) + '%'
-    };
-}
-
-// Example Usage
-const sampleWords = ['je', 'merci', 'néanmoins', 'précisément', 'ontologique']; // Mixed levels
-const assessment = assessLanguageLevel(sampleWords);
-
-console.log(assessment);
-
+        console.log(assessment);
 
         // Add these functions to implement the report generation
 
@@ -2044,10 +2071,10 @@ Generated by Hemiya AI - Your French Writing Coach
             // Map a numerical score to CEFR level
             if (score < 0.2) return "A1";
             if (score < 0.4) return "A2";
-            if (score < 0.6) return "A2";
-            if (score < 0.75) return "A2";
+            if (score < 0.6) return "B1";
+            if (score < 0.75) return "B2";
             if (score < 0.9) return "C1";
-            return "A2";
+            return "C2";
         }
 
         async function checkGrammarForAssessment(text) {
@@ -2273,10 +2300,10 @@ Generated by Hemiya AI - Your French Writing Coach
             const suggestions = {
                 'A1': 'Practice using simple connectors like "et" (and), "mais" (but), and "parce que" (because).',
                 'A2': 'Try incorporating time expressions to order your ideas (d\'abord, ensuite, enfin).',
-                'A2': 'Practice expressing opinions with phrases like "Je pense que..." and "À mon avis..."',
-                'A2': 'Work on using a range of linking words to mark relationships between ideas.',
+                'B1': 'Practice expressing opinions with phrases like "Je pense que..." and "À mon avis..."',
+                'B2': 'Work on using a range of linking words to mark relationships between ideas.',
                 'C1': 'Focus on nuanced expression and precision in your vocabulary choices.',
-                'A2': 'Develop more sophisticated argumentation with complex structures and idiomatic expressions.'
+                'C2': 'Develop more sophisticated argumentation with complex structures and idiomatic expressions.'
             };
             
             return suggestions[level];
