@@ -1545,6 +1545,17 @@ Screen Size: ${window.innerWidth}x${window.innerHeight}`
                 notification.textContent = `Welcome ${contactData.name}! You can now start your practice. We'll send you study tips tomorrow!`;
                 notification.classList.add('show');
                 
+                // Play the intro audio and animation immediately after entering the speaking board
+                setTimeout(() => {
+                    const introAudio = document.getElementById('introAudio');
+                    const avatarImg = document.querySelector('.ai-avatar .avatar-img');
+                    
+                    if (introAudio && avatarImg) {
+                        introAudio.play();
+                        startPulsingWithIntervals(avatarImg);
+                    }
+                }, 800); // Short delay to ensure smooth transition
+                
                 // Hide notification after 5 seconds
                 setTimeout(() => {
                     notification.classList.remove('show');
@@ -1560,6 +1571,17 @@ Screen Size: ${window.innerWidth}x${window.innerHeight}`
                 notification.style.background = 'rgba(255, 68, 68, 0.9)';
                 notification.classList.add('show');
                 
+                // Still play the animation even if email fails
+                setTimeout(() => {
+                    const introAudio = document.getElementById('introAudio');
+                    const avatarImg = document.querySelector('.ai-avatar .avatar-img');
+                    
+                    if (introAudio && avatarImg) {
+                        introAudio.play();
+                        startPulsingWithIntervals(avatarImg);
+                    }
+                }, 800);
+                
                 setTimeout(() => {
                     notification.classList.remove('show');
                 }, 5000);
@@ -1573,6 +1595,17 @@ Screen Size: ${window.innerWidth}x${window.innerHeight}`
             const userContact = localStorage.getItem('userContact');
             if (userContact) {
                 document.getElementById('contactOverlay').classList.add('hidden');
+                
+                // Auto-play for returning users after a short delay
+                setTimeout(() => {
+                    const introAudio = document.getElementById('introAudio');
+                    const avatarImg = document.querySelector('.ai-avatar .avatar-img');
+                    
+                    if (introAudio && avatarImg) {
+                        introAudio.play();
+                        startPulsingWithIntervals(avatarImg);
+                    }
+                }, 1500);
             }
         });
 
@@ -1638,7 +1671,6 @@ Screen Size: ${window.innerWidth}x${window.innerHeight}`
             const introAudio = document.getElementById('introAudio');
             const avatar = document.querySelector('.ai-avatar');
             const avatarImg = avatar.querySelector('.avatar-img');
-            let hasPlayedOnce = false;
             let pulseInterval;
 
             // Function to handle audio playback and animation
@@ -1656,199 +1688,6 @@ Screen Size: ${window.innerWidth}x${window.innerHeight}`
                 }
             }
 
-            // Function to create pulsing intervals
-            function startPulsingWithIntervals(element) {
-                let isPulsing = true;
-                let pulseCount = 0;
-                
-                // Cute emoji array with French-themed ones
-                let emojis = ['💬', '🇫🇷', '👋', '😊', '🎉', '🎓', '🤔', '👍', '✨', '🥐', '🧁', '🌟', '🌈', '🦄', '🎵', '🥰'];
-                
-                // Start initial pulse
-                element.classList.add('avatar-vibrating');
-                
-                // Clear any existing interval
-                if (pulseInterval) {
-                    clearInterval(pulseInterval);
-                }
-                
-                // Add floating particles around the avatar
-                createFloatingParticles(element.parentNode);
-                
-                // Add initial sparkles
-                addSparkleEffect(element.parentNode);
-                
-                // Create a random "talking" effect with cuter animations
-                pulseInterval = setInterval(() => {
-                    pulseCount++;
-                    
-                    // Create a pattern of animation
-                    if (pulseCount % 5 === 0) {
-                        // Add sparkle effects randomly around the avatar
-                        addSparkleEffect(element.parentNode);
-                        
-                        // Add a random emoji speech bubble with cuter styling
-                        const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
-                        createSpeechBubble(element.parentNode, randomEmoji);
-                    }
-                    
-                    // Occasionally make the avatar do a cute bounce
-                    if (pulseCount % 15 === 0) {
-                        element.style.animation = 'cute-bounce 0.8s cubic-bezier(0.28, 0.84, 0.42, 1) forwards';
-                        
-                        setTimeout(() => {
-                            element.style.animation = '';
-                            element.classList.add('avatar-vibrating');
-                        }, 1000);
-                    }
-                }, 300);
-            }
-
-            // Create sparkle effect around the avatar
-            function addSparkleEffect(container) {
-                const sparkleCount = Math.floor(Math.random() * 3) + 2;
-                
-                for (let i = 0; i < sparkleCount; i++) {
-                    setTimeout(() => {
-                        const sparkle = document.createElement('div');
-                        sparkle.classList.add('sparkle');
-                        
-                        // Random size between 3px and 10px
-                        const size = Math.random() * 7 + 3;
-                        
-                        // Position randomly around the avatar
-                        const angle = Math.random() * 360;
-                        const distance = Math.random() * 40 + 60; // Distance from center
-                        const centerX = 60; // Assuming avatar is 120px wide
-                        const centerY = 60; // Assuming avatar is 120px high
-                        
-                        const x = centerX + distance * Math.cos(angle * Math.PI / 180);
-                        const y = centerY + distance * Math.sin(angle * Math.PI / 180);
-                        
-                        Object.assign(sparkle.style, {
-                            width: `${size}px`,
-                            height: `${size}px`,
-                            left: `${x}px`,
-                            top: `${y}px`,
-                            background: `radial-gradient(circle, white 20%, ${getRandomColor()} 70%)`,
-                            boxShadow: `0 0 ${size/2}px ${size/2}px rgba(255, 255, 255, 0.7)`
-                        });
-                        
-                        container.appendChild(sparkle);
-                        
-                        // Remove the sparkle after animation completes
-                        setTimeout(() => {
-                            if (sparkle.parentNode) {
-                                container.removeChild(sparkle);
-                            }
-                        }, 1500);
-                    }, i * 100); // Stagger the sparkles
-                }
-            }
-
-            // Creates a cute emoji speech bubble
-            function createSpeechBubble(container, emoji) {
-                const bubble = document.createElement('div');
-                bubble.innerHTML = emoji;
-                bubble.style.position = 'absolute';
-                bubble.style.zIndex = '10';
-                
-                // Randomize position with more options
-                const positions = [
-                    { top: '-30px', right: '-5px' },
-                    { top: '-25px', right: '15px' },
-                    { top: '-20px', left: '-15px' },
-                    { top: '0px', right: '-35px' },
-                    { top: '10px', left: '-30px' },
-                    { top: '-15px', left: '60px' }
-                ];
-                const position = positions[Math.floor(Math.random() * positions.length)];
-                
-                Object.assign(bubble.style, {
-                    ...position,
-                    fontSize: '28px',
-                    padding: '5px',
-                    borderRadius: '50%',
-                    background: 'rgba(255, 255, 255, 0.2)',
-                    animation: 'popBubble 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-                    filter: 'drop-shadow(0 0 5px rgba(0,255,153,0.7))',
-                    transform: 'scale(0.1)',
-                    opacity: '0'
-                });
-                
-                container.appendChild(bubble);
-                
-                // Remove the speech bubble after animation
-                setTimeout(() => {
-                    if (bubble.parentNode) {
-                        container.removeChild(bubble);
-                    }
-                }, 1200);
-            }
-
-            // Create more colorful and vivid floating particles
-            function createFloatingParticles(container) {
-                const colors = ['#00FF99', '#00FFCC', '#00CCFF', '#CCFF00', '#FFCC00', '#FF66CC', '#CC99FF'];
-                const shapes = ['circle', 'circle', 'star', 'heart', 'circle'];
-                
-                // Create more particles for a vivid effect
-                for (let i = 0; i < 8; i++) {
-                    const particle = document.createElement('div');
-                    const size = Math.random() * 12 + 5;
-                    const color = colors[Math.floor(Math.random() * colors.length)];
-                    const shape = shapes[Math.floor(Math.random() * shapes.length)];
-                    
-                    let shapeCSS = 'border-radius: 50%;'; // Default circle
-                    
-                    if (shape === 'star') {
-                        // Simple star-like shape using clip-path
-                        shapeCSS = 'clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);';
-                    } else if (shape === 'heart') {
-                        // Simple heart-like shape
-                        shapeCSS = 'transform: rotate(-45deg); border-radius: 50% 50% 0 50%;';
-                    }
-                    
-                    Object.assign(particle.style, {
-                        position: 'absolute',
-                        width: `${size}px`,
-                        height: `${size}px`,
-                        backgroundColor: color,
-                        top: `${Math.random() * 120}px`,
-                        left: `${Math.random() * 120}px`,
-                        filter: 'blur(1px)',
-                        opacity: '0.7',
-                        animation: `float ${Math.random() * 4 + 3}s ease-in-out infinite, twinkle ${Math.random() * 2 + 1}s ease-in-out infinite`,
-                        zIndex: '1'
-                    });
-                    
-                    // Apply the shape CSS
-                    particle.style.cssText += shapeCSS;
-                    
-                    container.appendChild(particle);
-                    
-                    // Remove particles when audio ends
-                    introAudio.addEventListener('ended', () => {
-                        if (particle.parentNode) {
-                            container.removeChild(particle);
-                        }
-                    });
-                }
-            }
-
-            // Helper function to get random pastel colors
-            function getRandomColor() {
-                const hue = Math.floor(Math.random() * 360);
-                return `hsl(${hue}, 100%, 75%)`;
-            }
-
-            // Play automatically once when the page loads
-            if (!hasPlayedOnce) {
-                setTimeout(() => {
-                    playIntroAudio();
-                    hasPlayedOnce = true;
-                }, 1000);
-            }
-
             // Handle audio ending
             introAudio.addEventListener('ended', () => {
                 avatarImg.classList.remove('avatar-vibrating');
@@ -1860,8 +1699,231 @@ Screen Size: ${window.innerWidth}x${window.innerHeight}`
             // Make avatar clickable for replay
             avatar.addEventListener('click', () => {
                 playIntroAudio();
-                });
+            });
         }
+
+        // The startPulsingWithIntervals function is now used directly from multiple places,
+        // so we need to move it outside of setupIntroAudio to make it globally accessible
+        let pulseInterval; // Make this globally accessible
+
+        function startPulsingWithIntervals(element) {
+            let pulseCount = 0;
+            
+            // Cute emoji array with French-themed ones
+            let emojis = ['💬', '🇫🇷', '👋', '😊', '🎉', '🎓', '🤔', '👍', '✨', '🥐', '🧁', '🌟', '🌈', '🦄', '🎵', '🥰'];
+            
+            // Start initial pulse
+            element.classList.add('avatar-vibrating');
+            
+            // Clear any existing interval
+            if (pulseInterval) {
+                clearInterval(pulseInterval);
+            }
+            
+            // Add floating particles around the avatar
+            createFloatingParticles(element.parentNode);
+            
+            // Add initial sparkles
+            addSparkleEffect(element.parentNode);
+            
+            // Create a random "talking" effect with cuter animations
+            pulseInterval = setInterval(() => {
+                pulseCount++;
+                
+                // Create a pattern of animation
+                if (pulseCount % 5 === 0) {
+                    // Add sparkle effects randomly around the avatar
+                    addSparkleEffect(element.parentNode);
+                    
+                    // Add a random emoji speech bubble with cuter styling
+                    const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+                    createSpeechBubble(element.parentNode, randomEmoji);
+                }
+                
+                // Occasionally make the avatar do a cute bounce
+                if (pulseCount % 15 === 0) {
+                    element.style.animation = 'cute-bounce 0.8s cubic-bezier(0.28, 0.84, 0.42, 1) forwards';
+                    
+                    setTimeout(() => {
+                        element.style.animation = '';
+                        element.classList.add('avatar-vibrating');
+                    }, 1000);
+                }
+            }, 300);
+
+            // Make sure the audio element knows to stop the animation when it ends
+            const introAudio = document.getElementById('introAudio');
+            introAudio.addEventListener('ended', () => {
+                if (pulseInterval) {
+                    clearInterval(pulseInterval);
+                }
+                element.classList.remove('avatar-vibrating');
+                element.style.transform = '';
+            });
+        }
+
+        // These helper functions should also be moved outside of setupIntroAudio
+        function addSparkleEffect(container) {
+            const sparkleCount = Math.floor(Math.random() * 3) + 2;
+            
+            for (let i = 0; i < sparkleCount; i++) {
+                setTimeout(() => {
+                    const sparkle = document.createElement('div');
+                    sparkle.classList.add('sparkle');
+                    
+                    // Random size between 3px and 10px
+                    const size = Math.random() * 7 + 3;
+                    
+                    // Position randomly around the avatar
+                    const angle = Math.random() * 360;
+                    const distance = Math.random() * 40 + 60; // Distance from center
+                    const centerX = 60; // Assuming avatar is 120px wide
+                    const centerY = 60; // Assuming avatar is 120px high
+                    
+                    const x = centerX + distance * Math.cos(angle * Math.PI / 180);
+                    const y = centerY + distance * Math.sin(angle * Math.PI / 180);
+                    
+                    Object.assign(sparkle.style, {
+                        width: `${size}px`,
+                        height: `${size}px`,
+                        left: `${x}px`,
+                        top: `${y}px`,
+                        background: `radial-gradient(circle, white 20%, ${getRandomColor()} 70%)`,
+                        boxShadow: `0 0 ${size/2}px ${size/2}px rgba(255, 255, 255, 0.7)`
+                    });
+                    
+                    container.appendChild(sparkle);
+                    
+                    // Remove the sparkle after animation completes
+                    setTimeout(() => {
+                        if (sparkle.parentNode) {
+                            container.removeChild(sparkle);
+                        }
+                    }, 1500);
+                }, i * 100); // Stagger the sparkles
+            }
+        }
+
+        function createSpeechBubble(container, emoji) {
+            const bubble = document.createElement('div');
+            bubble.innerHTML = emoji;
+            bubble.style.position = 'absolute';
+            bubble.style.zIndex = '10';
+            
+            // Randomize position with more options
+            const positions = [
+                { top: '-30px', right: '-5px' },
+                { top: '-25px', right: '15px' },
+                { top: '-20px', left: '-15px' },
+                { top: '0px', right: '-35px' },
+                { top: '10px', left: '-30px' },
+                { top: '-15px', left: '60px' }
+            ];
+            const position = positions[Math.floor(Math.random() * positions.length)];
+            
+            Object.assign(bubble.style, {
+                ...position,
+                fontSize: '28px',
+                padding: '5px',
+                borderRadius: '50%',
+                background: 'rgba(255, 255, 255, 0.2)',
+                animation: 'popBubble 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+                filter: 'drop-shadow(0 0 5px rgba(0,255,153,0.7))',
+                transform: 'scale(0.1)',
+                opacity: '0'
+            });
+            
+            container.appendChild(bubble);
+            
+            // Remove the speech bubble after animation
+            setTimeout(() => {
+                if (bubble.parentNode) {
+                    container.removeChild(bubble);
+                }
+            }, 1200);
+        }
+
+        function createFloatingParticles(container) {
+            const colors = ['#00FF99', '#00FFCC', '#00CCFF', '#CCFF00', '#FFCC00', '#FF66CC', '#CC99FF'];
+            const shapes = ['circle', 'circle', 'star', 'heart', 'circle'];
+            
+            // Create more particles for a vivid effect
+            for (let i = 0; i < 8; i++) {
+                const particle = document.createElement('div');
+                const size = Math.random() * 12 + 5;
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                const shape = shapes[Math.floor(Math.random() * shapes.length)];
+                
+                let shapeCSS = 'border-radius: 50%;'; // Default circle
+                
+                if (shape === 'star') {
+                    // Simple star-like shape using clip-path
+                    shapeCSS = 'clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);';
+                } else if (shape === 'heart') {
+                    // Simple heart-like shape
+                    shapeCSS = 'transform: rotate(-45deg); border-radius: 50% 50% 0 50%;';
+                }
+                
+                Object.assign(particle.style, {
+                    position: 'absolute',
+                    width: `${size}px`,
+                    height: `${size}px`,
+                    backgroundColor: color,
+                    top: `${Math.random() * 120}px`,
+                    left: `${Math.random() * 120}px`,
+                    filter: 'blur(1px)',
+                    opacity: '0.7',
+                    animation: `float ${Math.random() * 4 + 3}s ease-in-out infinite, twinkle ${Math.random() * 2 + 1}s ease-in-out infinite`,
+                    zIndex: '1'
+                });
+                
+                // Apply the shape CSS
+                particle.style.cssText += shapeCSS;
+                
+                container.appendChild(particle);
+                
+                // Remove particles when audio ends
+                const introAudio = document.getElementById('introAudio');
+                introAudio.addEventListener('ended', () => {
+                    if (particle.parentNode) {
+                        container.removeChild(particle);
+                    }
+                });
+            }
+        }
+
+        function getRandomColor() {
+            const hue = Math.floor(Math.random() * 360);
+            return `hsl(${hue}, 100%, 75%)`;
+        }
+
+        // Add animation styles to the document when DOM is loaded
+        window.addEventListener('DOMContentLoaded', () => {
+            // Add animation styles
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes popBubble {
+                    0% { transform: scale(0) rotate(-10deg); opacity: 0; }
+                    40% { transform: scale(1.2) rotate(5deg); opacity: 1; }
+                    60% { transform: scale(1.1) rotate(-5deg); opacity: 1; }
+                    100% { transform: scale(1.3) translateY(-25px); opacity: 0; }
+                }
+                
+                @keyframes float {
+                    0% { transform: translate(0, 0) rotate(0deg); opacity: 0.7; }
+                    25% { transform: translate(15px, -15px) rotate(5deg); opacity: 0.9; }
+                    50% { transform: translate(25px, -5px) rotate(0deg); opacity: 0.7; }
+                    75% { transform: translate(10px, 10px) rotate(-5deg); opacity: 0.9; }
+                    100% { transform: translate(0, 0) rotate(0deg); opacity: 0.7; }
+                }
+                
+                @keyframes twinkle {
+                    0%, 100% { opacity: 0.3; transform: scale(1); }
+                    50% { opacity: 1; transform: scale(1.5); filter: brightness(1.3); }
+                }
+            `;
+            document.head.appendChild(style);
+        });
     </script>
 </body>
 </html> 
