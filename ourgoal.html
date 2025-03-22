@@ -35,6 +35,7 @@
             background-image: 
                 radial-gradient(circle at 15% 15%, rgba(0, 255, 155, 0.03) 0%, transparent 40%),
                 radial-gradient(circle at 85% 85%, rgba(0, 255, 155, 0.03) 0%, transparent 40%);
+            width: 100%;
         }
         
         .approach-section {
@@ -43,6 +44,7 @@
             align-items: center;
             position: relative;
             padding: 100px 0;
+            width: 100%;
         }
 
         /* Grid Background */
@@ -63,8 +65,9 @@
         
         .container {
             max-width: 1300px;
+            width: 100%;
             margin: 0 auto;
-            padding: 0 30px;
+            padding: 0 20px;
             position: relative;
             z-index: 1;
         }
@@ -74,6 +77,7 @@
             grid-template-columns: 1fr 1.5fr;
             gap: 80px;
             align-items: flex-start;
+            width: 100%;
         }
         
         .left-column {
@@ -88,6 +92,8 @@
             line-height: 1.3;
             margin-bottom: 30px;
             letter-spacing: -0.5px;
+            word-wrap: break-word;
+            hyphens: auto;
         }
         
         .philosophy-statement::after {
@@ -109,6 +115,9 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), 
                         0 1px 3px rgba(0, 255, 155, 0.1);
             backdrop-filter: blur(10px);
+            width: 100%;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
         
         .right-column::before {
@@ -129,6 +138,7 @@
             font-weight: 600;
             display: flex;
             align-items: center;
+            word-wrap: break-word;
         }
         
         .section-header::before {
@@ -139,12 +149,13 @@
             background: var(--accent-color);
             margin-right: 15px;
             border-radius: 3px;
+            flex-shrink: 0;
         }
         
         .section-divider {
             height: 1px;
             background: linear-gradient(90deg, var(--card-border), transparent 80%);
-            margin: 50px 0;
+            margin: 40px 0;
         }
         
         .emphasized-text {
@@ -157,6 +168,7 @@
             line-height: 1.8;
             color: var(--text-muted);
             font-weight: 300;
+            word-wrap: break-word;
         }
         
         .service-header {
@@ -165,7 +177,8 @@
             margin-bottom: 12px;
             font-weight: 500;
             display: flex;
-            align-items: center;
+            align-items: flex-start;
+            word-wrap: break-word;
         }
         
         .service-header span {
@@ -183,6 +196,7 @@
             background: rgba(0, 255, 155, 0.1);
             border-radius: 6px;
             padding: 5px;
+            flex-shrink: 0;
         }
         
         .service-icon svg {
@@ -192,44 +206,13 @@
         }
         
         .service-description {
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             padding-left: 43px;
             color: var(--text-muted);
             font-size: 1rem;
             line-height: 1.7;
             font-weight: 300;
-        }
-        
-        .cta-container {
-            margin-top: 50px;
-            text-align: right;
-        }
-        
-        .cta-button {
-            display: inline-flex;
-            align-items: center;
-            background: rgba(0, 255, 155, 0.1);
-            color: var(--accent-color);
-            padding: 12px 24px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 1rem;
-            border: 1px solid rgba(0, 255, 155, 0.2);
-            transition: all 0.3s ease;
-        }
-        
-        .cta-button:hover {
-            background: rgba(0, 255, 155, 0.2);
-            border-color: rgba(0, 255, 155, 0.3);
-            transform: translateY(-2px);
-        }
-        
-        .cta-button svg {
-            margin-left: 10px;
-            width: 18px;
-            height: 18px;
-            stroke: var(--accent-color);
+            word-wrap: break-word;
         }
         
         /* Subtle accent line */
@@ -250,7 +233,7 @@
         @media (max-width: 992px) {
             .two-column-layout {
                 grid-template-columns: 1fr;
-                gap: 50px;
+                gap: 40px;
             }
             
             .left-column {
@@ -265,11 +248,16 @@
             .accent-line {
                 display: none;
             }
+
+            .service-description {
+                padding-left: 43px;
+            }
         }
         
         @media (max-width: 768px) {
             .approach-section {
                 padding: 60px 0;
+                min-height: auto;
             }
             
             .philosophy-statement {
@@ -285,7 +273,59 @@
             }
             
             .right-column {
-                padding: 30px 25px;
+                padding: 30px 20px;
+            }
+
+            .service-description {
+                padding-left: 40px;
+            }
+            
+            .regular-text {
+                font-size: 1rem;
+                line-height: 1.7;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .approach-section {
+                padding: 40px 0;
+            }
+            
+            .philosophy-statement {
+                font-size: 1.6rem;
+            }
+            
+            .section-header {
+                font-size: 1.3rem;
+            }
+            
+            .service-header {
+                font-size: 1.1rem;
+            }
+            
+            .right-column {
+                padding: 25px 15px;
+            }
+            
+            .service-description {
+                padding-left: 30px;
+                font-size: 0.95rem;
+            }
+            
+            .service-icon {
+                width: 24px;
+                height: 24px;
+                margin-right: 10px;
+            }
+            
+            .service-icon svg {
+                width: 16px;
+                height: 16px;
+            }
+            
+            .regular-text {
+                font-size: 0.95rem;
+                line-height: 1.6;
             }
         }
     </style>
@@ -334,7 +374,7 @@
                                 <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
                             </svg>
                         </div>
-                        Online French Courses <span>(A0 to B2)</span>
+                        <div>Online French Courses <span>(A0 to B2)</span></div>
                     </h3>
                     <p class="service-description">
                         A structured, self-paced curriculum with 420+ grammar lessons, 5,220 quizzes, 
@@ -348,7 +388,7 @@
                                 <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
                             </svg>
                         </div>
-                        French Animated Story Series
+                        <div>French Animated Story Series</div>
                     </h3>
                     <p class="service-description">
                         52 engaging stories that bring real-life conversations to life, improving 
@@ -363,22 +403,12 @@
                                 <line x1="12" y1="22.08" x2="12" y2="12"></line>
                             </svg>
                         </div>
-                        AI-Powered VR Game
+                        <div>AI-Powered VR Game</div>
                     </h3>
                     <p class="service-description">
                         An interactive, speech-based experience where learners practice pronunciation, 
                         conversation, and fluency in a gamified escape-room setting.
                     </p>
-                    
-                    <div class="cta-container">
-                        <a href="#explore-courses" class="cta-button">
-             
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <line x1="5" y1="12" x2="19" y2="12"></line>
-                                <polyline points="12 5 19 12 12 19"></polyline>
-                            </svg>
-                        </a>
-                    </div>
                 </div>
             </div>
         </div>
