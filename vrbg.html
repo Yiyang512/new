@@ -81,7 +81,7 @@
             margin: 0 auto;
             padding: 0 5%;
             position: relative;
-            z-index: 4;
+            z-index: 2;
         }
 
         /* Left side content */
@@ -126,7 +126,7 @@
         /* French vocabulary elements with animations */
         .vocab-item {
             position: absolute;
-            z-index: 4;
+            z-index: 2;
         }
         
         .vocab-arbre {
@@ -182,7 +182,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 30px 5%;
-            z-index: 5;
+            z-index: 10;
         }
         
         .logo {
@@ -310,12 +310,6 @@
                 width: 60px;
                 height: 60px;
             }
-            
-            .corner-blur {
-                width: 40%;
-                height: 40%;
-                opacity: 0.25;
-            }
         }
         
         @media (max-width: 576px) {
@@ -353,193 +347,6 @@
             height: 100vh;
             overflow: hidden;
             position: relative;
-            border-radius: 32px;
-            box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
-        }
-        
-        /* Add these new styles for edge blur effects */
-        
-        /* Edge Blur Overlay */
-        .edge-blur {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 3;
-        }
-        
-        /* Vignette Effect */
-        .vignette-effect {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(
-                circle at center,
-                transparent 60%,
-                rgba(0, 0, 0, 0.4) 100%
-            );
-            pointer-events: none;
-            z-index: 3;
-        }
-        
-        /* Corner Blur Effects */
-        .corner-blur {
-            position: absolute;
-            width: 40%;
-            height: 40%;
-            pointer-events: none;
-            z-index: 3;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            opacity: 0.4;
-        }
-        
-        .corner-blur-tl {
-            top: -5%;
-            left: -5%;
-            width: 45%;
-            height: 45%;
-            border-radius: 0 0 80% 0;
-        }
-        
-        .corner-blur-tr {
-            top: -5%;
-            right: -5%;
-            width: 45%;
-            height: 45%;
-            border-radius: 0 0 0 80%;
-        }
-        
-        .corner-blur-bl {
-            bottom: -5%;
-            left: -5%;
-            width: 45%;
-            height: 45%;
-            border-radius: 0 80% 0 0;
-        }
-        
-        .corner-blur-br {
-            bottom: -5%;
-            right: -5%;
-            width: 45%;
-            height: 45%;
-            border-radius: 80% 0 0 0;
-        }
-        
-        /* Edge blending for smoother transition */
-        .edge-blend {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            box-shadow: 
-                inset 0 0 100px 25px rgba(0, 0, 0, 0.5),
-                inset 0 0 40px 10px rgba(0, 0, 0, 0.6);
-            pointer-events: none;
-            z-index: 2;
-            border-radius: 32px;
-        }
-        
-        /* Keep the main hero section relative for proper positioning */
-        .hero-section {
-            position: relative;
-            overflow: hidden;
-            border-radius: 32px;
-        }
-        
-        /* Update container z-index to appear above blur effects */
-        .container {
-            z-index: 4;
-        }
-        
-        /* French vocabulary elements also need higher z-index */
-        .vocab-item {
-            z-index: 4;
-        }
-        
-        /* Logo needs to appear above the blur effect */
-        .navbar {
-            z-index: 5;
-        }
-        
-        /* Add an outer glow wrapper */
-        .outer-glow-wrapper {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: 32px;
-            box-shadow: 
-                0 0 30px rgba(0, 255, 155, 0.1),
-                0 0 15px rgba(0, 0, 0, 0.6);
-            pointer-events: none;
-            z-index: 1;
-        }
-        
-        /* Additional smooth blur along the edges */
-        .edge-blur-horizontal {
-            position: absolute;
-            left: 0;
-            width: 100%;
-            height: 15%;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            opacity: 0.3;
-            pointer-events: none;
-            z-index: 2;
-        }
-        
-        .edge-blur-top {
-            top: 0;
-        }
-        
-        .edge-blur-bottom {
-            bottom: 0;
-        }
-        
-        .edge-blur-vertical {
-            position: absolute;
-            top: 0;
-            width: 15%;
-            height: 100%;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            opacity: 0.3;
-            pointer-events: none;
-            z-index: 2;
-        }
-        
-        .edge-blur-left {
-            left: 0;
-        }
-        
-        .edge-blur-right {
-            right: 0;
-        }
-        
-        /* Media query updates for responsive design */
-        @media (max-width: 768px) {
-            #vr-game-wrapper, .hero-section, .edge-blend, .outer-glow-wrapper {
-                border-radius: 24px;
-            }
-            
-            .corner-blur {
-                width: 50%;
-                height: 50%;
-                opacity: 0.3;
-            }
-        }
-        
-        @media (max-width: 576px) {
-            #vr-game-wrapper, .hero-section, .edge-blend, .outer-glow-wrapper {
-                border-radius: 16px;
-            }
         }
     </style>
 </head>
@@ -549,13 +356,6 @@
             <div class="bg-grid"></div>
             <div class="corner-accent corner-accent-top-left"></div>
             <div class="corner-accent corner-accent-bottom-right"></div>
-            
-            <div class="vignette-effect"></div>
-            <div class="edge-blend"></div>
-            <div class="corner-blur corner-blur-tl"></div>
-            <div class="corner-blur corner-blur-tr"></div>
-            <div class="corner-blur corner-blur-bl"></div>
-            <div class="corner-blur corner-blur-br"></div>
             
             <nav class="navbar">
                 <div class="logo">School<span class="logo-accent">Pulse™</span></div>
