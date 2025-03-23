@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>French Level Assessment - Simple French with Hems</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <style>
+        :root {
+            --accent-color: #00FF9B;
+            --accent-color-muted: rgba(0, 255, 155, 0.8);
+            --accent-color-glow: rgba(0, 255, 155, 0.3);
+            --dark-bg: #000A05;
+            --dark-card: #040f08;
+            --card-highlight: rgba(0, 255, 155, 0.05);
+            --text-light: #ffffff;
+            --text-muted: rgba(255, 255, 255, 0.8);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            line-height: 1.6;
+            background: linear-gradient(125deg, #000A05 0%, #001207 100%);
+            padding: 40px 0;
+            min-height: 100vh;
+        }
+        
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--dark-card);
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3), 0 0 30px rgba(0, 255, 155, 0.15);
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(0, 255, 155, 0.1);
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Grid background */
+        .bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 155, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 155, 0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        /* Header */
+        .quiz-header {
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            border-bottom: 1px solid rgba(0, 255, 155, 0.1);
+        }
+        
+        .quiz-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--text-light) 0%, var(--accent-color) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .quiz-title::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+            border-radius: 2px;
+        }
+        
+        .quiz-subtitle {
+            font-size: 1.1rem;
+            font-weight: 400;
+            color: var(--text-muted);
+            margin-top: 20px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Form */
+        .quiz-form {
+            padding: 40px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .form-group {
+            margin-bottom: 30px;
+            opacity: 0;
+            animation: fadeInUp 0.5s ease-out forwards;
+        }
+        
+        .form-group:nth-child(1) { animation-delay: 0.1s; }
+        .form-group:nth-child(2) { animation-delay: 0.15s; }
+        .form-group:nth-child(3) { animation-delay: 0.2s; }
+        .form-group:nth-child(4) { animation-delay: 0.25s; }
+        .form-group:nth-child(5) { animation-delay: 0.3s; }
+        .form-group:nth-child(6) { animation-delay: 0.35s; }
+        .form-group:nth-child(7) { animation-delay: 0.4s; }
+        .form-group:nth-child(8) { animation-delay: 0.45s; }
+        .form-group:nth-child(9) { animation-delay: 0.5s; }
+        .form-group:nth-child(10) { animation-delay: 0.55s; }
+        .form-group:nth-child(11) { animation-delay: 0.6s; }
+        .form-group:nth-child(12) { animation-delay: 0.65s; }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .form-label::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 6px;
+            width: 20px;
+            height: 20px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+            opacity: 0.2;
+        }
+        
+        .form-label strong {
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .form-label strong::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background-color: rgba(0, 255, 155, 0.2);
+            z-index: -1;
+            transform: translateY(-2px);
+        }
+        
+        .radio-group,
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-left: 30px;
+        }
+        
+        .radio-option,
+        .checkbox-option {
+            display: flex;
+            align-items: center;
+            position: relative;
+            cursor: pointer;
+            padding: 10px 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 255, 155, 0.1);
+            background-color: rgba(0, 255, 155, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .radio-option:hover,
+        .checkbox-option:hover {
+            background-color: rgba(0, 255, 155, 0.1);
+            transform: translateX(5px);
+            border-color: rgba(0, 255, 155, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .radio-input,
+        .checkbox-input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+        
+        .radio-custom,
+        .checkbox-custom {
+            position: relative;
+            display: inline-block;
+            width: 22px;
+            height: 22px;
+            margin-right: 15px;
+            border-radius: 50%;
+            border: 2px solid rgba(0, 255, 155, 0.5);
+            background-color: transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .checkbox-custom {
+            border-radius: 6px;
+        }
+        
+        .radio-option:hover .radio-custom,
+        .checkbox-option:hover .checkbox-custom {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 10px var(--accent-color-glow);
+        }
+        
+        .radio-input:checked + .radio-custom::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            animation: pulseEffect 0.5s ease-out;
+        }
+        
+        .checkbox-input:checked + .checkbox-custom::after {
+            content: "";
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(45deg);
+            width: 5px;
+            height: 10px;
+            border-right: 2px solid var(--accent-color);
+            border-bottom: 2px solid var(--accent-color);
+            animation: checkmark 0.3s ease-out forwards;
+        }
+        
+        @keyframes pulseEffect {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 0;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.5);
+                opacity: 0.5;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes checkmark {
+            0% {
+                height: 0;
+                width: 0;
+                opacity: 0;
+            }
+            100% {
+                height: 10px;
+                opacity: 1;
+            }
+        }
+        
+        .radio-label,
+        .checkbox-label {
+            font-size: 1rem;
+            color: var(--text-muted);
+            transition: color 0.3s ease;
+        }
+        
+        .radio-input:checked ~ .radio-label,
+        .checkbox-input:checked ~ .checkbox-label {
+            color: var(--text-light);
+            font-weight: 500;
+        }
+        
+        .email-input, .text-input {
+            width: 100%;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 255, 155, 0.2);
+            background-color: rgba(0, 255, 155, 0.05);
+            color: var(--text-light);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .text-input {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .email-input:focus, .text-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px var(--accent-color-glow);
+            background-color: rgba(0, 255, 155, 0.1);
+        }
+        
+        .email-input::placeholder, .text-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .range-container {
+            margin-left: 30px;
+            padding: 0 10px;
+        }
+        
+        .range-input {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: rgba(0, 255, 155, 0.1);
+            outline: none;
+            margin: 15px 0;
+        }
+        
+        .range-input::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            cursor: pointer;
+            box-shadow: 0 0 10px var(--accent-color-glow);
+            transition: all 0.3s ease;
+        }
+        
+        .range-input::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+        
+        .range-input::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            cursor: pointer;
+            box-shadow: 0 0 10px var(--accent-color-glow);
+            border: none;
+            transition: all 0.3s ease;
+        }
+        
+        .range-input::-moz-range-thumb:hover {
+            transform: scale(1.2);
+        }
+        
+        .range-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .range-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        
+        .range-value {
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--accent-color);
+            margin-top: 5px;
+        }
+        
+        .submit-button {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            margin-top: 30px;
+            background: linear-gradient(135deg, rgba(0, 255, 155, 0.8) 0%, rgba(0, 200, 155, 0.9) 100%);
+            color: #001207;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2), 0 0 15px rgba(0, 255, 155, 0.2);
+        }
+        
+        .submit-button::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                rgba(255, 255, 255, 0) 0%, 
+                rgba(255, 255, 255, 0.2) 50%, 
+                rgba(255, 255, 255, 0) 100%);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% {
+                left: -100%;
+            }
+            100% {
+                left: 100%;
+            }
+        }
+        
+        .submit-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 255, 155, 0.3);
+            background: linear-gradient(135deg, rgba(0, 255, 155, 0.9) 0%, rgba(0, 200, 155, 1) 100%);
+        }
+        
+        .submit-button:active {
+            transform: translateY(1px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2), 0 0 10px rgba(0, 255, 155, 0.2);
+        }
+        
+        /* Result message */
+        .result-message {
+            padding: 20px;
+            margin-top: 30px;
+            border-radius: 12px;
+            background-color: rgba(0, 255, 155, 0.1);
+            border: 1px solid rgba(0, 255, 155, 0.2);
+            text-align: center;
+            display: none;
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        
+        .success {
+            display: block;
+            background-color: rgba(0, 255, 155, 0.1);
+            border-color: rgba(0, 255, 155, 0.3);
+        }
+        
+        .error {
+            display: block;
+            background-color: rgba(255, 0, 0, 0.1);
+            border-color: rgba(255, 0, 0, 0.3);
+        }
+        
+        /* Loading indicator */
+        .loading {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 3px solid rgba(0, 255, 155, 0.1);
+            border-top-color: var(--accent-color);
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        /* Progress indicator */
+        .progress-container {
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            height: 6px;
+            margin-top: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background-color: var(--accent-color);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            position: relative;
+        }
+        
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background: linear-gradient(90deg, 
+                rgba(255, 255, 255, 0) 0%, 
+                rgba(255, 255, 255, 0.4) 50%, 
+                rgba(255, 255, 255, 0) 100%);
+            animation: shimmerProgress 2s infinite;
+        }
+        
+        @keyframes shimmerProgress {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(100%);
+            }
+        }
+        
+        .section-divider {
+            display: flex;
+            align-items: center;
+            margin: 40px 0;
+            opacity: 0.8;
+        }
+        
+        .section-divider::before,
+        .section-divider::after {
+            content: "";
+            flex-grow: 1;
+            height: 1px;
+            background: rgba(0, 255, 155, 0.2);
+        }
+        
+        .section-divider-text {
+            padding: 0 15px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent-color);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .quiz-container {
+                margin: 0 20px;
+            }
+            
+            .quiz-header, .quiz-form {
+                padding: 30px;
+            }
+            
+            .quiz-title {
+                font-size: 2rem;
+            }
+            
+            .form-label {
+                font-size: 1.1rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .quiz-header, .quiz-form {
+                padding: 20px;
+            }
+            
+            .quiz-title {
+                font-size: 1.8rem;
+            }
+            
+            .radio-group, .checkbox-group {
+                margin-left: 15px;
+            }
+            
+            .form-group {
+                margin-bottom: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="bg-grid"></div>
+        
+        <header class="quiz-header">
+            <h2 class="quiz-title">Discover Your French Journey</h2>
+            <p class="quiz-subtitle">Take this comprehensive assessment to reveal your current level, identify your challenges, and receive a personalized learning plan perfectly tailored to your specific needs</p>
+        </header>
+        
+        <form id="frenchDiscoveryForm" class="quiz-form">
+            <div class="section-divider">
+                <span class="section-divider-text">Current Level</span>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label"><strong>1. How long have you been learning French?</strong></label>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="experience" value="Not started" class="radio-input" required>
+                        <span class="radio-custom"></span>
+                        <span class="radio-label">Not started yet</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="experience" value="Less than 6 months" class="radio-input">
+                        <span class="radio-custom"></span>
+                        <span class="radio-label">Less than 6 months</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="experience" value="6-12 months" class="radio-input">
+                        <span class="radio-custom"></span>
+                        <span class="radio-label">6-12 months</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="experience" value="1-3 years" class="radio-input">
+                        <span class="radio-custom"></span>
+                        <span class="radio-label">1-3 years</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="experience" value="More than 3 years" class="radio-input">
+                        <span class="radio-custom"></span>
+                        <span class="radio-label">More than 3 years</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label"><strong>2. Can you introduce yourself in French?</strong></label>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="intro" value="No" class="radio-input" required>
+                        <span class="radio-custom"></span>
+                        <span class="radio-label">No, not at all</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="intro" value="A little" class="radio-input">
+                        <span class="radio-custom"></span>
+                        <span class="radio-label">A little bit</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="intro" value="Comfortable" class="radio-input">
+                        <span class="radio-custom"></span>
+                        <span class="radio-label">Yes, I can easily do that</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label"><strong>3. Can you understand a short paragraph in French?</strong></label>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="reading" value="No" class="radio-input" required>
+                        <span class="radio-custom"></span>
+                        <span class="radio-label">No, it's difficult</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="reading" value="Some" class="radio-input">
+                        <span class="radio-custom"></span>
+                        <span class="radio-label">Some words</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="reading" value="Yes" class="radio-input">
+                        <span class="radio-custom"></span>
+                        <span class="radio-label">Yes, with good accuracy</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label"><strong>4. Have you taken any French exams before?</strong></label>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="exams" value="No" class="radio-input" required>
+                        <span class="radio-custom"></span>
+                        <span class="radio-label">No</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="exams" value="DELF A1-A2" class="radio-input">
+                        <span class="radio-custom"></span>
+                        <span class="radio-label">DELF A1-A2</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="exams" value="DELF B1-B2" class="radio-input">
+                        <span class="radio-custom"></span>
+                        <span class="radio-label">DELF B1-B2</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="exams" value="TEF/TCF" class="radio-input">
+                        <span class="radio-custom"></span>
+                        <span class="radio-label">TEF/TCF</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="exams" value="Other" class="radio-input">
+                        <span class="radio-custom"></span>
+                        <span class="radio-label">Other</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="section-divider">
+                <span class="section-divider-text">Your Challenges</span>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label"><strong>5. What are your biggest challenges with French?</strong> (Select all that apply)</label>
+                <div class="checkbox-group">
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="challenges" value="Pronunciation" class="checkbox-input">
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">Pronunciation & accent</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="challenges" value="Grammar" class="checkbox-input">
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">Grammar & verb conjugation</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="challenges" value="Vocabulary" class="checkbox-input">
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">Limited vocabulary</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="challenges" value="Listening" class="checkbox-input">
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">Understanding native speakers</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="challenges" value="Speaking" class="checkbox-input">
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">Speaking fluently without hesitation</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="challenges" value="Confidence" class="checkbox-input">
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">Confidence to speak in public</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="challenges" value="Writing" class="checkbox-input">
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">Writing essays or formal texts</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="challenges" value="Motivation" class="checkbox-input">
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">Staying motivated</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label"><strong>6. What previous methods have you tried?</strong> (Select all that apply)</label>
+                <div class="checkbox-group">
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="methods" value="None" class="checkbox-input">
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">None yet</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="methods" value="Apps" class="checkbox-input">
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">Language learning apps</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="methods" value="Courses" class="checkbox-input">
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">Traditional classroom courses</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="methods" value="Tutors" class="checkbox-input">
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">Private tutors</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="methods" value="Self-study" class="checkbox-input">
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">Self-study with books</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="methods" value="Immersion" class="checkbox-input">
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">Immersion programs</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="methods" value="Online-courses" class="checkbox-input">
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">Online courses</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label"><strong>7. How urgently do you need to improve your French?</strong></label>
+                <div class="range-container">
+                    <div class="range-labels">
+                        <span class="range-label">No rush</span>
+                        <span class="range-label">Very urgent</span>
+                    </div>
+                    <input type="range" id="urgencyRange" name="urgency" min="1" max="10" value="5" class="range-input" required>
+                    <div class="range-value" id="urgencyValue">5</div>
+                </div>
+            </div>
+            
+            <div class="section-divider">
+                <span class="section-divider-text">Your Goals</span>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label"><strong>8. What are your current goals?</strong> (Select all that apply)</label>
+                <div class="checkbox-group">
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="goals" value="Speaking Practice" class="checkbox-input">
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">Speaking Practice</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="goals" value="Grammar Mastery" class="checkbox-input">
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">Grammar Mastery</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="goals" value="Writing Better" class="checkbox-input">
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">Writing Better</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="goals" value="Vocabulary Boost" class="checkbox-input">
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">Vocabulary Boost</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="goals" value="Pass TEF/TCF/DELF" class="checkbox-input">
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">Pass TEF/TCF/DELF</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="goals" value="Basic Conversation" class="checkbox-input">
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">Basic conversation skills</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="goals" value="Business French" class="checkbox-input">
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">Business/Professional French</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="goals" value="Cultural Understanding" class="checkbox-input">
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">Cultural understanding</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label"><strong>9. Are you preparing for Canadian Immigration?</strong></label>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="immigration" value="Yes" class="radio-input" required>
+                        <span class="radio-custom"></span>
+                        <span class="radio-label">Yes</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="immigration" value="No" class="radio-input">
+                        <span class="radio-custom"></span>
+                        <span class="radio-label">No</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="immigration" value="Not Sure" class="radio-input">
+                        <span class="radio-custom"></span>
+                        <span class="radio-label">Not Sure</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label"><strong>10. What specific situations do you need French for?</strong> (Select all that apply)</label>
+                <div class="checkbox-group">
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="situations" value="Travel" class="checkbox-input">
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">Travel & tourism</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="situations" value="Work" class="checkbox-input">
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">Work & professional settings</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="situations" value="Education" class="checkbox-input">
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">Education & academic settings</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="situations" value="Immigration" class="checkbox-input">
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">Immigration & citizenship</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="situations" value="Family" class="checkbox-input">
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">Family & social interactions</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="situations" value="Entertainment" class="checkbox-input">
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">Entertainment & media consumption</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label"><strong>11. What type of learning experience are you looking for?</strong> (Select all that apply)</label>
+                <div class="checkbox-group">
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="experience_type" value="On-Demand Course" class="checkbox-input">
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">On-Demand Course</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="experience_type" value="VR Game Practice" class="checkbox-input">
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">School Pulse™ VR Game (AI-powered speaking practice)</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="experience_type" value="1-on-1 Guidance" class="checkbox-input">
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">1-on-1 Private Tutoring</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="experience_type" value="Animated Stories" class="checkbox-input">
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">Animated Stories & Visual Lessons</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="experience_type" value="Group Classes" class="checkbox-input">
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">Interactive Group Classes</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="experience_type" value="Community" class="checkbox-input">
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">Community Practice & Exchange</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label"><strong>12. What is your age range?</strong></label>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="age" value="Under 12" class="radio-input" required>
+                        <span class="radio-custom"></span>
+                        <span class="radio-label">Under 12</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="age" value="13-17" class="radio-input">
+                        <span class="radio-custom"></span>
+                        <span class="radio-label">13 – 17</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="age" value="18-25" class="radio-input">
+                        <span class="radio-custom"></span>
+                        <span class="radio-label">18 – 25</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="age" value="26-40" class="radio-input">
+                        <span class="radio-custom"></span>
+                        <span class="radio-label">26 – 40</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="age" value="41-60" class="radio-input">
+                        <span class="radio-custom"></span>
+                        <span class="radio-label">41 – 60</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="age" value="60+" class="radio-input">
+                        <span class="radio-custom"></span>
+                        <span class="radio-label">60+</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="section-divider">
+                <span class="section-divider-text">Additional Information</span>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label"><strong>13. Is there anything specific you'd like us to know about your learning needs?</strong></label>
+                <textarea name="additional_info" class="text-input" placeholder="Share any specific requirements, challenges, or goals you have..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label"><strong>14. How did you hear about Simple French with Hems?</strong></label>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="source" value="Search" class="radio-input" required>
+                        <span class="radio-custom"></span>
+                        <span class="radio-label">Search Engine</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="source" value="Social Media" class="radio-input">
+                        <span class="radio-custom"></span>
+                        <span class="radio-label">Social Media</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="source" value="Friend" class="radio-input">
+                        <span class="radio-custom"></span>
+                        <span class="radio-label">Friend or Colleague</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="source" value="Advertisement" class="radio-input">
+                        <span class="radio-custom"></span>
+                        <span class="radio-label">Advertisement</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="source" value="Other" class="radio-input">
+                        <span class="radio-custom"></span>
+                        <span class="radio-label">Other</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label"><strong>15. Email</strong> (to send your personalized learning plan)</label>
+                <input type="email" name="email" placeholder="you@example.com" required class="email-input">
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            
+            <button type="submit" class="submit-button">Get My Personalized French Plan</button>
+            
+            <div class="loading" id="loadingIndicator">
+                <div class="spinner"></div>
+            </div>
+            
+            <div class="result-message" id="resultMessage"></div>
+        </form>
+    </div>
+    
+    <script>
+        // Initialize EmailJS
+        (function() {
+            emailjs.init("_KKm93NyfWfCIx2nC");
+        })();
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('frenchDiscoveryForm');
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const resultMessage = document.getElementById('resultMessage');
+            const progressBar = document.getElementById('progressBar');
+            const urgencyRange = document.getElementById('urgencyRange');
+            const urgencyValue = document.getElementById('urgencyValue');
+            
+            // Update urgency value display
+            urgencyRange.addEventListener('input', function() {
+                urgencyValue.textContent = this.value;
+            });
+            
+            // Update progress bar when user interacts with form
+            const formElements = form.querySelectorAll('input[type="radio"], input[type="checkbox"], input[type="email"], textarea');
+            let totalSections = 15; // Total number of questions
+            let filledSections = 0;
+            
+            formElements.forEach(element => {
+                element.addEventListener('change', function() {
+                    // Count filled elements by question groups
+                    let filledQuestions = new Set();
+                    
+                    // Radio buttons (each name group counts as one question)
+                    const radioGroups = {};
+                    form.querySelectorAll('input[type="radio"]:checked').forEach(radio => {
+                        filledQuestions.add(radio.name);
+                    });
+                    
+                    // Checkboxes (each name group counts as one question)
+                    const checkboxGroups = {};
+                    form.querySelectorAll('input[type="checkbox"]:checked').forEach(checkbox => {
+                        filledQuestions.add(checkbox.name);
+                    });
+                    
+                    // Email and textarea
+                    if (form.querySelector('input[type="email"]').value !== '') {
+                        filledQuestions.add('email');
+                    }
+                    
+                    if (form.querySelector('textarea').value !== '') {
+                        filledQuestions.add('additional_info');
+                    }
+                    
+                    // Update progress bar
+                    const progress = (filledQuestions.size / totalSections) * 100;
+                    progressBar.style.width = `${Math.min(progress, 100)}%`;
+                });
+            });
+            
+            // Add hover effects to options
+            const options = document.querySelectorAll('.radio-option, .checkbox-option');
+            options.forEach(option => {
+                option.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateX(5px)';
+                });
+                
+                option.addEventListener('mouseleave', function() {
+                    if (!this.querySelector('input').checked) {
+                        this.style.transform = 'translateX(0)';
+                    }
+                });
+            });
+            
+            // Form submission with EmailJS
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Show loading indicator
+                loadingIndicator.style.display = 'flex';
+                resultMessage.className = 'result-message';
+                resultMessage.textContent = '';
+                resultMessage.style.display = 'none';
+                
+                // Get form data for all fields
+                const formData = {
+                    experience: form.querySelector('input[name="experience"]:checked').value,
+                    intro: form.querySelector('input[name="intro"]:checked').value,
+                    reading: form.querySelector('input[name="reading"]:checked').value,
+                    exams: form.querySelector('input[name="exams"]:checked').value,
+                    challenges: Array.from(form.querySelectorAll('input[name="challenges"]:checked')).map(el => el.value).join(', '),
+                    methods: Array.from(form.querySelectorAll('input[name="methods"]:checked')).map(el => el.value).join(', '),
+                    urgency: form.querySelector('input[name="urgency"]').value,
+                    goals: Array.from(form.querySelectorAll('input[name="goals"]:checked')).map(el => el.value).join(', '),
+                    immigration: form.querySelector('input[name="immigration"]:checked').value,
+                    situations: Array.from(form.querySelectorAll('input[name="situations"]:checked')).map(el => el.value).join(', '),
+                    experience_type: Array.from(form.querySelectorAll('input[name="experience_type"]:checked')).map(el => el.value).join(', '),
+                    age: form.querySelector('input[name="age"]:checked').value,
+                    additional_info: form.querySelector('textarea[name="additional_info"]').value,
+                    source: form.querySelector('input[name="source"]:checked').value,
+                    email: form.querySelector('input[name="email"]').value
+                };
+                
+                // Send data using EmailJS with your new template ID
+                emailjs.send(
+                    'service_fr7pas9',
+                    'template_t7cjir9', // Your new template ID
+                    {
+                        to_email: formData.email,
+                        from_name: 'Simple French with Hems',
+                        experience: formData.experience,
+                        intro: formData.intro,
+                        reading: formData.reading,
+                        exams: formData.exams,
+                        challenges: formData.challenges,
+                        methods: formData.methods,
+                        urgency: formData.urgency,
+                        goals: formData.goals,
+                        immigration: formData.immigration,
+                        situations: formData.situations,
+                        experience_type: formData.experience_type,
+                        age: formData.age,
+                        additional_info: formData.additional_info,
+                        source: formData.source
+                    }
+                ).then(function(response) {
+                    // Success
+                    loadingIndicator.style.display = 'none';
+                    resultMessage.className = 'result-message success';
+                    resultMessage.innerHTML = `
+                        <h3 style="color: var(--accent-color); margin-bottom: 10px;">Merci Beaucoup!</h3>
+                        <p>Your comprehensive French learning assessment is complete!</p>
+                        <p style="margin-top: 10px;">We're preparing your personalized learning plan and will send it to <strong>${formData.email}</strong> shortly.</p>
+                        <p style="margin-top: 20px;">Check your inbox in the next 24 hours for your detailed roadmap to French fluency.</p>
+                    `;
+                    resultMessage.style.display = 'block';
+                    form.reset();
+                    progressBar.style.width = '0%';
+                    urgencyValue.textContent = '5';
+                    
+                    // Reset styled options
+                    options.forEach(option => {
+                        option.style.transform = 'translateX(0)';
+                    });
+                    
+                    // Second email to you (admin)
+                    emailjs.send(
+                        'service_fr7pas9',
+                        'template_for_admin', // Admin template with all details
+                        {
+                            to_email: 'your-admin-email@example.com', // Your email
+                            from_name: 'Assessment Form',
+                            // Include all form data fields as you already have
+                            experience: formData.experience,
+                            intro: formData.intro,
+                            // etc...
+                        }
+                    );
+                    
+                }).catch(function(error) {
+                    // Error
+                    loadingIndicator.style.display = 'none';
+                    resultMessage.className = 'result-message error';
+                    resultMessage.textContent = 'Oops! Something went wrong. Please try again or contact our support team for assistance.';
+                    resultMessage.style.display = 'block';
+                    console.error('EmailJS error:', error);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
