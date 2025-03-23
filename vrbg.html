@@ -26,6 +26,8 @@
             height: 100%;
             width: 100%;
             overflow-x: hidden;
+            margin: 0;
+            padding: 0;
         }
         
         body {
@@ -33,12 +35,15 @@
             background-color: var(--dark-bg);
             color: var(--text-light);
             line-height: 1.6;
+            position: relative;
         }
         
-        /* Full-screen Hero Section */
+        /* Full-screen Hero Section - Adjusted for full-bleed */
         .hero-section {
-            height: 100vh;
-            width: 100%;
+            min-height: 100vh;
+            width: 100vw;
+            margin: 0;
+            padding: 0;
             background: linear-gradient(45deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.45) 100%),
                         url('https://yiyang512.github.io/new/vrbg.jpg');
             background-size: cover;
@@ -46,6 +51,7 @@
             display: flex;
             align-items: center;
             position: relative;
+            overflow: hidden;
         }
 
         /* Background overlay with grid effect */
@@ -64,8 +70,8 @@
 
         .container {
             width: 100%;
-            max-width: 1440px;
-            margin: 0 auto;
+            max-width: 100%;
+            margin: 0;
             padding: 0 5%;
             position: relative;
             z-index: 2;
