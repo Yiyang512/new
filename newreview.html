@@ -265,11 +265,11 @@
             letter-spacing: 1px;
         }
         
-        /* Enhanced Review Cards Grid */
+        /* Enhanced Review Cards Grid - Adjusted for 4 per row */
         .reviews-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 40px;
+            grid-template-columns: repeat(4, 1fr); /* Force 4 columns */
+            gap: 30px;
             perspective: 1000px;
         }
         
@@ -620,14 +620,14 @@
         .delay-3 { animation-delay: 0.5s; }
         .delay-4 { animation-delay: 0.7s; }
         
-        /* Responsive styles */
+        /* Responsive adjustments */
         @media (max-width: 1200px) {
             .section-title {
                 font-size: 3.5rem;
             }
             
             .reviews-grid {
-                gap: 30px;
+                grid-template-columns: repeat(3, 1fr); /* 3 columns on smaller screens */
             }
             
             .vr-stat {
@@ -656,6 +656,10 @@
                 gap: 20px;
                 margin-bottom: 60px;
             }
+            
+            .reviews-grid {
+                grid-template-columns: repeat(2, 1fr); /* 2 columns on tablets */
+            }
         }
         
         @media (max-width: 768px) {
@@ -677,7 +681,7 @@
             }
             
             .reviews-grid {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                grid-template-columns: repeat(1, 1fr);
                 gap: 25px;
             }
             
@@ -702,8 +706,7 @@
             }
             
             .reviews-grid {
-                grid-template-columns: 1fr;
-                gap: 30px;
+                grid-template-columns: 1fr; /* 1 column on mobile */
             }
             
             .review-card {
