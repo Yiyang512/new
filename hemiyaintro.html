@@ -32,11 +32,10 @@
         }
         
         .hemiya-section {
-            padding: 100px 0;
+            padding: 70px 0;
             position: relative;
         }
 
-        /* Grid Background */
         .grid-background {
             position: absolute;
             top: 0;
@@ -53,7 +52,7 @@
         }
         
         .container {
-            max-width: 1300px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
             position: relative;
@@ -62,20 +61,20 @@
         
         .hemiya-title {
             text-align: center;
-            font-size: 3.5rem;
+            font-size: 3rem;
             color: var(--accent-color);
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             font-weight: 600;
             text-shadow: 0 0 20px rgba(0, 255, 155, 0.3);
         }
         
         .hemiya-subtitle {
             text-align: center;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             color: var(--text-light);
-            margin-bottom: 60px;
+            margin-bottom: 40px;
             font-weight: 300;
-            max-width: 800px;
+            max-width: 700px;
             margin-left: auto;
             margin-right: auto;
         }
@@ -83,7 +82,7 @@
         .hemiya-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 50px;
+            gap: 40px;
             align-items: center;
         }
         
@@ -93,7 +92,6 @@
             border-radius: 15px;
             border: 1px solid rgba(0, 255, 155, 0.2);
             position: relative;
-            overflow: hidden;
         }
         
         .hemiya-text::before {
@@ -107,7 +105,7 @@
         }
         
         .hemiya-features {
-            margin: 30px 0;
+            margin: 20px 0;
         }
         
         .feature-item {
@@ -117,9 +115,9 @@
         }
         
         .feature-icon {
-            width: 50px;
-            height: 50px;
-            min-width: 50px;
+            width: 45px;
+            height: 45px;
+            min-width: 45px;
             background: rgba(0, 255, 155, 0.1);
             border-radius: 10px;
             display: flex;
@@ -129,20 +127,20 @@
         }
         
         .feature-icon svg {
-            width: 24px;
-            height: 24px;
+            width: 22px;
+            height: 22px;
             stroke: var(--accent-color);
         }
         
         .feature-text h3 {
-            font-size: 1.25rem;
+            font-size: 1.1rem;
             color: var(--accent-color);
-            margin-bottom: 5px;
+            margin-bottom: 3px;
             font-weight: 500;
         }
         
         .feature-text p {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             color: rgba(255, 255, 255, 0.8);
             font-weight: 300;
         }
@@ -150,7 +148,7 @@
         .hemiya-images {
             display: grid;
             grid-template-rows: 1fr 1fr;
-            gap: 30px;
+            gap: 20px;
         }
         
         .image-container {
@@ -163,24 +161,19 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.3s ease;
             cursor: pointer;
         }
         
         .image-container:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 255, 155, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 255, 155, 0.2);
         }
         
         .image-container img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-        
-        .image-container:hover img {
-            transform: scale(1.03);
         }
         
         .image-label {
@@ -188,14 +181,13 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            padding: 15px;
+            padding: 12px;
             background: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(5px);
             color: var(--accent-color);
             font-weight: 500;
         }
         
-        /* Floating elements */
         .floating-element {
             position: absolute;
             background: radial-gradient(circle, var(--accent-color) 0%, transparent 70%);
@@ -206,16 +198,16 @@
         }
         
         .element-1 {
-            width: 200px;
-            height: 200px;
+            width: 180px;
+            height: 180px;
             top: 15%;
             right: 10%;
             animation: float 8s ease-in-out infinite;
         }
         
         .element-2 {
-            width: 150px;
-            height: 150px;
+            width: 120px;
+            height: 120px;
             bottom: 25%;
             left: 5%;
             animation: float 10s ease-in-out infinite;
@@ -224,73 +216,7 @@
         
         @keyframes float {
             0%, 100% { transform: translateY(0) translateX(0); }
-            25% { transform: translateY(-15px) translateX(15px); }
-            50% { transform: translateY(10px) translateX(-10px); }
-            75% { transform: translateY(-5px) translateX(5px); }
-        }
-        
-        /* Bright overlay lines */
-        .bright-lines {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 2;
-            overflow: hidden;
-        }
-
-        .bright-line {
-            position: absolute;
-            background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
-            height: 1px;
-            width: 100%;
-            opacity: 0.3;
-            animation: moveLine 15s linear infinite;
-        }
-
-        .bright-line:nth-child(1) {
-            top: 25%;
-            animation-delay: 0s;
-        }
-
-        .bright-line:nth-child(2) {
-            top: 55%;
-            animation-delay: 5s;
-        }
-
-        .bright-line:nth-child(3) {
-            top: 75%;
-            animation-delay: 9s;
-        }
-
-        @keyframes moveLine {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-        
-        /* Typing animation */
-        .typing-animation {
-            position: relative;
-            display: inline-block;
-        }
-        
-        .typing-animation::after {
-            content: "";
-            position: absolute;
-            right: -4px;
-            top: 50%;
-            transform: translateY(-50%);
-            height: 70%;
-            width: 2px;
-            background: var(--accent-color);
-            animation: blink 1s step-end infinite;
-        }
-        
-        @keyframes blink {
-            from, to { opacity: 1; }
-            50% { opacity: 0; }
+            50% { transform: translateY(-10px) translateX(10px); }
         }
         
         @media (max-width: 992px) {
@@ -305,31 +231,16 @@
         
         @media (max-width: 768px) {
             .hemiya-title {
-                font-size: 2.5rem;
+                font-size: 2.2rem;
             }
             
             .hemiya-subtitle {
-                font-size: 1.2rem;
-            }
-            
-            .feature-item {
-                flex-direction: column;
-            }
-            
-            .feature-icon {
-                margin-bottom: 15px;
-                margin-right: 0;
+                font-size: 1.1rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="bright-lines">
-        <div class="bright-line"></div>
-        <div class="bright-line"></div>
-        <div class="bright-line"></div>
-    </div>
-    
     <div class="floating-element element-1"></div>
     <div class="floating-element element-2"></div>
     
@@ -337,11 +248,11 @@
         <div class="grid-background"></div>
         <div class="container">
             <h1 class="hemiya-title">Meet Hemiya</h1>
-            <p class="hemiya-subtitle">Your personal AI-powered writing and speaking assistant designed to accelerate your French language journey</p>
+            <p class="hemiya-subtitle">Your AI-powered assistant for accelerated French language mastery</p>
             
             <div class="hemiya-content">
                 <div class="hemiya-text">
-                    <p>Hemiya combines cutting-edge AI technology with language learning expertise to provide real-time assistance for both written and spoken French. Whether you're drafting emails, practicing pronunciation, or preparing for conversations, Hemiya is your intelligent companion.</p>
+                    <p>Hemiya combines cutting-edge AI technology with language expertise to provide real-time assistance for written and spoken French, helping you achieve fluency faster.</p>
                     
                     <div class="hemiya-features">
                         <div class="feature-item">
@@ -351,8 +262,8 @@
                                 </svg>
                             </div>
                             <div class="feature-text">
-                                <h3>Real-Time Grammar Correction</h3>
-                                <p>Instantly identify and fix grammatical errors with detailed explanations to help you understand the rules.</p>
+                                <h3>Writing Assistance</h3>
+                                <p>Instant grammar correction and vocabulary enhancement to improve your written French.</p>
                             </div>
                         </div>
                         
@@ -363,21 +274,8 @@
                                 </svg>
                             </div>
                             <div class="feature-text">
-                                <h3>Pronunciation Feedback</h3>
-                                <p>Get immediate pronunciation assessment with specific guidance on how to improve your accent and intonation.</p>
-                            </div>
-                        </div>
-                        
-                        <div class="feature-item">
-                            <div class="feature-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="3 6 5 6 21 6"></polyline>
-                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                                </svg>
-                            </div>
-                            <div class="feature-text">
-                                <h3>Vocabulary Enhancement</h3>
-                                <p>Suggests more appropriate word choices and synonyms to enhance your writing style and expand your vocabulary.</p>
+                                <h3>Speaking Practice</h3>
+                                <p>Real-time pronunciation feedback and conversation practice in a judgment-free environment.</p>
                             </div>
                         </div>
                         
@@ -390,8 +288,8 @@
                                 </svg>
                             </div>
                             <div class="feature-text">
-                                <h3>Interactive Practice</h3>
-                                <p>Engage in realistic conversations with our AI to practice your speaking skills in a safe, judgment-free environment.</p>
+                                <h3>Interactive Learning</h3>
+                                <p>Personalized suggestions and exercises to accelerate your French language development.</p>
                             </div>
                         </div>
                     </div>
@@ -399,13 +297,13 @@
                 
                 <div class="hemiya-images">
                     <a href="https://simplefrenchwithhems.com/writing-test" class="image-container">
-                        <img src="https://yiyang512.github.io/new/write.jpg" alt="Hemiya Writing Assistant Interface">
-                        <div class="image-label">Writing Assistant Interface</div>
+                        <img src="https://yiyang512.github.io/new/write.jpg" alt="Hemiya Writing Assistant">
+                        <div class="image-label">Writing Assistant</div>
                     </a>
                     
                     <a href="https://simplefrenchwithhems.com/hemiya-speaking-test" class="image-container">
-                        <img src="https://yiyang512.github.io/new/speak.jpg" alt="Hemiya Speaking Assistant Interface">
-                        <div class="image-label">Speaking Assistant Interface</div>
+                        <img src="https://yiyang512.github.io/new/speak.jpg" alt="Hemiya Speaking Assistant">
+                        <div class="image-label">Speaking Assistant</div>
                     </a>
                 </div>
             </div>
