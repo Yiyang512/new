@@ -265,11 +265,11 @@
             letter-spacing: 1px;
         }
         
-        /* Enhanced Review Cards Grid - Adjusted for 4 per row */
+        /* Enhanced Review Cards Grid - Changed to 3 per row */
         .reviews-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr); /* Force 4 columns */
-            gap: 30px;
+            grid-template-columns: repeat(3, 1fr); /* Force 3 columns */
+            gap: 40px; /* Increased gap for wider cards */
             perspective: 1000px;
         }
         
@@ -626,10 +626,6 @@
                 font-size: 3.5rem;
             }
             
-            .reviews-grid {
-                grid-template-columns: repeat(3, 1fr); /* 3 columns on smaller screens */
-            }
-            
             .vr-stat {
                 padding: 10px 20px;
             }
@@ -897,48 +893,6 @@
                     <div class="feature-tags">
                         <span class="feature-tag">Exam Prep</span>
                         <span class="feature-tag">AI Tutor</span>
-                    </div>
-                </div>
-                
-                <!-- Review Card 4 -->
-                <div class="review-card animated-card delay-4">
-                    <div class="vr-headset-container">
-                        <div class="vr-helmet">
-                            <div class="vr-strap"></div>
-                            <div class="vr-display"></div>
-                            <div class="vr-lens vr-lens-left"></div>
-                            <div class="vr-lens vr-lens-right"></div>
-                        </div>
-                        <div class="vr-controller">
-                            <div class="vr-button"></div>
-                        </div>
-                    </div>
-                    
-                    <!-- Holographic Elements -->
-                    <div class="hologram hologram-1"></div>
-                    <div class="hologram hologram-2"></div>
-                    <div class="hologram hologram-3"></div>
-                    
-                    <div class="client-info">
-                        <h3 class="client-name">Sarah</h3>
-                        <p class="client-location">Ontario</p>
-                    </div>
-                    
-                    <div class="stars">
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                    </div>
-                    
-                    <p class="review-text">
-                        Simple French with Hems Inc. has been a game-changer for me! The whiteboard video lessons are incredibly helpful, and the quizzes have really boosted my confidence. Highly recommend!
-                    </p>
-                    
-                    <div class="feature-tags">
-                        <span class="feature-tag">VR Practice</span>
-                        <span class="feature-tag">Pronunciation</span>
                     </div>
                 </div>
             </div>
