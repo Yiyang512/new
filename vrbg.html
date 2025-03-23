@@ -8,6 +8,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* Reset for embedding */
+        html, body, div, section {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         :root {
             --accent-color: #00FF9B;
             --accent-color-muted: rgba(0, 255, 155, 0.8);
@@ -16,18 +23,14 @@
             --text-muted: rgba(255, 255, 255, 0.8);
         }
         
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
         html, body {
             height: 100%;
             width: 100%;
             overflow-x: hidden;
-            margin: 0;
-            padding: 0;
+            /* Force override any parent styles when embedded */
+            max-width: 100vw !important;
+            margin: 0 !important;
+            padding: 0 !important;
         }
         
         body {
@@ -38,12 +41,13 @@
             position: relative;
         }
         
-        /* Full-screen Hero Section - Adjusted for full-bleed */
+        /* Full-screen Hero Section with embedding fixes */
         .hero-section {
-            min-height: 100vh;
-            width: 100vw;
-            margin: 0;
-            padding: 0;
+            height: 100vh;
+            width: 100vw; /* Use viewport width instead of % */
+            max-width: 100vw !important;
+            margin: 0 !important;
+            padding: 0 !important;
             background: linear-gradient(45deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.45) 100%),
                         url('https://yiyang512.github.io/new/vrbg.jpg');
             background-size: cover;
@@ -51,7 +55,10 @@
             display: flex;
             align-items: center;
             position: relative;
-            overflow: hidden;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
         }
 
         /* Background overlay with grid effect */
@@ -70,8 +77,8 @@
 
         .container {
             width: 100%;
-            max-width: 100%;
-            margin: 0;
+            max-width: 1440px;
+            margin: 0 auto;
             padding: 0 5%;
             position: relative;
             z-index: 2;
@@ -333,39 +340,79 @@
                 display: none;
             }
         }
+        
+        /* Fix for embedding in iframes or other containers */
+        #vr-game-wrapper {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
     </style>
 </head>
 <body>
-    <section class="hero-section">
-        <div class="bg-grid"></div>
-        <div class="corner-accent corner-accent-top-left"></div>
-        <div class="corner-accent corner-accent-bottom-right"></div>
-        
-        <nav class="navbar">
-            <div class="logo">School<span class="logo-accent">Pulse™</span></div>
-        </nav>
-        
-        <div class="container">
-            <div class="hero-content">
-                <div class="vertical-accent"></div>
-                <h1 class="hero-title">Professional French Mastery Through Immersive Technology</h1>
-                <h2 class="hero-subtitle">
-                    School Pulse™ combines cutting-edge VR technology with proven language acquisition methodologies
-                    to deliver measurable results for professionals and immigrants.
-                </h2>
+    <div id="vr-game-wrapper">
+        <section class="hero-section">
+            <div class="bg-grid"></div>
+            <div class="corner-accent corner-accent-top-left"></div>
+            <div class="corner-accent corner-accent-bottom-right"></div>
+            
+            <nav class="navbar">
+                <div class="logo">School<span class="logo-accent">Pulse™</span></div>
+            </nav>
+            
+            <div class="container">
+                <div class="hero-content">
+                    <div class="vertical-accent"></div>
+                    <h1 class="hero-title">Professional French Mastery Through Immersive Technology</h1>
+                    <h2 class="hero-subtitle">
+                        School Pulse™ combines cutting-edge VR technology with proven language acquisition methodologies
+                        to deliver measurable results for professionals and immigrants.
+                    </h2>
+                </div>
             </div>
-        </div>
-        
-        <div class="vocab-item vocab-arbre">
-            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSIzMCIgY3k9IjMwIiByPSIyOCIgZmlsbD0icmdiYSg2MCwgODAsIDI1NSwgMC43KSIvPjwvc3ZnPg==" alt="Blue flower">
-            <span class="vocab-arbre-text">arbre</span>
-        </div>
-        
-        <div class="vocab-item vocab-maison">la maison</div>
-        
-        <div class="car-graphic">
-            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjUwIiB2aWV3Qm94PSIwIDAgMTAwIDUwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik0xMCAzNUgyMEwyNSAyMEg4MEw5MCAzNUg5NVY0MEg4MFY0NUgzMFY0MEgxMFYzNVoiIGZpbGw9InJnYmEoNjAsIDEwMCwgMjU1LCAwLjQpIi8+PGNpcmNsZSBjeD0iMjUiIGN5PSI0MCIgcj0iOCIgZmlsbD0icmdiYSg1MCwgNTAsIDUwLCAwLjYpIi8+PGNpcmNsZSBjeD0iNzUiIGN5PSI0MCIgcj0iOCIgZmlsbD0icmdiYSg1MCwgNTAsIDUwLCAwLjYpIi8+PC9zdmc+" alt="Car graphic">
-        </div>
-    </section>
+            
+            <div class="vocab-item vocab-arbre">
+                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSIzMCIgY3k9IjMwIiByPSIyOCIgZmlsbD0icmdiYSg2MCwgODAsIDI1NSwgMC43KSIvPjwvc3ZnPg==" alt="Blue flower">
+                <span class="vocab-arbre-text">arbre</span>
+            </div>
+            
+            <div class="vocab-item vocab-maison">la maison</div>
+            
+            <div class="car-graphic">
+                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjUwIiB2aWV3Qm94PSIwIDAgMTAwIDUwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik0xMCAzNUgyMEwyNSAyMEg4MEw5MCAzNUg5NVY0MEg4MFY0NUgzMFY0MEgxMFYzNVoiIGZpbGw9InJnYmEoNjAsIDEwMCwgMjU1LCAwLjQpIi8+PGNpcmNsZSBjeD0iMjUiIGN5PSI0MCIgcj0iOCIgZmlsbD0icmdiYSg1MCwgNTAsIDUwLCAwLjYpIi8+PGNpcmNsZSBjeD0iNzUiIGN5PSI0MCIgcj0iOCIgZmlsbD0icmdiYSg1MCwgNTAsIDUwLCAwLjYpIi8+PC9zdmc+" alt="Car graphic">
+            </div>
+        </section>
+    </div>
+    
+    <script>
+        // Force full-bleed behavior when embedded
+        (function() {
+            function setFullBleed() {
+                // Handle iframe embedding
+                if (window.self !== window.top) {
+                    document.documentElement.style.overflow = 'hidden';
+                    document.body.style.overflow = 'hidden';
+                    document.body.style.height = '100vh';
+                    document.body.style.width = '100vw';
+                    
+                    // Force container to full viewport
+                    const wrapper = document.getElementById('vr-game-wrapper');
+                    if (wrapper) {
+                        wrapper.style.width = '100vw';
+                        wrapper.style.height = '100vh';
+                        wrapper.style.position = 'absolute';
+                        wrapper.style.top = '0';
+                        wrapper.style.left = '0';
+                    }
+                }
+            }
+            
+            // Run on load
+            window.addEventListener('load', setFullBleed);
+            // Run immediately
+            setFullBleed();
+        })();
+    </script>
 </body>
 </html> 
