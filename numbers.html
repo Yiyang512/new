@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hemiya Stats</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent-color: #00FF9B;
+            --dark-bg: #001102;
+            --grid-color: rgba(0, 255, 155, 0.2);
+            --text-light: #ffffff;
+            --card-bg: rgba(10, 25, 15, 0.8);
+            --neon-shadow: 0 0 10px rgba(0, 255, 155, 0.3),
+                          0 0 20px rgba(0, 255, 155, 0.3),
+                          0 0 30px rgba(0, 255, 155, 0.3),
+                          0 0 40px rgba(0, 255, 155, 0.3);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .grid-background {
+            position: fixed;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 300px;
+            background-image: 
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.2;
+            pointer-events: none;
+            z-index: 0;
+            perspective: 1000px;
+            transform-style: preserve-3d;
+            animation: gridRotate 20s linear infinite;
+            filter: blur(1px);
+            transform: translateY(-50%);
+        }
+
+        @keyframes gridRotate {
+            0% { 
+                transform: rotateX(60deg) rotateZ(0deg) translateZ(-100px);
+                background-size: 40px 40px;
+            }
+            50% {
+                background-size: 60px 60px;
+            }
+            100% { 
+                transform: rotateX(60deg) rotateZ(360deg) translateZ(-100px);
+                background-size: 40px 40px;
+            }
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+            filter: blur(1px);
+            box-shadow: 0 0 10px var(--accent-color);
+            animation: particleFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes particleFloat {
+            0% { 
+                transform: translateY(0) scale(1) rotate(0deg); 
+                opacity: 0; 
+            }
+            25% { 
+                transform: translateY(-50px) scale(1.5) rotate(90deg); 
+                opacity: 0.8; 
+            }
+            50% { 
+                transform: translateY(-100px) scale(1) rotate(180deg); 
+                opacity: 0.4; 
+            }
+            75% { 
+                transform: translateY(-150px) scale(0.5) rotate(270deg); 
+                opacity: 0.2; 
+            }
+            100% { 
+                transform: translateY(-200px) scale(0) rotate(360deg); 
+                opacity: 0; 
+            }
+        }
+
+        .stats-container {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: nowrap;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+            perspective: 1000px;
+            transform-style: preserve-3d;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .stat-box {
+            width: 280px;
+            height: 200px;
+            background: var(--card-bg);
+            border: 1px solid rgba(0, 255, 155, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            transform: perspective(1000px) translateZ(0);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 30px rgba(0, 255, 155, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-box:hover {
+            transform: perspective(1000px) translateZ(50px);
+            box-shadow: var(--neon-shadow);
+        }
+
+        .stat-box::before {
+            content: '';
+            position: absolute;
+            inset: -5px;
+            background: linear-gradient(45deg, 
+                transparent 0%, 
+                rgba(0, 255, 155, 0.1) 45%, 
+                rgba(0, 255, 155, 0.4) 50%, 
+                rgba(0, 255, 155, 0.1) 55%, 
+                transparent 100%);
+            transform: translateX(-100%);
+            animation: shine 3s infinite;
+            filter: blur(5px);
+        }
+
+        .stat-box::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 15px;
+            padding: 2px;
+            background: linear-gradient(45deg, 
+                transparent, 
+                rgba(0, 255, 155, 0.3), 
+                transparent);
+            -webkit-mask: 
+                linear-gradient(#fff 0 0) content-box, 
+                linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            animation: borderGlow 2s linear infinite;
+        }
+
+        @keyframes borderGlow {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            20%, 100% { transform: translateX(100%); }
+        }
+
+        .stat-number {
+            font-size: 4.5rem;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            color: var(--accent-color);
+            text-shadow: 0 0 20px rgba(0, 255, 155, 0.5);
+            margin-bottom: 15px;
+            position: relative;
+            animation: numberPulse 2s ease-in-out infinite;
+            transform-style: preserve-3d;
+        }
+
+        @keyframes numberPulse {
+            0%, 100% { 
+                transform: scale(1) translateZ(0px); 
+                text-shadow: 0 0 20px rgba(0, 255, 155, 0.3);
+            }
+            50% { 
+                transform: scale(1.05) translateZ(20px); 
+                text-shadow: 0 0 40px rgba(0, 255, 155, 0.6);
+            }
+        }
+
+        .stat-number::after {
+            content: '+';
+            font-size: 2rem;
+            font-family: 'Poppins', sans-serif;
+            position: absolute;
+            top: 0;
+            right: -25px;
+            animation: plusPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes plusPulse {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.2) rotate(10deg); }
+        }
+
+        .stat-label {
+            font-size: 1.2rem;
+            font-weight: 500;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, #fff, var(--accent-color), #fff);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientText 3s linear infinite;
+        }
+
+        @keyframes gradientText {
+            0% { background-position: 0% center; }
+            50% { background-position: 100% center; }
+            100% { background-position: 0% center; }
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+            filter: blur(1px);
+            box-shadow: 0 0 10px var(--accent-color);
+            animation: particleFloat 4s ease-in-out infinite;
+        }
+
+        .orb {
+            position: fixed;
+            width: 300px;
+            height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%,
+                rgba(0, 255, 155, 0.1) 0%,
+                rgba(0, 255, 155, 0.05) 50%,
+                transparent 100%);
+            filter: blur(60px);
+            opacity: 0.5;
+            animation: orbFloat 10s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes orbFloat {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-30%, -30%) scale(1.2); }
+        }
+
+        .orb:nth-child(1) {
+            top: 50%;
+            left: 0%;
+        }
+
+        .orb:nth-child(2) {
+            top: 50%;
+            right: 0%;
+            left: auto;
+        }
+
+        @media (max-width: 1200px) {
+            .stats-container {
+                gap: 20px;
+                padding: 15px;
+            }
+
+            .stat-box {
+                width: 240px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .stats-container {
+                gap: 15px;
+                padding: 10px;
+            }
+
+            .stat-box {
+                width: 220px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stats-container {
+                flex-wrap: wrap;
+                gap: 15px;
+                padding: 15px;
+                justify-content: center;
+                max-width: 600px;
+            }
+
+            .stat-box {
+                width: calc(50% - 10px); /* 2 columns with gap */
+                min-width: unset;
+                height: 180px; /* Slightly reduced height */
+            }
+
+            .stat-number {
+                font-size: 3.5rem;
+            }
+
+            .stat-label {
+                font-size: 1rem;
+                letter-spacing: 1px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-container {
+                gap: 10px;
+                padding: 10px;
+            }
+
+            .stat-box {
+                width: calc(50% - 5px);
+                height: 160px;
+            }
+
+            .stat-number {
+                font-size: 3rem;
+                margin-bottom: 10px;
+            }
+
+            .stat-label {
+                font-size: 0.9rem;
+                letter-spacing: 0.5px;
+            }
+        }
+
+        /* Remove the horizontal scroll styles */
+        .stats-container {
+            overflow-x: visible;
+            scroll-behavior: unset;
+            -webkit-overflow-scrolling: unset;
+        }
+    </style>
+</head>
+<body>
+    <div class="orb" style="top: 30%; left: 20%;"></div>
+    <div class="orb" style="top: 70%; left: 80%;"></div>
+    <div class="grid-background"></div>
+    
+    <div class="stats-container">
+        <div class="stat-box">
+            <div class="stat-number" data-target="5000">0</div>
+            <div class="stat-label">Quizzes</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number" data-target="400">0</div>
+            <div class="stat-label">Grammar Videos</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number" data-target="50">0</div>
+            <div class="stat-label">Animated Stories</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number" data-target="10">0</div>
+            <div class="stat-label">Ebooks</div>
+        </div>
+    </div>
+
+    <script>
+        // Create floating particles
+        function createParticles() {
+            const container = document.body;
+            const particleCount = 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Random position
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                
+                // Random animation delay
+                particle.style.animationDelay = Math.random() * 4 + 's';
+                
+                container.appendChild(particle);
+                
+                // Remove and recreate particle after animation
+                particle.addEventListener('animationend', () => {
+                    particle.remove();
+                    createParticle();
+                });
+            }
+        }
+
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = '100%';
+            particle.style.animationDelay = '0s';
+            document.body.appendChild(particle);
+            
+            particle.addEventListener('animationend', () => {
+                particle.remove();
+                createParticle();
+            });
+        }
+
+        // Initialize particles
+        createParticles();
+
+        // Intersection Observer to start counting when stats are visible
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const container = entry.target;
+                    const numbers = container.querySelectorAll('.stat-number');
+                    numbers.forEach(animateNumber);
+                    observer.unobserve(container);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        // Observe the stats container
+        observer.observe(document.querySelector('.stats-container'));
+
+        function animateNumber(numberElement) {
+            const target = parseInt(numberElement.getAttribute('data-target'));
+            const duration = 4000; // Increased from 2000 to 4000 milliseconds
+            const steps = 100; // Increased from 50 to 100 for smoother animation
+            const stepDuration = duration / steps;
+            
+            let current = 0;
+            const increment = target / steps;
+            
+            const timer = setInterval(() => {
+                current += increment;
+                numberElement.textContent = Math.round(current);
+                
+                if (current >= target) {
+                    numberElement.textContent = target;
+                    clearInterval(timer);
+                }
+            }, stepDuration);
+        }
+
+        // Enhanced 3D hover effect with acceleration
+        document.querySelectorAll('.stat-box').forEach(box => {
+            let currentX = 0;
+            let currentY = 0;
+            let aimX = 0;
+            let aimY = 0;
+
+            box.addEventListener('mousemove', (e) => {
+                const rect = box.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                aimX = ((rect.width / 2) - x) / 15;
+                aimY = ((rect.height / 2) - y) / 15;
+            });
+            
+            box.addEventListener('mouseleave', () => {
+                aimX = 0;
+                aimY = 0;
+            });
+
+            function updatePosition() {
+                const deltaX = aimX - currentX;
+                const deltaY = aimY - currentY;
+                
+                currentX += deltaX * 0.2;
+                currentY += deltaY * 0.2;
+                
+                box.style.transform = `
+                    perspective(1000px)
+                    rotateX(${currentY}deg)
+                    rotateY(${-currentX}deg)
+                    scale3d(1.05, 1.05, 1.05)
+                `;
+                
+                requestAnimationFrame(updatePosition);
+            }
+            
+            updatePosition();
+        });
+    </script>
+</body>
+</html> 
