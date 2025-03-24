@@ -10,7 +10,7 @@
     <style>
         :root {
             --accent-color: #00FF9B;
-            --dark-bg: #01140A;
+            --dark-bg: #001102;
             --grid-color: rgba(0, 255, 155, 0.2);
             --text-light: #ffffff;
             --card-bg: rgba(10, 25, 15, 0.8);
@@ -28,7 +28,6 @@
             color: var(--text-light);
             line-height: 1.6;
             overflow-x: hidden;
-            background-image: radial-gradient(circle at 50% 50%, rgba(0, 255, 155, 0.08) 0%, transparent 80%);
         }
         
         .hemiya-section {
@@ -42,13 +41,63 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: 
-                linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
-                linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
-            background-size: 30px 30px;
-            opacity: 0.2;
+            background-image: radial-gradient(var(--grid-color) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.3;
             pointer-events: none;
             z-index: 0;
+            animation: dots-shine 8s infinite alternate;
+        }
+        
+        /* Add additional shining stars */
+        .shining-dots {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .dot {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+            opacity: 0;
+            animation: dot-shine 3s infinite ease-in-out;
+        }
+        
+        .dot:nth-child(1) { top: 10%; left: 20%; animation-delay: 0s; }
+        .dot:nth-child(2) { top: 25%; left: 80%; animation-delay: 0.7s; }
+        .dot:nth-child(3) { top: 60%; left: 45%; animation-delay: 1.4s; }
+        .dot:nth-child(4) { top: 75%; left: 10%; animation-delay: 2.1s; }
+        .dot:nth-child(5) { top: 40%; left: 30%; animation-delay: 2.8s; }
+        .dot:nth-child(6) { top: 80%; left: 70%; animation-delay: 3.5s; }
+        .dot:nth-child(7) { top: 30%; left: 60%; animation-delay: 4.2s; }
+        .dot:nth-child(8) { top: 70%; left: 85%; animation-delay: 4.9s; }
+        .dot:nth-child(9) { top: 15%; left: 40%; animation-delay: 5.6s; }
+        .dot:nth-child(10) { top: 50%; left: 15%; animation-delay: 6.3s; }
+        .dot:nth-child(11) { top: 20%; left: 90%; animation-delay: 7.0s; }
+        .dot:nth-child(12) { top: 85%; left: 65%; animation-delay: 7.7s; }
+        .dot:nth-child(13) { top: 35%; left: 75%; animation-delay: 8.4s; }
+        .dot:nth-child(14) { top: 90%; left: 25%; animation-delay: 9.1s; }
+        .dot:nth-child(15) { top: 5%; left: 55%; animation-delay: 9.8s; }
+        
+        @keyframes dots-shine {
+            0% { opacity: 0.2; }
+            50% { opacity: 0.4; }
+            100% { opacity: 0.2; }
+        }
+        
+        @keyframes dot-shine {
+            0% { transform: scale(1); opacity: 0; }
+            25% { transform: scale(2); opacity: 0.7; }
+            50% { transform: scale(1.5); opacity: 0.5; }
+            75% { transform: scale(2.5); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 0; }
         }
         
         .container {
@@ -238,6 +287,64 @@
                 font-size: 1.1rem;
             }
         }
+        
+        /* iframe optimization */
+        @media (max-width: 100%) {
+            .hemiya-section {
+                padding: 40px 0;
+            }
+            
+            .hemiya-title {
+                font-size: 2.5rem;
+                margin-bottom: 10px;
+            }
+            
+            .hemiya-subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 30px;
+            }
+            
+            .hemiya-content {
+                gap: 30px;
+            }
+            
+            .feature-text p {
+                font-size: 0.85rem;
+            }
+            
+            .floating-element {
+                opacity: 0.2;
+            }
+        }
+        
+        html.in-iframe {
+            height: auto;
+            overflow: hidden;
+        }
+        
+        html.in-iframe body {
+            height: auto;
+            overflow: hidden;
+        }
+        
+        /* Detect if in iframe */
+        @media (max-height: 800px) {
+            .hemiya-section {
+                padding: 30px 0;
+            }
+            
+            .hemiya-title {
+                font-size: 2.2rem;
+            }
+            
+            .hemiya-images {
+                grid-template-rows: auto;
+            }
+            
+            .image-container {
+                aspect-ratio: 16/9;
+            }
+        }
     </style>
 </head>
 <body>
@@ -246,6 +353,23 @@
     
     <section class="hemiya-section">
         <div class="grid-background"></div>
+        <div class="shining-dots">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
         <div class="container">
             <h1 class="hemiya-title">Meet Hemiya</h1>
             <p class="hemiya-subtitle">Your AI-powered assistant for accelerated French language mastery</p>
@@ -309,5 +433,25 @@
             </div>
         </div>
     </section>
+    
+    <script>
+        // Check if page is in iframe
+        if (window.self !== window.top) {
+            document.documentElement.classList.add('in-iframe');
+            
+            // Send page height to parent
+            function sendHeight() {
+                var height = document.body.scrollHeight;
+                window.parent.postMessage({
+                    type: 'setHeight',
+                    height: height
+                }, '*');
+            }
+            
+            // Send height on load and resize
+            window.addEventListener('load', sendHeight);
+            window.addEventListener('resize', sendHeight);
+        }
+    </script>
 </body>
 </html>
