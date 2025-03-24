@@ -52,13 +52,16 @@
                         url('https://yiyang512.github.io/new/vrbg.jpg');
             background-size: cover;
             background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
             display: flex;
             align-items: center;
-            position: relative;
+            position: fixed;
             left: 0;
             top: 0;
             right: 0;
             bottom: 0;
+            overflow: auto;
         }
 
         /* Background overlay with grid effect */
@@ -187,7 +190,7 @@
         
         .logo {
             font-weight: 700;
-            font-size: 1.4rem;
+            font-size: 4rem;
             color: var(--text-light);
             display: flex;
             align-items: center;
@@ -200,12 +203,12 @@
         .logo::before {
             content: "";
             display: inline-block;
-            width: 8px;
-            height: 8px;
+            width: 18px;
+            height: 18px;
             background: var(--accent-color);
-            margin-right: 8px;
+            margin-right: 18px;
             border-radius: 50%;
-            box-shadow: 0 0 10px var(--accent-color);
+            box-shadow: 0 0 20px var(--accent-color);
         }
         
         /* Subtle corner accents */
@@ -333,7 +336,7 @@
             }
             
             .logo {
-                font-size: 1.2rem;
+                font-size: 2.6rem;
             }
             
             .corner-accent {
@@ -345,8 +348,9 @@
         #vr-game-wrapper {
             width: 100vw;
             height: 100vh;
-            overflow: hidden;
+            overflow: auto;
             position: relative;
+            z-index: 1;
         }
     </style>
 </head>
