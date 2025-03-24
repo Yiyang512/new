@@ -709,6 +709,50 @@
                 padding: 30px 20px;
             }
         }
+        
+        /* iframe optimization */
+        html.in-iframe {
+            height: auto;
+            overflow: visible;
+        }
+        
+        html.in-iframe body {
+            height: auto;
+            overflow: visible;
+        }
+        
+        /* Optimize for iframe display */
+        @media (max-height: 1300px) {
+            .reviews-section {
+                padding: 60px 0;
+            }
+            
+            .section-header {
+                margin-bottom: 60px;
+            }
+            
+            .section-title {
+                font-size: 3.5rem;
+            }
+            
+            .vr-stats {
+                margin-bottom: 50px;
+                gap: 25px;
+            }
+            
+            .reviews-grid {
+                gap: 30px;
+            }
+            
+            .vr-headset-container {
+                height: 130px;
+                margin-bottom: 25px;
+            }
+            
+            .review-card {
+                padding: 35px 25px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -904,8 +948,12 @@
         document.addEventListener('DOMContentLoaded', function() {
             const particlesContainer = document.getElementById('vr-particles');
             
+            // Check if in iframe to adjust particle count for performance
+            const isInIframe = window.self !== window.top;
+            const particleCount = isInIframe ? 30 : 50; // Fewer particles in iframe for better performance
+            
             // Create particles
-            for (let i = 0; i < 50; i++) {
+            for (let i = 0; i < particleCount; i++) {
                 createParticle(particlesContainer);
             }
             
@@ -956,6 +1004,29 @@
             
             // Check visibility on scroll
             window.addEventListener('scroll', checkVisibility);
+            
+            // Check if in iframe
+            if (window.self !== window.top) {
+                document.documentElement.classList.add('in-iframe');
+                
+                // Send page height to parent
+                function sendHeight() {
+                    var height = document.body.scrollHeight;
+                    window.parent.postMessage({
+                        type: 'setHeight',
+                        height: height
+                    }, '*');
+                }
+                
+                // Send height on load and resize
+                window.addEventListener('load', sendHeight);
+                window.addEventListener('resize', sendHeight);
+                
+                // Make all cards visible immediately when in iframe
+                cards.forEach(card => {
+                    card.style.opacity = "1";
+                });
+            }
         });
         
         function createParticle(container) {
