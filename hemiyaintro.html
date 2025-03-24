@@ -210,7 +210,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
             cursor: pointer;
         }
         
@@ -218,11 +218,45 @@
             transform: translateY(-3px);
             box-shadow: 0 8px 20px rgba(0, 255, 155, 0.2);
         }
+
+        .image-container:hover .image-overlay {
+            opacity: 1;
+        }
         
         .image-container img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+        }
+
+        .image-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 17, 2, 0.85);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .try-free-text {
+            color: var(--accent-color);
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .click-tip {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            opacity: 0.9;
         }
         
         .image-label {
@@ -235,6 +269,7 @@
             backdrop-filter: blur(5px);
             color: var(--accent-color);
             font-weight: 500;
+            z-index: 2;
         }
         
         .floating-element {
@@ -285,6 +320,14 @@
             
             .hemiya-subtitle {
                 font-size: 1.1rem;
+            }
+
+            .try-free-text {
+                font-size: 1.2rem;
+            }
+
+            .click-tip {
+                font-size: 0.8rem;
             }
         }
         
@@ -371,8 +414,8 @@
             <div class="dot"></div>
         </div>
         <div class="container">
-            <h1 class="hemiya-title">Meet Hemiya</h1>
-            <p class="hemiya-subtitle">Your AI-powered assistant for accelerated French language mastery</p>
+            <h1 class="hemiya-title">Meet Hemiya ♛</h1>
+            <p class="hemiya-subtitle">Your AI-powered assistant for accelerated French language mastery!</p>
             
             <div class="hemiya-content">
                 <div class="hemiya-text">
@@ -420,14 +463,22 @@
                 </div>
                 
                 <div class="hemiya-images">
-                    <a href="https://simplefrenchwithhems.com/writing-test" class="image-container">
+                    <a href="https://simplefrenchwithhems.com/writing-test" class="image-container" target="_blank" rel="noopener noreferrer">
                         <img src="https://yiyang512.github.io/new/write.jpg" alt="Hemiya Writing Assistant">
-                        <div class="image-label">Writing Assistant</div>
+                        <div class="image-overlay">
+                            <div class="try-free-text">Try Writing Assistant✨</div>
+                            <div class="click-tip">Click to start your free session</div>
+                        </div>
+                        <div class="image-label">Writing Assistant⚡</div>
                     </a>
                     
-                    <a href="https://simplefrenchwithhems.com/hemiya-speaking-test" class="image-container">
+                    <a href="https://simplefrenchwithhems.com/hemiya-speaking-test" class="image-container" target="_blank" rel="noopener noreferrer">
                         <img src="https://yiyang512.github.io/new/speak.jpg" alt="Hemiya Speaking Assistant">
-                        <div class="image-label">Speaking Assistant</div>
+                        <div class="image-overlay">
+                            <div class="try-free-text">Try Speaking Assistant✨</div>
+                            <div class="click-tip">Click to start your free session</div>
+                        </div>
+                        <div class="image-label">Speaking Assistant⚡</div>
                     </a>
                 </div>
             </div>
