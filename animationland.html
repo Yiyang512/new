@@ -21,24 +21,23 @@
         }
 
         .hero-section {
-            width: 100vw;
-            height: 100vh;
-            max-height: 630px;
+            width: 100%;
+            min-height: 100vh;
             margin: 0;
-            padding: 0;
+            padding: 20px;
             display: grid;
             grid-template-columns: 0.8fr 1.2fr;
-            gap: 0;
+            gap: 20px;
             align-items: center;
             position: relative;
+            overflow: hidden;
         }
 
         .hero-content {
             position: relative;
             z-index: 1;
-            padding: 20px 40px;
+            padding: 20px;
             width: 100%;
-            height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -70,6 +69,7 @@
             gap: 6px;
             z-index: 2;
             letter-spacing: 0.02em;
+            white-space: nowrap;
         }
 
         .recommended-badge::before {
@@ -82,7 +82,7 @@
             font-size: 3rem;
             line-height: 1;
             margin-bottom: 20px;
-            margin-top: 0;
+            margin-top: 15px;
             font-weight: 600;
             letter-spacing: -0.02em;
             position: relative;
@@ -120,7 +120,6 @@
         .hero-images {
             position: relative;
             width: 100%;
-            height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -130,17 +129,15 @@
         .image-container {
             position: relative;
             width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            max-width: 800px;
+            margin: 0 auto;
         }
 
         .image-container img {
             width: 100%;
-            height: 100%;
+            height: auto;
             object-fit: contain;
-            max-height: 90vh;
+            display: block;
         }
 
         .emoji {
@@ -296,32 +293,41 @@
         @media (max-width: 992px) {
             .hero-section {
                 grid-template-columns: 1fr;
-                height: auto;
-                min-height: 100vh;
+                padding: 15px;
+                gap: 10px;
             }
 
             .hero-content {
-                padding: 20px;
+                padding: 10px;
             }
 
             .hero-images {
                 order: -1;
-                padding: 20px;
+                padding: 10px;
             }
 
-            .image-container img {
-                max-height: 50vh;
+            .image-container {
+                max-width: 600px;
             }
         }
 
         @media (max-width: 768px) {
             .hero-section {
-                padding: 15px;
+                padding: 10px;
             }
 
             .hero-bubble {
                 padding: 25px;
-                padding-top: 60px;
+                padding-top: 65px;
+            }
+
+            .hero-content,
+            .hero-images {
+                padding: 5px;
+            }
+
+            .image-container {
+                max-width: 500px;
             }
 
             .recommended-badge {
@@ -330,16 +336,44 @@
                 padding: 6px 12px;
                 font-size: 0.85rem;
             }
+
+            .hero-title {
+                margin-top: 10px;
+            }
         }
 
         @media (max-width: 480px) {
             .hero-section {
                 padding: 10px;
+                min-height: auto;
             }
 
             .hero-bubble {
                 padding: 20px;
-                padding-top: 50px;
+                padding-top: 55px;
+            }
+
+            .hero-content,
+            .hero-images {
+                padding: 5px;
+            }
+
+            .image-container {
+                max-width: 100%;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+                margin-top: 8px;
+                margin-bottom: 15px;
+            }
+
+            .hero-title span {
+                font-size: 2.8rem;
+            }
+
+            .hero-description {
+                font-size: 0.95rem;
             }
 
             .recommended-badge {
@@ -347,13 +381,37 @@
                 right: 12px;
                 padding: 5px 10px;
                 font-size: 0.8rem;
+                gap: 4px;
             }
         }
 
         @media (max-width: 360px) {
+            .hero-section {
+                padding: 5px;
+            }
+
             .hero-bubble {
                 padding: 15px;
-                padding-top: 45px;
+                padding-top: 50px;
+            }
+
+            .hero-content,
+            .hero-images {
+                padding: 5px;
+            }
+
+            .hero-title {
+                font-size: 1.8rem;
+                margin-top: 5px;
+                margin-bottom: 12px;
+            }
+
+            .hero-title span {
+                font-size: 2.5rem;
+            }
+
+            .hero-description {
+                font-size: 0.9rem;
             }
 
             .recommended-badge {
