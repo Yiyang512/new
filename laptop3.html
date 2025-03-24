@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI French Writing Assistant | Completion Page</title>
+  <title>AI French Speaking Assistant | Professional Language Learning Tools</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -75,6 +75,44 @@
       }
     }
 
+    /* Add some arm animation for extra character */
+    .robot-arm {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      bottom: 170px;
+      right: 85px;
+      opacity: 0;
+      animation: wave 2.5s ease-in-out 1s;
+    }
+
+    @keyframes wave {
+      0% {
+        transform: rotate(0deg);
+        opacity: 1;
+      }
+      20% {
+        transform: rotate(-20deg);
+        opacity: 1;
+      }
+      40% {
+        transform: rotate(10deg);
+        opacity: 1;
+      }
+      60% {
+        transform: rotate(-10deg);
+        opacity: 1;
+      }
+      80% {
+        transform: rotate(5deg);
+        opacity: 1;
+      }
+      100% {
+        transform: rotate(0deg);
+        opacity: 0;
+      }
+    }
+
     .laptop-message {
       background-color: var(--primary-green);
       color: black;
@@ -83,11 +121,30 @@
       padding: 24px 32px;
       border-radius: 30px;
       border: 8px solid var(--primary-border);
-      max-width: 400px;
+      max-width: 350px;
       line-height: 1.4;
       position: relative;
       margin-top: 20px;
       text-align: left;
+    }
+
+    .laptop-highlight {
+      color: var(--primary-border);
+    }
+
+    .typing-cursor {
+      display: inline-block;
+      width: 5px;
+      height: 1em;
+      background: black;
+      margin-left: 4px;
+      animation: blink 1s step-end infinite;
+      vertical-align: text-bottom;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
     }
 
     .right-column {
@@ -107,20 +164,21 @@
     }
 
     .text {
-      font-size: 48px;
-      line-height: 1.3;
-      color: var(--text-dark);
-      font-weight: 700;
-    }
-
-    .sub-text {
       font-size: 32px;
       line-height: 1.5;
       color: var(--text-medium);
       font-weight: 500;
-      margin-top: 20px;
     }
 
+    .text-highlight {
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .tef-highlight {
+      font-weight: 700;
+      color: var(--text-dark);
+    }
 
     @media (max-width: 768px) {
       .container {
@@ -147,7 +205,7 @@
       }
 
       .text {
-        font-size: 34px;
+        font-size: 20px;
         line-height: 1.3;
       }
       
@@ -178,12 +236,12 @@
       }
       
       .text {
-        font-size: 30px;
+        font-size: 20px;
         line-height: 1.3;
       }
       
       .sub-text {
-        font-size: 16px;
+        font-size: 120px;
         line-height: 1.35;
         margin-top: 12px;
       }
@@ -208,7 +266,7 @@
     
     @media (max-width: 360px) {
       .text {
-        font-size: 26px;
+        font-size: 20px;
         line-height: 1.25;
       }
       
@@ -240,7 +298,7 @@
     
     @media (max-width: 320px) {
       .text {
-        font-size: 24px;
+        font-size: 20px;
         line-height: 1.2;
       }
       
@@ -261,26 +319,52 @@
         margin-top: 10px;
       }
     }
-
   </style>
 </head>
 <body>
   <div class="container">
     <div class="left-column">
-      <img src="https://yiyang512.github.io/new/hemiya2.png" alt="AI French Writing Assistant" class="robot">
+      <img src="https://yiyang512.github.io/new/hemiya1.png" alt="AI French Speaking Assistant" class="robot">
+      <div class="robot-arm">👋</div>
       <div class="laptop-message">
-        Nice work! Don't forget to download your recording.
+        <span id="typing-text"></span><span class="typing-cursor"></span>
       </div>
     </div>
     <div class="right-column">
       <div class="vertical-line"></div>
       <div class="text">
-        Woohoo! How was it?
-      </div>
-      <div class="sub-text">
-        You've completed your French speaking session. Would you like to continue practicing or review your work?
+        Enhance your French speaking skills effortlessly with real-time 
+        <span class="text-highlight">AI corrections</span>, smart feedback, and 
+        exam-style prompts tailored for <span class="tef-highlight">TEF/DELF</span>.
       </div>
     </div>
   </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const text = 'For the best\nexperience,\nplease use laptop~';
+      const typingSpeed = 50; // milliseconds per character
+      const typingTextElement = document.getElementById('typing-text');
+      let charIndex = 0;
+      
+      function typeNextChar() {
+        if (charIndex < text.length) {
+          const char = text.charAt(charIndex);
+          if (char === '\n') {
+            typingTextElement.innerHTML += '<br>';
+          } else if (text.substring(charIndex, charIndex + 6) === 'laptop') {
+            typingTextElement.innerHTML += '<span class="laptop-highlight">laptop</span>';
+            charIndex += 5; // Skip the rest of "laptop"
+          } else {
+            typingTextElement.innerHTML += char;
+          }
+          charIndex++;
+          setTimeout(typeNextChar, typingSpeed);
+        }
+      }
+      
+      // Start typing animation
+      typeNextChar();
+    });
+  </script>
 </body>
-</html> 
+</html>
