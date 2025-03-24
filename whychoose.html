@@ -182,7 +182,7 @@
         }
         
         .feature-card:hover {
-          transform: translateY(-8px);
+          /* Removed transform effect */
         }
       </style>
     </div>
@@ -406,7 +406,7 @@
       
       <style>
         .faq-item:hover {
-          transform: translateY(-3px);
+          /* Removed transform effect */
         }
         
         .faq-item.active {
@@ -505,57 +505,42 @@
       margin-bottom: 120px;
     }
     
-    /* Refined UI Elements */
+    /* Refined UI Elements - removed transitions and transforms */
     #why-choose-us .feature-card {
-      transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
       border: 1px solid rgba(0, 255, 155, 0.08);
     }
     
     #why-choose-us .feature-card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
       border-color: rgba(0, 255, 155, 0.15);
     }
     
-    /* Professional accent elements */
+    /* Professional accent elements - removed transitions */
     #why-choose-us .accent-line {
       width: 70px;
       height: 3px;
       background: linear-gradient(90deg, rgba(0, 255, 155, 0), rgba(0, 255, 155, 0.8), rgba(0, 255, 155, 0));
       margin: 24px auto;
-      transition: width 0.3s ease;
     }
     
-    #why-choose-us .section-title:hover .accent-line {
-      width: 90px;
-    }
-    
-    /* Enhanced interactive elements */
+    /* Enhanced interactive elements - removed transitions and transforms */
     #why-choose-us .faq-item {
-      transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
       border: 1px solid rgba(0, 255, 155, 0.08);
     }
     
     #why-choose-us .faq-item:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
       border-color: rgba(0, 255, 155, 0.15);
     }
     
     #why-choose-us .faq-answer {
-      transition: all 0.3s ease;
-      max-height: 0;
-      overflow: hidden;
-      opacity: 0;
       padding: 0 30px;
       visibility: hidden;
+      display: none;
     }
     
     #why-choose-us .faq-item.active .faq-answer {
-      max-height: 500px;
-      opacity: 1;
-      padding: 0 30px 30px;
       visibility: visible;
+      display: block;
+      padding: 0 30px 30px;
     }
     
     /* Stats refinements */
@@ -569,18 +554,16 @@
       position: relative;
     }
     
-    /* Enhanced badges */
+    /* Enhanced badges - removed transitions and transforms */
     #why-choose-us .benefit-badge {
       padding: 8px 16px;
       border-radius: 100px;
       background: rgba(0, 255, 155, 0.08);
       border: 1px solid rgba(0, 255, 155, 0.15);
-      transition: all 0.3s ease;
     }
     
     #why-choose-us .benefit-badge:hover {
       background: rgba(0, 255, 155, 0.12);
-      transform: translateY(-3px);
     }
     
     /* Enhanced responsive behavior */
