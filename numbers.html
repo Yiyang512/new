@@ -202,6 +202,18 @@
             transform-style: preserve-3d;
         }
 
+        .stat-number::after {
+            content: '+';
+            font-size: 2.5rem;
+            font-family: 'Poppins', sans-serif;
+            position: absolute;
+            top: 5px;
+            right: -30px;
+            color: var(--accent-color);
+            text-shadow: 0 0 20px rgba(0, 255, 155, 0.5);
+            animation: plusPulse 2s ease-in-out infinite;
+        }
+
         @keyframes numberPulse {
             0%, 100% { 
                 transform: scale(1) translateZ(0px); 
@@ -210,6 +222,17 @@
             50% { 
                 transform: scale(1.05) translateZ(20px); 
                 text-shadow: 0 0 40px rgba(0, 255, 155, 0.6);
+            }
+        }
+
+        @keyframes plusPulse {
+            0%, 100% { 
+                transform: scale(1) rotate(0deg);
+                opacity: 0.8;
+            }
+            50% { 
+                transform: scale(1.2) rotate(10deg);
+                opacity: 1;
             }
         }
 
@@ -241,6 +264,11 @@
             .stat-box {
                 width: 240px;
             }
+
+            .stat-number::after {
+                font-size: 2.2rem;
+                right: -25px;
+            }
         }
 
         @media (max-width: 992px) {
@@ -251,6 +279,11 @@
 
             .stat-box {
                 width: 220px;
+            }
+
+            .stat-number::after {
+                font-size: 2rem;
+                right: -22px;
             }
         }
 
@@ -273,6 +306,12 @@
                 font-size: 3.5rem;
             }
 
+            .stat-number::after {
+                font-size: 1.8rem;
+                right: -20px;
+                top: 3px;
+            }
+
             .stat-label {
                 font-size: 1rem;
                 letter-spacing: 1px;
@@ -292,7 +331,12 @@
 
             .stat-number {
                 font-size: 3rem;
-                margin-bottom: 10px;
+            }
+
+            .stat-number::after {
+                font-size: 1.6rem;
+                right: -18px;
+                top: 2px;
             }
 
             .stat-label {
