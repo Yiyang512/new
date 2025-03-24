@@ -748,6 +748,30 @@
             justify-content: center;
         }
         
+        /* Scroll indicator for iframe mode */
+        html.in-iframe .scroll-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            opacity: 0.8;
+        }
+        
+        html.in-iframe .scroll-indicator svg {
+            width: 16px;
+            height: 16px;
+            stroke: var(--accent-color);
+            margin: 0 4px;
+            animation: scroll-hint 2s ease-in-out infinite;
+        }
+        
+        @keyframes scroll-hint {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(6px); }
+        }
+        
         html.in-iframe .vr-stat {
             padding: 5px 10px;
             transform: scale(0.9);
@@ -950,6 +974,13 @@
                         </div>
                     </div>
                 </div>
+                
+                <!-- Scroll indicator - only visible in iframe mode -->
+                <div class="scroll-indicator">
+                    Swipe <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M5 12h14M14 6l6 6-6 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg> to see all reviews
+                </div>
             </header>
             
             <div class="reviews-grid">
@@ -1076,6 +1107,48 @@
                     <div class="feature-tags">
                         <span class="feature-tag">Exam Prep</span>
                         <span class="feature-tag">AI Tutor</span>
+                    </div>
+                </div>
+                
+                <!-- Review Card 4 (New) -->
+                <div class="review-card animated-card delay-4">
+                    <div class="vr-headset-container">
+                        <div class="vr-helmet">
+                            <div class="vr-strap"></div>
+                            <div class="vr-display"></div>
+                            <div class="vr-lens vr-lens-left"></div>
+                            <div class="vr-lens vr-lens-right"></div>
+                        </div>
+                        <div class="vr-controller">
+                            <div class="vr-button"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Holographic Elements -->
+                    <div class="hologram hologram-1"></div>
+                    <div class="hologram hologram-2"></div>
+                    <div class="hologram hologram-3"></div>
+                    
+                    <div class="client-info">
+                        <h3 class="client-name">Sophie L.</h3>
+                        <p class="client-location">Montreal</p>
+                    </div>
+                    
+                    <div class="stars">
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                    </div>
+                    
+                    <p class="review-text">
+                        As someone who wanted to improve my French for business, this platform has been invaluable. The situational vocabulary and conversation practice helped me gain confidence quickly. Within months I was able to conduct meetings in French!
+                    </p>
+                    
+                    <div class="feature-tags">
+                        <span class="feature-tag">Business French</span>
+                        <span class="feature-tag">Conversation</span>
                     </div>
                 </div>
             </div>
