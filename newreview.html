@@ -41,7 +41,7 @@
         }
 
         .reviews-section {
-            padding: 120px 0;
+            padding: 60px 0;
             position: relative;
             overflow: hidden;
         }
@@ -56,7 +56,7 @@
             background-image: 
                 linear-gradient(rgba(0, 255, 155, 0.03) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(0, 255, 155, 0.03) 1px, transparent 1px);
-            background-size: 30px 30px;
+            background-size: 20px 20px;
             pointer-events: none;
             z-index: 0;
         }
@@ -138,9 +138,9 @@
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1100px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 15px;
             position: relative;
             z-index: 1;
         }
@@ -148,14 +148,14 @@
         /* Enhanced Section Header */
         .section-header {
             text-align: center;
-            margin-bottom: 100px;
+            margin-bottom: 50px;
             position: relative;
         }
         
         .section-title {
-            font-size: 4.5rem;
+            font-size: 3rem;
             font-weight: 700;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             background: linear-gradient(90deg, rgba(255,255,255,0.9) 0%, var(--accent-color) 100%);
             -webkit-background-clip: text;
             background-clip: text;
@@ -202,16 +202,16 @@
         .vr-stats {
             display: flex;
             justify-content: center;
-            gap: 40px;
-            margin-bottom: 80px;
+            gap: 25px;
+            margin-bottom: 40px;
             flex-wrap: wrap;
         }
         
         .vr-stat {
             display: flex;
             align-items: center;
-            gap: 15px;
-            padding: 12px 25px;
+            gap: 10px;
+            padding: 8px 15px;
             background: rgba(0, 255, 155, 0.05);
             border-radius: 50px;
             border: 1px solid rgba(0, 255, 155, 0.1);
@@ -226,8 +226,8 @@
         }
         
         .vr-stat-icon {
-            width: 40px;
-            height: 40px;
+            width: 30px;
+            height: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -252,14 +252,14 @@
         }
         
         .vr-stat-value {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: 700;
             color: var(--accent-color);
             line-height: 1;
         }
         
         .vr-stat-label {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -268,16 +268,16 @@
         /* Enhanced Review Cards Grid - Changed to 3 per row */
         .reviews-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr); /* Force 3 columns */
-            gap: 40px; /* Increased gap for wider cards */
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
             perspective: 1000px;
         }
         
         /* 3D VR Review Card */
         .review-card {
             background: var(--dark-card);
-            border-radius: 20px;
-            padding: 40px 30px;
+            border-radius: 15px;
+            padding: 25px 20px;
             position: relative;
             border: 1px solid rgba(0, 255, 155, 0.1);
             display: flex;
@@ -286,7 +286,7 @@
             overflow: hidden;
             transform-style: preserve-3d;
             transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
         }
         
         .review-card::before {
@@ -327,8 +327,8 @@
         /* VR Headset 3D Container */
         .vr-headset-container {
             position: relative;
-            height: 150px;
-            margin-bottom: 30px;
+            height: 110px;
+            margin-bottom: 20px;
             transform-style: preserve-3d;
             perspective: 800px;
         }
@@ -339,18 +339,18 @@
             top: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: 120px;
-            height: 120px;
+            width: 90px;
+            height: 90px;
             transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         
         .vr-display {
             position: absolute;
-            width: 100px;
-            height: 60px;
+            width: 75px;
+            height: 45px;
             background: linear-gradient(45deg, #111, #222);
-            border-radius: 10px;
-            top: 40px;
+            border-radius: 8px;
+            top: 30px;
             left: 50%;
             transform: translateX(-50%);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
@@ -379,45 +379,45 @@
         
         .vr-strap {
             position: absolute;
-            width: 140px;
-            height: 10px;
+            width: 110px;
+            height: 8px;
             background: #333;
-            border-radius: 5px;
-            top: 20px;
+            border-radius: 4px;
+            top: 15px;
             left: 50%;
             transform: translateX(-50%);
         }
         
         .vr-lens {
             position: absolute;
-            width: 30px;
-            height: 30px;
+            width: 24px;
+            height: 24px;
             background: #000;
             border-radius: 50%;
-            top: 55px;
+            top: 40px;
             box-shadow: 
                 inset 0 0 10px rgba(0, 255, 155, 0.5),
                 0 0 5px rgba(0, 255, 155, 0.2);
         }
         
         .vr-lens-left {
-            left: calc(50% - 40px);
+            left: calc(50% - 30px);
         }
         
         .vr-lens-right {
-            left: calc(50% + 10px);
+            left: calc(50% + 6px);
         }
         
         .vr-controller {
             position: absolute;
-            width: 40px;
-            height: 80px;
+            width: 30px;
+            height: 60px;
             background: linear-gradient(45deg, #222, #333);
-            border-radius: 10px;
+            border-radius: 8px;
             bottom: 0;
-            right: 50px;
+            right: 40px;
             transform: rotate(-30deg);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
             transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         
@@ -484,25 +484,25 @@
         /* Enhanced Client Info */
         .client-info {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             position: relative;
             z-index: 1;
         }
         
         .client-name {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: 600;
             color: var(--accent-color);
-            margin-bottom: 5px;
+            margin-bottom: 3px;
         }
         
         .client-location {
-            font-size: 1rem;
+            font-size: 0.9rem;
             color: var(--text-muted);
             font-weight: 300;
             position: relative;
             display: inline-block;
-            padding: 0 15px;
+            padding: 0 12px;
         }
         
         .client-location::before {
@@ -523,14 +523,14 @@
             display: flex;
             justify-content: center;
             gap: 5px;
-            margin: 15px 0;
+            margin: 10px 0;
             position: relative;
             z-index: 1;
         }
         
         .star {
             color: var(--star-color);
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             position: relative;
             transition: all 0.3s ease;
         }
@@ -543,8 +543,8 @@
         /* Enhanced Review Text */
         .review-text {
             text-align: center;
-            font-size: 1rem;
-            line-height: 1.8;
+            font-size: 0.9rem;
+            line-height: 1.6;
             color: var(--text-muted);
             flex-grow: 1;
             position: relative;
@@ -579,16 +579,16 @@
         .feature-tags {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 20px;
+            gap: 8px;
+            margin-top: 15px;
             justify-content: center;
         }
         
         .feature-tag {
             background: rgba(0, 255, 155, 0.1);
             border-radius: 50px;
-            padding: 5px 15px;
-            font-size: 0.8rem;
+            padding: 4px 12px;
+            font-size: 0.75rem;
             color: var(--accent-color);
             transition: all 0.3s ease;
         }
@@ -721,37 +721,176 @@
             overflow: visible;
         }
         
-        /* Optimize for iframe display */
-        @media (max-height: 1300px) {
-            .reviews-section {
-                padding: 60px 0;
-            }
-            
-            .section-header {
-                margin-bottom: 60px;
-            }
-            
-            .section-title {
-                font-size: 3.5rem;
-            }
-            
-            .vr-stats {
-                margin-bottom: 50px;
-                gap: 25px;
-            }
-            
-            .reviews-grid {
-                gap: 30px;
-            }
-            
-            .vr-headset-container {
-                height: 130px;
-                margin-bottom: 25px;
-            }
-            
-            .review-card {
-                padding: 35px 25px;
-            }
+        /* Optimize for iframe display - more compact version */
+        html.in-iframe .reviews-section {
+            padding: 20px 0;
+        }
+        
+        html.in-iframe .section-header {
+            margin-bottom: 15px;
+        }
+        
+        html.in-iframe .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+        
+        html.in-iframe .section-title::after {
+            bottom: -5px;
+            width: 60px;
+            height: 2px;
+        }
+        
+        html.in-iframe .vr-stats {
+            margin-bottom: 15px;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        html.in-iframe .vr-stat {
+            padding: 5px 10px;
+            transform: scale(0.9);
+        }
+        
+        html.in-iframe .vr-stat-icon {
+            width: 25px;
+            height: 25px;
+        }
+        
+        html.in-iframe .vr-stat-value {
+            font-size: 1.1rem;
+        }
+        
+        html.in-iframe .vr-stat-label {
+            font-size: 0.6rem;
+        }
+        
+        /* Convert grid to single row */
+        html.in-iframe .reviews-grid {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            gap: 15px;
+            padding-bottom: 5px;
+            -ms-overflow-style: none;  /* Hide scrollbar in IE and Edge */
+            scrollbar-width: none;  /* Hide scrollbar in Firefox */
+        }
+        
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        html.in-iframe .reviews-grid::-webkit-scrollbar {
+            display: none;
+        }
+        
+        html.in-iframe .review-card {
+            padding: 15px 10px;
+            min-width: 250px;
+            width: 250px;
+            flex: 0 0 auto;
+        }
+        
+        html.in-iframe .vr-headset-container {
+            height: 70px;
+            margin-bottom: 10px;
+        }
+        
+        html.in-iframe .vr-helmet {
+            width: 60px;
+            height: 60px;
+        }
+        
+        html.in-iframe .vr-display {
+            width: 50px;
+            height: 30px;
+            top: 20px;
+        }
+        
+        html.in-iframe .vr-strap {
+            width: 70px;
+            height: 6px;
+            top: 12px;
+        }
+        
+        html.in-iframe .vr-lens {
+            width: 16px;
+            height: 16px;
+            top: 27px;
+        }
+        
+        html.in-iframe .vr-lens-left {
+            left: calc(50% - 22px);
+        }
+        
+        html.in-iframe .vr-lens-right {
+            left: calc(50% + 6px);
+        }
+        
+        html.in-iframe .vr-controller {
+            width: 20px;
+            height: 40px;
+            right: 30px;
+        }
+        
+        html.in-iframe .vr-button {
+            width: 8px;
+            height: 8px;
+            top: 10px;
+        }
+        
+        html.in-iframe .client-name {
+            font-size: 1rem;
+            margin-bottom: 0;
+        }
+        
+        html.in-iframe .client-location {
+            font-size: 0.7rem;
+        }
+        
+        html.in-iframe .client-location::before {
+            width: 4px;
+            height: 4px;
+        }
+        
+        html.in-iframe .stars {
+            margin: 5px 0;
+        }
+        
+        html.in-iframe .star {
+            font-size: 0.9rem;
+        }
+        
+        html.in-iframe .review-text {
+            font-size: 0.75rem;
+            line-height: 1.4;
+            max-height: 100px;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 5;
+            -webkit-box-orient: vertical;
+        }
+        
+        html.in-iframe .feature-tags {
+            gap: 4px;
+            margin-top: 8px;
+        }
+        
+        html.in-iframe .feature-tag {
+            padding: 2px 8px;
+            font-size: 0.65rem;
+        }
+        
+        /* Reduce size of background elements */
+        html.in-iframe .bg-gradient {
+            opacity: 0.15;
+        }
+        
+        html.in-iframe .hologram {
+            display: none;
+        }
+        
+        /* Optimize particles for smaller display */
+        html.in-iframe .particle {
+            opacity: 0.07;
         }
     </style>
 </head>
@@ -979,24 +1118,27 @@
             // Perspective effect on cards
             const reviewCards = document.querySelectorAll('.review-card');
             
-            reviewCards.forEach(card => {
-                card.addEventListener('mousemove', function(e) {
-                    const rect = card.getBoundingClientRect();
-                    const mouseX = e.clientX - rect.left;
-                    const mouseY = e.clientY - rect.top;
-                    
-                    const centerX = rect.width / 2;
-                    const centerY = rect.height / 2;
-                    
-                    const rotateY = (mouseX - centerX) / 20;
-                    const rotateX = (centerY - mouseY) / 20;
-                    
-                    card.style.transform = `perspective(1000px) rotateY(${rotateY}deg) rotateX(${rotateX}deg) translateZ(0)`;
-                });
+            function handleMouseMove(e) {
+                const rect = this.getBoundingClientRect();
+                const mouseX = e.clientX - rect.left;
+                const mouseY = e.clientY - rect.top;
                 
-                card.addEventListener('mouseleave', function() {
-                    card.style.transform = 'perspective(1000px) rotateY(0) rotateX(0) translateZ(0)';
-                });
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateY = (mouseX - centerX) / 20;
+                const rotateX = (centerY - mouseY) / 20;
+                
+                this.style.transform = `perspective(1000px) rotateY(${rotateY}deg) rotateX(${rotateX}deg) translateZ(0)`;
+            }
+            
+            function handleMouseLeave() {
+                this.style.transform = 'perspective(1000px) rotateY(0) rotateX(0) translateZ(0)';
+            }
+            
+            reviewCards.forEach(card => {
+                card.addEventListener('mousemove', handleMouseMove);
+                card.addEventListener('mouseleave', handleMouseLeave);
             });
             
             // Check visibility on load
@@ -1025,6 +1167,22 @@
                 // Make all cards visible immediately when in iframe
                 cards.forEach(card => {
                     card.style.opacity = "1";
+                });
+                
+                // Disable 3D perspective effects in iframe for better performance
+                reviewCards.forEach(card => {
+                    // Remove event listeners for 3D effect
+                    card.removeEventListener('mousemove', handleMouseMove);
+                    card.removeEventListener('mouseleave', handleMouseLeave);
+                    
+                    // Add a simpler hover effect
+                    card.addEventListener('mouseenter', function() {
+                        this.style.transform = 'translateY(-5px)';
+                    });
+                    
+                    card.addEventListener('mouseleave', function() {
+                        this.style.transform = 'translateY(0)';
+                    });
                 });
             }
         });
