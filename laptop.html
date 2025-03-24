@@ -44,10 +44,11 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 30px;
+      gap: 60px;
       width: 100%;
-      max-width: 1000px;
+      max-width: 1400px;
       margin: 0 auto;
+      padding: 20px;
     }
 
     .left-column {
@@ -58,10 +59,10 @@
     }
 
     .robot {
-      width: 200px;
+      width: 300px;
       height: auto;
       display: block;
-      filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.1));
+      filter: drop-shadow(0 8px 15px rgba(0, 0, 0, 0.15));
       animation: float 3s ease-in-out infinite;
     }
 
@@ -70,17 +71,17 @@
         transform: translateY(0);
       }
       50% {
-        transform: translateY(-10px);
+        transform: translateY(-15px);
       }
     }
 
     /* Add some arm animation for extra character */
     .robot-arm {
       position: absolute;
-      width: 35px;
-      height: 35px;
-      bottom: 115px;
-      right: 60px;
+      width: 50px;
+      height: 50px;
+      bottom: 170px;
+      right: 85px;
       opacity: 0;
       animation: wave 2.5s ease-in-out 1s;
     }
@@ -116,14 +117,14 @@
       background-color: var(--primary-green);
       color: black;
       font-weight: 700;
-      font-size: 18px;
-      padding: 15px 20px;
-      border-radius: 20px;
-      border: 5px solid var(--primary-border);
-      max-width: 225px;
-      line-height: 1.25;
+      font-size: 28px;
+      padding: 24px 32px;
+      border-radius: 30px;
+      border: 8px solid var(--primary-border);
+      max-width: 350px;
+      line-height: 1.4;
       position: relative;
-      margin-top: 10px;
+      margin-top: 20px;
       text-align: left;
     }
 
@@ -133,10 +134,10 @@
 
     .typing-cursor {
       display: inline-block;
-      width: 3px;
+      width: 5px;
       height: 1em;
       background: black;
-      margin-left: 2px;
+      margin-left: 4px;
       animation: blink 1s step-end infinite;
       vertical-align: text-bottom;
     }
@@ -148,8 +149,8 @@
 
     .right-column {
       position: relative;
-      padding-left: 25px;
-      max-width: 600px;
+      padding-left: 40px;
+      max-width: 800px;
     }
 
     .vertical-line {
@@ -157,15 +158,16 @@
       left: 0;
       top: 0;
       bottom: 0;
-      width: 4px;
+      width: 8px;
       background-color: var(--primary-green);
-      border-radius: 2px;
+      border-radius: 4px;
     }
 
     .text {
-      font-size: 22px;
-      line-height: 1.4;
+      font-size: 32px;
+      line-height: 1.5;
       color: var(--text-medium);
+      font-weight: 500;
     }
 
     .text-highlight {
