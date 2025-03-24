@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI French Writing Assistant | Completion Page</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-green: #00f58c;
+      --primary-border: #007f3b;
+      --text-dark: #1a1c36;
+      --text-medium: #3b3f63;
+      --text-light: #6b6f8e;
+      --background: #ffffff;
+      --shadow-light: rgba(0, 127, 59, 0.1);
+      --shadow-medium: rgba(0, 127, 59, 0.2);
+      --accent-light: rgba(0, 245, 140, 0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: var(--background);
+      color: var(--text-medium);
+      line-height: 1.5;
+      padding: 0;
+      overflow-x: hidden;
+    }
+
+    .container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 60px;
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .left-column {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    .robot {
+      width: 300px;
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 8px 15px rgba(0, 0, 0, 0.15));
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-15px);
+      }
+    }
+
+    .laptop-message {
+      background-color: var(--primary-green);
+      color: black;
+      font-weight: 700;
+      font-size: 28px;
+      padding: 24px 32px;
+      border-radius: 30px;
+      border: 8px solid var(--primary-border);
+      max-width: 400px;
+      line-height: 1.4;
+      position: relative;
+      margin-top: 20px;
+      text-align: left;
+    }
+
+    .right-column {
+      position: relative;
+      padding-left: 40px;
+      max-width: 800px;
+    }
+
+    .vertical-line {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 8px;
+      background-color: var(--primary-green);
+      border-radius: 4px;
+    }
+
+    .text {
+      font-size: 48px;
+      line-height: 1.3;
+      color: var(--text-dark);
+      font-weight: 700;
+    }
+
+    .sub-text {
+      font-size: 32px;
+      line-height: 1.5;
+      color: var(--text-medium);
+      font-weight: 500;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        padding: 18px;
+        gap: 18px;
+        max-width: 92%;
+      }
+
+      .right-column {
+        padding-left: 0;
+        padding-top: 18px;
+        text-align: center;
+        max-width: 92%;
+      }
+
+      .vertical-line {
+        left: 50%;
+        top: 0;
+        bottom: auto;
+        width: 85px;
+        height: 5px;
+        transform: translateX(-50%);
+      }
+
+      .text {
+        font-size: 34px;
+        line-height: 1.3;
+      }
+      
+      .sub-text {
+        font-size: 20px;
+        line-height: 1.4;
+        margin-top: 14px;
+      }
+
+      .laptop-message {
+        text-align: center;
+        font-size: 20px;
+        padding: 14px 20px;
+        max-width: 240px;
+        border-width: 5px;
+      }
+      
+      .robot {
+        width: 190px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 14px;
+        gap: 14px;
+        max-width: 96%;
+      }
+      
+      .text {
+        font-size: 30px;
+        line-height: 1.3;
+      }
+      
+      .sub-text {
+        font-size: 16px;
+        line-height: 1.35;
+        margin-top: 12px;
+      }
+      
+      .robot {
+        width: 150px;
+      }
+      
+      .laptop-message {
+        font-size: 15px;
+        padding: 11px 16px;
+        max-width: 190px;
+        border-width: 4px;
+        border-radius: 18px;
+      }
+      
+      .vertical-line {
+        width: 65px;
+        height: 3px;
+      }
+    }
+    
+    @media (max-width: 360px) {
+      .text {
+        font-size: 26px;
+        line-height: 1.25;
+      }
+      
+      .sub-text {
+        font-size: 14px;
+        line-height: 1.25;
+      }
+      
+      .robot {
+        width: 130px;
+      }
+      
+      .laptop-message {
+        font-size: 13px;
+        padding: 9px 14px;
+        max-width: 170px;
+        border-width: 3px;
+        border-radius: 16px;
+      }
+      
+      .right-column {
+        padding-top: 14px;
+      }
+      
+      .vertical-line {
+        width: 55px;
+      }
+    }
+    
+    @media (max-width: 320px) {
+      .text {
+        font-size: 24px;
+        line-height: 1.2;
+      }
+      
+      .sub-text {
+        font-size: 13px;
+        line-height: 1.2;
+      }
+      
+      .robot {
+        width: 115px;
+      }
+      
+      .laptop-message {
+        font-size: 12px;
+        padding: 8px 12px;
+        max-width: 150px;
+        border-width: 3px;
+        margin-top: 10px;
+      }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="left-column">
+      <img src="https://yiyang512.github.io/new/hemiya2.png" alt="AI French Writing Assistant" class="robot">
+      <div class="laptop-message">
+        Nice work! Don't forget to download your recording.
+      </div>
+    </div>
+    <div class="right-column">
+      <div class="vertical-line"></div>
+      <div class="text">
+        Woohoo! How was it?
+      </div>
+      <div class="sub-text">
+        You've completed your French speaking session. Would you like to continue practicing or review your work?
+      </div>
+    </div>
+  </div>
+</body>
+</html> 
