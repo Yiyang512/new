@@ -29,12 +29,8 @@
             height: 100%;
             margin: 0;
             padding: 0;
-            overflow: hidden;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            overflow-x: hidden;
+            overflow-y: auto;
         }
 
         body {
@@ -44,19 +40,18 @@
             align-items: center;
             justify-content: center;
             font-feature-settings: "salt" 1;
-            min-width: 100vw;
-            min-height: 100vh;
+            min-width: 100%;
+            position: relative;
         }
 
         .hero-section {
-            width: 100vw;
-            height: 100vh;
-            max-height: 630px;
+            width: 100%;
+            min-height: 630px;
             margin: 0;
-            padding: 0;
+            padding: 20px;
             display: grid;
             grid-template-columns: 0.8fr 1.2fr;
-            gap: 0;
+            gap: 20px;
             align-items: center;
             position: relative;
         }
@@ -322,59 +317,66 @@
         }
 
         @media (max-width: 992px) {
+            html, body {
+                height: auto;
+                position: static;
+                overflow: auto;
+            }
+
+            body {
+                min-height: 100%;
+                padding: 20px 0;
+            }
+
             .hero-section {
                 grid-template-columns: 1fr;
-                height: auto;
-                min-height: 100vh;
+                min-height: auto;
+                gap: 30px;
             }
 
             .hero-content {
-                padding: 20px;
+                padding: 0;
             }
 
             .hero-images {
                 order: -1;
-                padding: 20px;
+                padding: 0;
+            }
+
+            .image-container {
+                max-width: 100%;
             }
 
             .image-container img {
-                max-height: 50vh;
+                max-height: 400px;
+                width: auto;
+                margin: 0 auto;
             }
         }
 
         @media (max-width: 768px) {
             .hero-section {
                 padding: 15px;
+                gap: 20px;
             }
 
-            .hero-bubble {
-                padding: 25px;
-                padding-top: 60px;
-            }
-
-            .recommended-badge {
-                top: 15px;
-                right: 15px;
-                padding: 6px 12px;
-                font-size: 0.85rem;
+            .image-container img {
+                max-height: 350px;
             }
         }
 
         @media (max-width: 480px) {
+            body {
+                padding: 15px 0;
+            }
+
             .hero-section {
                 padding: 10px;
+                gap: 15px;
             }
 
-            .hero-bubble {
-                padding: 20px;
-                padding-top: 50px;
-            }
-
-            .recommended-badge {
-                top: 12px;
-                right: 12px;
-                padding: 5px 10px;
-                font-size: 0.8rem;
+            .image-container img {
+                max-height: 300px;
             }
         }
 
