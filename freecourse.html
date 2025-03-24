@@ -1,293 +1,681 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Free French Learning Banner</title>
-    <style>
-        /* Base styling for the page */
-        body {
-            background-color: #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
-            color: #fff;
-            overflow: hidden;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free A0 Course - 3-Days Challenge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
 
-        /* Main banner container */
-        .banner {
-            position: relative;
-            width: 800px;
-            height: 500px;
-            background-color: #111;
-            border-radius: 25px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: #fff;
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.9);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            transition: transform 0.3s ease;
-            animation: tilt 5s ease-in-out infinite alternate;
-        }
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
 
-        /* Tilt animation */
-        @keyframes tilt {
-            0% { transform: rotateX(0deg) rotateY(0deg); }
-            100% { transform: rotateX(10deg) rotateY(-10deg); }
-        }
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
+    }
 
-        /* Multi-layer glowing border */
-        .banner::before, .banner::after {
-            content: "";
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(120deg, rgba(0, 170, 255, 0.4), rgba(138, 43, 226, 0.4), rgba(255, 20, 147, 0.4));
-            opacity: 0.8;
-            z-index: -1;
-            animation: rotate-bg 10s linear infinite;
-            border-radius: 25px;
-        }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-        .banner::after {
-            filter: blur(20px);
-            opacity: 0.6;
-        }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
 
-        @keyframes rotate-bg {
-            0% { transform: translate(-50%, -50%) rotate(0deg); }
-            100% { transform: translate(-50%, -50%) rotate(360deg); }
-        }
+    body {
+      background: #001102;
+      min-height: 100vh;
+      color: white;
+    }
 
-        /* Particle effect for added fanciness */
-        .particles {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            overflow: hidden;
-            z-index: 1;
-        }
+    .hero-section {
+      width: 100%;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 40px;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
 
-        .particle {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background-color: #00eaff;
-            border-radius: 50%;
-            box-shadow: 0 0 15px #00eaff, 0 0 20px #8a2be2;
-            animation: particle-animation 8s linear infinite;
-            opacity: 0.8;
-        }
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      padding: 20px;
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+    }
 
-        /* Different particle speeds */
-        .particle:nth-child(odd) { animation-duration: 12s; }
-        .particle:nth-child(even) { animation-duration: 7s; }
+    .hero-bubble {
+      width: 100%;
+      margin: 0 auto;
+      position: relative;
+      padding: 30px;
+      background: rgba(0, 255, 179, 0.02);
+      backdrop-filter: blur(10px);
+      border-radius: 30px;
+      border: 1px solid rgba(0, 255, 179, 0.1);
+    }
 
-        @keyframes particle-animation {
-            0% {
-                transform: translateY(0) translateX(0) scale(0.7);
-                opacity: 0.8;
-            }
-            50% {
-                opacity: 0.3;
-            }
-            100% {
-                transform: translateY(-800px) translateX(300px) scale(0.1);
-                opacity: 0;
-            }
-        }
+    .free-badge {
+      font-size: 5rem;
+      font-weight: 900;
+      line-height: 1;
+      margin-bottom: 15px;
+      background: linear-gradient(135deg, #00FFB3 0%, #00FF9B 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 2px 20px rgba(0, 255, 179, 0.3);
+    }
 
-        /* Text Container */
-        .text-container {
-            text-align: center;
-            z-index: 2;
-            text-shadow: 0 0 25px rgba(0, 255, 255, 0.9), 0 0 20px rgba(0, 170, 255, 0.7);
-        }
+    .course-title {
+      font-size: 3rem;
+      line-height: 1.1;
+      margin-bottom: 20px;
+      font-weight: 700;
+      color: #00FFB3;
+    }
 
-        /* Main title with animated gradient and shadow */
-        .title {
-            font-size: 3.5rem;
-            font-weight: bold;
-            color: #e0e0e0;
-            text-transform: uppercase;
-            background: linear-gradient(90deg, #00eaff, #ff69b4, #8a2be2, #00eaff);
-            background-size: 200%;
-            -webkit-background-clip: text;
-            color: transparent;
-            animation: gradient-flow 7s linear infinite, depth-shadow 3s ease-in-out infinite;
-        }
+    .challenge-text {
+      font-size: 2.5rem;
+      line-height: 1.2;
+      margin-bottom: 40px;
+      font-weight: 600;
+      color: white;
+    }
 
-        @keyframes gradient-flow {
-            0% { background-position: 0%; }
-            100% { background-position: 100%; }
-        }
+    .features-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+      margin-top: 40px;
+    }
 
-        @keyframes depth-shadow {
-            0%, 100% { text-shadow: 0 0 15px #00eaff, 0 0 30px #8a2be2; }
-            50% { text-shadow: 0 0 35px #ff69b4, 0 0 45px #00eaff; }
-        }
+    .feature-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 25px;
+      text-align: left;
+    }
 
-        /* Subtitle */
-        .subtitle {
-            font-size: 1.5rem;
-            text-transform: uppercase;
-            color: #8ab4f8;
-            margin-top: 10px;
-            animation: glow-text 2.5s infinite alternate-reverse;
-        }
+    .feature-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #00FFB3;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
 
-        /* Multi-colored border glow */
-        .neon-frame {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: 25px;
-            box-shadow: 0 0 50px #00aaff, 0 0 80px #8a2be2, 0 0 110px #ff1493;
-            animation: border-glow 6s ease-in-out infinite alternate;
-            z-index: -2;
-        }
+    .feature-title svg {
+      width: 20px;
+      height: 20px;
+      stroke: #00FFB3;
+      stroke-width: 2;
+      flex-shrink: 0;
+    }
 
-        /* Keyframes for glow and text effects */
-        @keyframes border-glow {
-            0%, 100% { box-shadow: 0 0 50px #00aaff, 0 0 80px #8a2be2, 0 0 110px #ff1493; }
-            50% { box-shadow: 0 0 90px #00eaff, 0 0 110px #ff69b4; }
-        }
+    .feature-text {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.8);
+      line-height: 1.5;
+    }
 
-        @keyframes glow-text {
-            from { text-shadow: 0 0 18px #00eaff, 0 0 22px #8a2be2; }
-            to { text-shadow: 0 0 28px #ff1493, 0 0 35px #00eaff; }
-        }
+    .tech-icons {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 2;
+    }
 
-        /* Circular tech elements */
-        .top-circles, .bottom-circles {
-            display: flex;
-            justify-content: space-between;
-            position: absolute;
-            width: 100%;
-            padding: 0 30px;
-            z-index: 1;
-        }
+    .tech-icon {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      stroke: #00FFB3;
+      stroke-width: 1.5;
+      fill: none;
+    }
 
-        .top-circles { top: 10px; }
-        .bottom-circles { bottom: 10px; }
+    @media (min-width: 768px) {
+      .hero-section {
+        grid-template-columns: 1fr 1fr;
+        padding: 40px;
+      }
 
-        .circle {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #00aaff, #ff69b4);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 0 25px rgba(255, 255, 255, 0.4);
-            animation: rotate 6s linear infinite;
-            position: relative;
-        }
+      .features-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
 
-        .circle::before {
-            content: "";
-            position: absolute;
-            width: 50%;
-            height: 50%;
-            border-radius: 50%;
-            background: radial-gradient(circle, #fff, rgba(255, 255, 255, 0));
-            animation: rotate-reverse 4s linear infinite;
-        }
+      .free-badge {
+        font-size: 6rem;
+      }
 
-        @keyframes rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+      .course-title {
+        font-size: 3.5rem;
+      }
 
-        @keyframes rotate-reverse {
-            0% { transform: rotate(360deg); }
-            100% { transform: rotate(0deg); }
-        }
+      .challenge-text {
+        font-size: 2.8rem;
+      }
+    }
 
-        .icon {
-            font-size: 2rem;
-            color: #00bfff;
-        }
+    @media (max-width: 767px) {
+      .hero-section {
+        padding: 15px;
+      }
 
-        /* Central Call-to-Action button */
-        .central-button {
-            position: absolute;
-            bottom: 25px;
-            padding: 15px 35px;
-            border: 2px solid #00bfff;
-            border-radius: 12px;
-            color: #00bfff;
-            font-size: 1.1rem;
-            text-transform: uppercase;
-            text-shadow: 0 0 7px #00bfff;
-            cursor: pointer;
-            transition: background 0.3s, transform 0.2s;
-            animation: button-shimmer 2s ease-in-out infinite alternate;
-            overflow: hidden;
-        }
+      .hero-content {
+        padding: 15px;
+      }
 
-        /* Button shimmer effect */
-        .central-button::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
-            animation: shimmer 2.5s infinite;
-        }
+      .hero-bubble {
+        padding: 20px;
+      }
 
-        @keyframes shimmer {
-            0% { left: -100%; }
-            100% { left: 100%; }
-        }
-    </style>
+      .free-badge {
+        font-size: 3.5rem;
+      }
+
+      .course-title {
+        font-size: 2.2rem;
+      }
+
+      .challenge-text {
+        font-size: 1.8rem;
+        margin-bottom: 30px;
+      }
+
+      .feature-card {
+        padding: 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-section {
+        padding: 10px;
+      }
+
+      .hero-content {
+        padding: 10px;
+      }
+
+      .hero-bubble {
+        padding: 15px;
+      }
+
+      .free-badge {
+        font-size: 3rem;
+      }
+
+      .course-title {
+        font-size: 2rem;
+      }
+
+      .challenge-text {
+        font-size: 1.6rem;
+      }
+
+      .features-grid {
+        gap: 15px;
+        margin-top: 30px;
+      }
+
+      .feature-card {
+        padding: 15px;
+      }
+
+      .feature-title {
+        font-size: 1rem;
+      }
+
+      .feature-text {
+        font-size: 0.85rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, ::before, ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    .floating-icons {
+      display: none;
+    }
+
+    .french-elements text {
+      font-family: 'Poppins', sans-serif;
+      fill: #00FFB3;
+      font-size: 14px;
+      opacity: 0.8;
+    }
+
+    .french-circle {
+      fill: rgba(0, 255, 179, 0.1);
+      stroke: #00FFB3;
+      stroke-width: 1;
+    }
+
+    .french-icon {
+      stroke: #00FFB3;
+      stroke-width: 1.5;
+      fill: none;
+    }
+
+    .learning-path {
+      stroke: #00FFB3;
+      stroke-width: 1;
+      stroke-dasharray: 4,4;
+      opacity: 0.4;
+    }
+
+    .hero-images {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .image-container {
+      width: 100%;
+      position: relative;
+      aspect-ratio: 16/9;
+    }
+
+    .vr-illustration {
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.3));
+    }
+
+    @media (max-width: 1200px) {
+      .french-elements text {
+        font-size: 11px;
+      }
+      
+      .french-circle {
+        transform-origin: center;
+        transform: scale(0.85);
+      }
+    }
+
+    @media (max-width: 992px) {
+      .french-elements text {
+        font-size: 9px;
+      }
+      
+      .french-circle {
+        transform: scale(0.75);
+      }
+
+      .hero-images {
+        padding: 10px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .french-elements text {
+        font-size: 8px;
+      }
+      
+      .french-circle {
+        transform: scale(0.65);
+      }
+
+      .hero-images {
+        padding: 5px;
+      }
+
+      .image-container {
+        aspect-ratio: 3/4;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .french-elements text {
+        font-size: 7px;
+      }
+      
+      .french-circle {
+        transform: scale(0.55);
+      }
+
+      .image-container {
+        aspect-ratio: 2/3;
+      }
+    }
+  </style>
 </head>
 <body>
+  <section class="hero-section">
+    <div class="hero-content">
+      <div class="hero-bubble">
+        <div class="free-badge">FREE</div>
+        <h1 class="course-title">A0 COURSE</h1>
+        <div class="challenge-text">THE 3-DAYS<br>CHALLENGE</div>
+        <div class="features-grid">
+          <div class="feature-card">
+            <h3 class="feature-title">
+              <svg viewBox="0 0 24 24">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              100% Free Access
+            </h3>
+            <p class="feature-text">Get complete access to our comprehensive A0 course materials and resources at <span class="highlight-text">absolutely no cost</span>.</p>
+          </div>
+          <div class="feature-card">
+            <h3 class="feature-title">
+              <svg viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M8 12l2 2 4-4"/>
+              </svg>
+              90% Pass Requirement
+            </h3>
+            <p class="feature-text">Master each section with a minimum <span class="highlight-text">90% score</span> on quizzes to advance to the next level.</p>
+          </div>
+          <div class="feature-card">
+            <h3 class="feature-title">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 15l-2-2h4l-2 2z"/>
+                <path d="M5.2 9.2l6.8-6.8 6.8 6.8c.3.3.5.7.5 1.1v8.4c0 1.1-.9 2-2 2H6.7c-1.1 0-2-.9-2-2v-8.4c0-.4.2-.8.5-1.1z"/>
+              </svg>
+              Official Certificate
+            </h3>
+            <p class="feature-text">Earn a <span class="highlight-text">verified completion certificate</span> with our official badge upon successful completion.</p>
+          </div>
+        </div>
 
-<div class="banner">
-    <div class="neon-frame"></div>
-    <div class="particles">
-        <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
-        <div class="particle" style="left: 25%; animation-delay: 1s;"></div>
-        <div class="particle" style="left: 40%; animation-delay: 2s;"></div>
-        <div class="particle" style="left: 55%; animation-delay: 3s;"></div>
-        <div class="particle" style="left: 70%; animation-delay: 4s;"></div>
-        <div class="particle" style="left: 85%; animation-delay: 5s;"></div>
+        <div class="tech-icons">
+          <svg class="tech-icon" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+            <line x1="9" y1="9" x2="9.01" y2="9"/>
+            <line x1="15" y1="9" x2="15.01" y2="9"/>
+          </svg>
+          <svg class="tech-icon" viewBox="0 0 24 24">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+            <path d="M2 17l10 5 10-5"/>
+            <path d="M2 12l10 5 10-5"/>
+          </svg>
+          <svg class="tech-icon" viewBox="0 0 24 24">
+            <path d="M18 8h1a4 4 0 0 1 0 8h-1"/>
+            <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>
+            <line x1="6" y1="1" x2="6" y2="4"/>
+            <line x1="10" y1="1" x2="10" y2="4"/>
+            <line x1="14" y1="1" x2="14" y2="4"/>
+          </svg>
+          <svg class="tech-icon" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 16v-4"/>
+            <path d="M12 8h.01"/>
+          </svg>
+          <svg class="tech-icon" viewBox="0 0 24 24">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+          <svg class="tech-icon" viewBox="0 0 24 24">
+            <path d="M12 2v4"/>
+            <path d="M12 18v4"/>
+            <path d="M4.93 4.93l2.83 2.83"/>
+            <path d="M16.24 16.24l2.83 2.83"/>
+            <path d="M2 12h4"/>
+            <path d="M18 12h4"/>
+            <path d="M4.93 19.07l2.83-2.83"/>
+            <path d="M16.24 7.76l2.83-2.83"/>
+          </svg>
+        </div>
+      </div>
     </div>
-    
-    <div class="top-circles">
-        <div class="circle"><div class="icon">⚙️</div></div>
-        <div class="circle"><div class="icon">⚙️</div></div>
-    </div>
-    
-    <div class="text-container">
-        <h1 class="title">FREE: Learn to Speak French in 2 hours!</h1>
-        <p class="subtitle">Unlock the Path to French Fluency</p>
-    </div>
+    <div class="hero-images">
+      <div class="image-container">
+        <svg class="vr-illustration" viewBox="0 0 1000 800" xmlns="http://www.w3.org/2000/svg">
+          <!-- Background Grid -->
+          <g class="grid-lines" opacity="0.1">
+            <line x1="0" y1="200" x2="1000" y2="200" stroke="#00FFB3" stroke-width="1"/>
+            <line x1="0" y1="400" x2="1000" y2="400" stroke="#00FFB3" stroke-width="1"/>
+            <line x1="0" y1="600" x2="1000" y2="600" stroke="#00FFB3" stroke-width="1"/>
+            <line x1="250" y1="0" x2="250" y2="800" stroke="#00FFB3" stroke-width="1"/>
+            <line x1="500" y1="0" x2="500" y2="800" stroke="#00FFB3" stroke-width="1"/>
+            <line x1="750" y1="0" x2="750" y2="800" stroke="#00FFB3" stroke-width="1"/>
+          </g>
 
-    <div class="bottom-circles">
-        <div class="circle"><div class="icon">👤</div></div>
-        <div class="circle"><div class="icon">🔒</div></div>
+          <!-- French Learning Elements -->
+          <g class="french-elements">
+            <!-- Level A0 -->
+            <g transform="translate(150,150)">
+              <circle class="french-circle" cx="0" cy="0" r="45"/>
+              <text x="-20" y="5">A0</text>
+            </g>
+
+            <!-- Basic Greetings -->
+            <g transform="translate(350,150)">
+              <circle class="french-circle" cx="0" cy="0" r="50"/>
+              <text x="-35" y="-15">Bonjour</text>
+              <text x="-35" y="5">Au revoir</text>
+              <text x="-30" y="25">Merci</text>
+            </g>
+
+            <!-- Common Verbs -->
+            <g transform="translate(550,150)">
+              <circle class="french-circle" cx="0" cy="0" r="55"/>
+              <text x="-25" y="-25">Être (to be)</text>
+              <text x="-30" y="-5">Avoir (to have)</text>
+              <text x="-30" y="15">Aller (to go)</text>
+              <text x="-35" y="35">Faire (to do/make)</text>
+            </g>
+
+            <!-- Basic Grammar -->
+            <g transform="translate(750,150)">
+              <circle class="french-circle" cx="0" cy="0" r="60"/>
+              <text x="-45" y="-25">Je suis (I am)</text>
+              <text x="-45" y="-5">Tu es (You are)</text>
+              <text x="-45" y="15">Il/Elle est (He/She is)</text>
+              <text x="-35" y="35">On est (We are)</text>
+            </g>
+
+            <!-- Essential Words -->
+            <g transform="translate(150,450)">
+              <circle class="french-circle" cx="0" cy="0" r="55"/>
+              <text x="-35" y="-25">Le/La/Les (The)</text>
+              <text x="-35" y="-5">Un/Une (A/An)</text>
+              <text x="-40" y="15">Et/Ou (And/Or)</text>
+              <text x="-35" y="35">Dans (In)</text>
+            </g>
+
+            <!-- Time Words -->
+            <g transform="translate(350,450)">
+              <circle class="french-circle" cx="0" cy="0" r="55"/>
+              <text x="-45" y="-25">Aujourd'hui (Today)</text>
+              <text x="-40" y="-5">Demain (Tomorrow)</text>
+              <text x="-30" y="15">Hier (Yesterday)</text>
+              <text x="-45" y="35">Maintenant (Now)</text>
+            </g>
+
+            <!-- Adjectives -->
+            <g transform="translate(550,450)">
+              <circle class="french-circle" cx="0" cy="0" r="55"/>
+              <text x="-35" y="-25">Grand (Big)</text>
+              <text x="-35" y="-5">Petit (Small)</text>
+              <text x="-35" y="15">Bon (Good)</text>
+              <text x="-45" y="35">Nouveau (New)</text>
+            </g>
+
+            <!-- Questions -->
+            <g transform="translate(750,450)">
+              <circle class="french-circle" cx="0" cy="0" r="60"/>
+              <text x="-50" y="-25">Qui? (Who?)</text>
+              <text x="-50" y="-5">Quand? (When?)</text>
+              <text x="-60" y="15">Comment? (How?)</text>
+              <text x="-55" y="35">Pourquoi? (Why?)</text>
+            </g>
+
+            <!-- Progress Path -->
+            <g class="learning-path">
+              <path d="M150,150 Q250,150 350,150 T550,150 T750,150 T750,450 T550,450 T350,450 T150,450" fill="none"/>
+            </g>
+
+            <!-- Progress Indicators (10 Quizzes) -->
+            <g transform="translate(250,250)">
+              <circle class="french-circle" cx="0" cy="0" r="25"/>
+              <text x="-25" y="5">Quiz 1</text>
+            </g>
+            <g transform="translate(450,250)">
+              <circle class="french-circle" cx="0" cy="0" r="25"/>
+              <text x="-25" y="5">Quiz 2</text>
+            </g>
+            <g transform="translate(650,250)">
+              <circle class="french-circle" cx="0" cy="0" r="25"/>
+              <text x="-25" y="5">Quiz 3</text>
+            </g>
+            <g transform="translate(750,300)">
+              <circle class="french-circle" cx="0" cy="0" r="25"/>
+              <text x="-25" y="5">Quiz 4</text>
+            </g>
+            <g transform="translate(650,350)">
+              <circle class="french-circle" cx="0" cy="0" r="25"/>
+              <text x="-25" y="5">Quiz 5</text>
+            </g>
+            <g transform="translate(450,350)">
+              <circle class="french-circle" cx="0" cy="0" r="25"/>
+              <text x="-25" y="5">Quiz 6</text>
+            </g>
+            <g transform="translate(250,350)">
+              <circle class="french-circle" cx="0" cy="0" r="25"/>
+              <text x="-25" y="5">Quiz 7</text>
+            </g>
+            <g transform="translate(150,300)">
+              <circle class="french-circle" cx="0" cy="0" r="25"/>
+              <text x="-25" y="5">Quiz 8</text>
+            </g>
+            <g transform="translate(250,300)">
+              <circle class="french-circle" cx="0" cy="0" r="25"/>
+              <text x="-25" y="5">Quiz 9</text>
+            </g>
+            <g transform="translate(450,300)">
+              <circle class="french-circle" cx="0" cy="0" r="25"/>
+              <text x="-25" y="5">Quiz 10</text>
+            </g>
+
+        
+
+            <!-- Connection Lines -->
+            <g class="connections">
+              <line class="connection-line" x1="150" y1="150" x2="350" y2="150"/>
+              <line class="connection-line" x1="350" y1="150" x2="550" y2="150"/>
+              <line class="connection-line" x1="550" y1="150" x2="750" y2="150"/>
+              <line class="connection-line" x1="750" y1="150" x2="750" y2="450"/>
+              <line class="connection-line" x1="750" y1="450" x2="550" y2="450"/>
+              <line class="connection-line" x1="550" y1="450" x2="350" y2="450"/>
+              <line class="connection-line" x1="350" y1="450" x2="150" y2="450"/>
+              <line class="connection-line" x1="150" y1="450" x2="150" y2="600"/>
+            </g>
+          </g>
+
+          <!-- Floating Elements -->
+          <g class="floating-elements">
+            <circle class="floating-circle" cx="225" cy="150" r="6"/>
+            <circle class="floating-circle" cx="400" cy="150" r="6"/>
+            <circle class="floating-circle" cx="600" cy="150" r="6"/>
+            <circle class="floating-circle" cx="700" cy="250" r="6"/>
+            <circle class="floating-circle" cx="625" cy="350" r="6"/>
+            <circle class="floating-circle" cx="450" cy="350" r="6"/>
+            <circle class="floating-circle" cx="250" cy="350" r="6"/>
+          </g>
+
+          <!-- Pulse Rings -->
+          <g class="pulse-rings" opacity="0.1">
+            <circle class="pulse-circle" cx="400" cy="300" r="180"/>
+            <circle class="pulse-circle" cx="400" cy="300" r="220"/>
+          </g>
+        </svg>
+        <style>
+          .vr-illustration {
+            width: 100%;
+            height: auto;
+            filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.3));
+          }
+
+          .french-elements {
+            animation: float 3s ease-in-out infinite;
+          }
+
+          .french-circle {
+            animation: pulse 2s ease-in-out infinite;
+          }
+
+          .floating-circle {
+            animation: float 4s ease-in-out infinite;
+          }
+
+          .connection-line {
+            animation: fadeInOut 3s ease-in-out infinite;
+          }
+
+          .learning-path {
+            animation: dash 20s linear infinite;
+          }
+
+          @keyframes dash {
+            to {
+              stroke-dashoffset: 100;
+            }
+          }
+
+          @keyframes fadeInOut {
+            0%, 100% { opacity: 0.1; }
+            50% { opacity: 0.3; }
+          }
+
+          @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.2; }
+            50% { transform: scale(1.1); opacity: 0.4; }
+          }
+
+          .certificate-achievement {
+            animation: float 4s ease-in-out infinite;
+          }
+          .certificate-stars path {
+            animation: twinkle 2s ease-in-out infinite;
+          }
+          @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
+          }
+        </style>
+      </div>
     </div>
-
-    <div class="central-button">Join My 3-Day Free Journey!</div>
-</div>
-
+  </section>
 </body>
-</html>
+</html> 
