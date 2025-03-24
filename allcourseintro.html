@@ -34,7 +34,7 @@
     }
     
     body {
-      background: linear-gradient(135deg, var(--dark-bg) 0%, #071F12 100%);
+      background: var(--dark-bg);
       font-family: 'Poppins', system-ui, -apple-system, sans-serif;
       color: var(--off-white);
       min-height: 100vh;
@@ -48,36 +48,32 @@
     .container {
       width: 100%;
       max-width: 1200px;
-      margin: 0 auto;
-      padding: 60px 20px;
+      padding: 0;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 80px;
       position: relative;
       z-index: 1;
+      gap: 30px;
     }
     
     /* Left side content */
     .content {
       flex: 1;
-      padding: 20px;
+      padding: 40px;
     }
     
     .badge {
       display: inline-flex;
       align-items: center;
-      padding: 8px 16px;
-      background-color: var(--primary-light);
+      padding: 6px 16px;
+      background-color: rgba(0, 232, 143, 0.08);
       color: var(--primary);
       border-radius: 30px;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       font-weight: 600;
-      margin-bottom: 32px;
-      opacity: 0;
-      animation: fadeIn 0.6s 0.3s forwards;
+      margin-bottom: 24px;
       letter-spacing: 0.02em;
-      box-shadow: 0 2px 10px rgba(0, 232, 143, 0.15);
     }
     
     .badge-dot {
@@ -91,24 +87,17 @@
     
     .headline {
       font-family: 'Poppins', sans-serif;
-      font-size: clamp(2.8rem, 6vw, 4.8rem);
-      font-weight: 800;
+      font-size: clamp(2.8rem, 5.5vw, 4.2rem);
+      font-weight: 700;
       color: var(--heading-color);
       line-height: 1.1;
       letter-spacing: -0.02em;
-      margin-bottom: 28px;
+      margin-bottom: 24px;
     }
     
     .headline-word {
       display: block;
-      animation: fadeInUp 0.8s forwards;
-      opacity: 0;
-      transform: translateY(20px);
     }
-    
-    .headline-word:nth-child(1) { animation-delay: 0.4s; }
-    .headline-word:nth-child(2) { animation-delay: 0.6s; }
-    .headline-word:nth-child(3) { animation-delay: 0.8s; }
     
     .headline-accent {
       color: var(--primary);
@@ -129,22 +118,18 @@
     }
     
     .subtitle {
-      font-size: clamp(1.1rem, 1.5vw, 1.2rem);
+      font-size: 1.1rem;
       font-weight: 400;
       color: var(--text-color);
-      margin-bottom: 48px;
+      margin-bottom: 32px;
       max-width: 550px;
-      animation: fadeIn 0.8s 1s forwards;
-      opacity: 0;
-      line-height: 1.7;
+      line-height: 1.6;
     }
     
     .features {
       display: flex;
-      margin-bottom: 48px;
-      gap: 28px;
-      animation: fadeIn 0.8s 1.2s forwards;
-      opacity: 0;
+      margin-bottom: 32px;
+      gap: 24px;
     }
     
     .feature {
@@ -153,31 +138,27 @@
     }
     
     .feature-icon {
-      width: 24px;
-      height: 24px;
+      width: 20px;
+      height: 20px;
       border-radius: 50%;
       background: var(--primary-light);
-      margin-right: 12px;
+      margin-right: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 14px;
+      font-size: 12px;
       color: var(--primary);
-      box-shadow: 0 2px 8px rgba(0, 232, 143, 0.2);
       flex-shrink: 0;
     }
     
     .feature-text {
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-weight: 500;
       color: var(--text-color);
     }
     
     .cta-buttons {
       display: flex;
-      gap: 20px;
-      animation: fadeIn 0.8s 1.4s forwards;
-      opacity: 0;
     }
     
     .cta-button {
@@ -186,50 +167,16 @@
       color: white;
       font-weight: 600;
       font-size: 1rem;
-      padding: 16px 32px;
-      border-radius: 14px;
+      padding: 14px 28px;
+      border-radius: 12px;
       text-decoration: none;
       border: none;
-      box-shadow: 0 4px 15px rgba(0, 204, 122, 0.3);
       transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-      z-index: 1;
-    }
-    
-    .cta-button::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-      transition: 0.5s;
-      z-index: -1;
     }
     
     .cta-button:hover {
       background-color: var(--button-hover);
-      transform: translateY(-3px);
-      box-shadow: 0 6px 20px rgba(0, 204, 122, 0.4);
-    }
-    
-    .cta-button:hover::before {
-      left: 100%;
-    }
-    
-    .cta-button.secondary {
-      background-color: transparent;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: var(--off-white);
-      box-shadow: none;
-    }
-    
-    .cta-button.secondary:hover {
-      background-color: rgba(255, 255, 255, 0.05);
-      border-color: rgba(255, 255, 255, 0.3);
-      transform: translateY(-3px);
+      transform: translateY(-2px);
     }
     
     /* Right side - Watch showcase */
@@ -239,15 +186,13 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      animation: fadeIn 1s 0.5s forwards;
-      opacity: 0;
     }
     
     .device-mockup {
       position: relative;
       width: 100%;
-      max-width: 420px;
-      filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.25));
+      max-width: 400px;
+      filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.25));
     }
     
     .watch {
@@ -269,7 +214,7 @@
       width: 100%;
       height: 100%;
       background: linear-gradient(145deg, #333333, #222222);
-      border-radius: 25%;
+      border-radius: 22%;
       box-shadow: 
         0 10px 30px rgba(0, 0, 0, 0.5),
         0 0 0 1px rgba(100, 100, 100, 0.5),
@@ -278,8 +223,6 @@
       justify-content: center;
       align-items: center;
       transform-style: preserve-3d;
-      transform: rotateY(-5deg) rotateX(5deg);
-      animation: subtleFloat 6s infinite alternate ease-in-out;
     }
     
     .watch-screen {
@@ -289,7 +232,7 @@
       width: 88%;
       height: 88%;
       background-color: var(--app-screen-bg);
-      border-radius: 22%;
+      border-radius: 18%;
       overflow: hidden;
       box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
     }
@@ -348,32 +291,23 @@
       grid-template-columns: repeat(3, 1fr);
       grid-template-rows: repeat(4, 1fr);
       gap: 8px;
-      padding: 10px;
+      padding: 8px;
     }
     
     .app-tile {
       position: relative;
       background: rgba(0, 30, 15, 0.8);
-      border-radius: 14px;
+      border-radius: 12px;
       overflow: hidden;
       display: flex;
       flex-direction: column;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-      transform: scale(0);
-      animation: tileAppear 0.4s forwards cubic-bezier(0.34, 1.56, 0.64, 1);
       backdrop-filter: blur(5px);
       border: 1px solid rgba(0, 255, 153, 0.15);
     }
     
-    .app-tile:hover {
-      transform: scale(1.05);
-      transition: transform 0.2s ease;
-      z-index: 2;
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
-    }
-    
     .tile-content {
-      padding: 6px;
+      padding: 4px;
       position: relative;
       z-index: 1;
       height: 100%;
@@ -405,8 +339,8 @@
     
     .tile-type {
       position: absolute;
-      bottom: 5px;
-      left: 5px;
+      bottom: 3px;
+      left: 3px;
       font-size: 0.3rem;
       font-weight: 600;
       color: white;
@@ -443,137 +377,20 @@
       z-index: 10;
     }
     
-    .glow-effect {
-      position: absolute;
-      width: 200%;
-      height: 200%;
-      top: -50%;
-      left: -50%;
-      background: radial-gradient(
-        circle at center,
-        rgba(0, 255, 153, 0.1) 0%,
-        transparent 70%
-      );
-      z-index: -1;
-      animation: rotateSlow 15s infinite linear;
-    }
-    
-    /* Background elements */
-    .floating-shape {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(60px);
-      z-index: -1;
-      opacity: 0.15;
-    }
-    
-    .shape-1 {
-      width: 350px;
-      height: 350px;
-      background: var(--primary);
-      top: -120px;
-      right: -100px;
-      animation: floatAnimation 20s infinite alternate ease-in-out;
-    }
-    
-    .shape-2 {
-      width: 250px;
-      height: 250px;
-      background: #00B36B;
-      bottom: -80px;
-      left: -80px;
-      animation: floatAnimation 15s infinite alternate-reverse ease-in-out;
-    }
-    
-    /* Decorative elements */
-    .decorative-dots {
-      position: absolute;
-      width: 180px;
-      height: 180px;
-      opacity: 0.2;
-      z-index: 0;
-    }
-    
-    .dots-1 {
-      top: 10%;
-      left: 5%;
-      background-image: radial-gradient(var(--primary) 1px, transparent 1px);
-      background-size: 15px 15px;
-    }
-    
-    .dots-2 {
-      bottom: 10%;
-      right: 5%;
-      background-image: radial-gradient(var(--primary) 1px, transparent 1px);
-      background-size: 10px 10px;
-    }
-    
-    /* App tile animation delay */
-    .app-tile:nth-child(1) { animation-delay: 0.1s; }
-    .app-tile:nth-child(2) { animation-delay: 0.15s; }
-    .app-tile:nth-child(3) { animation-delay: 0.2s; }
-    .app-tile:nth-child(4) { animation-delay: 0.25s; }
-    .app-tile:nth-child(5) { animation-delay: 0.3s; }
-    .app-tile:nth-child(6) { animation-delay: 0.35s; }
-    .app-tile:nth-child(7) { animation-delay: 0.4s; }
-    .app-tile:nth-child(8) { animation-delay: 0.45s; }
-    .app-tile:nth-child(9) { animation-delay: 0.5s; }
-    .app-tile:nth-child(10) { animation-delay: 0.55s; }
-    .app-tile:nth-child(11) { animation-delay: 0.6s; }
-    .app-tile:nth-child(12) { animation-delay: 0.65s; }
-    
-    /* Animations */
-    @keyframes fadeInUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    
-    @keyframes fadeIn {
-      to { opacity: 1; }
-    }
-    
-    @keyframes subtleFloat {
-      0% { 
-        transform: rotateY(-5deg) rotateX(5deg) translateY(0px); 
-      }
-      100% { 
-        transform: rotateY(5deg) rotateX(0deg) translateY(-10px); 
-      }
-    }
-    
-    @keyframes tileAppear {
-      to { transform: scale(1); }
-    }
-    
-    @keyframes floatAnimation {
-      0% { transform: translate(0, 0); }
-      50% { transform: translate(-20px, 20px); }
-      100% { transform: translate(20px, -20px); }
-    }
-    
-    @keyframes rotateSlow {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    
     /* Responsive styles */
     @media (max-width: 992px) {
       .container {
         flex-direction: column;
-        text-align: center;
-        padding: 40px 20px;
       }
       
       .content {
         order: 1;
-        padding: 10px;
+        padding: 30px 20px;
+        text-align: center;
       }
       
       .watch-showcase {
         order: 0;
-        margin-bottom: 50px;
       }
       
       .features {
@@ -588,10 +405,6 @@
       .cta-buttons {
         justify-content: center;
       }
-      
-      .decorative-dots {
-        display: none;
-      }
     }
     
     @media (max-width: 768px) {
@@ -601,16 +414,12 @@
         gap: 16px;
       }
       
-      .cta-buttons {
-        flex-direction: column;
+      .feature {
+        align-items: center;
       }
       
-      .watch-case {
-        transform: rotateY(0deg) rotateX(0deg);
-      }
-      
-      .floating-shape {
-        opacity: 0.1;
+      .device-mockup {
+        max-width: 340px;
       }
     }
     
@@ -636,19 +445,10 @@
       .device-mockup {
         max-width: 260px;
       }
-      
-      .feature {
-        align-items: center;
-      }
     }
   </style>
 </head>
 <body>
-  <div class="floating-shape shape-1"></div>
-  <div class="floating-shape shape-2"></div>
-  <div class="decorative-dots dots-1"></div>
-  <div class="decorative-dots dots-2"></div>
-  
   <div class="container">
     <div class="content">
       <div class="badge">
@@ -689,7 +489,6 @@
     </div>
     
     <div class="watch-showcase">
-      <div class="glow-effect"></div>
       <div class="device-mockup">
         <div class="watch">
           <div class="watch-body">
