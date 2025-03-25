@@ -407,14 +407,21 @@
         }
 
         .error {
-            background: #FF4444;
-            padding: 3px;
-            border-radius: 5px;
-            cursor: pointer;
             position: relative;
-            color: white;
-            font-weight: bold;
-            box-shadow: 0px 0px 10px #FF4444;
+            display: inline-block;
+            background-color: rgba(255, 68, 68, 0.15) !important;
+            border-bottom: 2px solid #FF4444 !important;
+            color: inherit;
+            cursor: help;
+            transition: all 0.3s ease;
+            padding: 2px 4px;
+            border-radius: 3px;
+            margin: 0 1px;
+        }
+
+        .error:hover {
+            background-color: rgba(255, 68, 68, 0.25) !important;
+            box-shadow: 0 2px 8px rgba(255, 68, 68, 0.4);
         }
 
         .error:hover::after {
@@ -422,14 +429,19 @@
             position: absolute;
             left: 50%;
             bottom: 125%;
-            background: #FF4444;
+            background: rgba(255, 68, 68, 0.95);
             color: white;
-            padding: 5px;
-            border-radius: 5px;
-            white-space: nowrap;
+            padding: 8px 12px;
+            border-radius: 6px;
+            white-space: pre-wrap;
             transform: translateX(-50%);
             font-size: 14px;
-            box-shadow: 0px 0px 10px #FF4444;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            max-width: 300px;
+            text-align: center;
+            line-height: 1.4;
+            pointer-events: none;
         }
 
         .feedback-message {
@@ -1192,6 +1204,181 @@
           width: 80%; /* Reduce this value */
           padding: 15px; /* You may also want to reduce padding */
         }
+
+        /* Grammar checker styles */
+        .error {
+            position: relative;
+            display: inline-block;
+            background-color: rgba(255, 68, 68, 0.15) !important;
+            border-bottom: 2px solid #FF4444 !important;
+            color: inherit;
+            cursor: help;
+            transition: all 0.3s ease;
+            padding: 2px 4px;
+            border-radius: 3px;
+            margin: 0 1px;
+        }
+
+        .error:hover {
+            background-color: rgba(255, 68, 68, 0.25) !important;
+            box-shadow: 0 2px 8px rgba(255, 68, 68, 0.4);
+        }
+
+        .error:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            left: 50%;
+            bottom: 125%;
+            background: rgba(255, 68, 68, 0.95);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            white-space: pre-wrap;
+            transform: translateX(-50%);
+            font-size: 14px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            max-width: 300px;
+            text-align: center;
+            line-height: 1.4;
+            pointer-events: none;
+        }
+
+        #textEditor {
+            position: relative;
+            width: 90%;
+            max-width: 800px;
+            min-height: 200px;
+            margin: 20px auto;
+            padding: 20px;
+            background: rgba(0, 255, 153, 0.1);
+            border: 2px solid var(--primary-color);
+            border-radius: 10px;
+            color: white;
+            font-size: 16px;
+            line-height: 1.5;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        #textEditor:focus {
+            box-shadow: 0 0 15px var(--primary-color);
+            background: rgba(0, 255, 153, 0.15);
+        }
+
+        #floating-tooltip {
+            position: fixed;
+            background: rgba(255, 68, 68, 0.95);
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            z-index: 1000;
+            max-width: 300px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            font-size: 14px;
+            line-height: 1.4;
+            pointer-events: none;
+            display: none;
+        }
+
+        .feedback-message {
+            margin: 20px auto;
+            padding: 15px;
+            border-radius: 8px;
+            background: rgba(0, 255, 153, 0.1);
+            border: 1px solid var(--primary-color);
+            max-width: 800px;
+            text-align: left;
+        }
+
+        .error-item {
+            margin: 10px 0;
+            padding: 10px;
+            background: rgba(255, 68, 68, 0.1);
+            border-radius: 8px;
+            border-left: 3px solid #FF4444;
+        }
+
+        .error-item div {
+            margin: 5px 0;
+        }
+
+        /* Loading spinner */
+        .fa-spinner {
+            margin-right: 10px;
+            color: var(--primary-color);
+        }
+
+        /* Success message */
+        .feedback-message[style*="border-color: #00FFB3"] {
+            background: rgba(0, 255, 179, 0.1);
+        }
+
+        /* Error message */
+        .feedback-message[style*="border-color: #FF4444"] {
+            background: rgba(255, 68, 68, 0.1);
+        }
+
+        .corrected-text-box {
+            position: relative;
+            width: 90%;
+            max-width: 800px;
+            min-height: 200px;
+            margin: 20px auto;
+            padding: 20px;
+            background: rgba(0, 255, 153, 0.1);
+            border: 2px solid #00FFB3;
+            border-radius: 10px;
+            color: white;
+            font-size: 16px;
+            line-height: 1.5;
+            overflow-y: auto;
+        }
+        
+        .correction {
+            background-color: rgba(0, 255, 153, 0.2);
+            color: #00FFB3;
+            padding: 2px 4px;
+            border-radius: 3px;
+            margin: 0 1px;
+            transition: all 0.3s ease;
+        }
+        
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        .btn-primary {
+            background: var(--primary-color);
+            color: black;
+            font-weight: bold;
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--primary-color);
+        }
+        
+        #correction-area {
+            margin: 30px auto;
+            padding: 20px;
+            border-radius: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid #00FFB3;
+            max-width: 850px;
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        .section-title {
+            text-align: center;
+            color: #00FFB3;
+            margin-bottom: 15px;
+            font-size: 20px;
+            text-shadow: 0 0 10px #00FFB3;
+        }
     </style>
 </head>
 <body>
@@ -1356,6 +1543,16 @@
             <button class="btn-green" onclick="generateDetailedReport()">
                 📋 Generate Detailed Report
             </button>
+        </div>
+        <!-- Add this HTML section after the grammar-errors div in the writingBoard section -->
+        <div id="correction-area" class="hidden">
+            <h3 class="section-title">Corrected Version</h3>
+            <div id="corrected-text" class="corrected-text-box"></div>
+            <div class="button-container">
+                <button id="apply-corrections" class="btn-primary">Apply All Corrections</button>
+                <button id="copy-corrections" class="btn-secondary">Copy Corrected Text</button>
+                <button id="dismiss-corrections" class="btn-secondary">Dismiss</button>
+            </div>
         </div>
     </div>
 
@@ -1659,10 +1856,33 @@
             document.getElementById('textEditor').innerHTML = '';
         }
 
+        // Add this at the start of your script section
+        const textEditor = document.getElementById('textEditor');
+
+        // Clear placeholder text on focus
+        textEditor.addEventListener('focus', function() {
+            if (this.innerText === 'Type your response in French here...') {
+                this.innerText = '';
+            }
+        });
+
+        // Restore placeholder if empty on blur
+        textEditor.addEventListener('blur', function() {
+            if (this.innerText.trim() === '') {
+                this.innerText = 'Type your response in French here...';
+            }
+        });
+
         async function checkGrammar() {
             let editor = document.getElementById('textEditor');
-            let text = editor.innerText;
+            let text = editor.innerText || editor.textContent;
             let grammarErrors = document.getElementById('grammar-errors');
+            let correctionArea = document.getElementById('correction-area');
+            let correctedTextBox = document.getElementById('corrected-text');
+
+            // Clear any existing error highlights
+            editor.innerHTML = text;
+            correctionArea.classList.add('hidden');
 
             if (text.trim() === '' || text === 'Type your response in French here...') {
                 grammarErrors.innerHTML = `
@@ -1676,7 +1896,7 @@
                 // Show checking message
                 grammarErrors.innerHTML = `
                     <div class="feedback-message">
-                        Checking grammar...
+                        <i class="fas fa-spinner fa-spin"></i> Checking grammar...
                     </div>`;
 
                 const response = await fetch('https://api.languagetool.org/v2/check', {
@@ -1686,37 +1906,199 @@
                     },
                     body: new URLSearchParams({
                         'text': text,
-                        'language': 'fr'
+                        'language': 'fr',
+                        'enabledOnly': 'false'
                     })
                 });
 
                 const data = await response.json();
-                
-                if (data.matches.length === 0) {
-                    const message = "🎉 No grammar mistakes found! Great job!";
-                    grammarErrors.innerHTML = '<div class="feedback-message"></div>';
-                    typeMessage(grammarErrors.querySelector('.feedback-message'), message);
+                console.log('LanguageTool response:', data); // Debug log
+
+                if (!data.matches || data.matches.length === 0) {
+                    grammarErrors.innerHTML = `
+                        <div class="feedback-message" style="border-color: #00FFB3; box-shadow: 0 0 10px #00FFB3;">
+                            🎉 No grammar mistakes found! Great job!
+                        </div>`;
                     return;
                 }
 
-                let correctedText = text;
+                // Create a temporary div to hold the text while we make replacements
+                let tempDiv = document.createElement('div');
+                tempDiv.textContent = text;
+                let html = tempDiv.innerHTML;
                 let offset = 0;
-                
-                data.matches.forEach(match => {
+                let errorSummary = '';
+
+                // For the corrected version
+                let correctedText = text;
+                let correctionOffset = 0;
+
+                // Sort matches by offset in reverse order (to handle offsets correctly)
+                data.matches.sort((a, b) => b.offset - a.offset);
+
+                data.matches.forEach((match, index) => {
                     const start = match.offset + offset;
                     const end = start + match.length;
                     const errorText = text.substring(match.offset, match.offset + match.length);
-                    const replacement = `<span class="error" data-tooltip="${match.message} | Suggestion: ${match.replacements[0]?.value || 'No suggestion'}">${errorText}</span>`;
-                    correctedText = correctedText.substring(0, start) + replacement + correctedText.substring(end);
+                    
+                    // Create error span with tooltip
+                    const replacement = `<span class="error" 
+                        data-error-id="${index}"
+                        data-tooltip="${match.message}${match.replacements.length > 0 ? '\nSuggestion: ' + match.replacements[0].value : ''}"
+                        style="background-color: rgba(255, 68, 68, 0.15); border-bottom: 2px solid #FF4444;"
+                        >${errorText}</span>`;
+
+                    // Insert the replacement
+                    html = html.substring(0, start) + replacement + html.substring(end);
                     offset += replacement.length - match.length;
+
+                    // Add to error summary
+                    errorSummary = `
+                        <div class="error-item">
+                            <div style="color: #FF4444; font-weight: bold;">Error ${data.matches.length - index}:</div>
+                            <div style="color: white;">"${errorText}" - ${match.message}</div>
+                            ${match.replacements.length > 0 ? 
+                                `<div style="color: #00FFB3;">✓ Suggestion: "${match.replacements[0].value}"</div>` : 
+                                ''}
+                            ${match.rule && match.rule.category ? 
+                                `<div style="color: rgba(255,255,255,0.7); font-size: 0.9em;">Category: ${match.rule.category.name}</div>` : 
+                                ''}
+                        </div>
+                    ` + errorSummary;
+
+                    // Apply correction to the corrected text version
+                    if (match.replacements && match.replacements.length > 0) {
+                        const correctionStart = match.offset + correctionOffset;
+                        const correctionEnd = correctionStart + match.length;
+                        const suggestion = match.replacements[0].value;
+                        
+                        correctedText = correctedText.substring(0, correctionStart) + suggestion + correctedText.substring(correctionEnd);
+                        correctionOffset += suggestion.length - match.length;
+                    }
                 });
 
-                editor.innerHTML = correctedText;
+                // Update the editor with highlighted errors
+                editor.innerHTML = html;
+
+                // Show error summary
                 grammarErrors.innerHTML = `
-                    <div class="feedback-message">
-                        Found ${data.matches.length} potential improvements. 
-                        Hover over the highlighted text to see suggestions.
-                    </div>`;
+                    <div class="feedback-message" style="border-color: #FF4444; box-shadow: 0 0 10px #FF4444;">
+                        <div style="font-size: 1.1em; margin-bottom: 15px;">
+                            Found ${data.matches.length} potential ${data.matches.length === 1 ? 'error' : 'errors'}:
+                        </div>
+                        ${errorSummary}
+                        <div style="margin-top: 15px; font-size: 0.9em; color: rgba(255, 255, 255, 0.7);">
+                            💡 Hover over the highlighted text to see detailed suggestions.
+                        </div>
+                        <div style="margin-top: 15px; text-align: center;">
+                            <button id="show-corrected" class="btn btn-primary">Show Corrected Version</button>
+                        </div>
+                    </div>
+                `;
+
+                // Prepare corrected version
+                let formattedCorrectedText = correctedText;
+                // Format the corrected text by highlighting the changes
+                data.matches.sort((a, b) => a.offset - b.offset); // Sort in ascending order for display
+                let formatOffset = 0;
+                
+                for (const match of data.matches) {
+                    if (match.replacements && match.replacements.length > 0) {
+                        const suggestion = match.replacements[0].value;
+                        const start = match.offset + formatOffset;
+                        formatOffset += suggestion.length - match.length;
+                        
+                        // Highlight the correction
+                        formattedCorrectedText = 
+                            formattedCorrectedText.substring(0, start) + 
+                            `<span class="correction" title="Original: '${match.context.text.substring(match.context.offset, match.context.offset + match.length)}'">` + 
+                            suggestion + 
+                            `</span>` + 
+                            formattedCorrectedText.substring(start + suggestion.length);
+                        
+                        formatOffset += (`<span class="correction" title="Original: '${match.context.text.substring(match.context.offset, match.context.offset + match.length)}'">`.length + `</span>`.length);
+                    }
+                }
+                
+                // Set the corrected text
+                correctedTextBox.innerHTML = formattedCorrectedText;
+                
+                // Add event listener to show corrected version
+                document.getElementById('show-corrected').addEventListener('click', function() {
+                    correctionArea.classList.remove('hidden');
+                    // Scroll to correction area
+                    correctionArea.scrollIntoView({ behavior: 'smooth' });
+                });
+                
+                // Add event listeners for the correction area buttons
+                document.getElementById('apply-corrections').addEventListener('click', function() {
+                    editor.innerHTML = correctedText;
+                    correctionArea.classList.add('hidden');
+                    grammarErrors.innerHTML = `
+                        <div class="feedback-message" style="border-color: #00FFB3; box-shadow: 0 0 10px #00FFB3;">
+                            ✅ All corrections applied successfully!
+                        </div>`;
+                });
+                
+                document.getElementById('copy-corrections').addEventListener('click', function() {
+                    navigator.clipboard.writeText(correctedText).then(function() {
+                        const copyButton = document.getElementById('copy-corrections');
+                        copyButton.textContent = "Copied!";
+                        setTimeout(() => {
+                            copyButton.textContent = "Copy Corrected Text";
+                        }, 2000);
+                    });
+                });
+                
+                document.getElementById('dismiss-corrections').addEventListener('click', function() {
+                    correctionArea.classList.add('hidden');
+                });
+
+                // Add click handlers for error spans
+                document.querySelectorAll('.error').forEach(errorSpan => {
+                    errorSpan.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        const tooltip = this.getAttribute('data-tooltip');
+                        const rect = this.getBoundingClientRect();
+                        
+                        // Create or update floating tooltip
+                        let floatingTooltip = document.getElementById('floating-tooltip');
+                        if (!floatingTooltip) {
+                            floatingTooltip = document.createElement('div');
+                            floatingTooltip.id = 'floating-tooltip';
+                            document.body.appendChild(floatingTooltip);
+                        }
+                        
+                        floatingTooltip.style.cssText = `
+                            position: fixed;
+                            background: rgba(255, 68, 68, 0.95);
+                            color: white;
+                            padding: 10px;
+                            border-radius: 8px;
+                            z-index: 1000;
+                            max-width: 300px;
+                            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+                            top: ${rect.bottom + window.scrollY + 10}px;
+                            left: ${rect.left + window.scrollX}px;
+                            font-size: 14px;
+                            line-height: 1.4;
+                            pointer-events: none;
+                        `;
+                        floatingTooltip.innerHTML = tooltip.replace('\n', '<br>');
+                        floatingTooltip.style.display = 'block';
+                        
+                        // Hide tooltip when clicking elsewhere
+                        const hideTooltip = (e) => {
+                            if (!this.contains(e.target)) {
+                                floatingTooltip.style.display = 'none';
+                                document.removeEventListener('click', hideTooltip);
+                            }
+                        };
+                        document.addEventListener('click', hideTooltip);
+                    });
+                });
 
             } catch (error) {
                 console.error('Grammar check error:', error);
@@ -1726,8 +2108,11 @@
                     </div>`;
             }
 
-            // After grammar check is complete, run comprehensive assessment
-            await assessWriting();
+            // After grammar check is complete, run comprehensive assessment with a slight delay
+            // to ensure grammar check UI displays properly first
+            setTimeout(async () => {
+                await assessWriting();
+            }, 500);
         }
 
         let timeLeft = 1800; // 30 minutes in seconds
@@ -2026,14 +2411,6 @@
 
             // Create and download PDF report
             generatePDF(report);
-        }
-
-        // Add this to your checkGrammar function
-        async function checkGrammar() {
-            // ... existing grammar check code ...
-            
-            // After grammar check is complete, run comprehensive assessment
-            await assessWriting();
         }
 
         // French vocabulary levels (simplified version)
