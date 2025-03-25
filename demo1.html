@@ -1,0 +1,1623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hemiya AI Speaking Demo - Interactive French Practice</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #00FF99;
+            --bg-color: #121212;
+            --text-color: #00FF99;
+            --card-bg: rgba(0, 255, 153, 0.2);
+            --font-family: 'Poppins', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: var(--font-family);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .demo-container {
+            max-width: 1000px;
+            width: 90%;
+            background: rgba(0, 255, 153, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 20px auto;
+            border: 2px solid var(--primary-color);
+            box-shadow: 0 0 30px var(--primary-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .demo-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .demo-header img {
+            width: 120px;
+            height: 120px;
+            border-radius: 60px;
+            margin: 20px auto;
+            border: 2px solid var(--primary-color);
+            box-shadow: 0 0 15px var(--primary-color);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .demo-header h1 {
+            font-size: 2.5em;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px var(--primary-color);
+        }
+
+        .demo-header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .demo-badge {
+            background: rgba(0, 255, 153, 0.1);
+            border: 1px solid var(--primary-color);
+            padding: 5px 15px;
+            border-radius: 15px;
+            display: inline-block;
+            margin: 10px 0;
+            font-size: 0.9em;
+            color: var(--primary-color);
+        }
+
+        .speaking-section {
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(0, 255, 153, 0.05);
+            border-radius: 15px;
+            border: 1px solid var(--primary-color);
+        }
+
+        .speaking-prompt {
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(0, 255, 153, 0.1);
+            border-radius: 10px;
+            font-size: 1.2em;
+        }
+
+        .pronunciation-guide {
+            font-style: italic;
+            color: rgba(0, 255, 153, 0.8);
+            margin: 10px 0;
+            font-size: 0.9em;
+            text-align: center;
+        }
+
+        .controls-panel {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .control-button {
+            padding: 12px 25px;
+            background: var(--primary-color);
+            color: var(--bg-color);
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .control-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px var(--primary-color);
+        }
+
+        .feedback-panel {
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(0, 255, 153, 0.1);
+            border-radius: 10px;
+            display: none;
+        }
+
+        .feedback-panel.active {
+            display: block;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .waveform {
+            width: 100%;
+            height: 100px;
+            background: rgba(0, 255, 153, 0.05);
+            border-radius: 10px;
+            margin: 15px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .wave-animation {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .wave-bar {
+            width: 3px;
+            height: 20px;
+            background: var(--primary-color);
+            animation: wave 1s ease-in-out infinite;
+            opacity: 0.7;
+        }
+
+        @keyframes wave {
+            0%, 100% { transform: scaleY(0.2); }
+            50% { transform: scaleY(1); }
+        }
+
+        .progress-indicator {
+            width: 100%;
+            height: 4px;
+            background: rgba(0, 255, 153, 0.1);
+            border-radius: 2px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .score-display {
+            text-align: center;
+            margin: 15px 0;
+            font-size: 1.2em;
+        }
+
+        .score-stars {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin: 10px 0;
+        }
+
+        .star {
+            font-size: 24px;
+            color: var(--primary-color);
+            opacity: 0.3;
+            transition: opacity 0.3s ease;
+        }
+
+        .star.active {
+            opacity: 1;
+        }
+
+        .tips-panel {
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(0, 255, 153, 0.05);
+            border-radius: 10px;
+        }
+
+        .tips-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .tips-list li {
+            margin: 10px 0;
+            padding: 10px;
+            background: rgba(0, 255, 153, 0.1);
+            border-radius: 8px;
+            border-left: 3px solid var(--primary-color);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 5px;
+            }
+
+            .demo-container {
+                padding: 8px;
+                margin: 3px;
+                width: 98%;
+            }
+
+            .demo-header {
+                margin-bottom: 10px;
+            }
+
+            .demo-header h1 {
+                font-size: 1.2em;
+                margin-bottom: 5px;
+            }
+
+            .demo-header p {
+                font-size: 0.8em;
+            }
+
+            .demo-header img {
+                width: 50px;
+                height: 50px;
+                margin: 5px auto;
+            }
+
+            .demo-badge {
+                font-size: 0.6em;
+                padding: 2px 8px;
+                margin: 5px 0;
+            }
+
+            .progress-bar-container {
+                margin: 10px 0;
+                height: 3px;
+            }
+
+            .demo-step {
+                margin: 5px 0;
+            }
+
+            .demo-step h3 {
+                font-size: 1em;
+                margin-bottom: 5px;
+            }
+
+            .level-selector {
+                gap: 3px;
+                margin: 5px 0;
+            }
+
+            .level-button {
+                padding: 4px 8px;
+                font-size: 0.7em;
+            }
+
+            .assessment-info {
+                padding: 8px;
+                margin: 5px 0;
+            }
+
+            .assessment-info h3 {
+                font-size: 0.9em;
+                margin-bottom: 8px;
+            }
+
+            .assessment-grid {
+                gap: 5px;
+            }
+
+            .assessment-card {
+                padding: 6px;
+            }
+
+            .assessment-card h4 {
+                font-size: 0.8em;
+                margin-bottom: 5px;
+            }
+
+            .assessment-card li {
+                font-size: 0.7em;
+                margin: 3px 0;
+            }
+
+            .camera-notice {
+                padding: 6px;
+                font-size: 0.7em;
+                gap: 8px;
+                margin: 8px 0;
+            }
+
+            .camera-notice .icon {
+                font-size: 18px;
+            }
+
+            .camera-preview {
+                height: 120px;
+                margin: 8px auto;
+            }
+
+            .speaking-prompt {
+                padding: 6px;
+                font-size: 0.8em;
+                margin: 8px 0;
+            }
+
+            .pronunciation-guide {
+                font-size: 0.7em;
+                margin: 5px 0;
+            }
+
+            .controls-panel {
+                gap: 8px;
+                margin: 8px 0;
+            }
+
+            .control-button {
+                padding: 5px 10px;
+                font-size: 0.8em;
+                gap: 5px;
+            }
+
+            .waveform {
+                height: 40px;
+                margin: 5px 0;
+            }
+
+            .wave-bar {
+                width: 2px;
+                height: 12px;
+            }
+
+            .feedback-panel {
+                padding: 6px;
+                margin: 5px 0;
+            }
+
+            .feedback-category {
+                padding: 5px;
+                margin: 5px 0;
+            }
+
+            .feedback-category h4 {
+                font-size: 0.8em;
+            }
+
+            .feedback-meter {
+                height: 4px;
+                margin: 3px 0;
+            }
+
+            .tips-panel {
+                padding: 6px;
+                margin: 5px 0;
+            }
+
+            .tips-panel h3 {
+                font-size: 0.9em;
+            }
+
+            .tips-list li {
+                padding: 5px;
+                font-size: 0.7em;
+                margin: 4px 0;
+            }
+
+            .completion-message {
+                padding: 15px;
+                margin: 10px;
+            }
+
+            .completion-header h2 {
+                font-size: 1.1em;
+                margin-bottom: 8px;
+            }
+
+            .completion-header p {
+                font-size: 0.8em;
+            }
+
+            .completion-stats {
+                gap: 8px;
+                margin: 15px 0;
+            }
+
+            .stat-card {
+                padding: 8px;
+            }
+
+            .stat-header {
+                margin-bottom: 5px;
+            }
+
+            .stat-header h3 {
+                font-size: 0.9em;
+            }
+
+            .stat-icon {
+                font-size: 18px;
+            }
+
+            .performance-metric {
+                margin: 5px 0;
+                font-size: 0.8em;
+            }
+
+            .metric-bar {
+                height: 4px;
+                margin: 3px 0;
+            }
+
+            .sub-metrics {
+                margin-left: 5px;
+                font-size: 0.7em;
+            }
+
+            .sub-metric {
+                margin: 2px 0;
+            }
+
+            .progress-category {
+                margin: 5px 0;
+            }
+
+            .progress-category h4 {
+                font-size: 0.8em;
+                margin-bottom: 3px;
+            }
+
+            .progress-list li {
+                font-size: 0.7em;
+                margin: 2px 0;
+            }
+
+            .achievement-badges {
+                gap: 4px;
+                margin: 10px 0;
+            }
+
+            .achievement-badge {
+                font-size: 0.7em;
+                padding: 4px 8px;
+            }
+
+            .completion-actions {
+                margin-top: 15px;
+                gap: 10px;
+            }
+
+            .demo-controls {
+                gap: 8px;
+                margin: 10px 0;
+            }
+
+            .chart-bars {
+                height: 15px;
+            }
+
+            .chart-label {
+                font-size: 0.7em;
+            }
+
+            .mini-chart {
+                margin-top: 5px;
+                padding-top: 3px;
+            }
+        }
+
+        .level-selector {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .level-button {
+            padding: 8px 20px;
+            border: 1px solid var(--primary-color);
+            background: rgba(0, 255, 153, 0.1);
+            color: var(--text-color);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .level-button.active {
+            background: var(--primary-color);
+            color: var(--bg-color);
+            box-shadow: 0 0 15px var(--primary-color);
+        }
+
+        .detailed-feedback {
+            margin: 15px 0;
+            padding: 15px;
+            background: rgba(0, 255, 153, 0.05);
+            border-radius: 10px;
+        }
+
+        .feedback-category {
+            margin: 10px 0;
+            padding: 10px;
+            background: rgba(0, 255, 153, 0.1);
+            border-radius: 8px;
+        }
+
+        .feedback-meter {
+            width: 100%;
+            height: 6px;
+            background: rgba(0, 255, 153, 0.1);
+            border-radius: 3px;
+            margin: 5px 0;
+            overflow: hidden;
+        }
+
+        .meter-fill {
+            height: 100%;
+            background: var(--primary-color);
+            width: 0;
+            transition: width 1s ease;
+        }
+
+        .prompt-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 15px 0;
+        }
+
+        .nav-button {
+            padding: 8px 15px;
+            background: rgba(0, 255, 153, 0.1);
+            border: 1px solid var(--primary-color);
+            color: var(--text-color);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-button:hover {
+            background: var(--primary-color);
+            color: var(--bg-color);
+        }
+
+        .camera-notice {
+            background: rgba(0, 255, 153, 0.1);
+            border: 1px solid var(--primary-color);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .camera-notice .icon {
+            font-size: 24px;
+            color: var(--primary-color);
+        }
+
+        .camera-notice .message {
+            flex: 1;
+            font-size: 0.9em;
+        }
+
+        .camera-preview {
+            width: 100%;
+            max-width: 400px;
+            height: 200px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--primary-color);
+            border-radius: 10px;
+            margin: 15px auto;
+            overflow: hidden;
+        }
+
+        .camera-preview video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .assessment-info {
+            background: rgba(0, 255, 153, 0.1);
+            border: 1px solid var(--primary-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .assessment-info h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .assessment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .assessment-card {
+            background: rgba(0, 255, 153, 0.05);
+            border: 1px solid var(--primary-color);
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .assessment-card h4 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .assessment-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .assessment-card li {
+            margin: 8px 0;
+            font-size: 0.9em;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .assessment-card li::before {
+            content: "→";
+            color: var(--primary-color);
+        }
+
+        .level-expectations {
+            margin: 15px 0;
+            padding: 10px;
+            background: rgba(0, 255, 153, 0.05);
+            border-radius: 8px;
+        }
+
+        .level-expectations h4 {
+            color: var(--primary-color);
+            margin-bottom: 8px;
+        }
+
+        .expectation-list {
+            font-size: 0.9em;
+            color: rgba(0, 255, 153, 0.9);
+        }
+
+        .example-feedback {
+            background: rgba(0, 255, 153, 0.05);
+            border-radius: 8px;
+            padding: 8px;
+            margin-top: 8px;
+            font-size: 0.85em;
+        }
+
+        .demo-step {
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .demo-step.active {
+            display: block;
+        }
+
+        .demo-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 4px;
+            background: rgba(0, 255, 153, 0.1);
+            border-radius: 2px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--primary-color);
+            width: 0;
+            transition: width 0.3s ease;
+        }
+
+        .completion-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(8px);
+        }
+
+        .completion-overlay.visible {
+            display: flex;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .completion-message {
+            background: rgba(0, 255, 153, 0.05);
+            border: 2px solid var(--primary-color);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            animation: messageSlideIn 0.6s ease-out;
+        }
+
+        @keyframes messageSlideIn {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .completion-header {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .completion-header::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 2px;
+            background: var(--primary-color);
+            box-shadow: 0 0 10px var(--primary-color);
+        }
+
+        .completion-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .stat-card {
+            background: rgba(0, 255, 153, 0.1);
+            border: 1px solid var(--primary-color);
+            border-radius: 15px;
+            padding: 15px;
+            text-align: left;
+            animation: cardFadeIn 0.5s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes cardFadeIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .stat-card:nth-child(1) { animation-delay: 0.2s; }
+        .stat-card:nth-child(2) { animation-delay: 0.4s; }
+        .stat-card:nth-child(3) { animation-delay: 0.6s; }
+
+        .stat-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        .stat-icon {
+            font-size: 24px;
+            animation: iconPulse 2s infinite;
+        }
+
+        @keyframes iconPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .achievement-badges {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .achievement-badge {
+            background: rgba(0, 255, 153, 0.1);
+            border: 1px solid var(--primary-color);
+            border-radius: 25px;
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9em;
+            animation: badgePopIn 0.5s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes badgePopIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .achievement-badge:nth-child(1) { animation-delay: 0.8s; }
+        .achievement-badge:nth-child(2) { animation-delay: 1.0s; }
+        .achievement-badge:nth-child(3) { animation-delay: 1.2s; }
+
+        .completion-actions {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .completion-actions button {
+            animation: buttonSlideIn 0.5s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes buttonSlideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .completion-actions button:nth-child(1) { animation-delay: 1.4s; }
+        .completion-actions button:nth-child(2) { animation-delay: 1.6s; }
+
+        @media (max-width: 768px) {
+            .completion-message {
+                padding: 20px;
+                margin: 15px;
+            }
+
+            .completion-stats {
+                gap: 10px;
+            }
+
+            .stat-card {
+                padding: 10px;
+            }
+
+            .achievement-badges {
+                gap: 5px;
+            }
+
+            .achievement-badge {
+                font-size: 0.8em;
+                padding: 6px 12px;
+            }
+        }
+
+        .mini-chart {
+            margin-top: 10px;
+            padding-top: 5px;
+            border-top: 1px solid rgba(0, 255, 153, 0.2);
+        }
+
+        .chart-label {
+            font-size: 0.8em;
+            margin-bottom: 5px;
+            opacity: 0.8;
+        }
+
+        .chart-bars {
+            display: flex;
+            align-items: flex-end;
+            gap: 3px;
+            height: 30px;
+        }
+
+        .mini-bar {
+            flex: 1;
+            background: var(--primary-color);
+            opacity: 0.7;
+            transition: height 1s ease;
+        }
+
+        .performance-metric {
+            margin: 10px 0;
+        }
+
+        .metric-bar {
+            height: 8px;
+            background: rgba(0, 255, 153, 0.1);
+            border-radius: 4px;
+            margin: 5px 0;
+            position: relative;
+        }
+
+        .metric-fill {
+            height: 100%;
+            background: var(--primary-color);
+            border-radius: 4px;
+            width: 0;
+            transition: width 1s ease;
+        }
+
+        .metric-value {
+            position: absolute;
+            right: 0;
+            top: -18px;
+            font-size: 0.9em;
+        }
+
+        .sub-metrics {
+            margin-left: 10px;
+            font-size: 0.85em;
+            opacity: 0.9;
+        }
+
+        .sub-metric {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+        }
+
+        .progress-category {
+            margin: 10px 0;
+        }
+
+        .progress-category h4 {
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+
+        .progress-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .progress-list li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 5px 0;
+            font-size: 0.85em;
+        }
+
+        .highlight-score {
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .progress-trend {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(0, 255, 153, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .trend-icon {
+            font-size: 1.2em;
+            color: var(--primary-color);
+        }
+
+        .trend-text {
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .chart-bars {
+                height: 20px;
+            }
+
+            .sub-metrics {
+                font-size: 0.8em;
+            }
+
+            .progress-list li {
+                font-size: 0.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <div class="demo-header">
+            <img src="https://yiyang512.github.io/new/hemiya.jpg" alt="Hemiya AI" class="avatar">
+            <h1>Hemiya AI Speaking Demo</h1>
+            <p>Practice French pronunciation with real-time feedback! ★</p>
+            <div class="demo-badge">※ Demo Version ※</div>
+        </div>
+
+        <div class="progress-bar-container">
+            <div class="progress-fill" id="progressBar"></div>
+        </div>
+
+        <div class="demo-step active" id="step1">
+            <h3>1. Choose Your Level</h3>
+            <div class="level-selector">
+                <button class="level-button active" onclick="setLevel('beginner')">Débutant (A1-A2)</button>
+                <button class="level-button" onclick="setLevel('intermediate')">Intermédiaire (B1-B2)</button>
+                <button class="level-button" onclick="setLevel('advanced')">Avancé (C1-C2)</button>
+            </div>
+            <div class="assessment-info">
+                <h3><span class="symbol">※</span> Level Assessment Criteria</h3>
+                <div class="assessment-grid">
+                    <div class="assessment-card">
+                        <h4>A1-A2 (Beginner)</h4>
+                        <ul>
+                            <li>Basic pronunciation</li>
+                            <li>Simple greetings</li>
+                            <li>Daily expressions</li>
+                        </ul>
+                    </div>
+                    <div class="assessment-card">
+                        <h4>B1-B2 (Intermediate)</h4>
+                        <ul>
+                            <li>Clear pronunciation</li>
+                            <li>Fluid conversations</li>
+                            <li>Complex topics</li>
+                        </ul>
+                    </div>
+                    <div class="assessment-card">
+                        <h4>C1-C2 (Advanced)</h4>
+                        <ul>
+                            <li>Native-like accent</li>
+                            <li>Abstract discussions</li>
+                            <li>Professional topics</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-step" id="step2">
+            <h3>2. Camera Setup</h3>
+            <div class="camera-notice">
+                <span class="icon">📹</span>
+                <div class="message">
+                    Please enable your camera. Your facial expressions and mouth movements will be analyzed for better pronunciation feedback.
+                </div>
+            </div>
+            <div class="camera-preview">
+                <video id="camera-feed" autoplay muted playsinline></video>
+            </div>
+        </div>
+
+        <div class="demo-step" id="step3">
+            <h3>3. Speaking Practice</h3>
+            <div class="speaking-prompt">
+                <div id="current-prompt">"Bonjour! Comment allez-vous aujourd'hui?"</div>
+                <div class="pronunciation-guide" id="current-guide">
+                    [bohn-ZHOOR koh-mahn tah-lay VOO oh-zhoor-DWEE]
+                </div>
+            </div>
+            <div class="controls-panel">
+                <button class="control-button" onclick="startListening()">
+                    <span class="symbol">⦿</span> Start Speaking
+                </button>
+            </div>
+            <div class="waveform">
+                <div class="wave-animation">
+                    <div class="wave-bar" style="animation-delay: 0s"></div>
+                    <div class="wave-bar" style="animation-delay: 0.1s"></div>
+                    <div class="wave-bar" style="animation-delay: 0.2s"></div>
+                    <div class="wave-bar" style="animation-delay: 0.3s"></div>
+                    <div class="wave-bar" style="animation-delay: 0.4s"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-step" id="step4">
+            <h3>4. Feedback & Analysis</h3>
+            <div class="feedback-panel active">
+                <div class="detailed-feedback">
+                    <div class="feedback-category">
+                        <h4>Pronunciation Accuracy</h4>
+                        <div class="feedback-meter">
+                            <div class="meter-fill" id="pronunciation-meter"></div>
+                        </div>
+                    </div>
+                    <div class="feedback-category">
+                        <h4>Rhythm & Intonation</h4>
+                        <div class="feedback-meter">
+                            <div class="meter-fill" id="rhythm-meter"></div>
+                        </div>
+                    </div>
+                    <div class="feedback-category">
+                        <h4>Fluency</h4>
+                        <div class="feedback-meter">
+                            <div class="meter-fill" id="fluency-meter"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tips-panel">
+                    <h3>Improvement Tips:</h3>
+                    <ul class="tips-list">
+                        <li><strong>Pronunciation:</strong> Focus on nasal sounds</li>
+                        <li><strong>Rhythm:</strong> Maintain steady pace</li>
+                        <li><strong>Fluency:</strong> Practice daily phrases</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-controls">
+            <button class="control-button" onclick="prevStep()">← Previous</button>
+            <button class="control-button" onclick="nextStep()" id="nextButton">Next →</button>
+        </div>
+    </div>
+
+    <div class="completion-overlay" id="completionOverlay">
+        <div class="completion-message">
+            <div class="completion-header">
+                <h2>✓ Speaking Practice Complete!</h2>
+                <p>Excellent work on your French pronunciation practice!</p>
+            </div>
+            
+            <div class="completion-stats">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-icon">⦿</span>
+                        <h3>Practice Summary</h3>
+                    </div>
+                    <p>Level: <strong id="completionLevel">Intermediate</strong></p>
+                    <p>Phrases Practiced: <strong id="phrasesCount">5</strong></p>
+                    <p>Total Duration: <strong id="practiceDuration">3 min</strong></p>
+                    <p>Attempts: <strong id="attemptCount">7</strong></p>
+                    <div class="mini-chart">
+                        <div class="chart-label">Practice Pattern</div>
+                        <div class="chart-bars">
+                            <div class="mini-bar" style="height: 60%"></div>
+                            <div class="mini-bar" style="height: 80%"></div>
+                            <div class="mini-bar" style="height: 90%"></div>
+                            <div class="mini-bar" style="height: 85%"></div>
+                            <div class="mini-bar" style="height: 95%"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-icon">↑</span>
+                        <h3>Performance Details</h3>
+                    </div>
+                    <div class="performance-metric">
+                        <span>Pronunciation</span>
+                        <div class="metric-bar">
+                            <div class="metric-fill" id="pronunciationBar"></div>
+                            <span class="metric-value" id="pronunciationScore">92%</span>
+                        </div>
+                        <div class="sub-metrics">
+                            <div class="sub-metric">
+                                <span>Nasal Sounds:</span>
+                                <strong id="nasalScore">95%</strong>
+                            </div>
+                            <div class="sub-metric">
+                                <span>Silent Letters:</span>
+                                <strong id="silentScore">88%</strong>
+                            </div>
+                            <div class="sub-metric">
+                                <span>Liaison:</span>
+                                <strong id="liaisonScore">90%</strong>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="performance-metric">
+                        <span>Rhythm & Flow</span>
+                        <div class="metric-bar">
+                            <div class="metric-fill" id="rhythmBar"></div>
+                            <span class="metric-value" id="rhythmScore">88%</span>
+                        </div>
+                    </div>
+                    <div class="performance-metric">
+                        <span>Fluency</span>
+                        <div class="metric-bar">
+                            <div class="metric-fill" id="fluencyBar"></div>
+                            <span class="metric-value" id="fluencyScore">85%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-icon">★</span>
+                        <h3>Progress Analysis</h3>
+                    </div>
+                    <div class="progress-category">
+                        <h4>Strengths</h4>
+                        <ul class="progress-list" id="strengthsList">
+                            <li><span class="highlight-score">95%</span> Nasal Vowels</li>
+                            <li><span class="highlight-score">92%</span> Word Stress</li>
+                            <li><span class="highlight-score">90%</span> Basic Grammar</li>
+                        </ul>
+                    </div>
+                    <div class="progress-category">
+                        <h4>Areas for Focus</h4>
+                        <ul class="progress-list" id="focusList">
+                            <li><span class="highlight-score">85%</span> Complex Liaisons</li>
+                            <li><span class="highlight-score">82%</span> Speed Control</li>
+                            <li><span class="highlight-score">80%</span> Intonation</li>
+                        </ul>
+                    </div>
+                    <div class="progress-trend">
+                        <span class="trend-icon">↗</span>
+                        <span class="trend-text">Improving Steadily</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="achievement-badges">
+                <div class="achievement-badge">
+                    <span class="stat-icon">✓</span>
+                    <span id="achievement1">Perfect Pronunciation</span>
+                </div>
+                <div class="achievement-badge">
+                    <span class="stat-icon">↑</span>
+                    <span id="achievement2">Steady Progress</span>
+                </div>
+                <div class="achievement-badge">
+                    <span class="stat-icon">⭐</span>
+                    <span id="achievement3">Quick Learner</span>
+                </div>
+            </div>
+
+            <div class="completion-actions">
+                <button class="control-button" onclick="restartDemo()">
+                    <span class="symbol">↺</span> Try New Phrases
+                </button>
+                <button class="control-button" onclick="closeCompletion()">
+                    <span class="symbol">✓</span> Finish Practice
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const prompts = {
+            beginner: [
+                {
+                    text: "Bonjour! Comment allez-vous aujourd'hui?",
+                    guide: "[bohn-ZHOOR koh-mahn tah-lay VOO oh-zhoor-DWEE]"
+                },
+                {
+                    text: "Je m'appelle Marie. Et vous?",
+                    guide: "[zhuh mah-pel mah-REE ay VOO]"
+                },
+                {
+                    text: "J'habite à Paris depuis deux ans.",
+                    guide: "[zhah-beet ah pah-REE duh-pwee duh zahn]"
+                },
+                {
+                    text: "Quel temps fait-il aujourd'hui?",
+                    guide: "[kel tahn feh-teel oh-zhoor-DWEE]"
+                },
+                {
+                    text: "Au revoir et à bientôt!",
+                    guide: "[oh ruh-VWAR ay ah byahn-TOH]"
+                }
+            ],
+            intermediate: [
+                {
+                    text: "Pourriez-vous me recommander un bon restaurant?",
+                    guide: "[poo-ryay VOO muh ruh-koh-mahn-day uhn bohn res-toh-RAHN]"
+                },
+                {
+                    text: "Je pense que le cinéma français est très intéressant.",
+                    guide: "[zhuh pahns kuh luh see-nay-mah frahn-SEH ay treh zahn-tay-reh-SAHN]"
+                },
+                {
+                    text: "Quel est votre film préféré et pourquoi?",
+                    guide: "[kel ay vot-ruh feelm pray-fay-RAY ay poor-KWAH]"
+                },
+                {
+                    text: "J'aimerais voyager en France l'année prochaine.",
+                    guide: "[zhay-muh-ray vwah-yah-ZHAY ahn frahns lah-NAY pro-SHEN]"
+                },
+                {
+                    text: "Comment avez-vous appris le français?",
+                    guide: "[koh-mahn tah-vay VOO ah-PREE luh frahn-SEH]"
+                }
+            ],
+            advanced: [
+                {
+                    text: "Les changements climatiques représentent un défi majeur pour notre génération.",
+                    guide: "[lay shahn-zhuh-mahn klee-mah-teek ruh-pray-zahnt uhn day-fee mah-ZHUR poor not-ruh zhay-nay-rah-SYOHN]"
+                },
+                {
+                    text: "Il faut que nous prenions des mesures concrètes pour protéger l'environnement.",
+                    guide: "[eel foh kuh noo pruh-NYOHN day muh-zur kohn-kret poor pro-tay-ZHAY lahn-vee-roh-nuh-MAHN]"
+                },
+                {
+                    text: "La diversité culturelle enrichit notre société de nombreuses façons.",
+                    guide: "[lah dee-vair-see-tay kool-too-rel ahn-ree-SHEE not-ruh so-syay-TAY duh nohm-bruz fah-SOHN]"
+                },
+                {
+                    text: "Quelles solutions proposez-vous pour améliorer le système éducatif?",
+                    guide: "[kel so-loo-SYOHN pro-po-zay VOO poor ah-may-lyo-RAY luh sees-tem ay-doo-kah-TEEF]"
+                },
+                {
+                    text: "L'intelligence artificielle transforme notre façon de travailler.",
+                    guide: "[lahn-te-lee-zhahns ar-tee-fee-SYEL trahns-FORM not-ruh fah-SOHN duh trah-vah-YAY]"
+                }
+            ]
+        };
+
+        let currentLevel = 'beginner';
+        let currentPromptIndex = 0;
+        let currentStep = 1;
+        const totalSteps = 4;
+
+        function setLevel(level) {
+            currentLevel = level;
+            currentPromptIndex = 0;
+            updatePrompt();
+            
+            // Update active level button
+            document.querySelectorAll('.level-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        function updatePrompt() {
+            const prompt = prompts[currentLevel][currentPromptIndex];
+            document.getElementById('current-prompt').textContent = prompt.text;
+            document.getElementById('current-guide').textContent = prompt.guide;
+            document.getElementById('prompt-counter').textContent = `${currentPromptIndex + 1}/${prompts[currentLevel].length}`;
+        }
+
+        function nextPrompt() {
+            if (currentPromptIndex < prompts[currentLevel].length - 1) {
+                currentPromptIndex++;
+                updatePrompt();
+            }
+        }
+
+        function previousPrompt() {
+            if (currentPromptIndex > 0) {
+                currentPromptIndex--;
+                updatePrompt();
+            }
+        }
+
+        function startListening() {
+            const waveform = document.querySelector('.wave-animation');
+            const feedback = document.querySelector('.feedback-panel');
+            const progressBar = document.querySelector('.progress-bar');
+            
+            waveform.style.display = 'flex';
+            
+            let progress = 0;
+            const progressInterval = setInterval(() => {
+                progress += 2;
+                progressBar.style.width = `${progress}%`;
+                
+                if (progress >= 100) {
+                    clearInterval(progressInterval);
+                    showFeedback();
+                }
+            }, 100);
+        }
+
+        function showFeedback() {
+            const feedback = document.querySelector('.feedback-panel');
+            const stars = document.querySelectorAll('.star');
+            
+            feedback.classList.add('active');
+            
+            // Animate stars
+            setTimeout(() => {
+                stars.forEach((star, index) => {
+                    setTimeout(() => {
+                        star.classList.add('active');
+                    }, index * 200);
+                });
+            }, 500);
+
+            // Animate detailed feedback meters
+            setTimeout(() => {
+                const pronunciationMeter = document.getElementById('pronunciation-meter');
+                const rhythmMeter = document.getElementById('rhythm-meter');
+                const fluencyMeter = document.getElementById('fluency-meter');
+
+                // Random scores for demo
+                pronunciationMeter.style.width = `${Math.random() * 40 + 60}%`;
+                rhythmMeter.style.width = `${Math.random() * 40 + 60}%`;
+                fluencyMeter.style.width = `${Math.random() * 40 + 60}%`;
+            }, 1000);
+        }
+
+        // Add camera initialization
+        async function initializeCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                const videoElement = document.getElementById('camera-feed');
+                videoElement.srcObject = stream;
+            } catch (err) {
+                console.error('Camera access error:', err);
+                const cameraPreview = document.querySelector('.camera-preview');
+                cameraPreview.innerHTML = `
+                    <div style="height: 100%; display: flex; align-items: center; justify-content: center; color: var(--primary-color);">
+                        Please enable camera access to continue
+                    </div>
+                `;
+            }
+        }
+
+        function updateProgress() {
+            const progress = (currentStep / totalSteps) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+        }
+
+        function showStep(step) {
+            document.querySelectorAll('.demo-step').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(`step${step}`).classList.add('active');
+            updateProgress();
+            updateNavigationButtons();
+        }
+
+        function nextStep() {
+            if (currentStep < totalSteps) {
+                currentStep++;
+                showStep(currentStep);
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                showStep(currentStep);
+            }
+        }
+
+        function updateNavigationButtons() {
+            const nextButton = document.getElementById('nextButton');
+            if (currentStep === totalSteps) {
+                nextButton.textContent = 'Finish ↺';
+                nextButton.onclick = showCompletion;
+            } else {
+                nextButton.textContent = 'Next →';
+                nextButton.onclick = nextStep;
+            }
+        }
+
+        function showCompletion() {
+            // Update completion stats
+            document.getElementById('completionLevel').textContent = currentLevel;
+            
+            // Generate random scores
+            const pronunciationScore = Math.floor(Math.random() * 15 + 85);
+            const rhythmScore = Math.floor(Math.random() * 15 + 85);
+            const fluencyScore = Math.floor(Math.random() * 15 + 85);
+            
+            // Update main scores and bars
+            document.getElementById('pronunciationScore').textContent = pronunciationScore + '%';
+            document.getElementById('rhythmScore').textContent = rhythmScore + '%';
+            document.getElementById('fluencyScore').textContent = fluencyScore + '%';
+            
+            document.getElementById('pronunciationBar').style.width = pronunciationScore + '%';
+            document.getElementById('rhythmBar').style.width = rhythmScore + '%';
+            document.getElementById('fluencyBar').style.width = fluencyScore + '%';
+            
+            // Generate sub-scores
+            const nasalScore = Math.floor(Math.random() * 10 + 90);
+            const silentScore = Math.floor(Math.random() * 15 + 80);
+            const liaisonScore = Math.floor(Math.random() * 15 + 85);
+            
+            document.getElementById('nasalScore').textContent = nasalScore + '%';
+            document.getElementById('silentScore').textContent = silentScore + '%';
+            document.getElementById('liaisonScore').textContent = liaisonScore + '%';
+            
+            // Update practice details
+            document.getElementById('phrasesCount').textContent = '5';
+            document.getElementById('practiceDuration').textContent = '3 min';
+            document.getElementById('attemptCount').textContent = '7';
+            
+            // Generate and update strengths and focus areas
+            const strengthsList = document.getElementById('strengthsList');
+            const focusList = document.getElementById('focusList');
+            
+            const strengths = [
+                { skill: 'Nasal Vowels', score: nasalScore },
+                { skill: 'Word Stress', score: Math.floor(Math.random() * 10 + 90) },
+                { skill: 'Basic Grammar', score: Math.floor(Math.random() * 10 + 90) }
+            ];
+            
+            const focusAreas = [
+                { skill: 'Complex Liaisons', score: Math.floor(Math.random() * 10 + 75) },
+                { skill: 'Speed Control', score: Math.floor(Math.random() * 10 + 75) },
+                { skill: 'Intonation', score: Math.floor(Math.random() * 10 + 75) }
+            ];
+            
+            strengthsList.innerHTML = strengths.map(item => 
+                `<li><span class="highlight-score">${item.score}%</span> ${item.skill}</li>`
+            ).join('');
+            
+            focusList.innerHTML = focusAreas.map(item => 
+                `<li><span class="highlight-score">${item.score}%</span> ${item.skill}</li>`
+            ).join('');
+            
+            // Show overlay with animation
+            document.getElementById('completionOverlay').classList.add('visible');
+        }
+
+        function closeCompletion() {
+            document.getElementById('completionOverlay').classList.remove('visible');
+        }
+
+        function restartDemo() {
+            // Reset everything
+            currentStep = 1;
+            currentPromptIndex = 0;
+            
+            // Hide completion overlay
+            closeCompletion();
+            
+            // Show first step
+            showStep(1);
+            
+            // Reset progress
+            updateProgress();
+            
+            // Reset any active feedback
+            document.querySelectorAll('.feedback-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            
+            // Reset meters
+            document.querySelectorAll('.meter-fill').forEach(meter => {
+                meter.style.width = '0%';
+            });
+            
+            // Scroll to top
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Initialize demo
+        document.addEventListener('DOMContentLoaded', () => {
+            showStep(1);
+            initializeCamera();
+        });
+    </script>
+</body>
+</html> 
