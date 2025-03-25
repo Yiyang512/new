@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>French Course Packages - Special Offers</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: #001102;
+      min-height: 100vh;
+      color: white;
+      line-height: 1.5;
+      padding: 20px 0;
+    }
+
+    .pricing-section {
+      width: 100%;
+      max-width: 1000px;
+      padding: 20px 16px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    .pricing-section::before {
+      display: none;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 24px;
+      max-width: 800px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .pricing-title {
+      font-size: 1.75rem;
+      margin-bottom: 8px;
+    }
+
+    .pricing-subtitle {
+      font-size: 0.8rem;
+      line-height: 1.4;
+      max-width: 450px;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      width: 100%;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .pricing-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .pricing-card::after {
+      display: none;
+    }
+
+    .pricing-card:hover {
+      transform: none;
+      box-shadow: none;
+    }
+
+    .card-badge {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: linear-gradient(135deg, rgba(0, 255, 179, 0.15) 0%, rgba(0, 255, 179, 0.05) 100%);
+      color: #00FFB3;
+      padding: 4px 10px;
+      border-radius: 30px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      border: 1px solid rgba(0, 255, 179, 0.2);
+      backdrop-filter: blur(4px);
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 255, 179, 0.15);
+    }
+
+    .card-header {
+      margin-bottom: 12px;
+      padding-right: 70px;
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 2px;
+      letter-spacing: -0.01em;
+    }
+
+    .card-subtitle {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.7rem;
+      line-height: 1.3;
+    }
+
+    @keyframes sparkle {
+      0%, 100% { 
+        opacity: 0;
+        transform: scale(0);
+      }
+      50% { 
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .price-container {
+      margin-bottom: 12px;
+      padding: 16px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sparkle {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    /* Small dots */
+    .sparkle:nth-child(1) {
+      width: 2px;
+      height: 2px;
+      top: 20%;
+      left: 15%;
+      background: rgba(0, 255, 179, 0.6);
+      animation: sparkle 2s infinite 0.1s;
+    }
+
+    .sparkle:nth-child(2) {
+      width: 1.5px;
+      height: 1.5px;
+      top: 30%;
+      right: 25%;
+      background: rgba(0, 255, 179, 0.5);
+      animation: sparkle 2s infinite 0.3s;
+    }
+
+    .sparkle:nth-child(3) {
+      width: 2px;
+      height: 2px;
+      bottom: 30%;
+      left: 30%;
+      background: rgba(0, 255, 179, 0.6);
+      animation: sparkle 2s infinite 0.5s;
+    }
+
+    .sparkle:nth-child(4) {
+      width: 1.5px;
+      height: 1.5px;
+      bottom: 20%;
+      right: 15%;
+      background: rgba(0, 255, 179, 0.5);
+      animation: sparkle 2s infinite 0.7s;
+    }
+
+    /* Additional dots */
+    .sparkle:nth-child(11) {
+      width: 1.2px;
+      height: 1.2px;
+      top: 45%;
+      left: 55%;
+      background: rgba(0, 255, 179, 0.45);
+      animation: sparkle 2s infinite 2.1s;
+    }
+
+    .sparkle:nth-child(12) {
+      width: 1.8px;
+      height: 1.8px;
+      top: 65%;
+      right: 45%;
+      background: rgba(0, 255, 179, 0.55);
+      animation: sparkle 2s infinite 2.3s;
+    }
+
+    .sparkle:nth-child(13) {
+      width: 1.3px;
+      height: 1.3px;
+      bottom: 45%;
+      left: 60%;
+      background: rgba(0, 255, 179, 0.5);
+      animation: sparkle 2s infinite 2.5s;
+    }
+
+    .sparkle:nth-child(14) {
+      width: 1.6px;
+      height: 1.6px;
+      top: 35%;
+      right: 55%;
+      background: rgba(0, 255, 179, 0.6);
+      animation: sparkle 2s infinite 2.7s;
+    }
+
+    .sparkle:nth-child(15) {
+      width: 1.4px;
+      height: 1.4px;
+      bottom: 55%;
+      left: 25%;
+      background: rgba(0, 255, 179, 0.5);
+      animation: sparkle 2s infinite 2.9s;
+    }
+
+    .sparkle:nth-child(16) {
+      width: 1.7px;
+      height: 1.7px;
+      top: 55%;
+      right: 20%;
+      background: rgba(0, 255, 179, 0.55);
+      animation: sparkle 2s infinite 3.1s;
+    }
+
+    .sparkle:nth-child(17) {
+      width: 1.1px;
+      height: 1.1px;
+      bottom: 25%;
+      left: 50%;
+      background: rgba(0, 255, 179, 0.45);
+      animation: sparkle 2s infinite 3.3s;
+    }
+
+    .sparkle:nth-child(18) {
+      width: 1.9px;
+      height: 1.9px;
+      top: 75%;
+      right: 30%;
+      background: rgba(0, 255, 179, 0.6);
+      animation: sparkle 2s infinite 3.5s;
+    }
+
+    .sparkle:nth-child(19) {
+      width: 1.2px;
+      height: 1.2px;
+      bottom: 35%;
+      left: 35%;
+      background: rgba(0, 255, 179, 0.45);
+      animation: sparkle 2s infinite 3.7s;
+    }
+
+    .sparkle:nth-child(20) {
+      width: 1.8px;
+      height: 1.8px;
+      top: 40%;
+      right: 40%;
+      background: rgba(0, 255, 179, 0.55);
+      animation: sparkle 2s infinite 3.9s;
+    }
+
+    .original-price {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.5);
+      text-decoration: line-through;
+      margin-bottom: 2px;
+      font-weight: 500;
+    }
+
+    .current-price {
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: white;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      background: none;
+      -webkit-text-fill-color: white;
+      margin-bottom: 0;
+    }
+
+    .price-suffix {
+      font-size: 1.2rem;
+      color: rgba(255, 255, 255, 0.7);
+      font-weight: 500;
+    }
+
+    .features-list {
+      list-style: none;
+      margin-bottom: 8px;
+      flex-grow: 0;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      margin-bottom: 4px;
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 0.75rem;
+      line-height: 1.3;
+      transition: all 0.2s ease;
+      padding: 3px 6px;
+      border-radius: 8px;
+    }
+
+    .feature-item:hover {
+      transform: none;
+      background: none;
+    }
+
+    .feature-item svg {
+      width: 10px;
+      height: 10px;
+      stroke: #00FFB3;
+      flex-shrink: 0;
+      margin-top: 1px;
+      transition: all 0.2s ease;
+    }
+
+    .feature-item:hover svg {
+      transform: none;
+    }
+
+    .feature-highlight {
+      color: #00FFB3;
+      font-weight: 700;
+      font-size: 0.8rem;
+      transition: all 0.2s ease;
+      position: relative;
+      padding: 0 2px;
+      text-shadow: none;
+    }
+
+    .feature-highlight::after {
+      display: none;
+    }
+
+    .button-group {
+      margin-top: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .cta-button {
+      background: linear-gradient(135deg, #00FFB3 0%, #00cc8f 100%);
+      color: #001102;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+      width: 100%;
+      text-align: center;
+      text-decoration: none;
+      letter-spacing: 0.5px;
+      position: relative;
+      overflow: hidden;
+      text-shadow: none;
+      box-shadow: none;
+    }
+
+    .cta-button::after {
+      display: none;
+    }
+
+    .cta-button:hover {
+      transform: none;
+      box-shadow: none;
+    }
+
+    .secondary-button {
+      background: rgba(255, 255, 255, 0.03);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      padding: 8px 16px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 100%;
+      text-align: center;
+      text-decoration: none;
+      letter-spacing: 0.5px;
+      backdrop-filter: blur(4px);
+      margin-top: 4px;
+    }
+
+    .secondary-button:hover {
+      background: rgba(255, 255, 255, 0.03);
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: none;
+    }
+
+    .savings-text {
+      color: #00FFB3;
+      font-size: 0.7rem;
+      font-weight: 600;
+      margin-top: 6px;
+      text-align: center;
+      letter-spacing: 0.8px;
+      padding: 3px 0;
+      opacity: 0.9;
+      transition: all 0.3s ease;
+      text-shadow: none;
+      text-transform: uppercase;
+    }
+
+    .pricing-card:hover .savings-text {
+      opacity: 0.9;
+    }
+
+    .feature-group {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 8px;
+      margin-top: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .pricing-card:hover .feature-group {
+      border-color: rgba(255, 255, 255, 0.12);
+    }
+
+    .feature-group-title {
+      font-size: 0.65rem;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: rgba(255, 255, 255, 0.7);
+      position: relative;
+      display: inline-block;
+      padding-left: 10px;
+    }
+
+    .feature-group-title::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 3px;
+      height: 3px;
+      background: #00FFB3;
+      border-radius: 50%;
+      box-shadow: 0 0 12px rgba(0, 255, 179, 0.4);
+    }
+
+    @media (max-width: 992px) {
+      .pricing-grid {
+        gap: 16px;
+      }
+
+      .pricing-title {
+        font-size: 1.5rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .pricing-grid {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+      }
+
+      .pricing-section {
+        padding: 20px 16px;
+      }
+
+      .pricing-title {
+        font-size: 1.4rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 12px 0;
+      }
+
+      .pricing-section {
+        padding: 16px 12px;
+      }
+
+      .pricing-card {
+        padding: 14px;
+      }
+
+      .card-header {
+        padding-right: 60px;
+      }
+
+      .button-group {
+        gap: 4px;
+      }
+    }
+
+    .coming-soon-text {
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 0.85rem;
+      font-weight: 500;
+      text-align: center;
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      margin-bottom: 4px;
+    }
+  </style>
+</head>
+<body>
+  <section class="pricing-section">
+    <div class="section-header">
+    </div>
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <div class="card-badge">Save $400</div>
+        <div class="card-header">
+          <h2 class="card-title">French A0-A2 Foundation</h2>
+          <p class="card-subtitle">Master fundamental French with structured progression through elementary levels</p>
+        </div>
+        <div class="price-container">
+          <div class="sparkle"></div>
+          <div class="sparkle"></div>
+          <div class="sparkle"></div>
+          <div class="sparkle"></div>
+          <div class="sparkle"></div>
+          <div class="sparkle"></div>
+          <div class="sparkle"></div>
+          <div class="sparkle"></div>
+          <div class="sparkle"></div>
+          <div class="sparkle"></div>
+          <div class="sparkle"></div>
+          <div class="sparkle"></div>
+          <div class="sparkle"></div>
+          <div class="sparkle"></div>
+          <div class="sparkle"></div>
+          <div class="sparkle"></div>
+          <div class="sparkle"></div>
+          <div class="sparkle"></div>
+          <div class="sparkle"></div>
+          <div class="sparkle"></div>
+          <div class="original-price">$1,699.99</div>
+          <div class="current-price">$999<span class="price-suffix">.99</span></div>
+        </div>
+        <ul class="features-list">
+          <li class="feature-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2v20"/>
+              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+            </svg>
+            One-time purchase, lifetime access
+          </li>
+          <li class="feature-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            Structured A0 Beginner Curriculum
+          </li>
+          <li class="feature-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            Comprehensive A1 Elementary Program
+          </li>
+          <li class="feature-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            Advanced A2 Pre-Intermediate Course
+          </li>
+          <li class="feature-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+            CLB 5 Guaranteed
+          </li>
+          <div class="feature-group">
+            <h4 class="feature-group-title">Comprehensive Learning Materials</h4>
+            <li class="feature-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+              </svg>
+              <span><span class="feature-highlight">5+</span> Comprehensive eBooks</span>
+            </li>
+            <li class="feature-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M23 7l-7 5 7 5V7z"/>
+                <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+              </svg>
+              <span><span class="feature-highlight">200+</span> Grammar Video Lessons</span>
+            </li>
+            <li class="feature-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 11l3 3L22 4"/>
+                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+              </svg>
+              <span><span class="feature-highlight">2,500+</span> Practice Quizzes</span>
+            </li>
+          </div>
+          <div class="feature-group">
+            <h4 class="feature-group-title">Additional Benefits</h4>
+            <li class="feature-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 16v-4"/>
+                <path d="M12 8h.01"/>
+              </svg>
+              Professional Tutor Support
+            </li>
+            <li class="feature-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                <polyline points="22 4 12 14.01 9 11.01"/>
+              </svg>
+              DELF A2 Certification Preparation
+            </li>
+          </div>
+          <div class="feature-group">
+            <h4 class="feature-group-title">Course Methodology</h4>
+            <li class="feature-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+              </svg>
+              Progressive Learning Path
+            </li>
+            <li class="feature-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+                <line x1="9" y1="9" x2="9.01" y2="9"/>
+                <line x1="15" y1="9" x2="15.01" y2="9"/>
+              </svg>
+              Immersive Learning Experience
+            </li>
+            <li class="feature-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 18v-6a9 9 0 0 1 18 0v6"/>
+                <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>
+              </svg>
+              Native Speaker Audio Content
+            </li>
+          </div>
+          <div class="feature-group">
+            <h4 class="feature-group-title">Assessment & Progress</h4>
+            <li class="feature-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/>
+                <line x1="4" y1="22" x2="4" y2="15"/>
+              </svg>
+              Progress Tracking Dashboard
+            </li>
+            <li class="feature-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                <path d="M21 12H3M12 3v18"/>
+              </svg>
+              Monthly Progress Assessments
+            </li>
+            <li class="feature-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 20h9"/>
+                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+              </svg>
+              Personalized Study Plans
+            </li>
+          </div>
+          <div class="feature-group">
+            <h4 class="feature-group-title">Interactive Learning</h4>
+            <li class="feature-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+              </svg>
+              Weekly Live Group Sessions
+            </li>
+            <li class="feature-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M15.5 3H5a2 2 0 0 0-2 2v14c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2V8.5L15.5 3z"/>
+                <path d="M15 3v6h6"/>
+              </svg>
+              Real-world Conversation Practice
+            </li>
+            <li class="feature-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+                <path d="M12 6v6l4 2"/>
+              </svg>
+              24/7 Community Access
+            </li>
+          </div>
+          <div class="feature-group">
+            <h4 class="feature-group-title">Course Duration</h4>
+            <li class="feature-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+              <span>3-4 months at <span class="feature-highlight">6 hours/week</span></span>
+            </li>
+            <li class="feature-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 8v4l3 3"/>
+                <path d="M3.05 11a9 9 0 1 1 .5 4"/>
+              </svg>
+              <span>Fast-track option available</span>
+            </li>
+          </div>
+        </ul>
+        <div class="button-group">
+          <a href="https://simplefrenchwithhems.com/order?link=otyDq&pricing_plan=ANzpQyxdBX" target="_blank" class="cta-button">Secure Your Spot</a>
+          <a href="https://simplefrenchwithhems.com/order?link=otyDq&pricing_plan=4lW504qwG3" target="_blank" class="secondary-button">Compare Plans</a>
+          <div class="savings-text">Special Offer • 41% Discount</div>
+        </div>
+      </div>
+
+      <div class="pricing-card">
+        <div class="card-badge">Premium Value</div>
+        <div class="card-header">
+          <h2 class="card-title">French A0-B2 Mastery</h2>
+          <p class="card-subtitle">Comprehensive journey from beginner to upper-intermediate proficiency</p>
+        </div>
+        <div class="price-container">
+          <div class="sparkle"></div>
+          <div class="sparkle"></div>
+          <div class="sparkle"></div>
+          <div class="sparkle"></div>
+          <div class="sparkle"></div>
+          <div class="sparkle"></div>
+          <div class="sparkle"></div>
+          <div class="sparkle"></div>
+          <div class="sparkle"></div>
+          <div class="sparkle"></div>
+          <div class="sparkle"></div>
+          <div class="sparkle"></div>
+          <div class="sparkle"></div>
+          <div class="sparkle"></div>
+          <div class="sparkle"></div>
+          <div class="sparkle"></div>
+          <div class="sparkle"></div>
+          <div class="sparkle"></div>
+          <div class="sparkle"></div>
+          <div class="sparkle"></div>
+          <div class="original-price">$1,999.99</div>
+          <div class="current-price">$1,599<span class="price-suffix">.99</span></div>
+        </div>
+        <ul class="features-list">
+          <li class="feature-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2v20"/>
+              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+            </svg>
+            One-time purchase, lifetime access
+          </li>
+          <li class="feature-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            Complete A0-A2 Foundation Package
+          </li>
+          <li class="feature-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            Intensive B1 Intermediate Training
+          </li>
+          <li class="feature-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            Advanced B2 Language Mastery
+          </li>
+          <li class="feature-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+            CLB 7 Guaranteed
+          </li>
+          <div class="feature-group">
+            <h4 class="feature-group-title">Enhanced Learning Materials</h4>
+            <li class="feature-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+              </svg>
+              <span><span class="feature-highlight">10+</span> Comprehensive eBooks</span>
+            </li>
+            <li class="feature-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M23 7l-7 5 7 5V7z"/>
+                <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+              </svg>
+              <span><span class="feature-highlight">400+</span> Grammar Video Lessons</span>
+            </li>
+            <li class="feature-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 11l3 3L22 4"/>
+                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+              </svg>
+              <span><span class="feature-highlight">5,000+</span> Practice Quizzes</span>
+            </li>
+          </div>
+          <div class="feature-group">
+            <h4 class="feature-group-title">Premium Benefits</h4>
+            <li class="feature-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+              Dedicated 1-on-1 Mentorship
+            </li>
+            <li class="feature-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                <polyline points="22 4 12 14.01 9 11.01"/>
+              </svg>
+              Complete DELF B2 Exam Preparation
+            </li>
+            <li class="feature-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+              Perpetual Access to Course Updates
+            </li>
+          </div>
+          <div class="feature-group">
+            <h4 class="feature-group-title">Course Methodology</h4>
+            <li class="feature-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+              </svg>
+              Progressive Learning Path
+            </li>
+            <li class="feature-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+                <line x1="9" y1="9" x2="9.01" y2="9"/>
+                <line x1="15" y1="9" x2="15.01" y2="9"/>
+              </svg>
+              Immersive Learning Experience
+            </li>
+            <li class="feature-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 18v-6a9 9 0 0 1 18 0v6"/>
+                <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>
+              </svg>
+              Native Speaker Audio Content
+            </li>
+          </div>
+          <div class="feature-group">
+            <h4 class="feature-group-title">Assessment & Progress</h4>
+            <li class="feature-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/>
+                <line x1="4" y1="22" x2="4" y2="15"/>
+              </svg>
+              Progress Tracking Dashboard
+            </li>
+            <li class="feature-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                <path d="M21 12H3M12 3v18"/>
+              </svg>
+              Monthly Progress Assessments
+            </li>
+            <li class="feature-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 20h9"/>
+                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+              </svg>
+              Personalized Study Plans
+            </li>
+          </div>
+          <div class="feature-group">
+            <h4 class="feature-group-title">Interactive Learning</h4>
+            <li class="feature-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+              </svg>
+              Weekly Live Group Sessions
+            </li>
+            <li class="feature-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M15.5 3H5a2 2 0 0 0-2 2v14c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2V8.5L15.5 3z"/>
+                <path d="M15 3v6h6"/>
+              </svg>
+              Real-world Conversation Practice
+            </li>
+            <li class="feature-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+                <path d="M12 6v6l4 2"/>
+              </svg>
+              24/7 Community Access
+            </li>
+          </div>
+          <div class="feature-group">
+            <h4 class="feature-group-title">Course Duration</h4>
+            <li class="feature-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+              <span>6-8 months at <span class="feature-highlight">6 hours/week</span></span>
+            </li>
+            <li class="feature-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 8v4l3 3"/>
+                <path d="M3.05 11a9 9 0 1 1 .5 4"/>
+              </svg>
+              <span>Fast-track option available</span>
+            </li>
+          </div>
+        </ul>
+        <div class="button-group">
+          <div class="coming-soon-text">Check out our A0-A2 Foundation course first!</div>
+          <div class="savings-text">Full Package Coming Soon! ...</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>
+</html> 
