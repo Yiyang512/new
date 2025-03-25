@@ -437,6 +437,35 @@
             pointer-events: none;
         }
 
+        .theme-selector {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .theme-btn {
+            padding: 0.8rem 1.5rem;
+            border: 2px solid var(--primary-color);
+            border-radius: 12px;
+            background-color: transparent;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .theme-btn:hover {
+            background: rgba(0, 255, 153, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .theme-btn.active {
+            background-color: var(--primary-color);
+            color: var(--background-color);
+        }
+
         @media (max-width: 768px) {
             body {
                 padding: 10px;
@@ -480,6 +509,14 @@
             <button class="level-btn" data-level="advanced">Advanced</button>
         </div>
 
+        <div class="theme-selector">
+            <button class="theme-btn" data-theme="all">All Themes</button>
+            <button class="theme-btn" data-theme="restaurant">Restaurant</button>
+            <button class="theme-btn" data-theme="travel">Travel</button>
+            <button class="theme-btn" data-theme="shopping">Shopping</button>
+            <button class="theme-btn" data-theme="business">Business</button>
+        </div>
+
         <div class="dialogue-container">
             <div id="dialogueContent"></div>
             <div class="feedback"></div>
@@ -492,6 +529,7 @@
             beginner: [
                 {
                     difficulty: 1,
+                    theme: 'restaurant',
                     lines: [
                         {
                             character: "Server",
@@ -539,6 +577,7 @@
                 },
                 {
                     difficulty: 1,
+                    theme: 'restaurant',
                     lines: [
                         {
                             character: "Bakery Staff",
@@ -586,6 +625,7 @@
                 },
                 {
                     difficulty: 1,
+                    theme: 'restaurant',
                     lines: [
                         {
                             character: "Metro Staff",
@@ -630,11 +670,204 @@
                             ]
                         }
                     ]
+                },
+                {
+                    difficulty: 1,
+                    theme: 'restaurant',
+                    lines: [
+                        {
+                            character: "Shopkeeper",
+                            correct: "C'est tout pour aujourd'hui?",
+                            options: [
+                                {
+                                    text: "C'est tout pour aujourd'hui?",
+                                    translation: "Is that all for today?",
+                                    hint: "This is how shopkeepers check if you need anything else"
+                                },
+                                {
+                                    text: "Vous voulez autre chose?",
+                                    translation: "Do you want something else?",
+                                    hint: "This is asking from the wrong perspective"
+                                },
+                                {
+                                    text: "À bientôt!",
+                                    translation: "See you soon!",
+                                    hint: "This is a goodbye, not a question about purchases"
+                                }
+                            ]
+                        },
+                        {
+                            character: "You",
+                            correct: "Oui, c'est tout. Merci beaucoup",
+                            options: [
+                                {
+                                    text: "Oui, c'est tout. Merci beaucoup",
+                                    translation: "Yes, that's all. Thank you very much",
+                                    hint: "This politely confirms you're done shopping"
+                                },
+                                {
+                                    text: "Non, au revoir",
+                                    translation: "No, goodbye",
+                                    hint: "This is confusing - saying no but leaving"
+                                },
+                                {
+                                    text: "Je ne sais pas",
+                                    translation: "I don't know",
+                                    hint: "You should know if you need anything else"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    difficulty: 1,
+                    theme: 'restaurant',
+                    lines: [
+                        {
+                            character: "Restaurant Host",
+                            correct: "Pour combien de personnes?",
+                            options: [
+                                {
+                                    text: "Pour combien de personnes?",
+                                    translation: "For how many people?",
+                                    hint: "This is how hosts ask about party size"
+                                },
+                                {
+                                    text: "Vous êtes combien?",
+                                    translation: "How many are you?",
+                                    hint: "This is too informal for a restaurant setting"
+                                },
+                                {
+                                    text: "Quelle heure est-il?",
+                                    translation: "What time is it?",
+                                    hint: "This is unrelated to seating guests"
+                                }
+                            ]
+                        },
+                        {
+                            character: "You",
+                            correct: "Pour deux personnes, s'il vous plaît",
+                            options: [
+                                {
+                                    text: "Pour deux personnes, s'il vous plaît",
+                                    translation: "For two people, please",
+                                    hint: "This clearly states your party size"
+                                },
+                                {
+                                    text: "Je suis seul",
+                                    translation: "I am alone",
+                                    hint: "This contradicts asking for a table for two"
+                                },
+                                {
+                                    text: "Nous sommes quatre",
+                                    translation: "We are four",
+                                    hint: "This is incorrect if you're a party of two"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    difficulty: 1,
+                    theme: 'shopping',
+                    lines: [
+                        {
+                            character: "Clothing Store Staff",
+                            correct: "Quelle taille cherchez-vous?",
+                            options: [
+                                {
+                                    text: "Quelle taille cherchez-vous?",
+                                    translation: "What size are you looking for?",
+                                    hint: "This is how staff asks about clothing size"
+                                },
+                                {
+                                    text: "Quel âge avez-vous?",
+                                    translation: "How old are you?",
+                                    hint: "This is too personal for shopping"
+                                },
+                                {
+                                    text: "Vous payez comment?",
+                                    translation: "How will you pay?",
+                                    hint: "Payment method comes after finding the right size"
+                                }
+                            ]
+                        },
+                        {
+                            character: "You",
+                            correct: "Je fais du medium en général",
+                            options: [
+                                {
+                                    text: "Je fais du medium en général",
+                                    translation: "I usually wear medium",
+                                    hint: "This clearly states your size"
+                                },
+                                {
+                                    text: "Je ne sais pas",
+                                    translation: "I don't know",
+                                    hint: "You should know your usual size"
+                                },
+                                {
+                                    text: "C'est trop cher",
+                                    translation: "It's too expensive",
+                                    hint: "Price hasn't been discussed yet"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    difficulty: 1,
+                    theme: 'travel',
+                    lines: [
+                        {
+                            character: "Tourist Office",
+                            correct: "Que souhaitez-vous visiter?",
+                            options: [
+                                {
+                                    text: "Que souhaitez-vous visiter?",
+                                    translation: "What would you like to visit?",
+                                    hint: "This helps plan tourist activities"
+                                },
+                                {
+                                    text: "D'où venez-vous?",
+                                    translation: "Where are you from?",
+                                    hint: "Origin isn't relevant to sightseeing plans"
+                                },
+                                {
+                                    text: "Au revoir!",
+                                    translation: "Goodbye!",
+                                    hint: "This ends the conversation without getting information"
+                                }
+                            ]
+                        },
+                        {
+                            character: "You",
+                            correct: "Je voudrais voir les musées principaux",
+                            options: [
+                                {
+                                    text: "Je voudrais voir les musées principaux",
+                                    translation: "I would like to see the main museums",
+                                    hint: "This clearly states your sightseeing interest"
+                                },
+                                {
+                                    text: "Je suis fatigué",
+                                    translation: "I am tired",
+                                    hint: "This doesn't help plan your visit"
+                                },
+                                {
+                                    text: "Je ne parle pas français",
+                                    translation: "I don't speak French",
+                                    hint: "You're already speaking French"
+                                }
+                            ]
+                        }
+                    ]
                 }
             ],
             intermediate: [
                 {
                     difficulty: 2,
+                    theme: 'restaurant',
                     lines: [
                         {
                             character: "Hotel Receptionist",
@@ -682,6 +915,7 @@
                 },
                 {
                     difficulty: 2,
+                    theme: 'restaurant',
                     lines: [
                         {
                             character: "Doctor",
@@ -729,6 +963,7 @@
                 },
                 {
                     difficulty: 2,
+                    theme: 'restaurant',
                     lines: [
                         {
                             character: "Pharmacist",
@@ -773,11 +1008,204 @@
                             ]
                         }
                     ]
+                },
+                {
+                    difficulty: 2,
+                    theme: 'restaurant',
+                    lines: [
+                        {
+                            character: "Travel Agent",
+                            correct: "Quelle est votre destination préférée?",
+                            options: [
+                                {
+                                    text: "Quelle est votre destination préférée?",
+                                    translation: "What is your preferred destination?",
+                                    hint: "The agent needs to know where you want to go"
+                                },
+                                {
+                                    text: "Quand partez-vous?",
+                                    translation: "When are you leaving?",
+                                    hint: "The destination should be decided before the date"
+                                },
+                                {
+                                    text: "Avez-vous un passeport?",
+                                    translation: "Do you have a passport?",
+                                    hint: "This is about documentation, not destination preference"
+                                }
+                            ]
+                        },
+                        {
+                            character: "You",
+                            correct: "Je voudrais aller à la côte d'Azur en été",
+                            options: [
+                                {
+                                    text: "Je voudrais aller à la côte d'Azur en été",
+                                    translation: "I would like to go to the French Riviera in summer",
+                                    hint: "This specifies both location and timing"
+                                },
+                                {
+                                    text: "Je ne voyage jamais",
+                                    translation: "I never travel",
+                                    hint: "This contradicts seeking travel advice"
+                                },
+                                {
+                                    text: "C'est trop cher",
+                                    translation: "It's too expensive",
+                                    hint: "Price hasn't been discussed yet"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    difficulty: 2,
+                    theme: 'restaurant',
+                    lines: [
+                        {
+                            character: "Real Estate Agent",
+                            correct: "Quel type de logement recherchez-vous?",
+                            options: [
+                                {
+                                    text: "Quel type de logement recherchez-vous?",
+                                    translation: "What type of housing are you looking for?",
+                                    hint: "The agent needs to know your housing preferences"
+                                },
+                                {
+                                    text: "Où habitez-vous maintenant?",
+                                    translation: "Where do you live now?",
+                                    hint: "Current location isn't relevant yet"
+                                },
+                                {
+                                    text: "Avez-vous des animaux?",
+                                    translation: "Do you have pets?",
+                                    hint: "Pet policy comes after finding a suitable property"
+                                }
+                            ]
+                        },
+                        {
+                            character: "You",
+                            correct: "Je cherche un appartement avec deux chambres et un balcon",
+                            options: [
+                                {
+                                    text: "Je cherche un appartement avec deux chambres et un balcon",
+                                    translation: "I'm looking for an apartment with two bedrooms and a balcony",
+                                    hint: "This clearly states your housing requirements"
+                                },
+                                {
+                                    text: "Je ne veux pas déménager",
+                                    translation: "I don't want to move",
+                                    hint: "This contradicts looking for housing"
+                                },
+                                {
+                                    text: "C'est pour mon chat",
+                                    translation: "It's for my cat",
+                                    hint: "This doesn't address the housing type question"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    difficulty: 2,
+                    theme: 'business',
+                    lines: [
+                        {
+                            character: "Client",
+                            correct: "Pouvez-vous me faire un devis détaillé?",
+                            options: [
+                                {
+                                    text: "Pouvez-vous me faire un devis détaillé?",
+                                    translation: "Can you provide me with a detailed quote?",
+                                    hint: "This is a common business request"
+                                },
+                                {
+                                    text: "Quel est votre nom?",
+                                    translation: "What is your name?",
+                                    hint: "Names should be established already"
+                                },
+                                {
+                                    text: "Je dois partir",
+                                    translation: "I need to leave",
+                                    hint: "This ends the meeting prematurely"
+                                }
+                            ]
+                        },
+                        {
+                            character: "You",
+                            correct: "Bien sûr, je vous l'envoie par email demain",
+                            options: [
+                                {
+                                    text: "Bien sûr, je vous l'envoie par email demain",
+                                    translation: "Of course, I'll send it by email tomorrow",
+                                    hint: "This professionally confirms the request"
+                                },
+                                {
+                                    text: "Je ne sais pas faire ça",
+                                    translation: "I don't know how to do that",
+                                    hint: "This shows lack of professionalism"
+                                },
+                                {
+                                    text: "C'est trop compliqué",
+                                    translation: "It's too complicated",
+                                    hint: "This avoids professional responsibility"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    difficulty: 2,
+                    theme: 'shopping',
+                    lines: [
+                        {
+                            character: "Electronics Store Staff",
+                            correct: "Recherchez-vous des caractéristiques particulières?",
+                            options: [
+                                {
+                                    text: "Recherchez-vous des caractéristiques particulières?",
+                                    translation: "Are you looking for specific features?",
+                                    hint: "This helps narrow down product options"
+                                },
+                                {
+                                    text: "Vous habitez où?",
+                                    translation: "Where do you live?",
+                                    hint: "Location isn't relevant to product features"
+                                },
+                                {
+                                    text: "Vous avez faim?",
+                                    translation: "Are you hungry?",
+                                    hint: "This is inappropriate for electronics shopping"
+                                }
+                            ]
+                        },
+                        {
+                            character: "You",
+                            correct: "Je veux un grand écran et une bonne batterie",
+                            options: [
+                                {
+                                    text: "Je veux un grand écran et une bonne batterie",
+                                    translation: "I want a large screen and good battery life",
+                                    hint: "This clearly states your product requirements"
+                                },
+                                {
+                                    text: "Je ne sais pas utiliser les ordinateurs",
+                                    translation: "I don't know how to use computers",
+                                    hint: "This contradicts shopping for electronics"
+                                },
+                                {
+                                    text: "Je préfère les livres",
+                                    translation: "I prefer books",
+                                    hint: "This is irrelevant to electronics shopping"
+                                }
+                            ]
+                        }
+                    ]
                 }
             ],
             advanced: [
                 {
                     difficulty: 3,
+                    theme: 'restaurant',
                     lines: [
                         {
                             character: "Interviewer",
@@ -819,6 +1247,7 @@
                 },
                 {
                     difficulty: 3,
+                    theme: 'restaurant',
                     lines: [
                         {
                             character: "Bank Advisor",
@@ -866,6 +1295,7 @@
                 },
                 {
                     difficulty: 3,
+                    theme: 'restaurant',
                     lines: [
                         {
                             character: "HR Manager",
@@ -910,6 +1340,150 @@
                             ]
                         }
                     ]
+                },
+                {
+                    difficulty: 3,
+                    theme: 'restaurant',
+                    lines: [
+                        {
+                            character: "Business Partner",
+                            correct: "Comment voyez-vous l'évolution du marché dans les cinq prochaines années?",
+                            options: [
+                                {
+                                    text: "Comment voyez-vous l'évolution du marché dans les cinq prochaines années?",
+                                    translation: "How do you see the market evolving in the next five years?",
+                                    hint: "This is about long-term market vision"
+                                },
+                                {
+                                    text: "Quel est votre chiffre d'affaires?",
+                                    translation: "What is your turnover?",
+                                    hint: "This is about current finances, not future vision"
+                                },
+                                {
+                                    text: "Où est votre bureau?",
+                                    translation: "Where is your office?",
+                                    hint: "Location is not relevant to market trends"
+                                }
+                            ]
+                        },
+                        {
+                            character: "You",
+                            correct: "Je prévois une forte croissance dans le secteur numérique",
+                            options: [
+                                {
+                                    text: "Je prévois une forte croissance dans le secteur numérique",
+                                    translation: "I forecast strong growth in the digital sector",
+                                    hint: "This shows market analysis and vision"
+                                },
+                                {
+                                    text: "Je ne suis pas économiste",
+                                    translation: "I'm not an economist",
+                                    hint: "This avoids giving a business perspective"
+                                },
+                                {
+                                    text: "Je préfère parler d'autre chose",
+                                    translation: "I prefer to talk about something else",
+                                    hint: "This evades the market discussion"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    difficulty: 3,
+                    theme: 'restaurant',
+                    lines: [
+                        {
+                            character: "Conference Moderator",
+                            correct: "Quelle est votre opinion sur l'intelligence artificielle?",
+                            options: [
+                                {
+                                    text: "Quelle est votre opinion sur l'intelligence artificielle?",
+                                    translation: "What is your opinion on artificial intelligence?",
+                                    hint: "This asks for expert opinion on AI"
+                                },
+                                {
+                                    text: "Avez-vous faim?",
+                                    translation: "Are you hungry?",
+                                    hint: "This is inappropriate for a conference setting"
+                                },
+                                {
+                                    text: "Quel temps fait-il?",
+                                    translation: "What's the weather like?",
+                                    hint: "Weather is irrelevant to an AI discussion"
+                                }
+                            ]
+                        },
+                        {
+                            character: "You",
+                            correct: "L'IA va révolutionner notre façon de travailler et de vivre",
+                            options: [
+                                {
+                                    text: "L'IA va révolutionner notre façon de travailler et de vivre",
+                                    translation: "AI will revolutionize how we work and live",
+                                    hint: "This provides a thoughtful perspective on AI's impact"
+                                },
+                                {
+                                    text: "Je n'utilise pas d'ordinateur",
+                                    translation: "I don't use computers",
+                                    hint: "This is unlikely for someone at a tech conference"
+                                },
+                                {
+                                    text: "Je dois partir maintenant",
+                                    translation: "I need to leave now",
+                                    hint: "This avoids engaging in the discussion"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    difficulty: 3,
+                    theme: 'business',
+                    lines: [
+                        {
+                            character: "Investment Advisor",
+                            correct: "Quel est votre profil de risque en matière d'investissement?",
+                            options: [
+                                {
+                                    text: "Quel est votre profil de risque en matière d'investissement?",
+                                    translation: "What is your investment risk profile?",
+                                    hint: "This assesses investment preferences"
+                                },
+                                {
+                                    text: "Combien gagnez-vous?",
+                                    translation: "How much do you earn?",
+                                    hint: "This is too direct about personal finances"
+                                },
+                                {
+                                    text: "Avez-vous des enfants?",
+                                    translation: "Do you have children?",
+                                    hint: "Family status comes later in planning"
+                                }
+                            ]
+                        },
+                        {
+                            character: "You",
+                            correct: "Je préfère des investissements à risque modéré avec un rendement stable",
+                            options: [
+                                {
+                                    text: "Je préfère des investissements à risque modéré avec un rendement stable",
+                                    translation: "I prefer moderate-risk investments with stable returns",
+                                    hint: "This shows clear investment preferences"
+                                },
+                                {
+                                    text: "Je ne veux pas perdre d'argent",
+                                    translation: "I don't want to lose money",
+                                    hint: "This is too simplistic for investment planning"
+                                },
+                                {
+                                    text: "Je ne comprends pas la finance",
+                                    translation: "I don't understand finance",
+                                    hint: "This shows lack of financial literacy"
+                                }
+                            ]
+                        }
+                    ]
                 }
             ]
         };
@@ -921,11 +1495,21 @@
         const maxScore = 100;
         let bonusPoints = 0;
         let achievements = new Set();
+        let currentTheme = 'all';
 
         const levelButtons = document.querySelectorAll('.level-btn');
         const dialogueContent = document.getElementById('dialogueContent');
         const feedback = document.querySelector('.feedback');
         const nextBtn = document.querySelector('.next-btn');
+        const themeButtons = document.querySelectorAll('.theme-btn');
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
 
         function createDialogueLine(line) {
             const div = document.createElement('div');
@@ -941,7 +1525,9 @@
             placeholder.selected = true;
             select.appendChild(placeholder);
             
-            line.options.forEach(option => {
+            const shuffledOptions = shuffleArray([...line.options]);
+            
+            shuffledOptions.forEach(option => {
                 const optionElement = document.createElement('option');
                 optionElement.value = option.text;
                 optionElement.textContent = option.text;
@@ -981,7 +1567,19 @@
 
         function loadDialogue() {
             dialogueContent.innerHTML = '';
-            const dialogue = dialogues[currentLevel][currentDialogue];
+            let filteredDialogues = dialogues[currentLevel];
+            
+            if (currentTheme !== 'all') {
+                filteredDialogues = filteredDialogues.filter(dialogue => 
+                    dialogue.theme === currentTheme
+                );
+            }
+            
+            if (currentDialogue >= filteredDialogues.length) {
+                currentDialogue = 0;
+            }
+            
+            const dialogue = filteredDialogues[currentDialogue];
             
             const difficultyDiv = document.createElement('div');
             difficultyDiv.className = 'difficulty-indicator';
@@ -1049,10 +1647,17 @@
                         ${streakBonus ? `<br>Streak bonus: +${streakBonus}` : ''}
                     </div>
                 `;
+                feedback.className = 'feedback success';
+                feedback.style.display = 'block';
                 
-                if (currentDialogue === dialogues[currentLevel].length - 1) {
-                    setTimeout(showLevelComplete, 1000);
-                }
+                setTimeout(() => {
+                    if (currentDialogue === dialogues[currentLevel].length - 1) {
+                        showLevelComplete();
+                    } else {
+                        currentDialogue++;
+                        loadDialogue();
+                    }
+                }, 1000);
             } else {
                 streak = 0;
                 feedback.innerHTML = `
@@ -1060,7 +1665,7 @@
                     <div>Keep trying!</div>
                 `;
                 feedback.className = 'feedback error';
-                nextBtn.classList.remove('show');
+                feedback.style.display = 'block';
             }
             
             document.querySelector('.score-display').textContent = `Score: ${totalScore}/${maxScore}`;
@@ -1123,6 +1728,16 @@
                 levelButtons.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 currentLevel = btn.dataset.level;
+                currentDialogue = 0;
+                loadDialogue();
+            });
+        });
+
+        themeButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                themeButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentTheme = btn.dataset.theme;
                 currentDialogue = 0;
                 loadDialogue();
             });
