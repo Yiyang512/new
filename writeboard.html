@@ -1415,13 +1415,13 @@
     <!-- Step 1: Topic Selection -->
     <div id="topicSelection">
         <select id="levelSelect">
-            <option value="">Select Level (A1 - A2)</option>
+            <option value="">Select Level (A1 - C2)</option>
             <option value="A1">A1 - Beginner</option>
             <option value="A2">A2 - Elementary</option>
-            <option value="A2">B1 - Intermediate</option>
-            <option value="A2">B2 - Upper Intermediate</option>
+            <option value="B1">B1 - Intermediate</option>
+            <option value="B2">B2 - Upper Intermediate</option>
             <option value="C1">C1 - Advanced</option>
-            <option value="A2">C2 - Proficient</option>
+            <option value="C2">C2 - Proficient</option>
         </select>
         <button class="btn-green" onclick="generateTopic()">Generate Topic</button>
         <button class="btn-red" onclick="randomizeTopic()">Randomize Topic</button>
@@ -1642,37 +1642,43 @@
                 "Introduce yourself in French.",
                 "Describe your daily routine.",
                 "Write an invitation letter.",
-                // ... rest of A1 topics ...
+                "Talk about your family.",
+                "Write about your favorite food."
             ],
             A2: [
                 "Write about your last vacation.",
                 "Describe your dream house.",
                 "Book a hotel room in French.",
-                // ... rest of A2 topics ...
+                "Talk about your hobbies.",
+                "Write about your neighborhood."
             ],
-            A2: [
+            B1: [
                 "Pros and cons of living in a big city.",
                 "Describe a moment when you helped someone.",
                 "Importance of learning French.",
-                // ... rest of A2 topics ...
+                "Describe your ideal job.",
+                "Write about a cultural experience."
             ],
-            A2: [
+            B2: [
                 "Impact of social media on relationships.",
                 "Write a job application letter.",
                 "Technology makes life better - Agree or disagree?",
-                // ... rest of A2 topics ...
+                "Describe a challenge you've overcome.",
+                "Compare education systems in different countries."
             ],
             C1: [
                 "Effects of climate change on the economy.",
                 "Why should students learn multiple languages?",
                 "Ethical implications of AI.",
-                // ... rest of C1 topics ...
+                "Analyze the role of media in modern society.",
+                "Discuss work-life balance in the digital age."
             ],
-            A2: [
+            C2: [
                 "Globalization and language diversity.",
                 "The role of literature in society.",
                 "The advantages and disadvantages of free speech.",
-                // ... rest of A2 topics ...
+                "Analyze philosophical perspectives on happiness.",
+                "Critique modern art movements."
             ]
         };
 
@@ -2302,25 +2308,43 @@
             const text = document.getElementById('textEditor').innerText;
             const assessmentPanel = document.getElementById('assessmentPanel');
             
+            console.log("Starting assessment with text:", text.substring(0, 50) + "...");
+            
+            // Don't run assessment if text is empty or placeholder
+            if (!text || text.trim() === '' || text === 'Type your response in French here...') {
+                console.log("Text is empty or placeholder, skipping assessment");
+                return;
+            }
+            
             // Show loading state
             assessmentPanel.classList.remove('hidden');
             showLoadingState();
 
             try {
+                console.log("Analyzing text metrics...");
                 // Analyze text metrics
                 const metrics = analyzeTextMetrics(text);
+                console.log("Text metrics:", metrics);
                 
+                console.log("Analyzing vocabulary...");
                 // Analyze vocabulary
                 const vocabAnalysis = analyzeVocabulary(text);
+                console.log("Vocabulary analysis:", vocabAnalysis);
                 
+                console.log("Assessing grammar...");
                 // Assess grammar (using existing LanguageTool API)
                 const grammarAnalysis = await checkGrammarForAssessment(text);
+                console.log("Grammar analysis:", grammarAnalysis);
                 
+                console.log("Determining CEFR level...");
                 // Determine CEFR level
                 const level = determineCEFRLevel(metrics, vocabAnalysis, grammarAnalysis);
+                console.log("Determined CEFR level:", level);
                 
+                console.log("Updating assessment UI...");
                 // Update UI with results
                 updateAssessmentUI(metrics, vocabAnalysis, grammarAnalysis, level);
+                console.log("Assessment complete!");
                 
             } catch (error) {
                 console.error('Assessment error:', error);
@@ -2332,24 +2356,51 @@
             const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
             const words = text.split(/\s+/).filter(w => w.length > 0);
             
+            // Handle edge cases better
+            const sentenceCount = Math.max(1, sentences.length); // Avoid division by zero
+            const wordCount = Math.max(1, words.length); // Avoid division by zero
+            
+            // Calculate sentence length variation safely
+            let sentenceLengthVariation = 0;
+            if (sentences.length > 1) {
+                const lengths = sentences.map(s => s.split(/\s+/).filter(w => w.length > 0).length);
+                sentenceLengthVariation = calculateVariation(lengths);
+            }
+            
             return {
-                averageSentenceLength: words.length / sentences.length,
-                sentenceLengthVariation: calculateVariation(sentences.map(s => s.split(/\s+/).length)),
-                uniqueWordsRatio: new Set(words.map(w => w.toLowerCase())).size / words.length,
-                textLength: words.length,
-                complexSentences: sentences.filter(s => s.includes(',') || s.includes(';')).length / sentences.length
+                averageSentenceLength: wordCount / sentenceCount,
+                sentenceLengthVariation: sentenceLengthVariation,
+                uniqueWordsRatio: new Set(words.map(w => w.toLowerCase())).size / wordCount,
+                textLength: wordCount,
+                complexSentences: sentences.filter(s => s.includes(',') || s.includes(';')).length / sentenceCount
             };
         }
 
         function analyzeVocabulary(text) {
             // This would connect to a French vocabulary database
             // For now, we'll use a simplified version
-            const words = text.toLowerCase().split(/\s+/);
+            const words = text.toLowerCase().split(/\s+/).filter(w => w.length > 0);
+            console.log("Total words to analyze:", words.length);
+            
+            if (words.length === 0) {
+                return {
+                    advanced: 0,
+                    intermediate: 0,
+                    basic: 0,
+                    uniqueWords: 0,
+                    commonPhrases: []
+                };
+            }
+            
+            const advanced = countAdvancedWords(words);
+            const intermediate = countIntermediateWords(words);
+            // Ensure basic words is not negative
+            const basic = Math.max(0, words.length - (advanced + intermediate));
             
             return {
-                advanced: countAdvancedWords(words),
-                intermediate: countIntermediateWords(words),
-                basic: words.length - (countAdvancedWords(words) + countIntermediateWords(words)),
+                advanced: advanced,
+                intermediate: intermediate,
+                basic: basic,
                 uniqueWords: new Set(words).size,
                 commonPhrases: identifyCommonPhrases(text)
             };
@@ -2643,22 +2694,26 @@ Generated by Hemiya AI - Your French Writing Coach
         }
 
         function countAdvancedWords(words) {
-            // Count words that appear in C1/A2 vocab lists
+            // Count words that appear in C1/C2 vocab lists (was incorrectly using C1/A2)
             let count = 0;
-            const advancedWords = [...frenchVocabulary.C1, ...frenchVocabulary.A2];
+            const advancedWords = [...frenchVocabulary.C1, ...frenchVocabulary.C2];
+            console.log("Advanced words to check against:", advancedWords.length);
             words.forEach(word => {
                 if (advancedWords.includes(word.toLowerCase())) count++;
             });
+            console.log("Advanced words found:", count);
             return count;
         }
 
         function countIntermediateWords(words) {
-            // Count words that appear in A2/A2 vocab lists
+            // Count words that appear in B1/B2 vocab lists (was incorrectly using A2/A2)
             let count = 0;
-            const intermediateWords = [...frenchVocabulary.A2, ...frenchVocabulary.A2];
+            const intermediateWords = [...frenchVocabulary.B1, ...frenchVocabulary.B2];
+            console.log("Intermediate words to check against:", intermediateWords.length);
             words.forEach(word => {
                 if (intermediateWords.includes(word.toLowerCase())) count++;
             });
+            console.log("Intermediate words found:", count);
             return count;
         }
 
@@ -2749,6 +2804,15 @@ Generated by Hemiya AI - Your French Writing Coach
             
             // Generate improvement suggestions
             generateImprovementSuggestions(level, grammarAnalysis, vocabAnalysis, metrics);
+            
+            // Ensure the assessment panel is visible and scrolled into view
+            const assessmentPanel = document.getElementById('assessmentPanel');
+            assessmentPanel.classList.remove('hidden');
+            
+            // Scroll the assessment panel into view with a slight delay to ensure UI updates are complete
+            setTimeout(() => {
+                assessmentPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 300);
         }
 
         function animateProgressBar(id, value) {
