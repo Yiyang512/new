@@ -3,62 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>French Dialogue Builder - Hemiya AI</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>French Dialogue Matcher</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary-color: #00FF99;
-            --secondary-color: #121212;
-            --accent-color: #00FFB3;
             --background-color: #121212;
             --text-color: #00FF99;
-            --card-bg: rgba(0, 255, 153, 0.2);
-            --error-color: #FF4444;
-            --success-color: #00FFB3;
+            --gradient: linear-gradient(135deg, rgba(0, 255, 153, 0.2), rgba(0, 255, 153, 0));
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Poppins', system-ui, -apple-system, sans-serif;
         }
 
         body {
             background-color: var(--background-color);
             color: var(--text-color);
-            line-height: 1.6;
-            border: 2px solid var(--primary-color);
-            border-radius: 20px;
-            box-shadow: 0 0 30px var(--primary-color);
-            margin: 20px;
             padding: 20px;
-            position: relative;
-            max-width: 1200px;
-            margin: 20px auto;
+            min-height: 100vh;
+            background: radial-gradient(circle at top right, rgba(0, 255, 153, 0.1), transparent 60%),
+                        radial-gradient(circle at bottom left, rgba(0, 255, 153, 0.1), transparent 60%);
         }
 
-        body::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            border-radius: 22px;
-            background: linear-gradient(45deg, 
-                var(--primary-color) 0%, 
-                transparent 50%,
-                var(--primary-color) 100%
-            );
-            z-index: -1;
-            animation: borderGlow 3s ease-in-out infinite;
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes glow {
+            0% { box-shadow: 0 0 5px var(--primary-color); }
+            50% { box-shadow: 0 0 20px var(--primary-color); }
+            100% { box-shadow: 0 0 5px var(--primary-color); }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes celebrate {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2) rotate(10deg); }
+        }
+
+        @keyframes confetti {
+            0% { transform: translateY(0) rotate(0); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 800px;
             margin: 0 auto;
-            padding: 2rem;
+            animation: fadeInUp 0.8s ease-out;
         }
 
         header {
@@ -73,17 +96,18 @@
             bottom: -10px;
             left: 50%;
             transform: translateX(-50%);
-            width: 150px;
-            height: 3px;
-            background: var(--primary-color);
-            box-shadow: 0 0 10px var(--primary-color);
+            width: 100px;
+            height: 2px;
+            background: var(--gradient);
+            animation: glow 2s infinite;
         }
 
         h1 {
             color: var(--primary-color);
-            font-size: 2.5rem;
             margin-bottom: 1rem;
+            font-size: 2.5em;
             text-shadow: 0 0 10px var(--primary-color);
+            letter-spacing: 2px;
         }
 
         .level-selector {
@@ -91,19 +115,20 @@
             justify-content: center;
             gap: 1rem;
             margin-bottom: 2rem;
+            perspective: 1000px;
         }
 
         .level-btn {
-            padding: 0.8rem 1.5rem;
+            padding: 1rem 2rem;
             border: 2px solid var(--primary-color);
-            border-radius: 25px;
+            border-radius: 12px;
             background-color: transparent;
             color: var(--text-color);
             cursor: pointer;
             transition: all 0.3s ease;
-            font-size: 1rem;
             position: relative;
             overflow: hidden;
+            backdrop-filter: blur(5px);
         }
 
         .level-btn::before {
@@ -127,892 +152,763 @@
         }
 
         .level-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 15px var(--primary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 255, 153, 0.3);
         }
 
         .level-btn.active {
             background-color: var(--primary-color);
-            color: var(--secondary-color);
+            color: var(--background-color);
+            animation: pulse 1s infinite;
         }
 
         .dialogue-container {
-            background-color: rgba(0, 255, 153, 0.1);
-            border-radius: 15px;
+            background: rgba(0, 255, 153, 0.05);
+            border-radius: 16px;
             padding: 2rem;
-            box-shadow: 0 0 20px rgba(0, 255, 153, 0.2);
             margin-bottom: 2rem;
-            border: 1px solid var(--primary-color);
-        }
-
-        .dialogue-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid rgba(0, 255, 153, 0.2);
-        }
-
-        .dialogue-title {
-            font-size: 1.5rem;
-            color: var(--primary-color);
-            text-shadow: 0 0 5px var(--primary-color);
-        }
-
-        .dialogue-progress {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .progress-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background-color: rgba(0, 255, 153, 0.2);
-            border: 1px solid var(--primary-color);
-            transition: all 0.3s ease;
-        }
-
-        .progress-dot.active {
-            background-color: var(--primary-color);
-            box-shadow: 0 0 10px var(--primary-color);
+            border: 1px solid rgba(0, 255, 153, 0.2);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 255, 153, 0.1);
+            animation: fadeInUp 0.8s ease-out;
         }
 
         .dialogue-line {
             display: flex;
             align-items: center;
-            gap: 1rem;
-            padding: 1rem;
-            background-color: rgba(0, 255, 153, 0.05);
-            border-radius: 10px;
-            border: 1px solid rgba(0, 255, 153, 0.2);
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            background: rgba(0, 255, 153, 0.03);
+            border-radius: 12px;
             transition: all 0.3s ease;
+            animation: slideIn 0.5s ease-out;
+            border: 1px solid rgba(0, 255, 153, 0.1);
         }
 
         .dialogue-line:hover {
-            background-color: rgba(0, 255, 153, 0.1);
-            transform: translateX(5px);
+            transform: translateX(10px);
+            background: rgba(0, 255, 153, 0.05);
         }
 
         .character {
-            font-weight: 600;
-            color: var(--primary-color);
-            min-width: 100px;
+            font-weight: bold;
+            min-width: 80px;
             text-shadow: 0 0 5px var(--primary-color);
         }
 
-        .dialogue-input {
+        .dialogue-select {
             flex: 1;
-            padding: 0.8rem;
-            border: 2px solid rgba(0, 255, 153, 0.2);
-            border-radius: 8px;
-            font-size: 1rem;
-            background: transparent;
-            color: var(--text-color);
-            transition: all 0.3s ease;
-        }
-
-        .dialogue-input:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 10px var(--primary-color);
-        }
-
-        .dialogue-input::placeholder {
-            color: rgba(0, 255, 153, 0.5);
-        }
-
-        .hint-btn {
-            padding: 0.5rem 1rem;
-            background-color: transparent;
+            padding: 1rem;
             border: 1px solid var(--primary-color);
-            border-radius: 5px;
+            border-radius: 8px;
+            background-color: rgba(0, 0, 0, 0.3);
+            color: var(--text-color);
             cursor: pointer;
             transition: all 0.3s ease;
-            color: var(--text-color);
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2300FF99' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1em;
         }
 
-        .hint-btn:hover {
-            background-color: rgba(0, 255, 153, 0.2);
+        .dialogue-select:hover {
             box-shadow: 0 0 10px var(--primary-color);
         }
 
-        .hint-text {
-            display: none;
-            margin-top: 0.5rem;
-            color: var(--text-color);
-            font-style: italic;
-            padding: 0.5rem;
-            background: rgba(0, 255, 153, 0.1);
-            border-radius: 5px;
-            border-left: 3px solid var(--primary-color);
-        }
-
-        .controls {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 2rem;
-            gap: 1rem;
-        }
-
-        .btn {
-            padding: 1rem 2rem;
-            border: 2px solid var(--primary-color);
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            background: transparent;
-            color: var(--text-color);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(0, 255, 153, 0.2),
-                transparent
-            );
-            transition: 0.5s;
-        }
-
-        .btn:hover::before {
-            left: 100%;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
+        .dialogue-select:focus {
+            outline: none;
             box-shadow: 0 0 15px var(--primary-color);
         }
 
-        .btn-primary {
-            background-color: var(--primary-color);
-            color: var(--secondary-color);
+        .translation {
+            color: rgba(0, 255, 153, 0.7);
+            font-size: 0.9rem;
+            margin-top: 0.8rem;
+            font-style: italic;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(-10px);
         }
 
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
+        .translation.show {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .feedback {
-            margin-top: 1rem;
-            padding: 1rem;
+            padding: 1.2rem;
             border-radius: 8px;
+            margin-top: 1.5rem;
             display: none;
-            animation: fadeIn 0.3s ease-out;
+            text-align: center;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            animation: fadeInUp 0.5s ease-out;
         }
 
         .feedback.success {
-            background-color: rgba(0, 255, 179, 0.1);
-            color: var(--success-color);
-            border: 1px solid var(--success-color);
+            display: block;
+            background: rgba(0, 255, 153, 0.1);
+            border: 1px solid var(--primary-color);
+            box-shadow: 0 0 15px rgba(0, 255, 153, 0.2);
         }
 
         .feedback.error {
-            background-color: rgba(255, 68, 68, 0.1);
-            color: var(--error-color);
-            border: 1px solid var(--error-color);
-        }
-
-        .score-display {
-            position: fixed;
-            top: 1rem;
-            right: 1rem;
-            background-color: rgba(0, 255, 153, 0.1);
-            padding: 1rem;
-            border-radius: 10px;
-            border: 1px solid var(--primary-color);
-            box-shadow: 0 0 15px var(--primary-color);
-            animation: float 3s ease-in-out infinite;
-        }
-
-        .score-value {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--primary-color);
-            text-shadow: 0 0 5px var(--primary-color);
-        }
-
-        .achievement {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            background-color: rgba(0, 255, 153, 0.2);
-            color: var(--text-color);
-            padding: 1rem 2rem;
-            border-radius: 10px;
-            border: 1px solid var(--primary-color);
-            box-shadow: 0 0 20px var(--primary-color);
-            display: none;
-            animation: slideIn 0.5s ease-out;
-        }
-
-        .timer {
-            position: fixed;
-            top: 1rem;
-            left: 1rem;
-            background-color: rgba(0, 255, 153, 0.1);
-            padding: 1rem;
-            border-radius: 10px;
-            border: 1px solid var(--primary-color);
-            box-shadow: 0 0 15px var(--primary-color);
-            animation: float 3s ease-in-out infinite;
-        }
-
-        .timer-value {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--primary-color);
-            text-shadow: 0 0 5px var(--primary-color);
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-
-        @keyframes borderGlow {
-            0% { opacity: 0.5; }
-            50% { opacity: 1; }
-            100% { opacity: 0.5; }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        .level-info {
-            text-align: center;
-            margin-bottom: 2rem;
-            padding: 1rem;
-            background: rgba(0, 255, 153, 0.1);
-            border-radius: 10px;
-            border: 1px solid var(--primary-color);
-        }
-
-        .level-description {
-            color: var(--text-color);
-            margin-bottom: 1rem;
-        }
-
-        .level-stats {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin-top: 1rem;
-        }
-
-        .stat-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .stat-value {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--primary-color);
-        }
-
-        .stat-label {
-            font-size: 0.9rem;
-            color: rgba(0, 255, 153, 0.7);
-        }
-
-        /* Add streak indicator */
-        .streak-display {
-            position: fixed;
-            top: 5rem;
-            right: 1rem;
-            background-color: rgba(0, 255, 153, 0.1);
-            padding: 1rem;
-            border-radius: 10px;
-            border: 1px solid var(--primary-color);
-            box-shadow: 0 0 15px var(--primary-color);
-        }
-
-        .streak-value {
-            font-size: 1.2rem;
-            color: var(--primary-color);
-            text-shadow: 0 0 5px var(--primary-color);
-        }
-
-        /* Add keyboard shortcuts info */
-        .keyboard-shortcuts {
-            position: fixed;
-            bottom: 1rem;
-            left: 1rem;
-            background-color: rgba(0, 255, 153, 0.1);
-            padding: 1rem;
-            border-radius: 10px;
-            border: 1px solid var(--primary-color);
-            font-size: 0.9rem;
-        }
-
-        .shortcut-key {
-            color: var(--primary-color);
-            font-weight: 600;
-        }
-
-        /* Add styles for the new help system */
-        .help-container {
-            background: rgba(0, 255, 153, 0.1);
-            border: 1px solid var(--primary-color);
-            border-radius: 10px;
-            padding: 20px;
-            margin-top: 20px;
-        }
-
-        .help-title {
-            color: var(--primary-color);
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 15px;
-            text-shadow: 0 0 5px var(--primary-color);
-        }
-
-        .help-section {
-            margin-bottom: 15px;
-            padding: 10px;
-            border-left: 3px solid var(--primary-color);
-            background: rgba(0, 255, 153, 0.05);
-        }
-
-        .help-section-title {
-            color: var(--primary-color);
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .help-list {
-            list-style: none;
-            padding-left: 0;
-        }
-
-        .help-list li {
-            margin: 8px 0;
-            padding-left: 25px;
-            position: relative;
-        }
-
-        .help-list li::before {
-            content: '→';
-            position: absolute;
-            left: 0;
-            color: var(--primary-color);
-        }
-
-        .help-tip {
-            font-style: italic;
-            color: rgba(0, 255, 153, 0.7);
-            margin-top: 10px;
-            padding: 8px;
-            border-radius: 5px;
-            background: rgba(0, 255, 153, 0.05);
-        }
-
-        .help-button {
-            background: transparent;
-            border: 1px solid var(--primary-color);
-            color: var(--primary-color);
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            margin-top: 10px;
-            transition: all 0.3s ease;
-        }
-
-        .help-button:hover {
-            background: rgba(0, 255, 153, 0.1);
-            box-shadow: 0 0 10px var(--primary-color);
-        }
-
-        .welcome-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            animation: fadeIn 0.5s ease-out;
-        }
-
-        .welcome-content {
-            background: var(--secondary-color);
-            border: 2px solid var(--primary-color);
-            border-radius: 15px;
-            padding: 30px;
-            max-width: 800px;
-            width: 90%;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 0 30px var(--primary-color);
-            color: var(--text-color);
-        }
-
-        .welcome-title {
-            font-size: 2rem;
-            color: var(--primary-color);
-            text-align: center;
-            margin-bottom: 20px;
-            text-shadow: 0 0 10px var(--primary-color);
-        }
-
-        .rules-section {
-            margin: 20px 0;
-            padding: 15px;
-            border-left: 3px solid var(--primary-color);
-            background: rgba(0, 255, 153, 0.1);
-        }
-
-        .rules-title {
-            color: var(--primary-color);
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-
-        .rules-list {
-            list-style: none;
-            padding: 0;
-        }
-
-        .rules-list li {
-            margin: 10px 0;
-            padding-left: 25px;
-            position: relative;
-        }
-
-        .rules-list li::before {
-            content: '→';
-            position: absolute;
-            left: 0;
-            color: var(--primary-color);
-        }
-
-        .start-button {
             display: block;
-            margin: 20px auto 0;
-            padding: 15px 30px;
+            background: rgba(255, 68, 68, 0.1);
+            border: 1px solid #FF4444;
+            color: #FF4444;
+            box-shadow: 0 0 15px rgba(255, 68, 68, 0.2);
+        }
+
+        .next-btn {
+            padding: 1rem 2rem;
             background: var(--primary-color);
-            color: var(--secondary-color);
+            color: var(--background-color);
             border: none;
-            border-radius: 25px;
-            font-size: 1.2rem;
+            border-radius: 12px;
             cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .start-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 20px var(--primary-color);
-        }
-
-        .example-dialogue {
-            background: rgba(0, 255, 153, 0.05);
-            padding: 15px;
-            border-radius: 10px;
-            margin: 15px 0;
-            border: 1px solid var(--primary-color);
-        }
-
-        .key-feature {
-            display: inline-block;
-            background: rgba(0, 255, 153, 0.1);
-            padding: 2px 8px;
-            border-radius: 4px;
-            color: var(--primary-color);
-            margin: 0 2px;
-        }
-
-        .audio-status {
-            position: fixed;
-            top: 80px;
-            right: 1rem;
-            background-color: rgba(0, 255, 153, 0.1);
-            padding: 1rem;
-            border-radius: 10px;
-            border: 1px solid var(--primary-color);
-            box-shadow: 0 0 15px var(--primary-color);
             display: none;
-            animation: fadeIn 0.3s ease-out;
-            z-index: 1000;
-        }
-
-        .demo-section {
-            margin: 20px 0;
-            padding: 15px;
-            border: 2px solid var(--primary-color);
-            border-radius: 15px;
-            background: rgba(0, 255, 153, 0.05);
+            font-weight: 600;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            margin: 1.5rem auto 0;
             position: relative;
             overflow: hidden;
         }
 
-        .demo-title {
-            color: var(--primary-color);
-            font-size: 1.2rem;
-            margin-bottom: 15px;
+        .next-btn.show {
+            display: block;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .next-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 153, 0.3);
+        }
+
+        .next-btn::after {
+            content: '→';
+            position: absolute;
+            right: 1.5rem;
+            transition: 0.3s;
+            opacity: 0;
+        }
+
+        .next-btn:hover::after {
+            right: 1rem;
+            opacity: 1;
+        }
+
+        .hint {
+            color: #FF4444;
+            font-size: 0.9rem;
+            margin-top: 0.8rem;
+            padding: 0.5rem;
+            border-radius: 4px;
+            background: rgba(255, 68, 68, 0.1);
+            display: none;
+            animation: fadeInUp 0.3s ease-out;
+        }
+
+        .hint.show {
+            display: block;
+        }
+
+        .progress {
             text-align: center;
-            text-shadow: 0 0 5px var(--primary-color);
+            margin-bottom: 1rem;
+            color: rgba(0, 255, 153, 0.7);
+            font-size: 0.9rem;
         }
 
-        .demo-dialogue {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 20px;
-            border-radius: 10px;
-            margin: 10px 0;
-        }
-
-        .demo-line {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin: 10px 0;
-            padding: 10px;
-            border-radius: 8px;
+        .progress-bar {
+            width: 100%;
+            height: 6px;
             background: rgba(0, 255, 153, 0.1);
-            transition: all 0.3s ease;
+            border-radius: 3px;
+            margin: 1rem 0;
+            overflow: hidden;
         }
 
-        .demo-line.active {
-            background: rgba(0, 255, 153, 0.2);
-            box-shadow: 0 0 10px var(--primary-color);
-            transform: translateX(10px);
-        }
-
-        .demo-character {
-            font-weight: bold;
-            color: var(--primary-color);
-            min-width: 80px;
-        }
-
-        .demo-input {
-            flex: 1;
-            padding: 8px;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--primary-color);
-            border-radius: 5px;
-            color: var(--text-color);
-            font-family: monospace;
-        }
-
-        .demo-cursor {
-            display: inline-block;
-            width: 2px;
-            height: 1em;
+        .progress-fill {
+            height: 100%;
             background: var(--primary-color);
-            animation: blink 1s infinite;
-            vertical-align: middle;
-            margin-left: 2px;
+            width: 0%;
+            transition: width 0.3s ease;
         }
 
-        .demo-button {
-            padding: 5px 10px;
-            background: transparent;
-            border: 1px solid var(--primary-color);
-            border-radius: 5px;
-            color: var(--primary-color);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .demo-button:hover {
-            background: rgba(0, 255, 153, 0.1);
-            box-shadow: 0 0 10px var(--primary-color);
-        }
-
-        .demo-controls {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .demo-status {
+        .score-display {
             text-align: center;
-            margin: 10px 0;
-            padding: 5px;
-            border-radius: 5px;
-            background: rgba(0, 255, 153, 0.1);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
             color: var(--primary-color);
         }
 
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
+        .hint-icon {
+            cursor: pointer;
+            margin-left: 0.5rem;
+            color: rgba(0, 255, 153, 0.7);
+            font-size: 1.2rem;
         }
 
-        @keyframes typing {
-            from { width: 0; }
-            to { width: 100%; }
+        .hint-icon:hover {
+            color: var(--primary-color);
+        }
+
+        .difficulty-indicator {
+            display: inline-block;
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-left: 1rem;
+            background: rgba(0, 255, 153, 0.1);
+        }
+
+        .feedback-emoji {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            animation: pulse 0.5s ease infinite;
+        }
+
+        .streak-display {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.5rem 1rem;
+            background: rgba(0, 255, 153, 0.1);
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .level-complete {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 255, 153, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 16px;
+            text-align: center;
+            border: 2px solid var(--primary-color);
+            box-shadow: 0 0 30px rgba(0, 255, 153, 0.3);
+            z-index: 1000;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .celebration-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            animation: celebrate 1s infinite;
+        }
+
+        .celebration-stats {
+            margin: 1rem 0;
+            padding: 1rem;
+            background: rgba(0, 255, 153, 0.1);
+            border-radius: 8px;
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: var(--primary-color);
+            animation: confetti 3s linear infinite;
+        }
+
+        .achievement-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: rgba(0, 255, 153, 0.2);
+            border-radius: 20px;
+            margin: 0.5rem;
+            animation: bounce 1s infinite;
+        }
+
+        .bonus-points {
+            position: absolute;
+            color: var(--primary-color);
+            font-weight: bold;
+            animation: fadeInUp 0.5s ease-out;
+            pointer-events: none;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .level-selector {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .dialogue-container {
+                padding: 1rem;
+            }
+
+            .dialogue-line {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 1rem;
+            }
+
+            .character {
+                min-width: auto;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="welcome-modal" id="welcomeModal">
-        <div class="welcome-content">
-            <h1 class="welcome-title">Welcome to French Dialogue Builder! 🇫🇷</h1>
-            
-            <div class="rules-section">
-                <div class="rules-title">How to Play:</div>
-                <ol class="rules-list">
-                    <li>Choose your level: <span class="key-feature">Beginner</span>, <span class="key-feature">Intermediate</span>, or <span class="key-feature">Advanced</span></li>
-                    <li>You'll see a dialogue scenario with empty input fields</li>
-                    <li>Type the correct French phrases in the input boxes</li>
-                    <li>Use the <span class="key-feature">💡 Hint</span> button if you need help</li>
-                    <li>Click <span class="key-feature">🔊 Listen</span> to hear the correct pronunciation</li>
-                    <li>Click <span class="key-feature">Check Answers</span> to verify your responses</li>
-                </ol>
-            </div>
-
-            <div class="rules-section">
-                <div class="rules-title">Example Dialogue:</div>
-                <div class="example-dialogue">
-                    <p><strong>Server:</strong> [Input field] ← Type: "Bonjour! Que puis-je faire pour vous?"</p>
-                    <p><strong>You:</strong> [Input field] ← Type: "Je voudrais un café, s'il vous plaît"</p>
-                    <p>💡 Hints are available for each line</p>
-                    <p>🔊 Listen to hear correct pronunciation</p>
-                </div>
-            </div>
-
-            <div class="rules-section">
-                <div class="rules-title">Features:</div>
-                <ul class="rules-list">
-                    <li>Score points for correct answers</li>
-                    <li>Build streaks for consecutive correct dialogues</li>
-                    <li>Track your progress with accuracy rate</li>
-                    <li>Use keyboard shortcuts:
-                        <ul class="rules-list" style="margin-left: 20px">
-                            <li><span class="key-feature">Enter</span> - Check answers</li>
-                            <li><span class="key-feature">Space</span> - Listen to dialogue</li>
-                            <li><span class="key-feature">→</span> - Next dialogue</li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="rules-section">
-                <div class="rules-title">Tips:</div>
-                <ul class="rules-list">
-                    <li>Pay attention to accents and punctuation</li>
-                    <li>Use hints if you're stuck (-5 points penalty)</li>
-                    <li>Practice pronunciation with the audio feature</li>
-                    <li>Try to maintain your streak for higher scores</li>
-                </ul>
-            </div>
-
-            <div class="demo-section" id="demoSection">
-                <div class="demo-title">👀 Watch Demo</div>
-                <div class="demo-status" id="demoStatus">Watch how to use the dialogue builder...</div>
-                
-                <div class="demo-dialogue">
-                    <div class="demo-line" id="demoLine1">
-                        <span class="demo-character">Server:</span>
-                        <div class="demo-input" id="demoInput1">Bonjour! Que puis-je faire pour vous?</div>
-                        <button class="demo-button">💡</button>
-                    </div>
-                    <div class="demo-line" id="demoLine2">
-                        <span class="demo-character">You:</span>
-                        <div class="demo-input" id="demoInput2"></div>
-                        <button class="demo-button">💡</button>
-                    </div>
-                </div>
-
-                <div class="demo-controls">
-                    <button class="demo-button" id="replayDemo">🔄 Replay Demo</button>
-                    <button class="demo-button" id="skipDemo">⏭️ Skip Demo</button>
-                </div>
-            </div>
-
-            <button class="start-button" onclick="startGame()">Start Playing! 🎮</button>
-        </div>
-    </div>
-
     <div class="container">
         <header>
-            <h1>French Dialogue Builder</h1>
-            <p>Master French conversations with Hemiya AI's interactive dialogue practice</p>
+            <h1>French Dialogue Matcher</h1>
+            <p>Master French conversations through interactive matching</p>
         </header>
 
         <div class="level-selector">
-            <button class="level-btn active" data-level="beginner">Beginner (A1-A2)</button>
-            <button class="level-btn" data-level="intermediate">Intermediate (B1-B2)</button>
-            <button class="level-btn" data-level="advanced">Advanced (C1-C2)</button>
-        </div>
-
-        <div class="level-info">
-            <h3 class="level-description">Current Level: <span id="currentLevelDesc">Beginner (A1-A2)</span></h3>
-            <div class="level-stats">
-                <div class="stat-item">
-                    <span class="stat-value" id="completedDialogues">0</span>
-                    <span class="stat-label">Dialogues Completed</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-value" id="accuracyRate">0%</span>
-                    <span class="stat-label">Accuracy Rate</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-value" id="bestStreak">0</span>
-                    <span class="stat-label">Best Streak</span>
-                </div>
-            </div>
+            <button class="level-btn active" data-level="beginner">Beginner</button>
+            <button class="level-btn" data-level="intermediate">Intermediate</button>
+            <button class="level-btn" data-level="advanced">Advanced</button>
         </div>
 
         <div class="dialogue-container">
-            <div class="dialogue-header">
-                <h2 class="dialogue-title">At the Café</h2>
-                <div class="dialogue-progress">
-                    <div class="progress-dot active"></div>
-                    <div class="progress-dot"></div>
-                    <div class="progress-dot"></div>
-                    <div class="progress-dot"></div>
-                </div>
-            </div>
-
-            <div class="dialogue-content">
-                <!-- Dialogue lines will be dynamically inserted here -->
-            </div>
-
+            <div id="dialogueContent"></div>
             <div class="feedback"></div>
-
-            <div class="controls">
-                <button class="btn" id="listenBtn">🔊 Listen</button>
-                <button class="btn btn-secondary" id="checkBtn">Check Answers</button>
-                <button class="btn btn-primary" id="nextBtn" disabled>Next Dialogue</button>
-            </div>
+            <button class="next-btn">Next Dialogue</button>
         </div>
     </div>
 
-    <div class="score-display">
-        Score: <span class="score-value">0</span>
-    </div>
-
-    <div class="streak-display">
-        Streak: <span class="streak-value">0</span>
-    </div>
-
-    <div class="timer">
-        Time: <span class="timer-value">00:00</span>
-    </div>
-
-    <div class="keyboard-shortcuts">
-        <div><span class="shortcut-key">Enter</span> - Check Answers</div>
-        <div><span class="shortcut-key">Space</span> - Listen to Dialogue</div>
-        <div><span class="shortcut-key">→</span> - Next Dialogue</div>
-    </div>
-
-    <div class="achievement">
-        🎉 Achievement Unlocked! 🎉
-    </div>
-
-    <div class="audio-status" id="audioStatus"></div>
-
     <script>
-        // Enhanced dialogue scenarios
         const dialogues = {
             beginner: [
                 {
-                    title: "At the Café",
-                    level: "A1",
-                    description: "Learn basic café interactions",
+                    difficulty: 1,
                     lines: [
-                        { character: "Server", correct: "Bonjour! Que puis-je faire pour vous?", hint: "Say 'Hello! How can I help you?'", audio: "cafe-1.mp3" },
-                        { character: "You", correct: "Je voudrais un café, s'il vous plaît", hint: "Say 'I would like a coffee, please'", audio: "cafe-2.mp3" },
-                        { character: "Server", correct: "Bien sûr! Quel type de café?", hint: "Say 'Of course! What type of coffee?'", audio: "cafe-3.mp3" },
-                        { character: "You", correct: "Un café au lait, s'il vous plaît", hint: "Say 'A café au lait, please'", audio: "cafe-4.mp3" }
+                        {
+                            character: "Server",
+                            correct: "Bonjour! Que puis-je faire pour vous?",
+                            options: [
+                                {
+                                    text: "Bonjour! Que puis-je faire pour vous?",
+                                    translation: "Hello! What can I do for you?",
+                                    hint: "This is a common greeting from service staff"
+                                },
+                                {
+                                    text: "Au revoir! Bonne journée!",
+                                    translation: "Goodbye! Have a nice day!",
+                                    hint: "This is used when leaving, not greeting"
+                                },
+                                {
+                                    text: "Je voudrais un café.",
+                                    translation: "I would like a coffee.",
+                                    hint: "This is a customer's response, not a server's greeting"
+                                }
+                            ]
+                        },
+                        {
+                            character: "You",
+                            correct: "Je voudrais un café, s'il vous plaît",
+                            options: [
+                                {
+                                    text: "Je voudrais un café, s'il vous plaît",
+                                    translation: "I would like a coffee, please",
+                                    hint: "This is a polite way to order"
+                                },
+                                {
+                                    text: "Je ne comprends pas",
+                                    translation: "I don't understand",
+                                    hint: "This indicates confusion, not placing an order"
+                                },
+                                {
+                                    text: "Au revoir",
+                                    translation: "Goodbye",
+                                    hint: "This ends the conversation instead of ordering"
+                                }
+                            ]
+                        }
                     ]
                 },
                 {
-                    title: "Meeting Someone New",
-                    level: "A1",
-                    description: "Practice basic introductions",
+                    difficulty: 1,
                     lines: [
-                        { character: "You", correct: "Bonjour! Je m'appelle Marie", hint: "Say 'Hello! My name is Marie'", audio: "intro-1.mp3" },
-                        { character: "Friend", correct: "Enchanté(e)! Je suis Pierre", hint: "Say 'Nice to meet you! I am Pierre'", audio: "intro-2.mp3" },
-                        { character: "You", correct: "Comment allez-vous?", hint: "Say 'How are you?'", audio: "intro-3.mp3" },
-                        { character: "Friend", correct: "Très bien, merci! Et vous?", hint: "Say 'Very well, thank you! And you?'", audio: "intro-4.mp3" }
+                        {
+                            character: "Bakery Staff",
+                            correct: "Vous désirez quelque chose?",
+                            options: [
+                                {
+                                    text: "Vous désirez quelque chose?",
+                                    translation: "Would you like something?",
+                                    hint: "This is how staff politely asks for your order"
+                                },
+                                {
+                                    text: "Bon appétit!",
+                                    translation: "Enjoy your meal!",
+                                    hint: "This is said after someone receives their food, not before ordering"
+                                },
+                                {
+                                    text: "L'addition, s'il vous plaît",
+                                    translation: "The bill, please",
+                                    hint: "This is for requesting the bill, not starting an order"
+                                }
+                            ]
+                        },
+                        {
+                            character: "You",
+                            correct: "Une baguette, s'il vous plaît",
+                            options: [
+                                {
+                                    text: "Une baguette, s'il vous plaît",
+                                    translation: "A baguette, please",
+                                    hint: "This is a simple, polite way to order bread"
+                                },
+                                {
+                                    text: "Je n'aime pas le pain",
+                                    translation: "I don't like bread",
+                                    hint: "This is negative and doesn't place an order"
+                                },
+                                {
+                                    text: "À demain",
+                                    translation: "See you tomorrow",
+                                    hint: "This is a goodbye, not an order"
+                                }
+                            ]
+                        }
                     ]
                 },
                 {
-                    title: "Shopping for Clothes",
-                    level: "A2",
-                    description: "Learn shopping vocabulary",
+                    difficulty: 1,
                     lines: [
-                        { character: "You", correct: "Je cherche une chemise bleue", hint: "Say 'I'm looking for a blue shirt'", audio: "shop-1.mp3" },
-                        { character: "Clerk", correct: "Quelle taille portez-vous?", hint: "Say 'What size do you wear?'", audio: "shop-2.mp3" },
-                        { character: "You", correct: "Je porte du medium", hint: "Say 'I wear medium'", audio: "shop-3.mp3" },
-                        { character: "Clerk", correct: "Voici une belle chemise bleue", hint: "Say 'Here's a nice blue shirt'", audio: "shop-4.mp3" }
+                        {
+                            character: "Metro Staff",
+                            correct: "Où souhaitez-vous aller?",
+                            options: [
+                                {
+                                    text: "Où souhaitez-vous aller?",
+                                    translation: "Where would you like to go?",
+                                    hint: "This is how staff asks for your destination"
+                                },
+                                {
+                                    text: "D'où venez-vous?",
+                                    translation: "Where are you from?",
+                                    hint: "This asks about origin, not destination"
+                                },
+                                {
+                                    text: "Quel temps fait-il?",
+                                    translation: "What's the weather like?",
+                                    hint: "This is unrelated to metro travel"
+                                }
+                            ]
+                        },
+                        {
+                            character: "You",
+                            correct: "Je vais à la Tour Eiffel",
+                            options: [
+                                {
+                                    text: "Je vais à la Tour Eiffel",
+                                    translation: "I'm going to the Eiffel Tower",
+                                    hint: "This clearly states your destination"
+                                },
+                                {
+                                    text: "Je ne sais pas",
+                                    translation: "I don't know",
+                                    hint: "You should know your destination"
+                                },
+                                {
+                                    text: "Au revoir",
+                                    translation: "Goodbye",
+                                    hint: "This doesn't answer the question"
+                                }
+                            ]
+                        }
                     ]
                 }
             ],
             intermediate: [
                 {
-                    title: "Making Plans",
-                    level: "B1",
-                    description: "Practice making arrangements",
+                    difficulty: 2,
                     lines: [
-                        { character: "You", correct: "Voulez-vous aller au cinéma ce soir?", hint: "Say 'Would you like to go to the cinema tonight?'", audio: "plans-1.mp3" },
-                        { character: "Friend", correct: "Oui, pourquoi pas! À quelle heure?", hint: "Say 'Yes, why not! At what time?'", audio: "plans-2.mp3" },
-                        { character: "You", correct: "À 19h30, ça vous convient?", hint: "Say 'At 7:30 PM, does that work for you?'", audio: "plans-3.mp3" },
-                        { character: "Friend", correct: "Parfait! Je vous retrouve devant le cinéma", hint: "Say 'Perfect! I'll meet you in front of the cinema'", audio: "plans-4.mp3" }
+                        {
+                            character: "Hotel Receptionist",
+                            correct: "Avez-vous une réservation pour ce soir?",
+                            options: [
+                                {
+                                    text: "Avez-vous une réservation pour ce soir?",
+                                    translation: "Do you have a reservation for tonight?",
+                                    hint: "The receptionist needs to check if you've booked"
+                                },
+                                {
+                                    text: "Voulez-vous le petit-déjeuner?",
+                                    translation: "Would you like breakfast?",
+                                    hint: "This is asked after check-in, not before"
+                                },
+                                {
+                                    text: "Quelle est votre nationalité?",
+                                    translation: "What is your nationality?",
+                                    hint: "This is for registration, not the initial greeting"
+                                }
+                            ]
+                        },
+                        {
+                            character: "You",
+                            correct: "Oui, au nom de Martin pour trois nuits",
+                            options: [
+                                {
+                                    text: "Oui, au nom de Martin pour trois nuits",
+                                    translation: "Yes, under the name Martin for three nights",
+                                    hint: "This provides all necessary booking information"
+                                },
+                                {
+                                    text: "Non, je pars maintenant",
+                                    translation: "No, I'm leaving now",
+                                    hint: "This contradicts the purpose of checking in"
+                                },
+                                {
+                                    text: "Je ne sais pas",
+                                    translation: "I don't know",
+                                    hint: "You should know if you have a reservation"
+                                }
+                            ]
+                        }
                     ]
                 },
                 {
-                    title: "At the Restaurant",
-                    level: "B1",
-                    description: "Learn restaurant vocabulary",
+                    difficulty: 2,
                     lines: [
-                        { character: "Server", correct: "Avez-vous choisi votre plat?", hint: "Say 'Have you chosen your dish?'", audio: "rest-1.mp3" },
-                        { character: "You", correct: "Je voudrais le plat du jour, s'il vous plaît", hint: "Say 'I would like the daily special, please'", audio: "rest-2.mp3" },
-                        { character: "Server", correct: "Comment souhaitez-vous votre viande?", hint: "Say 'How would you like your meat?'", audio: "rest-3.mp3" },
-                        { character: "You", correct: "À point, s'il vous plaît", hint: "Say 'Medium, please'", audio: "rest-4.mp3" }
+                        {
+                            character: "Doctor",
+                            correct: "Quels sont vos symptômes?",
+                            options: [
+                                {
+                                    text: "Quels sont vos symptômes?",
+                                    translation: "What are your symptoms?",
+                                    hint: "The doctor is asking about your health issues"
+                                },
+                                {
+                                    text: "Comment allez-vous?",
+                                    translation: "How are you?",
+                                    hint: "This is too casual for a medical consultation"
+                                },
+                                {
+                                    text: "Avez-vous une assurance?",
+                                    translation: "Do you have insurance?",
+                                    hint: "This is about administrative matters, not medical symptoms"
+                                }
+                            ]
+                        },
+                        {
+                            character: "You",
+                            correct: "J'ai mal à la tête et de la fièvre",
+                            options: [
+                                {
+                                    text: "J'ai mal à la tête et de la fièvre",
+                                    translation: "I have a headache and fever",
+                                    hint: "This describes common symptoms clearly"
+                                },
+                                {
+                                    text: "Je suis en forme",
+                                    translation: "I'm in good shape",
+                                    hint: "This contradicts the purpose of visiting a doctor"
+                                },
+                                {
+                                    text: "Je ne suis pas malade",
+                                    translation: "I'm not sick",
+                                    hint: "This doesn't make sense in a doctor's consultation"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    difficulty: 2,
+                    lines: [
+                        {
+                            character: "Pharmacist",
+                            correct: "Avez-vous une ordonnance?",
+                            options: [
+                                {
+                                    text: "Avez-vous une ordonnance?",
+                                    translation: "Do you have a prescription?",
+                                    hint: "The pharmacist needs to know if you have a prescription"
+                                },
+                                {
+                                    text: "Quel est votre nom?",
+                                    translation: "What is your name?",
+                                    hint: "Name isn't needed before checking prescription"
+                                },
+                                {
+                                    text: "Vous êtes malade?",
+                                    translation: "Are you sick?",
+                                    hint: "Too informal for a pharmacy setting"
+                                }
+                            ]
+                        },
+                        {
+                            character: "You",
+                            correct: "Oui, voici l'ordonnance du médecin",
+                            options: [
+                                {
+                                    text: "Oui, voici l'ordonnance du médecin",
+                                    translation: "Yes, here is the doctor's prescription",
+                                    hint: "This properly presents your prescription"
+                                },
+                                {
+                                    text: "Non, je veux juste un conseil",
+                                    translation: "No, I just want advice",
+                                    hint: "This indicates no prescription when one is needed"
+                                },
+                                {
+                                    text: "Je ne comprends pas",
+                                    translation: "I don't understand",
+                                    hint: "The question about prescription is clear"
+                                }
+                            ]
+                        }
                     ]
                 }
             ],
             advanced: [
                 {
-                    title: "Job Interview",
-                    level: "C1",
-                    description: "Master professional conversations",
+                    difficulty: 3,
                     lines: [
-                        { character: "Interviewer", correct: "Parlez-moi de votre expérience professionnelle", hint: "Say 'Tell me about your professional experience'", audio: "job-1.mp3" },
-                        { character: "You", correct: "J'ai travaillé pendant cinq ans dans le marketing digital", hint: "Say 'I worked for five years in digital marketing'", audio: "job-2.mp3" },
-                        { character: "Interviewer", correct: "Quelles sont vos compétences principales?", hint: "Say 'What are your main skills?'", audio: "job-3.mp3" },
-                        { character: "You", correct: "Je suis expert en analyse de données et en stratégie marketing", hint: "Say 'I am an expert in data analysis and marketing strategy'", audio: "job-4.mp3" }
+                        {
+                            character: "Interviewer",
+                            correct: "Parlez-moi de votre expérience professionnelle",
+                            options: [
+                                {
+                                    text: "Parlez-moi de votre expérience professionnelle",
+                                    translation: "Tell me about your professional experience"
+                                },
+                                {
+                                    text: "Quel est votre salaire actuel?",
+                                    translation: "What is your current salary?"
+                                },
+                                {
+                                    text: "Où habitez-vous?",
+                                    translation: "Where do you live?"
+                                }
+                            ]
+                        },
+                        {
+                            character: "You",
+                            correct: "J'ai cinq ans d'expérience en marketing",
+                            options: [
+                                {
+                                    text: "J'ai cinq ans d'expérience en marketing",
+                                    translation: "I have five years of experience in marketing"
+                                },
+                                {
+                                    text: "Je préfère ne pas répondre",
+                                    translation: "I prefer not to answer"
+                                },
+                                {
+                                    text: "Je viens de Paris",
+                                    translation: "I'm from Paris"
+                                }
+                            ]
+                        }
                     ]
                 },
                 {
-                    title: "Business Meeting",
-                    level: "C1",
-                    description: "Practice business French",
+                    difficulty: 3,
                     lines: [
-                        { character: "You", correct: "Nous devons discuter des résultats du dernier trimestre", hint: "Say 'We need to discuss last quarter's results'", audio: "bus-1.mp3" },
-                        { character: "Colleague", correct: "Les chiffres montrent une croissance significative", hint: "Say 'The figures show significant growth'", audio: "bus-2.mp3" },
-                        { character: "You", correct: "Quelles sont vos projections pour l'année prochaine?", hint: "Say 'What are your projections for next year?'", audio: "bus-3.mp3" },
-                        { character: "Colleague", correct: "Nous prévoyons une augmentation de 15% du chiffre d'affaires", hint: "Say 'We forecast a 15% increase in revenue'", audio: "bus-4.mp3" }
+                        {
+                            character: "Bank Advisor",
+                            correct: "Quel type de compte souhaitez-vous ouvrir?",
+                            options: [
+                                {
+                                    text: "Quel type de compte souhaitez-vous ouvrir?",
+                                    translation: "What type of account would you like to open?",
+                                    hint: "The advisor needs to know which account type you want"
+                                },
+                                {
+                                    text: "Combien voulez-vous emprunter?",
+                                    translation: "How much would you like to borrow?",
+                                    hint: "This is about loans, not opening an account"
+                                },
+                                {
+                                    text: "Avez-vous une carte bancaire?",
+                                    translation: "Do you have a bank card?",
+                                    hint: "This is about existing services, not new accounts"
+                                }
+                            ]
+                        },
+                        {
+                            character: "You",
+                            correct: "Je voudrais ouvrir un compte épargne avec un taux d'intérêt avantageux",
+                            options: [
+                                {
+                                    text: "Je voudrais ouvrir un compte épargne avec un taux d'intérêt avantageux",
+                                    translation: "I would like to open a savings account with a good interest rate",
+                                    hint: "This specifies the account type and shows financial knowledge"
+                                },
+                                {
+                                    text: "Je veux fermer mon compte",
+                                    translation: "I want to close my account",
+                                    hint: "This is the opposite of opening an account"
+                                },
+                                {
+                                    text: "Je voudrais un rendez-vous",
+                                    translation: "I would like an appointment",
+                                    hint: "You're already in the appointment discussing accounts"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    difficulty: 3,
+                    lines: [
+                        {
+                            character: "HR Manager",
+                            correct: "Pouvez-vous décrire votre expérience en gestion d'équipe?",
+                            options: [
+                                {
+                                    text: "Pouvez-vous décrire votre expérience en gestion d'équipe?",
+                                    translation: "Can you describe your team management experience?",
+                                    hint: "This is a common interview question about leadership"
+                                },
+                                {
+                                    text: "Quel est votre salaire actuel?",
+                                    translation: "What is your current salary?",
+                                    hint: "This is typically discussed later in the interview"
+                                },
+                                {
+                                    text: "Quand pouvez-vous commencer?",
+                                    translation: "When can you start?",
+                                    hint: "This is asked after discussing experience"
+                                }
+                            ]
+                        },
+                        {
+                            character: "You",
+                            correct: "J'ai dirigé une équipe de dix personnes pendant trois ans",
+                            options: [
+                                {
+                                    text: "J'ai dirigé une équipe de dix personnes pendant trois ans",
+                                    translation: "I managed a team of ten people for three years",
+                                    hint: "This directly answers the question with specific details"
+                                },
+                                {
+                                    text: "Je préfère travailler seul",
+                                    translation: "I prefer to work alone",
+                                    hint: "This contradicts the team management focus"
+                                },
+                                {
+                                    text: "Je suis très organisé",
+                                    translation: "I am very organized",
+                                    hint: "This doesn't address team management experience"
+                                }
+                            ]
+                        }
                     ]
                 }
             ]
@@ -1020,554 +916,228 @@
 
         let currentLevel = 'beginner';
         let currentDialogue = 0;
-        let score = 0;
         let streak = 0;
-        let bestStreak = 0;
-        let startTime;
-        let timerInterval;
-        let totalAttempts = 0;
-        let correctAttempts = 0;
-        let gameStarted = false;
+        let totalScore = 0;
+        const maxScore = 100;
+        let bonusPoints = 0;
+        let achievements = new Set();
 
-        // DOM Elements
         const levelButtons = document.querySelectorAll('.level-btn');
-        const dialogueTitle = document.querySelector('.dialogue-title');
-        const dialogueContent = document.querySelector('.dialogue-content');
-        const progressDots = document.querySelectorAll('.progress-dot');
-        const checkBtn = document.getElementById('checkBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const listenBtn = document.getElementById('listenBtn');
+        const dialogueContent = document.getElementById('dialogueContent');
         const feedback = document.querySelector('.feedback');
-        const scoreValue = document.querySelector('.score-value');
-        const streakValue = document.querySelector('.streak-value');
-        const timerValue = document.querySelector('.timer-value');
-        const achievement = document.querySelector('.achievement');
-        const currentLevelDesc = document.getElementById('currentLevelDesc');
-        const completedDialogues = document.getElementById('completedDialogues');
-        const accuracyRate = document.getElementById('accuracyRate');
-        const bestStreakElement = document.getElementById('bestStreak');
+        const nextBtn = document.querySelector('.next-btn');
 
-        // Event Listeners
+        function createDialogueLine(line) {
+            const div = document.createElement('div');
+            div.className = 'dialogue-line';
+            
+            const select = document.createElement('select');
+            select.className = 'dialogue-select';
+            
+            const placeholder = document.createElement('option');
+            placeholder.value = '';
+            placeholder.textContent = 'Select your answer...';
+            placeholder.disabled = true;
+            placeholder.selected = true;
+            select.appendChild(placeholder);
+            
+            line.options.forEach(option => {
+                const optionElement = document.createElement('option');
+                optionElement.value = option.text;
+                optionElement.textContent = option.text;
+                optionElement.dataset.hint = option.hint;
+                select.appendChild(optionElement);
+            });
+            
+            div.innerHTML = `<span class="character">${line.character}:</span>`;
+            div.appendChild(select);
+
+            const translation = document.createElement('div');
+            translation.className = 'translation';
+            div.appendChild(translation);
+
+            const hint = document.createElement('div');
+            hint.className = 'hint';
+            div.appendChild(hint);
+
+            select.addEventListener('change', (e) => {
+                const selectedOption = line.options.find(opt => opt.text === e.target.value);
+                if (selectedOption) {
+                    translation.textContent = selectedOption.translation;
+                    translation.classList.add('show');
+                    
+                    if (e.target.value !== line.correct) {
+                        hint.textContent = selectedOption.hint;
+                        hint.classList.add('show');
+                    } else {
+                        hint.classList.remove('show');
+                    }
+                }
+                checkAnswers();
+            });
+
+            return div;
+        }
+
+        function loadDialogue() {
+            dialogueContent.innerHTML = '';
+            const dialogue = dialogues[currentLevel][currentDialogue];
+            
+            const difficultyDiv = document.createElement('div');
+            difficultyDiv.className = 'difficulty-indicator';
+            difficultyDiv.textContent = `Difficulty: ${'⭐'.repeat(dialogue.difficulty || 1)}`;
+            dialogueContent.appendChild(difficultyDiv);
+            
+            const progressBar = document.createElement('div');
+            progressBar.className = 'progress-bar';
+            const progressFill = document.createElement('div');
+            progressFill.className = 'progress-fill';
+            progressFill.style.width = `${(currentDialogue / dialogues[currentLevel].length) * 100}%`;
+            progressBar.appendChild(progressFill);
+            dialogueContent.appendChild(progressBar);
+            
+            const scoreDisplay = document.createElement('div');
+            scoreDisplay.className = 'score-display';
+            scoreDisplay.textContent = `Score: ${totalScore}/${maxScore}`;
+            dialogueContent.appendChild(scoreDisplay);
+            
+            const streakDisplay = document.createElement('div');
+            streakDisplay.className = 'streak-display';
+            streakDisplay.textContent = `Streak: 🔥 ${streak}`;
+            dialogueContent.appendChild(streakDisplay);
+            
+            dialogue.lines.forEach((line, index) => {
+                const lineElement = createDialogueLine(line);
+                lineElement.style.animationDelay = `${index * 0.2}s`;
+                dialogueContent.appendChild(lineElement);
+            });
+
+            feedback.style.display = 'none';
+            nextBtn.classList.remove('show');
+        }
+
+        function checkAnswers() {
+            const selects = document.querySelectorAll('.dialogue-select');
+            const dialogue = dialogues[currentLevel][currentDialogue];
+            let allCorrect = true;
+
+            selects.forEach((select, index) => {
+                const isCorrect = select.value === dialogue.lines[index].correct;
+                select.style.borderColor = isCorrect ? 'var(--primary-color)' : '#FF4444';
+                if (!isCorrect) allCorrect = false;
+            });
+
+            if (allCorrect) {
+                streak++;
+                const points = 10 * (dialogue.difficulty || 1);
+                const streakBonus = Math.floor(streak / 3) * 5;
+                totalScore = Math.min(maxScore, totalScore + points + streakBonus);
+                
+                if (streakBonus > 0) {
+                    const rect = feedback.getBoundingClientRect();
+                    addBonusPoints(streakBonus, rect.right, rect.top);
+                }
+                
+                checkAchievements();
+                
+                const emoji = ['🎉', '⭐', '👏', '🌟', '✨'][Math.floor(Math.random() * 5)];
+                feedback.innerHTML = `
+                    <div class="feedback-emoji">${emoji}</div>
+                    <div>Correct! Well done!</div>
+                    <div style="font-size: 0.9rem; margin-top: 0.5rem">
+                        +${points} points
+                        ${streakBonus ? `<br>Streak bonus: +${streakBonus}` : ''}
+                    </div>
+                `;
+                
+                if (currentDialogue === dialogues[currentLevel].length - 1) {
+                    setTimeout(showLevelComplete, 1000);
+                }
+            } else {
+                streak = 0;
+                feedback.innerHTML = `
+                    <div class="feedback-emoji">💪</div>
+                    <div>Keep trying!</div>
+                `;
+                feedback.className = 'feedback error';
+                nextBtn.classList.remove('show');
+            }
+            
+            document.querySelector('.score-display').textContent = `Score: ${totalScore}/${maxScore}`;
+            document.querySelector('.streak-display').textContent = `Streak: 🔥 ${streak}`;
+        }
+
+        function showLevelComplete() {
+            const levelComplete = document.createElement('div');
+            levelComplete.className = 'level-complete';
+            
+            const confettiCount = 50;
+            for (let i = 0; i < confettiCount; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = `${Math.random() * 100}vw`;
+                confetti.style.animationDuration = `${Math.random() * 2 + 1}s`;
+                confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                document.body.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 3000);
+            }
+            
+            levelComplete.innerHTML = `
+                <div class="celebration-title">🎉 Level Complete! 🎉</div>
+                <div class="celebration-stats">
+                    <div>Final Score: ${totalScore}</div>
+                    <div>Longest Streak: ${streak}</div>
+                    <div>Bonus Points: +${bonusPoints}</div>
+                </div>
+                <div class="achievements">
+                    ${Array.from(achievements).map(achievement => 
+                        `<div class="achievement-badge">🏆 ${achievement}</div>`
+                    ).join('')}
+                </div>
+                <button class="next-btn" onclick="this.parentElement.remove()">Continue</button>
+            `;
+            
+            document.body.appendChild(levelComplete);
+        }
+
+        function addBonusPoints(amount, x, y) {
+            const bonus = document.createElement('div');
+            bonus.className = 'bonus-points';
+            bonus.textContent = `+${amount}`;
+            bonus.style.left = `${x}px`;
+            bonus.style.top = `${y}px`;
+            document.body.appendChild(bonus);
+            
+            setTimeout(() => bonus.remove(), 1000);
+            bonusPoints += amount;
+        }
+
+        function checkAchievements() {
+            if (streak >= 5) achievements.add('Streak Master');
+            if (totalScore >= 50) achievements.add('Half Way There');
+            if (totalScore >= 100) achievements.add('Perfect Score');
+        }
+
         levelButtons.forEach(btn => {
             btn.addEventListener('click', () => {
                 levelButtons.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 currentLevel = btn.dataset.level;
                 currentDialogue = 0;
-                currentLevelDesc.textContent = btn.textContent;
                 loadDialogue();
             });
         });
 
-        checkBtn.addEventListener('click', checkAnswers);
-        nextBtn.addEventListener('click', loadNextDialogue);
-        listenBtn.addEventListener('click', playDialogue);
-
-        // Keyboard shortcuts
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && !checkBtn.disabled) {
-                checkAnswers();
-            } else if (e.key === ' ' && !e.target.classList.contains('dialogue-input')) {
-                e.preventDefault();
-                playDialogue();
-            } else if (e.key === 'ArrowRight' && !nextBtn.disabled) {
-                loadNextDialogue();
-            }
-        });
-
-        // Initialize
-        function init() {
-            if (!gameStarted) {
-                return; // Don't initialize until the user clicks start
-            }
-            initializeSpeechSynthesis();
-            loadDialogue();
-            startTimer();
-            updateStats();
-        }
-
-        // Load dialogue
-        function loadDialogue() {
-            const dialogue = dialogues[currentLevel][currentDialogue];
-            dialogueTitle.textContent = `${dialogue.title} (${dialogue.level})`;
-            dialogueContent.innerHTML = '';
-            
-            dialogue.lines.forEach((line, index) => {
-                const lineElement = createDialogueLine(line, index);
-                dialogueContent.appendChild(lineElement);
-            });
-
-            resetProgress();
-            checkBtn.disabled = false;
-            nextBtn.disabled = true;
-            feedback.style.display = 'none';
-            startTimer();
-        }
-
-        // Create dialogue line element
-        function createDialogueLine(line, index) {
-            const div = document.createElement('div');
-            div.className = 'dialogue-line';
-            div.innerHTML = `
-                <span class="character">${line.character}:</span>
-                <input type="text" class="dialogue-input" placeholder="${line.correct}" data-index="${index}">
-                <button class="hint-btn">💡</button>
-                <div class="hint-text">${line.hint}</div>
-            `;
-
-            const input = div.querySelector('.dialogue-input');
-            const hintBtn = div.querySelector('.hint-btn');
-            const hintText = div.querySelector('.hint-text');
-            
-            input.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
-                    checkAnswers();
-                }
-            });
-
-            hintBtn.addEventListener('click', () => {
-                hintText.style.display = hintText.style.display === 'none' ? 'block' : 'none';
-                score -= 5; // Small penalty for using hints
-                scoreValue.textContent = score;
-            });
-
-            return div;
-        }
-
-        // Check answers
-        function checkAnswers() {
-            const inputs = document.querySelectorAll('.dialogue-input');
-            const dialogue = dialogues[currentLevel][currentDialogue];
-            let allCorrect = true;
-            totalAttempts++;
-
-            inputs.forEach((input, index) => {
-                const isCorrect = input.value.toLowerCase().trim() === dialogue.lines[index].correct.toLowerCase().trim();
-                input.style.borderColor = isCorrect ? 'var(--success-color)' : 'var(--error-color)';
-                if (!isCorrect) allCorrect = false;
-            });
-
-            if (allCorrect) {
-                correctAttempts++;
-                score += 100;
-                streak++;
-                if (streak > bestStreak) {
-                    bestStreak = streak;
-                    bestStreakElement.textContent = bestStreak;
-                }
-                scoreValue.textContent = score;
-                streakValue.textContent = streak;
-                feedback.textContent = 'Excellent! All answers are correct! 🌟';
-                feedback.className = 'feedback success';
-                checkBtn.disabled = true;
-                nextBtn.disabled = false;
-                showAchievement();
-            } else {
-                streak = 0;
-                streakValue.textContent = streak;
-                feedback.textContent = 'Some answers are incorrect. Try again! 💪';
-                feedback.className = 'feedback error';
-            }
-
-            feedback.style.display = 'block';
-            updateStats();
-        }
-
-        // Load next dialogue
-        function loadNextDialogue() {
+        nextBtn.addEventListener('click', () => {
             currentDialogue++;
             if (currentDialogue >= dialogues[currentLevel].length) {
                 currentDialogue = 0;
-                showLevelCompleteAchievement();
             }
             loadDialogue();
-            updateStats();
-        }
-
-        // Reset progress
-        function resetProgress() {
-            progressDots.forEach(dot => dot.classList.remove('active'));
-            progressDots[0].classList.add('active');
-        }
-
-        // Start timer
-        function startTimer() {
-            if (timerInterval) clearInterval(timerInterval);
-            startTime = Date.now();
-            
-            timerInterval = setInterval(() => {
-                const elapsed = Math.floor((Date.now() - startTime) / 1000);
-                const minutes = Math.floor(elapsed / 60);
-                const seconds = elapsed % 60;
-                timerValue.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-            }, 1000);
-        }
-
-        // Show achievement
-        function showAchievement() {
-            const dialogue = dialogues[currentLevel][currentDialogue];
-            achievement.textContent = `🎉 Achievement Unlocked: ${dialogue.title} (${dialogue.level}) Mastered! 🎉`;
-            achievement.style.display = 'block';
-            setTimeout(() => {
-                achievement.style.display = 'none';
-            }, 3000);
-        }
-
-        // Show level complete achievement
-        function showLevelCompleteAchievement() {
-            achievement.textContent = `🏆 Congratulations! You've completed all ${currentLevel} level dialogues! 🏆`;
-            achievement.style.display = 'block';
-            setTimeout(() => {
-                achievement.style.display = 'none';
-            }, 5000);
-        }
-
-        // Play dialogue audio
-        function playDialogue() {
-            const dialogue = dialogues[currentLevel][currentDialogue];
-            const listenButton = document.getElementById('listenBtn');
-            const audioStatus = document.getElementById('audioStatus');
-            
-            function showAudioStatus(message, type = 'info') {
-                audioStatus.textContent = message;
-                audioStatus.style.display = 'block';
-                audioStatus.style.backgroundColor = type === 'error' ? 'rgba(255, 68, 68, 0.1)' : 'rgba(0, 255, 153, 0.1)';
-                audioStatus.style.borderColor = type === 'error' ? 'var(--error-color)' : 'var(--primary-color)';
-                
-                setTimeout(() => {
-                    audioStatus.style.display = 'none';
-                }, 3000);
-            }
-
-            // Check if speech synthesis is supported
-            if (!window.speechSynthesis) {
-                showAudioStatus('❌ Your browser does not support text-to-speech', 'error');
-                showAudioHelp('Text-to-speech is not supported in your browser. Try using Chrome or Edge.', 'error');
-                return;
-            }
-
-            // Cancel any ongoing speech
-            speechSynthesis.cancel();
-
-            // Get available voices
-            let voices = speechSynthesis.getVoices();
-            const frenchVoices = voices.filter(voice => voice.lang.startsWith('fr'));
-            
-            // Disable listen button while playing
-            listenButton.disabled = true;
-            listenButton.textContent = '🔊 Playing...';
-            showAudioStatus('▶️ Playing dialogue...');
-
-            // Create a queue of utterances
-            const utterances = dialogue.lines.map(line => {
-                const utterance = new SpeechSynthesisUtterance(line.correct);
-                
-                // Try to use a French voice if available
-                if (frenchVoices.length > 0) {
-                    utterance.voice = frenchVoices[0];
-                }
-                
-                utterance.lang = 'fr-FR';
-                utterance.rate = 0.9; // Slightly slower for better clarity
-                utterance.pitch = 1;
-                utterance.volume = 1;
-                
-                // Highlight the current line being spoken
-                utterance.onstart = () => {
-                    const inputs = document.querySelectorAll('.dialogue-input');
-                    inputs.forEach(input => input.style.backgroundColor = 'transparent');
-                    const currentInput = inputs[dialogue.lines.indexOf(line)];
-                    if (currentInput) {
-                        currentInput.style.backgroundColor = 'rgba(0, 255, 153, 0.1)';
-                        currentInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }
-                    showAudioStatus(`🗣️ Speaking: "${line.correct}"`);
-                };
-
-                utterance.onend = () => {
-                    const inputs = document.querySelectorAll('.dialogue-input');
-                    inputs.forEach(input => input.style.backgroundColor = 'transparent');
-                };
-
-                utterance.onerror = (event) => {
-                    console.error('Speech synthesis error:', event);
-                    showAudioStatus('❌ Error playing this line', 'error');
-                };
-
-                return utterance;
-            });
-
-            // Play utterances in sequence
-            let currentIndex = 0;
-            
-            function speakNext() {
-                if (currentIndex < utterances.length) {
-                    const utterance = utterances[currentIndex];
-                    
-                    utterance.onend = () => {
-                        currentIndex++;
-                        setTimeout(speakNext, 500); // Add small delay between lines
-                    };
-
-                    try {
-                        speechSynthesis.speak(utterance);
-                    } catch (error) {
-                        console.error('Speech synthesis error:', error);
-                        showAudioStatus('❌ Error playing audio', 'error');
-                        resetListenButton();
-                    }
-                } else {
-                    // Reset button when all lines are spoken
-                    resetListenButton();
-                    showAudioStatus('✅ Dialogue complete!');
-                }
-            }
-
-            function resetListenButton() {
-                listenButton.disabled = false;
-                listenButton.textContent = '🔊 Listen';
-            }
-
-            // Start playing the sequence
-            speakNext();
-
-            // Add a safety timeout to reset button if something goes wrong
-            setTimeout(() => {
-                if (listenButton.disabled) {
-                    resetListenButton();
-                    showAudioStatus('⚠️ Playback timed out', 'error');
-                }
-            }, utterances.length * 5000); // 5 seconds per utterance as safety
-        }
-
-        // Add this new function to show audio help messages
-        function showAudioHelp(message, type = 'info') {
-            feedback.innerHTML = `
-                <div class="help-container">
-                    <div class="help-title">
-                        ${type === 'error' ? '❌ Audio Playback Issue' : '🔊 Audio Playback Guide'}
-                    </div>
-                    
-                    <div class="help-section">
-                        <div class="help-section-title">Current Status:</div>
-                        <div>${message}</div>
-                    </div>
-
-                    <div class="help-section">
-                        <div class="help-section-title">Troubleshooting Steps:</div>
-                        <ul class="help-list">
-                            <li>Check if your device volume is turned on and at an audible level</li>
-                            <li>Ensure your browser (Chrome/Edge recommended) is up to date</li>
-                            <li>Allow text-to-speech permissions if your browser asks</li>
-                            <li>Install French language support on your system:
-                                <ul class="help-list" style="margin-left: 20px; font-size: 0.9em;">
-                                    <li>Windows: Settings → Time & Language → Language → Add French</li>
-                                    <li>Mac: System Preferences → Language & Region → Add French</li>
-                                    <li>Mobile: Check system language settings</li>
-                                </ul>
-                            </li>
-                            <li>Try refreshing the page if audio stops working</li>
-                        </ul>
-                    </div>
-
-                    <div class="help-section">
-                        <div class="help-section-title">Alternative Learning Methods:</div>
-                        <ul class="help-list">
-                            <li>Practice by reading the dialogue text aloud yourself</li>
-                            <li>Use the written hints to guide your pronunciation</li>
-                            <li>Focus on understanding the written dialogue structure</li>
-                        </ul>
-                    </div>
-
-                    <div class="help-tip">
-                        💡 Pro Tip: Even without audio, you can improve your French by carefully studying the dialogue patterns and practicing the written responses!
-                    </div>
-
-                    <button class="help-button" onclick="dismissHelp()">Got it! 👍</button>
-                </div>
-            `;
-            feedback.className = 'feedback info';
-            feedback.style.display = 'block';
-        }
-
-        // Add dismiss help function
-        function dismissHelp() {
-            feedback.style.display = 'none';
-        }
-
-        // Update the initializeSpeechSynthesis function
-        function initializeSpeechSynthesis() {
-            if (window.speechSynthesis) {
-                speechSynthesis.cancel();
-
-                // Try to load voices
-                function loadVoices() {
-                    const voices = speechSynthesis.getVoices();
-                    const frenchVoices = voices.filter(voice => voice.lang.startsWith('fr'));
-                    
-                    if (frenchVoices.length > 0) {
-                        console.log('French voices available:', frenchVoices);
-                        showAudioHelp(`✅ Found ${frenchVoices.length} French voice(s). Audio playback ready!`);
-                    } else {
-                        console.log('No French voices found');
-                        showAudioHelp(`⚠️ No French voices found. The system will use default voice. For better pronunciation:
-                            1. Install French language pack in your system
-                            2. Use Chrome or Edge browser
-                            3. Check if your system supports text-to-speech`, 'warning');
-                    }
-                }
-
-                // First try to get voices
-                loadVoices();
-
-                // If voices aren't loaded yet, wait for them
-                if (speechSynthesis.onvoiceschanged !== undefined) {
-                    speechSynthesis.onvoiceschanged = loadVoices;
-                }
-
-                // Initialize with a silent utterance
-                const utterance = new SpeechSynthesisUtterance('');
-                utterance.volume = 0;
-                utterance.rate = 1;
-                speechSynthesis.speak(utterance);
-            } else {
-                showAudioHelp('❌ Your browser does not support text-to-speech. Please use Chrome or Edge for the best experience.', 'error');
-            }
-        }
-
-        // Update statistics
-        function updateStats() {
-            completedDialogues.textContent = totalAttempts;
-            const accuracy = totalAttempts > 0 ? Math.round((correctAttempts / totalAttempts) * 100) : 0;
-            accuracyRate.textContent = `${accuracy}%`;
-            bestStreakElement.textContent = bestStreak;
-        }
-
-        // Add this function to handle game start
-        function startGame() {
-            const welcomeModal = document.getElementById('welcomeModal');
-            const demoSection = document.getElementById('demoSection');
-            welcomeModal.style.display = 'none';
-            gameStarted = true;
-            init();
-        }
-
-        // Add help button to the controls div
-        document.querySelector('.controls').innerHTML += `
-            <button class="btn" onclick="showInstructions()">❓ Help</button>
-        `;
-
-        // Add function to show instructions again
-        function showInstructions() {
-            document.getElementById('welcomeModal').style.display = 'flex';
-        }
-
-        // Demo functionality
-        function runDemo() {
-            const demoStatus = document.getElementById('demoStatus');
-            const demoLine1 = document.getElementById('demoLine1');
-            const demoLine2 = document.getElementById('demoLine2');
-            const demoInput2 = document.getElementById('demoInput2');
-            const replayButton = document.getElementById('replayDemo');
-            const skipButton = document.getElementById('skipDemo');
-            
-            let currentStep = 0;
-            const demoSteps = [
-                {
-                    action: 'status',
-                    text: '1. Read the dialogue prompt...',
-                    duration: 2000
-                },
-                {
-                    action: 'highlight',
-                    element: demoLine1,
-                    text: '2. Listen to the correct pronunciation',
-                    duration: 2000
-                },
-                {
-                    action: 'status',
-                    text: '3. Type your response in French...',
-                    duration: 1000
-                },
-                {
-                    action: 'type',
-                    element: demoInput2,
-                    text: 'Je voudrais un café, s\'il vous plaît',
-                    duration: 100
-                },
-                {
-                    action: 'status',
-                    text: '4. Check your answer and continue!',
-                    duration: 2000
-                }
-            ];
-
-            function typeText(element, text, delay) {
-                let index = 0;
-                element.innerHTML = '<span class="demo-cursor"></span>';
-                
-                function addChar() {
-                    if (index < text.length) {
-                        element.innerHTML = text.slice(0, index + 1) + '<span class="demo-cursor"></span>';
-                        index++;
-                        setTimeout(addChar, delay);
-                    }
-                }
-                
-                addChar();
-            }
-
-            function runStep() {
-                if (currentStep >= demoSteps.length) {
-                    demoStatus.textContent = 'Demo complete! Try it yourself!';
-                    return;
-                }
-
-                const step = demoSteps[currentStep];
-                
-                switch (step.action) {
-                    case 'status':
-                        demoStatus.textContent = step.text;
-                        break;
-                    case 'highlight':
-                        step.element.classList.add('active');
-                        setTimeout(() => step.element.classList.remove('active'), step.duration);
-                        demoStatus.textContent = step.text;
-                        break;
-                    case 'type':
-                        typeText(step.element, step.text, step.duration);
-                        break;
-                }
-
-                setTimeout(() => {
-                    currentStep++;
-                    runStep();
-                }, step.duration);
-            }
-
-            // Start demo
-            runStep();
-
-            // Add event listeners for demo controls
-            replayButton.addEventListener('click', () => {
-                currentStep = 0;
-                demoInput2.textContent = '';
-                runStep();
-            });
-
-            skipButton.addEventListener('click', () => {
-                demoStatus.textContent = 'Demo skipped. Start playing!';
-                demoInput2.textContent = 'Je voudrais un café, s\'il vous plaît';
-            });
-        }
-
-        // Run demo when welcome modal is shown
-        document.addEventListener('DOMContentLoaded', () => {
-            setTimeout(runDemo, 1000); // Start demo after a short delay
         });
 
-        // Initialize the game
-        init();
+        // Initialize
+        loadDialogue();
     </script>
 </body>
 </html> 
