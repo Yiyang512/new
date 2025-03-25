@@ -1039,80 +1039,103 @@
                 <div class="demo-interaction">
                     <div class="conversation-example">
                         <div class="chat-bubble ai">
-                            <div class="typing-effect">Bonjour! Que puis-je faire pour vous?</div>
-                            <div class="audio-status" id="audioStatus" style="display: none;">
-                                <div class="audio-wave">
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                </div>
-                                <span>Playing audio...</span>
-                            </div>
+                            <div class="typing-effect">Écrivez une dissertation sur le thème suivant...</div>
                         </div>
                         <div class="chat-bubble user" id="userResponse">
-                            Type your response...
+                            Start writing your essay here...
                         </div>
                     </div>
                     <div class="hint-container" id="hintContainer">
-                        <h4>※ Helpful Hints:</h4>
+                        <h4>※ Writing Guidelines:</h4>
                         <ul class="example-list" id="hintList"></ul>
                     </div>
-                    <input type="text" class="demo-input" placeholder="Type your response in French...">
-                    <button class="demo-button" onclick="playAudio()">♪ Listen</button>
-                    <button class="demo-button" onclick="showHint()">※ Hint</button>
+                    <input type="text" class="demo-input" placeholder="Begin your French essay...">
+                    <button class="demo-button" onclick="showHint()">※ Writing Tips</button>
                     
                     <div class="vocab-category">
-                        <h4>Essential Phrases</h4>
+                        <h4>Academic Writing Structures</h4>
                         <div class="vocabulary-section">
-                            <div class="vocab-card" onclick="speakPhrase(this)">
-                                <div class="french">Bonjour</div>
-                                <div class="english">Hello</div>
+                            <div class="vocab-card">
+                                <div class="french">Introduction</div>
+                                <div class="english">Opening Techniques</div>
+                                <div class="grammar-point">
+                                    • De nos jours... (Nowadays...)
+                                    • Dans le contexte actuel... (In the current context...)
+                                    • Il est indéniable que... (It is undeniable that...)
+                                </div>
                             </div>
-                            <div class="vocab-card" onclick="speakPhrase(this)">
-                                <div class="french">Au revoir</div>
-                                <div class="english">Goodbye</div>
+                            <div class="vocab-card">
+                                <div class="french">Développement</div>
+                                <div class="english">Main Body</div>
+                                <div class="grammar-point">
+                                    • En premier lieu... (Firstly...)
+                                    • Par ailleurs... (Moreover...)
+                                    • En revanche... (On the other hand...)
+                                </div>
                             </div>
-                            <div class="vocab-card" onclick="speakPhrase(this)">
-                                <div class="french">S'il vous plaît</div>
-                                <div class="english">Please</div>
+                            <div class="vocab-card">
+                                <div class="french">Conclusion</div>
+                                <div class="english">Concluding Remarks</div>
+                                <div class="grammar-point">
+                                    • En définitive... (Ultimately...)
+                                    • Pour conclure... (To conclude...)
+                                    • En somme... (In summary...)
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="vocab-category">
-                        <h4>Common Questions</h4>
+                        <h4>Advanced Academic Expressions</h4>
                         <div class="vocabulary-section">
-                            <div class="vocab-card" onclick="speakPhrase(this)">
-                                <div class="french">Comment allez-vous?</div>
-                                <div class="english">How are you?</div>
+                            <div class="vocab-card">
+                                <div class="french">Argumentation</div>
+                                <div class="english">Argumentative Phrases</div>
+                                <div class="grammar-point">
+                                    • Force est de constater que... (It must be noted that...)
+                                    • Il convient de souligner... (It should be emphasized...)
+                                    • À y regarder de plus près... (Upon closer examination...)
+                                </div>
                             </div>
-                            <div class="vocab-card" onclick="speakPhrase(this)">
-                                <div class="french">Où est...?</div>
-                                <div class="english">Where is...?</div>
+                            <div class="vocab-card">
+                                <div class="french">Analyse Critique</div>
+                                <div class="english">Critical Analysis</div>
+                                <div class="grammar-point">
+                                    • On peut néanmoins objecter que... (One can nevertheless object that...)
+                                    • Cette approche présente des limites... (This approach has limitations...)
+                                    • Il est pertinent de... (It is relevant to...)
+                                </div>
                             </div>
-                            <div class="vocab-card" onclick="speakPhrase(this)">
-                                <div class="french">Que voulez-vous?</div>
-                                <div class="english">What do you want?</div>
+                            <div class="vocab-card">
+                                <div class="french">Synthèse</div>
+                                <div class="english">Synthesis</div>
+                                <div class="grammar-point">
+                                    • En croisant les perspectives... (Cross-referencing perspectives...)
+                                    • L'analyse révèle que... (The analysis reveals that...)
+                                    • Il en ressort que... (It emerges that...)
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="vocab-category">
-                        <h4>Useful Verbs</h4>
-                        <div class="vocabulary-section">
-                            <div class="vocab-card" onclick="speakPhrase(this)">
-                                <div class="french">Je voudrais</div>
-                                <div class="english">I would like</div>
-                            </div>
-                            <div class="vocab-card" onclick="speakPhrase(this)">
-                                <div class="french">Je peux</div>
-                                <div class="english">I can</div>
-                            </div>
-                            <div class="vocab-card" onclick="speakPhrase(this)">
-                                <div class="french">Je dois</div>
-                                <div class="english">I must/have to</div>
-                            </div>
+                        <h4>Writing Exercise Prompts</h4>
+                        <div class="step-explanation">
+                            <h4>Practice Topics:</h4>
+                            <ul class="explanation-list">
+                                <li>
+                                    <strong>Dissertation:</strong> "Les réseaux sociaux ont-ils changé notre façon de communiquer?"
+                                    <div class="grammar-point">Have social networks changed the way we communicate?</div>
+                                </li>
+                                <li>
+                                    <strong>Commentaire:</strong> "Analysez l'impact du changement climatique sur la société moderne."
+                                    <div class="grammar-point">Analyze the impact of climate change on modern society.</div>
+                                </li>
+                                <li>
+                                    <strong>Synthèse:</strong> "Comparez les systèmes éducatifs traditionnels et modernes."
+                                    <div class="grammar-point">Compare traditional and modern educational systems.</div>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -1376,76 +1399,39 @@
 
         function showHint() {
             const hints = [
-                "※ Try: 'Je voudrais un café, s'il vous plaît'",
-                "→ Or: 'Bonjour! Je peux avoir...'",
-                "※ Remember to use polite forms!",
-                "→ Start with a greeting: 'Bonjour!'",
-                "※ Add 's'il vous plaît' to be more polite",
-                "→ Use 'Je voudrais' instead of 'Je veux'"
+                "※ Start with a clear thesis statement",
+                "→ Use academic expressions to strengthen your arguments",
+                "※ Structure your essay with clear paragraphs",
+                "→ Support your points with specific examples",
+                "※ Maintain formal language throughout",
+                "→ Use appropriate transition words between ideas"
             ];
             
             const hintContainer = document.getElementById('hintContainer');
             const hintList = document.getElementById('hintList');
             
-            // Clear previous hints
             hintList.innerHTML = '';
             
-            // Add new random hint
             const hint = hints[Math.floor(Math.random() * hints.length)];
             const li = document.createElement('li');
             li.textContent = hint;
             hintList.appendChild(li);
             
-            // Show hint container with animation
             hintContainer.classList.add('visible');
             
-            // Add shake animation to input
             const demoInput = document.querySelector('.demo-input');
             demoInput.classList.add('shake');
             setTimeout(() => demoInput.classList.remove('shake'), 500);
         }
 
-        function playAudio() {
-            const audioStatus = document.getElementById('audioStatus');
-            audioStatus.style.display = 'inline-flex';
-            
-            // Show feedback overlay
-            const feedback = document.getElementById('feedbackOverlay');
-            feedback.textContent = 'Playing: "Bonjour! Que puis-je faire pour vous?"';
-            feedback.classList.add('visible');
-            
-            // Hide audio status and feedback after 2 seconds
-            setTimeout(() => {
-                audioStatus.style.display = 'none';
-                feedback.classList.remove('visible');
-            }, 2000);
-        }
-
-        function speakPhrase(card) {
-            const french = card.querySelector('.french').textContent;
-            card.classList.add('bounce');
-            
-            // Show feedback overlay
-            const feedback = document.getElementById('feedbackOverlay');
-            feedback.textContent = `Playing: "${french}"`;
-            feedback.classList.add('visible');
-            
-            // Hide feedback after animation
-            setTimeout(() => {
-                card.classList.remove('bounce');
-                feedback.classList.remove('visible');
-            }, 2000);
-        }
-
         function updateUserResponse(input) {
             const userBubble = document.getElementById('userResponse');
-            userBubble.textContent = input.value || 'Type your response...';
+            userBubble.textContent = input.value || 'Start writing your essay here...';
             userBubble.classList.add('bounce');
             
-            // Show real-time corrections if needed
-            if (input.value.includes('Je veux')) {
+            if (input.value.includes('je pense')) {
                 const feedback = document.getElementById('feedbackOverlay');
-                feedback.innerHTML = '※ Suggestion: Use "Je voudrais" for more polite form';
+                feedback.innerHTML = '※ Suggestion: Use "je considère que" or "il me semble que" for academic writing';
                 feedback.classList.add('visible');
                 setTimeout(() => feedback.classList.remove('visible'), 3000);
             }
@@ -1522,7 +1508,7 @@
 
             // Reset any user inputs or states
             document.querySelector('.demo-input').value = '';
-            document.getElementById('userResponse').textContent = 'Type your response...';
+            document.getElementById('userResponse').textContent = 'Start writing your essay here...';
             document.querySelectorAll('.level-details').forEach(details => {
                 details.classList.remove('active');
             });
