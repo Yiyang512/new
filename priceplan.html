@@ -456,65 +456,251 @@
 
     @media (max-width: 992px) {
       .pricing-section {
-        padding: 32px 24px;
+        padding: 24px 20px;
       }
 
       .pricing-grid {
-        gap: 24px;
+        gap: 20px;
       }
 
       .pricing-title {
-        font-size: 2rem;
+        font-size: 1.8rem;
       }
 
       .card-title {
-        font-size: 1.3rem;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .pricing-grid {
-        grid-template-columns: 1fr;
-        max-width: 500px;
-      }
-
-      .pricing-title {
-        font-size: 1.75rem;
-      }
-
-      .pricing-card {
-        padding: 24px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      body {
-        padding: 20px 0;
-      }
-
-      .pricing-section {
-        padding: 20px 16px;
-      }
-
-      .pricing-title {
-        font-size: 1.5rem;
-      }
-
-      .pricing-card {
-        padding: 20px;
-      }
-
-      .card-header {
-        padding-right: 80px;
+        font-size: 1.2rem;
       }
 
       .current-price {
-        font-size: 2.75rem;
+        font-size: 3rem;
       }
 
       .price-suffix {
         font-size: 1.5rem;
       }
+
+      .feature-item {
+        font-size: 0.85rem;
+        padding: 5px 10px;
+      }
+
+      .feature-highlight {
+        font-size: 0.95rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 8px 0;
+      }
+
+      .pricing-section {
+        padding: 12px 8px;
+      }
+
+      .pricing-grid {
+        gap: 12px;
+        margin-top: 16px;
+      }
+
+      .highlight-message {
+        padding: 12px;
+        margin: 12px auto;
+        gap: 8px;
+      }
+
+      .highlight-message svg {
+        width: 24px;
+        height: 24px;
+        margin-bottom: 0;
+      }
+
+      .highlight-message p {
+        font-size: 0.85rem;
+        line-height: 1.3;
+      }
+
+      .typewriter-2 {
+        margin-top: 8px;
+      }
+
+      .pricing-card {
+        padding: 12px;
+      }
+
+      .card-header {
+        margin-bottom: 12px;
+        padding-right: 70px;
+      }
+
+      .price-container {
+        padding: 8px;
+        margin-bottom: 12px;
+      }
+
+      .feature-group {
+        padding-top: 8px;
+        margin-top: 8px;
+      }
+
+      .feature-item {
+        margin-bottom: 2px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 6px 0;
+      }
+
+      .pricing-section {
+        padding: 8px 6px;
+      }
+
+      .pricing-grid {
+        gap: 10px;
+        margin-top: 12px;
+      }
+
+      .highlight-message {
+        padding: 10px;
+        margin: 10px auto;
+        gap: 6px;
+      }
+
+      .highlight-message svg {
+        width: 20px;
+        height: 20px;
+      }
+
+      .highlight-message p {
+        font-size: 0.75rem;
+        line-height: 1.2;
+      }
+
+      .pricing-card {
+        padding: 10px;
+      }
+
+      .card-header {
+        padding-right: 50px;
+        margin-bottom: 8px;
+      }
+
+      .card-badge {
+        padding: 2px 6px;
+        top: 6px;
+        right: 6px;
+        font-size: 0.65rem;
+      }
+
+      .card-title {
+        font-size: 0.95rem;
+      }
+
+      .card-subtitle {
+        font-size: 0.7rem;
+        line-height: 1.2;
+      }
+
+      .price-container {
+        padding: 8px;
+        margin-bottom: 8px;
+      }
+
+      .original-price {
+        font-size: 0.75rem;
+        margin-bottom: 0;
+      }
+
+      .current-price {
+        font-size: 1.75rem;
+      }
+
+      .price-suffix {
+        font-size: 0.9rem;
+      }
+
+      .feature-group {
+        padding-top: 6px;
+        margin-top: 6px;
+      }
+
+      .feature-group-title {
+        font-size: 0.55rem;
+        margin-bottom: 2px;
+        padding-left: 12px;
+      }
+
+      .feature-group-title::before {
+        width: 4px;
+        height: 4px;
+      }
+
+      .feature-item {
+        font-size: 0.7rem;
+        padding: 1px 4px;
+        margin-bottom: 1px;
+        gap: 4px;
+        line-height: 1.2;
+      }
+
+      .feature-item svg {
+        width: 8px;
+        height: 8px;
+        margin-top: 3px;
+      }
+
+      .feature-highlight {
+        font-size: 0.75rem;
+      }
+
+      .button-group {
+        margin-top: 8px;
+      }
+
+      .cta-button {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+        border-radius: 8px;
+      }
+
+      .secondary-button {
+        padding: 4px 10px;
+        font-size: 0.7rem;
+        margin-top: 4px;
+        border-radius: 6px;
+      }
+
+      .savings-text {
+        font-size: 0.6rem;
+        margin-top: 4px;
+        padding: 2px 0;
+      }
+
+      .coming-soon-text {
+        font-size: 0.75rem;
+        padding: 6px;
+        margin-bottom: 4px;
+      }
+
+      /* Sparkle adjustments */
+      .sparkle {
+        transform: scale(0.6);
+      }
+
+      /* Reduce animation delays to speed up the typing effect */
+      .word-1 { animation-delay: 0.05s; }
+      .word-2 { animation-delay: 0.25s; }
+      .word-3 { animation-delay: 0.4s; }
+      .word-4 { animation-delay: 0.55s; }
+      .word-5 { animation-delay: 0.7s; }
+      .word-6 { animation-delay: 0.85s; }
+      .word-7 { animation-delay: 1s; }
+      .word-8 { animation-delay: 1.15s; }
+      .word-9 { animation-delay: 1.4s; }
+      .word-10 { animation-delay: 1.55s; }
+      /* ... continue with shorter delays ... */
     }
 
     .coming-soon-text {
