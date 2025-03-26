@@ -862,6 +862,202 @@
                             ]
                         }
                     ]
+                },
+                {
+                    difficulty: 1,
+                    theme: 'shopping',
+                    type: 'inquiry',
+                    lines: [
+                        {
+                            character: "Shoe Store Staff",
+                            correct: "Quelle pointure faites-vous?",
+                            options: [
+                                {
+                                    text: "Quelle pointure faites-vous?",
+                                    translation: "What's your shoe size?",
+                                    hint: "This is how to ask for shoe size in French"
+                                },
+                                {
+                                    text: "Quelle couleur préférez-vous?",
+                                    translation: "What color do you prefer?",
+                                    hint: "Size should be determined before color"
+                                },
+                                {
+                                    text: "Vous payez comment?",
+                                    translation: "How will you pay?",
+                                    hint: "Payment method comes after finding the right size"
+                                }
+                            ]
+                        },
+                        {
+                            character: "You",
+                            correct: "Je fais du 42",
+                            options: [
+                                {
+                                    text: "Je fais du 42",
+                                    translation: "I wear size 42",
+                                    hint: "This directly states your shoe size"
+                                },
+                                {
+                                    text: "Je préfère le noir",
+                                    translation: "I prefer black",
+                                    hint: "Color isn't relevant to the size question"
+                                },
+                                {
+                                    text: "Je paie en espèces",
+                                    translation: "I'll pay in cash",
+                                    hint: "Payment method isn't relevant yet"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    difficulty: 1,
+                    theme: 'travel',
+                    type: 'problem-solving',
+                    lines: [
+                        {
+                            character: "Train Station Staff",
+                            correct: "Votre train a du retard. Voulez-vous prendre le prochain?",
+                            options: [
+                                {
+                                    text: "Votre train a du retard. Voulez-vous prendre le prochain?",
+                                    translation: "Your train is delayed. Would you like to take the next one?",
+                                    hint: "This offers a solution to a travel problem"
+                                },
+                                {
+                                    text: "Avez-vous votre billet?",
+                                    translation: "Do you have your ticket?",
+                                    hint: "The ticket isn't relevant to the delay situation"
+                                },
+                                {
+                                    text: "Bon voyage!",
+                                    translation: "Have a good trip!",
+                                    hint: "This doesn't address the delay"
+                                }
+                            ]
+                        },
+                        {
+                            character: "You",
+                            correct: "Oui, s'il vous plaît. À quelle heure est le prochain?",
+                            options: [
+                                {
+                                    text: "Oui, s'il vous plaît. À quelle heure est le prochain?",
+                                    translation: "Yes, please. What time is the next one?",
+                                    hint: "This accepts the solution and asks for details"
+                                },
+                                {
+                                    text: "Non, je veux un remboursement",
+                                    translation: "No, I want a refund",
+                                    hint: "This is more confrontational than necessary"
+                                },
+                                {
+                                    text: "Je ne comprends pas",
+                                    translation: "I don't understand",
+                                    hint: "The situation is clearly explained"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    difficulty: 1,
+                    theme: 'shopping',
+                    type: 'comparison',
+                    lines: [
+                        {
+                            character: "Electronics Store Staff",
+                            correct: "Préférez-vous un modèle Android ou iPhone?",
+                            options: [
+                                {
+                                    text: "Préférez-vous un modèle Android ou iPhone?",
+                                    translation: "Do you prefer an Android model or iPhone?",
+                                    hint: "This helps compare different phone types"
+                                },
+                                {
+                                    text: "Avez-vous une carte de fidélité?",
+                                    translation: "Do you have a loyalty card?",
+                                    hint: "Loyalty cards come after choosing a product"
+                                },
+                                {
+                                    text: "Voulez-vous un sac?",
+                                    translation: "Would you like a bag?",
+                                    hint: "This comes after purchase"
+                                }
+                            ]
+                        },
+                        {
+                            character: "You",
+                            correct: "Je préfère Android pour sa personnalisation",
+                            options: [
+                                {
+                                    text: "Je préfère Android pour sa personnalisation",
+                                    translation: "I prefer Android for its customization",
+                                    hint: "This shows a clear preference with reasoning"
+                                },
+                                {
+                                    text: "Je ne sais pas",
+                                    translation: "I don't know",
+                                    hint: "You should have a preference when shopping"
+                                },
+                                {
+                                    text: "Combien ça coûte?",
+                                    translation: "How much does it cost?",
+                                    hint: "Price comes after choosing the type"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    difficulty: 1,
+                    theme: 'travel',
+                    type: 'emergency',
+                    lines: [
+                        {
+                            character: "Hotel Staff",
+                            correct: "Il y a un problème avec votre chambre. Nous pouvons vous offrir une suite gratuite.",
+                            options: [
+                                {
+                                    text: "Il y a un problème avec votre chambre. Nous pouvons vous offrir une suite gratuite.",
+                                    translation: "There's an issue with your room. We can offer you a free suite.",
+                                    hint: "This addresses a problem with a solution"
+                                },
+                                {
+                                    text: "Votre chambre est prête",
+                                    translation: "Your room is ready",
+                                    hint: "This contradicts the problem situation"
+                                },
+                                {
+                                    text: "Vous devez payer plus",
+                                    translation: "You need to pay more",
+                                    hint: "This is inappropriate for a hotel's mistake"
+                                }
+                            ]
+                        },
+                        {
+                            character: "You",
+                            correct: "C'est très gentil, merci de gérer la situation",
+                            options: [
+                                {
+                                    text: "C'est très gentil, merci de gérer la situation",
+                                    translation: "That's very kind, thank you for handling the situation",
+                                    hint: "This shows appreciation for problem resolution"
+                                },
+                                {
+                                    text: "Je veux parler au directeur",
+                                    translation: "I want to speak to the manager",
+                                    hint: "This is too aggressive when offered a solution"
+                                },
+                                {
+                                    text: "Je pars maintenant",
+                                    translation: "I'm leaving now",
+                                    hint: "This rejects a good solution"
+                                }
+                            ]
+                        }
+                    ]
                 }
             ],
             intermediate: [
@@ -1200,6 +1396,104 @@
                             ]
                         }
                     ]
+                },
+                {
+                    difficulty: 2,
+                    theme: 'business',
+                    type: 'negotiation',
+                    lines: [
+                        {
+                            character: "Supplier",
+                            correct: "Nous pouvons vous offrir une remise de 15% pour une commande en gros",
+                            options: [
+                                {
+                                    text: "Nous pouvons vous offrir une remise de 15% pour une commande en gros",
+                                    translation: "We can offer you a 15% discount for a bulk order",
+                                    hint: "This is a common business negotiation offer"
+                                },
+                                {
+                                    text: "Quand voulez-vous être payé?",
+                                    translation: "When do you want to be paid?",
+                                    hint: "Payment timing comes after price negotiation"
+                                },
+                                {
+                                    text: "Où est votre bureau?",
+                                    translation: "Where is your office?",
+                                    hint: "Location isn't relevant to the price discussion"
+                                }
+                            ]
+                        },
+                        {
+                            character: "You",
+                            correct: "Pouvons-nous discuter d'une remise de 20% avec un engagement annuel?",
+                            options: [
+                                {
+                                    text: "Pouvons-nous discuter d'une remise de 20% avec un engagement annuel?",
+                                    translation: "Can we discuss a 20% discount with an annual commitment?",
+                                    hint: "This is a professional counter-offer"
+                                },
+                                {
+                                    text: "C'est trop cher",
+                                    translation: "That's too expensive",
+                                    hint: "This is too direct and unprofessional"
+                                },
+                                {
+                                    text: "Je ne suis pas intéressé",
+                                    translation: "I'm not interested",
+                                    hint: "This ends the negotiation prematurely"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    difficulty: 2,
+                    theme: 'business',
+                    type: 'presentation',
+                    lines: [
+                        {
+                            character: "Colleague",
+                            correct: "Pouvez-vous présenter les résultats du dernier trimestre?",
+                            options: [
+                                {
+                                    text: "Pouvez-vous présenter les résultats du dernier trimestre?",
+                                    translation: "Can you present last quarter's results?",
+                                    hint: "This is a common business presentation request"
+                                },
+                                {
+                                    text: "Où est la salle de réunion?",
+                                    translation: "Where is the meeting room?",
+                                    hint: "Location should be known before the presentation"
+                                },
+                                {
+                                    text: "Avez-vous déjeuné?",
+                                    translation: "Have you had lunch?",
+                                    hint: "This is too casual for a business presentation"
+                                }
+                            ]
+                        },
+                        {
+                            character: "You",
+                            correct: "Bien sûr, j'ai préparé une présentation détaillée avec les graphiques",
+                            options: [
+                                {
+                                    text: "Bien sûr, j'ai préparé une présentation détaillée avec les graphiques",
+                                    translation: "Of course, I've prepared a detailed presentation with graphs",
+                                    hint: "This shows professional preparation"
+                                },
+                                {
+                                    text: "Je ne suis pas prêt",
+                                    translation: "I'm not ready",
+                                    hint: "This shows lack of preparation"
+                                },
+                                {
+                                    text: "Demandez à quelqu'un d'autre",
+                                    translation: "Ask someone else",
+                                    hint: "This avoids professional responsibility"
+                                }
+                            ]
+                        }
+                    ]
                 }
             ],
             advanced: [
@@ -1488,6 +1782,86 @@
             ]
         };
 
+        // Enhanced theme-specific achievements
+        const themeAchievements = {
+            restaurant: {
+                basic: {
+                    name: "Restaurant Rookie",
+                    requirement: 3,
+                    description: "Complete 3 restaurant scenarios"
+                },
+                intermediate: {
+                    name: "Restaurant Professional",
+                    requirement: 7,
+                    description: "Complete 7 restaurant scenarios"
+                },
+                master: {
+                    name: "Restaurant Master",
+                    requirement: 12,
+                    description: "Complete 12 restaurant scenarios"
+                }
+            },
+            shopping: {
+                basic: {
+                    name: "Shopping Beginner",
+                    requirement: 3,
+                    description: "Complete 3 shopping scenarios"
+                },
+                intermediate: {
+                    name: "Shopping Pro",
+                    requirement: 7,
+                    description: "Complete 7 shopping scenarios"
+                },
+                master: {
+                    name: "Shopping Expert",
+                    requirement: 12,
+                    description: "Complete 12 shopping scenarios"
+                }
+            },
+            travel: {
+                basic: {
+                    name: "Travel Novice",
+                    requirement: 3,
+                    description: "Complete 3 travel scenarios"
+                },
+                intermediate: {
+                    name: "Travel Explorer",
+                    requirement: 7,
+                    description: "Complete 7 travel scenarios"
+                },
+                master: {
+                    name: "Travel Pro",
+                    requirement: 12,
+                    description: "Complete 12 travel scenarios"
+                }
+            },
+            business: {
+                basic: {
+                    name: "Business Rookie",
+                    requirement: 3,
+                    description: "Complete 3 business scenarios"
+                },
+                intermediate: {
+                    name: "Business Professional",
+                    requirement: 7,
+                    description: "Complete 7 business scenarios"
+                },
+                master: {
+                    name: "Business Negotiator",
+                    requirement: 12,
+                    description: "Complete 12 business scenarios"
+                }
+            }
+        };
+
+        // Add theme completion tracking
+        let themeCompletions = {
+            restaurant: 0,
+            shopping: 0,
+            travel: 0,
+            business: 0
+        };
+
         let currentLevel = 'beginner';
         let currentDialogue = 0;
         let streak = 0;
@@ -1629,11 +2003,20 @@
                 streak++;
                 const points = 10 * (dialogue.difficulty || 1);
                 const streakBonus = Math.floor(streak / 3) * 5;
-                totalScore = Math.min(maxScore, totalScore + points + streakBonus);
                 
-                if (streakBonus > 0) {
+                // Enhanced theme bonus calculation
+                let themeBonus = 0;
+                if (currentTheme !== 'all') {
+                    themeCompletions[currentTheme]++;
+                    themeBonus = calculateThemeBonus(themeCompletions[currentTheme]);
+                }
+                
+                totalScore = Math.min(maxScore, totalScore + points + streakBonus + themeBonus);
+                
+                if (streakBonus > 0 || themeBonus > 0) {
                     const rect = feedback.getBoundingClientRect();
-                    addBonusPoints(streakBonus, rect.right, rect.top);
+                    if (streakBonus > 0) addBonusPoints(streakBonus, rect.right, rect.top);
+                    if (themeBonus > 0) addBonusPoints(themeBonus, rect.right, rect.top + 30);
                 }
                 
                 checkAchievements();
@@ -1645,6 +2028,7 @@
                     <div style="font-size: 0.9rem; margin-top: 0.5rem">
                         +${points} points
                         ${streakBonus ? `<br>Streak bonus: +${streakBonus}` : ''}
+                        ${themeBonus ? `<br>Theme mastery bonus: +${themeBonus}` : ''}
                     </div>
                 `;
                 feedback.className = 'feedback success';
@@ -1721,6 +2105,44 @@
             if (streak >= 5) achievements.add('Streak Master');
             if (totalScore >= 50) achievements.add('Half Way There');
             if (totalScore >= 100) achievements.add('Perfect Score');
+
+            // Check theme-specific achievements
+            if (currentTheme !== 'all') {
+                const themeProgress = themeCompletions[currentTheme];
+                const themeAchievementLevels = themeAchievements[currentTheme];
+                
+                // Check each achievement level
+                if (themeProgress >= themeAchievementLevels.basic.requirement) {
+                    achievements.add(themeAchievementLevels.basic.name);
+                }
+                if (themeProgress >= themeAchievementLevels.intermediate.requirement) {
+                    achievements.add(themeAchievementLevels.intermediate.name);
+                }
+                if (themeProgress >= themeAchievementLevels.master.requirement) {
+                    achievements.add(themeAchievementLevels.master.name);
+                }
+            }
+
+            // Add interaction type achievements
+            const completedTypes = new Set(dialogues[currentLevel]
+                .filter(d => d.type)
+                .map(d => d.type));
+            
+            if (completedTypes.size >= 3) achievements.add('Interaction Master');
+            if (completedTypes.has('emergency')) achievements.add('Crisis Manager');
+            if (completedTypes.has('negotiation')) achievements.add('Master Negotiator');
+            if (completedTypes.has('presentation')) achievements.add('Presentation Pro');
+        }
+
+        function calculateThemeBonus(themeProgress) {
+            let bonus = Math.floor(themeProgress / 3) * 3; // Base bonus
+            
+            // Additional bonuses for reaching achievement levels
+            if (themeProgress >= 12) bonus += 10; // Master level bonus
+            else if (themeProgress >= 7) bonus += 5; // Intermediate level bonus
+            else if (themeProgress >= 3) bonus += 2; // Basic level bonus
+            
+            return bonus;
         }
 
         levelButtons.forEach(btn => {
