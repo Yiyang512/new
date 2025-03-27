@@ -3,163 +3,1645 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catch the Swimming Fish - French Vocabulary</title>
+    <title>French Fishing Adventure</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg-color: #001102;
+            --accent-color: #00FF9B;
+            --text-color: #FFFFFF;
+            --card-bg: rgba(0, 255, 155, 0.1);
+            --success-color: #00FF9B;
+            --error-color: #FF4444;
+            --neutral-color: #666666;
+            --water-color-1: rgba(0, 102, 51, 0.3);
+            --water-color-2: rgba(0, 51, 25, 0.8);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
         }
 
         body {
-            background-color: #000;
-            color: #00ffff;
-            font-family: Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            overflow: hidden;
+        }
+
+        .game-container {
+            width: 100%;
             height: 100vh;
-            overflow: hidden;
-        }
-
-        h1 {
-            margin-top: 10px;
-            font-size: 2em;
-            text-shadow: 0 0 10px #00ffff;
-        }
-
-        .ocean {
             position: relative;
-            width: 80vw;
-            height: 70vh;
             overflow: hidden;
-            background: linear-gradient(to bottom, #001f3f, #000a1f);
-            border: 2px solid #00ffff;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
-            margin-top: 20px;
         }
 
+        /* Background Effects */
+        .grid-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(var(--accent-color) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: -1;
+            animation: pulse 3s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.1; }
+            100% { opacity: 0.2; }
+        }
+
+        /* Water animation */
+        .water {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 65%;
+            background: linear-gradient(to bottom, var(--water-color-1), var(--water-color-2));
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .water:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 200%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0.5 0.2 20 10" preserveAspectRatio="none"><path d="M0,10 L0,5 Q2.5,3 5,5 T10,5 T15,5 T20,5 L20,10 Z" fill="%230099ff" opacity="0.2"/></svg>') repeat-x;
+            animation: waveMove 20s linear infinite;
+        }
+
+        .water:after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            width: 200%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0.5 0.2 20 10" preserveAspectRatio="none"><path d="M0,10 L0,6 Q5,2 10,6 T20,6 L20,10 Z" fill="%230077cc" opacity="0.3"/></svg>') repeat-x;
+            animation: waveMove 15s linear infinite reverse;
+        }
+
+        @keyframes waveMove {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Bubbles */
+        .bubble {
+            position: absolute;
+            bottom: 0;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(0, 255, 155, 0.8), rgba(0, 255, 155, 0.2));
+            opacity: 0.5;
+            z-index: 1;
+            animation: bubbleRise linear forwards;
+            box-shadow: 0 0 5px rgba(0, 255, 155, 0.3);
+        }
+
+        @keyframes bubbleRise {
+            0% { transform: translateY(0) scale(1); opacity: 0.5; }
+            100% { transform: translateY(-100vh) scale(0.5); opacity: 0; }
+        }
+
+        /* Fish - Cuter designs */
         .fish {
             position: absolute;
-            width: 70px;
-            height: 50px;
-            background-color: #ff6347;
-            border-radius: 50%;
+            width: 80px;
+            height: 60px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
             cursor: pointer;
-            color: #fff;
-            font-size: 0.8em;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.2s;
+            z-index: 1;
+            animation: swim 80s linear infinite;
+            filter: drop-shadow(2px 2px 4px rgba(0, 255, 155, 0.2));
+            transition: transform 0.3s ease, filter 0.3s ease;
         }
 
         .fish:hover {
+            filter: brightness(1.3) drop-shadow(3px 3px 8px rgba(0, 255, 155, 0.5));
+            z-index: 3;
+            animation-play-state: paused;
             transform: scale(1.1);
         }
 
-        .fish:after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 0;
-            border-top: 10px solid transparent;
-            border-bottom: 10px solid transparent;
-            border-left: 15px solid #ff6347;
-            left: -15px;
-            top: 15px;
+        .fish:nth-child(even) {
+            animation-duration: 90s;
+            animation-direction: reverse;
         }
 
-        .scoreboard {
-            font-size: 1.2em;
-            color: #00ffff;
-            text-shadow: 0 0 5px #00ffff;
-            margin-top: 10px;
+        .fish:nth-child(3n) {
+            animation-duration: 100s;
+        }
+
+        .fish:nth-child(5n) {
+            animation-duration: 110s;
+        }
+
+        @keyframes swim {
+            0% { transform: translateX(-100%) scaleX(1) translateY(0); }
+            25% { transform: translateX(calc(25vw - 20px)) scaleX(1) translateY(20px); }
+            45% { transform: translateX(calc(100vw - 80px)) scaleX(1) translateY(-10px); }
+            50% { transform: translateX(calc(100vw - 80px)) scaleX(-1) translateY(0); }
+            75% { transform: translateX(calc(75vw - 60px)) scaleX(-1) translateY(-20px); }
+            95% { transform: translateX(-100px) scaleX(-1) translateY(10px); }
+            100% { transform: translateX(-100px) scaleX(1) translateY(0); }
+        }
+
+        .fish.caught {
+            animation: caught 1s forwards;
+        }
+
+        @keyframes caught {
+            0% { transform: translateY(0) rotate(0); }
+            50% { transform: translateY(-50vh) rotate(180deg); }
+            100% { transform: translateY(-120vh) rotate(360deg) scale(0.5); opacity: 0; }
+        }
+
+        /* Word Bubble */
+        .word-bubble {
+            position: absolute;
+            background: var(--card-bg);
+            border: 2px solid var(--accent-color);
+            border-radius: 15px;
+            padding: 0.5rem 1rem;
+            font-size: 1.2rem;
+            color: var(--accent-color);
+            pointer-events: none;
+            white-space: nowrap;
+            top: -45px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            box-shadow: 0 0 15px rgba(0, 255, 155, 0.3);
+            backdrop-filter: blur(5px);
+            animation: glow 3s infinite alternate;
+        }
+        
+        @keyframes glow {
+            0% { box-shadow: 0 0 10px rgba(0, 255, 155, 0.2); }
+            100% { box-shadow: 0 0 20px rgba(0, 255, 155, 0.4); }
+        }
+
+        /* Topic Selection */
+        .topic-selection {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 17, 2, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1002;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .topic-container {
+            background: var(--card-bg);
+            border: 2px solid var(--accent-color);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 800px;
+            width: 90%;
+            text-align: center;
+            animation: slideUp 0.5s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .topic-container h2 {
+            color: var(--accent-color);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .topic-card {
+            background: rgba(0, 17, 2, 0.7);
+            border: 2px solid rgba(0, 255, 155, 0.3);
+            border-radius: 15px;
+            padding: 1.5rem 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .topic-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+            box-shadow: 0 10px 20px rgba(0, 255, 155, 0.2);
+        }
+
+        .topic-card.selected {
+            background: rgba(0, 255, 155, 0.2);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 20px rgba(0, 255, 155, 0.3);
+        }
+
+        .topic-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .topic-name {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .start-topic-btn {
+            background: var(--accent-color);
+            color: var(--bg-color);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.3rem;
+            margin-top: 2rem;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .start-topic-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 255, 155, 0.4);
+        }
+
+        .start-topic-btn:disabled {
+            background: var(--neutral-color);
+            transform: none;
+            box-shadow: none;
+            cursor: not-allowed;
+        }
+
+        /* Feedback Panel */
+        .feedback {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 17, 36, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 2px solid var(--accent-color);
+            text-align: center;
+            display: none;
+            animation: popIn 0.3s ease;
+            z-index: 200;
+            min-width: 350px;
+            box-shadow: 0 0 30px rgba(0, 255, 155, 0.2);
+        }
+
+        .feedback input {
+            width: 100%;
+            margin-top: 1rem;
+            padding: 1rem;
+            border: 2px solid var(--accent-color);
+            border-radius: 10px;
+            background: rgba(0, 17, 36, 0.5);
+            color: var(--text-color);
+            font-size: 1.1rem;
+            text-align: center;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .feedback input:focus {
+            box-shadow: 0 0 15px rgba(0, 255, 155, 0.4);
+        }
+
+        /* Sound Toggle and Player */
+        .game-controls {
+            position: fixed;
+            top: 1rem;
+            right: 6rem;
+            display: flex;
+            gap: 1rem;
+            z-index: 101;
+        }
+
+        .control-btn {
+            background: rgba(0, 17, 2, 0.7);
+            border: 2px solid rgba(0, 255, 155, 0.3);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-color);
+            cursor: pointer;
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(0, 255, 155, 0.1);
+        }
+
+        .control-btn:hover {
+            transform: scale(1.1);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px rgba(0, 255, 155, 0.3);
+            filter: brightness(1.2);
+        }
+
+        .control-btn.active {
+            background: rgba(0, 255, 155, 0.2);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px rgba(0, 255, 155, 0.3);
+        }
+
+        /* Timer bar */
+        .timer-container {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            width: 100%;
+            padding: 0 1rem;
+            z-index: 100;
+        }
+
+        .timer-bar {
+            height: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .timer-progress {
+            height: 100%;
+            background: linear-gradient(to right, var(--accent-color), #00ffff);
+            width: 100%;
+            transition: width 0.1s linear;
+            border-radius: 5px;
+            box-shadow: 0 0 8px var(--accent-color);
+        }
+
+        /* Game intro */
+        .game-intro {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 17, 2, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .game-intro-content {
+            background: var(--card-bg);
+            border: 2px solid var(--accent-color);
+            border-radius: 20px;
+            padding: 2.5rem;
+            max-width: 700px;
+            width: 90%;
+            text-align: center;
+            animation: slideUp 0.5s ease;
+        }
+
+        .game-intro h1 {
+            color: var(--accent-color);
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px rgba(0, 255, 155, 0.5);
+        }
+
+        .game-intro p {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            font-size: 1.2rem;
+        }
+
+        .start-btn {
+            background: var(--accent-color);
+            color: var(--bg-color);
+            border: none;
+            padding: 1.2rem 2.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.4rem;
+            margin-top: 1.5rem;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(0, 255, 155, 0.3);
+        }
+
+        .start-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 255, 155, 0.4);
+        }
+
+        /* Sound Warning */
+        .sound-warning {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 17, 2, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .sound-warning-content {
+            background: var(--card-bg);
+            border: 2px solid var(--accent-color);
+            border-radius: 20px;
+            padding: 2.5rem;
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+            animation: slideUp 0.3s ease;
+        }
+
+        .sound-warning-content h2 {
+            color: var(--accent-color);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .sound-warning-content ul {
+            margin: 1.5rem 0;
+        }
+
+        .sound-warning-content li {
+            margin: 0.8rem 0;
+            font-size: 1.1rem;
+        }
+
+        .sound-warning-btn {
+            background: var(--accent-color);
+            color: var(--bg-color);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            margin-top: 1.5rem;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .sound-warning-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 255, 155, 0.4);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        @keyframes popIn {
+            0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+            .fishing-rod {
+                width: 8px;
+                height: 250px;
+            }
+
+            .fish {
+                width: 60px;
+                height: 30px;
+            }
+
+            .word-bubble {
+                font-size: 0.9rem;
+                padding: 0.3rem 0.7rem;
+                top: -35px;
+            }
+
+            .game-intro h1 {
+                font-size: 2rem;
+            }
+
+            .game-intro p {
+                font-size: 1rem;
+            }
+
+            .start-btn {
+                padding: 1rem 2rem;
+                font-size: 1.2rem;
+            }
+
+            .topics-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            }
+
+            .topic-icon {
+                font-size: 2rem;
+            }
+
+            .feedback {
+                min-width: 90%;
+                padding: 1.5rem;
+            }
+        }
+
+        /* Game Header - More professional */
+        .game-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 17, 2, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            border-bottom: 2px solid rgba(0, 255, 155, 0.3);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Topic switcher */
+        .topic-switcher {
+            position: fixed;
+            top: 0.9rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 101;
+            display: flex;
+            align-items: center;
+            background: rgba(0, 17, 2, 0.8);
+            border: 2px solid var(--accent-color);
+            border-radius: 20px;
+            padding: 0.3rem 1rem;
+            box-shadow: 0 0 15px rgba(0, 255, 155, 0.2);
+        }
+
+        .current-topic {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--accent-color);
+            font-weight: 500;
+            padding-right: 0.5rem;
+        }
+
+        .topic-icon-small {
+            font-size: 1.2rem;
+        }
+
+        .change-topic-btn {
+            background: var(--accent-color);
+            color: var(--bg-color);
+            border: none;
+            border-radius: 15px;
+            padding: 0.3rem 0.8rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .change-topic-btn:hover {
+            background: #00cc7a;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 255, 155, 0.3);
+        }
+        
+        .score-container, .level-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .score-icon, .level-icon {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--card-bg);
+            border-radius: 50%;
+            font-size: 1.2rem;
+            box-shadow: 0 0 10px rgba(0, 255, 155, 0.2);
+        }
+
+        .score {
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            font-weight: 600;
+            text-shadow: 0 0 5px rgba(0, 255, 155, 0.3);
+        }
+
+        .level {
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            font-weight: 600;
+            text-shadow: 0 0 5px rgba(0, 255, 155, 0.3);
+        }
+
+        /* Fishing Rod */
+        .fishing-rod {
+            position: fixed;
+            bottom: 65%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 12px;
+            height: 350px;
+            background: linear-gradient(to bottom, #A67C52, #8B4513);
+            z-index: 2;
+            transform-origin: bottom center;
+            cursor: pointer;
+            box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+            border-radius: 6px;
+        }
+
+        .fishing-line {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 2px;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.6);
+            transform: translateX(-50%);
+        }
+
+        .fishing-hook {
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+            transform: translateX(-50%);
+            animation: bobbing 2s infinite ease-in-out;
+            z-index: 3;
+            box-shadow: 0 0 15px var(--accent-color);
+            filter: brightness(1.2);
+        }
+
+        @keyframes bobbing {
+            0%, 100% { transform: translateX(-50%) translateY(0); box-shadow: 0 0 15px var(--accent-color); }
+            50% { transform: translateX(-50%) translateY(-10px); box-shadow: 0 0 25px var(--accent-color); }
+        }
+
+        .fishing-rod:hover .fishing-hook {
+            animation-duration: 1s;
+            box-shadow: 0 0 30px var(--accent-color);
+            filter: brightness(1.4);
+        }
+
+        .fishing-rod.casting {
+            animation: cast 1s forwards;
+        }
+
+        @keyframes cast {
+            0% { transform: translateX(-50%) rotate(0); }
+            50% { transform: translateX(-50%) rotate(-30deg); }
+            100% { transform: translateX(-50%) rotate(0); }
         }
     </style>
 </head>
 <body>
+    <div class="grid-background"></div>
+    <div class="water"></div>
+    
+    <!-- Game Intro -->
+    <div class="game-intro" id="gameIntro">
+        <div class="game-intro-content">
+            <h1>🎣 French Fishing Adventure</h1>
+            <p>Dive into a sea of French vocabulary and catch fish by translating words!</p>
+            <p>The faster you translate, the more points you'll earn. Choose from various topics to improve your French skills!</p>
+            <button class="start-btn" onclick="startGame()">Start Fishing! 🐟</button>
+        </div>
+    </div>
 
-    <h1>Catch the Swimming Fish - Which One Did You Know?</h1>
-    <div class="ocean" id="ocean"></div>
-    <div class="scoreboard">Score: <span id="score">0</span></div>
+    <!-- Topic Selection -->
+    <div class="topic-selection" id="topicSelection" style="display: none;">
+        <div class="topic-container">
+            <h2>Choose a Topic</h2>
+            <p>Select the vocabulary category you want to practice</p>
+            <div class="topics-grid" id="topicsGrid">
+                <!-- Topics will be generated dynamically -->
+            </div>
+            <button class="start-topic-btn" id="startTopicBtn" disabled>Start Fishing!</button>
+        </div>
+    </div>
+    
+    <!-- Sound Warning -->
+    <div class="sound-warning" id="soundWarning" style="display: none;">
+        <div class="sound-warning-content">
+            <h2>🎮 Sound Effects & Music</h2>
+            <p>This game includes sound effects and background music:</p>
+            <ul style="list-style: none; margin: 1rem 0;">
+                <li>🎣 Fishing rod cast & splashes</li>
+                <li>🐟 Fish caught sound</li>
+                <li>✨ Correct answer celebration</li>
+                <li>❌ Wrong answer alerts</li>
+                <li>🌊 Ocean background music</li>
+            </ul>
+            <p>You can toggle sounds and music anytime using the control buttons in the top right corner.</p>
+            <button class="sound-warning-btn" onclick="closeSoundWarning()">Got it! Let's Fish!</button>
+        </div>
+    </div>
+
+    <div class="game-container">
+        <div class="game-header">
+            <div class="score-container">
+                <div class="score-icon">🏆</div>
+                <div class="score">Score: <span id="score">0</span></div>
+            </div>
+            <div class="level-container">
+                <div class="level-icon">📈</div>
+                <div class="level">Level: <span id="level">1</span></div>
+            </div>
+        </div>
+
+        <div class="topic-switcher" id="topicSwitcher" style="display: none;">
+            <div class="current-topic">
+                <span class="topic-icon-small" id="currentTopicIcon">🎮</span>
+                <span id="currentTopicName">Topic</span>
+            </div>
+            <button class="change-topic-btn" id="changeTopicBtn">Change Topic</button>
+        </div>
+
+        <div class="timer-container">
+            <div class="timer-bar">
+                <div class="timer-progress" id="timerProgress"></div>
+            </div>
+        </div>
+
+        <div class="fishing-rod" id="fishingRod">
+            <div class="fishing-line"></div>
+            <div class="fishing-hook"></div>
+        </div>
+
+        <div class="game-controls">
+            <button class="control-btn active" id="soundToggle" title="Toggle Sound Effects">🔊</button>
+            <button class="control-btn active" id="musicToggle" title="Toggle Background Music">🎵</button>
+            <button class="control-btn" id="pauseBtn" title="Pause Game">⏸️</button>
+        </div>
+
+        <div class="feedback" id="feedback"></div>
+    </div>
 
     <script>
-        const ocean = document.getElementById("ocean");
-        const scoreDisplay = document.getElementById("score");
+        // Game state
         let score = 0;
-
-        const words = [
-            "Amour", "Bonheur", "Courage", "Liberté", "Espoir", "Joie", "Nature",
-            "Étoile", "Soleil", "Lune", "Mer", "Montagne", "Rivière", "Fleur", "Forêt",
-            "Sagesse", "Force", "Beauté", "Harmonie", "Paix", "Amitié", "Famille", 
-            "Rêve", "Passion", "Énergie", "Respect"
+        let level = 1;
+        let soundEnabled = true;
+        let musicEnabled = true;
+        let gameActive = false;
+        let gamePaused = false;
+        let currentTopic = null;
+        let activeFish = [];
+        let timer = null;
+        let timerValue = 20; // seconds
+        let fishCount = 20; // Fish per level
+        
+        // Topic definitions
+        const topics = [
+            {
+                id: 'basics',
+                name: 'Basic Phrases',
+                icon: '👋',
+                words: [
+                    { french: "bonjour", english: "hello" },
+                    { french: "merci", english: "thank you" },
+                    { french: "au revoir", english: "goodbye" },
+                    { french: "s'il vous plaît", english: "please" },
+                    { french: "oui", english: "yes" },
+                    { french: "non", english: "no" },
+                    { french: "excusez-moi", english: "excuse me" },
+                    { french: "pardon", english: "sorry" },
+                    { french: "salut", english: "hi" },
+                    { french: "bonsoir", english: "good evening" },
+                    { french: "comment allez-vous", english: "how are you" },
+                    { french: "je m'appelle", english: "my name is" },
+                    { french: "enchanté", english: "nice to meet you" },
+                    { french: "à bientôt", english: "see you soon" },
+                    { french: "bien sûr", english: "of course" },
+                    { french: "bon appétit", english: "enjoy your meal" },
+                    { french: "à la prochaine", english: "until next time" },
+                    { french: "bonne journée", english: "have a good day" },
+                    { french: "je ne comprends pas", english: "I don't understand" },
+                    { french: "je ne parle pas français", english: "I don't speak French" }
+                ]
+            },
+            {
+                id: 'animals',
+                name: 'Animals',
+                icon: '🐾',
+                words: [
+                    { french: "chat", english: "cat" },
+                    { french: "chien", english: "dog" },
+                    { french: "oiseau", english: "bird" },
+                    { french: "poisson", english: "fish" },
+                    { french: "lapin", english: "rabbit" },
+                    { french: "cheval", english: "horse" },
+                    { french: "vache", english: "cow" },
+                    { french: "cochon", english: "pig" },
+                    { french: "mouton", english: "sheep" },
+                    { french: "souris", english: "mouse" },
+                    { french: "grenouille", english: "frog" },
+                    { french: "serpent", english: "snake" },
+                    { french: "lion", english: "lion" },
+                    { french: "tigre", english: "tiger" },
+                    { french: "éléphant", english: "elephant" },
+                    { french: "girafe", english: "giraffe" },
+                    { french: "singe", english: "monkey" },
+                    { french: "ours", english: "bear" },
+                    { french: "loup", english: "wolf" },
+                    { french: "renard", english: "fox" }
+                ]
+            },
+            {
+                id: 'food',
+                name: 'Food & Drinks',
+                icon: '🍽️',
+                words: [
+                    { french: "pain", english: "bread" },
+                    { french: "fromage", english: "cheese" },
+                    { french: "pomme", english: "apple" },
+                    { french: "banane", english: "banana" },
+                    { french: "orange", english: "orange" },
+                    { french: "lait", english: "milk" },
+                    { french: "eau", english: "water" },
+                    { french: "café", english: "coffee" },
+                    { french: "thé", english: "tea" },
+                    { french: "vin", english: "wine" },
+                    { french: "poulet", english: "chicken" },
+                    { french: "poisson", english: "fish" },
+                    { french: "riz", english: "rice" },
+                    { french: "pâtes", english: "pasta" },
+                    { french: "soupe", english: "soup" },
+                    { french: "salade", english: "salad" },
+                    { french: "beurre", english: "butter" },
+                    { french: "œuf", english: "egg" },
+                    { french: "sucre", english: "sugar" },
+                    { french: "sel", english: "salt" }
+                ]
+            },
+            {
+                id: 'colors',
+                name: 'Colors',
+                icon: '🎨',
+                words: [
+                    { french: "rouge", english: "red" },
+                    { french: "bleu", english: "blue" },
+                    { french: "vert", english: "green" },
+                    { french: "jaune", english: "yellow" },
+                    { french: "noir", english: "black" },
+                    { french: "blanc", english: "white" },
+                    { french: "gris", english: "gray" },
+                    { french: "violet", english: "purple" },
+                    { french: "orange", english: "orange" },
+                    { french: "rose", english: "pink" },
+                    { french: "marron", english: "brown" },
+                    { french: "beige", english: "beige" },
+                    { french: "doré", english: "golden" },
+                    { french: "argenté", english: "silver" },
+                    { french: "turquoise", english: "turquoise" },
+                    { french: "indigo", english: "indigo" },
+                    { french: "bordeaux", english: "burgundy" },
+                    { french: "cyan", english: "cyan" },
+                    { french: "magenta", english: "magenta" },
+                    { french: "multicolore", english: "multicolored" }
+                ]
+            },
+            {
+                id: 'numbers',
+                name: 'Numbers',
+                icon: '🔢',
+                words: [
+                    { french: "un", english: "one" },
+                    { french: "deux", english: "two" },
+                    { french: "trois", english: "three" },
+                    { french: "quatre", english: "four" },
+                    { french: "cinq", english: "five" },
+                    { french: "six", english: "six" },
+                    { french: "sept", english: "seven" },
+                    { french: "huit", english: "eight" },
+                    { french: "neuf", english: "nine" },
+                    { french: "dix", english: "ten" },
+                    { french: "vingt", english: "twenty" },
+                    { french: "trente", english: "thirty" },
+                    { french: "quarante", english: "forty" },
+                    { french: "cinquante", english: "fifty" },
+                    { french: "soixante", english: "sixty" },
+                    { french: "cent", english: "hundred" },
+                    { french: "mille", english: "thousand" },
+                    { french: "million", english: "million" },
+                    { french: "premier", english: "first" },
+                    { french: "deuxième", english: "second" }
+                ]
+            },
+            {
+                id: 'body',
+                name: 'Body Parts',
+                icon: '👤',
+                words: [
+                    { french: "tête", english: "head" },
+                    { french: "main", english: "hand" },
+                    { french: "pied", english: "foot" },
+                    { french: "bras", english: "arm" },
+                    { french: "jambe", english: "leg" },
+                    { french: "œil", english: "eye" },
+                    { french: "nez", english: "nose" },
+                    { french: "bouche", english: "mouth" },
+                    { french: "oreille", english: "ear" },
+                    { french: "doigt", english: "finger" },
+                    { french: "cheveux", english: "hair" },
+                    { french: "cœur", english: "heart" },
+                    { french: "dos", english: "back" },
+                    { french: "épaule", english: "shoulder" },
+                    { french: "ventre", english: "stomach" },
+                    { french: "genou", english: "knee" },
+                    { french: "dent", english: "tooth" },
+                    { french: "langue", english: "tongue" },
+                    { french: "cou", english: "neck" },
+                    { french: "poitrine", english: "chest" }
+                ]
+            },
+            {
+                id: 'professions',
+                name: 'Professions',
+                icon: '💼',
+                words: [
+                    { french: "médecin", english: "doctor" },
+                    { french: "professeur", english: "teacher" },
+                    { french: "ingénieur", english: "engineer" },
+                    { french: "avocat", english: "lawyer" },
+                    { french: "artiste", english: "artist" },
+                    { french: "policier", english: "police officer" },
+                    { french: "pompier", english: "firefighter" },
+                    { french: "chef", english: "chef" },
+                    { french: "serveur", english: "waiter" },
+                    { french: "vendeur", english: "salesperson" },
+                    { french: "écrivain", english: "writer" },
+                    { french: "architecte", english: "architect" },
+                    { french: "journaliste", english: "journalist" },
+                    { french: "musicien", english: "musician" },
+                    { french: "acteur", english: "actor" },
+                    { french: "infirmier", english: "nurse" },
+                    { french: "comptable", english: "accountant" },
+                    { french: "fermier", english: "farmer" },
+                    { french: "photographe", english: "photographer" },
+                    { french: "chauffeur", english: "driver" }
+                ]
+            },
+            {
+                id: 'verbs',
+                name: 'Common Verbs',
+                icon: '🏃',
+                words: [
+                    { french: "être", english: "to be" },
+                    { french: "avoir", english: "to have" },
+                    { french: "aller", english: "to go" },
+                    { french: "faire", english: "to do/make" },
+                    { french: "dire", english: "to say" },
+                    { french: "voir", english: "to see" },
+                    { french: "vouloir", english: "to want" },
+                    { french: "pouvoir", english: "to be able to" },
+                    { french: "manger", english: "to eat" },
+                    { french: "boire", english: "to drink" },
+                    { french: "parler", english: "to speak" },
+                    { french: "écouter", english: "to listen" },
+                    { french: "lire", english: "to read" },
+                    { french: "écrire", english: "to write" },
+                    { french: "dormir", english: "to sleep" },
+                    { french: "courir", english: "to run" },
+                    { french: "prendre", english: "to take" },
+                    { french: "venir", english: "to come" },
+                    { french: "savoir", english: "to know" },
+                    { french: "aimer", english: "to like/love" }
+                ]
+            },
+            {
+                id: 'travel',
+                name: 'Travel & Places',
+                icon: '✈️',
+                words: [
+                    { french: "hôtel", english: "hotel" },
+                    { french: "plage", english: "beach" },
+                    { french: "montagne", english: "mountain" },
+                    { french: "ville", english: "city" },
+                    { french: "village", english: "village" },
+                    { french: "rivière", english: "river" },
+                    { french: "lac", english: "lake" },
+                    { french: "forêt", english: "forest" },
+                    { french: "île", english: "island" },
+                    { french: "passeport", english: "passport" },
+                    { french: "valise", english: "suitcase" },
+                    { french: "avion", english: "airplane" },
+                    { french: "train", english: "train" },
+                    { french: "voiture", english: "car" },
+                    { french: "vélo", english: "bicycle" },
+                    { french: "bus", english: "bus" },
+                    { french: "bateau", english: "boat" },
+                    { french: "aéroport", english: "airport" },
+                    { french: "gare", english: "train station" },
+                    { french: "ticket", english: "ticket" }
+                ]
+            },
+            {
+                id: 'time',
+                name: 'Time Expressions',
+                icon: '⏰',
+                words: [
+                    { french: "aujourd'hui", english: "today" },
+                    { french: "demain", english: "tomorrow" },
+                    { french: "hier", english: "yesterday" },
+                    { french: "maintenant", english: "now" },
+                    { french: "plus tard", english: "later" },
+                    { french: "heure", english: "hour" },
+                    { french: "minute", english: "minute" },
+                    { french: "seconde", english: "second" },
+                    { french: "matin", english: "morning" },
+                    { french: "midi", english: "noon" },
+                    { french: "soir", english: "evening" },
+                    { french: "nuit", english: "night" },
+                    { french: "semaine", english: "week" },
+                    { french: "mois", english: "month" },
+                    { french: "année", english: "year" },
+                    { french: "lundi", english: "Monday" },
+                    { french: "mardi", english: "Tuesday" },
+                    { french: "janvier", english: "January" },
+                    { french: "février", english: "February" },
+                    { french: "saison", english: "season" }
+                ]
+            }
         ];
 
-        // Function to create a fish
-        function createFish() {
-            const fish = document.createElement("div");
-            fish.classList.add("fish");
-
-            // Set a random word on the fish
-            const randomWord = words[Math.floor(Math.random() * words.length)];
-            fish.textContent = randomWord;
-
-            // Randomly position fish
-            const startX = Math.random() * (ocean.clientWidth - 70);
-            const startY = Math.random() * (ocean.clientHeight - 50);
-            fish.style.left = `${startX}px`;
-            fish.style.top = `${startY}px`;
-
-            // Random speed for fish to swim
-            const speed = Math.random() * 3 + 1;
-
-            // Add event listener to catch fish
-            fish.addEventListener("click", catchFish);
-
-            // Append fish to ocean
-            ocean.appendChild(fish);
-
-            // Make fish swim in different directions
-            let directionX = Math.random() < 0.5 ? 1 : -1;
-            let directionY = Math.random() < 0.5 ? 1 : -1;
-
-            function swim() {
-                let posX = parseFloat(fish.style.left);
-                let posY = parseFloat(fish.style.top);
-
-                // Change direction if fish hits the container edges
-                if (posX <= 0 || posX >= ocean.clientWidth - 70) directionX *= -1;
-                if (posY <= 0 || posY >= ocean.clientHeight - 50) directionY *= -1;
-
-                // Update position
-                fish.style.left = `${posX + speed * directionX}px`;
-                fish.style.top = `${posY + speed * directionY}px`;
-
-                requestAnimationFrame(swim);
+        // Create bubble elements for water animation
+        function createBubbles() {
+            const container = document.querySelector('.water');
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const bubble = document.createElement('div');
+                    bubble.className = 'bubble';
+                    
+                    // Random size
+                    const size = Math.random() * 20 + 5;
+                    bubble.style.width = `${size}px`;
+                    bubble.style.height = `${size}px`;
+                    
+                    // Random position
+                    bubble.style.left = `${Math.random() * 100}%`;
+                    
+                    // Random animation duration
+                    const duration = Math.random() * 10 + 5;
+                    bubble.style.animation = `bubbleRise ${duration}s linear forwards`;
+                    
+                    container.appendChild(bubble);
+                    
+                    // Remove bubble after animation
+                    setTimeout(() => {
+                        bubble.remove();
+                    }, duration * 1000);
+                }, Math.random() * 5000);
             }
-            swim();
+        }
+        
+        // Generate fish SVGs with cuter designs
+        const fishImages = [
+            // Super cute blue fish with smile and fins
+            'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 60"><path d="M70,30 Q80,20 70,10 Q55,0 40,5 L15,10 Q0,20 15,30 Q0,40 15,50 L40,55 Q55,60 70,50 Q80,40 70,30 Z" fill="%230088ff"/><circle cx="65" cy="22" r="4" fill="white"/><circle cx="65" cy="22" r="2" fill="black"/><path d="M45,35 Q52,38 45,42" stroke="white" stroke-width="2" fill="none"/><path d="M20,15 Q10,5 5,15" stroke="%230088ff" stroke-width="4" fill="none"/><path d="M20,45 Q10,55 5,45" stroke="%230088ff" stroke-width="4" fill="none"/><path d="M75,25 Q85,20 85,30 Q85,40 75,35" fill="%230088ff" stroke="none"/></svg>',
+            
+            // Super cute green fish with bubbles and happy eye
+            'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 60"><path d="M70,30 Q80,20 70,10 Q55,0 40,5 L15,10 Q0,20 15,30 Q0,40 15,50 L40,55 Q55,60 70,50 Q80,40 70,30 Z" fill="%2300ff88"/><circle cx="65" cy="22" r="4" fill="white"/><circle cx="65" cy="22" r="2" fill="black"/><path d="M45,35 Q50,40 45,42" stroke="white" stroke-width="2" fill="none"/><path d="M75,15 Q85,15 85,25" stroke="%2300ff88" stroke-width="4" fill="none"/><path d="M75,45 Q85,45 85,35" stroke="%2300ff88" stroke-width="4" fill="none"/><circle cx="15" cy="15" r="3" fill="white" opacity="0.7"/><circle cx="10" cy="25" r="2" fill="white" opacity="0.7"/><circle cx="12" cy="42" r="2.5" fill="white" opacity="0.7"/><path d="M66,22 Q67,20 68,22" stroke="black" stroke-width="1" fill="none"/></svg>',
+            
+            // Super cute orange fish with swishy tail
+            'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 60"><defs><linearGradient id="orangeGradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23ffaa00"/><stop offset="100%" style="stop-color:%23ff8800"/></linearGradient></defs><path d="M70,30 Q80,20 70,10 Q55,0 40,5 L15,10 Q0,20 15,30 Q0,40 15,50 L40,55 Q55,60 70,50 Q80,40 70,30 Z" fill="url(%23orangeGradient)"/><circle cx="65" cy="22" r="4" fill="white"/><circle cx="65" cy="22" r="2" fill="black"/><path d="M45,35 Q52,38 45,41" stroke="white" stroke-width="2" fill="none"/><path d="M10,30 Q0,20 10,10 L5,20 L10,30 Z" fill="%23ff8800"/><path d="M10,30 Q0,40 10,50 L5,40 L10,30 Z" fill="%23ff8800"/><path d="M65,21 Q67,19 69,21" stroke="black" stroke-width="1" fill="none"/></svg>',
+            
+            // Super cute pink heart-shaped fish
+            'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 60"><defs><linearGradient id="pinkGradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23ff99bb"/><stop offset="100%" style="stop-color:%23ff0088"/></linearGradient></defs><path d="M70,20 Q80,0 60,0 Q50,0 45,10 Q40,0 30,0 Q10,0 20,20 Q0,40 20,50 L45,55 Q60,60 70,50 Q90,35 70,20 Z" fill="url(%23pinkGradient)"/><circle cx="60" cy="22" r="4" fill="white"/><circle cx="60" cy="22" r="2" fill="black"/><path d="M40,35 Q45,40 40,45" stroke="white" stroke-width="2" fill="none"/><path d="M20,20 Q10,20 10,30" stroke="%23ff0088" stroke-width="3" fill="none"/><path d="M60,21 Q62,19 64,21" stroke="black" stroke-width="1" fill="none"/></svg>',
+            
+            // Super cute purple fish with fancy fins
+            'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 60"><defs><linearGradient id="purpleGradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23cc99ff"/><stop offset="100%" style="stop-color:%238866cc"/></linearGradient></defs><path d="M70,30 Q80,15 60,10 Q45,5 30,15 L15,20 Q5,30 15,40 L30,45 Q45,55 60,50 Q80,45 70,30 Z" fill="url(%23purpleGradient)"/><circle cx="60" cy="25" r="4" fill="white"/><circle cx="60" cy="25" r="2" fill="black"/><path d="M45,30 Q50,35 45,40" stroke="white" stroke-width="2" fill="none"/><path d="M75,25 L85,15 M75,35 L85,45" stroke="%23aa88ff" stroke-width="3"/><path d="M40,10 Q50,0 60,5" stroke="%23aa88ff" stroke-width="3" fill="none"/><path d="M40,50 Q50,60 60,55" stroke="%23aa88ff" stroke-width="3" fill="none"/><path d="M60,24 Q62,22 64,24" stroke="black" stroke-width="1" fill="none"/></svg>',
+            
+            // Super cute yellow tropical fish with stripes
+            'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 60"><defs><linearGradient id="yellowGradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23ffee00"/><stop offset="100%" style="stop-color:%23ffcc00"/></linearGradient></defs><path d="M60,30 Q75,10 55,5 Q40,0 20,10 L10,20 Q0,30 10,40 L20,50 Q40,60 55,55 Q75,50 60,30 Z" fill="url(%23yellowGradient)"/><path d="M25,10 Q25,30 25,50" stroke="%23ff8800" stroke-width="5" fill="none"/><path d="M35,5 Q35,30 35,55" stroke="%23ff8800" stroke-width="5" fill="none"/><path d="M45,8 Q45,30 45,52" stroke="%23ff8800" stroke-width="5" fill="none"/><circle cx="55" cy="20" r="4" fill="white"/><circle cx="55" cy="20" r="2" fill="black"/><path d="M35,30 Q42,33 35,37" stroke="white" stroke-width="2" fill="none"/><path d="M55,19 Q57,17 59,19" stroke="black" stroke-width="1" fill="none"/></svg>',
+            
+            // Super cute red angelfish
+            'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 60"><defs><linearGradient id="redGradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23ff6666"/><stop offset="100%" style="stop-color:%23cc3333"/></linearGradient></defs><path d="M65,30 Q75,15 65,10 Q50,0 35,10 L15,15 Q0,30 15,45 L35,50 Q50,60 65,50 Q75,45 65,30 Z" fill="url(%23redGradient)"/><circle cx="60" cy="20" r="4" fill="white"/><circle cx="60" cy="20" r="2" fill="black"/><path d="M40,30 Q47,33 40,37" stroke="white" stroke-width="2" fill="none"/><path d="M40,5 C40,30 40,30 40,55" stroke="%23cc3333" stroke-width="10" fill="none"/><path d="M25,7 C25,30 25,30 25,53" stroke="%23cc3333" stroke-width="7" fill="none"/><path d="M60,19 Q62,17 64,19" stroke="black" stroke-width="1" fill="none"/></svg>',
+            
+            // Super cute teal fish with sparkles
+            'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 60"><defs><linearGradient id="tealGradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%2300ffee"/><stop offset="100%" style="stop-color:%2300cccc"/></linearGradient></defs><path d="M70,30 Q80,20 70,10 Q55,0 40,5 L15,10 Q0,20 15,30 Q0,40 15,50 L40,55 Q55,60 70,50 Q80,40 70,30 Z" fill="url(%23tealGradient)"/><circle cx="65" cy="22" r="4" fill="white"/><circle cx="65" cy="22" r="2" fill="black"/><path d="M50,30 Q57,33 50,37" stroke="white" stroke-width="2" fill="none"/><circle cx="15" cy="15" r="3" fill="white" opacity="0.7"/><circle cx="10" cy="25" r="2" fill="white" opacity="0.7"/><circle cx="12" cy="45" r="2.5" fill="white" opacity="0.7"/><path d="M25,20 L28,23 M22,23 L28,17" stroke="white" stroke-width="1"/><path d="M35,15 L38,18 M32,18 L38,12" stroke="white" stroke-width="1"/><path d="M30,40 L33,43 M27,43 L33,37" stroke="white" stroke-width="1"/><path d="M65,21 Q67,19 69,21" stroke="black" stroke-width="1" fill="none"/></svg>',
+            
+            // Super cute pufferfish with expressive face
+            'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 60"><defs><radialGradient id="pufferGradient" cx="50%" cy="50%" r="50%" fx="50%" fy="50%"><stop offset="0%" style="stop-color:%23ffcc33"/><stop offset="100%" style="stop-color:%23ff9900"/></radialGradient></defs><path d="M60,30 A25,25 0 1,0 60,30.1" fill="url(%23pufferGradient)"/><path d="M60,30 L85,35 M60,30 L85,30 M60,30 L85,25 M60,30 L80,15 M60,30 L70,10 M60,30 L60,5 M60,30 L50,10 M60,30 L40,15 M60,30 L35,20 M60,30 L30,30 M60,30 L35,40 M60,30 L40,45 M60,30 L50,50 M60,30 L60,55 M60,30 L70,50 M60,30 L80,45" stroke="%23ff9900" stroke-width="2"/><circle cx="50" cy="25" r="4" fill="white"/><circle cx="50" cy="25" r="2" fill="black"/><circle cx="45" cy="25" r="1" fill="white"/><path d="M43,35 A7,7 0 0,0 57,35" stroke="black" stroke-width="1.5" fill="none"/><path d="M45,32 Q50,29 55,32" stroke="black" stroke-width="1" fill="none"/></svg>',
+            
+            // Super cute clownfish with big eyes
+            'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 60"><defs><linearGradient id="clownGradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23ffaa44"/><stop offset="100%" style="stop-color:%23ff7700"/></linearGradient></defs><path d="M70,30 Q80,20 70,10 Q55,0 40,5 L15,10 Q0,20 15,30 Q0,40 15,50 L40,55 Q55,60 70,50 Q80,40 70,30 Z" fill="url(%23clownGradient)"/><path d="M30,10 Q30,20 30,30 Q30,40 30,50" stroke="white" stroke-width="10" fill="none"/><path d="M50,5 Q50,20 50,30 Q50,40 50,55" stroke="white" stroke-width="10" fill="none"/><circle cx="65" cy="22" r="5" fill="white"/><circle cx="65" cy="22" r="3" fill="black"/><circle cx="65" cy="22" r="1" fill="white"/><path d="M50,30 Q56,34 50,38" stroke="black" stroke-width="2" fill="none"/><path d="M45,45 C50,50 60,50 65,45" stroke="%23ff7700" stroke-width="3" fill="none"/><path d="M75,25 L85,20 M75,35 L85,40" stroke="%23ff7700" stroke-width="3" fill="none"/></svg>',
+            
+            // Super cute blue-green betta fish with flowing fins
+            'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 60"><defs><linearGradient id="bettaGradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%2300ccff"/><stop offset="100%" style="stop-color:%2300ffaa"/></linearGradient></defs><path d="M65,30 Q75,20 65,10 Q50,0 35,10 L20,15 Q10,30 20,45 L35,50 Q50,60 65,50 Q75,40 65,30 Z" fill="url(%23bettaGradient)"/><path d="M65,10 Q85,-10 85,20" stroke="%2300ccff" stroke-width="2" fill="none"/><path d="M65,50 Q85,70 85,40" stroke="%2300ccff" stroke-width="2" fill="none"/><path d="M20,15 Q0,-5 5,25" stroke="%2300ffaa" stroke-width="2" fill="none"/><path d="M20,45 Q0,65 5,35" stroke="%2300ffaa" stroke-width="2" fill="none"/><path d="M35,10 Q35,-10 55,-5" stroke="%2300ccff" stroke-width="2" fill="none"/><path d="M35,50 Q35,70 55,65" stroke="%2300ccff" stroke-width="2" fill="none"/><circle cx="55" cy="25" r="4" fill="white"/><circle cx="55" cy="25" r="2" fill="black"/><path d="M35,32 Q42,35 35,38" stroke="white" stroke-width="2" fill="none"/><circle cx="55" cy="25" r="0.5" fill="white"/></svg>'
+        ];
+
+        // Sound effects
+        const sounds = {
+            cast: new Audio('https://freesound.org/data/previews/332/332464_4486188-lq.mp3'),
+            catch: new Audio('https://freesound.org/data/previews/108/108787_1093376-lq.mp3'),
+            wrong: new Audio('https://freesound.org/data/previews/178/178875_3033349-lq.mp3'),
+            correct: new Audio('https://freesound.org/data/previews/243/243701_1565250-lq.mp3'),
+            levelUp: new Audio('https://freesound.org/data/previews/320/320655_5260872-lq.mp3'),
+            splash: new Audio('https://freesound.org/data/previews/476/476115_7871886-lq.mp3'),
+            bubbles: new Audio('https://freesound.org/data/previews/188/188282_3437302-lq.mp3'),
+            water: new Audio('https://freesound.org/data/previews/339/339810_4764750-lq.mp3')
+        };
+
+        // Background music
+        const backgroundMusic = new Audio('https://freesound.org/data/previews/573/573660_4056068-lq.mp3');
+        backgroundMusic.loop = true;
+        backgroundMusic.volume = 0.4;
+
+        // Preload sounds
+        Object.values(sounds).forEach(sound => {
+            sound.load();
+            sound.volume = 0.6;
+        });
+
+        // Play sound with error handling
+        function playSound(key) {
+            if (!soundEnabled) return;
+            
+            const sound = sounds[key];
+            if (sound) {
+                sound.currentTime = 0;
+                sound.play().catch(err => console.warn('Error playing sound:', err));
+            }
         }
 
-        // Function to catch fish
-        function catchFish(event) {
-            score++;
-            scoreDisplay.textContent = score;
-            event.target.remove();
-            createFish(); // Create a new fish when one is caught
+        // Toggle background music
+        function toggleMusic() {
+            if (musicEnabled) {
+                backgroundMusic.play().catch(err => console.warn('Error playing music:', err));
+            } else {
+                backgroundMusic.pause();
+            }
         }
 
-        // Generate 25 fish at the start
+        // Start the game
         function startGame() {
-            for (let i = 0; i < 25; i++) {
-                createFish();
+            const gameIntro = document.getElementById('gameIntro');
+            gameIntro.style.animation = 'fadeOut 0.5s ease';
+            
+            setTimeout(() => {
+                gameIntro.style.display = 'none';
+                document.getElementById('topicSelection').style.display = 'flex';
+                generateTopics();
+            }, 500);
+        }
+
+        // Generate topic cards
+        function generateTopics() {
+            const topicsGrid = document.getElementById('topicsGrid');
+            topicsGrid.innerHTML = '';
+            
+            topics.forEach((topic, index) => {
+                const card = document.createElement('div');
+                card.className = 'topic-card';
+                card.dataset.topicId = index;
+                
+                card.innerHTML = `
+                    <div class="topic-icon">${topic.icon}</div>
+                    <div class="topic-name">${topic.name}</div>
+                `;
+                
+                card.addEventListener('click', () => {
+                    // Remove selected class from all cards
+                    document.querySelectorAll('.topic-card').forEach(c => c.classList.remove('selected'));
+                    // Add selected class to clicked card
+                    card.classList.add('selected');
+                    // Set current topic
+                    currentTopic = index;
+                    // Enable start button
+                    document.getElementById('startTopicBtn').disabled = false;
+                });
+                
+                topicsGrid.appendChild(card);
+            });
+            
+            // Add event listener to start topic button
+            document.getElementById('startTopicBtn').addEventListener('click', () => {
+                document.getElementById('topicSelection').style.display = 'none';
+                document.getElementById('soundWarning').style.display = 'flex';
+            });
+        }
+
+        // Initialize game
+        function initGame() {
+            updateScore(0);
+            updateLevel(1);
+            
+            // Show topic switcher
+            document.getElementById('topicSwitcher').style.display = 'flex';
+            updateTopicDisplay();
+            
+            createFish();
+            setupEventListeners();
+            gameActive = true;
+            startTimer();
+            
+            // Create bubbles
+            createBubbles();
+            setInterval(createBubbles, 15000);
+            
+            // Start background music
+            if (musicEnabled) {
+                toggleMusic();
             }
         }
 
-        startGame();
+        // Update topic display
+        function updateTopicDisplay() {
+            const topic = topics[currentTopic || 0];
+            document.getElementById('currentTopicIcon').textContent = topic.icon;
+            document.getElementById('currentTopicName').textContent = topic.name;
+        }
+
+        // Change topic
+        function changeTopic() {
+            // Pause game temporarily
+            const wasPaused = gamePaused;
+            if (!gamePaused) {
+                gamePaused = true;
+                clearInterval(timer);
+                document.querySelectorAll('.fish').forEach(fish => {
+                    fish.style.animationPlayState = 'paused';
+                });
+            }
+            
+            // Show topic selection
+            document.getElementById('topicSelection').style.display = 'flex';
+            
+            // Update start button text and functionality
+            const startButton = document.getElementById('startTopicBtn');
+            startButton.textContent = 'Continue Fishing';
+            startButton.disabled = false;
+            
+            // Clear previous event listener
+            const newStartButton = startButton.cloneNode(true);
+            startButton.parentNode.replaceChild(newStartButton, startButton);
+            
+            // Add new event listener
+            newStartButton.addEventListener('click', () => {
+                document.getElementById('topicSelection').style.display = 'none';
+                
+                if (currentTopic !== null) {
+                    // Update topic display
+                    updateTopicDisplay();
+                    
+                    // Create new fish with the new topic
+                    createFish();
+                    
+                    // Resume game if it wasn't paused before
+                    if (!wasPaused) {
+                        gamePaused = false;
+                        startTimer();
+                        document.querySelectorAll('.fish').forEach(fish => {
+                            fish.style.animationPlayState = 'running';
+                        });
+                    }
+                }
+            });
+        }
+
+        // Start timer
+        function startTimer() {
+            const timerProgress = document.getElementById('timerProgress');
+            let timeLeft = timerValue;
+            
+            timerProgress.style.width = '100%';
+            
+            timer = setInterval(() => {
+                timeLeft -= 0.1;
+                const percentage = (timeLeft / timerValue) * 100;
+                timerProgress.style.width = `${percentage}%`;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    if (gameActive) {
+                        createFish();
+                        startTimer();
+                    }
+                }
+            }, 100);
+        }
+
+        // Create fish with words
+        function createFish() {
+            const container = document.querySelector('.game-container');
+            const levelWords = topics[currentTopic || 0].words;
+            
+            // Clear existing fish
+            activeFish.forEach(fish => fish.remove());
+            activeFish = [];
+            
+            // Water boundaries calculation
+            const waterHeight = window.innerHeight * 0.65;
+            const waterTop = window.innerHeight - waterHeight;
+            
+            // Create new fish - ensure we create all fishCount fish
+            for (let i = 0; i < fishCount; i++) {
+                const fish = document.createElement('div');
+                fish.className = 'fish';
+                
+                // Choose a word - cycle through words if needed to reach fishCount
+                const wordIndex = i % levelWords.length;
+                const word = levelWords[wordIndex];
+                
+                // Set fish image
+                const imageIndex = Math.floor(Math.random() * fishImages.length);
+                fish.style.backgroundImage = `url('${fishImages[imageIndex]}')`;
+                
+                // Distribute fish vertically across the water area
+                // Divide the water into sections based on number of fish
+                const sectionSize = waterHeight / Math.min(fishCount, 10); // Create up to 10 vertical sections
+                const section = i % Math.min(fishCount, 10); // Determine which section this fish belongs to
+                
+                // Calculate position within the section
+                const baseTop = waterTop + (section * sectionSize);
+                const randomOffset = Math.random() * (sectionSize * 0.7); // Random position within section
+                const topPosition = baseTop + randomOffset + 20; // Add some padding from top
+                
+                fish.style.top = `${topPosition}px`;
+                // Store initial position for animation reference
+                fish.dataset.baseTop = topPosition;
+                
+                // Add word bubble
+                const bubble = document.createElement('div');
+                bubble.className = 'word-bubble';
+                bubble.textContent = word.french;
+                fish.appendChild(bubble);
+                
+                // Store word data
+                fish.dataset.word = word.english;
+                
+                // Set animation duration - randomize slightly for more natural movement
+                const baseSpeed = 80;
+                const randomFactor = 0.8 + Math.random() * 0.4; // 0.8 to 1.2
+                const levelFactor = 1 + (Math.min(level, 5) - 1) * 0.1;
+                fish.style.animationDuration = `${baseSpeed * randomFactor / levelFactor}s`;
+                
+                // Randomize starting position in animation
+                fish.style.animationDelay = `-${Math.random() * 80}s`;
+                
+                // Add event listener
+                fish.addEventListener('click', () => catchFish(fish));
+                
+                container.appendChild(fish);
+                activeFish.push(fish);
+            }
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Sound toggle
+            document.getElementById('soundToggle').addEventListener('click', () => {
+                soundEnabled = !soundEnabled;
+                const button = document.getElementById('soundToggle');
+                button.textContent = soundEnabled ? '🔊' : '🔈';
+                button.classList.toggle('active', soundEnabled);
+            });
+            
+            // Music toggle
+            document.getElementById('musicToggle').addEventListener('click', () => {
+                musicEnabled = !musicEnabled;
+                const button = document.getElementById('musicToggle');
+                button.textContent = musicEnabled ? '🎵' : '🎵';
+                button.classList.toggle('active', musicEnabled);
+                toggleMusic();
+            });
+            
+            // Pause button
+            document.getElementById('pauseBtn').addEventListener('click', () => {
+                gamePaused = !gamePaused;
+                const button = document.getElementById('pauseBtn');
+                button.textContent = gamePaused ? '▶️' : '⏸️';
+                
+                if (gamePaused) {
+                    clearInterval(timer);
+                    document.querySelectorAll('.fish').forEach(fish => {
+                        fish.style.animationPlayState = 'paused';
+                    });
+                } else {
+                    startTimer();
+                    document.querySelectorAll('.fish').forEach(fish => {
+                        fish.style.animationPlayState = 'running';
+                    });
+                }
+            });
+            
+            // Topic change button
+            document.getElementById('changeTopicBtn').addEventListener('click', changeTopic);
+            
+            // Fishing rod animation
+            const fishingRod = document.getElementById('fishingRod');
+            fishingRod.addEventListener('click', () => {
+                if (!gamePaused) {
+                    fishingRod.classList.add('casting');
+                    playSound('splash');
+                    
+                    setTimeout(() => {
+                        fishingRod.classList.remove('casting');
+                    }, 1000);
+                }
+            });
+        }
+
+        // Catch fish
+        function catchFish(fish) {
+            clearInterval(timer);
+            playSound('catch');
+            
+            fish.classList.add('caught');
+            const word = fish.dataset.word;
+            const feedback = document.getElementById('feedback');
+            
+            // Show feedback
+            feedback.style.display = 'block';
+            feedback.innerHTML = `<div style="font-size: 1.5rem; margin-bottom: 1rem;">Translate:</div><div style="font-size: 2rem; color: var(--accent-color); margin-bottom: 1rem;">"${fish.querySelector('.word-bubble').textContent}"</div>`;
+            
+            // Create input
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.placeholder = 'Type the English translation...';
+            input.autofocus = true;
+            feedback.appendChild(input);
+            
+            setTimeout(() => {
+                input.focus();
+            }, 100);
+            
+            // Handle answer
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    const answer = input.value.toLowerCase().trim();
+                    const correct = answer === word.toLowerCase();
+                    
+                    if (correct) {
+                        // Calculate points - faster answers get more points
+                        const timeLeft = parseFloat(document.getElementById('timerProgress').style.width) / 100 * timerValue;
+                        const timeBonus = Math.round(timeLeft * 2);
+                        const points = 10 + timeBonus;
+                        
+                        updateScore(score + points);
+                        showFeedback(`Correct! +${points} points 🎉`, 'success');
+                    } else {
+                        playSound('wrong');
+                        showFeedback(`Wrong! The correct answer is "${word}" 📚`, 'error');
+                    }
+                    
+                    // Continue game
+                    setTimeout(() => {
+                        feedback.style.display = 'none';
+                        feedback.innerHTML = '';
+                        
+                        // Remove caught fish
+                        setTimeout(() => {
+                            fish.remove();
+                            activeFish = activeFish.filter(f => f !== fish);
+                            
+                            // Create new fish if all are caught
+                            if (activeFish.length === 0) {
+                                createFish();
+                            }
+                            
+                            startTimer();
+                        }, 500);
+                    }, 2000);
+                }
+            });
+        }
+
+        // Update score
+        function updateScore(newScore) {
+            score = newScore;
+            document.getElementById('score').textContent = score;
+            
+            // Level up every 100 points
+            if (score >= level * 100 && level < 5) {
+                updateLevel(level + 1);
+            }
+        }
+
+        // Update level
+        function updateLevel(newLevel) {
+            level = newLevel;
+            document.getElementById('level').textContent = level;
+            
+            playSound('levelUp');
+            
+            // Adjust timer with level
+            timerValue = Math.max(15 - (level - 1) * 2, 5);
+            
+            // Show level up message
+            const levelMessages = [
+                "",
+                "Beginner words! 🐠",
+                "Common objects! 🐟",
+                "Action verbs! 🐡",
+                "Time expressions! 🦈"
+            ];
+            
+            showFeedback(`Level ${level}! ${levelMessages[level-1]} 🎉`, 'success');
+            
+            // Clear and create new fish
+            activeFish.forEach(fish => fish.remove());
+            createFish();
+        }
+
+        // Show feedback
+        function showFeedback(message, type) {
+            const feedback = document.getElementById('feedback');
+            feedback.style.display = 'block';
+            feedback.style.backgroundColor = type === 'success' ? 'rgba(0, 255, 155, 0.2)' : 'rgba(255, 68, 68, 0.2)';
+            feedback.style.border = `2px solid ${type === 'success' ? 'var(--success-color)' : 'var(--error-color)'}`;
+            feedback.innerHTML = `<div style="font-size: 1.5rem;">${message}</div>`;
+            
+            setTimeout(() => {
+                feedback.style.display = 'none';
+            }, 2000);
+        }
+
+        // Close sound warning
+        function closeSoundWarning() {
+            const warning = document.getElementById('soundWarning');
+            warning.style.animation = 'fadeOut 0.3s ease';
+            setTimeout(() => {
+                warning.style.display = 'none';
+                initGame();
+            }, 300);
+        }
+
+        // Animate fish continuously
+        function animateFish() {
+            activeFish.forEach(fish => {
+                if (!fish.classList.contains('caught') && !gamePaused) {
+                    // Get the base/initial position that was set during fish creation
+                    const baseTop = parseFloat(fish.dataset.baseTop) || parseInt(fish.style.top);
+                    
+                    // Create a small oscillation up and down based on unique seed per fish
+                    const uniqueSeed = baseTop; // Use the base position as a unique seed
+                    const wiggle = Math.sin((Date.now() / 1000) + uniqueSeed) * 5; // More gentle wiggle of ±5px
+                    
+                    // Set the new position, keeping the fish around its base position
+                    fish.style.top = `${baseTop + wiggle}px`;
+                    
+                    // Store the base position if it wasn't stored before
+                    if (!fish.dataset.baseTop) {
+                        fish.dataset.baseTop = baseTop;
+                    }
+                }
+            });
+            
+            requestAnimationFrame(animateFish);
+        }
+
+        // Start animation
+        requestAnimationFrame(animateFish);
     </script>
 </body>
 </html>
