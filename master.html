@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hemiya - French Exam Master</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #001102;
+            --accent-color: #00FF9B;
+            --text-color: #FFFFFF;
+            --card-bg: rgba(0, 255, 155, 0.1);
+            --success-color: #00FF9B;
+            --error-color: #FF4444;
+            --neutral-color: #666666;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        .game-container {
+            max-width: 1200px;
+            width: 90%;
+            margin: 2rem auto;
+            position: relative;
+        }
+
+        /* Background Effects */
+        .grid-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(var(--accent-color) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.1;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .shining-dot {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0%, 100% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(2); opacity: 0.8; }
+        }
+
+        /* Game Header */
+        .game-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .game-title {
+            font-size: 3rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            text-shadow: 0 0 20px rgba(0, 255, 155, 0.3);
+        }
+
+        .level-selector {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .level-btn {
+            padding: 1rem 2rem;
+            background: var(--card-bg);
+            border: 2px solid var(--accent-color);
+            color: var(--accent-color);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .level-btn:hover, .level-btn.active {
+            background: var(--accent-color);
+            color: var(--bg-color);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 155, 0.3);
+        }
+
+        /* Game Content */
+        .game-content {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 2px solid var(--accent-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Lifelines */
+        .lifelines {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .lifeline-btn {
+            padding: 0.5rem 1rem;
+            background: var(--card-bg);
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .lifeline-btn:hover:not(:disabled) {
+            background: var(--accent-color);
+            color: var(--bg-color);
+            transform: translateY(-2px);
+        }
+
+        .lifeline-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .lifeline-count {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        /* Hint Panel */
+        .hint-panel {
+            background: rgba(0, 255, 155, 0.1);
+            border: 1px solid var(--accent-color);
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1rem 0;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question-container {
+            margin-bottom: 2rem;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .question-number {
+            font-size: 1.2rem;
+            color: var(--accent-color);
+        }
+
+        .timer {
+            font-size: 1.2rem;
+            color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .question-text {
+            font-size: 1.4rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .options-container {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .option-btn {
+            padding: 1rem;
+            background: rgba(0, 255, 155, 0.1);
+            border: 1px solid var(--accent-color);
+            border-radius: 10px;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .option-btn:hover {
+            background: rgba(0, 255, 155, 0.2);
+            transform: translateX(10px);
+        }
+
+        .option-btn.correct {
+            background: rgba(0, 255, 155, 0.3);
+            border-color: var(--success-color);
+        }
+
+        .option-btn.wrong {
+            background: rgba(255, 68, 68, 0.3);
+            border-color: var(--error-color);
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            height: 10px;
+            background: rgba(0, 255, 155, 0.1);
+            border-radius: 5px;
+            margin: 2rem 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--accent-color);
+            width: 0;
+            transition: width 0.3s ease;
+        }
+
+        /* Feedback Panel */
+        .feedback-panel {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--card-bg);
+            padding: 1rem 2rem;
+            border-radius: 15px;
+            border: 2px solid var(--accent-color);
+            display: none;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translate(-50%, 100%); opacity: 0; }
+            to { transform: translate(-50%, 0); opacity: 1; }
+        }
+
+        /* Sound Effects */
+        .sound-toggle {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: none;
+            border: none;
+            color: var(--accent-color);
+            cursor: pointer;
+            font-size: 1.5rem;
+            z-index: 100;
+        }
+
+        /* Sound Warning Modal */
+        .sound-warning {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 17, 2, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .sound-warning-content {
+            background: var(--card-bg);
+            border: 2px solid var(--accent-color);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 500px;
+            text-align: center;
+            animation: slideUp 0.3s ease;
+        }
+
+        .sound-warning h2 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+
+        .sound-warning p {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .sound-warning-btn {
+            background: var(--accent-color);
+            color: var(--bg-color);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .sound-warning-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 155, 0.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .game-title {
+                font-size: 2rem;
+            }
+
+            .level-selector {
+                flex-wrap: wrap;
+            }
+
+            .level-btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 0.9rem;
+            }
+
+            .question-text {
+                font-size: 1.2rem;
+            }
+
+            .option-btn {
+                padding: 0.8rem;
+                font-size: 0.9rem;
+            }
+
+            .sound-warning-content {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+
+            .sound-warning h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-background"></div>
+    
+    <!-- Sound Warning Modal -->
+    <div class="sound-warning" id="soundWarning">
+        <div class="sound-warning-content">
+            <h2>🎮 Sound Effects Notice</h2>
+            <p>This game includes sound effects for:</p>
+            <ul style="list-style: none; margin: 1rem 0;">
+                <li>✨ Correct answers</li>
+                <li>❌ Wrong answers</li>
+                <li>🔊 Button clicks</li>
+                <li>🎉 Level completion</li>
+            </ul>
+            <p>You can toggle sound on/off using the 🔊 button in the top right corner.</p>
+            <button class="sound-warning-btn" onclick="closeSoundWarning()">Got it! Let's Play</button>
+        </div>
+    </div>
+
+    <div class="game-container">
+        <div class="game-header">
+            <h1 class="game-title">French Exam Master</h1>
+            <p class="game-subtitle">Master DELF/TEF with interactive practice</p>
+            
+            <div class="level-selector">
+                <button class="level-btn" data-level="a1">A1 - Beginner</button>
+                <button class="level-btn" data-level="a2">A2 - Elementary</button>
+                <button class="level-btn" data-level="b1">B1 - Intermediate</button>
+                <button class="level-btn" data-level="b2">B2 - Upper Intermediate</button>
+                <button class="level-btn" data-level="c1">C1 - Advanced</button>
+            </div>
+        </div>
+
+        <div class="game-content">
+            <div class="lifelines">
+                <button class="lifeline-btn" id="hintBtn" title="Get a hint">
+                    💡 Hint
+                    <span class="lifeline-count">(3)</span>
+                </button>
+                <button class="lifeline-btn" id="fiftyFiftyBtn" title="Remove two wrong answers">
+                    ½ 50:50
+                    <span class="lifeline-count">(1)</span>
+                </button>
+                <button class="lifeline-btn" id="skipBtn" title="Skip this question">
+                    ⏭️ Skip
+                    <span class="lifeline-count">(2)</span>
+                </button>
+            </div>
+
+            <div class="hint-panel" id="hintPanel">
+                <p id="hintText"></p>
+            </div>
+
+            <div class="question-container">
+                <div class="question-header">
+                    <span class="question-number">Question 1/15</span>
+                    <div class="timer">⏱️ 00:30</div>
+                </div>
+                <p class="question-text">Loading questions...</p>
+                <div class="options-container">
+                    <!-- Options will be added dynamically -->
+                </div>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <button class="sound-toggle">🔊</button>
+    <div class="feedback-panel"></div>
+
+    <script>
+        // Game state
+        let currentLevel = null;
+        let currentQuestion = 0;
+        let score = 0;
+        let timer = null;
+        let soundEnabled = true;
+        let streak = 0;
+        let totalTime = 0;
+        let mistakes = [];
+        let lifelines = {
+            hints: 3,
+            fiftyFifty: 1,
+            skip: 2
+        };
+
+        // Sound effects
+        const sounds = {
+            correct: new Audio('https://www.orangefreesounds.com/wp-content/uploads/2021/10/Ding-ding-ding-sound-effect-game-show.mp3'),
+            wrong: new Audio('https://www.orangefreesounds.com/wp-content/uploads/2014/08/Wrong-answer-sound-effect.mp3'),
+            click: new Audio('https://www.orangefreesounds.com/wp-content/uploads/2022/04/Click-sound-effect.mp3'),
+            levelComplete: new Audio('https://www.orangefreesounds.com/wp-content/uploads/2022/02/Success-sound-effect.mp3'),
+            ding: new Audio('https://freesound.org/data/previews/243/243701_1565250-lq.mp3'),
+            aww: new Audio('https://freesound.org/data/previews/178/178875_3033349-lq.mp3')
+        };
+
+        // Preload sounds and handle errors
+        Object.values(sounds).forEach(sound => {
+            sound.load();
+            sound.addEventListener('error', () => {
+                console.warn('Failed to load sound:', sound.src);
+                // Fallback to alternative sound URLs if primary fails
+                if (sound === sounds.correct) {
+                    sound.src = 'https://freesound.org/data/previews/243/243701_1565250-lq.mp3';
+                } else if (sound === sounds.wrong) {
+                    sound.src = 'https://freesound.org/data/previews/178/178875_3033349-lq.mp3';
+                }
+                sound.load();
+            });
+        });
+
+        // Sound playback helper function with error handling
+        function playSound(soundKey) {
+            if (!soundEnabled) return;
+            
+            const sound = sounds[soundKey];
+            if (!sound) return;
+
+            // Reset and play
+            sound.currentTime = 0;
+            sound.play().catch(err => {
+                console.warn('Failed to play sound:', err);
+            });
+        }
+
+        // Questions database
+        const questions = {
+            a1: [
+                {
+                    question: "Comment allez-vous?",
+                    options: ["Je vais bien, merci", "Au revoir", "Je m'appelle Jean", "Bonjour"],
+                    correct: 0,
+                    type: "basic_conversation",
+                    explanation: "This is a common greeting asking 'How are you?'"
+                },
+                {
+                    question: "Quelle heure est-il?",
+                    options: ["Il est 14h30", "J'ai 20 ans", "Je suis français", "Il fait beau"],
+                    correct: 0,
+                    type: "time",
+                    explanation: "This question asks for the time"
+                },
+                {
+                    question: "Choisissez le bon article: ___ table",
+                    options: ["la", "le", "les", "un"],
+                    correct: 0,
+                    type: "grammar",
+                    explanation: "'Table' is feminine in French"
+                },
+                {
+                    question: "Quel est le pluriel de 'journal'?",
+                    options: ["journaux", "journals", "journales", "journeaux"],
+                    correct: 0,
+                    type: "grammar",
+                    explanation: "'Journal' has an irregular plural form"
+                },
+                {
+                    question: "Je ___ étudiant.",
+                    options: ["suis", "es", "est", "sont"],
+                    correct: 0,
+                    type: "grammar",
+                    explanation: "'Je' requires the verb form 'suis'"
+                }
+            ],
+            a2: [
+                {
+                    question: "Au restaurant, vous voulez commander. Vous dites:",
+                    options: [
+                        "Je voudrais un café, s'il vous plaît",
+                        "J'ai un café",
+                        "Je veux un café maintenant",
+                        "Donnez-moi un café"
+                    ],
+                    correct: 0,
+                    type: "politeness",
+                    explanation: "Using 'Je voudrais' is the polite way to order"
+                },
+                {
+                    question: "Complétez: Hier, je ___ au cinéma.",
+                    options: ["suis allé", "vais", "aller", "allé"],
+                    correct: 0,
+                    type: "grammar",
+                    explanation: "Past tense (passé composé) with 'aller'"
+                },
+                {
+                    question: "Choisissez l'adjectif correct: La voiture ___ est belle.",
+                    options: ["rouge", "rouges", "rouge's", "rouge est"],
+                    correct: 0,
+                    type: "grammar",
+                    explanation: "Adjectives must agree in gender and number"
+                }
+            ],
+            b1: [
+                {
+                    question: "Pendant une réunion professionnelle, vous devez exprimer votre désaccord. Vous dites:",
+                    options: [
+                        "Je comprends votre point de vue, mais je pense que...",
+                        "Non, vous avez tort!",
+                        "C'est n'importe quoi",
+                        "Je ne suis pas d'accord du tout"
+                    ],
+                    correct: 0,
+                    type: "professional",
+                    explanation: "Professional disagreement requires diplomacy"
+                },
+                {
+                    question: "Complétez avec le pronom relatif correct: C'est le livre ___ j'ai lu hier.",
+                    options: ["que", "qui", "dont", "où"],
+                    correct: 0,
+                    type: "grammar",
+                    explanation: "'Que' is used when the relative pronoun is the direct object"
+                }
+            ],
+            b2: [
+                {
+                    question: "Dans un texte argumentatif, quelle expression permet de nuancer son propos?",
+                    options: [
+                        "Il convient néanmoins de souligner que...",
+                        "Il est évident que...",
+                        "Sans aucun doute...",
+                        "Il est certain que..."
+                    ],
+                    correct: 0,
+                    type: "writing",
+                    explanation: "Nuancing arguments is important in academic writing"
+                },
+                {
+                    question: "Choisissez la bonne forme du subjonctif: Il faut que tu ___ à l'heure.",
+                    options: ["sois", "es", "soit", "être"],
+                    correct: 0,
+                    type: "grammar",
+                    explanation: "'Il faut que' requires the subjunctive mood"
+                }
+            ],
+            c1: [
+                {
+                    question: "Dans un contexte professionnel, comment exprimeriez-vous une suggestion de manière diplomatique?",
+                    options: [
+                        "Il serait peut-être judicieux d'envisager...",
+                        "Vous devriez faire...",
+                        "Il faut absolument...",
+                        "Je vous suggère de..."
+                    ],
+                    correct: 0,
+                    type: "professional",
+                    explanation: "Professional suggestions should be diplomatic and indirect"
+                },
+                {
+                    question: "Quel registre de langue est approprié pour une soutenance de thèse?",
+                    options: [
+                        "Le registre soutenu",
+                        "Le registre familier",
+                        "Le registre courant",
+                        "Le registre populaire"
+                    ],
+                    correct: 0,
+                    type: "register",
+                    explanation: "Academic presentations require formal language"
+                }
+            ]
+        };
+
+        // Initialize shining dots
+        function createShiningDots() {
+            for (let i = 0; i < 20; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'shining-dot';
+                dot.style.left = `${Math.random() * 100}vw`;
+                dot.style.top = `${Math.random() * 100}vh`;
+                dot.style.animationDelay = `${Math.random() * 3}s`;
+                document.body.appendChild(dot);
+            }
+        }
+
+        // Level selection
+        document.querySelectorAll('.level-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (soundEnabled) sounds.click.play();
+                currentLevel = btn.dataset.level;
+                document.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                startGame();
+            });
+        });
+
+        // Sound toggle
+        document.querySelector('.sound-toggle').addEventListener('click', () => {
+            soundEnabled = !soundEnabled;
+            document.querySelector('.sound-toggle').textContent = soundEnabled ? '🔊' : '🔈';
+        });
+
+        // Initialize lifeline buttons
+        document.getElementById('hintBtn').addEventListener('click', useHint);
+        document.getElementById('fiftyFiftyBtn').addEventListener('click', useFiftyFifty);
+        document.getElementById('skipBtn').addEventListener('click', useSkip);
+
+        // Lifeline: Hint
+        function useHint() {
+            if (lifelines.hints > 0) {
+                lifelines.hints--;
+                updateLifelineCounts();
+                
+                const question = questions[currentLevel][currentQuestion];
+                let hint = '';
+                
+                switch(question.type) {
+                    case 'grammar':
+                        hint = "Think about grammar rules: " + question.explanation;
+                        break;
+                    case 'professional':
+                        hint = "Consider the formality level and professional context.";
+                        break;
+                    case 'basic_conversation':
+                        hint = "Think about common everyday phrases.";
+                        break;
+                    default:
+                        hint = "Look for context clues in the question.";
+                }
+                
+                const hintPanel = document.getElementById('hintPanel');
+                document.getElementById('hintText').textContent = hint;
+                hintPanel.style.display = 'block';
+                
+                if (soundEnabled) sounds.click.play();
+            }
+        }
+
+        // Lifeline: 50:50
+        function useFiftyFifty() {
+            if (lifelines.fiftyFifty > 0) {
+                lifelines.fiftyFifty--;
+                updateLifelineCounts();
+                
+                const question = questions[currentLevel][currentQuestion];
+                const options = document.querySelectorAll('.option-btn');
+                const wrongOptions = Array.from(options).filter((_, index) => 
+                    index !== question.correct
+                );
+                
+                // Randomly remove two wrong options
+                const toRemove = wrongOptions
+                    .sort(() => Math.random() - 0.5)
+                    .slice(0, 2);
+                
+                toRemove.forEach(option => {
+                    option.style.display = 'none';
+                });
+                
+                if (soundEnabled) sounds.click.play();
+            }
+        }
+
+        // Lifeline: Skip
+        function useSkip() {
+            if (lifelines.skip > 0) {
+                lifelines.skip--;
+                updateLifelineCounts();
+                
+                currentQuestion++;
+                if (currentQuestion < questions[currentLevel].length) {
+                    showQuestion();
+                } else {
+                    endGame();
+                }
+                updateProgress();
+                
+                if (soundEnabled) sounds.click.play();
+            }
+        }
+
+        // Update lifeline counts display
+        function updateLifelineCounts() {
+            document.querySelector('#hintBtn .lifeline-count').textContent = `(${lifelines.hints})`;
+            document.querySelector('#fiftyFiftyBtn .lifeline-count').textContent = `(${lifelines.fiftyFifty})`;
+            document.querySelector('#skipBtn .lifeline-count').textContent = `(${lifelines.skip})`;
+            
+            // Disable buttons if no lifelines left
+            document.getElementById('hintBtn').disabled = lifelines.hints === 0;
+            document.getElementById('fiftyFiftyBtn').disabled = lifelines.fiftyFifty === 0;
+            document.getElementById('skipBtn').disabled = lifelines.skip === 0;
+        }
+
+        // Game initialization
+        function startGame() {
+            currentQuestion = 0;
+            score = 0;
+            streak = 0;
+            totalTime = 0;
+            mistakes = [];
+            // Reset lifelines
+            lifelines = {
+                hints: 3,
+                fiftyFifty: 1,
+                skip: 2
+            };
+            updateLifelineCounts();
+            showQuestion();
+            updateProgress();
+        }
+
+        // Show question
+        function showQuestion() {
+            const question = questions[currentLevel][currentQuestion];
+            document.querySelector('.question-text').textContent = question.question;
+            
+            const optionsContainer = document.querySelector('.options-container');
+            optionsContainer.innerHTML = '';
+            
+            // Shuffle options
+            const shuffledOptions = [...question.options];
+            for (let i = shuffledOptions.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffledOptions[i], shuffledOptions[j]] = [shuffledOptions[j], shuffledOptions[i]];
+            }
+            
+            shuffledOptions.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.className = 'option-btn';
+                button.textContent = option;
+                button.addEventListener('click', () => checkAnswer(shuffledOptions.indexOf(question.options[question.correct]) === index));
+                optionsContainer.appendChild(button);
+            });
+
+            document.querySelector('.question-number').textContent = `Question ${currentQuestion + 1}/${questions[currentLevel].length}`;
+            startTimer();
+        }
+
+        // Timer functionality
+        function startTimer() {
+            let timeLeft = 30;
+            clearInterval(timer);
+            
+            timer = setInterval(() => {
+                timeLeft--;
+                document.querySelector('.timer').textContent = `⏱️ ${timeLeft.toString().padStart(2, '0')}`;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    checkAnswer(false);
+                }
+            }, 1000);
+        }
+
+        // Check answer
+        function checkAnswer(isCorrect) {
+            clearInterval(timer);
+            const question = questions[currentLevel][currentQuestion];
+            
+            if (isCorrect) {
+                playSound('correct');
+                setTimeout(() => playSound('ding'), 300);
+                score++;
+                streak++;
+                showFeedback(`Correct! 🎉 ${streak > 1 ? `Streak: ${streak}🔥` : ''}`, 'success');
+                
+                setTimeout(() => {
+                    showFeedback(question.explanation, 'success');
+                }, 1500);
+            } else {
+                playSound('wrong');
+                setTimeout(() => playSound('aww'), 300);
+                streak = 0;
+                mistakes.push({
+                    question: question.question,
+                    type: question.type,
+                    explanation: question.explanation
+                });
+                showFeedback(`Incorrect. ${question.explanation} 💪`, 'error');
+            }
+
+            // Hide hint panel if it's showing
+            document.getElementById('hintPanel').style.display = 'none';
+
+            setTimeout(() => {
+                currentQuestion++;
+                if (currentQuestion < questions[currentLevel].length) {
+                    showQuestion();
+                } else {
+                    endGame();
+                }
+                updateProgress();
+            }, 3000);
+        }
+
+        // Update progress bar
+        function updateProgress() {
+            const progress = (currentQuestion / questions[currentLevel].length) * 100;
+            document.querySelector('.progress-bar').style.width = `${progress}%`;
+        }
+
+        // Show feedback
+        function showFeedback(message, type) {
+            const feedback = document.querySelector('.feedback-panel');
+            feedback.textContent = message;
+            feedback.style.display = 'block';
+            feedback.style.backgroundColor = type === 'success' ? 'rgba(0, 255, 155, 0.2)' : 'rgba(255, 68, 68, 0.2)';
+            
+            setTimeout(() => {
+                feedback.style.display = 'none';
+            }, 2500);
+        }
+
+        // End game
+        function endGame() {
+            if (soundEnabled) sounds.levelComplete.play();
+            const percentage = (score / questions[currentLevel].length) * 100;
+            
+            let resultMessage = `Level Complete! 🏆\n`;
+            resultMessage += `Score: ${percentage}%\n`;
+            resultMessage += `Longest Streak: ${streak}🔥\n`;
+            resultMessage += `Lifelines Remaining: ${lifelines.hints + lifelines.fiftyFifty + lifelines.skip}\n`;
+            
+            if (mistakes.length > 0) {
+                resultMessage += `\nAreas to Review:\n`;
+                const typeCount = {};
+                mistakes.forEach(mistake => {
+                    typeCount[mistake.type] = (typeCount[mistake.type] || 0) + 1;
+                });
+                Object.entries(typeCount).forEach(([type, count]) => {
+                    resultMessage += `${type}: ${count} mistakes\n`;
+                });
+            }
+            
+            showFeedback(resultMessage, percentage >= 70 ? 'success' : 'error');
+            
+            setTimeout(() => {
+                document.querySelectorAll('.level-btn').forEach(btn => btn.classList.remove('active'));
+                document.querySelector('.question-text').textContent = 'Select a level to start';
+                document.querySelector('.options-container').innerHTML = '';
+                document.getElementById('hintPanel').style.display = 'none';
+            }, 5000);
+        }
+
+        // Close sound warning
+        function closeSoundWarning() {
+            const warning = document.getElementById('soundWarning');
+            warning.style.animation = 'fadeOut 0.3s ease';
+            setTimeout(() => {
+                warning.style.display = 'none';
+            }, 300);
+        }
+
+        // Add fadeOut animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeOut {
+                from { opacity: 1; }
+                to { opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize game
+        createShiningDots();
+    </script>
+</body>
+</html> 
