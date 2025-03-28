@@ -1,933 +1,1155 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hemiya - French Exam Master</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-color: #001102;
-            --accent-color: #00FF9B;
-            --text-color: #FFFFFF;
-            --card-bg: rgba(0, 255, 155, 0.1);
-            --success-color: #00FF9B;
-            --error-color: #FF4444;
-            --neutral-color: #666666;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DELF/TEF Exam Prep Game - Simple French with Hems</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
+<style>
+  :root {
+    --dark-bg: #001102;
+    --accent-color: #00ff66;
+    --accent-secondary: #00f5ff;
+    --accent-tertiary: #99ff00;
+    --light-text: #fff;
+    --card-bg: rgba(0, 17, 2, 0.7);
+    --card-border: rgba(0, 255, 155, 0.2);
+    --card-hover: rgba(0, 255, 155, 0.3);
+  }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            overflow-x: hidden;
-        }
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
-        .game-container {
-            max-width: 1200px;
-            width: 90%;
-            margin: 2rem auto;
-            position: relative;
-        }
+  body {
+    background-color: var(--dark-bg);
+    font-family: 'Poppins', sans-serif;
+    color: var(--light-text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    overflow-x: hidden;
+  }
 
-        /* Background Effects */
-        .grid-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: radial-gradient(var(--accent-color) 1px, transparent 1px);
-            background-size: 40px 40px;
-            opacity: 0.1;
-            pointer-events: none;
-            z-index: -1;
-        }
+  /* Background dots animation */
+  .bg-dots {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
 
-        .shining-dot {
-            position: absolute;
-            width: 3px;
-            height: 3px;
-            background: var(--accent-color);
-            border-radius: 50%;
-            animation: shine 3s infinite;
-        }
+  .dot {
+    position: absolute;
+    background-color: var(--accent-color);
+    border-radius: 50%;
+    opacity: 0.2;
+    transform: scale(0);
+    animation: pulse 3s infinite;
+  }
 
-        @keyframes shine {
-            0%, 100% { transform: scale(1); opacity: 0.3; }
-            50% { transform: scale(2); opacity: 0.8; }
-        }
+  @keyframes pulse {
+    0% { transform: scale(0); opacity: 0; }
+    50% { transform: scale(1); opacity: 0.2; }
+    100% { transform: scale(0); opacity: 0; }
+  }
 
-        /* Game Header */
-        .game-header {
-            text-align: center;
-            margin-bottom: 3rem;
-            position: relative;
-        }
+  .game-container {
+    width: 90%;
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    background: var(--card-bg);
+    border-radius: 12px;
+    border: 1px solid var(--card-border);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    position: relative;
+    z-index: 1;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+  }
 
-        .game-title {
-            font-size: 3rem;
-            color: var(--accent-color);
-            margin-bottom: 1rem;
-            text-shadow: 0 0 20px rgba(0, 255, 155, 0.3);
-        }
+  header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
 
-        .level-selector {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin: 2rem 0;
-        }
+  h1 {
+    font-family: 'Audiowide', cursive;
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(90deg, var(--accent-color), var(--accent-secondary), var(--accent-tertiary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
 
-        .level-btn {
-            padding: 1rem 2rem;
-            background: var(--card-bg);
-            border: 2px solid var(--accent-color);
-            color: var(--accent-color);
-            border-radius: 15px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
+  .subtitle {
+    color: var(--light-text);
+    font-size: 1.1rem;
+    opacity: 0.9;
+  }
 
-        .level-btn:hover, .level-btn.active {
-            background: var(--accent-color);
-            color: var(--bg-color);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 255, 155, 0.3);
-        }
+  .level-select {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
 
-        /* Game Content */
-        .game-content {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 2rem;
-            border: 2px solid var(--accent-color);
-            position: relative;
-            overflow: hidden;
-        }
+  .level-btn {
+    background: rgba(0, 17, 2, 0.6);
+    color: var(--light-text);
+    border: 1px solid var(--card-border);
+    border-radius: 50px;
+    padding: 0.7rem 1.5rem;
+    font-family: 'Audiowide', cursive;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
 
-        /* Lifelines */
-        .lifelines {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
+  .level-btn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 102, 0.2), transparent);
+    animation: shine 3s infinite;
+    display: none;
+  }
 
-        .lifeline-btn {
-            padding: 0.5rem 1rem;
-            background: var(--card-bg);
-            border: 1px solid var(--accent-color);
-            color: var(--accent-color);
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
+  .level-btn:hover {
+    background: rgba(0, 255, 102, 0.1);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 255, 102, 0.2);
+  }
 
-        .lifeline-btn:hover:not(:disabled) {
-            background: var(--accent-color);
-            color: var(--bg-color);
-            transform: translateY(-2px);
-        }
+  .level-btn:hover::after {
+    display: block;
+  }
 
-        .lifeline-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
+  .level-btn.active {
+    background: linear-gradient(90deg, rgba(0, 255, 102, 0.2), rgba(0, 245, 255, 0.2));
+    box-shadow: 0 0 10px rgba(0, 255, 102, 0.3);
+  }
 
-        .lifeline-count {
-            font-size: 0.8rem;
-            opacity: 0.8;
-        }
+  @keyframes shine {
+    0% { left: -100%; }
+    100% { left: 100%; }
+  }
 
-        /* Hint Panel */
-        .hint-panel {
-            background: rgba(0, 255, 155, 0.1);
-            border: 1px solid var(--accent-color);
-            border-radius: 10px;
-            padding: 1rem;
-            margin: 1rem 0;
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
+  .question-container {
+    background: rgba(0, 17, 2, 0.5);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--card-border);
+  }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+  .question-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
 
-        .question-container {
-            margin-bottom: 2rem;
-        }
+  .question-number {
+    font-family: 'Audiowide', cursive;
+    color: var(--accent-color);
+  }
 
-        .question-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
+  .question-timer {
+    color: var(--accent-secondary);
+    font-weight: 600;
+  }
 
-        .question-number {
-            font-size: 1.2rem;
-            color: var(--accent-color);
-        }
+  .question-text {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.4;
+  }
 
-        .timer {
-            font-size: 1.2rem;
-            color: var(--accent-color);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
+  .options-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
 
-        .question-text {
-            font-size: 1.4rem;
-            margin-bottom: 2rem;
-            line-height: 1.6;
-        }
+  .option {
+    background: rgba(0, 17, 2, 0.7);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    padding: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
 
-        .options-container {
-            display: grid;
-            gap: 1rem;
-        }
+  .option:hover {
+    background: rgba(0, 255, 102, 0.1);
+    transform: translateY(-2px);
+  }
 
-        .option-btn {
-            padding: 1rem;
-            background: rgba(0, 255, 155, 0.1);
-            border: 1px solid var(--accent-color);
-            border-radius: 10px;
-            color: var(--text-color);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: left;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
+  .option.selected {
+    background: rgba(0, 255, 102, 0.15);
+    border-color: var(--accent-color);
+  }
 
-        .option-btn:hover {
-            background: rgba(0, 255, 155, 0.2);
-            transform: translateX(10px);
-        }
+  .option.correct {
+    background: rgba(0, 255, 102, 0.2);
+    border-color: var(--accent-color);
+  }
 
-        .option-btn.correct {
-            background: rgba(0, 255, 155, 0.3);
-            border-color: var(--success-color);
-        }
+  .option.incorrect {
+    background: rgba(255, 0, 0, 0.1);
+    border-color: rgba(255, 0, 0, 0.3);
+  }
 
-        .option-btn.wrong {
-            background: rgba(255, 68, 68, 0.3);
-            border-color: var(--error-color);
-        }
+  .controls {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.5rem;
+  }
 
-        /* Progress Bar */
-        .progress-container {
-            width: 100%;
-            height: 10px;
-            background: rgba(0, 255, 155, 0.1);
-            border-radius: 5px;
-            margin: 2rem 0;
-            overflow: hidden;
-        }
+  .btn {
+    background: rgba(0, 17, 2, 0.7);
+    color: var(--light-text);
+    border: 1px solid var(--card-border);
+    border-radius: 50px;
+    padding: 0.7rem 1.5rem;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
 
-        .progress-bar {
-            height: 100%;
-            background: var(--accent-color);
-            width: 0;
-            transition: width 0.3s ease;
-        }
+  .btn:hover {
+    background: rgba(0, 255, 102, 0.1);
+    transform: translateY(-2px);
+  }
 
-        /* Feedback Panel */
-        .feedback-panel {
-            position: fixed;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--card-bg);
-            padding: 1rem 2rem;
-            border-radius: 15px;
-            border: 2px solid var(--accent-color);
-            display: none;
-            animation: slideUp 0.3s ease;
-        }
+  .btn.primary {
+    background: linear-gradient(90deg, rgba(0, 255, 102, 0.2), rgba(0, 245, 255, 0.2));
+    border: 1px solid var(--accent-color);
+  }
 
-        @keyframes slideUp {
-            from { transform: translate(-50%, 100%); opacity: 0; }
-            to { transform: translate(-50%, 0); opacity: 1; }
-        }
+  .progress-container {
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    margin: 1.5rem 0;
+    overflow: hidden;
+  }
 
-        /* Sound Effects */
-        .sound-toggle {
-            position: fixed;
-            top: 2rem;
-            right: 2rem;
-            background: none;
-            border: none;
-            color: var(--accent-color);
-            cursor: pointer;
-            font-size: 1.5rem;
-            z-index: 100;
-        }
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-color), var(--accent-secondary));
+    width: 0;
+    transition: width 0.3s ease;
+  }
 
-        /* Sound Warning Modal */
-        .sound-warning {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 17, 2, 0.9);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            animation: fadeIn 0.3s ease;
-        }
+  .score {
+    text-align: center;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
 
-        .sound-warning-content {
-            background: var(--card-bg);
-            border: 2px solid var(--accent-color);
-            border-radius: 20px;
-            padding: 2rem;
-            max-width: 500px;
-            text-align: center;
-            animation: slideUp 0.3s ease;
-        }
+  .score-value {
+    color: var(--accent-color);
+    font-weight: 600;
+  }
 
-        .sound-warning h2 {
-            color: var(--accent-color);
-            margin-bottom: 1rem;
-            font-size: 1.8rem;
-        }
+  .result-container {
+    text-align: center;
+    display: none;
+  }
 
-        .sound-warning p {
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-        }
+  .result-title {
+    font-family: 'Audiowide', cursive;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(90deg, var(--accent-color), var(--accent-secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
 
-        .sound-warning-btn {
-            background: var(--accent-color);
-            color: var(--bg-color);
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-        }
+  .result-details {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+  }
 
-        .sound-warning-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 255, 155, 0.3);
-        }
+  .feedback {
+    background: rgba(0, 17, 2, 0.5);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    text-align: left;
+  }
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .game-title {
-                font-size: 2rem;
-            }
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 1.8rem;
+    }
+    
+    .subtitle {
+      font-size: 1rem;
+    }
+    
+    .options-container {
+      grid-template-columns: 1fr;
+    }
+    
+    .level-btn {
+      font-size: 0.8rem;
+      padding: 0.6rem 1.2rem;
+    }
+    
+    .game-container {
+      padding: 1.2rem;
+    }
+  }
 
-            .level-selector {
-                flex-wrap: wrap;
-            }
-
-            .level-btn {
-                padding: 0.8rem 1.5rem;
-                font-size: 0.9rem;
-            }
-
-            .question-text {
-                font-size: 1.2rem;
-            }
-
-            .option-btn {
-                padding: 0.8rem;
-                font-size: 0.9rem;
-            }
-
-            .sound-warning-content {
-                margin: 1rem;
-                padding: 1.5rem;
-            }
-
-            .sound-warning h2 {
-                font-size: 1.5rem;
-            }
-        }
-    </style>
+  @media (max-width: 480px) {
+    h1 {
+      font-size: 1.5rem;
+    }
+    
+    .question-text {
+      font-size: 1.1rem;
+    }
+    
+    .controls {
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .btn {
+      width: 100%;
+    }
+  }
+</style>
 </head>
 <body>
-    <div class="grid-background"></div>
-    
-    <!-- Sound Warning Modal -->
-    <div class="sound-warning" id="soundWarning">
-        <div class="sound-warning-content">
-            <h2>🎮 Sound Effects Notice</h2>
-            <p>This game includes sound effects for:</p>
-            <ul style="list-style: none; margin: 1rem 0;">
-                <li>✨ Correct answers</li>
-                <li>❌ Wrong answers</li>
-                <li>🔊 Button clicks</li>
-                <li>🎉 Level completion</li>
-            </ul>
-            <p>You can toggle sound on/off using the 🔊 button in the top right corner.</p>
-            <button class="sound-warning-btn" onclick="closeSoundWarning()">Got it! Let's Play</button>
-        </div>
+  <div class="bg-dots" id="bgDots"></div>
+
+  <div class="game-container">
+    <header>
+      <h1>French Exam Master</h1>
+      <p class="subtitle">Prepare for DELF/TEF with interactive practice</p>
+    </header>
+
+    <div class="level-select" id="levelSelect">
+      <button class="level-btn active" data-level="a1">A1 Débutant</button>
+      <button class="level-btn" data-level="a2">A2 Élémentaire</button>
+      <button class="level-btn" data-level="b1">B1 Intermédiaire</button>
+      <button class="level-btn" data-level="b2">B2 Avancé</button>
     </div>
 
-    <div class="game-container">
-        <div class="game-header">
-            <h1 class="game-title">French Exam Master</h1>
-            <p class="game-subtitle">Master DELF/TEF with interactive practice</p>
-            
-            <div class="level-selector">
-                <button class="level-btn" data-level="a1">A1 - Beginner</button>
-                <button class="level-btn" data-level="a2">A2 - Elementary</button>
-                <button class="level-btn" data-level="b1">B1 - Intermediate</button>
-                <button class="level-btn" data-level="b2">B2 - Upper Intermediate</button>
-                <button class="level-btn" data-level="c1">C1 - Advanced</button>
-            </div>
-        </div>
-
-        <div class="game-content">
-            <div class="lifelines">
-                <button class="lifeline-btn" id="hintBtn" title="Get a hint">
-                    💡 Hint
-                    <span class="lifeline-count">(3)</span>
-                </button>
-                <button class="lifeline-btn" id="fiftyFiftyBtn" title="Remove two wrong answers">
-                    ½ 50:50
-                    <span class="lifeline-count">(1)</span>
-                </button>
-                <button class="lifeline-btn" id="skipBtn" title="Skip this question">
-                    ⏭️ Skip
-                    <span class="lifeline-count">(2)</span>
-                </button>
-            </div>
-
-            <div class="hint-panel" id="hintPanel">
-                <p id="hintText"></p>
-            </div>
-
-            <div class="question-container">
-                <div class="question-header">
-                    <span class="question-number">Question 1/15</span>
-                    <div class="timer">⏱️ 00:30</div>
-                </div>
-                <p class="question-text">Loading questions...</p>
-                <div class="options-container">
-                    <!-- Options will be added dynamically -->
-                </div>
-            </div>
-
-            <div class="progress-container">
-                <div class="progress-bar"></div>
-            </div>
-        </div>
+    <div class="score">
+      Score: <span class="score-value" id="scoreValue">0</span>
     </div>
 
-    <button class="sound-toggle">🔊</button>
-    <div class="feedback-panel"></div>
+    <div class="progress-container">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
 
-    <script>
-        // Game state
-        let currentLevel = null;
-        let currentQuestion = 0;
-        let score = 0;
-        let timer = null;
-        let soundEnabled = true;
-        let streak = 0;
-        let totalTime = 0;
-        let mistakes = [];
-        let lifelines = {
-            hints: 3,
-            fiftyFifty: 1,
-            skip: 2
-        };
+    <div class="question-container" id="questionContainer">
+      <div class="question-header">
+        <div class="question-number" id="questionNumber">Question 1/15</div>
+        <div class="question-timer" id="questionTimer">30</div>
+      </div>
+      <div class="question-text" id="questionText">
+        Loading question...
+      </div>
+      <div class="options-container" id="optionsContainer">
+        <!-- Options will be inserted here by JavaScript -->
+      </div>
+    </div>
 
-        // Sound effects
-        const sounds = {
-            correct: new Audio('https://www.orangefreesounds.com/wp-content/uploads/2021/10/Ding-ding-ding-sound-effect-game-show.mp3'),
-            wrong: new Audio('https://www.orangefreesounds.com/wp-content/uploads/2014/08/Wrong-answer-sound-effect.mp3'),
-            click: new Audio('https://www.orangefreesounds.com/wp-content/uploads/2022/04/Click-sound-effect.mp3'),
-            levelComplete: new Audio('https://www.orangefreesounds.com/wp-content/uploads/2022/02/Success-sound-effect.mp3'),
-            ding: new Audio('https://freesound.org/data/previews/243/243701_1565250-lq.mp3'),
-            aww: new Audio('https://freesound.org/data/previews/178/178875_3033349-lq.mp3')
-        };
+    <div class="controls">
+      <button class="btn" id="prevBtn">Previous</button>
+      <button class="btn primary" id="nextBtn">Next</button>
+    </div>
 
-        // Preload sounds and handle errors
-        Object.values(sounds).forEach(sound => {
-            sound.load();
-            sound.addEventListener('error', () => {
-                console.warn('Failed to load sound:', sound.src);
-                // Fallback to alternative sound URLs if primary fails
-                if (sound === sounds.correct) {
-                    sound.src = 'https://freesound.org/data/previews/243/243701_1565250-lq.mp3';
-                } else if (sound === sounds.wrong) {
-                    sound.src = 'https://freesound.org/data/previews/178/178875_3033349-lq.mp3';
-                }
-                sound.load();
-            });
-        });
+    <div class="result-container" id="resultContainer">
+      <h2 class="result-title">Quiz Complete!</h2>
+      <p class="result-details">
+        You scored <span id="finalScore">0</span> out of <span id="totalQuestions">15</span>
+      </p>
+      <div class="feedback" id="feedback">
+        <!-- Feedback will be inserted here -->
+      </div>
+      <button class="btn primary" id="restartBtn">Try Again</button>
+    </div>
+  </div>
 
-        // Sound playback helper function with error handling
-        function playSound(soundKey) {
-            if (!soundEnabled) return;
-            
-            const sound = sounds[soundKey];
-            if (!sound) return;
+  <script>
+    // Audio files for sound effects
+    const sounds = {
+      correct: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-bonus-earned-in-game-2058.mp3'),
+      incorrect: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-negativeistic-tone-interface-click-1590.mp3'),
+      levelUp: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-unlock-game-notification-253.mp3'),
+      gameOver: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-completion-of-a-level-2063.mp3')
+    };
 
-            // Reset and play
-            sound.currentTime = 0;
-            sound.play().catch(err => {
-                console.warn('Failed to play sound:', err);
-            });
+    // Game state
+    const gameState = {
+      currentLevel: 'a1',
+      currentQuestionIndex: 0,
+      score: 0,
+      timer: null,
+      timeLeft: 30,
+      selectedOption: null,
+      questionsAnswered: [],
+      questionsData: {
+        a1: [
+          {
+            question: "Comment vous appelez-vous?",
+            options: ["Je m'appelle Marie", "J'ai 25 ans", "J'habite à Paris", "Je suis médecin"],
+            correctAnswer: 0,
+            explanation: "Cette question demande votre nom. La réponse correcte est 'Je m'appelle Marie'."
+          },
+          {
+            question: "Quelle est la couleur du drapeau français?",
+            options: ["Rouge, jaune et vert", "Bleu, blanc et rouge", "Noir, jaune et rouge", "Vert, blanc et rouge"],
+            correctAnswer: 1,
+            explanation: "Le drapeau français est bleu, blanc et rouge (bleu, blanc, rouge)."
+          },
+          {
+            question: "Quel est le contraire de 'grand'?",
+            options: ["Petit", "Gros", "Mince", "Large"],
+            correctAnswer: 0,
+            explanation: "Le contraire de 'grand' est 'petit'."
+          },
+          {
+            question: "Comment allez-vous?",
+            options: ["Je vais au cinéma", "Je vais bien, merci", "Je vais manger", "Je vais dormir"],
+            correctAnswer: 1,
+            explanation: "Cette question demande comment vous vous sentez. La réponse correcte est 'Je vais bien, merci'."
+          },
+          {
+            question: "Quelle heure est-il?",
+            options: ["J'ai l'heure", "Il est dix heures", "C'est l'heure", "L'heure, c'est maintenant"],
+            correctAnswer: 1,
+            explanation: "Pour indiquer l'heure, on utilise 'Il est...' suivi de l'heure."
+          },
+          {
+            question: "Quel jour sommes-nous aujourd'hui?",
+            options: ["Nous sommes lundi", "C'est le jour", "Aujourd'hui c'est le matin", "Le jour est beau"],
+            correctAnswer: 0,
+            explanation: "Pour indiquer le jour, on utilise 'Nous sommes...' suivi du jour de la semaine."
+          },
+          {
+            question: "Où habitez-vous?",
+            options: ["J'ai une maison", "J'habite à Lyon", "Je suis chez moi", "Ma maison est grande"],
+            correctAnswer: 1,
+            explanation: "Cette question demande où vous vivez. La réponse correcte est 'J'habite à Lyon'."
+          },
+          {
+            question: "Qu'est-ce que c'est?",
+            options: ["C'est à moi", "C'est pour toi", "C'est un livre", "C'est maintenant"],
+            correctAnswer: 2,
+            explanation: "Cette question demande d'identifier un objet. La réponse correcte est 'C'est un livre'."
+          },
+          {
+            question: "Quelle est votre nationalité?",
+            options: ["Je suis étudiant", "Je suis français", "Je suis professeur", "Je suis en France"],
+            correctAnswer: 1,
+            explanation: "Cette question demande votre nationalité. La réponse correcte est 'Je suis français'."
+          },
+          {
+            question: "Quel âge avez-vous?",
+            options: ["J'ai vingt ans", "Je suis né en 1990", "Je suis jeune", "J'ai un frère"],
+            correctAnswer: 0,
+            explanation: "Cette question demande votre âge. La réponse correcte est 'J'ai vingt ans'."
+          },
+          {
+            question: "Combien coûte ce livre?",
+            options: ["Il est intéressant", "Il est rouge", "Il coûte dix euros", "Il est à moi"],
+            correctAnswer: 2,
+            explanation: "Cette question demande le prix. La réponse correcte est 'Il coûte dix euros'."
+          },
+          {
+            question: "Qu'est-ce que vous aimez faire le weekend?",
+            options: ["Je suis occupé", "J'aime dormir", "Je travaille", "Je suis fatigué"],
+            correctAnswer: 1,
+            explanation: "Cette question demande ce que vous aimez faire. La réponse correcte est 'J'aime dormir'."
+          },
+          {
+            question: "Comment vas-tu au travail?",
+            options: ["Je vais bien", "Je vais en bus", "Je travaille beaucoup", "Je suis en retard"],
+            correctAnswer: 1,
+            explanation: "Cette question demande votre moyen de transport. La réponse correcte est 'Je vais en bus'."
+          },
+          {
+            question: "Quelle est la capitale de la France?",
+            options: ["Lyon", "Marseille", "Paris", "Bordeaux"],
+            correctAnswer: 2,
+            explanation: "La capitale de la France est Paris."
+          },
+          {
+            question: "Comment dit-on 'Bonjour' en anglais?",
+            options: ["Good morning", "Goodbye", "Hello", "Thank you"],
+            correctAnswer: 2,
+            explanation: "'Bonjour' en anglais se dit 'Hello'."
+          }
+        ],
+        a2: [
+          {
+            question: "Que faites-vous comme métier?",
+            options: ["Je fais du sport", "Je suis ingénieur", "Je fais les courses", "Je fais la cuisine"],
+            correctAnswer: 1,
+            explanation: "Cette question demande votre profession. La réponse correcte est 'Je suis ingénieur'."
+          },
+          {
+            question: "Quel temps fait-il aujourd'hui?",
+            options: ["Il fait beau", "Il fait du sport", "Il fait ses devoirs", "Il fait un gâteau"],
+            correctAnswer: 0,
+            explanation: "Cette question demande la météo. La réponse correcte est 'Il fait beau'."
+          },
+          {
+            question: "Pourquoi apprenez-vous le français?",
+            options: ["Pour manger", "Pour dormir", "Pour voyager en France", "Pour danser"],
+            correctAnswer: 2,
+            explanation: "Cette question demande la raison pour laquelle vous apprenez le français. La réponse logique est 'Pour voyager en France'."
+          },
+          {
+            question: "À quelle heure commence le film?",
+            options: ["Le film est bon", "Le film commence à 20h", "J'aime ce film", "Le film est long"],
+            correctAnswer: 1,
+            explanation: "Cette question demande l'heure du début du film. La réponse correcte est 'Le film commence à 20h'."
+          },
+          {
+            question: "Qu'est-ce que vous prenez comme dessert?",
+            options: ["Je prends le bus", "Je prends une décision", "Je prends une tarte aux pommes", "Je prends rendez-vous"],
+            correctAnswer: 2,
+            explanation: "Cette question demande quel dessert vous choisissez. La réponse correcte est 'Je prends une tarte aux pommes'."
+          },
+          {
+            question: "Complétez: 'Je vais ___ marché'",
+            options: ["à", "au", "en", "de"],
+            correctAnswer: 1,
+            explanation: "La préposition correcte est 'au' (contraction de 'à le')."
+          },
+          {
+            question: "Comment vas-tu à l'école?",
+            options: ["Je vais bien", "Je vais à l'école à vélo", "Je vais apprendre", "Je vais à 8 heures"],
+            correctAnswer: 1,
+            explanation: "Cette question demande votre moyen de transport. La réponse correcte est 'Je vais à l'école à vélo'."
+          },
+          {
+            question: "Quelle est la date aujourd'hui?",
+            options: ["Il fait chaud", "C'est lundi", "Nous sommes le 10 mai", "Il est 14h30"],
+            correctAnswer: 2,
+            explanation: "Cette question demande la date. La réponse correcte est 'Nous sommes le 10 mai'."
+          },
+          {
+            question: "Qu'est-ce que vous allez faire ce weekend?",
+            options: ["J'ai fait du sport", "Je fais du shopping", "Je vais visiter mes parents", "Je suis allé au cinéma"],
+            correctAnswer: 2,
+            explanation: "Cette question demande vos projets pour le weekend. La réponse correcte est 'Je vais visiter mes parents' (futur proche)."
+          },
+          {
+            question: "Vous préférez le café ou le thé?",
+            options: ["J'aime le café", "Je bois du café", "Je préfère le thé", "Le café est bon"],
+            correctAnswer: 2,
+            explanation: "Cette question demande votre préférence. La réponse directe est 'Je préfère le thé'."
+          },
+          {
+            question: "Complétez: 'Je ne mange pas ___ viande'",
+            options: ["de", "la", "une", "du"],
+            correctAnswer: 0,
+            explanation: "Après une négation, on utilise généralement 'de' au lieu de l'article partitif."
+          },
+          {
+            question: "Où sont mes lunettes?",
+            options: ["J'ai des lunettes", "Tes lunettes sont sur la table", "Je ne porte pas de lunettes", "Les lunettes sont chères"],
+            correctAnswer: 1,
+            explanation: "Cette question demande l'emplacement. La réponse correcte est 'Tes lunettes sont sur la table'."
+          },
+          {
+            question: "Quel est l'opposé de 'chaud'?",
+            options: ["Chaleur", "Température", "Froid", "Vent"],
+            correctAnswer: 2,
+            explanation: "L'opposé de 'chaud' est 'froid'."
+          },
+          {
+            question: "Comment est-ce que je peux aller à la gare?",
+            options: ["La gare est grande", "Vous pouvez prendre le bus", "Le train est à l'heure", "Je vais à la gare"],
+            correctAnswer: 1,
+            explanation: "Cette question demande des directions. La réponse appropriée est 'Vous pouvez prendre le bus'."
+          },
+          {
+            question: "Je voudrais réserver une table pour deux personnes.",
+            options: ["C'est une affirmation, pas une question", "La table est là", "Pour ce soir?", "Deux personnes, s'il vous plaît"],
+            correctAnswer: 0,
+            explanation: "Cette phrase est une affirmation (demande), pas une question."
+          },
+          {
+            question: "Conjuguez le verbe 'finir' au présent (nous): Nous...",
+            options: ["finissons", "finions", "finirons", "finirions"],
+            correctAnswer: 0,
+            explanation: "La conjugaison correcte du verbe 'finir' à la première personne du pluriel au présent est 'nous finissons'."
+          },
+          {
+            question: "Qu'est-ce que vous avez fait hier?",
+            options: ["Je fais mes devoirs", "Je ferai du sport", "J'ai visité un musée", "Je vais dormir"],
+            correctAnswer: 2,
+            explanation: "Cette question est au passé composé. La réponse correcte est 'J'ai visité un musée'."
+          },
+          {
+            question: "Quel sport pratiquez-vous?",
+            options: ["Le sport est bon pour la santé", "J'aime le sport", "Je regarde le sport à la télé", "Je joue au football"],
+            correctAnswer: 3,
+            explanation: "Cette question demande quel sport vous pratiquez. La réponse correcte est 'Je joue au football'."
+          },
+          {
+            question: "Depuis combien de temps étudiez-vous le français?",
+            options: ["Le français est difficile", "J'étudie le français depuis deux ans", "J'étudierai le français", "J'étudie bien"],
+            correctAnswer: 1,
+            explanation: "Cette question demande la durée. La réponse correcte est 'J'étudie le français depuis deux ans'."
+          },
+          {
+            question: "Quel est le plat traditionnel français?",
+            options: ["Le coq au vin", "Le hamburger", "Les spaghetti", "Le sushi"],
+            correctAnswer: 0,
+            explanation: "Le coq au vin est un plat traditionnel français."
+          }
+        ],
+        b1: [
+          {
+            question: "Pourriez-vous me dire ce qui s'est passé pendant la réunion?",
+            options: ["Je n'aime pas les réunions", "La réunion aura lieu demain", "Nous avons discuté du nouveau projet", "La réunion est ennuyeuse"],
+            correctAnswer: 2,
+            explanation: "Cette question demande de raconter les événements de la réunion au passé. La réponse appropriée est 'Nous avons discuté du nouveau projet'."
+          },
+          {
+            question: "Si j'avais plus de temps, je...",
+            options: ["voyage plus", "voyagerais plus", "avais voyagé plus", "voyager plus"],
+            correctAnswer: 1,
+            explanation: "La structure correcte est 'Si + imparfait, conditionnel présent'. Donc 'je voyagerais plus'."
+          },
+          {
+            question: "Je vous prie de m'excuser pour mon retard, c'est que...",
+            options: ["j'ai raté le bus", "je rate le bus", "je vais rater le bus", "je ratais le bus"],
+            correctAnswer: 0,
+            explanation: "Pour expliquer un retard qui vient de se produire, on utilise le passé composé: 'j'ai raté le bus'."
+          },
+          {
+            question: "Quelle est votre opinion concernant les énergies renouvelables?",
+            options: ["Je n'ai pas d'énergie", "L'énergie coûte cher", "Je pense qu'elles sont essentielles pour l'avenir", "Je préfère l'électricité"],
+            correctAnswer: 2,
+            explanation: "Cette question demande une opinion développée. La réponse la plus complète est 'Je pense qu'elles sont essentielles pour l'avenir'."
+          },
+          {
+            question: "Comment réagiriez-vous si on vous proposait un poste à l'étranger?",
+            options: ["J'ai accepté", "J'accepterai", "J'accepterais", "J'acceptais"],
+            correctAnswer: 2,
+            explanation: "Cette question est au conditionnel. La réponse correcte est 'J'accepterais'."
+          },
+          {
+            question: "Pourquoi n'êtes-vous pas venu à la fête samedi dernier?",
+            options: ["Je viendrai", "Je ne viens pas", "Je ne venais pas", "Je n'ai pas pu venir"],
+            correctAnswer: 3,
+            explanation: "Cette question est au passé. La réponse correcte est 'Je n'ai pas pu venir'."
+          },
+          {
+            question: "Qu'est-ce que vous feriez pour améliorer les transports publics?",
+            options: ["Les transports publics sont bien", "J'ai pris le bus", "Je prends souvent le métro", "J'augmenterais la fréquence des bus"],
+            correctAnswer: 3,
+            explanation: "Cette question demande une suggestion au conditionnel. La réponse correcte est 'J'augmenterais la fréquence des bus'."
+          },
+          {
+            question: "Comment avez-vous trouvé le film que je vous ai recommandé?",
+            options: ["Je le trouverai", "Je l'ai trouvé intéressant", "Je ne l'ai pas encore trouvé", "Je vais le trouver"],
+            correctAnswer: 1,
+            explanation: "Cette question demande une opinion sur un film déjà vu. La réponse correcte est 'Je l'ai trouvé intéressant'."
+          },
+          {
+            question: "Complétez: 'Il faut que vous ___ à l'heure'",
+            options: ["arrivez", "arriverez", "arriveriez", "arriviez"],
+            correctAnswer: 3,
+            explanation: "Après 'il faut que', on utilise le subjonctif présent: 'arriviez'."
+          },
+          {
+            question: "Que pensez-vous des réseaux sociaux?",
+            options: ["Je pense à mes amis", "Je pense que j'ai un compte", "Je pense que c'est utile mais aussi addictif", "Je pense aux photos"],
+            correctAnswer: 2,
+            explanation: "Cette question demande une opinion développée. La réponse la plus complète est 'Je pense que c'est utile mais aussi addictif'."
+          },
+          {
+            question: "Il vaudrait mieux que vous...",
+            options: ["partez maintenant", "partiez maintenant", "partirez maintenant", "partiriez maintenant"],
+            correctAnswer: 1,
+            explanation: "Après 'il vaudrait mieux que', on utilise le subjonctif présent: 'partiez'."
+          },
+          {
+            question: "Pouvez-vous expliquer pourquoi vous avez choisi cette carrière?",
+            options: ["Je choisirai une carrière", "J'ai choisi cette carrière parce qu'elle correspond à mes valeurs", "Je vais choisir", "Je choisis maintenant"],
+            correctAnswer: 1,
+            explanation: "Cette question demande une explication au passé. La réponse correcte est 'J'ai choisi cette carrière parce qu'elle correspond à mes valeurs'."
+          },
+          {
+            question: "Avant de partir en vacances, je...",
+            options: ["vais réserver un hôtel", "ai fait mes valises", "fais mes valises", "ferai mes valises"],
+            correctAnswer: 3,
+            explanation: "La phrase implique une action future avant une autre action future. La réponse correcte est 'ferai mes valises'."
+          },
+          {
+            question: "À votre avis, quelles sont les causes du changement climatique?",
+            options: ["Il fait chaud aujourd'hui", "Le temps change", "Les principales causes sont les émissions de gaz à effet de serre", "Je ne sais pas la météo"],
+            correctAnswer: 2,
+            explanation: "Cette question demande une opinion informée. La réponse la plus développée est 'Les principales causes sont les émissions de gaz à effet de serre'."
+          },
+          {
+            question: "Qu'auriez-vous fait différemment si vous aviez su?",
+            options: ["Je ne sais pas", "J'aurais pris une autre décision", "Je vais faire différemment", "Je fais différemment"],
+            correctAnswer: 1,
+            explanation: "Cette question est au conditionnel passé. La réponse correcte est 'J'aurais pris une autre décision'."
+          },
+          {
+            question: "Laquelle de ces villes est la capitale du Canada?",
+            options: ["Toronto", "Montréal", "Vancouver", "Ottawa"],
+            correctAnswer: 3,
+            explanation: "La capitale du Canada est Ottawa."
+          },
+          {
+            question: "Dès que j'aurai terminé ce travail, je...",
+            options: ["prends des vacances", "prenais des vacances", "prendrais des vacances", "prendrai des vacances"],
+            correctAnswer: 3,
+            explanation: "Après 'dès que' suivi du futur antérieur, on utilise le futur simple: 'prendrai'."
+          },
+          {
+            question: "Qu'est-ce qui vous motive dans votre travail?",
+            options: ["Je travaille beaucoup", "J'ai travaillé hier", "Ce qui me motive, c'est de pouvoir être créatif", "Le travail est difficile"],
+            correctAnswer: 2,
+            explanation: "Cette question demande une réflexion personnelle. La réponse la plus développée est 'Ce qui me motive, c'est de pouvoir être créatif'."
+          },
+          {
+            question: "Identifiez la voix passive: 'Le roman a été écrit par Victor Hugo'",
+            options: ["Voix active", "Voix passive", "Voix pronominale", "Voix réflexive"],
+            correctAnswer: 1,
+            explanation: "La phrase 'Le roman a été écrit par Victor Hugo' est à la voix passive."
+          },
+          {
+            question: "Comment avez-vous surmonté cette difficulté?",
+            options: ["C'était difficile", "Je vais essayer", "J'essaie maintenant", "J'ai demandé de l'aide à un collègue"],
+            correctAnswer: 3,
+            explanation: "Cette question est au passé et demande une action spécifique. La réponse correcte est 'J'ai demandé de l'aide à un collègue'."
+          }
+        ],
+        b2: [
+          {
+            question: "Dans quelle mesure êtes-vous d'accord avec cette affirmation: 'La technologie nous isole socialement'?",
+            options: ["J'utilise beaucoup la technologie", "Je n'aime pas la technologie", "Cette affirmation est fausse", "Bien que la technologie puisse faciliter la communication, elle peut effectivement réduire les interactions en personne"],
+            correctAnswer: 3,
+            explanation: "Cette question demande une opinion nuancée. La réponse la plus développée est 'Bien que la technologie puisse faciliter la communication, elle peut effectivement réduire les interactions en personne'."
+          },
+          {
+            question: "Si les gouvernements avaient pris des mesures plus tôt contre le changement climatique, nous...",
+            options: ["avons moins de problèmes", "aurions moins de problèmes", "avions moins de problèmes", "aurons moins de problèmes"],
+            correctAnswer: 1,
+            explanation: "Cette phrase est au conditionnel passé. La réponse correcte est 'aurions moins de problèmes'."
+          },
+          {
+            question: "Quelles mesures préconiseriez-vous pour améliorer le système éducatif?",
+            options: ["L'éducation est importante", "J'ai été à l'école", "Je préconiserais une approche plus individualisée", "Les étudiants étudient beaucoup"],
+            correctAnswer: 2,
+            explanation: "Cette question demande une suggestion au conditionnel. La réponse la plus développée est 'Je préconiserais une approche plus individualisée'."
+          },
+          {
+            question: "Comment interprétez-vous cette citation: 'La liberté des uns s'arrête là où commence celle des autres'?",
+            options: ["J'aime la liberté", "Cette citation parle de limites", "Cela signifie que notre liberté est limitée par le respect des droits d'autrui", "La liberté est un droit"],
+            correctAnswer: 2,
+            explanation: "Cette question demande une interprétation. La réponse la plus développée est 'Cela signifie que notre liberté est limitée par le respect des droits d'autrui'."
+          },
+          {
+            question: "Identifiez la proposition subordonnée dans: 'Je crois que vous avez raison'",
+            options: ["Je crois", "que vous avez raison", "Je crois que", "vous avez raison"],
+            correctAnswer: 1,
+            explanation: "La proposition subordonnée est 'que vous avez raison'."
+          },
+          {
+            question: "En quoi les politiques d'immigration actuelles pourraient-elles être améliorées?",
+            options: ["L'immigration est un problème", "Les politiques sont bonnes", "Les politiques sont mauvaises", "Les politiques pourraient être plus humaines tout en restant efficaces"],
+            correctAnswer: 3,
+            explanation: "Cette question demande une analyse critique. La réponse la plus nuancée est 'Les politiques pourraient être plus humaines tout en restant efficaces'."
+          },
+          {
+            question: "Quel est le mode verbal dans: 'Il est essentiel que vous soyez présent'?",
+            options: ["Indicatif", "Conditionnel", "Impératif", "Subjonctif"],
+            correctAnswer: 3,
+            explanation: "Le verbe 'soyez' est au subjonctif présent."
+          },
+          {
+            question: "À votre avis, quels sont les enjeux majeurs auxquels notre société sera confrontée dans les décennies à venir?",
+            options: ["La société change", "Je ne sais pas", "Les enjeux majeurs incluent le changement climatique et les inégalités sociales", "Tout va bien"],
+            correctAnswer: 2,
+            explanation: "Cette question demande une analyse prospective. La réponse la plus développée est 'Les enjeux majeurs incluent le changement climatique et les inégalités sociales'."
+          },
+          {
+            question: "Quelle différence faites-vous entre 'éthique' et 'morale'?",
+            options: ["Ce sont des synonymes", "L'éthique concerne les principes généraux, tandis que la morale est plus personnelle", "La morale est meilleure", "L'éthique est meilleure"],
+            correctAnswer: 1,
+            explanation: "Cette question demande une distinction conceptuelle. La réponse la plus précise est 'L'éthique concerne les principes généraux, tandis que la morale est plus personnelle'."
+          },
+          {
+            question: "En quoi le récit de ce roman diffère-t-il des œuvres précédentes de l'auteur?",
+            options: ["Je n'ai pas lu ce roman", "Ce roman est bon", "Ce roman est mauvais", "Ce roman adopte une structure non-linéaire, contrairement aux œuvres précédentes"],
+            correctAnswer: 3,
+            explanation: "Cette question demande une analyse littéraire comparative. La réponse la plus précise est 'Ce roman adopte une structure non-linéaire, contrairement aux œuvres précédentes'."
+          },
+          {
+            question: "Quel impact la pandémie a-t-elle eu sur votre façon de travailler?",
+            options: ["La pandémie était difficile", "J'ai été malade", "La pandémie m'a obligé à m'adapter au télétravail", "Je n'ai pas changé"],
+            correctAnswer: 2,
+            explanation: "Cette question demande une réflexion personnelle sur un changement. La réponse la plus développée est 'La pandémie m'a obligé à m'adapter au télétravail'."
+          },
+          {
+            question: "Dans quelle mesure l'art peut-il influencer la société?",
+            options: ["J'aime l'art", "L'art est beau", "L'art peut refléter et parfois transformer les valeurs sociales", "Je ne m'intéresse pas à l'art"],
+            correctAnswer: 2,
+            explanation: "Cette question demande une réflexion sur le rôle de l'art. La réponse la plus développée est 'L'art peut refléter et parfois transformer les valeurs sociales'."
+          },
+          {
+            question: "Complétez avec le pronom relatif correct: 'C'est la personne ___ je vous ai parlé'",
+            options: ["que", "qui", "dont", "où"],
+            correctAnswer: 2,
+            explanation: "On dit 'parler de quelqu'un', donc le pronom relatif correct est 'dont'."
+          },
+          {
+            question: "Comment expliquez-vous le succès croissant des mouvements populistes?",
+            options: ["Je ne suis pas la politique", "Les gens sont mécontents", "Ce phénomène résulte d'une combinaison de facteurs économiques et sociaux", "C'est normal"],
+            correctAnswer: 2,
+            explanation: "Cette question demande une analyse politique. La réponse la plus développée est 'Ce phénomène résulte d'une combinaison de facteurs économiques et sociaux'."
+          },
+          {
+            question: "Quelle stratégie adopteriez-vous pour résoudre ce conflit?",
+            options: ["Les conflits sont normaux", "Je ne sais pas", "J'éviterais le conflit", "Je proposerais une médiation pour comprendre les intérêts de chaque partie"],
+            correctAnswer: 3,
+            explanation: "Cette question demande une stratégie de résolution. La réponse la plus développée est 'Je proposerais une médiation pour comprendre les intérêts de chaque partie'."
+          },
+          {
+            question: "Identifiez la fonction du groupe souligné: 'Il a parlé pendant _deux heures_'",
+            options: ["Sujet", "Complément d'objet direct", "Complément circonstanciel de temps", "Attribut du sujet"],
+            correctAnswer: 2,
+            explanation: "'Pendant deux heures' est un complément circonstanciel de temps."
+          },
+          {
+            question: "En quoi consiste le développement durable?",
+            options: ["C'est développer l'économie", "C'est protéger l'environnement", "C'est un concept récent", "C'est un développement qui répond aux besoins présents sans compromettre ceux des générations futures"],
+            correctAnswer: 3,
+            explanation: "Cette question demande une définition précise. La réponse la plus complète est 'C'est un développement qui répond aux besoins présents sans compromettre ceux des générations futures'."
+          },
+          {
+            question: "Pourquoi certains pays résistent-ils à l'adoption de politiques environnementales plus strictes?",
+            options: ["Ils n'aiment pas l'environnement", "C'est trop cher", "Ils sont mauvais", "Ils craignent les impacts économiques à court terme et les désavantages compétitifs"],
+            correctAnswer: 3,
+            explanation: "Cette question demande une analyse géopolitique. La réponse la plus nuancée est 'Ils craignent les impacts économiques à court terme et les désavantages compétitifs'."
+          },
+          {
+            question: "Quels moyens utiliseriez-vous pour promouvoir l'égalité des genres dans le milieu professionnel?",
+            options: ["L'égalité est importante", "Je suis pour l'égalité", "Je ne sais pas", "J'instaurerais des politiques de transparence salariale et des quotas temporaires"],
+            correctAnswer: 3,
+            explanation: "Cette question demande des solutions concrètes. La réponse la plus développée est 'J'instaurerais des politiques de transparence salariale et des quotas temporaires'."
+          },
+          {
+            question: "Comment la littérature francophone contemporaine aborde-t-elle la question de l'identité?",
+            options: ["La littérature est intéressante", "Je ne lis pas beaucoup", "C'est un sujet important", "Elle l'aborde souvent à travers le prisme de la migration et du multiculturalisme"],
+            correctAnswer: 3,
+            explanation: "Cette question demande une analyse littéraire thématique. La réponse la plus précise est 'Elle l'aborde souvent à travers le prisme de la migration et du multiculturalisme'."
+          }
+        ]
+      }
+    };
+
+    // Create background dots
+    function createDots() {
+      const dotsContainer = document.getElementById('bgDots');
+      const numberOfDots = 50;
+      
+      for (let i = 0; i < numberOfDots; i++) {
+        const dot = document.createElement('div');
+        dot.classList.add('dot');
+        
+        // Random size between 3 and 8px
+        const size = Math.random() * 5 + 3;
+        dot.style.width = `${size}px`;
+        dot.style.height = `${size}px`;
+        
+        // Random position
+        dot.style.left = `${Math.random() * 100}%`;
+        dot.style.top = `${Math.random() * 100}%`;
+        
+        // Random animation delay
+        dot.style.animationDelay = `${Math.random() * 5}s`;
+        
+        dotsContainer.appendChild(dot);
+      }
+    }
+
+    // Update question display
+    function displayQuestion() {
+      const { currentLevel, currentQuestionIndex } = gameState;
+      const question = gameState.questionsData[currentLevel][currentQuestionIndex];
+      
+      const questionNumberEl = document.getElementById('questionNumber');
+      const questionTextEl = document.getElementById('questionText');
+      const optionsContainerEl = document.getElementById('optionsContainer');
+      const progressBarEl = document.getElementById('progressBar');
+      
+      // Update question number and text
+      questionNumberEl.textContent = `Question ${currentQuestionIndex + 1}/${gameState.questionsData[currentLevel].length}`;
+      questionTextEl.textContent = question.question;
+      
+      // Clear previous options
+      optionsContainerEl.innerHTML = '';
+      
+      // Add new options
+      question.options.forEach((option, index) => {
+        const optionEl = document.createElement('div');
+        optionEl.classList.add('option');
+        optionEl.textContent = option;
+        optionEl.dataset.index = index;
+        
+        // Check if this option was previously selected
+        const answered = gameState.questionsAnswered[currentQuestionIndex];
+        if (answered && answered.selectedOption === index) {
+          optionEl.classList.add('selected');
+          if (answered.correct) {
+            optionEl.classList.add('correct');
+          } else {
+            optionEl.classList.add('incorrect');
+          }
         }
+        
+        optionEl.addEventListener('click', selectOption);
+        optionsContainerEl.appendChild(optionEl);
+      });
+      
+      // Update progress bar
+      const progress = ((currentQuestionIndex + 1) / gameState.questionsData[currentLevel].length) * 100;
+      progressBarEl.style.width = `${progress}%`;
+      
+      // Reset and start timer
+      resetTimer();
+    }
 
-        // Questions database
-        const questions = {
-            a1: [
-                {
-                    question: "Comment allez-vous?",
-                    options: ["Je vais bien, merci", "Au revoir", "Je m'appelle Jean", "Bonjour"],
-                    correct: 0,
-                    type: "basic_conversation",
-                    explanation: "This is a common greeting asking 'How are you?'"
-                },
-                {
-                    question: "Quelle heure est-il?",
-                    options: ["Il est 14h30", "J'ai 20 ans", "Je suis français", "Il fait beau"],
-                    correct: 0,
-                    type: "time",
-                    explanation: "This question asks for the time"
-                },
-                {
-                    question: "Choisissez le bon article: ___ table",
-                    options: ["la", "le", "les", "un"],
-                    correct: 0,
-                    type: "grammar",
-                    explanation: "'Table' is feminine in French"
-                },
-                {
-                    question: "Quel est le pluriel de 'journal'?",
-                    options: ["journaux", "journals", "journales", "journeaux"],
-                    correct: 0,
-                    type: "grammar",
-                    explanation: "'Journal' has an irregular plural form"
-                },
-                {
-                    question: "Je ___ étudiant.",
-                    options: ["suis", "es", "est", "sont"],
-                    correct: 0,
-                    type: "grammar",
-                    explanation: "'Je' requires the verb form 'suis'"
-                }
-            ],
-            a2: [
-                {
-                    question: "Au restaurant, vous voulez commander. Vous dites:",
-                    options: [
-                        "Je voudrais un café, s'il vous plaît",
-                        "J'ai un café",
-                        "Je veux un café maintenant",
-                        "Donnez-moi un café"
-                    ],
-                    correct: 0,
-                    type: "politeness",
-                    explanation: "Using 'Je voudrais' is the polite way to order"
-                },
-                {
-                    question: "Complétez: Hier, je ___ au cinéma.",
-                    options: ["suis allé", "vais", "aller", "allé"],
-                    correct: 0,
-                    type: "grammar",
-                    explanation: "Past tense (passé composé) with 'aller'"
-                },
-                {
-                    question: "Choisissez l'adjectif correct: La voiture ___ est belle.",
-                    options: ["rouge", "rouges", "rouge's", "rouge est"],
-                    correct: 0,
-                    type: "grammar",
-                    explanation: "Adjectives must agree in gender and number"
-                }
-            ],
-            b1: [
-                {
-                    question: "Pendant une réunion professionnelle, vous devez exprimer votre désaccord. Vous dites:",
-                    options: [
-                        "Je comprends votre point de vue, mais je pense que...",
-                        "Non, vous avez tort!",
-                        "C'est n'importe quoi",
-                        "Je ne suis pas d'accord du tout"
-                    ],
-                    correct: 0,
-                    type: "professional",
-                    explanation: "Professional disagreement requires diplomacy"
-                },
-                {
-                    question: "Complétez avec le pronom relatif correct: C'est le livre ___ j'ai lu hier.",
-                    options: ["que", "qui", "dont", "où"],
-                    correct: 0,
-                    type: "grammar",
-                    explanation: "'Que' is used when the relative pronoun is the direct object"
-                }
-            ],
-            b2: [
-                {
-                    question: "Dans un texte argumentatif, quelle expression permet de nuancer son propos?",
-                    options: [
-                        "Il convient néanmoins de souligner que...",
-                        "Il est évident que...",
-                        "Sans aucun doute...",
-                        "Il est certain que..."
-                    ],
-                    correct: 0,
-                    type: "writing",
-                    explanation: "Nuancing arguments is important in academic writing"
-                },
-                {
-                    question: "Choisissez la bonne forme du subjonctif: Il faut que tu ___ à l'heure.",
-                    options: ["sois", "es", "soit", "être"],
-                    correct: 0,
-                    type: "grammar",
-                    explanation: "'Il faut que' requires the subjunctive mood"
-                }
-            ],
-            c1: [
-                {
-                    question: "Dans un contexte professionnel, comment exprimeriez-vous une suggestion de manière diplomatique?",
-                    options: [
-                        "Il serait peut-être judicieux d'envisager...",
-                        "Vous devriez faire...",
-                        "Il faut absolument...",
-                        "Je vous suggère de..."
-                    ],
-                    correct: 0,
-                    type: "professional",
-                    explanation: "Professional suggestions should be diplomatic and indirect"
-                },
-                {
-                    question: "Quel registre de langue est approprié pour une soutenance de thèse?",
-                    options: [
-                        "Le registre soutenu",
-                        "Le registre familier",
-                        "Le registre courant",
-                        "Le registre populaire"
-                    ],
-                    correct: 0,
-                    type: "register",
-                    explanation: "Academic presentations require formal language"
-                }
-            ]
-        };
+    // Handle option selection
+    function selectOption(e) {
+      const selectedIndex = parseInt(e.target.dataset.index);
+      const { currentLevel, currentQuestionIndex } = gameState;
+      const question = gameState.questionsData[currentLevel][currentQuestionIndex];
+      
+      // Remove previous selections
+      document.querySelectorAll('.option').forEach(opt => {
+        opt.classList.remove('selected', 'correct', 'incorrect');
+      });
+      
+      // Add new selection
+      e.target.classList.add('selected');
+      
+      // Check if answer is correct
+      const isCorrect = selectedIndex === question.correctAnswer;
+      
+      // Play sound
+      if (isCorrect) {
+        sounds.correct.play();
+        e.target.classList.add('correct');
+      } else {
+        sounds.incorrect.play();
+        e.target.classList.add('incorrect');
+        
+        // Show correct answer
+        document.querySelectorAll('.option')[question.correctAnswer].classList.add('correct');
+      }
+      
+      // Store answer
+      gameState.questionsAnswered[currentQuestionIndex] = {
+        selectedOption: selectedIndex,
+        correct: isCorrect
+      };
+      
+      // Update score
+      if (isCorrect && !gameState.questionsAnswered[currentQuestionIndex].counted) {
+        gameState.score++;
+        gameState.questionsAnswered[currentQuestionIndex].counted = true;
+        document.getElementById('scoreValue').textContent = gameState.score;
+      }
+      
+      // Clear timer
+      clearInterval(gameState.timer);
+    }
 
-        // Initialize shining dots
-        function createShiningDots() {
-            for (let i = 0; i < 20; i++) {
-                const dot = document.createElement('div');
-                dot.className = 'shining-dot';
-                dot.style.left = `${Math.random() * 100}vw`;
-                dot.style.top = `${Math.random() * 100}vh`;
-                dot.style.animationDelay = `${Math.random() * 3}s`;
-                document.body.appendChild(dot);
+    // Reset and start timer
+    function resetTimer() {
+      clearInterval(gameState.timer);
+      gameState.timeLeft = 30;
+      document.getElementById('questionTimer').textContent = gameState.timeLeft;
+      
+      gameState.timer = setInterval(() => {
+        gameState.timeLeft--;
+        document.getElementById('questionTimer').textContent = gameState.timeLeft;
+        
+        if (gameState.timeLeft <= 0) {
+          clearInterval(gameState.timer);
+          // Auto-select incorrect if time runs out
+          const { currentLevel, currentQuestionIndex } = gameState;
+          const question = gameState.questionsData[currentLevel][currentQuestionIndex];
+          
+          // Show correct answer
+          document.querySelectorAll('.option').forEach((opt, index) => {
+            if (index === question.correctAnswer) {
+              opt.classList.add('correct');
             }
+          });
+          
+          // Store answer
+          gameState.questionsAnswered[currentQuestionIndex] = {
+            selectedOption: null,
+            correct: false,
+            counted: true
+          };
+          
+          sounds.incorrect.play();
         }
+      }, 1000);
+    }
 
-        // Level selection
-        document.querySelectorAll('.level-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                if (soundEnabled) sounds.click.play();
-                currentLevel = btn.dataset.level;
-                document.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                startGame();
-            });
-        });
+    // Navigate to next question
+    function nextQuestion() {
+      const { currentLevel, currentQuestionIndex } = gameState;
+      
+      if (currentQuestionIndex < gameState.questionsData[currentLevel].length - 1) {
+        gameState.currentQuestionIndex++;
+        displayQuestion();
+      } else {
+        showResults();
+      }
+    }
 
-        // Sound toggle
-        document.querySelector('.sound-toggle').addEventListener('click', () => {
-            soundEnabled = !soundEnabled;
-            document.querySelector('.sound-toggle').textContent = soundEnabled ? '🔊' : '🔈';
-        });
+    // Navigate to previous question
+    function prevQuestion() {
+      if (gameState.currentQuestionIndex > 0) {
+        gameState.currentQuestionIndex--;
+        displayQuestion();
+      }
+    }
 
-        // Initialize lifeline buttons
-        document.getElementById('hintBtn').addEventListener('click', useHint);
-        document.getElementById('fiftyFiftyBtn').addEventListener('click', useFiftyFifty);
-        document.getElementById('skipBtn').addEventListener('click', useSkip);
-
-        // Lifeline: Hint
-        function useHint() {
-            if (lifelines.hints > 0) {
-                lifelines.hints--;
-                updateLifelineCounts();
-                
-                const question = questions[currentLevel][currentQuestion];
-                let hint = '';
-                
-                switch(question.type) {
-                    case 'grammar':
-                        hint = "Think about grammar rules: " + question.explanation;
-                        break;
-                    case 'professional':
-                        hint = "Consider the formality level and professional context.";
-                        break;
-                    case 'basic_conversation':
-                        hint = "Think about common everyday phrases.";
-                        break;
-                    default:
-                        hint = "Look for context clues in the question.";
-                }
-                
-                const hintPanel = document.getElementById('hintPanel');
-                document.getElementById('hintText').textContent = hint;
-                hintPanel.style.display = 'block';
-                
-                if (soundEnabled) sounds.click.play();
-            }
+    // Show quiz results
+    function showResults() {
+      clearInterval(gameState.timer);
+      
+      const questionContainer = document.getElementById('questionContainer');
+      const resultContainer = document.getElementById('resultContainer');
+      const controls = document.querySelector('.controls');
+      
+      questionContainer.style.display = 'none';
+      resultContainer.style.display = 'block';
+      controls.style.display = 'none';
+      
+      const finalScore = document.getElementById('finalScore');
+      const totalQuestions = document.getElementById('totalQuestions');
+      const feedback = document.getElementById('feedback');
+      
+      finalScore.textContent = gameState.score;
+      totalQuestions.textContent = gameState.questionsData[gameState.currentLevel].length;
+      
+      // Generate feedback
+      const percentage = (gameState.score / gameState.questionsData[gameState.currentLevel].length) * 100;
+      let feedbackMessage = '';
+      
+      if (percentage >= 80) {
+        feedbackMessage = `<p><strong>Excellent travail!</strong> Vous maîtrisez bien le niveau ${gameState.currentLevel.toUpperCase()}. Vous êtes prêt pour l'examen!</p>`;
+        sounds.levelUp.play();
+      } else if (percentage >= 60) {
+        feedbackMessage = `<p><strong>Bon travail!</strong> Vous avez une bonne compréhension du niveau ${gameState.currentLevel.toUpperCase()}, mais il y a encore place à l'amélioration.</p>`;
+        sounds.correct.play();
+      } else {
+        feedbackMessage = `<p><strong>Continuez à pratiquer!</strong> Ce niveau ${gameState.currentLevel.toUpperCase()} nécessite plus de travail avant l'examen.</p>`;
+        sounds.gameOver.play();
+      }
+      
+      // Add question-specific feedback
+      feedbackMessage += '<h3>Révision des questions:</h3><ul>';
+      gameState.questionsAnswered.forEach((answer, index) => {
+        const question = gameState.questionsData[gameState.currentLevel][index];
+        if (!answer || !answer.correct) {
+          feedbackMessage += `<li><strong>Question ${index + 1}:</strong> ${question.explanation}</li>`;
         }
+      });
+      feedbackMessage += '</ul>';
+      
+      feedback.innerHTML = feedbackMessage;
+    }
 
-        // Lifeline: 50:50
-        function useFiftyFifty() {
-            if (lifelines.fiftyFifty > 0) {
-                lifelines.fiftyFifty--;
-                updateLifelineCounts();
-                
-                const question = questions[currentLevel][currentQuestion];
-                const options = document.querySelectorAll('.option-btn');
-                const wrongOptions = Array.from(options).filter((_, index) => 
-                    index !== question.correct
-                );
-                
-                // Randomly remove two wrong options
-                const toRemove = wrongOptions
-                    .sort(() => Math.random() - 0.5)
-                    .slice(0, 2);
-                
-                toRemove.forEach(option => {
-                    option.style.display = 'none';
-                });
-                
-                if (soundEnabled) sounds.click.play();
-            }
-        }
+    // Restart the quiz
+    function restartQuiz() {
+      gameState.currentQuestionIndex = 0;
+      gameState.score = 0;
+      gameState.questionsAnswered = [];
+      
+      document.getElementById('scoreValue').textContent = 0;
+      document.getElementById('questionContainer').style.display = 'block';
+      document.getElementById('resultContainer').style.display = 'none';
+      document.querySelector('.controls').style.display = 'flex';
+      
+      displayQuestion();
+    }
 
-        // Lifeline: Skip
-        function useSkip() {
-            if (lifelines.skip > 0) {
-                lifelines.skip--;
-                updateLifelineCounts();
-                
-                currentQuestion++;
-                if (currentQuestion < questions[currentLevel].length) {
-                    showQuestion();
-                } else {
-                    endGame();
-                }
-                updateProgress();
-                
-                if (soundEnabled) sounds.click.play();
-            }
-        }
+    // Change level
+    function changeLevel(e) {
+      const newLevel = e.target.dataset.level;
+      if (newLevel === gameState.currentLevel) return;
+      
+      // Update active button
+      document.querySelectorAll('.level-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      e.target.classList.add('active');
+      
+      // Change level
+      gameState.currentLevel = newLevel;
+      restartQuiz();
+      sounds.levelUp.play();
+    }
 
-        // Update lifeline counts display
-        function updateLifelineCounts() {
-            document.querySelector('#hintBtn .lifeline-count').textContent = `(${lifelines.hints})`;
-            document.querySelector('#fiftyFiftyBtn .lifeline-count').textContent = `(${lifelines.fiftyFifty})`;
-            document.querySelector('#skipBtn .lifeline-count').textContent = `(${lifelines.skip})`;
-            
-            // Disable buttons if no lifelines left
-            document.getElementById('hintBtn').disabled = lifelines.hints === 0;
-            document.getElementById('fiftyFiftyBtn').disabled = lifelines.fiftyFifty === 0;
-            document.getElementById('skipBtn').disabled = lifelines.skip === 0;
-        }
-
-        // Game initialization
-        function startGame() {
-            currentQuestion = 0;
-            score = 0;
-            streak = 0;
-            totalTime = 0;
-            mistakes = [];
-            // Reset lifelines
-            lifelines = {
-                hints: 3,
-                fiftyFifty: 1,
-                skip: 2
-            };
-            updateLifelineCounts();
-            showQuestion();
-            updateProgress();
-        }
-
-        // Show question
-        function showQuestion() {
-            const question = questions[currentLevel][currentQuestion];
-            document.querySelector('.question-text').textContent = question.question;
-            
-            const optionsContainer = document.querySelector('.options-container');
-            optionsContainer.innerHTML = '';
-            
-            // Shuffle options
-            const shuffledOptions = [...question.options];
-            for (let i = shuffledOptions.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [shuffledOptions[i], shuffledOptions[j]] = [shuffledOptions[j], shuffledOptions[i]];
-            }
-            
-            shuffledOptions.forEach((option, index) => {
-                const button = document.createElement('button');
-                button.className = 'option-btn';
-                button.textContent = option;
-                button.addEventListener('click', () => checkAnswer(shuffledOptions.indexOf(question.options[question.correct]) === index));
-                optionsContainer.appendChild(button);
-            });
-
-            document.querySelector('.question-number').textContent = `Question ${currentQuestion + 1}/${questions[currentLevel].length}`;
-            startTimer();
-        }
-
-        // Timer functionality
-        function startTimer() {
-            let timeLeft = 30;
-            clearInterval(timer);
-            
-            timer = setInterval(() => {
-                timeLeft--;
-                document.querySelector('.timer').textContent = `⏱️ ${timeLeft.toString().padStart(2, '0')}`;
-                
-                if (timeLeft <= 0) {
-                    clearInterval(timer);
-                    checkAnswer(false);
-                }
-            }, 1000);
-        }
-
-        // Check answer
-        function checkAnswer(isCorrect) {
-            clearInterval(timer);
-            const question = questions[currentLevel][currentQuestion];
-            
-            if (isCorrect) {
-                playSound('correct');
-                setTimeout(() => playSound('ding'), 300);
-                score++;
-                streak++;
-                showFeedback(`Correct! 🎉 ${streak > 1 ? `Streak: ${streak}🔥` : ''}`, 'success');
-                
-                setTimeout(() => {
-                    showFeedback(question.explanation, 'success');
-                }, 1500);
-            } else {
-                playSound('wrong');
-                setTimeout(() => playSound('aww'), 300);
-                streak = 0;
-                mistakes.push({
-                    question: question.question,
-                    type: question.type,
-                    explanation: question.explanation
-                });
-                showFeedback(`Incorrect. ${question.explanation} 💪`, 'error');
-            }
-
-            // Hide hint panel if it's showing
-            document.getElementById('hintPanel').style.display = 'none';
-
-            setTimeout(() => {
-                currentQuestion++;
-                if (currentQuestion < questions[currentLevel].length) {
-                    showQuestion();
-                } else {
-                    endGame();
-                }
-                updateProgress();
-            }, 3000);
-        }
-
-        // Update progress bar
-        function updateProgress() {
-            const progress = (currentQuestion / questions[currentLevel].length) * 100;
-            document.querySelector('.progress-bar').style.width = `${progress}%`;
-        }
-
-        // Show feedback
-        function showFeedback(message, type) {
-            const feedback = document.querySelector('.feedback-panel');
-            feedback.textContent = message;
-            feedback.style.display = 'block';
-            feedback.style.backgroundColor = type === 'success' ? 'rgba(0, 255, 155, 0.2)' : 'rgba(255, 68, 68, 0.2)';
-            
-            setTimeout(() => {
-                feedback.style.display = 'none';
-            }, 2500);
-        }
-
-        // End game
-        function endGame() {
-            if (soundEnabled) sounds.levelComplete.play();
-            const percentage = (score / questions[currentLevel].length) * 100;
-            
-            let resultMessage = `Level Complete! 🏆\n`;
-            resultMessage += `Score: ${percentage}%\n`;
-            resultMessage += `Longest Streak: ${streak}🔥\n`;
-            resultMessage += `Lifelines Remaining: ${lifelines.hints + lifelines.fiftyFifty + lifelines.skip}\n`;
-            
-            if (mistakes.length > 0) {
-                resultMessage += `\nAreas to Review:\n`;
-                const typeCount = {};
-                mistakes.forEach(mistake => {
-                    typeCount[mistake.type] = (typeCount[mistake.type] || 0) + 1;
-                });
-                Object.entries(typeCount).forEach(([type, count]) => {
-                    resultMessage += `${type}: ${count} mistakes\n`;
-                });
-            }
-            
-            showFeedback(resultMessage, percentage >= 70 ? 'success' : 'error');
-            
-            setTimeout(() => {
-                document.querySelectorAll('.level-btn').forEach(btn => btn.classList.remove('active'));
-                document.querySelector('.question-text').textContent = 'Select a level to start';
-                document.querySelector('.options-container').innerHTML = '';
-                document.getElementById('hintPanel').style.display = 'none';
-            }, 5000);
-        }
-
-        // Close sound warning
-        function closeSoundWarning() {
-            const warning = document.getElementById('soundWarning');
-            warning.style.animation = 'fadeOut 0.3s ease';
-            setTimeout(() => {
-                warning.style.display = 'none';
-            }, 300);
-        }
-
-        // Add fadeOut animation
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes fadeOut {
-                from { opacity: 1; }
-                to { opacity: 0; }
-            }
-        `;
-        document.head.appendChild(style);
-
-        // Initialize game
-        createShiningDots();
-    </script>
+    // Initialize the game
+    document.addEventListener('DOMContentLoaded', function() {
+      createDots();
+      
+      // Set up event listeners
+      document.getElementById('nextBtn').addEventListener('click', nextQuestion);
+      document.getElementById('prevBtn').addEventListener('click', prevQuestion);
+      document.getElementById('restartBtn').addEventListener('click', restartQuiz);
+      
+      document.querySelectorAll('.level-btn').forEach(btn => {
+        btn.addEventListener('click', changeLevel);
+      });
+      
+      // Start with first question
+      displayQuestion();
+    });
+  </script>
 </body>
 </html> 
