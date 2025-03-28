@@ -109,6 +109,9 @@
             height: 100%;
             z-index: -1;
             pointer-events: none;
+            contain: strict;
+            will-change: transform;
+            transform: translateZ(0);
         }
 
         .dot {
@@ -119,12 +122,14 @@
             border-radius: 50%;
             box-shadow: 0 0 8px 2px rgba(0, 255, 155, 0.6);
             animation: shine 4s infinite alternate;
+            contain: layout style paint;
+            will-change: transform, opacity;
         }
 
         @keyframes shine {
-            0% { opacity: 0.2; transform: scale(0.8); box-shadow: 0 0 5px 1px rgba(0, 255, 155, 0.4); }
-            50% { opacity: 0.7; transform: scale(1.2); box-shadow: 0 0 10px 3px rgba(0, 255, 155, 0.8); }
-            100% { opacity: 0.2; transform: scale(0.8); box-shadow: 0 0 5px 1px rgba(0, 255, 155, 0.4); }
+            0% { opacity: 0.2; transform: translateZ(0) scale(0.8); box-shadow: 0 0 5px 1px rgba(0, 255, 155, 0.4); }
+            50% { opacity: 0.7; transform: translateZ(0) scale(1.2); box-shadow: 0 0 10px 3px rgba(0, 255, 155, 0.8); }
+            100% { opacity: 0.2; transform: translateZ(0) scale(0.8); box-shadow: 0 0 5px 1px rgba(0, 255, 155, 0.4); }
         }
 
         .top-bar {
@@ -269,6 +274,7 @@
             padding: 4rem 1.5rem 2.5rem;
             position: relative;
             z-index: 1;
+            text-align: center;
         }
 
         .header h1 {
@@ -281,6 +287,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-shadow: 0 2px 10px rgba(0, 255, 155, 0.3);
+            text-align: center;
         }
 
         .header p {
@@ -2058,7 +2065,10 @@
         // Create background dots
         document.addEventListener('DOMContentLoaded', function() {
             const backgroundDots = document.getElementById('background-dots');
-            const numDots = 120;
+            const numDots = 60; // Reduced from 120 to 60 for better performance
+            
+            // Create dots in batches for better performance
+            const fragment = document.createDocumentFragment();
             
             for (let i = 0; i < numDots; i++) {
                 const dot = document.createElement('div');
@@ -2070,141 +2080,153 @@
                 dot.style.left = x + '%';
                 dot.style.top = y + '%';
                 
-                // Random size for more depth
-                const size = Math.random() * 3 + 1;
-                dot.style.width = `${size}px`;
-                dot.style.height = `${size}px`;
+                // Random size for more depth (using transform scale instead of width/height)
+                const size = Math.random() * 1.5 + 0.5;
+                dot.style.transform = `scale(${size})`;
                 
                 // Random animation delay and duration
                 dot.style.animationDelay = Math.random() * 4 + 's';
                 dot.style.animationDuration = (Math.random() * 4 + 3) + 's';
                 
-                backgroundDots.appendChild(dot);
+                fragment.appendChild(dot);
             }
             
-            // Initialize FAQ functionality
-            const faqItems = document.querySelectorAll('.faq-item');
+            backgroundDots.appendChild(fragment);
             
+            // Optimize scroll animations using Intersection Observer
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                        observer.unobserve(entry.target); // Stop observing once animated
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '50px'
+            });
+            
+            // Observe elements for animation
+            document.querySelectorAll('.stat-card, .step-card, .benefit-card, .tier-card, .partner-card, .testimonial, .faq-item').forEach(element => {
+                observer.observe(element);
+            });
+            
+            // Optimize parallax effect with requestAnimationFrame
+            let ticking = false;
+            window.addEventListener('mousemove', function(e) {
+                if (!ticking) {
+                    window.requestAnimationFrame(function() {
+                        const moveX = (e.clientX / window.innerWidth) * 15;
+                        const moveY = (e.clientY / window.innerHeight) * 15;
+                        backgroundDots.style.transform = `translate3d(${moveX}px, ${moveY}px, 0)`;
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Previous background dots and animation code remains...
+            
+            // Initialize FAQ functionality with optimized performance
+            const faqItems = document.querySelectorAll('.faq-item');
+            const faqStyle = document.createElement('style');
+            faqStyle.textContent = `
+                .faq-question {
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    contain: content;
+                }
+                
+                .faq-question:hover {
+                    background: linear-gradient(90deg, rgba(0, 179, 113, 0.3), rgba(0, 255, 155, 0.2));
+                }
+                
+                .faq-question.active {
+                    background: linear-gradient(90deg, rgba(0, 179, 113, 0.4), rgba(0, 255, 155, 0.3));
+                }
+                
+                .faq-question::after {
+                    content: '+';
+                    position: absolute;
+                    right: 1.8rem;
+                    font-size: 1.5rem;
+                    transition: transform 0.3s ease;
+                    color: var(--accent-color);
+                }
+                
+                .faq-question.active::after {
+                    transform: rotate(45deg);
+                }
+                
+                .faq-answer {
+                    max-height: 0;
+                    overflow: hidden;
+                    transition: max-height 0.5s ease;
+                    contain: content;
+                }
+                
+                .stat-card, .step-card, .benefit-card, .tier-card, .partner-card, .testimonial, .faq-item {
+                    opacity: 0;
+                    transform: translateY(30px);
+                    transition: opacity 0.8s ease, transform 0.8s ease;
+                    contain: content;
+                }
+                
+                .animate {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            `;
+            document.head.appendChild(faqStyle);
+            
+            // Optimize FAQ click handlers
             faqItems.forEach(item => {
                 const question = item.querySelector('.faq-question');
                 const answer = item.querySelector('.faq-answer');
                 
-                // Add click event to questions
                 question.addEventListener('click', () => {
-                    // Check if this answer is currently open
-                    const isOpen = answer.style.maxHeight;
-                    
-                    // Close all answers
-                    faqItems.forEach(faq => {
-                        faq.querySelector('.faq-answer').style.maxHeight = null;
-                        faq.querySelector('.faq-question').classList.remove('active');
+                    requestAnimationFrame(() => {
+                        const isOpen = answer.style.maxHeight;
+                        
+                        // Close all answers
+                        faqItems.forEach(faq => {
+                            const faqAnswer = faq.querySelector('.faq-answer');
+                            const faqQuestion = faq.querySelector('.faq-question');
+                            faqAnswer.style.maxHeight = null;
+                            faqQuestion.classList.remove('active');
+                        });
+                        
+                        // If the clicked answer wasn't open, open it
+                        if (!isOpen) {
+                            answer.style.maxHeight = answer.scrollHeight + 'px';
+                            question.classList.add('active');
+                        }
                     });
-                    
-                    // If the clicked answer wasn't open, open it
-                    if (!isOpen) {
-                        answer.style.maxHeight = answer.scrollHeight + 'px';
-                        question.classList.add('active');
-                    }
                 });
                 
-                // Style for dynamic content
                 answer.style.maxHeight = null;
             });
             
-            // Add styling for FAQ questions
-            document.head.insertAdjacentHTML('beforeend', `
-                <style>
-                    .faq-question {
-                        cursor: pointer;
-                        transition: all 0.3s ease;
-                    }
-                    
-                    .faq-question:hover {
-                        background: linear-gradient(90deg, rgba(0, 179, 113, 0.3), rgba(0, 255, 155, 0.2));
-                    }
-                    
-                    .faq-question.active {
-                        background: linear-gradient(90deg, rgba(0, 179, 113, 0.4), rgba(0, 255, 155, 0.3));
-                    }
-                    
-                    .faq-question::after {
-                        content: '+';
-                        position: absolute;
-                        right: 1.8rem;
-                        font-size: 1.5rem;
-                        transition: transform 0.3s ease;
-                        color: var(--accent-color);
-                    }
-                    
-                    .faq-question.active::after {
-                        transform: rotate(45deg);
-                    }
-                    
-                    .faq-answer {
-                        max-height: 0;
-                        overflow: hidden;
-                        transition: max-height 0.5s ease;
-                    }
-                </style>
-            `);
-            
-            // Smooth scrolling for nav links
+            // Optimize smooth scrolling
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
                     e.preventDefault();
-                    
                     const targetId = this.getAttribute('href');
                     const targetElement = document.querySelector(targetId);
                     
                     if (targetElement) {
-                        targetElement.scrollIntoView({
-                            behavior: 'smooth'
+                        requestAnimationFrame(() => {
+                            const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
+                            window.scrollTo({
+                                top: targetPosition,
+                                behavior: 'smooth'
+                            });
                         });
                     }
                 });
             });
-            
-            // Add subtle parallax effect for background dots
-            window.addEventListener('mousemove', function(e) {
-                const moveX = (e.clientX / window.innerWidth) * 15;
-                const moveY = (e.clientY / window.innerHeight) * 15;
-                
-                backgroundDots.style.transform = `translate(${moveX}px, ${moveY}px)`;
-            });
-            
-            // Animate elements when they come into view
-            const animateOnScroll = function() {
-                const elements = document.querySelectorAll('.stat-card, .step-card, .benefit-card, .tier-card, .partner-card, .testimonial, .faq-item');
-                
-                elements.forEach(element => {
-                    const elementPosition = element.getBoundingClientRect().top;
-                    const screenPosition = window.innerHeight / 1.2;
-                    
-                    if (elementPosition < screenPosition) {
-                        element.classList.add('animate');
-                    }
-                });
-            };
-            
-            // Add the animation class to elements
-            document.head.insertAdjacentHTML('beforeend', `
-                <style>
-                    .stat-card, .step-card, .benefit-card, .tier-card, .partner-card, .testimonial, .faq-item {
-                        opacity: 0;
-                        transform: translateY(30px);
-                        transition: opacity 0.8s ease, transform 0.8s ease;
-                    }
-                    
-                    .animate {
-                        opacity: 1;
-                        transform: translateY(0);
-                    }
-                </style>
-            `);
-            
-            // Run animation function on load and scroll
-            window.addEventListener('scroll', animateOnScroll);
-            animateOnScroll(); // Run on initial load
         });
     </script>
 </body>
