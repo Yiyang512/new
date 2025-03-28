@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn French Online | Simple French with Hems</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3f51b5;
+            --secondary-color: #ff4081;
+            --accent-color: #00FF9B;
+            --light-color: #F5F9FC;
+            --dark-color: #001102;
+            --gradient-start: #001102;
+            --gradient-end: #002204;
+            --card-bg: rgba(0, 17, 2, 0.85);
+            --card-border: rgba(0, 255, 155, 0.15);
+            --card-hover: rgba(0, 255, 155, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            color: var(--light-color);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .top-banner {
+            background: rgba(0, 17, 2, 0.95);
+            padding: 1.2rem;
+            text-align: center;
+            border-bottom: 1px solid var(--card-border);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .top-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 155, 0.1), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .top-banner h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            background: linear-gradient(90deg, #ffffff, var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+            padding: 0;
+            position: relative;
+            letter-spacing: -0.5px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .section {
+            margin: 0;
+            padding: 1.5rem;
+            background: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            flex: 1;
+            text-align: center;
+            max-width: 300px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            border-color: var(--card-hover);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .section:hover::before {
+            opacity: 1;
+        }
+
+        .section h2 {
+            font-size: 1.4rem;
+            margin-bottom: 0.8rem;
+            color: var(--accent-color);
+            border-bottom: 2px solid var(--card-border);
+            padding-bottom: 0.5rem;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .section p {
+            font-size: 1rem;
+            line-height: 1.5;
+            margin-bottom: 0;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 400;
+        }
+
+        @media (max-width: 768px) {
+            .top-banner {
+                padding: 1rem;
+            }
+
+            .top-banner h1 {
+                font-size: 1.4rem;
+            }
+
+            .container {
+                flex-direction: column;
+                padding: 1rem;
+                gap: 1rem;
+            }
+
+            .section {
+                width: 100%;
+                max-width: none;
+                margin-bottom: 0;
+                padding: 1.2rem;
+            }
+
+            .section h2 {
+                font-size: 1.2rem;
+                margin-bottom: 0.6rem;
+            }
+
+            .section p {
+                font-size: 0.9rem;
+            }
+
+            .section:hover {
+                transform: translateY(-3px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-banner">
+        <h1>Learn French Online – Courses from Beginner to Advanced</h1>
+    </div>
+
+    <div class="container">
+        <div class="section">
+            <h2>AI & VR Platform</h2>
+            <p>Practice with AI tutors and get instant feedback on pronunciation.</p>
+        </div>
+
+        <div class="section">
+            <h2>Levels A0-B2</h2>
+            <p>From basic phrases to fluent conversations.</p>
+        </div>
+
+        <div class="section">
+            <h2>TEF/DELF Prep</h2>
+            <p>VR exam simulations with 95%+ pass rate.</p>
+        </div>
+    </div>
+</body>
+</html> 
