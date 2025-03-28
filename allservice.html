@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>French Learning Resources | Interactive Flip Cards</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-green: #00FF9B;
+            --dark-bg: transparent;
+            --card-bg: rgba(10, 25, 15, 0.8);
+            --card-back: rgba(10, 25, 15, 0.8);
+            --highlight: rgba(0, 255, 155, 0.2);
+            --button-bg: #00FF9B;
+            --grid-color: rgba(0, 255, 155, 0.2);
+            --text-light: #ffffff;
+        }
+        
+        body {
+            background-color: transparent;
+            color: var(--text-light);
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-image: radial-gradient(circle, var(--grid-color) 1px, transparent 1px);
+            background-size: 20px 20px;
+            animation: pulse 4s infinite ease-in-out;
+        }
+        
+        @keyframes pulse {
+            0% { background-color: transparent; }
+            50% { background-color: rgba(0, 255, 155, 0.05); }
+            100% { background-color: transparent; }
+        }
+        
+        .header {
+            text-align: center;
+            padding: 2rem 0;
+        }
+        
+        .header h1 {
+            color: var(--neon-green);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(0, 255, 155, 0.7);
+            font-weight: 700;
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            color: var(--text-light);
+            font-weight: 300;
+        }
+        
+        .hover-instruction {
+            font-size: 1rem;
+            margin-top: 1rem;
+            animation: fadeInOut 3s infinite ease-in-out;
+            color: var(--text-light);
+        }
+        
+        @keyframes fadeInOut {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+        
+        .flip-cards-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .flip-card {
+            background-color: transparent;
+            width: 350px;
+            height: 450px;
+            perspective: 1000px;
+            margin-bottom: 2rem;
+        }
+        
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+            box-shadow: 0 0 25px rgba(0, 255, 155, 0.3);
+            border-radius: 10px;
+            border: 1px solid rgba(0, 255, 155, 0.3);
+        }
+        
+        .flip-card:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .flip-card-front {
+            background-color: var(--card-bg);
+            color: var(--neon-green);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+        }
+        
+        .flip-card-front .title-container {
+            background-color: rgba(10, 25, 15, 0.9);
+            width: 100%;
+            padding: 1rem 0;
+            margin-top: auto;
+            border-top: 1px solid rgba(0, 255, 155, 0.3);
+        }
+        
+        .flip-card-front h2 {
+            margin: 0;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(0, 255, 155, 0.7);
+            font-weight: 600;
+        }
+        
+        .flip-card-back {
+            background-color: var(--card-back);
+            color: var(--text-light);
+            transform: rotateY(180deg);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+            text-align: left;
+            background-image: linear-gradient(to bottom, rgba(10, 25, 15, 0.95), rgba(10, 25, 15, 0.95));
+        }
+        
+        .flip-card-back ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin: 0;
+            width: 100%;
+        }
+        
+        .flip-card-back li {
+            margin-bottom: 0.8rem;
+            padding-left: 1.5rem;
+            position: relative;
+            font-weight: 300;
+        }
+        
+        .flip-card-back li:before {
+            content: "◉";
+            color: var(--neon-green);
+            font-size: 1rem;
+            position: absolute;
+            left: 0;
+            top: 0.2rem;
+        }
+        
+        .flip-card-back h3 {
+            color: var(--neon-green);
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--neon-green);
+            padding-bottom: 0.5rem;
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0 0 5px rgba(0, 255, 155, 0.7);
+            font-weight: 600;
+        }
+        
+        .highlight {
+            color: var(--neon-green);
+            font-weight: 500;
+        }
+        
+        .cta-button {
+            background-color: var(--button-bg);
+            color: rgba(10, 25, 15, 1);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            margin-top: 1.5rem;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .cta-button:hover {
+            background-color: #00e68a;
+            box-shadow: 0 0 15px rgba(0, 255, 155, 0.6);
+            transform: translateY(-3px);
+        }
+
+        #online-courses {
+            background-image: url('https://yiyang512.github.io/new/1111.jpg');
+            background-size: cover;
+            background-position: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        #animated-stories {
+            background-image: url('https://yiyang512.github.io/new/2222.jpg');
+            background-size: cover;
+            background-position: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        #vr-game {
+            background-image: url('https://yiyang512.github.io/new/3333.jpg');
+            background-size: cover;
+            background-position: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .flip-cards-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .flip-card {
+                width: 300px;
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>French Learning Resources</h1>
+        <p>Discover our interactive learning tools to master French language skills</p>
+        <p class="hover-instruction"><span class="highlight">Hover your mouse</span> over any card to reveal more details</p>
+    </div>
+
+    <div class="flip-cards-container">
+        <!-- Online French Courses Card -->
+        <div class="flip-card">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">
+                    <div id="online-courses"></div>
+                    <div class="title-container">
+                        <h2>Online French Courses</h2>
+                    </div>
+                </div>
+                <div class="flip-card-back">
+                    <h3>Comprehensive Courses</h3>
+                    <ul>
+                        <li>A1, A2, B1, B2, <span class="highlight">TEF/DELF Prep</span></li>
+                        <li><span class="highlight">420+</span> grammar lessons</li>
+                        <li><span class="highlight">5,220+</span> MOCK quizzes</li>
+                        <li><span class="highlight">DELF & TEF</span> exam-focused training</li>
+                        <li><span class="highlight">90%+</span> quiz score required to progress</li>
+                    </ul>
+                    <a href="https://simplefrenchwithhems.com/b/3h6ux" class="cta-button" target="_blank">Test Your French Level</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- French Animated Stories Card -->
+        <div class="flip-card">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">
+                    <div id="animated-stories"></div>
+                    <div class="title-container">
+                        <h2>French Animated Stories</h2>
+                    </div>
+                </div>
+                <div class="flip-card-back">
+                    <h3>Story Series Topics</h3>
+                    <ul>
+                        <li><span class="highlight">Travel</span> – Greetings, shopping, directions</li>
+                        <li><span class="highlight">Work</span> – Office talk, interviews</li>
+                        <li><span class="highlight">Culture</span> – Traditions, family, social</li>
+                        <li><span class="highlight">Emergencies</span> – Help, problem-solving</li>
+                        <li>Daily life scenarios with native speakers</li>
+                        <li>Progressive difficulty levels</li>
+                    </ul>
+                    <a href="https://simplefrenchwithhems.com/b/animations" class="cta-button" target="_blank">Learn More</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- VR Game Card -->
+        <div class="flip-card">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">
+                    <div id="vr-game"></div>
+                    <div class="title-container">
+                        <h2>VR Game - School Pulse™</h2>
+                    </div>
+                </div>
+                <div class="flip-card-back">
+                    <h3>Innovative VR Learning</h3>
+                    <ul>
+                        <li>Canada's <span class="highlight">First AI VR</span> French Game</li>
+                        <li><span class="highlight">3-Level Escape Room</span> – Task-based learning</li>
+                        <li><span class="highlight">AI Chat & Pronunciation</span> Tests</li>
+                        <li><span class="highlight">Real-Time Speech</span> Feedback</li>
+                        <li>Licensed for Schools</li>
+                        <li>Enterprise-Grade Virtual Reality Platform</li>
+                    </ul>
+                    <a href="https://simplefrenchwithhems.com/vr-game" class="cta-button" target="_blank">Explore More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 
