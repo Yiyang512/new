@@ -29,6 +29,11 @@
             font-family: 'Poppins', sans-serif;
         }
 
+        html {
+            scroll-padding-top: 100px; /* Add scroll padding to account for fixed header */
+            scroll-behavior: smooth;
+        }
+
         body {
             background-color: var(--dark-color);
             color: var(--light-color);
@@ -2218,9 +2223,12 @@
                     
                     if (targetElement) {
                         requestAnimationFrame(() => {
-                            const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
+                            const headerOffset = 100; // Account for fixed header
+                            const elementPosition = targetElement.getBoundingClientRect().top;
+                            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                            
                             window.scrollTo({
-                                top: targetPosition,
+                                top: offsetPosition,
                                 behavior: 'smooth'
                             });
                         });
