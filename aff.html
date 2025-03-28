@@ -40,6 +40,7 @@
             position: relative;
             font-size: 16px;
             background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            z-index: 0;
         }
 
         /* Responsive font sizing for different screen sizes */
@@ -107,7 +108,7 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            overflow: hidden;
+            pointer-events: none;
         }
 
         .dot {
@@ -129,7 +130,7 @@
         .top-bar {
             background: rgba(0, 17, 2, 0.95);
             padding: 1rem 2rem;
-            text-align: left;
+            text-align: center;
             border-bottom: 1px solid rgba(0, 255, 155, 0.1);
             position: fixed;
             top: 0;
@@ -137,6 +138,7 @@
             right: 0;
             z-index: 1000;
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -174,6 +176,7 @@
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
             border-radius: 50px;
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             margin: 2rem auto;
             max-width: 800px;
             position: sticky;
@@ -264,6 +267,8 @@
         .header {
             margin-top: 3rem;
             padding: 4rem 1.5rem 2.5rem;
+            position: relative;
+            z-index: 1;
         }
 
         .header h1 {
@@ -298,15 +303,16 @@
             border-radius: 12px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(0, 255, 155, 0.15);
-            overflow: hidden;
+            position: relative;
+            z-index: 1;
         }
 
         section {
             width: 100%;
             padding: 1rem;
             margin-bottom: 3rem;
-            overflow: visible;
             position: relative;
+            z-index: 2;
         }
 
         /* Fix for step cards getting cut off */
@@ -574,11 +580,17 @@
             border: 1px solid rgba(0, 255, 155, 0.15);
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            position: relative;
+            z-index: 1;
+            transform: translateZ(0);
+            will-change: transform;
         }
         
         .stat-card:hover, .step-card:hover, .benefit-card:hover, .partner-card:hover, .tier-card:hover {
-            transform: translateY(-8px);
+            transform: translateY(-8px) translateZ(0);
+            z-index: 2;
             box-shadow: 0 20px 40px rgba(0, 255, 155, 0.15);
             border-color: rgba(0, 255, 155, 0.3);
             background: linear-gradient(145deg, rgba(0, 17, 2, 0.8), rgba(0, 34, 4, 0.9));
@@ -641,6 +653,8 @@
             gap: 2rem;
             margin-bottom: 2.5rem;
             position: relative;
+            z-index: 2;
+            transform: translateZ(0);
         }
         
         .step-card {
@@ -708,6 +722,9 @@
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 2rem;
             margin-bottom: 2.5rem;
+            position: relative;
+            z-index: 2;
+            transform: translateZ(0);
         }
         
         .benefit-card {
@@ -722,7 +739,8 @@
         }
         
         .benefit-card:hover {
-            transform: translateY(-8px);
+            transform: translateY(-8px) translateZ(0);
+            z-index: 2;
             box-shadow: 0 15px 35px rgba(0, 255, 155, 0.2);
             border-color: rgba(0, 255, 155, 0.4);
         }
@@ -904,6 +922,9 @@
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 2rem;
             margin-bottom: 2.5rem;
+            position: relative;
+            z-index: 2;
+            transform: translateZ(0);
         }
 
         /* Tech Partners Section */
@@ -916,10 +937,15 @@
             background: linear-gradient(145deg, rgba(0, 17, 2, 0.8), rgba(0, 34, 4, 0.95));
             border: 1px solid rgba(0, 255, 155, 0.2);
             transition: all 0.4s ease;
+            transform: translateZ(0);
+            will-change: transform;
+            position: relative;
+            z-index: 1;
         }
 
         #tech-partners .partner-card:hover {
-            transform: translateY(-8px);
+            transform: translateY(-8px) translateZ(0);
+            z-index: 2;
             border-color: rgba(0, 255, 155, 0.4);
             box-shadow: 0 20px 40px rgba(0, 255, 155, 0.15);
         }
@@ -962,6 +988,9 @@
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 2rem;
             margin-bottom: 2.5rem;
+            position: relative;
+            z-index: 2;
+            transform: translateZ(0);
         }
         
         .testimonial {
@@ -973,7 +1002,8 @@
         }
         
         .testimonial:hover {
-            transform: translateY(-8px);
+            transform: translateY(-8px) translateZ(0);
+            z-index: 2;
             box-shadow: 0 20px 40px rgba(0, 255, 155, 0.15);
             border-color: rgba(0, 255, 155, 0.3);
         }
@@ -1140,7 +1170,8 @@
         }
         
         .faq-item:hover {
-            transform: translateY(-8px);
+            transform: translateY(-8px) translateZ(0);
+            z-index: 2;
             box-shadow: 0 20px 40px rgba(0, 255, 155, 0.15);
             border-color: rgba(0, 255, 155, 0.3);
         }
