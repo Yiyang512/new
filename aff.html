@@ -1,0 +1,2135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Affiliate Program | Simple French with Hems</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3f51b5;
+            --secondary-color: #ff4081;
+            --accent-color: #00FF9B;
+            --light-color: #F5F9FC;
+            --dark-color: #001102;
+            --success-color: #00c853;
+            --error-color: #f44336;
+            --neutral-color: #9e9e9e;
+            --hems-color: #26a69a;
+            --gradient-start: #001102;
+            --gradient-end: #002204;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--dark-color);
+            color: var(--light-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+            font-size: 16px;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+        }
+
+        /* Responsive font sizing for different screen sizes */
+        @media (min-width: 1024px) {
+            body {
+                font-size: 20px;
+            }
+            
+            h1 { font-size: 4rem !important; font-weight: 700 !important; }
+            h2 { font-size: 3rem !important; font-weight: 700 !important; }
+            h3 { font-size: 2.2rem !important; font-weight: 600 !important; }
+            
+            p, li {
+                font-size: 1.3rem !important;
+                line-height: 1.8 !important;
+            }
+            
+            .container {
+                max-width: 1400px;
+                padding: 3rem;
+            }
+
+            .stat-number {
+                font-size: 3.5rem !important;
+            }
+
+            .tier-rate {
+                font-size: 3rem !important;
+            }
+
+            .benefit-icon, .partner-icon {
+                font-size: 3rem !important;
+            }
+
+            .nav-button {
+                font-size: 1.2rem !important;
+                padding: 1rem 2rem !important;
+            }
+
+            .faq-question {
+                font-size: 1.4rem !important;
+                padding: 1.5rem 2rem !important;
+            }
+
+            .faq-answer {
+                font-size: 1.2rem !important;
+                line-height: 1.8 !important;
+            }
+
+            .contact-value {
+                font-size: 1.4rem !important;
+            }
+
+            .cta-button {
+                font-size: 1.3rem !important;
+                padding: 1.2rem 3rem !important;
+            }
+        }
+
+        /* Background shining dots */
+        .background-dots {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .dot {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+            box-shadow: 0 0 8px 2px rgba(0, 255, 155, 0.6);
+            animation: shine 4s infinite alternate;
+        }
+
+        @keyframes shine {
+            0% { opacity: 0.2; transform: scale(0.8); box-shadow: 0 0 5px 1px rgba(0, 255, 155, 0.4); }
+            50% { opacity: 0.7; transform: scale(1.2); box-shadow: 0 0 10px 3px rgba(0, 255, 155, 0.8); }
+            100% { opacity: 0.2; transform: scale(0.8); box-shadow: 0 0 5px 1px rgba(0, 255, 155, 0.4); }
+        }
+
+        .top-bar {
+            background: rgba(0, 17, 2, 0.95);
+            padding: 1rem 2rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(0, 255, 155, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .main-site-link {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            border: 1px solid rgba(0, 255, 155, 0.2);
+            background: rgba(0, 255, 155, 0.05);
+            letter-spacing: 0.5px;
+        }
+
+        .main-site-link:hover {
+            background: rgba(0, 255, 155, 0.1);
+            border-color: rgba(0, 255, 155, 0.4);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(0, 255, 155, 0.2);
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(0, 17, 2, 0.8);
+            border: 1px solid rgba(0, 255, 155, 0.15);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            margin: 2rem auto;
+            max-width: 800px;
+            position: sticky;
+            top: 80px;
+            z-index: 100;
+        }
+
+        .nav-button {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            padding: 0.8rem 1.5rem;
+            position: relative;
+            transition: all 0.3s ease;
+            border-radius: 25px;
+            background: transparent;
+        }
+
+        .nav-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 255, 155, 0.1);
+            border-radius: 25px;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .nav-button:hover::before {
+            opacity: 1;
+        }
+
+        .nav-button::after {
+            content: '';
+            position: absolute;
+            bottom: 0.4rem;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--accent-color);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-button:hover::after {
+            width: 60%;
+        }
+
+        @media (max-width: 768px) {
+            .nav-buttons {
+                padding: 0.8rem;
+                gap: 0.5rem;
+                margin: 1.5rem auto;
+                top: 60px;
+            }
+
+            .nav-button {
+                padding: 0.6rem 1rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .top-bar {
+                padding: 0.8rem 1rem;
+            }
+
+            .nav-buttons {
+                padding: 0.6rem;
+                gap: 0.3rem;
+                margin: 1rem auto;
+                flex-wrap: wrap;
+                justify-content: center;
+                border-radius: 15px;
+            }
+
+            .nav-button {
+                padding: 0.5rem 0.8rem;
+                font-size: 0.8rem;
+            }
+        }
+
+        .header {
+            margin-top: 3rem;
+            padding: 4rem 1.5rem 2.5rem;
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+            font-weight: 700;
+            background: linear-gradient(90deg, #ffffff, var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 10px rgba(0, 255, 155, 0.3);
+        }
+
+        .header p {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            color: #e6fff0;
+            line-height: 1.6;
+        }
+
+        /* Fix for sections getting cut off */
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            padding: 2.5rem;
+            margin: 2rem auto;
+            background: rgba(0, 17, 2, 0.85);
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(0, 255, 155, 0.15);
+            overflow: hidden;
+        }
+
+        section {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 3rem;
+            overflow: visible;
+            position: relative;
+        }
+
+        /* Fix for step cards getting cut off */
+        .step-card {
+            background: linear-gradient(145deg, rgba(0, 17, 2, 0.7), rgba(0, 34, 4, 0.9));
+            border-radius: 12px;
+            padding: 2.5rem 2rem 2rem;
+            position: relative;
+            border: 1px solid rgba(0, 255, 155, 0.2);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            overflow: visible;
+            margin: 1.5rem 0.5rem;
+        }
+
+        .step-number {
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #00b371, var(--accent-color));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            font-weight: 700;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            z-index: 2;
+        }
+
+        /* Fix for contact items getting cut off */
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+            padding: 1rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.2rem 2rem;
+            background: rgba(0, 255, 155, 0.05);
+            border-radius: 50px;
+            border: 1px solid rgba(0, 255, 155, 0.1);
+            transition: all 0.3s ease;
+            width: fit-content;
+            min-width: 200px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        /* Fix for FAQ items getting cut off */
+        .faq-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+            padding: 0.5rem;
+        }
+
+        .faq-item {
+            margin: 0.5rem;
+            overflow: hidden;
+        }
+
+        /* Fix for mobile responsiveness */
+        @media (max-width: 480px) {
+            .container {
+                padding: 1.5rem;
+                margin: 1rem auto;
+            }
+
+            section {
+                padding: 0.5rem;
+                margin-bottom: 2rem;
+            }
+
+            .step-card {
+                padding: 2rem 1.5rem 1.5rem;
+                margin: 1.5rem 0.3rem;
+            }
+
+            .step-number {
+                top: -12px;
+                left: -12px;
+                width: 35px;
+                height: 35px;
+                font-size: 1.1rem;
+            }
+
+            .contact-item {
+                padding: 1rem 1.5rem;
+                min-width: 150px;
+                gap: 0.8rem;
+            }
+
+            .faq-container {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+
+        /* Fix for extra small screens */
+        @media (max-width: 360px) {
+            .container {
+                padding: 1rem;
+            }
+
+            section {
+                padding: 0.3rem;
+            }
+
+            .step-card {
+                padding: 1.8rem 1.2rem 1.2rem;
+                margin: 1.2rem 0.2rem;
+            }
+
+            .contact-item {
+                padding: 0.8rem 1.2rem;
+                min-width: 120px;
+            }
+        }
+
+        /* Fix for stat cards getting cut off */
+        .stat-card {
+            padding: 1.5rem;
+            border-radius: 12px;
+            position: relative;
+            overflow: visible;
+        }
+
+        .stat-number {
+            font-size: 2.8rem;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        /* Fix for benefit cards getting cut off */
+        .benefit-card {
+            padding: 2rem;
+            margin: 0.5rem;
+            overflow: visible;
+        }
+
+        .benefit-icon {
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Fix for testimonial cards getting cut off */
+        .testimonial {
+            margin: 0.5rem;
+            overflow: hidden;
+        }
+
+        .testimonial-content {
+            padding: 2rem;
+            position: relative;
+            overflow: visible;
+        }
+
+        /* Fix for tier cards getting cut off */
+        .tier-card {
+            padding: 2rem;
+            margin: 0.5rem;
+            overflow: visible;
+        }
+
+        .tier-rate {
+            font-size: 2.3rem;
+            line-height: 1.2;
+            margin: 1rem 0;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            letter-spacing: 1px;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(0, 255, 155, 0.15);
+        }
+        
+        .section-title i {
+            background: linear-gradient(135deg, #00b371, var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-right: 1.2rem;
+        }
+
+        .section-intro {
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            text-align: center;
+            padding: 0 1rem;
+        }
+        
+        .section-intro h2 {
+            background: linear-gradient(135deg, #ffffff, var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1.2rem;
+            line-height: 1.3;
+        }
+        
+        .section-intro p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .cta-button {
+            background: linear-gradient(135deg, #00b371 0%, var(--accent-color) 100%);
+            border: none;
+            padding: 1rem 2.5rem;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: white;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta-button::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 80%);
+            transform: scale(0);
+            transition: transform 0.6s ease-out;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 255, 155, 0.4);
+            background: linear-gradient(135deg, var(--accent-color) 0%, #00b371 100%);
+        }
+        
+        .cta-button:hover::after {
+            transform: scale(1);
+        }
+        
+        /* Affiliate Stats Section */
+        .affiliate-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.8rem;
+            margin: 2.5rem 0;
+        }
+        
+        .stat-card, .step-card, .benefit-card, .partner-card, .tier-card {
+            background: linear-gradient(145deg, rgba(0, 17, 2, 0.75), rgba(0, 34, 4, 0.85));
+            border: 1px solid rgba(0, 255, 155, 0.15);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .stat-card:hover, .step-card:hover, .benefit-card:hover, .partner-card:hover, .tier-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 255, 155, 0.15);
+            border-color: rgba(0, 255, 155, 0.3);
+            background: linear-gradient(145deg, rgba(0, 17, 2, 0.8), rgba(0, 34, 4, 0.9));
+        }
+        
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 255, 155, 0.1) 0%, rgba(0, 255, 155, 0) 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+        }
+        
+        .stat-card:hover::after {
+            opacity: 1;
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, #ffffff, var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.8rem;
+            line-height: 1;
+            position: relative;
+        }
+        
+        .stat-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            color: #ffffff;
+        }
+        
+        .stat-desc {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.5;
+        }
+        
+        .cta-container {
+            text-align: center;
+            margin: 2.5rem 0;
+            padding: 2rem;
+            background: rgba(0, 17, 2, 0.3);
+            border-radius: 12px;
+            border: 1px solid rgba(0, 255, 155, 0.1);
+        }
+
+        /* Steps Section */
+        .steps-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+            position: relative;
+        }
+        
+        .step-card {
+            background: linear-gradient(145deg, rgba(0, 17, 2, 0.7), rgba(0, 34, 4, 0.9));
+            border-radius: 12px;
+            padding: 2rem;
+            position: relative;
+            border: 1px solid rgba(0, 255, 155, 0.2);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .step-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            border-color: rgba(0, 255, 155, 0.4);
+        }
+        
+        .step-number {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #00b371, var(--accent-color));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            font-weight: 700;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            z-index: 1;
+        }
+        
+        .step-content h3 {
+            color: var(--accent-color);
+            margin-bottom: 1.2rem;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-left: 45px;
+        }
+        
+        .affiliate-process {
+            background: linear-gradient(145deg, rgba(0, 17, 2, 0.4), rgba(0, 34, 4, 0.6));
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 2.5rem;
+            border: 1px solid rgba(0, 255, 155, 0.1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .affiliate-process h3 {
+            color: var(--accent-color);
+            margin-bottom: 1.2rem;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        /* Benefits Section */
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+        }
+        
+        .benefit-card {
+            background: linear-gradient(145deg, rgba(0, 17, 2, 0.7), rgba(0, 34, 4, 0.9));
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(0, 255, 155, 0.2);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .benefit-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0, 255, 155, 0.2);
+            border-color: rgba(0, 255, 155, 0.4);
+        }
+        
+        .benefit-card::after {
+            content: '';
+            position: absolute;
+            bottom: -80px;
+            right: -80px;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(0, 255, 155, 0.15) 0%, rgba(0, 255, 155, 0) 70%);
+            border-radius: 50%;
+            transition: all 0.4s ease;
+        }
+        
+        .benefit-card:hover::after {
+            transform: scale(1.2);
+        }
+        
+        .benefit-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.2rem;
+            text-align: center;
+        }
+        
+        .benefit-card h3 {
+            color: var(--accent-color);
+            margin-bottom: 1.2rem;
+            text-align: center;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        /* Commission Table */
+        .commission-table-container {
+            overflow-x: auto;
+            margin-bottom: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(145deg, rgba(0, 17, 2, 0.7), rgba(0, 34, 4, 0.9));
+        }
+        
+        .commission-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .commission-table th,
+        .commission-table td {
+            padding: 1.2rem 1.5rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(0, 255, 155, 0.15);
+        }
+        
+        .commission-table th {
+            background: linear-gradient(90deg, rgba(0, 179, 113, 0.2), rgba(0, 255, 155, 0.1));
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .commission-table tr:nth-child(even) {
+            background-color: rgba(0, 255, 155, 0.05);
+        }
+        
+        .commission-table tr:hover {
+            background-color: rgba(0, 255, 155, 0.1);
+        }
+        
+        .commission-table td:last-child {
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+        
+        .tier-details, .payment-info {
+            margin-top: 2.5rem;
+        }
+        
+        .tier-details h3, .payment-info h3 {
+            color: var(--accent-color);
+            margin-bottom: 1.2rem;
+            font-weight: 700;
+            font-size: 1.5rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        
+        .tier-details h3::after, .payment-info h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-color), transparent);
+            border-radius: 3px;
+        }
+        
+        .tier-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .tier-card {
+            background: linear-gradient(145deg, rgba(0, 17, 2, 0.6), rgba(0, 34, 4, 0.8));
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            border: 1px solid rgba(0, 255, 155, 0.15);
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tier-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0, 255, 155, 0.15);
+            border-color: rgba(0, 255, 155, 0.3);
+        }
+        
+        .tier-level {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            color: white;
+        }
+        
+        .tier-rate {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, #ffffff, var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            line-height: 1;
+        }
+        
+        .tier-req {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .payment-details {
+            list-style-type: none;
+            background: linear-gradient(145deg, rgba(0, 17, 2, 0.4), rgba(0, 34, 4, 0.6));
+            border-radius: 12px;
+            padding: 2rem;
+            border: 1px solid rgba(0, 255, 155, 0.15);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .payment-details li {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+            position: relative;
+            line-height: 1.5;
+        }
+        
+        .payment-details li::before {
+            content: '✓';
+            color: var(--accent-color);
+            position: absolute;
+            left: 0;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        
+        .payment-details li:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Partners Section */
+        .partners-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+        }
+        
+        .partner-card {
+            background: linear-gradient(145deg, rgba(0, 17, 2, 0.7), rgba(0, 34, 4, 0.9));
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(0, 255, 155, 0.2);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .partner-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0, 255, 155, 0.2);
+            border-color: rgba(0, 255, 155, 0.4);
+        }
+        
+        .partner-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.2rem;
+            text-align: center;
+            background: linear-gradient(135deg, #00b371, var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .partner-card h3 {
+            color: var(--accent-color);
+            margin-bottom: 1.2rem;
+            text-align: center;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+        
+        .partner-card p {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+        }
+
+        /* Testimonials Section */
+        .testimonials-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+        }
+        
+        .testimonial {
+            background: linear-gradient(145deg, rgba(0, 17, 2, 0.75), rgba(0, 34, 4, 0.85));
+            border: 1px solid rgba(0, 255, 155, 0.15);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .testimonial:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 255, 155, 0.15);
+            border-color: rgba(0, 255, 155, 0.3);
+        }
+        
+        .testimonial-content {
+            padding: 2rem;
+            position: relative;
+        }
+        
+        .testimonial-content::before {
+            content: '"';
+            font-size: 6rem;
+            position: absolute;
+            top: -20px;
+            left: 10px;
+            opacity: 0.1;
+            color: var(--accent-color);
+            font-family: Georgia, serif;
+        }
+        
+        .testimonial-author {
+            background: linear-gradient(90deg, rgba(0, 179, 113, 0.2), rgba(0, 255, 155, 0.1));
+            padding: 1.5rem 2rem;
+            border-top: 1px solid rgba(0, 255, 155, 0.1);
+        }
+        
+        .author-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+            color: white;
+        }
+        
+        .author-title {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 0.8rem;
+        }
+        
+        .earnings {
+            font-size: 1rem;
+            color: var(--accent-color);
+            font-weight: 700;
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background: rgba(0, 255, 155, 0.1);
+            border-radius: 50px;
+            border: 1px solid rgba(0, 255, 155, 0.2);
+        }
+
+        /* Form Section */
+        .form-container {
+            background-color: rgba(0, 17, 2, 0.8);
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(0, 255, 155, 0.3);
+            margin-bottom: 2rem;
+        }
+        
+        .form-intro {
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .affiliate-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: 5px;
+            border: 1px solid rgba(0, 255, 155, 0.3);
+            background-color: rgba(0, 17, 2, 0.8);
+            color: white;
+            font-size: 1rem;
+        }
+        
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+        }
+        
+        .checkbox-group input {
+            width: auto;
+            margin-right: 0.5rem;
+        }
+        
+        .checkbox-group label {
+            margin-bottom: 0;
+        }
+        
+        .terms-link {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+        
+        .terms-link:hover {
+            text-decoration: underline;
+        }
+        
+        .form-submit {
+            grid-column: 1 / -1;
+            text-align: center;
+        }
+        
+        .after-apply {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(0, 255, 155, 0.2);
+            text-align: center;
+        }
+        
+        .after-apply h3 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+        
+        .next-steps {
+            list-style-position: inside;
+            margin: 0 auto;
+            max-width: 500px;
+            text-align: left;
+        }
+        
+        .next-steps li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* FAQ Section */
+        .faq-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+        }
+        
+        .faq-item {
+            background: linear-gradient(145deg, rgba(0, 17, 2, 0.75), rgba(0, 34, 4, 0.85));
+            border: 1px solid rgba(0, 255, 155, 0.15);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .faq-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 255, 155, 0.15);
+            border-color: rgba(0, 255, 155, 0.3);
+        }
+        
+        .faq-question {
+            padding: 1.2rem 1.8rem;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: white;
+            background: linear-gradient(90deg, rgba(0, 179, 113, 0.1), rgba(0, 255, 155, 0.05));
+            position: relative;
+            letter-spacing: 0.5px;
+            transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .faq-question:hover {
+            background: linear-gradient(90deg, rgba(0, 179, 113, 0.2), rgba(0, 255, 155, 0.1));
+        }
+        
+        .faq-question.active {
+            background: linear-gradient(90deg, rgba(0, 179, 113, 0.3), rgba(0, 255, 155, 0.2));
+        }
+        
+        .faq-answer {
+            padding: 1.8rem;
+            font-size: 1rem;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Contact Section */
+        .contact-container {
+            background: linear-gradient(145deg, rgba(0, 17, 2, 0.7), rgba(0, 34, 4, 0.9));
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(0, 255, 155, 0.2);
+            text-align: center;
+        }
+        
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1.2rem 2rem;
+            background: rgba(0, 255, 155, 0.05);
+            border-radius: 50px;
+            border: 1px solid rgba(0, 255, 155, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .contact-item:hover {
+            background: rgba(0, 255, 155, 0.1);
+            border-color: rgba(0, 255, 155, 0.3);
+            transform: translateY(-3px);
+        }
+        
+        .contact-label {
+            font-weight: 700;
+            color: white;
+        }
+        
+        .contact-value {
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+        
+        .contact-cta {
+            margin-top: 2rem;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .affiliate-stats,
+            .steps-container,
+            .benefits-grid,
+            .tier-grid,
+            .partners-grid,
+            .testimonials-container,
+            .affiliate-form,
+            .faq-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-info {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+            
+            .commission-table th,
+            .commission-table td {
+                padding: 1rem 0.8rem;
+                font-size: 0.9rem;
+            }
+            
+            .header {
+                margin-top: 2.5rem;
+                padding: 3rem 1rem 2rem;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .header p {
+                font-size: 1rem;
+            }
+            
+            .nav-buttons {
+                padding: 0.5rem;
+                gap: 0.8rem;
+            }
+            
+            .nav-button {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .container {
+                padding: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .top-bar {
+                padding: 0.5rem;
+            }
+
+            .main-site-link {
+                font-size: 0.8rem;
+                padding: 0.3rem 0.6rem;
+            }
+
+            .header {
+                margin-top: 2rem;
+                padding: 2.5rem 0.8rem 1.5rem;
+            }
+            
+            .stat-number {
+                font-size: 2rem;
+            }
+            
+            .tier-rate {
+                font-size: 1.8rem;
+            }
+            
+            .benefit-icon, .partner-icon {
+                font-size: 1.6rem;
+            }
+            
+            .step-number {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+                top: -15px;
+                left: -15px;
+            }
+            
+            /* Fix for step numbers getting cut off */
+            .step-card {
+                padding-top: 1.5rem;
+                padding-left: 1.5rem;
+                margin-top: 15px;
+                margin-left: 15px;
+            }
+            
+            .step-content h3 {
+                margin-left: 0;
+            }
+            
+            .contact-item {
+                padding: 0.8rem 1.5rem;
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .faq-question {
+                padding: 1rem 1.5rem;
+                font-size: 1rem;
+            }
+            
+            .faq-answer {
+                padding: 1.5rem;
+                font-size: 0.9rem;
+            }
+            
+            .nav-buttons {
+                padding: 0.4rem;
+                gap: 0.5rem;
+                margin: 0.8rem 0 1.2rem;
+            }
+            
+            .nav-button {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.8rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem !important;
+            }
+            
+            h3 {
+                font-size: 1.2rem !important;
+                margin-bottom: 0.8rem !important;
+            }
+            
+            p, li {
+                font-size: 0.9rem !important;
+                line-height: 1.4 !important;
+                margin-bottom: 0.5rem;
+            }
+            
+            .section-title {
+                margin-bottom: 1rem;
+                padding-bottom: 0.4rem;
+            }
+            
+            .section-title i {
+                font-size: 1.6rem;
+                margin-right: 0.6rem;
+            }
+            
+            .section-intro {
+                margin-bottom: 1.2rem;
+            }
+            
+            .affiliate-stats {
+                gap: 0.8rem;
+                margin: 1.2rem 0;
+            }
+            
+            .stat-card, .step-card, .benefit-card, .partner-card, .tier-card {
+                padding: 1rem;
+                border-radius: 8px;
+            }
+            
+            .stat-desc {
+                font-size: 0.8rem !important;
+                line-height: 1.3 !important;
+            }
+            
+            .cta-button {
+                padding: 0.7rem 1.2rem;
+                font-size: 0.8rem;
+                margin-top: 0.7rem;
+            }
+            
+            .cta-container {
+                padding: 1.2rem;
+                margin: 1.5rem 0;
+            }
+            
+            .steps-container, .benefits-grid, .tier-grid, .partners-grid {
+                gap: 1rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            .affiliate-process, .payment-details {
+                padding: 1.2rem;
+                margin-top: 1.5rem;
+            }
+            
+            .testimonial-content {
+                padding: 1.2rem;
+            }
+            
+            .testimonial-author {
+                padding: 1rem 1.2rem;
+            }
+            
+            .testimonial-content::before {
+                font-size: 4rem;
+                top: -15px;
+            }
+            
+            .author-name {
+                font-size: 0.95rem;
+            }
+            
+            .author-title {
+                font-size: 0.8rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .earnings {
+                font-size: 0.85rem;
+                padding: 0.2rem 0.6rem;
+            }
+            
+            .after-apply {
+                margin-top: 1.5rem;
+                padding-top: 1.5rem;
+            }
+            
+            ol.next-steps {
+                margin: 10px auto;
+            }
+            
+            ol.next-steps li {
+                margin-bottom: 10px;
+                padding-left: 35px;
+                font-size: 0.85rem !important;
+            }
+            
+            ol.next-steps li span {
+                width: 25px;
+                height: 25px;
+                font-size: 0.9rem;
+            }
+            
+            .contact-info[style*="margin: 40px 0"] {
+                margin: 20px 0 !important;
+            }
+            
+            .contact-item[style*="margin-bottom: 20px"] {
+                margin-bottom: 10px !important;
+                padding: 1rem 1.5rem !important;
+            }
+            
+            .contact-value[style*="font-size: 1.5rem"] {
+                font-size: 0.8rem !important;
+            }
+            
+            ul[style*="list-style-type: none"] {
+                padding: 15px !important;
+                margin: 15px auto !important;
+            }
+            
+            ul[style*="list-style-type: none"] li {
+                padding-top: 6px !important;
+                padding-bottom: 6px !important;
+                margin-bottom: 3px !important;
+                font-size: 0.85rem !important;
+            }
+        }
+        
+        /* Extra small screens */
+        @media (max-width: 360px) {
+            .header h1 {
+                font-size: 1.4rem !important;
+            }
+            
+            .header p {
+                font-size: 0.8rem !important;
+            }
+            
+            .nav-buttons {
+                gap: 0.3rem;
+            }
+            
+            .nav-button {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.75rem;
+            }
+            
+            h2 {
+                font-size: 1.3rem !important;
+            }
+            
+            h3 {
+                font-size: 1.1rem !important;
+            }
+            
+            .stat-number {
+                font-size: 1.7rem;
+            }
+            
+            .step-number {
+                width: 30px;
+                height: 30px;
+                font-size: 1rem;
+                top: -10px;
+                left: -10px;
+            }
+            
+            .stat-card, .step-card, .benefit-card, .partner-card, .tier-card {
+                padding: 0.8rem;
+            }
+            
+            .container {
+                padding: 0.8rem;
+            }
+            
+            .cta-button {
+                padding: 0.5rem 1rem;
+                font-size: 0.75rem;
+            }
+            
+            p, li {
+                font-size: 0.8rem !important;
+            }
+            
+            .contact-value[style*="font-size: 1.5rem"] {
+                font-size: 1rem !important;
+            }
+        }
+
+        /* JavaScript styles for FAQ */
+        @keyframes plusRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(45deg); }
+        }
+        
+        @keyframes minusRotate {
+            0% { transform: rotate(45deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        /* Scroll animations */
+        .animate {
+            animation: fadeInUp 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background animation -->
+    <div class="background-dots" id="background-dots"></div>
+    
+    <!-- Header -->
+    <header class="header">
+        <div class="top-bar">
+            <div class="top-bar-right">
+                <a href="#contact" class="main-site-link">Contact Support</a>
+            </div>
+        </div>
+        <h1>Simple French with Hems - Affiliate Program</h1>
+        <p>Join our elite network of partners and earn substantial commissions while helping others achieve French language mastery</p>
+    </header>
+    
+    <div class="nav-buttons">
+        <a href="#how-it-works" class="nav-button">How It Works</a>
+        <a href="#benefits" class="nav-button">Benefits</a>
+        <a href="#commission" class="nav-button">Commission Structure</a>
+        <a href="#join" class="nav-button">Join Now</a>
+    </div>
+
+    <!-- Main content -->
+    <div class="container">
+        <section id="intro">
+            <div class="section-intro">
+                <h2>Partner With the Premier French Exam Preparation Service</h2>
+                <p>Becoming a Simple French with Hems affiliate is your opportunity to promote a service with proven excellence. With our 95%+ pass rate and specialized approach to French language exam preparation, you can confidently recommend our programs knowing they deliver exceptional results.</p>
+            </div>
+            
+            <div class="affiliate-stats">
+                <div class="stat-card">
+                    <div class="stat-number">20%</div>
+                    <div class="stat-title">Base Commission</div>
+                    <div class="stat-desc">Earn substantial commissions on every referred purchase</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">90</div>
+                    <div class="stat-title">Cookie Duration</div>
+                    <div class="stat-desc">Days to convert your referrals - among the highest in the industry</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">$200+</div>
+                    <div class="stat-title">Average Commission</div>
+                    <div class="stat-desc">Per course enrollment - premium earnings for quality leads</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">0</div>
+                    <div class="stat-title">Cost to Join</div>
+                    <div class="stat-desc">Free to become an affiliate with full support and resources</div>
+                </div>
+            </div>
+            
+            <div class="cta-container">
+                <a href="#join" class="cta-button">BECOME AN AFFILIATE TODAY</a>
+            </div>
+        </section>
+        
+        <section id="how-it-works">
+            <h2 class="section-title"><i>🔄</i> How Our Affiliate Program Works</h2>
+            <div class="steps-container">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Join Our Program</h3>
+                        <p>Complete the simple application form at the bottom of this page. We review applications within 48 hours and provide you with your unique affiliate link and access to promotional materials.</p>
+                    </div>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Share With Your Audience</h3>
+                        <p>Promote Simple French with Hems to your audience using your affiliate link. We provide high-converting banners, email templates, and content ideas to help you succeed.</p>
+                    </div>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Track Your Performance</h3>
+                        <p>Access our real-time dashboard to monitor clicks, conversions, and earnings. Our transparent reporting system shows you exactly how your promotions are performing.</p>
+                    </div>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Earn Commissions</h3>
+                        <p>Receive reliable monthly payments via PayPal, Wise, or bank transfer. Commissions are processed on the 15th of each month for the previous month's conversions.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="affiliate-process">
+                <h3>Transparent and User-Friendly Process</h3>
+                <p>Our affiliate program is designed with simplicity and transparency in mind. We use advanced tracking technology to ensure every referral is properly attributed to you, even if the customer returns to our site multiple times before purchasing.</p>
+                <p>The 90-day cookie duration means you'll earn commissions even if your referrals don't purchase immediately, giving you ample time to convert your audience.</p>
+            </div>
+        </section>
+        
+        <section id="benefits">
+            <h2 class="section-title"><i>🎁</i> Why Partner With Us</h2>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">💰</div>
+                    <h3>Generous Commissions</h3>
+                    <p>Earn 20% on all course sales, with average commissions of $200+ per enrollment. Top affiliates can qualify for increased rates up to a maximum of 30%.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🚀</div>
+                    <h3>High Conversion Rate</h3>
+                    <p>Our landing pages convert at 8.5% on average, significantly higher than industry standards. This means more commissions for you with the same traffic.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">📊</div>
+                    <h3>Detailed Analytics</h3>
+                    <p>Access comprehensive analytics including clicks, conversions, and earnings. Use data-driven insights to optimize your promotion strategy.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🛠️</div>
+                    <h3>Marketing Resources</h3>
+                    <p>Get access to professionally designed banners, email templates, social media content, and promotional copy to help you succeed.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">👨‍💼</div>
+                    <h3>Dedicated Support</h3>
+                    <p>Our affiliate manager is available to provide personalized guidance, answer questions, and help optimize your campaigns.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">💯</div>
+                    <h3>Quality Product</h3>
+                    <p>Promote a service with a 95%+ exam pass rate and excellent student satisfaction. High-quality products mean fewer refunds and more satisfied referrals.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="commission">
+            <h2 class="section-title"><i>💲</i> Commission Structure</h2>
+            <div class="commission-table-container">
+                <table class="commission-table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Price Range</th>
+                            <th>Commission Rate</th>
+                            <th>Your Earnings</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Individual Courses</td>
+                            <td>$299 - $699</td>
+                            <td>20%</td>
+                            <td>$59.80 - $139.80</td>
+                        </tr>
+                        <tr>
+                            <td>Course Bundles</td>
+                            <td>$799 - $1,499</td>
+                            <td>20%</td>
+                            <td>$159.80 - $299.80</td>
+                        </tr>
+                        <tr>
+                            <td>Premium Packages</td>
+                            <td>$1,599 - $2,999</td>
+                            <td>20%</td>
+                            <td>$319.80 - $599.80</td>
+                        </tr>
+                        <tr>
+                            <td>Private Coaching</td>
+                            <td>$999 - $4,999</td>
+                            <td>15%</td>
+                            <td>$149.85 - $749.85</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="tier-details">
+                <h3>Performance Tiers</h3>
+                <p>As you generate more sales, you can unlock higher commission rates:</p>
+                <div class="tier-grid">
+                    <div class="tier-card">
+                        <div class="tier-level">Standard</div>
+                        <div class="tier-rate">20%</div>
+                        <div class="tier-req">New affiliates start here</div>
+                    </div>
+                    <div class="tier-card">
+                        <div class="tier-level">Silver</div>
+                        <div class="tier-rate">25%</div>
+                        <div class="tier-req">After 10 sales or $10,000 in revenue</div>
+                    </div>
+                    <div class="tier-card">
+                        <div class="tier-level">Gold</div>
+                        <div class="tier-rate">30%</div>
+                        <div class="tier-req">After 25 sales or $25,000 in revenue</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="payment-info">
+                <h3>Payment Information</h3>
+                <ul class="payment-details">
+                    <li><strong>Payment Schedule:</strong> Monthly payments on the 15th for the previous month's sales</li>
+                    <li><strong>Payment Methods:</strong> PayPal, Wise, or Bank Transfer</li>
+                    <li><strong>Minimum Payout:</strong> $50 (No minimum for Gold tier affiliates)</li>
+                    <li><strong>Cookie Duration:</strong> 90 days</li>
+                    <li><strong>Refund Policy:</strong> Commissions are paid after the 30-day refund period</li>
+                </ul>
+            </div>
+        </section>
+        
+        <section id="ideal-partners">
+            <h2 class="section-title"><i>🤝</i> Who Should Join Our Affiliate Program</h2>
+            <div class="partners-grid">
+                <div class="partner-card">
+                    <div class="partner-icon">👨‍🏫</div>
+                    <h3>Language Teachers</h3>
+                    <p>French teachers, tutors, and language coaches who want to provide their students with additional resources for exam preparation.</p>
+                </div>
+                <div class="partner-card">
+                    <div class="partner-icon">📝</div>
+                    <h3>Education Bloggers</h3>
+                    <p>Bloggers and content creators in the education, language learning, or study abroad niches.</p>
+                </div>
+                <div class="partner-card">
+                    <div class="partner-icon">🌍</div>
+                    <h3>Immigration Consultants</h3>
+                    <p>Consultants who help clients with Canadian immigration, where French language skills can provide significant advantages.</p>
+                </div>
+                <div class="partner-card">
+                    <div class="partner-icon">🎓</div>
+                    <h3>University Advisors</h3>
+                    <p>Academic advisors and counselors who help students prepare for study abroad opportunities in French-speaking countries.</p>
+                </div>
+                <div class="partner-card">
+                    <div class="partner-icon">📱</div>
+                    <h3>Social Media Influencers</h3>
+                    <p>Social media personalities who focus on language learning, education, productivity, or personal development.</p>
+                </div>
+                <div class="partner-card">
+                    <div class="partner-icon">✈️</div>
+                    <h3>Travel/Expat Bloggers</h3>
+                    <p>Content creators who focus on travel or expatriate life in French-speaking countries or regions.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="testimonials">
+            <h2 class="section-title"><i>💬</i> What Our Affiliates Say</h2>
+            <div class="testimonials-container">
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        <p>"As a French teacher, I was initially hesitant to refer my students elsewhere, but Simple French with Hems has been the perfect complement to my teaching. My students who need extra exam preparation get excellent results, and I earn substantial commissions. It's a win-win partnership."</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-name">Marie L.</div>
+                        <div class="author-title">Language Teacher, Toronto</div>
+                        <div class="earnings">$2,140 earned last month</div>
+                    </div>
+                </div>
+                
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        <p>"My immigration blog has a dedicated section for French language requirements for Canadian immigration. Adding Simple French with Hems affiliate links has not only helped my readers find quality preparation resources but has also become a significant revenue stream for my business."</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-name">Raj P.</div>
+                        <div class="author-title">Immigration Consultant</div>
+                        <div class="earnings">$3,600+ earned last quarter</div>
+                    </div>
+                </div>
+                
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        <p>"The promotional materials provided are top-notch and convert extremely well. I simply integrated their banners into my language learning blog, and the commissions started rolling in almost immediately. The 90-day cookie is also much more generous than other programs I've tried."</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-name">Emma K.</div>
+                        <div class="author-title">Education Blogger</div>
+                        <div class="earnings">$1,250 monthly average</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="join">
+            <h2 class="section-title"><i>📝</i> Apply to Become an Affiliate</h2>
+            <div class="contact-container">
+                <p>Ready to start earning premium commissions by promoting Simple French with Hems? Our streamlined application process makes it easy to join our partner network.</p>
+                <p>To apply for our exclusive affiliate program, please email us directly at:</p>
+                <div class="contact-info" style="margin: 40px 0;">
+                    <div class="contact-item" style="justify-content: center; margin-bottom: 20px; background: rgba(0, 255, 155, 0.1); border: 1px solid rgba(0, 255, 155, 0.3); padding: 1.5rem 2rem;">
+                        <div class="contact-value" style="font-size: 1.5rem; font-weight: 700; color: var(--accent-color);">support@simplefrenchwithhems.com</div>
+                    </div>
+                </div>
+                <p>Please include the following information in your application email:</p>
+                <ul style="list-style-type: none; text-align: left; max-width: 700px; margin: 30px auto; padding: 25px; background: linear-gradient(145deg, rgba(0, 17, 2, 0.5), rgba(0, 34, 4, 0.7)); border-radius: 12px; border: 1px solid rgba(0, 255, 155, 0.2); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);">
+                    <li style="padding: 10px 0; margin-bottom: 5px; position: relative; padding-left: 30px;">
+                        <span style="position: absolute; left: 0; color: var(--accent-color); font-weight: 700;">→</span>
+                        Your full name
+                    </li>
+                    <li style="padding: 10px 0; margin-bottom: 5px; position: relative; padding-left: 30px;">
+                        <span style="position: absolute; left: 0; color: var(--accent-color); font-weight: 700;">→</span>
+                        Your website or blog URL
+                    </li>
+                    <li style="padding: 10px 0; margin-bottom: 5px; position: relative; padding-left: 30px;">
+                        <span style="position: absolute; left: 0; color: var(--accent-color); font-weight: 700;">→</span>
+                        Relevant social media profiles
+                    </li>
+                    <li style="padding: 10px 0; margin-bottom: 5px; position: relative; padding-left: 30px;">
+                        <span style="position: absolute; left: 0; color: var(--accent-color); font-weight: 700;">→</span>
+                        A description of your audience
+                    </li>
+                    <li style="padding: 10px 0; margin-bottom: 5px; position: relative; padding-left: 30px;">
+                        <span style="position: absolute; left: 0; color: var(--accent-color); font-weight: 700;">→</span>
+                        How you plan to promote Simple French with Hems
+                    </li>
+                    <li style="padding: 10px 0; position: relative; padding-left: 30px;">
+                        <span style="position: absolute; left: 0; color: var(--accent-color); font-weight: 700;">→</span>
+                        Your preferred payment method (PayPal, Wise, or Bank Transfer)
+                    </li>
+                </ul>
+                <p>We review all applications within 48 hours and prioritize partners who demonstrate a strong alignment with our brand values.</p>
+                <div class="after-apply">
+                    <h3>What Happens Next?</h3>
+                    <ol class="next-steps" style="counter-reset: steps; list-style-type: none; text-align: left; max-width: 600px; margin: 20px auto;">
+                        <li style="counter-increment: steps; margin-bottom: 15px; position: relative; padding-left: 40px;">
+                            <span style="position: absolute; left: 0; top: -2px; width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg, #00b371, var(--accent-color)); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700;">1</span>
+                            We review your application (within 48 hours)
+                        </li>
+                        <li style="counter-increment: steps; margin-bottom: 15px; position: relative; padding-left: 40px;">
+                            <span style="position: absolute; left: 0; top: -2px; width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg, #00b371, var(--accent-color)); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700;">2</span>
+                            Approved affiliates receive welcome email with login details
+                        </li>
+                        <li style="counter-increment: steps; margin-bottom: 15px; position: relative; padding-left: 40px;">
+                            <span style="position: absolute; left: 0; top: -2px; width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg, #00b371, var(--accent-color)); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700;">3</span>
+                            Access your dashboard and premium promotional materials
+                        </li>
+                        <li style="counter-increment: steps; position: relative; padding-left: 40px;">
+                            <span style="position: absolute; left: 0; top: -2px; width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg, #00b371, var(--accent-color)); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700;">4</span>
+                            Start promoting and earning substantial commissions
+                        </li>
+                    </ol>
+                </div>
+                <div style="margin-top: 30px;">
+                    <a href="#intro" class="cta-button">START NOW</a>
+                </div>
+            </div>
+        </section>
+        
+        <section id="faq">
+            <h2 class="section-title"><i>❓</i> Frequently Asked Questions</h2>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">How long does it take to get approved?</div>
+                    <div class="faq-answer">We review all applications within 48 hours. Once approved, you'll receive immediate access to your affiliate dashboard and professional promotional materials.</div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">What is the cookie duration?</div>
+                    <div class="faq-answer">We offer a generous 90-day cookie duration, which means you'll earn a commission if your referral purchases within 90 days of clicking your affiliate link – one of the longest tracking periods in the industry.</div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">When and how do I get paid?</div>
+                    <div class="faq-answer">Payments are processed reliably on the 15th of each month for the previous month's sales. We offer multiple secure payment options including PayPal, Wise, and direct bank transfers.</div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">Is there a minimum payout threshold?</div>
+                    <div class="faq-answer">Yes, the minimum payout is $50 for Standard and Silver tier affiliates. Gold tier affiliates enjoy the privilege of no minimum payout requirement.</div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">Can I promote the affiliate program to others?</div>
+                    <div class="faq-answer">We don't currently offer a two-tier affiliate system. Your commissions are earned only on direct sales you refer. We focus on maximizing the value of your direct referrals.</div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">What promotional materials do you provide?</div>
+                    <div class="faq-answer">We provide comprehensive marketing resources including high-converting banners in various sizes, professional email templates, engaging social media content, blog post templates, and exclusive discounts for your audience.</div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">Do you allow paid advertising with my affiliate link?</div>
+                    <div class="faq-answer">Yes, but with some strategic restrictions. You cannot bid on our brand terms in search engines to avoid competing with our own campaigns. Please contact your dedicated affiliate manager for complete guidelines on paid advertising opportunities.</div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">Are there any restrictions on how I can promote?</div>
+                    <div class="faq-answer">We prohibit spam, misleading claims, and any unethical marketing tactics to maintain the integrity of our brand. Full guidelines are provided upon approval to ensure successful and compliant promotion.</div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="contact">
+            <h2 class="section-title"><i>📧</i> Questions? Contact Our Affiliate Team</h2>
+            <div class="contact-container">
+                <p>If you have any questions about our exclusive affiliate program, please don't hesitate to contact us. Our dedicated affiliate management team is committed to supporting your success.</p>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-label">Email:</div>
+                        <div class="contact-value">support@simplefrenchwithhems.com</div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-label">Response Time:</div>
+                        <div class="contact-value">Within 24 hours</div>
+                    </div>
+                </div>
+                <div class="contact-cta">
+                    <a href="#join" class="cta-button">APPLY NOW</a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Create background dots
+        document.addEventListener('DOMContentLoaded', function() {
+            const backgroundDots = document.getElementById('background-dots');
+            const numDots = 120;
+            
+            for (let i = 0; i < numDots; i++) {
+                const dot = document.createElement('div');
+                dot.classList.add('dot');
+                
+                // Random position
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                dot.style.left = x + '%';
+                dot.style.top = y + '%';
+                
+                // Random size for more depth
+                const size = Math.random() * 3 + 1;
+                dot.style.width = `${size}px`;
+                dot.style.height = `${size}px`;
+                
+                // Random animation delay and duration
+                dot.style.animationDelay = Math.random() * 4 + 's';
+                dot.style.animationDuration = (Math.random() * 4 + 3) + 's';
+                
+                backgroundDots.appendChild(dot);
+            }
+            
+            // Initialize FAQ functionality
+            const faqItems = document.querySelectorAll('.faq-item');
+            
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                const answer = item.querySelector('.faq-answer');
+                
+                // Add click event to questions
+                question.addEventListener('click', () => {
+                    // Check if this answer is currently open
+                    const isOpen = answer.style.maxHeight;
+                    
+                    // Close all answers
+                    faqItems.forEach(faq => {
+                        faq.querySelector('.faq-answer').style.maxHeight = null;
+                        faq.querySelector('.faq-question').classList.remove('active');
+                    });
+                    
+                    // If the clicked answer wasn't open, open it
+                    if (!isOpen) {
+                        answer.style.maxHeight = answer.scrollHeight + 'px';
+                        question.classList.add('active');
+                    }
+                });
+                
+                // Style for dynamic content
+                answer.style.maxHeight = null;
+            });
+            
+            // Add styling for FAQ questions
+            document.head.insertAdjacentHTML('beforeend', `
+                <style>
+                    .faq-question {
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                    }
+                    
+                    .faq-question:hover {
+                        background: linear-gradient(90deg, rgba(0, 179, 113, 0.3), rgba(0, 255, 155, 0.2));
+                    }
+                    
+                    .faq-question.active {
+                        background: linear-gradient(90deg, rgba(0, 179, 113, 0.4), rgba(0, 255, 155, 0.3));
+                    }
+                    
+                    .faq-question::after {
+                        content: '+';
+                        position: absolute;
+                        right: 1.8rem;
+                        font-size: 1.5rem;
+                        transition: transform 0.3s ease;
+                        color: var(--accent-color);
+                    }
+                    
+                    .faq-question.active::after {
+                        transform: rotate(45deg);
+                    }
+                    
+                    .faq-answer {
+                        max-height: 0;
+                        overflow: hidden;
+                        transition: max-height 0.5s ease;
+                    }
+                </style>
+            `);
+            
+            // Smooth scrolling for nav links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Add subtle parallax effect for background dots
+            window.addEventListener('mousemove', function(e) {
+                const moveX = (e.clientX / window.innerWidth) * 15;
+                const moveY = (e.clientY / window.innerHeight) * 15;
+                
+                backgroundDots.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            });
+            
+            // Animate elements when they come into view
+            const animateOnScroll = function() {
+                const elements = document.querySelectorAll('.stat-card, .step-card, .benefit-card, .tier-card, .partner-card, .testimonial, .faq-item');
+                
+                elements.forEach(element => {
+                    const elementPosition = element.getBoundingClientRect().top;
+                    const screenPosition = window.innerHeight / 1.2;
+                    
+                    if (elementPosition < screenPosition) {
+                        element.classList.add('animate');
+                    }
+                });
+            };
+            
+            // Add the animation class to elements
+            document.head.insertAdjacentHTML('beforeend', `
+                <style>
+                    .stat-card, .step-card, .benefit-card, .tier-card, .partner-card, .testimonial, .faq-item {
+                        opacity: 0;
+                        transform: translateY(30px);
+                        transition: opacity 0.8s ease, transform 0.8s ease;
+                    }
+                    
+                    .animate {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                </style>
+            `);
+            
+            // Run animation function on load and scroll
+            window.addEventListener('scroll', animateOnScroll);
+            animateOnScroll(); // Run on initial load
+        });
+    </script>
+</body>
+</html> 
