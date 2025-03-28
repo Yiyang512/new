@@ -14,9 +14,9 @@
             --accent-color: #00FF9B;
             --light-color: #F5F9FC;
             --dark-color: #001102;
-            --gradient-start: #001102;
-            --gradient-end: #002204;
-            --card-bg: rgba(0, 17, 2, 0.85);
+            --gradient-start: transparent;
+            --gradient-end: transparent;
+            --card-bg: transparent;
             --card-border: rgba(0, 255, 155, 0.15);
             --card-hover: rgba(0, 255, 155, 0.1);
             --transition: all 0.3s ease;
@@ -30,19 +30,17 @@
         }
 
         body {
-            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            background: transparent;
             color: var(--light-color);
             min-height: 100vh;
             overflow-x: hidden;
         }
 
         .top-banner {
-            background: rgba(0, 17, 2, 0.95);
+            background: transparent;
             padding: 1.2rem;
             text-align: center;
             border-bottom: 1px solid var(--card-border);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
             position: relative;
             overflow: hidden;
         }
@@ -89,40 +87,63 @@
         .section {
             margin: 0;
             padding: 1.5rem;
-            background: var(--card-bg);
+            background: transparent;
             border-radius: 16px;
             border: 1px solid var(--card-border);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            box-shadow: none;
             flex: 1;
             text-align: center;
             max-width: 300px;
             transition: var(--transition);
             position: relative;
             overflow: hidden;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .section::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            top: 20%;
+            left: 20%;
+            animation: shine 2s infinite;
+            opacity: 0.3;
         }
 
         .section::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
-            opacity: 0;
-            transition: var(--transition);
+            width: 4px;
+            height: 4px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            bottom: 20%;
+            right: 20%;
+            animation: shine 2s infinite 0.5s;
+            opacity: 0.3;
         }
 
-        .section:hover {
-            transform: translateY(-5px);
-            border-color: var(--card-hover);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        @keyframes shine {
+            0% {
+                transform: scale(0.5);
+                opacity: 0.3;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.6;
+            }
+            100% {
+                transform: scale(0.5);
+                opacity: 0.3;
+            }
         }
 
+        .section:hover::after,
         .section:hover::before {
-            opacity: 1;
+            opacity: 0.8;
+            animation-duration: 1s;
         }
 
         .section h2 {
@@ -133,14 +154,16 @@
             padding-bottom: 0.5rem;
             font-weight: 600;
             letter-spacing: -0.5px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .section p {
             font-size: 1rem;
             line-height: 1.5;
             margin-bottom: 0;
-            color: rgba(255, 255, 255, 0.9);
+            color: var(--light-color);
             font-weight: 400;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         @media (max-width: 768px) {
