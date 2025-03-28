@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Reviews - Simple French with Hems</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        background-color: transparent;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        overflow-x: hidden;
+    }
+
+    .reviews-container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+        max-width: 1000px;
+        padding: 1rem;
+    }
+
+    .review {
+        background: rgba(0, 17, 2, 0.2);
+        border: 1px solid rgba(0, 255, 155, 0.15);
+        border-radius: 8px;
+        padding: 1.2rem;
+        position: relative;
+        overflow: hidden;
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        opacity: 0;
+        animation: fadeIn 0.8s forwards;
+    }
+
+    .review:nth-child(1) {
+        animation-delay: 0.2s;
+    }
+    
+    .review:nth-child(2) {
+        animation-delay: 0.5s;
+    }
+    
+    .review:nth-child(3) {
+        animation-delay: 0.8s;
+    }
+
+    .review::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(0, 255, 102, 0.1), transparent);
+        animation: shine 3s infinite;
+        animation-delay: calc(var(--i) * 0.5s);
+    }
+
+    .review:nth-child(1) { --i: 1; }
+    .review:nth-child(2) { --i: 2; }
+    .review:nth-child(3) { --i: 3; }
+
+    .review-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.8rem;
+    }
+
+    .customer-name {
+        font-family: 'Audiowide', cursive;
+        color: #00ff66;
+        font-size: 1.2rem;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+
+    .rating {
+        color: #ccff33;
+        font-size: 1.1rem;
+        font-weight: bold;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .review-text {
+        font-family: 'Poppins', sans-serif;
+        color: #fff;
+        line-height: 1.5;
+        font-size: 0.95rem;
+    }
+
+    @keyframes fadeIn {
+        0% { opacity: 0; transform: translateY(10px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes shine {
+        0% { left: -100%; }
+        100% { left: 200%; }
+    }
+
+    /* Media queries for responsive design */
+    @media (max-width: 768px) {
+        .reviews-container {
+            padding: 0.8rem;
+            gap: 1rem;
+        }
+        
+        .review {
+            padding: 1rem;
+        }
+        
+        .customer-name {
+            font-size: 1.1rem;
+        }
+        
+        .review-text {
+            font-size: 0.9rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .reviews-container {
+            padding: 0.6rem;
+            gap: 0.8rem;
+        }
+        
+        .review {
+            padding: 0.8rem;
+        }
+        
+        .customer-name {
+            font-size: 1rem;
+        }
+        
+        .rating {
+            font-size: 1rem;
+        }
+        
+        .review-text {
+            font-size: 0.85rem;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div class="reviews-container">
+    <div class="review">
+        <div class="review-header">
+            <div class="customer-name">Sarah T.</div>
+            <div class="rating">★★★★★</div>
+        </div>
+        <div class="review-text">
+            The VR immersion transformed my learning experience! After 3 months with Simple French, I was confidently holding conversations with locals during my Paris trip. The AI feedback on pronunciation was a game-changer.
+        </div>
+    </div>
+
+    <div class="review">
+        <div class="review-header">
+            <div class="customer-name">Michael L.</div>
+            <div class="rating">★★★★★</div>
+        </div>
+        <div class="review-text">
+            I tried several apps before discovering Simple French with Hems. The difference is incredible - the virtual cafe simulations made me feel like I was actually in France, and I passed my DELF exam on the first attempt!
+        </div>
+    </div>
+
+    <div class="review">
+        <div class="review-header">
+            <div class="customer-name">Emma K.</div>
+            <div class="rating">★★★★★</div>
+        </div>
+        <div class="review-text">
+            As someone who struggled with traditional language classes, the AI tutoring adapts perfectly to my learning style. The VR environment removes all anxiety about making mistakes, and my progress has been remarkable.
+        </div>
+    </div>
+</div>
+
+</body>
+</html> 
