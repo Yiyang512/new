@@ -905,46 +905,57 @@
             gap: 2rem;
             margin-bottom: 2.5rem;
         }
-        
-        .partner-card {
-            background: linear-gradient(145deg, rgba(0, 17, 2, 0.7), rgba(0, 34, 4, 0.9));
-            border-radius: 12px;
-            padding: 2rem;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+
+        /* Tech Partners Section */
+        #tech-partners .partner-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 2.5rem;
+            background: linear-gradient(145deg, rgba(0, 17, 2, 0.8), rgba(0, 34, 4, 0.95));
             border: 1px solid rgba(0, 255, 155, 0.2);
             transition: all 0.4s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .partner-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 35px rgba(0, 255, 155, 0.2);
-            border-color: rgba(0, 255, 155, 0.4);
-        }
-        
-        .partner-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1.2rem;
-            text-align: center;
-            background: linear-gradient(135deg, #00b371, var(--accent-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .partner-card h3 {
-            color: var(--accent-color);
-            margin-bottom: 1.2rem;
-            text-align: center;
-            font-size: 1.4rem;
-            font-weight: 700;
-        }
-        
-        .partner-card p {
-            color: rgba(255, 255, 255, 0.9);
-            line-height: 1.6;
         }
 
+        #tech-partners .partner-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(0, 255, 155, 0.4);
+            box-shadow: 0 20px 40px rgba(0, 255, 155, 0.15);
+        }
+
+        #tech-partners .partner-content {
+            margin-top: 1rem;
+        }
+
+        #tech-partners .partner-content p {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+
+        @media (min-width: 1024px) {
+            #tech-partners .partner-content p {
+                font-size: 1.3rem !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            #tech-partners .partner-card {
+                padding: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #tech-partners .partner-card {
+                padding: 1.5rem;
+            }
+            
+            #tech-partners .partner-content p {
+                font-size: 0.9rem;
+            }
+        }
+        
         /* Testimonials Section */
         .testimonials-container {
             display: grid;
@@ -1912,6 +1923,40 @@
             </div>
         </section>
         
+        <section id="tech-partners">
+            <h2 class="section-title"><i>🔧</i> Hardware | Device Partners</h2>
+            <div class="partners-grid">
+                <div class="partner-card">
+                    <img src="https://yiyang512.github.io/new/meta.png" alt="Meta Logo" style="width: 120px; height: auto; margin-bottom: 1.5rem;">
+                    <div class="partner-content">
+                        <p>Through our partnership with Meta, we bring School Pulse to the Meta Quest ecosystem, ensuring cutting-edge VR integration and accessibility across multiple devices. Together, these technologies power the next generation of AI-driven, interactive French learning.</p>
+                    </div>
+                </div>
+                <div class="partner-card">
+                    <img src="https://yiyang512.github.io/new/ocu.png" alt="Oculus Logo" style="width: 120px; height: auto; margin-bottom: 1.5rem; background: rgba(255, 255, 255, 0.9); padding: 10px; border-radius: 8px; filter: brightness(1.2) contrast(1.1);">
+                    <div class="partner-content">
+                        <p>Our collaboration with Oculus allows us to optimize School Pulse for the Oculus VR platform, delivering high-performance, immersive language learning with smooth interactions and responsive AI feedback. This ensures learners experience seamless, real-time French practice in an intuitive VR environment.</p>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="section-title" style="margin-top: 4rem;"><i>💻</i> Technology | Integration Partners</h2>
+            <div class="partners-grid">
+                <div class="partner-card">
+                    <img src="https://yiyang512.github.io/new/unity.png" alt="Unity Logo" style="width: 120px; height: auto; margin-bottom: 1.5rem;">
+                    <div class="partner-content">
+                        <p>Simple French with Hems partners with Unity to revolutionize VR language learning. Our School Pulse VR platform leverages Unity's advanced real-time rendering and interactive 3D capabilities to create an immersive learning experience. With Unity's powerful engine, we enable seamless integration of AI-driven language practice.</p>
+                    </div>
+                </div>
+                <div class="partner-card">
+                    <div class="partner-icon" style="font-size: 4rem; margin-bottom: 1.5rem;">🤖</div>
+                    <div class="partner-content">
+                        <p>Our innovative VR game, School Pulse, leverages cutting-edge Natural Language Processing (NLP) technology to create an immersive and interactive French learning experience. This advanced AI-driven system enables real-time speech recognition and feedback, helping students master pronunciation and conversational skills.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section id="faq">
             <h2 class="section-title"><i>❓</i> Frequently Asked Questions</h2>
             <div class="faq-container">
