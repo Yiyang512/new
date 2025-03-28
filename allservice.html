@@ -26,15 +26,6 @@
             line-height: 1.6;
             margin: 0;
             padding: 0;
-            background-image: radial-gradient(circle, var(--grid-color) 1px, transparent 1px);
-            background-size: 20px 20px;
-            animation: pulse 4s infinite ease-in-out;
-        }
-        
-        @keyframes pulse {
-            0% { background-color: transparent; }
-            50% { background-color: rgba(0, 255, 155, 0.05); }
-            100% { background-color: transparent; }
         }
         
         .header {
@@ -85,10 +76,11 @@
         
         .flip-card {
             background-color: transparent;
-            width: 350px;
+            width: calc(33.333% - 2rem);
             height: 450px;
             perspective: 1000px;
             margin-bottom: 2rem;
+            min-width: 300px;
         }
         
         .flip-card-inner {
@@ -243,6 +235,12 @@
             height: 100%;
         }
 
+        @media (max-width: 1100px) {
+            .flip-card {
+                width: calc(50% - 2rem);
+            }
+        }
+        
         @media (max-width: 768px) {
             .flip-cards-container {
                 flex-direction: column;
