@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Culture - Simple French with Hems</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .banner-container {
+            position: relative;
+            width: 100%;
+            height: 700px;
+            overflow: hidden;
+            background: transparent;
+        }
+
+        #bannerCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.7;
+        }
+
+        .content {
+            position: relative;
+            z-index: 10;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #001102;
+            padding: 0 2rem;
+            text-align: center;
+        }
+
+        .section-badge {
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid rgba(0, 255, 0, 0.2);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #006600;
+            margin-bottom: 2rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            text-align: center;
+            line-height: 1.2;
+            margin-bottom: 2rem;
+            background: linear-gradient(120deg, #001102, #004400);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            max-width: 1200px;
+            margin-bottom: 3rem;
+        }
+
+        .value-card {
+            background: rgba(0, 255, 0, 0.05);
+            border: 1px solid rgba(0, 255, 0, 0.1);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .value-card:hover {
+            transform: translateY(-5px);
+            background: rgba(0, 255, 0, 0.08);
+            border-color: rgba(0, 255, 0, 0.2);
+        }
+
+        .value-title {
+            color: #00ff00;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .value-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #00cc00, #00ff00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p {
+            font-size: 1.125rem;
+            text-align: center;
+            max-width: 56rem;
+            line-height: 1.8;
+            font-weight: 300;
+            color: #001102;
+            margin-bottom: 3rem;
+        }
+
+        .mission-text {
+            font-size: 1.25rem;
+            font-weight: 400;
+            color: #001102;
+            max-width: 48rem;
+            line-height: 1.7;
+            position: relative;
+            padding: 2rem;
+            border-radius: 16px;
+            background: rgba(0, 255, 0, 0.05);
+            border: 1px solid rgba(0, 255, 0, 0.1);
+        }
+
+        .mission-text::before,
+        .mission-text::after {
+            content: '"';
+            font-size: 4rem;
+            position: absolute;
+            color: rgba(0, 255, 0, 0.2);
+            font-family: serif;
+        }
+
+        .mission-text::before {
+            top: -1rem;
+            left: -0.5rem;
+        }
+
+        .mission-text::after {
+            bottom: -2.5rem;
+            right: -0.5rem;
+        }
+
+        @media (max-width: 1024px) {
+            .values-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .banner-container {
+                height: auto;
+                min-height: 80vh;
+                padding: 2rem 0;
+            }
+            
+            h1 {
+                font-size: 2rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .section-badge {
+                font-size: 0.7rem;
+                padding: 0.35rem 1rem;
+                margin-bottom: 1rem;
+            }
+
+            .values-grid {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .value-card {
+                padding: 0.75rem;
+            }
+
+            .value-icon {
+                font-size: 1.5rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .value-title {
+                font-size: 1rem;
+                margin-bottom: 0.25rem;
+            }
+
+            .value-card div:last-child {
+                font-size: 0.875rem;
+            }
+
+            p, .mission-text {
+                font-size: 0.875rem;
+                line-height: 1.5;
+                margin-bottom: 1.5rem;
+            }
+
+            .mission-text {
+                padding: 1.25rem;
+            }
+
+            .mission-text::before,
+            .mission-text::after {
+                font-size: 2.5rem;
+            }
+
+            .mission-text::before {
+                top: -0.5rem;
+                left: -0.25rem;
+            }
+
+            .mission-text::after {
+                bottom: -1.5rem;
+                right: -0.25rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .banner-container {
+                min-height: 70vh;
+                padding: 1.5rem 0;
+            }
+
+            h1 {
+                font-size: 1.75rem;
+                margin-bottom: 1rem;
+            }
+
+            .section-badge {
+                font-size: 0.65rem;
+                padding: 0.25rem 0.75rem;
+            }
+
+            .values-grid {
+                gap: 0.5rem;
+                margin-bottom: 1rem;
+            }
+
+            .value-card {
+                padding: 0.5rem;
+            }
+
+            .value-icon {
+                font-size: 1.25rem;
+                margin-bottom: 0.35rem;
+            }
+
+            .value-title {
+                font-size: 0.9rem;
+            }
+
+            .value-card div:last-child {
+                font-size: 0.8rem;
+            }
+
+            p, .mission-text {
+                font-size: 0.8rem;
+                line-height: 1.4;
+                margin-bottom: 1rem;
+            }
+
+            .mission-text {
+                padding: 1rem;
+            }
+
+            .content {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="banner-container">
+        <canvas id="bannerCanvas"></canvas>
+        <div class="content">
+            <div class="section-badge">Our Culture</div>
+            <h1>Innovation Meets Education</h1>
+            <div class="values-grid">
+                <div class="value-card">
+                    <div class="value-icon">💡</div>
+                    <div class="value-title">Innovation</div>
+                    <div>Pioneering AI and VR technology to transform language learning</div>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">🤝</div>
+                    <div class="value-title">Inclusivity</div>
+                    <div>Creating accessible learning experiences for everyone</div>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">🌊</div>
+                    <div class="value-title">Immersion</div>
+                    <div>Deep, engaging experiences that accelerate learning</div>
+                </div>
+            </div>
+            <p class="mission-text">
+                At Simple French with Hems, we believe in innovation, inclusivity, and immersion. Our culture is built on the foundation of continuous learning, where technology meets education to create transformative experiences.
+            </p>
+            <p>
+                We are passionate about breaking language barriers through AI-powered tools, VR immersion, and interactive storytelling, making French learning engaging, accessible, and effective.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        class Particle {
+            constructor(canvas) {
+                this.canvas = canvas;
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = Math.random() * 0.15 - 0.075;
+                this.speedY = Math.random() * 0.15 - 0.075;
+                this.brightness = 0;
+                this.alpha = Math.random() * 0.2 + 0.1;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.brightness = Math.sin(Date.now() * 0.001) * 0.5 + 0.5;
+
+                if (this.x < 0) this.x = this.canvas.width;
+                if (this.x > this.canvas.width) this.x = 0;
+                if (this.y < 0) this.y = this.canvas.height;
+                if (this.y > this.canvas.height) this.y = 0;
+            }
+
+            draw(ctx) {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                const greenValue = 180 + Math.floor(75 * this.brightness);
+                ctx.fillStyle = `rgba(0, ${greenValue}, 0, ${this.alpha})`;
+                ctx.fill();
+
+                ctx.shadowColor = `rgba(0, ${greenValue}, 0, ${this.alpha})`;
+                ctx.shadowBlur = 15;
+            }
+        }
+
+        function initBanner() {
+            const canvas = document.getElementById('bannerCanvas');
+            const ctx = canvas.getContext('2d');
+
+            function resizeCanvas() {
+                canvas.width = canvas.offsetWidth;
+                canvas.height = canvas.offsetHeight;
+            }
+
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+
+            const particles = Array.from({ length: 150 }, () => new Particle(canvas));
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                particles.forEach(particle => {
+                    particle.update();
+                    particle.draw(ctx);
+                });
+
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        }
+
+        document.addEventListener('DOMContentLoaded', initBanner);
+    </script>
+</body>
+</html> 
