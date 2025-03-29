@@ -241,34 +241,46 @@
             display: none;
             text-align: center;
             margin-top: 1rem;
+            position: relative;
+        }
+        
+        .carousel-arrows {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 0.5rem;
+        }
+        
+        .carousel-arrow {
+            background-color: rgba(0, 255, 155, 0.2);
+            color: var(--neon-green);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.2rem;
+            border: 1px solid rgba(0, 255, 155, 0.4);
+            transition: all 0.3s ease;
+        }
+        
+        .carousel-arrow:hover {
+            background-color: rgba(0, 255, 155, 0.4);
+            box-shadow: 0 0 10px rgba(0, 255, 155, 0.5);
+        }
+        
+        .carousel-counter {
+            display: block;
+            text-align: center;
+            color: var(--text-light);
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
         }
         
         .carousel-dots {
-            display: inline-flex;
-            gap: 0.5rem;
-        }
-        
-        .dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.3);
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .dot.active {
-            background-color: var(--neon-green);
-            box-shadow: 0 0 8px var(--neon-green);
-        }
-        
-        .swipe-instruction {
             display: none;
-            text-align: center;
-            color: var(--text-light);
-            font-size: 0.9rem;
-            margin-top: 0.5rem;
-            opacity: 0.8;
         }
 
         @media (max-width: 1100px) {
@@ -304,18 +316,18 @@
                 margin-top: 0.2rem;
             }
             
-            .carousel-nav {
-                display: block;
-                margin-top: 0.3rem;
+            .carousel-arrows {
+                gap: 1.5rem;
             }
             
-            .dot {
-                width: 6px;
-                height: 6px;
+            .carousel-arrow {
+                width: 36px;
+                height: 36px;
+                font-size: 1rem;
             }
             
-            .carousel-dots {
-                gap: 0.3rem;
+            .carousel-counter {
+                font-size: 0.7rem;
             }
             
             .flip-cards-container {
@@ -329,6 +341,7 @@
                 -ms-overflow-style: none; /* IE and Edge */
                 padding: 2.5rem 1.5rem;
                 margin: 0.7rem auto;
+                scroll-padding: 0 15%; /* Add padding to scroll snap points */
             }
             
             .flip-cards-container::-webkit-scrollbar {
@@ -406,6 +419,87 @@
                 letter-spacing: 0.5px;
                 border-radius: 4px;
             }
+            
+            .mobile-spacer {
+                display: block;
+                min-width: 15%;
+                height: 1px;
+                flex: 0 0 15%;
+            }
+            
+            .card-tabs {
+                gap: 0.5rem;
+                padding: 0 0.5rem;
+                margin-bottom: 1rem;
+            }
+            
+            .card-tab {
+                padding: 0.3rem 0.5rem;
+                font-size: 0.7rem;
+                white-space: nowrap;
+            }
+            
+            .card-tab-icon {
+                margin-right: 0.2rem;
+                font-size: 0.7rem;
+            }
+        }
+        
+        @media (min-width: 769px) {
+            .mobile-spacer {
+                display: none;
+            }
+        }
+
+        .swipe-instruction {
+            display: none;
+            text-align: center;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            opacity: 0.8;
+        }
+
+        /* Card navigation tabs */
+        .card-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 0 auto 1.5rem auto;
+            max-width: 1200px;
+        }
+        
+        .card-tab {
+            background-color: rgba(10, 25, 15, 0.6);
+            color: var(--text-light);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            border: 1px solid rgba(0, 255, 155, 0.2);
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-tab.active {
+            background-color: rgba(0, 255, 155, 0.2);
+            color: var(--neon-green);
+            border-color: rgba(0, 255, 155, 0.5);
+            text-shadow: 0 0 5px rgba(0, 255, 155, 0.5);
+        }
+        
+        .card-tab:hover {
+            background-color: rgba(0, 255, 155, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 3px 8px rgba(0, 255, 155, 0.2);
+        }
+        
+        .card-tab-icon {
+            display: inline-block;
+            margin-right: 0.4rem;
+            font-size: 0.9rem;
         }
     </style>
 </head>
@@ -414,10 +508,26 @@
         <h1>French Learning Resources</h1>
         <p>Discover our interactive learning tools to master French language skills</p>
         <p class="hover-instruction"><span class="highlight">Hover your mouse</span> over any card to reveal more details</p>
-        <p class="swipe-instruction"><span class="highlight">Swipe left/right</span> to browse cards, <span class="highlight">tap</span> to flip</p>
+        <p class="swipe-instruction"><span class="highlight">Use arrows</span> to navigate cards, <span class="highlight">tap</span> to flip</p>
+    </div>
+
+    <!-- Card Navigation Tabs -->
+    <div class="card-tabs">
+        <div class="card-tab active" data-card="0">
+            <span class="card-tab-icon">⦿</span>Courses
+        </div>
+        <div class="card-tab" data-card="1">
+            <span class="card-tab-icon">⦿</span>Stories
+        </div>
+        <div class="card-tab" data-card="2">
+            <span class="card-tab-icon">⦿</span>VR Game
+        </div>
     </div>
 
     <div class="flip-cards-container">
+        <!-- Blank spacer for mobile only - helps with first card positioning -->
+        <div class="mobile-spacer"></div>
+        
         <!-- Online French Courses Card -->
         <div class="flip-card" data-slide="0">
             <div class="flip-card-inner">
@@ -491,48 +601,119 @@
     </div>
     
     <div class="carousel-nav">
-        <div class="carousel-dots">
-            <span class="dot active" data-index="0"></span>
-            <span class="dot" data-index="1"></span>
-            <span class="dot" data-index="2"></span>
+        <div class="carousel-arrows">
+            <span class="carousel-arrow prev-arrow">&#10094;</span>
+            <span class="carousel-counter">
+                <span id="current-card">1</span>/<span id="total-cards">3</span>
+            </span>
+            <span class="carousel-arrow next-arrow">&#10095;</span>
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Desktop navigation
+            const cardTabs = document.querySelectorAll('.card-tab');
+            const cards = document.querySelectorAll('.flip-card');
+            
+            // Add click handlers for card tabs on desktop and mobile
+            cardTabs.forEach((tab) => {
+                tab.addEventListener('click', function() {
+                    // Remove active class from all tabs
+                    cardTabs.forEach(t => t.classList.remove('active'));
+                    // Add active class to clicked tab
+                    this.classList.add('active');
+                    
+                    // Get card index from data attribute
+                    const cardIndex = parseInt(this.getAttribute('data-card'));
+                    
+                    // Handle mobile vs desktop differently
+                    if (window.innerWidth <= 768) {
+                        // On mobile, scroll to the card
+                        scrollToCard(cardIndex);
+                    } else {
+                        // On desktop, scroll the card into view
+                        cards[cardIndex].scrollIntoView({ 
+                            behavior: 'smooth', 
+                            block: 'nearest' 
+                        });
+                    }
+                });
+            });
+            
             // Only run this on mobile
             if (window.innerWidth <= 768) {
                 const container = document.querySelector('.flip-cards-container');
-                const cards = document.querySelectorAll('.flip-card');
-                const dots = document.querySelectorAll('.dot');
+                const prevArrow = document.querySelector('.prev-arrow');
+                const nextArrow = document.querySelector('.next-arrow');
+                const currentCardElement = document.getElementById('current-card');
+                const totalCardsElement = document.getElementById('total-cards');
+                const spacer = document.querySelector('.mobile-spacer');
                 let touchStartX = 0;
                 let touchEndX = 0;
                 let currentIndex = 0;
                 
-                // Initialize scroll position
-                updateActiveDot(0);
+                // Show navigation
+                document.querySelector('.carousel-nav').style.display = 'block';
+                
+                // Show total cards
+                totalCardsElement.textContent = cards.length;
+                
+                // Calculate the proper scroll position for each card
+                function calculateScrollPosition(index) {
+                    const spacerWidth = spacer.offsetWidth;
+                    const cardWidth = cards[0].offsetWidth;
+                    const cardGap = 14; // 0.7rem gap = 14px
+                    
+                    // Account for spacer width for the first card
+                    return spacerWidth + (index * (cardWidth + cardGap));
+                }
+                
+                // Initialize to first card with a small delay to ensure layout is complete
+                setTimeout(() => {
+                    scrollToCard(0);
+                    updateCardCounter(0);
+                }, 100);
                 
                 // Add scroll event listener to container
                 container.addEventListener('scroll', function() {
-                    // Find which card is most visible in the container
+                    // Find which card is most visible
                     const scrollPosition = container.scrollLeft;
-                    const containerWidth = container.offsetWidth;
-                    const cardWidth = cards[0].offsetWidth + 16; // card width + gap
+                    const spacerWidth = spacer.offsetWidth;
+                    const cardWidth = cards[0].offsetWidth;
+                    const cardGap = 14; // 0.7rem gap
                     
-                    const visibleIndex = Math.round(scrollPosition / cardWidth);
-                    updateActiveDot(visibleIndex);
+                    // Calculate the visible index accounting for the spacer
+                    const adjustedPosition = scrollPosition - spacerWidth;
+                    const visibleIndex = Math.round(adjustedPosition / (cardWidth + cardGap));
+                    
+                    if (visibleIndex >= 0 && visibleIndex < cards.length) {
+                        updateCardCounter(visibleIndex);
+                        
+                        // Update active tab
+                        cardTabs.forEach(t => t.classList.remove('active'));
+                        if (cardTabs[visibleIndex]) {
+                            cardTabs[visibleIndex].classList.add('active');
+                        }
+                    }
                 });
                 
-                // Add click listeners to dots
-                dots.forEach(dot => {
-                    dot.addEventListener('click', function() {
-                        const index = parseInt(this.getAttribute('data-index'));
-                        scrollToCard(index);
-                    });
+                // Add click listeners to arrow buttons with circular navigation
+                prevArrow.addEventListener('click', function() {
+                    // Go to the last card if at the first card, otherwise go to previous
+                    const newIndex = currentIndex <= 0 ? cards.length - 1 : currentIndex - 1;
+                    scrollToCard(newIndex);
+                });
+                
+                nextArrow.addEventListener('click', function() {
+                    // Go to the first card if at the last card, otherwise go to next
+                    const newIndex = currentIndex >= cards.length - 1 ? 0 : currentIndex + 1;
+                    scrollToCard(newIndex);
                 });
                 
                 // Add touch event listeners for flip on mobile
-                cards.forEach(card => {
+                cards.forEach((card, index) => {
+                    // Make each card go to its correct position when clicked directly
                     card.addEventListener('click', function(e) {
                         // Don't flip if we're swiping or clicking a button
                         if (Math.abs(touchEndX - touchStartX) < 5 && !e.target.closest('a')) {
@@ -550,24 +731,42 @@
                     // Track touch end
                     card.addEventListener('touchend', function(e) {
                         touchEndX = e.changedTouches[0].screenX;
+                        
+                        // Add swipe handling with circular navigation
+                        const swipeDistance = touchEndX - touchStartX;
+                        if (Math.abs(swipeDistance) > 50) { // Threshold for swipe detection
+                            if (swipeDistance > 0) { // Right swipe (previous)
+                                const newIndex = currentIndex <= 0 ? cards.length - 1 : currentIndex - 1;
+                                scrollToCard(newIndex);
+                            } else { // Left swipe (next)
+                                const newIndex = currentIndex >= cards.length - 1 ? 0 : currentIndex + 1;
+                                scrollToCard(newIndex);
+                            }
+                        }
                     });
                 });
                 
-                function updateActiveDot(index) {
-                    dots.forEach(dot => dot.classList.remove('active'));
-                    if (dots[index]) {
-                        dots[index].classList.add('active');
+                function updateCardCounter(index) {
+                    if (index >= 0 && index < cards.length) {
+                        currentCardElement.textContent = index + 1;
                         currentIndex = index;
                     }
                 }
                 
                 function scrollToCard(index) {
                     if (index >= 0 && index < cards.length) {
-                        const cardWidth = cards[0].offsetWidth + 16; // width + gap
+                        const position = calculateScrollPosition(index);
                         container.scrollTo({
-                            left: index * cardWidth,
+                            left: position,
                             behavior: 'smooth'
                         });
+                        updateCardCounter(index);
+                        
+                        // Update active tab when scrolling programmatically
+                        cardTabs.forEach(t => t.classList.remove('active'));
+                        if (cardTabs[index]) {
+                            cardTabs[index].classList.add('active');
+                        }
                     }
                 }
             }
