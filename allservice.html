@@ -292,53 +292,8 @@
             height: 100%;
         }
         
-        /* Carousel navigation */
-        .carousel-nav {
-            display: none;
-            text-align: center;
-            margin-top: 1rem;
-            position: relative;
-        }
+        /* Remove carousel navigation styles */
         
-        .carousel-arrows {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin-top: 0.5rem;
-        }
-        
-        .carousel-arrow {
-            background-color: rgba(0, 255, 155, 0.2);
-            color: var(--neon-green);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 1.2rem;
-            border: 1px solid rgba(0, 255, 155, 0.4);
-            transition: all 0.3s ease;
-        }
-        
-        .carousel-arrow:hover {
-            background-color: rgba(0, 255, 155, 0.4);
-            box-shadow: 0 0 10px rgba(0, 255, 155, 0.5);
-        }
-        
-        .carousel-counter {
-            display: block;
-            text-align: center;
-            color: var(--text-light);
-            font-size: 0.8rem;
-            margin-top: 0.5rem;
-        }
-        
-        .carousel-dots {
-            display: none;
-        }
-
         @media (max-width: 1100px) {
             .flip-card {
                 width: calc(50% - 2rem);
@@ -370,20 +325,6 @@
                 display: block;
                 font-size: 0.7rem;
                 margin-top: 0.2rem;
-            }
-            
-            .carousel-arrows {
-                gap: 1.5rem;
-            }
-            
-            .carousel-arrow {
-                width: 36px;
-                height: 36px;
-                font-size: 1rem;
-            }
-            
-            .carousel-counter {
-                font-size: 0.7rem;
             }
             
             .flip-cards-container {
@@ -530,10 +471,6 @@
             
             .all-cards-mode .flip-card-inner {
                 box-shadow: 0 0 8px rgba(0, 255, 155, 0.2);
-            }
-            
-            .all-cards-mode .carousel-nav {
-                display: none;
             }
             
             .all-cards-mode .card-tabs {
@@ -787,16 +724,8 @@
         </div>
     </div>
     
-    <div class="carousel-nav">
-        <div class="carousel-arrows">
-            <span class="carousel-arrow prev-arrow">&#10094;</span>
-            <span class="carousel-counter">
-                <span id="current-card">1</span>/<span id="total-cards">3</span>
-            </span>
-            <span class="carousel-arrow next-arrow">&#10095;</span>
-        </div>
-    </div>
-
+    <!-- Removing the carousel navigation arrows -->
+    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Desktop navigation
@@ -841,7 +770,6 @@
                     
                     // Show the current card in single card mode
                     showCard(currentIndex || 0);
-                    document.querySelector('.carousel-nav').style.display = 'block';
                     document.querySelector('.card-tabs').style.display = 'flex';
                 });
                 
@@ -860,8 +788,6 @@
                             cardInner.style.transform = 'rotateY(0deg)';
                         }
                     });
-                    
-                    document.querySelector('.carousel-nav').style.display = 'none';
                 });
             }
             
@@ -916,38 +842,10 @@
             
             // Mobile specific logic
             if (window.innerWidth <= 768) {
-                const prevArrow = document.querySelector('.prev-arrow');
-                const nextArrow = document.querySelector('.next-arrow');
-                const currentCardElement = document.getElementById('current-card');
-                const totalCardsElement = document.getElementById('total-cards');
                 let currentIndex = 0;
-                
-                // Show navigation and total cards
-                document.querySelector('.carousel-nav').style.display = 'block';
-                totalCardsElement.textContent = cards.length;
                 
                 // Show the first card initially
                 showCard(0);
-                currentCardElement.textContent = 1;
-                
-                // Arrow navigation with circular pattern
-                prevArrow.addEventListener('click', function() {
-                    if (body.classList.contains('single-card-mode')) {
-                        const newIndex = currentIndex <= 0 ? cards.length - 1 : currentIndex - 1;
-                        showCard(newIndex);
-                        currentCardElement.textContent = newIndex + 1;
-                        currentIndex = newIndex;
-                    }
-                });
-                
-                nextArrow.addEventListener('click', function() {
-                    if (body.classList.contains('single-card-mode')) {
-                        const newIndex = currentIndex >= cards.length - 1 ? 0 : currentIndex + 1;
-                        showCard(newIndex);
-                        currentCardElement.textContent = newIndex + 1;
-                        currentIndex = newIndex;
-                    }
-                });
                 
                 // Swipe detection
                 let touchStartX = 0;
@@ -968,13 +866,11 @@
                                 // Right swipe (previous)
                                 const newIndex = currentIndex <= 0 ? cards.length - 1 : currentIndex - 1;
                                 showCard(newIndex);
-                                currentCardElement.textContent = newIndex + 1;
                                 currentIndex = newIndex;
                             } else {
                                 // Left swipe (next)
                                 const newIndex = currentIndex >= cards.length - 1 ? 0 : currentIndex + 1;
                                 showCard(newIndex);
-                                currentCardElement.textContent = newIndex + 1;
                                 currentIndex = newIndex;
                             }
                         }
