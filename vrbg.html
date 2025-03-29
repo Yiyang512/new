@@ -305,7 +305,7 @@
                 height: 80px;
             }
             
-            .vocab-arbre, .vocab-maison {
+            .vocab-arbre, .vocab-maison, .feature-word {
                 display: none;
             }
             
@@ -352,6 +352,91 @@
             position: relative;
             z-index: 1;
         }
+
+        /* Remove the floating feature styles */
+        .feature-word {
+            position: relative;
+            font-weight: 600;
+            color: var(--accent-color);
+            text-shadow: 0 0 15px rgba(0, 255, 155, 0.3);
+        }
+
+        .features-list {
+            position: absolute;
+            bottom: 80px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            z-index: 2;
+            padding: 0 2rem;
+        }
+
+        .features-list .feature-word {
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            opacity: 0;
+            animation: fadeInUp 0.5s ease-out forwards;
+        }
+
+        .features-list .feature-word::before {
+            content: "";
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: var(--accent-color);
+            margin-right: 12px;
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent-color);
+        }
+
+        .feature-word:nth-child(1) { animation-delay: 0.1s; }
+        .feature-word:nth-child(2) { animation-delay: 0.2s; }
+        .feature-word:nth-child(3) { animation-delay: 0.3s; }
+        .feature-word:nth-child(4) { animation-delay: 0.4s; }
+
+        @media (max-width: 992px) {
+            .features-list {
+                gap: 2rem;
+                bottom: 60px;
+            }
+
+            .features-list .feature-word {
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .features-list {
+                flex-wrap: wrap;
+                gap: 1rem 2rem;
+                bottom: 40px;
+                justify-content: center;
+            }
+
+            .features-list .feature-word {
+                font-size: 1rem;
+            }
+
+            .features-list .feature-word::before {
+                width: 6px;
+                height: 6px;
+                margin-right: 8px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .features-list {
+                bottom: 30px;
+                gap: 0.75rem 1.5rem;
+            }
+
+            .features-list .feature-word {
+                font-size: 0.9rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -375,7 +460,14 @@
                     </h2>
                 </div>
             </div>
-            
+
+            <div class="features-list">
+                <div class="feature-word">AI-Powered</div>
+                <div class="feature-word">Interactive</div>
+                <div class="feature-word">Gamified</div>
+                <div class="feature-word">Adaptive</div>
+            </div>
+
             <div class="vocab-item vocab-arbre">
                 <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSIzMCIgY3k9IjMwIiByPSIyOCIgZmlsbD0icmdiYSg2MCwgODAsIDI1NSwgMC43KSIvPjwvc3ZnPg==" alt="Blue flower">
                 <span class="vocab-arbre-text">arbre</span>
