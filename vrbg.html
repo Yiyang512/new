@@ -8,7 +8,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
+        /* Reset for embedding */
+        html, body, div, section {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -17,88 +18,80 @@
         :root {
             --accent-color: #00FF9B;
             --accent-color-muted: rgba(0, 255, 155, 0.8);
+            --dark-bg: #000000;
             --text-light: #ffffff;
             --text-muted: rgba(255, 255, 255, 0.8);
-            --gradient-overlay: linear-gradient(45deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.65) 100%);
-            --vignette-color: rgba(0, 0, 0, 0.7);
         }
-
-        .hero-section {
-            width: 100%;
+        
+        html, body {
             height: 100%;
-            min-height: 100vh;
-            background: var(--gradient-overlay),
-                        radial-gradient(circle at center, transparent 0%, var(--vignette-color) 100%),
+            width: 100%;
+            overflow-x: hidden;
+            /* Force override any parent styles when embedded */
+            max-width: 100vw !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            line-height: 1.6;
+            position: relative;
+        }
+        
+        /* Full-screen Hero Section with embedding fixes */
+        .hero-section {
+            height: 100vh;
+            width: 100vw; /* Use viewport width instead of % */
+            max-width: 100vw !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            background: linear-gradient(45deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.45) 100%),
                         url('https://yiyang512.github.io/new/vrbg.jpg');
             background-size: cover;
             background-position: center;
-            font-family: 'Poppins', sans-serif;
-            color: var(--text-light);
+            background-repeat: no-repeat;
+            background-attachment: fixed;
             display: flex;
-            flex-direction: column;
-            position: relative;
-            overflow: hidden;
+            align-items: center;
+            position: fixed;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            overflow: auto;
         }
 
+        /* Background overlay with grid effect */
         .bg-grid {
             position: absolute;
-            inset: 0;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background-image: 
-                linear-gradient(rgba(0, 255, 155, 0.015) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 255, 155, 0.015) 1px, transparent 1px);
-            background-size: 30px 30px;
+                linear-gradient(rgba(0, 255, 155, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 155, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
             pointer-events: none;
-            opacity: 0.7;
-            mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
-            -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
         }
 
-        .navbar {
-            padding: 30px 5%;
-            z-index: 10;
-        }
-
-        .logo {
-            font-weight: 700;
-            font-size: 2.8rem;
-            color: var(--text-light);
-            display: flex;
-            align-items: center;
-            letter-spacing: -0.5px;
-        }
-
-        .logo-accent {
-            color: var(--accent-color);
-        }
-
-        .logo::before {
-            content: "";
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            background: var(--accent-color);
-            margin-right: 15px;
-            border-radius: 50%;
-            box-shadow: 0 0 20px var(--accent-color);
-        }
-
-        .main-content {
-            flex: 1;
-            display: flex;
-            align-items: center;
+        .container {
+            width: 100%;
+            max-width: 1440px;
+            margin: 0 auto;
             padding: 0 5%;
             position: relative;
+            z-index: 2;
         }
 
+        /* Left side content */
         .hero-content {
-            max-width: 700px;
-            backdrop-filter: blur(10px);
-            background: rgba(0, 0, 0, 0.2);
-            padding: 3rem;
-            border-radius: 20px;
-            border: 1px solid rgba(0, 255, 155, 0.1);
-            animation: fadeInUp 1.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+            max-width: 650px;
             position: relative;
+            animation: fadeInUp 1s ease-out;
         }
 
         .vertical-accent {
@@ -106,72 +99,142 @@
             left: 0;
             top: 50%;
             transform: translateY(-50%);
-            width: 4px;
-            height: 80%;
-            background: linear-gradient(180deg, var(--accent-color) 0%, rgba(0, 255, 155, 0.3) 100%);
-            border-radius: 2px;
-            box-shadow: 0 0 20px rgba(0, 255, 155, 0.2);
+            width: 6px;
+            height: 120px;
+            background-color: var(--accent-color);
+            border-radius: 3px;
+            box-shadow: 0 0 20px rgba(0, 255, 155, 0.4);
         }
 
         .hero-title {
-            font-size: 3.8rem;
-            line-height: 1.2;
+            font-size: 4.2rem;
+            line-height: 1.15;
             margin-bottom: 2rem;
-            padding-left: 2rem;
+            position: relative;
+            padding-left: 40px;
             font-weight: 700;
             letter-spacing: -0.5px;
-            background: linear-gradient(120deg, #ffffff 0%, var(--accent-color-muted) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
 
         .hero-subtitle {
-            font-size: 1.25rem;
+            font-size: 1.35rem;
             font-weight: 400;
             line-height: 1.8;
-            padding-left: 2rem;
+            padding-left: 40px;
+            position: relative;
             color: var(--text-muted);
             max-width: 580px;
-            letter-spacing: 0.2px;
         }
-
-        .features-list {
+        
+        /* French vocabulary elements with animations */
+        .vocab-item {
             position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            display: flex;
-            justify-content: center;
-            gap: 4rem;
-            padding: 1.5rem;
-            backdrop-filter: blur(8px);
-            background: rgba(0, 0, 0, 0.2);
-            border-top: 1px solid rgba(0, 255, 155, 0.1);
+            z-index: 2;
         }
-
-        .feature-word {
-            font-size: 1.1rem;
-            font-weight: 500;
-            color: var(--accent-color);
+        
+        .vocab-arbre {
+            right: 15%;
+            bottom: 28%;
             display: flex;
             align-items: center;
-            letter-spacing: 0.5px;
-            text-shadow: 0 0 15px rgba(0, 255, 155, 0.3);
-            opacity: 0;
-            animation: fadeInUp 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+            animation: floatElement 6s ease-in-out infinite;
         }
-
-        .feature-word::before {
+        
+        .vocab-arbre img {
+            width: 70px;
+            height: 70px;
+            margin-right: 15px;
+            filter: drop-shadow(0 0 10px rgba(60, 80, 255, 0.5));
+        }
+        
+        .vocab-arbre-text {
+            font-size: 3rem;
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        .vocab-maison {
+            left: 50%;
+            bottom: 18%;
+            font-size: 2.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            animation: floatElement 8s ease-in-out infinite reverse;
+            animation-delay: 1s;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* Car graphic with animation */
+        .car-graphic {
+            position: absolute;
+            left: 25%;
+            bottom: 18%;
+            width: 120px;
+            opacity: 0.8;
+            z-index: 2;
+            animation: slideCar 20s linear infinite;
+            filter: drop-shadow(0 0 8px rgba(60, 100, 255, 0.4));
+        }
+        
+        /* Professional navigation */
+        .navbar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 5%;
+            z-index: 10;
+        }
+        
+        .logo {
+            font-weight: 700;
+            font-size: 4rem;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo-accent {
+            color: var(--accent-color);
+        }
+        
+        .logo::before {
             content: "";
             display: inline-block;
-            width: 6px;
-            height: 6px;
+            width: 18px;
+            height: 18px;
             background: var(--accent-color);
-            margin-right: 10px;
+            margin-right: 18px;
             border-radius: 50%;
-            box-shadow: 0 0 15px var(--accent-color);
+            box-shadow: 0 0 20px var(--accent-color);
         }
-
+        
+        /* Subtle corner accents */
+        .corner-accent {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border: 2px solid rgba(0, 255, 155, 0.15);
+            z-index: 1;
+        }
+        
+        .corner-accent-top-left {
+            top: 50px;
+            left: 50px;
+            border-right: none;
+            border-bottom: none;
+        }
+        
+        .corner-accent-bottom-right {
+            bottom: 50px;
+            right: 50px;
+            border-left: none;
+            border-top: none;
+        }
+        
+        /* Animation keyframes */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -182,109 +245,178 @@
                 transform: translateY(0);
             }
         }
-
-        @media (max-width: 992px) {
-            .hero-content {
-                padding: 2.5rem;
-                margin: 0 1.5rem;
+        
+        @keyframes floatElement {
+            0%, 100% {
+                transform: translateY(0);
             }
-
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+        
+        @keyframes slideCar {
+            0% {
+                transform: translateX(-100px);
+            }
+            100% {
+                transform: translateX(1000px);
+            }
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 1200px) {
+            .hero-title {
+                font-size: 3.5rem;
+            }
+            
+            .vertical-accent {
+                height: 100px;
+            }
+        }
+        
+        @media (max-width: 992px) {
             .hero-title {
                 font-size: 3rem;
             }
-
-            .features-list {
-                gap: 3rem;
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .corner-accent {
+                width: 80px;
+                height: 80px;
             }
         }
-
+        
         @media (max-width: 768px) {
-            .hero-content {
-                padding: 2rem;
-                margin: 0 1rem;
-            }
-
             .hero-title {
                 font-size: 2.5rem;
-                padding-left: 1.5rem;
+                padding-left: 30px;
             }
-
+            
             .hero-subtitle {
                 font-size: 1.1rem;
-                padding-left: 1.5rem;
+                padding-left: 30px;
             }
-
-            .features-list {
-                padding: 1rem;
-                gap: 2rem;
+            
+            .vertical-accent {
+                height: 80px;
             }
-
-            .feature-word {
-                font-size: 1rem;
+            
+            .vocab-arbre, .vocab-maison {
+                display: none;
+            }
+            
+            .corner-accent {
+                width: 60px;
+                height: 60px;
             }
         }
-
+        
         @media (max-width: 576px) {
-            .hero-content {
-                padding: 1.5rem;
-            }
-
             .hero-title {
                 font-size: 2rem;
-                padding-left: 1.2rem;
+                padding-left: 25px;
             }
-
+            
             .hero-subtitle {
                 font-size: 1rem;
-                padding-left: 1.2rem;
+                padding-left: 25px;
             }
-
-            .features-list {
-                padding: 0.75rem;
-                gap: 1.5rem;
-                flex-wrap: wrap;
-            }
-
-            .feature-word {
-                font-size: 0.9rem;
-            }
-
+            
             .vertical-accent {
-                width: 3px;
+                height: 60px;
+                width: 4px;
             }
-
+            
             .navbar {
                 padding: 20px 5%;
             }
-
+            
             .logo {
-                font-size: 2.2rem;
+                font-size: 2.6rem;
             }
+            
+            .corner-accent {
+                display: none;
+            }
+        }
+        
+        /* Fix for embedding in iframes or other containers */
+        #vr-game-wrapper {
+            width: 100vw;
+            height: 100vh;
+            overflow: auto;
+            position: relative;
+            z-index: 1;
         }
     </style>
 </head>
 <body>
-    <section class="hero-section">
-        <div class="bg-grid"></div>
-        <nav class="navbar">
-            <div class="logo">School<span class="logo-accent">Pulse™</span></div>
-        </nav>
-        <div class="main-content">
-            <div class="hero-content">
-                <div class="vertical-accent"></div>
-                <h1 class="hero-title">Professional French Mastery Through Immersive Technology</h1>
-                <h2 class="hero-subtitle">
-                    School Pulse™ combines cutting-edge VR technology with proven language acquisition methodologies
-                    to deliver measurable results for professionals and immigrants.
-                </h2>
+    <div id="vr-game-wrapper">
+        <section class="hero-section">
+            <div class="bg-grid"></div>
+            <div class="corner-accent corner-accent-top-left"></div>
+            <div class="corner-accent corner-accent-bottom-right"></div>
+            
+            <nav class="navbar">
+                <div class="logo">School<span class="logo-accent">Pulse™</span></div>
+            </nav>
+            
+            <div class="container">
+                <div class="hero-content">
+                    <div class="vertical-accent"></div>
+                    <h1 class="hero-title">Professional French Mastery Through Immersive Technology</h1>
+                    <h2 class="hero-subtitle">
+                        School Pulse™ combines cutting-edge VR technology with proven language acquisition methodologies
+                        to deliver measurable results for professionals and immigrants.
+                    </h2>
+                </div>
             </div>
-        </div>
-        <div class="features-list">
-            <div class="feature-word">AI-Powered</div>
-            <div class="feature-word">Interactive</div>
-            <div class="feature-word">Gamified</div>
-            <div class="feature-word">Adaptive</div>
-        </div>
-    </section>
+            
+            <div class="vocab-item vocab-arbre">
+                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSIzMCIgY3k9IjMwIiByPSIyOCIgZmlsbD0icmdiYSg2MCwgODAsIDI1NSwgMC43KSIvPjwvc3ZnPg==" alt="Blue flower">
+                <span class="vocab-arbre-text">arbre</span>
+            </div>
+            
+            <div class="vocab-item vocab-maison">la maison</div>
+            
+            <div class="car-graphic">
+                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjUwIiB2aWV3Qm94PSIwIDAgMTAwIDUwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik0xMCAzNUgyMEwyNSAyMEg4MEw5MCAzNUg5NVY0MEg4MFY0NUgzMFY0MEgxMFYzNVoiIGZpbGw9InJnYmEoNjAsIDEwMCwgMjU1LCAwLjQpIi8+PGNpcmNsZSBjeD0iMjUiIGN5PSI0MCIgcj0iOCIgZmlsbD0icmdiYSg1MCwgNTAsIDUwLCAwLjYpIi8+PGNpcmNsZSBjeD0iNzUiIGN5PSI0MCIgcj0iOCIgZmlsbD0icmdiYSg1MCwgNTAsIDUwLCAwLjYpIi8+PC9zdmc+" alt="Car graphic">
+            </div>
+        </section>
+    </div>
+    
+    <script>
+        // Force full-bleed behavior when embedded
+        (function() {
+            function setFullBleed() {
+                // Handle iframe embedding
+                if (window.self !== window.top) {
+                    document.documentElement.style.overflow = 'hidden';
+                    document.body.style.overflow = 'hidden';
+                    document.body.style.height = '100vh';
+                    document.body.style.width = '100vw';
+                    
+                    // Force container to full viewport
+                    const wrapper = document.getElementById('vr-game-wrapper');
+                    if (wrapper) {
+                        wrapper.style.width = '100vw';
+                        wrapper.style.height = '100vh';
+                        wrapper.style.position = 'absolute';
+                        wrapper.style.top = '0';
+                        wrapper.style.left = '0';
+                    }
+                }
+            }
+            
+            // Run on load
+            window.addEventListener('load', setFullBleed);
+            // Run immediately
+            setFullBleed();
+        })();
+    </script>
 </body>
 </html> 
