@@ -21,6 +21,8 @@
             --dark-bg: #000000;
             --text-light: #ffffff;
             --text-muted: rgba(255, 255, 255, 0.8);
+            --gradient-overlay: linear-gradient(45deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.65) 100%);
+            --vignette-color: rgba(0, 0, 0, 0.7);
         }
         
         html, body {
@@ -44,13 +46,14 @@
         /* Full-screen Hero Section with embedding fixes */
         .hero-section {
             height: 100vh;
-            width: 100vw; /* Use viewport width instead of % */
+            width: 100vw;
             max-width: 100vw !important;
             margin: 0 !important;
             padding: 0 !important;
-            background: linear-gradient(45deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.45) 100%),
+            background: var(--gradient-overlay),
+                        radial-gradient(circle at center, transparent 0%, var(--vignette-color) 100%),
                         url('https://yiyang512.github.io/new/vrbg.jpg');
-            background-size: cover;
+            background-size: cover, cover, cover;
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
@@ -72,10 +75,13 @@
             width: 100%;
             height: 100%;
             background-image: 
-                linear-gradient(rgba(0, 255, 155, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 255, 155, 0.03) 1px, transparent 1px);
-            background-size: 40px 40px;
+                linear-gradient(rgba(0, 255, 155, 0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 155, 0.015) 1px, transparent 1px);
+            background-size: 30px 30px;
             pointer-events: none;
+            opacity: 0.7;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
+            -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
         }
 
         .container {
@@ -89,9 +95,14 @@
 
         /* Left side content */
         .hero-content {
-            max-width: 650px;
+            max-width: 700px;
             position: relative;
-            animation: fadeInUp 1s ease-out;
+            animation: fadeInUp 1.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.2);
+            padding: 3rem;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 255, 155, 0.1);
         }
 
         .vertical-accent {
@@ -99,31 +110,36 @@
             left: 0;
             top: 50%;
             transform: translateY(-50%);
-            width: 6px;
-            height: 120px;
-            background-color: var(--accent-color);
-            border-radius: 3px;
-            box-shadow: 0 0 20px rgba(0, 255, 155, 0.4);
+            width: 4px;
+            height: 80%;
+            background: linear-gradient(180deg, var(--accent-color) 0%, rgba(0, 255, 155, 0.3) 100%);
+            border-radius: 2px;
+            box-shadow: 0 0 20px rgba(0, 255, 155, 0.2);
         }
 
         .hero-title {
-            font-size: 4.2rem;
-            line-height: 1.15;
+            font-size: 3.8rem;
+            line-height: 1.2;
             margin-bottom: 2rem;
             position: relative;
-            padding-left: 40px;
+            padding-left: 2rem;
             font-weight: 700;
             letter-spacing: -0.5px;
+            background: linear-gradient(120deg, #ffffff 0%, var(--accent-color-muted) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(0, 255, 155, 0.1);
         }
 
         .hero-subtitle {
-            font-size: 1.35rem;
+            font-size: 1.25rem;
             font-weight: 400;
             line-height: 1.8;
-            padding-left: 40px;
+            padding-left: 2rem;
             position: relative;
             color: var(--text-muted);
             max-width: 580px;
+            letter-spacing: 0.2px;
         }
         
         /* French vocabulary elements with animations */
@@ -190,10 +206,11 @@
         
         .logo {
             font-weight: 700;
-            font-size: 4rem;
+            font-size: 2.8rem;
             color: var(--text-light);
             display: flex;
             align-items: center;
+            letter-spacing: -0.5px;
         }
         
         .logo-accent {
@@ -203,21 +220,23 @@
         .logo::before {
             content: "";
             display: inline-block;
-            width: 18px;
-            height: 18px;
+            width: 12px;
+            height: 12px;
             background: var(--accent-color);
-            margin-right: 18px;
+            margin-right: 15px;
             border-radius: 50%;
             box-shadow: 0 0 20px var(--accent-color);
         }
         
-        /* Subtle corner accents */
+        /* Corner accents with softer appearance */
         .corner-accent {
             position: absolute;
-            width: 100px;
-            height: 100px;
-            border: 2px solid rgba(0, 255, 155, 0.15);
+            width: 120px;
+            height: 120px;
+            border: 1px solid rgba(0, 255, 155, 0.1);
             z-index: 1;
+            opacity: 0.8;
+            backdrop-filter: blur(2px);
         }
         
         .corner-accent-top-left {
@@ -363,78 +382,108 @@
 
         .features-list {
             position: absolute;
-            bottom: 80px;
+            bottom: 60px;
             left: 0;
             right: 0;
             display: flex;
             justify-content: center;
-            gap: 3rem;
+            gap: 4rem;
             z-index: 2;
-            padding: 0 2rem;
+            padding: 1.5rem;
+            backdrop-filter: blur(8px);
+            background: rgba(0, 0, 0, 0.2);
+            border-top: 1px solid rgba(0, 255, 155, 0.1);
         }
 
         .features-list .feature-word {
-            font-size: 1.25rem;
+            font-size: 1.1rem;
             display: flex;
             align-items: center;
             opacity: 0;
-            animation: fadeInUp 0.5s ease-out forwards;
+            animation: fadeInUp 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+            letter-spacing: 0.5px;
+            font-weight: 500;
         }
 
         .features-list .feature-word::before {
             content: "";
             display: inline-block;
-            width: 8px;
-            height: 8px;
+            width: 6px;
+            height: 6px;
             background: var(--accent-color);
-            margin-right: 12px;
+            margin-right: 10px;
             border-radius: 50%;
-            box-shadow: 0 0 10px var(--accent-color);
+            box-shadow: 0 0 15px var(--accent-color);
         }
 
-        .feature-word:nth-child(1) { animation-delay: 0.1s; }
-        .feature-word:nth-child(2) { animation-delay: 0.2s; }
-        .feature-word:nth-child(3) { animation-delay: 0.3s; }
-        .feature-word:nth-child(4) { animation-delay: 0.4s; }
-
         @media (max-width: 992px) {
-            .features-list {
-                gap: 2rem;
-                bottom: 60px;
+            .hero-content {
+                padding: 2.5rem;
+                margin: 0 1.5rem;
             }
 
-            .features-list .feature-word {
-                font-size: 1.1rem;
+            .hero-title {
+                font-size: 3rem;
+            }
+
+            .features-list {
+                gap: 3rem;
             }
         }
 
         @media (max-width: 768px) {
+            .hero-content {
+                padding: 2rem;
+                margin: 0 1rem;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+                padding-left: 1.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.1rem;
+                padding-left: 1.5rem;
+            }
+
             .features-list {
-                flex-wrap: wrap;
-                gap: 1rem 2rem;
-                bottom: 40px;
-                justify-content: center;
+                padding: 1rem;
+                gap: 2rem;
             }
 
             .features-list .feature-word {
                 font-size: 1rem;
             }
-
-            .features-list .feature-word::before {
-                width: 6px;
-                height: 6px;
-                margin-right: 8px;
-            }
         }
 
         @media (max-width: 576px) {
+            .hero-content {
+                padding: 1.5rem;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+                padding-left: 1.2rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1rem;
+                padding-left: 1.2rem;
+            }
+
             .features-list {
-                bottom: 30px;
-                gap: 0.75rem 1.5rem;
+                padding: 0.75rem;
+                gap: 1.5rem;
+                flex-wrap: wrap;
             }
 
             .features-list .feature-word {
                 font-size: 0.9rem;
+            }
+
+            .vertical-accent {
+                width: 3px;
             }
         }
     </style>
