@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Use Cases - Simple French with Hems</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .banner-container {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            overflow: hidden;
+            background: transparent;
+            padding: 4rem 2rem;
+        }
+
+        #bannerCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.7;
+            will-change: transform;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            z-index: -1;
+        }
+
+        .content {
+            max-width: 1400px;
+            margin: 0 auto;
+            color: rgba(255, 255, 255, 0.95);
+        }
+
+        h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 4rem;
+            background: linear-gradient(120deg, #ffffff, #00ff00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+
+        .use-cases-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .use-case-card {
+            background: rgba(0, 17, 2, 0.7);
+            border: 1px solid rgba(0, 255, 0, 0.1);
+            border-radius: 24px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .use-case-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0, 255, 0, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 255, 0, 0.1);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #00ff00;
+            margin-bottom: 1.5rem;
+            line-height: 1.3;
+        }
+
+        .card-list {
+            list-style: none;
+        }
+
+        .card-list li {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+            position: relative;
+            line-height: 1.5;
+        }
+
+        .card-list li::before {
+            content: "•";
+            color: #00ff00;
+            position: absolute;
+            left: 0;
+            font-size: 1.2em;
+        }
+
+        .highlight {
+            color: #00ff00;
+            font-weight: 500;
+        }
+
+        @media (max-width: 1200px) {
+            .use-cases-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .banner-container {
+                padding: 2rem 1rem;
+                min-height: auto;
+            }
+
+            h1 {
+                font-size: 2rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .use-cases-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .card-image {
+                height: 100px;
+                margin-bottom: 1rem;
+            }
+
+            .card-title {
+                font-size: 1.1rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .use-case-card {
+                padding: 1rem;
+            }
+
+            .card-list li {
+                font-size: 0.9rem;
+                margin-bottom: 0.5rem;
+                padding-left: 1rem;
+                line-height: 1.4;
+            }
+
+            .card-list li::before {
+                font-size: 1em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .banner-container {
+                padding: 1.5rem 0.75rem;
+            }
+
+            h1 {
+                font-size: 1.75rem;
+                margin-bottom: 1rem;
+            }
+
+            .use-cases-grid {
+                gap: 0.75rem;
+            }
+
+            .card-image {
+                height: 80px;
+                margin-bottom: 0.75rem;
+            }
+
+            .card-title {
+                font-size: 1rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .use-case-card {
+                padding: 0.75rem;
+                border-radius: 16px;
+            }
+
+            .card-list li {
+                font-size: 0.8rem;
+                margin-bottom: 0.4rem;
+                padding-left: 0.875rem;
+                line-height: 1.3;
+            }
+
+            .highlight {
+                font-size: 0.8rem;
+            }
+
+            .card-list li::before {
+                font-size: 0.9em;
+                left: 0;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .banner-container {
+                padding: 1rem 0.5rem;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .card-image {
+                height: 70px;
+            }
+
+            .card-title {
+                font-size: 0.9rem;
+            }
+
+            .use-case-card {
+                padding: 0.625rem;
+                border-radius: 12px;
+            }
+
+            .card-list li {
+                font-size: 0.75rem;
+                margin-bottom: 0.3rem;
+                padding-left: 0.75rem;
+            }
+
+            .highlight {
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="banner-container">
+        <canvas id="bannerCanvas"></canvas>
+        <div class="content">
+            <h1>Use Cases</h1>
+            <div class="use-cases-grid">
+                <div class="use-case-card">
+                    <div class="card-image">
+                        <img src="education.png" alt="Education & Language Schools" 
+                             onerror="this.src='data:image/svg+xml;charset=UTF-8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'200\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%2300ff00\' stroke-width=\'1\' stroke-linecap=\'round\' stroke-linejoin=\'round\'><path d=\'M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z\'></path><path d=\'M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z\'></path></svg>'">
+                    </div>
+                    <h2 class="card-title">Education & Language Schools</h2>
+                    <ul class="card-list">
+                        <li>Schools & universities use AI-powered VR for French learning.</li>
+                        <li>Students prep for <span class="highlight">DELF & TEF</span> with interactive simulations.</li>
+                        <li>Language schools enhance lessons with real-world speaking practice.</li>
+                    </ul>
+                </div>
+
+                <div class="use-case-card">
+                    <div class="card-image">
+                        <img src="corporate.png" alt="Corporate Training" 
+                             onerror="this.src='data:image/svg+xml;charset=UTF-8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'200\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%2300ff00\' stroke-width=\'1\' stroke-linecap=\'round\' stroke-linejoin=\'round\'><path d=\'M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z\'></path><path d=\'M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16\'></path></svg>'">
+                    </div>
+                    <h2 class="card-title">Corporate Training & Workforce Development</h2>
+                    <ul class="card-list">
+                        <li>Companies train employees for <span class="highlight">bilingual communication</span> in global business.</li>
+                        <li>HR teams upskill staff with AI-driven French training.</li>
+                        <li>Professionals prep for exams with immersive language practice.</li>
+                    </ul>
+                </div>
+
+                <div class="use-case-card">
+                    <div class="card-image">
+                        <img src="hospitality.png" alt="Customer Service & Hospitality" 
+                             onerror="this.src='data:image/svg+xml;charset=UTF-8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'200\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%2300ff00\' stroke-width=\'1\' stroke-linecap=\'round\' stroke-linejoin=\'round\'><path d=\'M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5\'></path></svg>'">
+                    </div>
+                    <h2 class="card-title">Customer Service & Hospitality</h2>
+                    <ul class="card-list">
+                        <li>Hotels & restaurants train staff in real-world French conversations.</li>
+                        <li>Employees handle French-speaking customers through VR simulations.</li>
+                        <li>Businesses enhance service & guest satisfaction in bilingual regions.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class Particle {
+            constructor(canvas) {
+                this.canvas = canvas;
+                this.init();
+            }
+
+            init() {
+                this.x = Math.random() * this.canvas.width;
+                this.y = Math.random() * this.canvas.height;
+                this.size = Math.random() * 1.5 + 0.5;
+                this.speedX = Math.random() * 0.1 - 0.05;
+                this.speedY = Math.random() * 0.1 - 0.05;
+                this.brightness = 0;
+                this.alpha = Math.random() * 0.15 + 0.1;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.brightness = Math.sin(Date.now() * 0.001) * 0.3 + 0.7;
+
+                if (this.x < 0 || this.x > this.canvas.width || 
+                    this.y < 0 || this.y > this.canvas.height) {
+                    this.init();
+                }
+            }
+
+            draw(ctx) {
+                const greenValue = 180 + Math.floor(75 * this.brightness);
+                ctx.fillStyle = `rgba(0, ${greenValue}, 0, ${this.alpha})`;
+                
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initBanner() {
+            const canvas = document.getElementById('bannerCanvas');
+            const ctx = canvas.getContext('2d', {
+                alpha: true,
+                desynchronized: true
+            });
+
+            let animationFrameId;
+            let particles = [];
+            let lastTime = 0;
+            const FPS = 30;
+            const frameDelay = 1000 / FPS;
+
+            function resizeCanvas() {
+                const dpr = window.devicePixelRatio || 1;
+                const rect = canvas.getBoundingClientRect();
+                
+                canvas.width = rect.width * dpr;
+                canvas.height = rect.height * dpr;
+                
+                ctx.scale(dpr, dpr);
+                
+                const particleCount = window.innerWidth < 768 ? 75 : 100;
+                particles = Array.from({ length: particleCount }, () => new Particle(canvas));
+            }
+
+            function animate(currentTime) {
+                animationFrameId = requestAnimationFrame(animate);
+
+                const elapsed = currentTime - lastTime;
+                if (elapsed < frameDelay) return;
+                lastTime = currentTime - (elapsed % frameDelay);
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                particles.forEach(particle => particle.update());
+                particles.forEach(particle => particle.draw(ctx));
+            }
+
+            let resizeTimeout;
+            window.addEventListener('resize', () => {
+                if (resizeTimeout) clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(resizeCanvas, 100);
+            });
+
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    cancelAnimationFrame(animationFrameId);
+                } else {
+                    lastTime = performance.now();
+                    animate(lastTime);
+                }
+            });
+
+            resizeCanvas();
+            animate(performance.now());
+
+            return () => {
+                cancelAnimationFrame(animationFrameId);
+                window.removeEventListener('resize', resizeCanvas);
+            };
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initBanner);
+        } else {
+            initBanner();
+        }
+    </script>
+</body>
+</html> 
