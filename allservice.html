@@ -82,6 +82,24 @@
             perspective: 1000px;
             margin-bottom: 2rem;
             min-width: 300px;
+            animation: card-entrance 0.8s ease-out;
+            animation-fill-mode: backwards;
+        }
+        
+        .flip-card:nth-child(1) {
+            animation-delay: 0.2s;
+        }
+        
+        .flip-card:nth-child(2) {
+            animation-delay: 0.4s;
+        }
+        
+        .flip-card:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+        
+        .flip-card:hover .flip-card-inner {
+            transform: rotateY(180deg) scale(1.02);
         }
         
         .flip-card-inner {
@@ -89,7 +107,7 @@
             width: 100%;
             height: 100%;
             text-align: center;
-            transition: transform 0.8s;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.5s ease;
             transform-style: preserve-3d;
             box-shadow: 0 0 25px rgba(0, 255, 155, 0.3);
             border-radius: 10px;
@@ -98,6 +116,7 @@
         
         .flip-card:hover .flip-card-inner {
             transform: rotateY(180deg);
+            box-shadow: 0 0 30px rgba(0, 255, 155, 0.5);
         }
         
         .flip-card-front, .flip-card-back {
@@ -125,6 +144,7 @@
             padding: 1rem 0;
             margin-top: auto;
             border-top: 1px solid rgba(0, 255, 155, 0.3);
+            transition: all 0.4s ease;
         }
         
         .flip-card-front h2 {
@@ -161,6 +181,8 @@
             padding-left: 1.5rem;
             position: relative;
             font-weight: 300;
+            transform: translateX(0);
+            transition: transform 0.3s ease;
         }
         
         .flip-card-back li:before {
@@ -182,6 +204,19 @@
             letter-spacing: 1px;
             text-shadow: 0 0 5px rgba(0, 255, 155, 0.7);
             font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .flip-card-back h3:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 1px;
+            background: var(--neon-green);
+            animation: neon-border 3s infinite ease-in-out;
         }
         
         .highlight {
@@ -204,12 +239,32 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             font-family: 'Poppins', sans-serif;
+            position: relative;
+            overflow: hidden;
         }
         
         .cta-button:hover {
             background-color: #00e68a;
             box-shadow: 0 0 15px rgba(0, 255, 155, 0.6);
             transform: translateY(-3px);
+        }
+        
+        .cta-button:after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(30deg);
+            transition: all 0.5s;
+            opacity: 0;
+        }
+        
+        .cta-button:hover:after {
+            transform: rotate(30deg) translate(10%, 10%);
+            opacity: 1;
         }
 
         #online-courses {
@@ -331,31 +386,25 @@
             }
             
             .flip-cards-container {
-                display: flex;
-                flex-wrap: nowrap;
-                overflow-x: auto;
-                scroll-snap-type: x mandatory;
-                -webkit-overflow-scrolling: touch;
-                gap: 0.7rem;
-                scrollbar-width: none; /* Firefox */
-                -ms-overflow-style: none; /* IE and Edge */
-                padding: 2.5rem 1.5rem;
+                display: block;
+                position: relative;
                 margin: 0.7rem auto;
-                scroll-padding: 0 15%; /* Add padding to scroll snap points */
-            }
-            
-            .flip-cards-container::-webkit-scrollbar {
-                display: none; /* Chrome, Safari and Opera */
+                padding: 0.5rem;
+                overflow: visible;
             }
             
             .flip-card {
-                scroll-snap-align: center;
-                flex: 0 0 70%;
-                width: 70%;
+                width: 100%;
                 min-width: auto;
-                height: 300px;
-                margin: 0;
+                height: 320px;
+                margin: 0 auto;
                 perspective: 1500px;
+                display: none; /* Hide all cards by default */
+            }
+            
+            /* Only show the active card */
+            .flip-card.active-card {
+                display: block;
             }
             
             .flip-card-inner {
@@ -421,10 +470,7 @@
             }
             
             .mobile-spacer {
-                display: block;
-                min-width: 15%;
-                height: 1px;
-                flex: 0 0 15%;
+                display: none; /* Remove spacer completely */
             }
             
             .card-tabs {
@@ -442,6 +488,71 @@
             .card-tab-icon {
                 margin-right: 0.2rem;
                 font-size: 0.7rem;
+            }
+            
+            .view-toggle {
+                display: block;
+            }
+            
+            /* Show all mode */
+            .all-cards-mode .flip-cards-container {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 0.5rem;
+                padding: 0.5rem;
+                overflow: visible;
+            }
+            
+            .all-cards-mode .flip-card {
+                display: block;
+                width: 30%;
+                height: 180px;
+                margin-bottom: 0.5rem;
+            }
+            
+            .all-cards-mode .flip-card-front h2 {
+                font-size: 0.7rem;
+                letter-spacing: 0.3px;
+            }
+            
+            .all-cards-mode .flip-card-front .title-container {
+                padding: 0.4rem 0;
+            }
+            
+            .all-cards-mode .flip-card-inner {
+                box-shadow: 0 0 8px rgba(0, 255, 155, 0.2);
+            }
+            
+            .all-cards-mode .carousel-nav {
+                display: none;
+            }
+            
+            .all-cards-mode .card-tabs {
+                display: none;
+            }
+            
+            /* Single card mode - existing styles */
+            .single-card-mode .flip-cards-container {
+                display: block;
+                position: relative;
+                margin: 0.7rem auto;
+                padding: 0.5rem;
+                overflow: visible;
+            }
+            
+            .single-card-mode .flip-card {
+                width: 100%;
+                min-width: auto;
+                height: 320px;
+                margin: 0 auto;
+                perspective: 1500px;
+                display: none; /* Hide all cards by default */
+            }
+            
+            /* Only show the active card */
+            .single-card-mode .flip-card.active-card {
+                display: block;
             }
         }
         
@@ -501,6 +612,71 @@
             margin-right: 0.4rem;
             font-size: 0.9rem;
         }
+        
+        /* View mode toggle */
+        .view-toggle {
+            display: none;
+            text-align: center;
+            margin: 0.5rem auto;
+        }
+        
+        .view-toggle-button {
+            background-color: rgba(10, 25, 15, 0.6);
+            color: var(--text-light);
+            padding: 0.4rem 0.8rem;
+            border-radius: 5px;
+            cursor: pointer;
+            border: 1px solid rgba(0, 255, 155, 0.2);
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+        
+        .view-toggle-button:hover, .view-toggle-button.active {
+            background-color: rgba(0, 255, 155, 0.2);
+            color: var(--neon-green);
+        }
+
+        /* Pulse animation for cards when hovering over tabs */
+        @keyframes card-pulse {
+            0% { transform: scale(1); box-shadow: 0 0 25px rgba(0, 255, 155, 0.3); }
+            50% { transform: scale(1.05); box-shadow: 0 0 35px rgba(0, 255, 155, 0.6); }
+            100% { transform: scale(1); box-shadow: 0 0 25px rgba(0, 255, 155, 0.3); }
+        }
+        
+        .pulse-animation {
+            animation: card-pulse 0.8s ease-in-out infinite;
+        }
+
+        /* Additional card animations */
+        @keyframes card-entrance {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes glow-pulse {
+            0% { box-shadow: 0 0 15px rgba(0, 255, 155, 0.3); }
+            50% { box-shadow: 0 0 25px rgba(0, 255, 155, 0.7); }
+            100% { box-shadow: 0 0 15px rgba(0, 255, 155, 0.3); }
+        }
+        
+        @keyframes neon-border {
+            0% { border-color: rgba(0, 255, 155, 0.3); }
+            50% { border-color: rgba(0, 255, 155, 0.8); }
+            100% { border-color: rgba(0, 255, 155, 0.3); }
+        }
+        
+        .active-card .flip-card-inner {
+            animation: glow-pulse 2s infinite ease-in-out;
+        }
+        
+        .flip-card:hover .title-container {
+            background-color: rgba(0, 255, 155, 0.2);
+            border-top-color: rgba(0, 255, 155, 0.6);
+        }
+        
+        .flip-card-back li:hover {
+            transform: translateX(5px);
+        }
     </style>
 </head>
 <body>
@@ -509,6 +685,12 @@
         <p>Discover our interactive learning tools to master French language skills</p>
         <p class="hover-instruction"><span class="highlight">Hover your mouse</span> over any card to reveal more details</p>
         <p class="swipe-instruction"><span class="highlight">Use arrows</span> to navigate cards, <span class="highlight">tap</span> to flip</p>
+    </div>
+
+    <!-- View mode toggle for mobile -->
+    <div class="view-toggle">
+        <button class="view-toggle-button single-view active">Single Card View</button>
+        <button class="view-toggle-button all-view">View All Cards</button>
     </div>
 
     <!-- Card Navigation Tabs -->
@@ -525,9 +707,6 @@
     </div>
 
     <div class="flip-cards-container">
-        <!-- Blank spacer for mobile only - helps with first card positioning -->
-        <div class="mobile-spacer"></div>
-        
         <!-- Online French Courses Card -->
         <div class="flip-card" data-slide="0">
             <div class="flip-card-inner">
@@ -615,160 +794,195 @@
             // Desktop navigation
             const cardTabs = document.querySelectorAll('.card-tab');
             const cards = document.querySelectorAll('.flip-card');
+            const body = document.body;
             
-            // Add click handlers for card tabs on desktop and mobile
+            // Add hover effects to tabs to make cards pulse
+            cardTabs.forEach((tab) => {
+                tab.addEventListener('mouseenter', function() {
+                    const cardIndex = parseInt(this.getAttribute('data-card'));
+                    const cardInner = cards[cardIndex].querySelector('.flip-card-inner');
+                    
+                    // Don't pulse if card is flipped
+                    if (cardInner.style.transform !== 'rotateY(180deg)') {
+                        cardInner.classList.add('pulse-animation');
+                    }
+                });
+                
+                tab.addEventListener('mouseleave', function() {
+                    const cardIndex = parseInt(this.getAttribute('data-card'));
+                    const cardInner = cards[cardIndex].querySelector('.flip-card-inner');
+                    cardInner.classList.remove('pulse-animation');
+                });
+            });
+            
+            // Set initial mode for mobile
+            if (window.innerWidth <= 768) {
+                body.classList.add('single-card-mode');
+            }
+            
+            // View mode toggle
+            const singleViewBtn = document.querySelector('.single-view');
+            const allViewBtn = document.querySelector('.all-view');
+            
+            if (singleViewBtn && allViewBtn) {
+                singleViewBtn.addEventListener('click', function() {
+                    body.classList.remove('all-cards-mode');
+                    body.classList.add('single-card-mode');
+                    this.classList.add('active');
+                    allViewBtn.classList.remove('active');
+                    
+                    // Show the current card in single card mode
+                    showCard(currentIndex || 0);
+                    document.querySelector('.carousel-nav').style.display = 'block';
+                    document.querySelector('.card-tabs').style.display = 'flex';
+                });
+                
+                allViewBtn.addEventListener('click', function() {
+                    body.classList.remove('single-card-mode');
+                    body.classList.add('all-cards-mode');
+                    this.classList.add('active');
+                    singleViewBtn.classList.remove('active');
+                    
+                    // Show all cards
+                    cards.forEach(card => {
+                        card.style.display = 'block';
+                        // Reset any flipped cards
+                        const cardInner = card.querySelector('.flip-card-inner');
+                        if (cardInner.style.transform === 'rotateY(180deg)') {
+                            cardInner.style.transform = 'rotateY(0deg)';
+                        }
+                    });
+                    
+                    document.querySelector('.carousel-nav').style.display = 'none';
+                });
+            }
+            
+            // Function to show a specific card on mobile
+            function showCard(index) {
+                // Hide all cards
+                cards.forEach(card => {
+                    card.classList.remove('active-card');
+                });
+                
+                // Show the selected card
+                if (cards[index]) {
+                    cards[index].classList.add('active-card');
+                }
+                
+                // Update tabs
+                cardTabs.forEach(tab => tab.classList.remove('active'));
+                if (cardTabs[index]) {
+                    cardTabs[index].classList.add('active');
+                }
+            }
+            
+            // Add click handlers for card tabs
             cardTabs.forEach((tab) => {
                 tab.addEventListener('click', function() {
-                    // Remove active class from all tabs
-                    cardTabs.forEach(t => t.classList.remove('active'));
-                    // Add active class to clicked tab
-                    this.classList.add('active');
-                    
-                    // Get card index from data attribute
                     const cardIndex = parseInt(this.getAttribute('data-card'));
                     
-                    // Handle mobile vs desktop differently
-                    if (window.innerWidth <= 768) {
-                        // On mobile, scroll to the card
-                        scrollToCard(cardIndex);
+                    if (window.innerWidth <= 768 && body.classList.contains('single-card-mode')) {
+                        // On mobile single card mode, show only the selected card
+                        showCard(cardIndex);
+                        
+                        // Update counter if visible
+                        if (currentCardElement) {
+                            currentCardElement.textContent = cardIndex + 1;
+                            currentIndex = cardIndex;
+                        }
                     } else {
-                        // On desktop, scroll the card into view
-                        cards[cardIndex].scrollIntoView({ 
-                            behavior: 'smooth', 
-                            block: 'nearest' 
-                        });
+                        // On desktop or all cards mode, just update the active tab
+                        cardTabs.forEach(t => t.classList.remove('active'));
+                        this.classList.add('active');
+                        
+                        // Scroll to the card if not in all cards mode
+                        if (!body.classList.contains('all-cards-mode')) {
+                            cards[cardIndex].scrollIntoView({ 
+                                behavior: 'smooth', 
+                                block: 'nearest' 
+                            });
+                        }
                     }
                 });
             });
             
-            // Only run this on mobile
+            // Mobile specific logic
             if (window.innerWidth <= 768) {
-                const container = document.querySelector('.flip-cards-container');
                 const prevArrow = document.querySelector('.prev-arrow');
                 const nextArrow = document.querySelector('.next-arrow');
                 const currentCardElement = document.getElementById('current-card');
                 const totalCardsElement = document.getElementById('total-cards');
-                const spacer = document.querySelector('.mobile-spacer');
-                let touchStartX = 0;
-                let touchEndX = 0;
                 let currentIndex = 0;
                 
-                // Show navigation
+                // Show navigation and total cards
                 document.querySelector('.carousel-nav').style.display = 'block';
-                
-                // Show total cards
                 totalCardsElement.textContent = cards.length;
                 
-                // Calculate the proper scroll position for each card
-                function calculateScrollPosition(index) {
-                    const spacerWidth = spacer.offsetWidth;
-                    const cardWidth = cards[0].offsetWidth;
-                    const cardGap = 14; // 0.7rem gap = 14px
-                    
-                    // Account for spacer width for the first card
-                    return spacerWidth + (index * (cardWidth + cardGap));
-                }
+                // Show the first card initially
+                showCard(0);
+                currentCardElement.textContent = 1;
                 
-                // Initialize to first card with a small delay to ensure layout is complete
-                setTimeout(() => {
-                    scrollToCard(0);
-                    updateCardCounter(0);
-                }, 100);
+                // Arrow navigation with circular pattern
+                prevArrow.addEventListener('click', function() {
+                    if (body.classList.contains('single-card-mode')) {
+                        const newIndex = currentIndex <= 0 ? cards.length - 1 : currentIndex - 1;
+                        showCard(newIndex);
+                        currentCardElement.textContent = newIndex + 1;
+                        currentIndex = newIndex;
+                    }
+                });
                 
-                // Add scroll event listener to container
-                container.addEventListener('scroll', function() {
-                    // Find which card is most visible
-                    const scrollPosition = container.scrollLeft;
-                    const spacerWidth = spacer.offsetWidth;
-                    const cardWidth = cards[0].offsetWidth;
-                    const cardGap = 14; // 0.7rem gap
+                nextArrow.addEventListener('click', function() {
+                    if (body.classList.contains('single-card-mode')) {
+                        const newIndex = currentIndex >= cards.length - 1 ? 0 : currentIndex + 1;
+                        showCard(newIndex);
+                        currentCardElement.textContent = newIndex + 1;
+                        currentIndex = newIndex;
+                    }
+                });
+                
+                // Swipe detection
+                let touchStartX = 0;
+                let touchEndX = 0;
+                
+                document.addEventListener('touchstart', function(e) {
+                    touchStartX = e.changedTouches[0].screenX;
+                });
+                
+                document.addEventListener('touchend', function(e) {
+                    touchEndX = e.changedTouches[0].screenX;
                     
-                    // Calculate the visible index accounting for the spacer
-                    const adjustedPosition = scrollPosition - spacerWidth;
-                    const visibleIndex = Math.round(adjustedPosition / (cardWidth + cardGap));
-                    
-                    if (visibleIndex >= 0 && visibleIndex < cards.length) {
-                        updateCardCounter(visibleIndex);
-                        
-                        // Update active tab
-                        cardTabs.forEach(t => t.classList.remove('active'));
-                        if (cardTabs[visibleIndex]) {
-                            cardTabs[visibleIndex].classList.add('active');
+                    // Process swipe if it's significant and in single card mode
+                    if (body.classList.contains('single-card-mode')) {
+                        const swipeDistance = touchEndX - touchStartX;
+                        if (Math.abs(swipeDistance) > 50) {
+                            if (swipeDistance > 0) {
+                                // Right swipe (previous)
+                                const newIndex = currentIndex <= 0 ? cards.length - 1 : currentIndex - 1;
+                                showCard(newIndex);
+                                currentCardElement.textContent = newIndex + 1;
+                                currentIndex = newIndex;
+                            } else {
+                                // Left swipe (next)
+                                const newIndex = currentIndex >= cards.length - 1 ? 0 : currentIndex + 1;
+                                showCard(newIndex);
+                                currentCardElement.textContent = newIndex + 1;
+                                currentIndex = newIndex;
+                            }
                         }
                     }
                 });
                 
-                // Add click listeners to arrow buttons with circular navigation
-                prevArrow.addEventListener('click', function() {
-                    // Go to the last card if at the first card, otherwise go to previous
-                    const newIndex = currentIndex <= 0 ? cards.length - 1 : currentIndex - 1;
-                    scrollToCard(newIndex);
-                });
-                
-                nextArrow.addEventListener('click', function() {
-                    // Go to the first card if at the last card, otherwise go to next
-                    const newIndex = currentIndex >= cards.length - 1 ? 0 : currentIndex + 1;
-                    scrollToCard(newIndex);
-                });
-                
-                // Add touch event listeners for flip on mobile
-                cards.forEach((card, index) => {
-                    // Make each card go to its correct position when clicked directly
+                // Add tap to flip functionality
+                cards.forEach(card => {
                     card.addEventListener('click', function(e) {
-                        // Don't flip if we're swiping or clicking a button
-                        if (Math.abs(touchEndX - touchStartX) < 5 && !e.target.closest('a')) {
+                        if (!e.target.closest('a')) {
                             const cardInner = this.querySelector('.flip-card-inner');
                             cardInner.style.transform = cardInner.style.transform === 'rotateY(180deg)' ? 
                                 'rotateY(0deg)' : 'rotateY(180deg)';
                         }
                     });
-                    
-                    // Track touch start
-                    card.addEventListener('touchstart', function(e) {
-                        touchStartX = e.changedTouches[0].screenX;
-                    });
-                    
-                    // Track touch end
-                    card.addEventListener('touchend', function(e) {
-                        touchEndX = e.changedTouches[0].screenX;
-                        
-                        // Add swipe handling with circular navigation
-                        const swipeDistance = touchEndX - touchStartX;
-                        if (Math.abs(swipeDistance) > 50) { // Threshold for swipe detection
-                            if (swipeDistance > 0) { // Right swipe (previous)
-                                const newIndex = currentIndex <= 0 ? cards.length - 1 : currentIndex - 1;
-                                scrollToCard(newIndex);
-                            } else { // Left swipe (next)
-                                const newIndex = currentIndex >= cards.length - 1 ? 0 : currentIndex + 1;
-                                scrollToCard(newIndex);
-                            }
-                        }
-                    });
                 });
-                
-                function updateCardCounter(index) {
-                    if (index >= 0 && index < cards.length) {
-                        currentCardElement.textContent = index + 1;
-                        currentIndex = index;
-                    }
-                }
-                
-                function scrollToCard(index) {
-                    if (index >= 0 && index < cards.length) {
-                        const position = calculateScrollPosition(index);
-                        container.scrollTo({
-                            left: position,
-                            behavior: 'smooth'
-                        });
-                        updateCardCounter(index);
-                        
-                        // Update active tab when scrolling programmatically
-                        cardTabs.forEach(t => t.classList.remove('active'));
-                        if (cardTabs[index]) {
-                            cardTabs[index].classList.add('active');
-                        }
-                    }
-                }
             }
         });
     </script>
