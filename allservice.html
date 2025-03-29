@@ -69,7 +69,7 @@
             flex-wrap: wrap;
             justify-content: center;
             gap: 2rem;
-            max-width: 1200px;
+            max-width: 1000px;
             margin: 2rem auto;
             padding: 0 1rem;
             position: relative;
@@ -389,6 +389,7 @@
             .flip-cards-container {
                 display: block;
                 position: relative;
+                max-width: 90%;
                 margin: 0.7rem auto;
                 padding: 0.5rem;
                 overflow: visible;
@@ -397,7 +398,7 @@
             .flip-card {
                 width: 100%;
                 min-width: auto;
-                height: 320px;
+                height: 380px;
                 margin: 0 auto;
                 perspective: 1500px;
                 display: none; /* Hide all cards by default */
@@ -423,6 +424,14 @@
                 width: 100%;
                 height: 100%;
                 overflow: hidden;
+                box-sizing: border-box; /* Ensure padding doesn't affect size */
+            }
+            
+            /* Override hover transforms for mobile */
+            @media (max-width: 768px) {
+                .flip-card:hover .flip-card-inner {
+                    transform: rotateY(180deg) scale(1) !important; /* Force no scaling on mobile */
+                }
             }
             
             .flip-card-front h2 {
@@ -432,10 +441,6 @@
             
             .flip-card-front .title-container {
                 padding: 0.7rem 0;
-            }
-            
-            .flip-card-back {
-                padding: 1.5rem;
             }
             
             .flip-card-back h3 {
@@ -547,7 +552,7 @@
             .single-card-mode .flip-card {
                 width: 100%;
                 min-width: auto;
-                height: 320px;
+                height: 380px;
                 margin: 0 auto;
                 perspective: 1500px;
                 display: none; /* Hide all cards by default */
@@ -679,17 +684,6 @@
         
         .flip-card-back li:hover {
             transform: translateX(5px);
-        }
-
-        /* Card reset animation for mobile */
-        @keyframes card-reset {
-            0% { transform: scale(1); }
-            50% { transform: scale(0.92); }
-            100% { transform: scale(1); }
-        }
-        
-        .card-reset-animation {
-            animation: card-reset 0.5s ease-in-out forwards;
         }
     </style>
 </head>
@@ -987,25 +981,15 @@
                     }
                 });
                 
-                // Add tap to flip functionality with reset animation
+                // Add tap to flip functionality with consistent sizing
                 cards.forEach(card => {
                     card.addEventListener('click', function(e) {
                         if (!e.target.closest('a')) {
                             const cardInner = this.querySelector('.flip-card-inner');
                             
-                            // If currently flipped, add reset animation when flipping back
+                            // Simple 180-degree rotation without scaling
                             if (cardInner.style.transform === 'rotateY(180deg)') {
                                 cardInner.style.transform = 'rotateY(0deg)';
-                                
-                                // Add reset animation class after flip completes
-                                setTimeout(() => {
-                                    cardInner.classList.add('card-reset-animation');
-                                    
-                                    // Remove the animation class after it completes
-                                    setTimeout(() => {
-                                        cardInner.classList.remove('card-reset-animation');
-                                    }, 500);
-                                }, 400);
                             } else {
                                 cardInner.style.transform = 'rotateY(180deg)';
                             }
