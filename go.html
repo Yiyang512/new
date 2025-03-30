@@ -36,8 +36,8 @@
             width: 100%;
             height: 90px;
             background-color: transparent;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
             position: relative;
             display: flex;
             align-items: center;
@@ -55,6 +55,7 @@
             height: 100%;
             background-color: transparent;
             z-index: 0;
+            display: none;
         }
         
         .banner-bg {
@@ -146,10 +147,10 @@
         .text-section {
             display: flex;
             align-items: center;
-            background: var(--highlight-light);
+            background: transparent;
             border-radius: 28px;
             padding: 8px 18px 8px 8px;
-            border: 1px solid var(--highlight-light);
+            border: 1px solid transparent;
             transition: transform 0.3s ease;
         }
         
