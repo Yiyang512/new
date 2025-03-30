@@ -1022,6 +1022,91 @@
       border-radius: 4px;
     }
 
+    /* Navigation tabs above pricing cards */
+    .pricing-tabs {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 44px;
+      width: 100%;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .pricing-tab {
+      padding: 10px 20px;
+      background: rgba(255, 255, 255, 0.05);
+      color: rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      margin: 0 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      position: relative;
+      overflow: display;
+    }
+    
+    .pricing-tab.active {
+      background: rgba(0, 255, 179, 0.1);
+      color: #00FFB3;
+      border-color: rgba(0, 255, 179, 0.3);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 255, 179, 0.2);
+    }
+    
+    .pricing-tab:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+    }
+    
+    .pricing-tab.active:hover {
+      background: rgba(0, 255, 179, 0.15);
+    }
+    
+    .pricing-tab .tab-badge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: #ff4757;
+      color: white;
+      font-size: 0.6rem;
+      padding: 2px 6px;
+      border-radius: 10px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    
+    @media (max-width: 600px) {
+      .pricing-tabs {
+        margin-bottom: 16px;
+      }
+      
+      .pricing-tab {
+        padding: 8px 16px;
+        font-size: 0.8rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .pricing-tabs {
+        margin-bottom: 12px;
+      }
+      
+      .pricing-tab {
+        padding: 6px 12px;
+        font-size: 0.7rem;
+        margin: 0 5px;
+      }
+      
+      .pricing-tab .tab-badge {
+        font-size: 0.5rem;
+        padding: 1px 4px;
+      }
+    }
+
     /* Next card indicator */
     .next-card-arrow {
       position: absolute;
@@ -1112,6 +1197,17 @@
         </div>
       </div>
     </div>
+    
+    <div class="pricing-tabs">
+      <div class="pricing-tab active" data-index="0">
+        Bundle A (A0-A2)
+        <span class="tab-badge">Popular</span>
+      </div>
+      <div class="pricing-tab" data-index="1">
+        Bundle B (A0-B2)
+      </div>
+    </div>
+    
     <div class="pricing-grid">
       <div class="swipe-hint">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
@@ -1402,6 +1498,7 @@
       const pricingGrid = document.querySelector('.pricing-grid');
       const dots = document.querySelectorAll('.mobile-dot');
       const swipeHint = document.querySelector('.swipe-hint');
+      const pricingTabs = document.querySelectorAll('.pricing-tab');
       let autoSlideInterval;
       let slidingForward = true;
       let userInteracted = false;
@@ -1410,7 +1507,40 @@
         // Hide swipe hint once user interacts with the cards
         let hasInteracted = false;
         
-        // Update active dot based on scroll position
+        // Tab navigation functionality
+        pricingTabs.forEach((tab) => {
+          tab.addEventListener('click', function() {
+            // Mark as interacted
+            userInteracted = true;
+            hasInteracted = true;
+            clearInterval(autoSlideInterval);
+            
+            // Update active tab
+            pricingTabs.forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Scroll to the corresponding card
+            const index = parseInt(this.getAttribute('data-index'));
+            const cardWidth = pricingGrid.querySelector('.pricing-card').offsetWidth;
+            
+            pricingGrid.scrollTo({
+              left: index * cardWidth,
+              behavior: 'smooth'
+            });
+            
+            setActiveDot(index);
+            
+            // Hide swipe hint when tabs are clicked
+            if (swipeHint) {
+              swipeHint.style.opacity = '0';
+              setTimeout(() => {
+                swipeHint.style.display = 'none';
+              }, 500);
+            }
+          });
+        });
+        
+        // Update tab and dot based on scroll position
         pricingGrid.addEventListener('scroll', function() {
           const scrollPosition = pricingGrid.scrollLeft;
           const cardWidth = pricingGrid.querySelector('.pricing-card').offsetWidth;
@@ -1428,11 +1558,13 @@
             }
           }
           
-          // Determine which card is most visible
+          // Determine which card is most visible and update tabs
           if (scrollPosition < scrollThreshold) {
             setActiveDot(0);
+            setActiveTab(0);
           } else {
             setActiveDot(1);
+            setActiveTab(1);
           }
         });
         
@@ -1485,18 +1617,20 @@
                 behavior: 'smooth'
               });
               setActiveDot(1);
+              setActiveTab(1);
             } else {
               pricingGrid.scrollTo({
                 left: 0,
                 behavior: 'smooth'
               });
               setActiveDot(0);
+              setActiveTab(0);
             }
-          }, 4000); // Change slide every 4 seconds
+          }, 500); // Change slide every 4 seconds
         }
         
         // Start auto-sliding after 2 seconds
-        setTimeout(startAutoSlide, 2000);
+        setTimeout(startAutoSlide, 500);
         
         // Click on dots to navigate
         dots.forEach((dot, index) => {
@@ -1510,6 +1644,7 @@
               behavior: 'smooth'
             });
             setActiveDot(index);
+            setActiveTab(index);
             
             // Hide swipe hint after user clicks on dots
             if (!hasInteracted) {
@@ -1530,6 +1665,16 @@
               dot.classList.add('active');
             } else {
               dot.classList.remove('active');
+            }
+          });
+        }
+        
+        function setActiveTab(index) {
+          pricingTabs.forEach((tab, i) => {
+            if (i === index) {
+              tab.classList.add('active');
+            } else {
+              tab.classList.remove('active');
             }
           });
         }
