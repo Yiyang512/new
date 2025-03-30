@@ -29,7 +29,8 @@
         body, html {
             margin: 0;
             padding: 0;
-            overflow-x: hidden;
+            overflow: visible;
+            height: auto;
         }
         
         body {
@@ -42,10 +43,8 @@
         .comparison-section {
             padding: 0;
             position: relative;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            min-height: auto;
+            display: block;
         }
         
         .grid-background {
@@ -113,7 +112,7 @@
             width: 100%;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 20px 20px 0;
             position: relative;
             z-index: 2;
         }
@@ -259,7 +258,7 @@
         
         /* Exclusive features section styles */
         .exclusive-features-section {
-            margin-top: 0;
+            margin-top: 20px;
             margin-bottom: 50px;
             background: rgba(10, 25, 15, 0.7);
             border-radius: 15px;
@@ -942,7 +941,17 @@
             // Scroll to top on page load to ensure no gap at the top
             window.scrollTo(0, 0);
             
-            // Any JavaScript functionality can be added here
+            // Send the height to parent frame for proper sizing
+            function sendHeight() {
+                const height = document.body.scrollHeight;
+                if (window.parent && window.parent !== window) {
+                    window.parent.postMessage({ type: 'resize', height: height }, '*');
+                }
+            }
+            
+            // Send height after load and after any resize
+            sendHeight();
+            window.addEventListener('resize', sendHeight);
         });
     </script>
 </body>
