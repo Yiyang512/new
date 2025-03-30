@@ -26,16 +26,21 @@
             box-sizing: border-box;
         }
         
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        
         body {
             font-family: 'Poppins', sans-serif;
             background-color: var(--dark-bg);
             color: var(--text-light);
             line-height: 1.6;
-            overflow-x: hidden;
         }
         
         .comparison-section {
-            padding: 70px 0;
+            padding: 0;
             position: relative;
             min-height: 100vh;
             display: flex;
@@ -44,7 +49,7 @@
         }
         
         .grid-background {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
@@ -58,7 +63,7 @@
         }
         
         .shining-dots {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
@@ -105,11 +110,12 @@
         }
         
         .container {
+            width: 100%;
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
             position: relative;
-            z-index: 1;
+            z-index: 2;
         }
         
         .comparison-title {
@@ -117,14 +123,16 @@
             font-size: 3rem;
             color: var(--accent-color);
             margin-bottom: 15px;
+            margin-top: 0;
             font-weight: 600;
             text-shadow: 0 0 20px rgba(0, 255, 155, 0.3);
         }
         
         .comparison-subtitle {
             text-align: center;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             color: var(--text-light);
+            margin-top: 0;
             margin-bottom: 40px;
             font-weight: 300;
             max-width: 800px;
@@ -251,6 +259,7 @@
         
         /* Exclusive features section styles */
         .exclusive-features-section {
+            margin-top: 0;
             margin-bottom: 50px;
             background: rgba(10, 25, 15, 0.7);
             border-radius: 15px;
@@ -923,13 +932,16 @@
                 </table>
             </div>
             
-            <p class="table-note">Note: This comparison is based on typical features available on popular language learning platforms as of 2023.</p>
+            <p class="table-note">Note: This comparison is based on typical features available on popular language learning platforms as of 2025.</p>
         </div>
     </section>
     
     <script>
         // Script to handle table responsiveness if needed
         document.addEventListener('DOMContentLoaded', function() {
+            // Scroll to top on page load to ensure no gap at the top
+            window.scrollTo(0, 0);
+            
             // Any JavaScript functionality can be added here
         });
     </script>
