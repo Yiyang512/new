@@ -12,10 +12,10 @@
             --accent-color: #00FF9B;
             --accent-color-dark: #00CC7A;
             --accent-glow: rgba(0, 255, 155, 0.15);
-            --dark-bg: rgba(0, 22, 8, 0.8);
+            --dark-bg: rgba(0, 0, 0, 0);
             --text-light: #ffffff;
             --border-light: rgba(0, 255, 155, 0.15);
-            --highlight-light: rgba(255, 255, 255, 0.03);
+            --highlight-light: rgba(255, 255, 255, 0.05);
         }
         
         * {
@@ -34,7 +34,7 @@
         
         .hemiya-banner {
             width: 100%;
-            height: 68px;
+            height: 90px;
             background-color: transparent;
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
@@ -42,9 +42,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border-bottom: 1px solid var(--border-light);
+            border-bottom: none;
             overflow: hidden;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+            box-shadow: none;
         }
         
         .banner-backdrop {
@@ -53,7 +53,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: var(--dark-bg);
+            background-color: transparent;
             z-index: 0;
         }
         
@@ -82,13 +82,13 @@
         
         .dot {
             position: absolute;
-            width: 2px;
-            height: 2px;
+            width: 4px;
+            height: 4px;
             background-color: var(--accent-color);
             border-radius: 50%;
             opacity: 0;
             animation: dot-shine 4s infinite cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 0 4px 1px var(--accent-glow);
+            box-shadow: 0 0 8px 3px var(--accent-glow);
         }
         
         .dot:nth-child(1) { top: 30%; left: 15%; animation-delay: 0s; }
@@ -109,15 +109,15 @@
         }
         
         .avatar-container {
-            width: 42px;
-            height: 42px;
+            width: 84px;
+            height: 84px;
             border-radius: 50%;
             overflow: hidden;
-            border: 1.5px solid var(--accent-color);
-            margin-right: 16px;
+            border: 2.5px solid var(--accent-color);
+            margin-right: 20px;
             flex-shrink: 0;
             background-color: rgba(0, 255, 155, 0.03);
-            box-shadow: 0 0 12px rgba(0, 255, 155, 0.25);
+            box-shadow: 0 0 18px rgba(0, 255, 155, 0.35);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         
@@ -137,8 +137,8 @@
             align-items: center;
             justify-content: space-between;
             width: 100%;
-            max-width: 1140px;
-            padding: 0 24px;
+            max-width: 1200px;
+            padding: 0 30px;
             position: relative;
             z-index: 2;
         }
@@ -147,8 +147,8 @@
             display: flex;
             align-items: center;
             background: var(--highlight-light);
-            border-radius: 24px;
-            padding: 6px 14px 6px 6px;
+            border-radius: 28px;
+            padding: 8px 18px 8px 8px;
             border: 1px solid var(--highlight-light);
             transition: transform 0.3s ease;
         }
@@ -159,9 +159,9 @@
         
         .banner-text {
             color: var(--text-light);
-            font-size: 0.9rem;
+            font-size: 2.1rem;
             font-weight: 500;
-            max-width: 600px;
+            max-width: 850px;
             letter-spacing: 0.3px;
             line-height: 1.4;
         }
@@ -170,15 +170,15 @@
             background: linear-gradient(135deg, var(--accent-color), var(--accent-color-dark));
             color: rgba(0, 22, 8, 0.95);
             border: none;
-            padding: 7px 20px;
-            border-radius: 22px;
+            padding: 10px 26px;
+            border-radius: 28px;
             font-weight: 600;
-            font-size: 0.82rem;
+            font-size: 1.3rem;
             cursor: pointer;
             transition: all 0.3s ease;
             text-decoration: none;
             white-space: nowrap;
-            box-shadow: 0 4px 10px rgba(0, 255, 155, 0.2);
+            box-shadow: 0 4px 15px rgba(0, 255, 155, 0.3);
             letter-spacing: 0.4px;
             display: flex;
             align-items: center;
@@ -241,51 +241,51 @@
         /* Responsive adjustments */
         @media (max-width: 768px) {
             .banner-content {
-                padding: 0 16px;
+                padding: 0 24px;
             }
             
             .banner-text {
-                font-size: 0.85rem;
+                font-size: 1.05rem;
             }
         }
         
         @media (max-width: 576px) {
             .hemiya-banner {
                 height: auto;
-                padding: 12px 0;
+                padding: 18px 0;
             }
             
             .banner-content {
                 flex-direction: column;
                 text-align: center;
-                gap: 10px;
-                padding: 8px;
+                gap: 16px;
+                padding: 12px;
             }
             
             .banner-text {
-                margin: 3px 0 0;
-                font-size: 0.8rem;
+                margin: 5px 0 0;
+                font-size: 1rem;
             }
             
             .avatar-container {
-                margin-right: 10px;
-                width: 36px;
-                height: 36px;
+                margin-right: 14px;
+                width: 78px;
+                height: 78px;
             }
             
             .text-section {
-                padding: 4px 12px 4px 4px;
+                padding: 6px 16px 6px 6px;
                 width: 100%;
                 justify-content: center;
-                border-radius: 20px;
+                border-radius: 24px;
             }
             
             .banner-button {
-                padding: 6px 16px;
-                font-size: 0.75rem;
-                border-radius: 18px;
+                padding: 9px 20px;
+                font-size: 0.95rem;
+                border-radius: 24px;
                 width: 100%;
-                max-width: 180px;
+                max-width: 220px;
             }
         }
     </style>
