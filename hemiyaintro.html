@@ -34,7 +34,7 @@
             padding: 70px 0;
             position: relative;
         }
-        
+
         .grid-background {
             position: absolute;
             top: 0;
@@ -99,7 +99,7 @@
             75% { transform: scale(2.5); opacity: 0.8; }
             100% { transform: scale(1); opacity: 0; }
         }
-
+        
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -142,7 +142,7 @@
             border: 1px solid rgba(0, 255, 155, 0.2);
             position: relative;
         }
-
+        
         .hemiya-text::before {
             content: "";
             position: absolute;
@@ -198,85 +198,8 @@
             display: grid;
             grid-template-rows: 1fr 1fr;
             gap: 20px;
-            position: relative;
         }
         
-        .connector {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 2;
-            pointer-events: none;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .connector-dot {
-            width: 6px;
-            height: 6px;
-            background: var(--accent-color);
-            border-radius: 50%;
-            animation: dotPulse 2s ease-in-out infinite;
-        }
-
-        .connector-dot:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-
-        .connector-dot:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-
-        @keyframes dotPulse {
-            0%, 100% {
-                transform: scale(1);
-                opacity: 0.5;
-            }
-            50% {
-                transform: scale(1.5);
-                opacity: 1;
-                box-shadow: 0 0 10px var(--accent-color);
-            }
-        }
-
-        .connector::before, .connector::after {
-            content: '';
-            position: absolute;
-            width: 20px;
-            height: 2px;
-            background: var(--accent-color);
-            opacity: 0.6;
-        }
-
-        .connector::before {
-            transform: translateY(-10px);
-            animation: lineSlide 2s ease-in-out infinite;
-        }
-
-        .connector::after {
-            transform: translateY(10px);
-            animation: lineSlide 2s ease-in-out infinite reverse;
-        }
-
-        @keyframes lineSlide {
-            0%, 100% {
-                transform: translateY(-10px) scaleX(0.8);
-                opacity: 0.4;
-            }
-            50% {
-                transform: translateY(-10px) scaleX(1.2);
-                opacity: 0.8;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .connector {
-                transform: translate(-50%, -50%) scale(0.8);
-            }
-        }
-
         .image-container {
             position: relative;
             overflow: hidden;
@@ -290,69 +213,14 @@
             transition: all 0.3s ease;
             cursor: pointer;
         }
-
-        .image-container.writing {
-            animation: containerPulse 4s ease-in-out infinite;
-            animation-delay: 0s;
-        }
-
-        .image-container.speaking {
-            animation: containerPulse 4s ease-in-out infinite;
-            animation-delay: 2s;
-        }
-        
-        @keyframes containerPulse {
-            0%, 50%, 100% {
-                box-shadow: 0 0 0 rgba(0, 255, 155, 0);
-                transform: translateY(0);
-            }
-            25% {
-                box-shadow: 0 0 30px rgba(0, 255, 155, 0.3);
-                transform: translateY(-3px);
-            }
-        }
         
         .image-container:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 20px rgba(0, 255, 155, 0.2);
-            animation-play-state: paused;
         }
 
         .image-container:hover .image-overlay {
             opacity: 1;
-        }
-
-        .image-container::after {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            border-radius: 16px;
-            background: linear-gradient(45deg, transparent, rgba(0, 255, 155, 0.1), transparent);
-            z-index: 0;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .image-container.writing::after {
-            animation: borderGlow 4s ease-in-out infinite;
-            animation-delay: 0s;
-        }
-
-        .image-container.speaking::after {
-            animation: borderGlow 4s ease-in-out infinite;
-            animation-delay: 2s;
-        }
-
-        @keyframes borderGlow {
-            0%, 50%, 100% {
-                opacity: 0;
-            }
-            25% {
-                opacity: 1;
-            }
         }
         
         .image-container img {
@@ -447,160 +315,19 @@
         
         @media (max-width: 768px) {
             .hemiya-title {
-                font-size: 2rem;
-                margin-bottom: 5px;
+                font-size: 2.2rem;
             }
             
             .hemiya-subtitle {
                 font-size: 1.2rem;
-                margin-bottom: 15px;
             }
 
             .try-free-text {
-                font-size: 1.1rem;
+                font-size: 1.2rem;
             }
 
             .click-tip {
-                font-size: 0.7rem;
-            }
-
-            .hemiya-section {
-                padding: 15px 0;
-            }
-
-            .hemiya-text {
-                padding: 15px;
                 font-size: 0.8rem;
-            }
-
-            .hemiya-content {
-                gap: 15px;
-            }
-
-            .feature-item {
-                margin-bottom: 8px;
-                padding: 5px 0;
-            }
-
-            .feature-icon {
-                width: 28px;
-                height: 28px;
-                min-width: 28px;
-                margin-right: 8px;
-            }
-
-            .feature-icon svg {
-                width: 14px;
-                height: 14px;
-            }
-
-            .feature-text h3 {
-                font-size: 0.8rem;
-                margin-bottom: 1px;
-            }
-
-            .feature-text p {
-                font-size: 0.7rem;
-                line-height: 1.3;
-                margin-top: 2px;
-            }
-
-            .image-container {
-                aspect-ratio: 16/6;
-                border-radius: 10px;
-            }
-
-            .image-label {
-                padding: 5px 8px;
-                font-size: 0.75rem;
-            }
-
-            .hemiya-features {
-                margin: 10px 0;
-            }
-
-            .container {
-                padding: 0 10px;
-            }
-
-            .floating-element {
-                display: none;
-            }
-
-            .connector {
-                transform: translate(-50%, -50%) scale(0.6);
-            }
-
-            .hemiya-images {
-                gap: 12px;
-            }
-
-            .image-overlay {
-                padding: 10px;
-            }
-
-            .grid-background {
-                background-size: 20px 20px;
-            }
-
-            .dot {
-                width: 4px;
-                height: 4px;
-            }
-
-            .shining-dots {
-                display: none;
-            }
-
-            .image-container::after {
-                border-radius: 11px;
-            }
-
-            @keyframes containerPulse {
-                0%, 50%, 100% {
-                    box-shadow: 0 0 0 rgba(0, 255, 155, 0);
-                transform: translateY(0);
-                }
-                25% {
-                    box-shadow: 0 0 15px rgba(0, 255, 155, 0.2);
-                    transform: translateY(-2px);
-                }
-            }
-
-            .image-container:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 5px 15px rgba(0, 255, 155, 0.15);
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .hemiya-title {
-                font-size: 2.1rem;
-            }
-
-            .hemiya-subtitle {
-                font-size: 1.1rem;
-                margin-bottom: 12px;
-            }
-
-            .hemiya-section {
-                padding: 12px 0;
-            }
-
-            .hemiya-content {
-                gap: 12px;
-            }
-
-            .image-container {
-                aspect-ratio: 16/5;
-            }
-
-            .connector {
-                transform: translate(-50%, -50%) scale(0.5);
-            }
-
-            .feature-item {
-                margin-bottom: 6px;
             }
         }
         
@@ -616,7 +343,7 @@
             }
             
             .hemiya-subtitle {
-                font-size: 1.1rem;
+                font-size: 1.2rem;
                 margin-bottom: 30px;
             }
             
@@ -659,190 +386,6 @@
             
             .image-container {
                 aspect-ratio: 16/9;
-            }
-        }
-
-        /* Desktop/Laptop enhancements */
-        @media (min-width: 1200px) {
-            .hemiya-title {
-                font-size: 4rem;
-                margin-bottom: 25px;
-                text-shadow: 0 0 30px rgba(0, 255, 155, 0.4);
-            }
-            
-            .hemiya-subtitle {
-                font-size: 1.6rem;
-                margin-bottom: 50px;
-                max-width: 800px;
-            }
-
-            .hemiya-section {
-                padding: 100px 0;
-            }
-
-            .hemiya-content {
-                gap: 60px;
-            }
-
-            .hemiya-text {
-                padding: 40px;
-                font-size: 1.1rem;
-            }
-
-            .feature-item {
-                margin-bottom: 30px;
-                padding: 10px;
-                transform: translateX(0);
-                transition: transform 0.3s ease;
-            }
-
-            .feature-item:hover {
-                transform: translateX(10px);
-            }
-
-            .feature-icon {
-                width: 60px;
-                height: 60px;
-                min-width: 60px;
-                margin-right: 20px;
-            }
-
-            .feature-icon svg {
-                width: 30px;
-                height: 30px;
-            }
-
-            .feature-text h3 {
-                font-size: 1.4rem;
-                margin-bottom: 8px;
-            }
-
-            .feature-text p {
-                font-size: 1.1rem;
-                line-height: 1.6;
-            }
-
-            .hemiya-images {
-                gap: 30px;
-            }
-
-            .image-container {
-                aspect-ratio: 16/9;
-                border-radius: 20px;
-                border-width: 2px;
-            }
-
-            .image-container::after {
-                border-radius: 22px;
-            }
-
-            .image-label {
-                padding: 15px 20px;
-                font-size: 1.2rem;
-            }
-
-            .try-free-text {
-                font-size: 2rem;
-                margin-bottom: 15px;
-            }
-
-            .click-tip {
-                font-size: 1.1rem;
-            }
-
-            .connector {
-                transform: translate(-50%, -50%) scale(1.2);
-            }
-
-            .connector-dot {
-                width: 8px;
-                height: 8px;
-            }
-
-            @keyframes containerPulse {
-                0%, 50%, 100% {
-                    box-shadow: 0 0 0 rgba(0, 255, 155, 0);
-                    transform: translateY(0);
-                }
-                25% {
-                    box-shadow: 0 0 50px rgba(0, 255, 155, 0.4);
-                    transform: translateY(-5px);
-                }
-            }
-
-            .image-container:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 15px 30px rgba(0, 255, 155, 0.3);
-            }
-
-            .grid-background {
-                background-size: 50px 50px;
-            }
-
-            .dot {
-                width: 3px;
-                height: 3px;
-            }
-
-            .floating-element.element-1 {
-                width: 250px;
-                height: 250px;
-            }
-
-            .floating-element.element-2 {
-                width: 180px;
-                height: 180px;
-            }
-        }
-
-        /* Extra large screens */
-        @media (min-width: 1600px) {
-            .container {
-                max-width: 1400px;
-            }
-
-            .hemiya-title {
-                font-size: 4.5rem;
-            }
-
-            .hemiya-subtitle {
-                font-size: 1.8rem;
-                max-width: 900px;
-            }
-
-            .hemiya-content {
-                gap: 80px;
-            }
-
-            .feature-icon {
-                width: 70px;
-                height: 70px;
-                min-width: 70px;
-            }
-
-            .feature-icon svg {
-                width: 35px;
-                height: 35px;
-            }
-
-            .feature-text h3 {
-                font-size: 1.6rem;
-            }
-
-            .feature-text p {
-                font-size: 1.2rem;
-            }
-
-            .try-free-text {
-                font-size: 2.2rem;
-            }
-
-            .click-tip {
-                font-size: 1.2rem;
-            }
-
-            .connector {
-                transform: translate(-50%, -50%) scale(1.4);
             }
         }
     </style>
@@ -900,9 +443,9 @@
                             <div class="feature-text">
                                 <h3>Speaking Practice</h3>
                                 <p>Real-time pronunciation feedback and conversation practice in a judgment-free environment.</p>
-                </div>
-            </div>
-            
+                            </div>
+                        </div>
+                        
                         <div class="feature-item">
                             <div class="feature-icon">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -917,10 +460,10 @@
                             </div>
                         </div>
                     </div>
-            </div>
-            
+                </div>
+                
                 <div class="hemiya-images">
-                    <a href="https://simplefrenchwithhems.com/writing-test" class="image-container writing" target="_blank" rel="noopener noreferrer">
+                    <a href="https://simplefrenchwithhems.com/writing-test" class="image-container" target="_blank" rel="noopener noreferrer">
                         <img src="https://yiyang512.github.io/new/write.jpg" alt="Hemiya Writing Assistant">
                         <div class="image-overlay">
                             <div class="try-free-text">Try Writing Assistant✨</div>
@@ -929,13 +472,7 @@
                         <div class="image-label">Try Writing Assistant for FREE⚡</div>
                     </a>
                     
-                    <div class="connector">
-                        <div class="connector-dot"></div>
-                        <div class="connector-dot"></div>
-                        <div class="connector-dot"></div>
-                    </div>
-                    
-                    <a href="https://simplefrenchwithhems.com/hemiya-speaking-test" class="image-container speaking" target="_blank" rel="noopener noreferrer">
+                    <a href="https://simplefrenchwithhems.com/hemiya-speaking-test" class="image-container" target="_blank" rel="noopener noreferrer">
                         <img src="https://yiyang512.github.io/new/speak.jpg" alt="Hemiya Speaking Assistant">
                         <div class="image-overlay">
                             <div class="try-free-text">Try Speaking Assistant✨</div>
@@ -945,12 +482,12 @@
                     </a>
                 </div>
             </div>
-            </div>
-        </section>
+        </div>
+    </section>
     
     <script>
         // Check if page is in iframe
-                if (window.self !== window.top) {
+        if (window.self !== window.top) {
             document.documentElement.classList.add('in-iframe');
             
             // Send page height to parent
@@ -968,4 +505,4 @@
         }
     </script>
 </body>
-</html> 
+</html>
