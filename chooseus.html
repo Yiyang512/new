@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple French with Hems - Comparison</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent-color: #00FF9B;
+            --accent-color-dark: #00CC7A;
+            --dark-bg: #001102;
+            --grid-color: rgba(0, 255, 155, 0.2);
+            --text-light: #ffffff;
+            --card-bg: rgba(10, 25, 15, 0.8);
+            --header-bg: rgba(0, 25, 10, 0.9);
+            --row-hover: rgba(0, 255, 155, 0.1);
+            --border-light: rgba(0, 255, 155, 0.2);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .comparison-section {
+            padding: 70px 0;
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .grid-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(var(--grid-color) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.3;
+            pointer-events: none;
+            z-index: 0;
+            animation: dots-shine 8s infinite alternate;
+        }
+        
+        .shining-dots {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .dot {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+            opacity: 0;
+            animation: dot-shine 3s infinite ease-in-out;
+        }
+        
+        .dot:nth-child(1) { top: 10%; left: 20%; animation-delay: 0s; }
+        .dot:nth-child(2) { top: 25%; left: 80%; animation-delay: 0.7s; }
+        .dot:nth-child(3) { top: 60%; left: 45%; animation-delay: 1.4s; }
+        .dot:nth-child(4) { top: 75%; left: 10%; animation-delay: 2.1s; }
+        .dot:nth-child(5) { top: 40%; left: 30%; animation-delay: 2.8s; }
+        .dot:nth-child(6) { top: 80%; left: 70%; animation-delay: 3.5s; }
+        .dot:nth-child(7) { top: 30%; left: 60%; animation-delay: 4.2s; }
+        .dot:nth-child(8) { top: 70%; left: 85%; animation-delay: 4.9s; }
+        .dot:nth-child(9) { top: 15%; left: 40%; animation-delay: 5.6s; }
+        .dot:nth-child(10) { top: 50%; left: 15%; animation-delay: 6.3s; }
+        .dot:nth-child(11) { top: 20%; left: 90%; animation-delay: 7.0s; }
+        .dot:nth-child(12) { top: 85%; left: 65%; animation-delay: 7.7s; }
+        
+        @keyframes dots-shine {
+            0% { opacity: 0.2; }
+            50% { opacity: 0.4; }
+            100% { opacity: 0.2; }
+        }
+        
+        @keyframes dot-shine {
+            0% { transform: scale(1); opacity: 0; }
+            25% { transform: scale(2); opacity: 0.7; }
+            50% { transform: scale(1.5); opacity: 0.5; }
+            75% { transform: scale(2.5); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 0; }
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .comparison-title {
+            text-align: center;
+            font-size: 3rem;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+            font-weight: 600;
+            text-shadow: 0 0 20px rgba(0, 255, 155, 0.3);
+        }
+        
+        .comparison-subtitle {
+            text-align: center;
+            font-size: 1.3rem;
+            color: var(--text-light);
+            margin-bottom: 40px;
+            font-weight: 300;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .table-wrapper {
+            background: var(--card-bg);
+            border-radius: 15px;
+            border: 1px solid var(--border-light);
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+        
+        .table-wrapper::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-color), transparent);
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .comparison-table th,
+        .comparison-table td {
+            padding: 20px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-light);
+        }
+        
+        .comparison-table th {
+            background-color: var(--header-bg);
+            font-weight: 500;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .comparison-table th:first-child {
+            width: 25%;
+        }
+        
+        .comparison-table th.hems-column {
+            color: var(--accent-color);
+        }
+        
+        .comparison-table tr:hover {
+            background-color: var(--row-hover);
+        }
+        
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .check-icon {
+            color: var(--accent-color);
+            font-size: 1.2rem;
+        }
+        
+        .x-icon {
+            color: #ff5555;
+            font-size: 1.2rem;
+        }
+        
+        .partial-icon {
+            color: #ffcc00;
+            font-size: 1.2rem;
+        }
+        
+        .feature-category {
+            font-weight: 500;
+            color: var(--accent-color);
+            font-size: 1.1rem;
+            padding-top: 30px;
+            border-bottom: 2px solid var(--accent-color-dark);
+        }
+        
+        .hems-highlight {
+            background-color: rgba(0, 255, 155, 0.05);
+        }
+        
+        .feature-name {
+            font-weight: 400;
+        }
+        
+        .table-note {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+            margin-top: 20px;
+            font-style: italic;
+        }
+        
+        .category-icon {
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        
+        /* The glowing effect for Hems column */
+        .hems-column-header {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hems-column-header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, rgba(0, 255, 155, 0.2) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        
+        /* Exclusive features section styles */
+        .exclusive-features-section {
+            margin-bottom: 50px;
+            background: rgba(10, 25, 15, 0.7);
+            border-radius: 15px;
+            border: 1px solid var(--border-light);
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+        
+        .exclusive-features-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-color), transparent);
+        }
+        
+        .exclusive-title {
+            text-align: center;
+            color: var(--accent-color);
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            position: relative;
+            font-weight: 500;
+            text-shadow: 0 0 15px rgba(0, 255, 155, 0.3);
+        }
+        
+        .exclusive-features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+        
+        .exclusive-feature {
+            background: rgba(0, 17, 2, 0.5);
+            border-radius: 12px;
+            padding: 25px;
+            position: relative;
+            border: 1px solid rgba(0, 255, 155, 0.15);
+            transition: all 0.3s ease;
+        }
+        
+        .exclusive-feature:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            border-color: rgba(0, 255, 155, 0.3);
+        }
+        
+        .exclusive-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(0, 255, 155, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            border: 1px solid rgba(0, 255, 155, 0.2);
+        }
+        
+        .exclusive-icon svg {
+            width: 25px;
+            height: 25px;
+            stroke: var(--accent-color);
+        }
+        
+        .exclusive-feature h3 {
+            color: var(--accent-color);
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        
+        .exclusive-feature p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .competitors-tag {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.7);
+            display: flex;
+            align-items: center;
+        }
+        
+        .vs-tag {
+            background: rgba(255, 87, 51, 0.3);
+            color: #ff5733;
+            padding: 3px 6px;
+            border-radius: 4px;
+            margin-right: 10px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+        
+        .competitor-note {
+            font-style: italic;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 992px) {
+            .comparison-table th:not(:first-child),
+            .comparison-table td:not(:first-child) {
+                padding: 15px 10px;
+            }
+            
+            .comparison-title {
+                font-size: 2.5rem;
+            }
+            
+            .comparison-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .exclusive-features {
+                gap: 20px;
+            }
+            
+            .exclusive-feature {
+                padding: 20px;
+            }
+            
+            .exclusive-feature h3 {
+                font-size: 1.2rem;
+            }
+            
+            .exclusive-feature p {
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .comparison-section {
+                padding: 40px 0;
+                min-height: auto;
+            }
+            
+            .comparison-title {
+                font-size: 2rem;
+            }
+            
+            .comparison-subtitle {
+                font-size: 1rem;
+                margin-bottom: 30px;
+            }
+            
+            .exclusive-features-section {
+                padding: 20px;
+                margin-bottom: 30px;
+            }
+            
+            .exclusive-title {
+                font-size: 1.5rem;
+                margin-bottom: 20px;
+            }
+            
+            .exclusive-features {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .exclusive-feature {
+                padding: 15px;
+            }
+            
+            .exclusive-icon {
+                width: 40px;
+                height: 40px;
+                margin-bottom: 10px;
+            }
+            
+            .exclusive-icon svg {
+                width: 20px;
+                height: 20px;
+            }
+            
+            .exclusive-feature h3 {
+                font-size: 1.1rem;
+                margin-bottom: 8px;
+            }
+            
+            .exclusive-feature p {
+                font-size: 0.85rem;
+                margin-bottom: 10px;
+            }
+            
+            .competitors-tag {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+            }
+            
+            .comparison-table {
+                font-size: 0.9rem;
+            }
+            
+            .comparison-table th,
+            .comparison-table td {
+                padding: 12px 8px;
+            }
+            
+            .feature-category {
+                font-size: 1rem;
+            }
+            
+            /* Mobile-optimized table view */
+            .card-view-notice {
+                display: none;
+                color: var(--accent-color);
+                text-align: center;
+                margin-bottom: 20px;
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 10px;
+            }
+            
+            .comparison-title {
+                font-size: 1.8rem;
+            }
+            
+            .comparison-subtitle {
+                font-size: 0.9rem;
+                margin-bottom: 20px;
+            }
+            
+            .comparison-table {
+                font-size: 0.8rem;
+            }
+            
+            .comparison-table th,
+            .comparison-table td {
+                padding: 10px 5px;
+            }
+            
+            .feature-category {
+                font-size: 0.9rem;
+            }
+            
+            .check-icon, .x-icon, .partial-icon {
+                font-size: 1rem;
+            }
+            
+            .table-wrapper {
+                border-radius: 10px;
+            }
+            
+            .card-view-notice {
+                display: block;
+            }
+            
+            /* Card view for mobile */
+            .comparison-table thead {
+                display: none;
+            }
+            
+            .comparison-table, 
+            .comparison-table tbody, 
+            .comparison-table tr {
+                display: block;
+                width: 100%;
+            }
+            
+            .comparison-table tr {
+                margin-bottom: 15px;
+                border-bottom: 1px solid var(--border-light);
+            }
+            
+            .comparison-table td {
+                display: block;
+                text-align: right;
+                position: relative;
+                padding-left: 50%;
+                border-bottom: 1px dotted rgba(0, 255, 155, 0.1);
+            }
+            
+            .comparison-table td:before {
+                content: attr(data-label);
+                position: absolute;
+                left: 10px;
+                top: 10px;
+                font-weight: 500;
+                text-align: left;
+                color: var(--accent-color);
+            }
+            
+            .comparison-table td:last-child {
+                border-bottom: none;
+            }
+            
+            .feature-category {
+                text-align: center !important;
+                padding: 20px 5px !important;
+                background-color: var(--header-bg);
+                border-top-left-radius: 8px;
+                border-top-right-radius: 8px;
+            }
+            
+            .hems-highlight td {
+                background-color: rgba(0, 255, 155, 0.05);
+            }
+            
+            .hems-column {
+                background-color: rgba(0, 255, 155, 0.08);
+            }
+        }
+        
+        @media (max-width: 360px) {
+            .comparison-title {
+                font-size: 1.5rem;
+            }
+            
+            .comparison-subtitle {
+                font-size: 0.8rem;
+            }
+            
+            .comparison-table td {
+                padding-left: 45%;
+                font-size: 0.75rem;
+                padding-top: 8px;
+                padding-bottom: 8px;
+            }
+            
+            .comparison-table td:before {
+                font-size: 0.75rem;
+            }
+        }
+        
+        /* Custom scrollbar for table on all devices */
+        .table-wrapper {
+            overflow-x: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent-color) var(--dark-bg);
+        }
+        
+        .table-wrapper::-webkit-scrollbar {
+            height: 8px;
+            width: 8px;
+        }
+        
+        .table-wrapper::-webkit-scrollbar-thumb {
+            background-color: var(--accent-color);
+            border-radius: 4px;
+        }
+        
+        .table-wrapper::-webkit-scrollbar-track {
+            background-color: var(--dark-bg);
+        }
+    </style>
+</head>
+<body>
+    <section class="comparison-section">
+        <div class="grid-background"></div>
+        <div class="shining-dots">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+        
+        <div class="container">
+            <h1 class="comparison-title">Why Choose Simple French with Hems?</h1>
+            <p class="comparison-subtitle">See how our AI-powered approach delivers a superior learning experience compared to traditional French learning platforms</p>
+            
+            <!-- New exclusive features section -->
+            <div class="exclusive-features-section">
+                <h2 class="exclusive-title">Our Exclusive Offerings</h2>
+                <div class="exclusive-features">
+                    <div class="exclusive-feature">
+                        <div class="exclusive-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                        </div>
+                        <h3>Step-by-Step French Courses</h3>
+                        <p>Structured learning paths tailored to your pace and goals, with progressive difficulty and personalized feedback.</p>
+                        <div class="competitors-tag">
+                            <span class="vs-tag">vs</span>
+                            <span class="competitor-note">Generic courses with rigid progression</span>
+                        </div>
+                    </div>
+                    
+                    <div class="exclusive-feature">
+                        <div class="exclusive-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                            </svg>
+                        </div>
+                        <h3>French Animated Stories</h3>
+                        <p>Engaging animated content designed to immerse you in authentic French while making learning enjoyable and contextual.</p>
+                        <div class="competitors-tag">
+                            <span class="vs-tag">vs</span>
+                            <span class="competitor-note">Text-only examples or non-interactive videos</span>
+                        </div>
+                    </div>
+                    
+                    <div class="exclusive-feature">
+                        <div class="exclusive-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                            </svg>
+                        </div>
+                        <h3>Hemiya AI Assistant Bot</h3>
+                        <p>Your 24/7 AI language partner trained specifically for French learning, providing instant feedback and conversation practice.</p>
+                        <div class="competitors-tag">
+                            <span class="vs-tag">vs</span>
+                            <span class="competitor-note">Basic chatbots or no AI assistance at all</span>
+                        </div>
+                    </div>
+                    
+                    <div class="exclusive-feature">
+                        <div class="exclusive-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                            </svg>
+                        </div>
+                        <h3>VR Language Game</h3>
+                        <p>Immersive virtual reality environment that puts your French skills to the test in real-world scenarios and cultural contexts.</p>
+                        <div class="competitors-tag">
+                            <span class="vs-tag">vs</span>
+                            <span class="competitor-note">Traditional screen-based or text-only exercises</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card-view-notice">Swipe left/right to see more details for each feature</div>
+            
+            <div class="table-wrapper">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Features</th>
+                            <th class="hems-column-header hems-column">Simple French with Hems</th>
+                            <th>Gamified App A</th>
+                            <th>Video Platform B</th>
+                            <th>Tutor Service C</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Learning Approach -->
+                        <tr>
+                            <td colspan="5" class="feature-category">
+                                <svg class="category-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 20h9"></path>
+                                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                                </svg>
+                                Learning Approach
+                            </td>
+                        </tr>
+                        <tr class="hems-highlight">
+                            <td class="feature-name">AI-Powered Personalization</td>
+                            <td class="hems-column" data-label="Simple French with Hems"><span class="check-icon">✓</span> Advanced AI customization</td>
+                            <td data-label="Gamified App A"><span class="partial-icon">⊘</span> Basic algorithms</td>
+                            <td data-label="Video Platform B"><span class="x-icon">✕</span> Limited</td>
+                            <td data-label="Tutor Service C"><span class="partial-icon">⊘</span> Tutor dependent</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Real Conversational French</td>
+                            <td class="hems-column" data-label="Simple French with Hems"><span class="check-icon">✓</span> Authentic daily French</td>
+                            <td data-label="Gamified App A"><span class="partial-icon">⊘</span> Scripted phrases</td>
+                            <td data-label="Video Platform B"><span class="check-icon">✓</span> Passive listening</td>
+                            <td data-label="Tutor Service C"><span class="check-icon">✓</span> Limited by schedule</td>
+                        </tr>
+                        <tr class="hems-highlight">
+                            <td class="feature-name">Adaptive Learning Path</td>
+                            <td class="hems-column" data-label="Simple French with Hems"><span class="check-icon">✓</span> Real-time adaptation</td>
+                            <td data-label="Gamified App A"><span class="partial-icon">⊘</span> Fixed progression</td>
+                            <td data-label="Video Platform B"><span class="x-icon">✕</span> Self-guided only</td>
+                            <td data-label="Tutor Service C"><span class="partial-icon">⊘</span> Manual adjustments</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Cultural Context</td>
+                            <td class="hems-column" data-label="Simple French with Hems"><span class="check-icon">✓</span> Rich cultural insights</td>
+                            <td data-label="Gamified App A"><span class="x-icon">✕</span> Minimal</td>
+                            <td data-label="Video Platform B"><span class="check-icon">✓</span> Via content only</td>
+                            <td data-label="Tutor Service C"><span class="partial-icon">⊘</span> Varies by tutor</td>
+                        </tr>
+                        
+                        <!-- Speaking & Pronunciation -->
+                        <tr>
+                            <td colspan="5" class="feature-category">
+                                <svg class="category-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                                    <line x1="12" y1="19" x2="12" y2="23"></line>
+                                    <line x1="8" y1="23" x2="16" y2="23"></line>
+                                </svg>
+                                Speaking & Pronunciation
+                            </td>
+                        </tr>
+                        <tr class="hems-highlight">
+                            <td class="feature-name">Real-time Pronunciation Feedback</td>
+                            <td class="hems-column" data-label="Simple French with Hems"><span class="check-icon">✓</span> Instant detailed feedback</td>
+                            <td data-label="Gamified App A"><span class="partial-icon">⊘</span> Basic feedback</td>
+                            <td data-label="Video Platform B"><span class="x-icon">✕</span> None</td>
+                            <td data-label="Tutor Service C"><span class="partial-icon">⊘</span> During sessions only</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Accent Training</td>
+                            <td class="hems-column" data-label="Simple French with Hems"><span class="check-icon">✓</span> Regional accent options</td>
+                            <td data-label="Gamified App A"><span class="x-icon">✕</span> Standard only</td>
+                            <td data-label="Video Platform B"><span class="partial-icon">⊘</span> Passive exposure</td>
+                            <td data-label="Tutor Service C"><span class="partial-icon">⊘</span> Tutor's accent only</td>
+                        </tr>
+                        <tr class="hems-highlight">
+                            <td class="feature-name">Conversation Practice</td>
+                            <td class="hems-column" data-label="Simple French with Hems"><span class="check-icon">✓</span> Unlimited AI conversation</td>
+                            <td data-label="Gamified App A"><span class="x-icon">✕</span> Scripted responses</td>
+                            <td data-label="Video Platform B"><span class="x-icon">✕</span> None</td>
+                            <td data-label="Tutor Service C"><span class="check-icon">✓</span> Limited to sessions</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Speech Recognition Accuracy</td>
+                            <td class="hems-column" data-label="Simple French with Hems"><span class="check-icon">✓</span> Advanced AI model</td>
+                            <td data-label="Gamified App A"><span class="partial-icon">⊘</span> Basic recognition</td>
+                            <td data-label="Video Platform B"><span class="x-icon">✕</span> N/A</td>
+                            <td data-label="Tutor Service C"><span class="check-icon">✓</span> Human ear</td>
+                        </tr>
+                        
+                        <!-- Writing Assistance -->
+                        <tr>
+                            <td colspan="5" class="feature-category">
+                                <svg class="category-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                                    <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
+                                    <line x1="9" y1="9" x2="10" y2="9"></line>
+                                    <line x1="9" y1="13" x2="15" y2="13"></line>
+                                    <line x1="9" y1="17" x2="15" y2="17"></line>
+                                </svg>
+                                Writing Assistance
+                            </td>
+                        </tr>
+                        <tr class="hems-highlight">
+                            <td class="feature-name">Grammar Correction</td>
+                            <td class="hems-column" data-label="Simple French with Hems"><span class="check-icon">✓</span> Contextual explanations</td>
+                            <td data-label="Gamified App A"><span class="partial-icon">⊘</span> Basic corrections</td>
+                            <td data-label="Video Platform B"><span class="x-icon">✕</span> None</td>
+                            <td data-label="Tutor Service C"><span class="partial-icon">⊘</span> During sessions only</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Vocabulary Enhancement</td>
+                            <td class="hems-column" data-label="Simple French with Hems"><span class="check-icon">✓</span> Smart suggestions</td>
+                            <td data-label="Gamified App A"><span class="partial-icon">⊘</span> Fixed vocabulary</td>
+                            <td data-label="Video Platform B"><span class="partial-icon">⊘</span> Passive only</td>
+                            <td data-label="Tutor Service C"><span class="check-icon">✓</span> Tutor dependent</td>
+                        </tr>
+                        <tr class="hems-highlight">
+                            <td class="feature-name">Style & Tone Guidance</td>
+                            <td class="hems-column" data-label="Simple French with Hems"><span class="check-icon">✓</span> Formal/informal coaching</td>
+                            <td data-label="Gamified App A"><span class="x-icon">✕</span> Limited</td>
+                            <td data-label="Video Platform B"><span class="x-icon">✕</span> None</td>
+                            <td data-label="Tutor Service C"><span class="partial-icon">⊘</span> Basic guidance</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Authentic Expression</td>
+                            <td class="hems-column" data-label="Simple French with Hems"><span class="check-icon">✓</span> Native-like phrasing</td>
+                            <td data-label="Gamified App A"><span class="x-icon">✕</span> Textbook French</td>
+                            <td data-label="Video Platform B"><span class="partial-icon">⊘</span> Passive exposure</td>
+                            <td data-label="Tutor Service C"><span class="check-icon">✓</span> Tutor dependent</td>
+                        </tr>
+                        
+                        <!-- Learning Experience -->
+                        <tr>
+                            <td colspan="5" class="feature-category">
+                                <svg class="category-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M5 3v16h16"></path>
+                                    <path d="M16 16l5-15"></path>
+                                    <path d="M8.929 14.582l3.464 1L16.8 9.586"></path>
+                                </svg>
+                                Learning Experience
+                            </td>
+                        </tr>
+                        <tr class="hems-highlight">
+                            <td class="feature-name">Availability</td>
+                            <td class="hems-column" data-label="Simple French with Hems"><span class="check-icon">✓</span> 24/7 unlimited access</td>
+                            <td data-label="Gamified App A"><span class="check-icon">✓</span> Anytime</td>
+                            <td data-label="Video Platform B"><span class="check-icon">✓</span> Anytime</td>
+                            <td data-label="Tutor Service C"><span class="x-icon">✕</span> Scheduled only</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Learning Analytics</td>
+                            <td class="hems-column" data-label="Simple French with Hems"><span class="check-icon">✓</span> Comprehensive insights</td>
+                            <td data-label="Gamified App A"><span class="partial-icon">⊘</span> Basic stats</td>
+                            <td data-label="Video Platform B"><span class="x-icon">✕</span> Minimal</td>
+                            <td data-label="Tutor Service C"><span class="partial-icon">⊘</span> Manual tracking</td>
+                        </tr>
+                        <tr class="hems-highlight">
+                            <td class="feature-name">Content Relevance</td>
+                            <td class="hems-column" data-label="Simple French with Hems"><span class="check-icon">✓</span> Personalized content</td>
+                            <td data-label="Gamified App A"><span class="partial-icon">⊘</span> Generic themes</td>
+                            <td data-label="Video Platform B"><span class="partial-icon">⊘</span> Broad selection</td>
+                            <td data-label="Tutor Service C"><span class="check-icon">✓</span> Can be customized</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Emotional Intelligence</td>
+                            <td class="hems-column" data-label="Simple French with Hems"><span class="check-icon">✓</span> Supportive AI coach</td>
+                            <td data-label="Gamified App A"><span class="x-icon">✕</span> Mechanical</td>
+                            <td data-label="Video Platform B"><span class="x-icon">✕</span> Passive</td>
+                            <td data-label="Tutor Service C"><span class="check-icon">✓</span> Human empathy</td>
+                        </tr>
+                        
+                        <!-- Cost & Value -->
+                        <tr>
+                            <td colspan="5" class="feature-category">
+                                <svg class="category-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                                </svg>
+                                Cost & Value
+                            </td>
+                        </tr>
+                        <tr class="hems-highlight">
+                            <td class="feature-name">Pricing Model</td>
+                            <td class="hems-column" data-label="Simple French with Hems"><span class="check-icon">✓</span> Flexible subscription</td>
+                            <td data-label="Gamified App A"><span class="partial-icon">⊘</span> Tiered + ads</td>
+                            <td data-label="Video Platform B"><span class="partial-icon">⊘</span> Monthly only</td>
+                            <td data-label="Tutor Service C"><span class="x-icon">✕</span> Per hour/session</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Time to Proficiency</td>
+                            <td class="hems-column" data-label="Simple French with Hems"><span class="check-icon">✓</span> Accelerated learning</td>
+                            <td data-label="Gamified App A"><span class="x-icon">✕</span> Slow progression</td>
+                            <td data-label="Video Platform B"><span class="partial-icon">⊘</span> Self-paced</td>
+                            <td data-label="Tutor Service C"><span class="partial-icon">⊘</span> Schedule dependent</td>
+                        </tr>
+                        <tr class="hems-highlight">
+                            <td class="feature-name">Value Per Session</td>
+                            <td class="hems-column" data-label="Simple French with Hems"><span class="check-icon">✓</span> Highest ROI</td>
+                            <td data-label="Gamified App A"><span class="partial-icon">⊘</span> Limited depth</td>
+                            <td data-label="Video Platform B"><span class="partial-icon">⊘</span> Passive learning</td>
+                            <td data-label="Tutor Service C"><span class="check-icon">✓</span> High but expensive</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Free Trial Quality</td>
+                            <td class="hems-column" data-label="Simple French with Hems"><span class="check-icon">✓</span> Full feature access</td>
+                            <td data-label="Gamified App A"><span class="partial-icon">⊘</span> Limited features</td>
+                            <td data-label="Video Platform B"><span class="partial-icon">⊘</span> Ad-supported</td>
+                            <td data-label="Tutor Service C"><span class="x-icon">✕</span> Demo only</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <p class="table-note">Note: This comparison is based on typical features available on popular language learning platforms as of 2023.</p>
+        </div>
+    </section>
+    
+    <script>
+        // Script to handle table responsiveness if needed
+        document.addEventListener('DOMContentLoaded', function() {
+            // Any JavaScript functionality can be added here
+        });
+    </script>
+</body>
+</html> 
