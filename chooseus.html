@@ -45,6 +45,8 @@
             position: relative;
             min-height: auto;
             display: block;
+            align-items: flex-start;
+            justify-content: flex-start;
         }
         
         .grid-background {
@@ -112,7 +114,7 @@
             width: 100%;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px 20px 0;
+            padding: 0 20px;
             position: relative;
             z-index: 2;
         }
@@ -402,7 +404,7 @@
         
         @media (max-width: 768px) {
             .comparison-section {
-                padding: 20px 0;
+                padding: 0;
                 min-height: auto;
             }
             
@@ -860,9 +862,66 @@
                 font-size: 1.1rem;
             }
         }
+        
+        /* Force content to start at the top when in iframe */
+        html.in-iframe body {
+            height: auto;
+            min-height: 0;
+            overflow-y: visible;
+            position: relative;
+        }
+
+        html.in-iframe .comparison-section {
+            padding-top: 0;
+            min-height: 0;
+        }
+
+        html.in-iframe .container {
+            padding-top: 10px;
+        }
+
+        /* Add bottom padding to ensure we have space at the bottom */
+        html.in-iframe body::after {
+            content: "";
+            display: block;
+            height: 20px; /* Space at the bottom */
+        }
+
+        /* Add specific styles to prevent content from being pushed down in iframe */
+        html, body {
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        /* Make sure the container starts right at the top */
+        .container {
+            padding-top: 0;
+            margin-top: 0;
+        }
+
+        /* Additional iframe-specific alignment */
+        html.in-iframe .comparison-title {
+            padding-top: 10px;
+            margin-top: 0;
+        }
+
+        /* Fix vertical alignment issues */
+        html.in-iframe .exclusive-features-section {
+            margin-top: 10px;
+        }
+
+        @media (max-width: 576px) {
+            html.in-iframe .comparison-section {
+                padding: 0;
+            }
+            
+            html.in-iframe .comparison-title {
+                padding-top: 5px;
+            }
+        }
     </style>
 </head>
-<body>
+<body onload="window.scrollTo(0,0);">
     <section class="comparison-section">
         <div class="grid-background"></div>
         <div class="shining-dots">
@@ -881,7 +940,7 @@
         </div>
         
         <div class="container">
-            <h1 class="comparison-title">Why Choose Simple French with Hems?</h1>
+            <h1 class="comparison-title">Why Choose Simple French with Hems!</h1>
             <p class="comparison-subtitle">See how our AI-powered approach delivers a superior learning experience compared to traditional French learning platforms</p>
             
             <!-- New exclusive features section -->
@@ -1192,13 +1251,26 @@
             }
             
             // Mark page as being in iframe if that's the case
-            if (inIframe()) {
+            const isInIframe = inIframe();
+            if (isInIframe) {
                 document.documentElement.classList.add('in-iframe');
+                
+                // Force content to start at the top when in iframe
+                document.body.style.position = 'absolute';
+                document.body.style.top = '0';
+                document.body.style.left = '0';
+                document.body.style.width = '100%';
             }
             
             // Send the height to parent frame for proper sizing
             function sendHeight() {
-                const height = document.body.scrollHeight;
+                const height = Math.max(
+                    document.body.scrollHeight,
+                    document.body.offsetHeight,
+                    document.documentElement.scrollHeight,
+                    document.documentElement.offsetHeight
+                );
+                
                 if (window.parent && window.parent !== window) {
                     window.parent.postMessage({ type: 'resize', height: height }, '*');
                 }
@@ -1208,12 +1280,30 @@
             function adjustForWidth() {
                 const width = window.innerWidth;
                 // Further reduce sizes for very small embedded widths
-                if (width < 400 && inIframe()) {
+                if (width < 400 && isInIframe) {
                     document.body.classList.add('very-small-width');
                 } else {
                     document.body.classList.remove('very-small-width');
                 }
+                
+                // Always ensure content starts at the top
+                if (isInIframe) {
+                    document.documentElement.scrollTop = 0;
+                    document.body.scrollTop = 0;
+                }
+                
                 sendHeight();
+            }
+            
+            // Handle height changes
+            if (isInIframe) {
+                // Create a ResizeObserver to detect when the content height changes
+                const resizeObserver = new ResizeObserver(entries => {
+                    sendHeight();
+                });
+                
+                // Observe the body for size changes
+                resizeObserver.observe(document.body);
             }
             
             // Send height after load and after any resize
@@ -1222,9 +1312,12 @@
             window.addEventListener('resize', adjustForWidth);
             
             // Periodically check height to account for dynamic content
-            setTimeout(sendHeight, 500);
-            setTimeout(sendHeight, 1000);
-            setTimeout(sendHeight, 2000);
+            if (isInIframe) {
+                setTimeout(sendHeight, 100);
+                setTimeout(sendHeight, 500);
+                setTimeout(sendHeight, 1000);
+                setTimeout(sendHeight, 2000);
+            }
         });
     </script>
 </body>
