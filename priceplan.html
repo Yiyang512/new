@@ -147,6 +147,7 @@
       border: 1px solid rgba(255, 255, 255, 0.08);
       position: relative;
       overflow: hidden;
+      text-align: center;
     }
 
     .sparkle {
@@ -284,16 +285,12 @@
     }
 
     .original-price {
-      font-size: 1.1rem;
-      color: rgba(255, 255, 255, 0.5);
-      text-decoration: line-through;
-      margin-bottom: 4px;
-      font-weight: 500;
+      display: none; /* Hide original price */
     }
 
     .current-price {
-      font-size: 3.5rem;
-      font-weight: 700;
+      font-size: 1.6rem;
+      font-weight: 600;
       color: white;
       line-height: 1;
       letter-spacing: -0.02em;
@@ -352,24 +349,42 @@
 
     .button-group {
       margin-top: 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
     }
 
     .cta-button {
       background: linear-gradient(135deg, #00FFB3 0%, #00cc8f 100%);
       color: #001102;
       border: none;
-      border-radius: 16px;
+      border-radius: 36px;
       padding: 16px 32px;
       font-size: 1rem;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
       width: 100%;
+      max-width: 320px;
       text-align: center;
       text-decoration: none;
       letter-spacing: 0.5px;
       position: relative;
       overflow: hidden;
+    }
+
+    .disabled-button {
+      background: linear-gradient(135deg, #888888 0%, #666666 100%);
+      color: #ffffff;
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+    
+    .disabled-button:hover {
+      transform: none;
+      box-shadow: none;
     }
 
     .cta-button::after {
@@ -414,6 +429,7 @@
       letter-spacing: 1px;
       padding: 8px 0;
       text-transform: uppercase;
+      width: 100%;
     }
 
     .pricing-card:hover .savings-text {
@@ -497,7 +513,7 @@
       .pricing-grid {
         gap: 20px;
       }
-
+      
       .pricing-title {
         font-size: 1.8rem;
       }
@@ -507,7 +523,7 @@
       }
 
       .current-price {
-        font-size: 3rem;
+        font-size: 1.4rem;
       }
 
       .price-suffix {
@@ -531,6 +547,52 @@
       .highlight-message h3 {
         font-size: 1.3rem;
       }
+      
+      .cta-button {
+        max-width: 100%;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .pricing-grid {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        gap: 16px;
+        padding: 10px 0;
+        margin-bottom: 10px;
+        position: relative;
+      }
+      
+      .pricing-grid::-webkit-scrollbar {
+        display: none; /* Hide scrollbar for Chrome/Safari */
+      }
+      
+      .pricing-grid {
+        -ms-overflow-style: none;  /* Hide scrollbar for IE and Edge */
+        scrollbar-width: none;  /* Hide scrollbar for Firefox */
+      }
+      
+      .pricing-card {
+        flex: 0 0 90%;
+        scroll-snap-align: center;
+        margin-right: 5%;
+        position: relative;
+      }
+      
+      .mobile-scroll-indicator {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .mobile-dots {
+        display: flex;
+      }
+      
+      .swipe-hint {
+        display: flex;
+      }
     }
 
     @media (max-width: 480px) {
@@ -546,7 +608,7 @@
         gap: 10px;
         margin-top: 12px;
       }
-
+      
       .highlight-message {
         padding: 1rem;
         margin: 1.5rem auto;
@@ -866,6 +928,133 @@
     .word-32 { animation-delay: 10.3s; }
     .word-33 { animation-delay: 10.6s; }
     .word-34 { animation-delay: 10.9s; }
+
+    /* Mobile sliding container styles */
+    .mobile-scroll-indicator {
+      display: none;
+      text-align: center;
+      margin-top: 12px;
+      margin-bottom: 10px;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      padding: 8px 15px;
+      background: rgba(0, 255, 179, 0.1);
+      border-radius: 30px;
+      border: 1px solid rgba(0, 255, 179, 0.2);
+      width: fit-content;
+      margin-left: auto;
+      margin-right: auto;
+      animation: pulse 2s infinite ease-in-out;
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 0.7; }
+      50% { transform: scale(1.05); opacity: 1; }
+      100% { transform: scale(1); opacity: 0.7; }
+    }
+    
+    .mobile-scroll-indicator svg {
+      width: 18px;
+      height: 18px;
+      vertical-align: middle;
+      margin-right: 6px;
+      stroke: var(--accent-color);
+      animation: slideRight 1.5s infinite ease-in-out;
+    }
+    
+    @keyframes slideRight {
+      0% { transform: translateX(-3px); }
+      50% { transform: translateX(3px); }
+      100% { transform: translateX(-3px); }
+    }
+    
+    .swipe-hint {
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+      width: 30px;
+      height: 30px;
+      background: rgba(0, 255, 179, 0.15);
+      border-radius: 50%;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+      animation: fadeInOut 3s infinite ease-in-out;
+      pointer-events: none;
+    }
+    
+    .swipe-hint svg {
+      width: 20px;
+      height: 20px;
+      stroke: var(--accent-color);
+    }
+    
+    @keyframes fadeInOut {
+      0% { opacity: 0; }
+      50% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+    
+    .mobile-dots {
+      display: none;
+      justify-content: center;
+      margin-top: 15px;
+      gap: 8px;
+    }
+    
+    .mobile-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+    }
+    
+    .mobile-dot.active {
+      background-color: var(--accent-color);
+      width: 20px;
+      border-radius: 4px;
+    }
+
+    /* Next card indicator */
+    .next-card-arrow {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 255, 179, 0.15);
+      height: 40px;
+      width: 24px;
+      border-radius: 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      animation: pulseArrow 1.5s infinite ease-in-out;
+      z-index: 5;
+      pointer-events: none;
+    }
+    
+    .next-card-arrow svg {
+      width: 16px;
+      height: 16px;
+      stroke: var(--accent-color, #00FFB3);
+      stroke-width: 2;
+    }
+    
+    @keyframes pulseArrow {
+      0% { opacity: 0.4; transform: translateY(-50%) translateX(-3px); }
+      50% { opacity: 1; transform: translateY(-50%) translateX(3px); }
+      100% { opacity: 0.4; transform: translateY(-50%) translateX(-3px); }
+    }
+    
+    @media (min-width: 601px) {
+      .next-card-arrow {
+        display: none;
+      }
+    }
   </style>
 </head>
 <body>
@@ -921,8 +1110,19 @@
       </div>
     </div>
     <div class="pricing-grid">
+      <div class="swipe-hint">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+          <path d="M9 18l6-6-6-6"></path>
+        </svg>
+      </div>
+      
       <div class="pricing-card">
         <div class="card-badge">Save $400</div>
+        <div class="next-card-arrow">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M9 18l6-6-6-6"></path>
+          </svg>
+        </div>
         <div class="card-header">
           <h2 class="card-title">French A0-A2 Foundation</h2>
           <p class="card-subtitle">Master fundamental French with structured progression through elementary levels</p>
@@ -949,7 +1149,7 @@
           <div class="sparkle"></div>
           <div class="sparkle"></div>
           <div class="original-price">$1,699.99</div>
-          <div class="current-price">$999<span class="price-suffix">.99</span></div>
+          <div class="current-price">Start From $89.99/month</div>
         </div>
         <ul class="features-list">
           <li class="feature-item">
@@ -1044,9 +1244,8 @@
           </div>
         </ul>
         <div class="button-group">
-          <a href="https://simplefrenchwithhems.com/order?link=otyDq&pricing_plan=ANzpQyxdBX" target="_blank" class="cta-button">Secure Your Spot</a>
-          <a href="https://simplefrenchwithhems.com/order?link=otyDq&pricing_plan=4lW504qwG3" target="_blank" class="secondary-button">Compare Plans</a>
-          <div class="savings-text">Special Offer • 41% Discount</div>
+          <a href="https://simplefrenchwithhems.com/b/bundlealevel" target="_blank" class="cta-button">View Course Details</a>
+          <div class="savings-text">Special Offer • Limited Time</div>
         </div>
       </div>
 
@@ -1078,7 +1277,7 @@
           <div class="sparkle"></div>
           <div class="sparkle"></div>
           <div class="original-price">$1,999.99</div>
-          <div class="current-price">$1,599<span class="price-suffix">.99</span></div>
+          <div class="current-price">Start From $99.99/month</div>
         </div>
         <ul class="features-list">
           <li class="feature-item">
@@ -1175,11 +1374,164 @@
           </div>
         </ul>
         <div class="button-group">
-          <div class="coming-soon-text">Check out our A0-A2 Foundation course first!</div>
-          <div class="savings-text">Full Package Coming Soon! ...</div>
+          <div class="cta-button disabled-button">Coming Soon</div>
+          <div class="savings-text">Complete Package Coming Soon!</div>
         </div>
       </div>
     </div>
+    
+    <div class="mobile-scroll-indicator">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+        <path d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+      </svg>
+      Swipe to explore all options
+    </div>
+    
+    <div class="mobile-dots">
+      <div class="mobile-dot active"></div>
+      <div class="mobile-dot"></div>
+    </div>
   </section>
+  
+  <script>
+    // Mobile card slider functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const pricingGrid = document.querySelector('.pricing-grid');
+      const dots = document.querySelectorAll('.mobile-dot');
+      const swipeHint = document.querySelector('.swipe-hint');
+      let autoSlideInterval;
+      let slidingForward = true;
+      let userInteracted = false;
+      
+      if (pricingGrid && dots.length > 0) {
+        // Hide swipe hint once user interacts with the cards
+        let hasInteracted = false;
+        
+        // Update active dot based on scroll position
+        pricingGrid.addEventListener('scroll', function() {
+          const scrollPosition = pricingGrid.scrollLeft;
+          const cardWidth = pricingGrid.querySelector('.pricing-card').offsetWidth;
+          const scrollThreshold = cardWidth / 2;
+          
+          // Hide swipe hint after user scrolls
+          if (!hasInteracted && scrollPosition > 10) {
+            hasInteracted = true;
+            userInteracted = true;
+            if (swipeHint) {
+              swipeHint.style.opacity = '0';
+              setTimeout(() => {
+                swipeHint.style.display = 'none';
+              }, 500);
+            }
+          }
+          
+          // Determine which card is most visible
+          if (scrollPosition < scrollThreshold) {
+            setActiveDot(0);
+          } else {
+            setActiveDot(1);
+          }
+        });
+        
+        // Add touch event listeners for swipe detection
+        pricingGrid.addEventListener('touchstart', function() {
+          userInteracted = true;
+          if (!hasInteracted) {
+            hasInteracted = true;
+            if (swipeHint) {
+              swipeHint.style.opacity = '0';
+              setTimeout(() => {
+                swipeHint.style.display = 'none';
+              }, 500);
+            }
+          }
+          
+          // Stop auto-sliding when user interacts
+          clearInterval(autoSlideInterval);
+        });
+        
+        // Add mouse interaction detection
+        pricingGrid.addEventListener('mousedown', function() {
+          userInteracted = true;
+          clearInterval(autoSlideInterval);
+        });
+        
+        // Auto sliding functionality
+        function startAutoSlide() {
+          autoSlideInterval = setInterval(() => {
+            if (userInteracted) {
+              clearInterval(autoSlideInterval);
+              return;
+            }
+            
+            const cardWidth = pricingGrid.querySelector('.pricing-card').offsetWidth;
+            const maxScroll = pricingGrid.scrollWidth - pricingGrid.clientWidth;
+            const currentScroll = pricingGrid.scrollLeft;
+            
+            // Check if we need to change direction
+            if (currentScroll <= 0) {
+              slidingForward = true;
+            } else if (currentScroll >= maxScroll - 10) {
+              slidingForward = false;
+            }
+            
+            // Scroll to the next or previous card
+            if (slidingForward) {
+              pricingGrid.scrollTo({
+                left: cardWidth,
+                behavior: 'smooth'
+              });
+              setActiveDot(1);
+            } else {
+              pricingGrid.scrollTo({
+                left: 0,
+                behavior: 'smooth'
+              });
+              setActiveDot(0);
+            }
+          }, 4000); // Change slide every 4 seconds
+        }
+        
+        // Start auto-sliding after 2 seconds
+        setTimeout(startAutoSlide, 2000);
+        
+        // Click on dots to navigate
+        dots.forEach((dot, index) => {
+          dot.addEventListener('click', function() {
+            userInteracted = true;
+            clearInterval(autoSlideInterval);
+            
+            const cardWidth = pricingGrid.querySelector('.pricing-card').offsetWidth;
+            pricingGrid.scrollTo({
+              left: index * cardWidth,
+              behavior: 'smooth'
+            });
+            setActiveDot(index);
+            
+            // Hide swipe hint after user clicks on dots
+            if (!hasInteracted) {
+              hasInteracted = true;
+              if (swipeHint) {
+                swipeHint.style.opacity = '0';
+                setTimeout(() => {
+                  swipeHint.style.display = 'none';
+                }, 500);
+              }
+            }
+          });
+        });
+        
+        function setActiveDot(index) {
+          dots.forEach((dot, i) => {
+            if (i === index) {
+              dot.classList.add('active');
+            } else {
+              dot.classList.remove('active');
+            }
+          });
+        }
+      }
+    });
+  </script>
 </body>
 </html> 
