@@ -360,6 +360,34 @@
                 font-size: 0.85rem;
                 line-height: 1.4;
             }
+
+            /* Make tools section smaller on mobile */
+            .hemiya-section[style*="padding-top: 0"] h3 {
+                font-size: 1.3rem !important;
+                margin-bottom: 12px !important;
+            }
+
+            .hemiya-section[style*="padding-top: 0"] .container > div:first-of-type {
+                gap: 8px !important;
+            }
+
+            .hemiya-section[style*="padding-top: 0"] a {
+                padding: 6px 10px !important;
+                border-radius: 8px !important;
+            }
+
+            .hemiya-section[style*="padding-top: 0"] a > span:first-child {
+                font-size: 0.9rem !important;
+            }
+
+            .hemiya-section[style*="padding-top: 0"] a > span:last-child {
+                font-size: 0.75rem !important;
+            }
+
+            .hemiya-section[style*="padding-top: 0"] div[style*="text-align: center"] p {
+                font-size: 0.75rem !important;
+                margin-top: 10px !important;
+            }
         }
         
         @media (max-width: 576px) {
@@ -409,6 +437,42 @@
             
             .hemiya-content {
                 gap: 20px;
+            }
+
+            /* Make tools section much smaller on small mobile */
+            .hemiya-section[style*="padding-top: 0"] {
+                padding: 10px 0 !important;
+            }
+
+            .hemiya-section[style*="padding-top: 0"] h3 {
+                font-size: 1.1rem !important;
+                margin-bottom: 8px !important;
+            }
+
+            .hemiya-section[style*="padding-top: 0"] .container > div:first-of-type {
+                gap: 5px !important;
+                max-width: 100% !important;
+            }
+
+            .hemiya-section[style*="padding-top: 0"] a {
+                padding: 4px 8px !important;
+                border-radius: 6px !important;
+                gap: 4px !important;
+                border-width: 0.5px !important;
+            }
+
+            .hemiya-section[style*="padding-top: 0"] a > span:first-child {
+                font-size: 0.75rem !important;
+            }
+
+            .hemiya-section[style*="padding-top: 0"] a > span:last-child {
+                font-size: 0.65rem !important;
+            }
+
+            .hemiya-section[style*="padding-top: 0"] div[style*="text-align: center"] p {
+                font-size: 0.65rem !important;
+                margin-top: 8px !important;
+                margin-bottom: 5px !important;
             }
         }
         
