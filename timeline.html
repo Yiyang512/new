@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Journey - Simple French with Hems</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent-color: #00FF9B;
+            --bg-dark: #0A0A0A;
+            --text-light: rgba(255, 255, 255, 0.95);
+            --text-dim: rgba(255, 255, 255, 0.7);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 6rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .section-badge {
+            background: rgba(0, 255, 155, 0.1);
+            border: 1px solid rgba(0, 255, 155, 0.2);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--accent-color);
+            display: inline-block;
+            margin-bottom: 1.5rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(120deg, #ffffff, var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 100%;
+            background: rgba(0, 255, 155, 0.2);
+            box-shadow: 0 0 15px rgba(0, 255, 155, 0.1);
+        }
+
+        .timeline-item {
+            display: flex;
+            justify-content: center;
+            padding: 3rem 0;
+            width: 100%;
+            position: relative;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.6s ease;
+        }
+
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .timeline-content {
+            width: 45%;
+            padding: 2rem;
+            background: rgba(0, 255, 155, 0.05);
+            border: 1px solid rgba(0, 255, 155, 0.1);
+            border-radius: 20px;
+            position: relative;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .timeline-content:hover {
+            transform: translateY(-5px);
+            background: rgba(0, 255, 155, 0.08);
+            border-color: rgba(0, 255, 155, 0.2);
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-right: auto;
+            text-align: right;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content {
+            margin-left: auto;
+            text-align: left;
+        }
+
+        .timeline-date {
+            position: absolute;
+            top: 0;
+            transform: translateY(-50%);
+            background: var(--accent-color);
+            color: var(--bg-dark);
+            padding: 0.75rem 1.5rem;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            box-shadow: 0 0 20px rgba(0, 255, 155, 0.3);
+            z-index: 1;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-date {
+            right: -85px;
+        }
+
+        .timeline-item:nth-child(even) .timeline-date {
+            left: -85px;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 20px rgba(0, 255, 155, 0.5);
+        }
+
+        .timeline-dot::before {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--accent-color);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            animation: pulse 2s infinite;
+        }
+
+        .timeline-title {
+            color: var(--accent-color);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            letter-spacing: -0.5px;
+        }
+
+        .timeline-description {
+            color: var(--text-dim);
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .timeline-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .timeline-stats {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+            justify-content: flex-end;
+        }
+
+        .timeline-item:nth-child(even) .timeline-stats {
+            justify-content: flex-start;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .timeline-tag {
+            display: inline-block;
+            padding: 0.35rem 1rem;
+            background: rgba(0, 255, 155, 0.1);
+            border-radius: 20px;
+            font-size: 0.875rem;
+            color: var(--accent-color);
+            margin: 0.5rem;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.5;
+            }
+            70% {
+                transform: translate(-50%, -50%) scale(1.5);
+                opacity: 0;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem 0.5rem;
+            }
+
+            h1 {
+                font-size: 1.75rem;
+                margin-bottom: 1rem;
+            }
+
+            .subtitle {
+                font-size: 0.875rem;
+                line-height: 1.4;
+            }
+
+            .section-badge {
+                font-size: 0.75rem;
+                padding: 0.35rem 1rem;
+                margin-bottom: 1rem;
+            }
+
+            .header {
+                margin-bottom: 3rem;
+            }
+
+            .timeline::before {
+                left: 20px;
+            }
+
+            .timeline-item {
+                padding: 1rem 0;
+            }
+
+            .timeline-date {
+                position: relative;
+                transform: none;
+                display: inline-block;
+                font-size: 0.75rem;
+                padding: 0.35rem 0.75rem;
+                margin: 0 auto 0.75rem;
+                left: auto !important;
+                right: auto !important;
+                text-align: center;
+                width: fit-content;
+            }
+
+            .timeline-content {
+                width: calc(100% - 40px);
+                margin-left: 40px !important;
+                padding: 0.75rem;
+                border-radius: 12px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .timeline-icon {
+                font-size: 1.5rem;
+                margin-bottom: 0.75rem;
+                text-align: center;
+            }
+
+            .timeline-title {
+                font-size: 1rem;
+                margin-bottom: 0.5rem;
+                text-align: center;
+                width: 100%;
+            }
+
+            .timeline-description {
+                font-size: 0.8rem;
+                line-height: 1.4;
+                margin-bottom: 0.75rem;
+                text-align: left;
+                width: 100%;
+            }
+
+            .timeline-tags {
+                text-align: center;
+                width: 100%;
+            }
+
+            .timeline-dot {
+                width: 12px;
+                height: 12px;
+                left: 20px;
+            }
+
+            .timeline-dot::before {
+                width: 24px;
+                height: 24px;
+            }
+
+            .timeline-stats {
+                gap: 0.75rem;
+                margin-top: 0.75rem;
+            }
+
+            .stat-number {
+                font-size: 1rem;
+                margin-bottom: 0.15rem;
+            }
+
+            .stat-label {
+                font-size: 0.65rem;
+            }
+
+            .timeline-tag {
+                font-size: 0.7rem;
+                padding: 0.25rem 0.75rem;
+                margin: 0.25rem;
+            }
+
+            .timeline-item:nth-child(odd) .timeline-content,
+            .timeline-item:nth-child(even) .timeline-content {
+                text-align: left;
+            }
+
+            .timeline-stats {
+                justify-content: flex-start;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0.75rem 0.25rem;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .timeline-content {
+                padding: 0.5rem;
+                gap: 0.5rem;
+            }
+
+            .timeline-date {
+                font-size: 0.7rem;
+                padding: 0.3rem 0.6rem;
+                margin-bottom: 0.6rem;
+            }
+
+            .timeline-title {
+                font-size: 0.9rem;
+            }
+
+            .timeline-icon {
+                font-size: 1.25rem;
+            }
+
+            .timeline-tag {
+                font-size: 0.65rem;
+                padding: 0.2rem 0.5rem;
+            }
+
+            .stat-number {
+                font-size: 0.9rem;
+            }
+
+            .stat-label {
+                font-size: 0.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="section-badge">Notre Voyage</div>
+            <h1>The Evolution of Simple French with Hems</h1>
+            <p class="subtitle">From a vision of accessible French learning to a global community of language enthusiasts.</p>
+        </div>
+        
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">2023 March</div>
+                    <div class="timeline-icon">💡</div>
+                    <div class="timeline-title">Vision & Innovation Planning</div>
+                    <div class="timeline-description">The journey began with a revolutionary vision: combining cutting-edge AI, VR, and gamification to transform French learning. Conducted extensive research on language acquisition theories and modern learning technologies. Developed initial architecture focusing on immersive, personalized learning experiences.</div>
+                    <div class="timeline-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">3</div>
+                            <div class="stat-label">Core Technologies</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">12</div>
+                            <div class="stat-label">Research Papers</div>
+                        </div>
+                    </div>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">Research</span>
+                        <span class="timeline-tag">Innovation</span>
+                        <span class="timeline-tag">Planning</span>
+                    </div>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">2023 April</div>
+                    <div class="timeline-icon">🧠</div>
+                    <div class="timeline-title">AI Framework Development</div>
+                    <div class="timeline-description">Developed core AI architecture using transformer models for natural language understanding. Created adaptive learning algorithms for personalized lesson progression. Implemented real-time pronunciation analysis with accent recognition and contextual feedback.</div>
+                    <div class="timeline-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">95%</div>
+                            <div class="stat-label">Accuracy Rate</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">5ms</div>
+                            <div class="stat-label">Response Time</div>
+                        </div>
+                    </div>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">NLP</span>
+                        <span class="timeline-tag">Machine Learning</span>
+                        <span class="timeline-tag">Speech Analysis</span>
+                    </div>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">2023 May</div>
+                    <div class="timeline-icon">🎮</div>
+                    <div class="timeline-title">Game Engine & VR Foundation</div>
+                    <div class="timeline-description">Built custom Unity-based engine optimized for language learning. Developed procedural dialogue system with natural conversation flows. Created immersive VR environments with French cultural authenticity. Implemented cognitive science-based reward mechanisms.</div>
+                    <div class="timeline-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">5+</div>
+                            <div class="stat-label">Scenarios</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">60fps</div>
+                            <div class="stat-label">VR Performance</div>
+                        </div>
+                    </div>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">Unity3D</span>
+                        <span class="timeline-tag">VR Development</span>
+                        <span class="timeline-tag">Gamification</span>
+                    </div>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">2023 July</div>
+                    <div class="timeline-icon">🎯</div>
+                    <div class="timeline-title">Beta Launch & Testing</div>
+                    <div class="timeline-description">Released beta version to select users. Integrated core features: AI tutor interactions, basic VR scenarios, and adaptive learning paths. Gathered crucial user feedback and performance metrics. Implemented initial A1-A2 course content with interactive exercises.</div>
+                    <div class="timeline-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">100+</div>
+                            <div class="stat-label">Beta Users</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">92%</div>
+                            <div class="stat-label">User Satisfaction</div>
+                        </div>
+                    </div>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">Beta Testing</span>
+                        <span class="timeline-tag">User Feedback</span>
+                        <span class="timeline-tag">A1-A2 Courses</span>
+                    </div>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">2023 September</div>
+                    <div class="timeline-icon">🌟</div>
+                    <div class="timeline-title">VR Learning Experience</div>
+                    <div class="timeline-description">Launched full VR suite with photogrammetry-scanned French locations. Integrated haptic feedback for gesture-based learning. Implemented multiplayer language exchange spaces. Created AI-powered NPCs with regional French accents and cultural behaviors.</div>
+                    <div class="timeline-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">2+</div>
+                            <div class="stat-label">VR Locations</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">10+</div>
+                            <div class="stat-label">Prototype Users</div>
+                        </div>
+                    </div>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">VR Immersion</span>
+                        <span class="timeline-tag">Cultural Learning</span>
+                        <span class="timeline-tag">Social Features</span>
+                    </div>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">2023 November</div>
+                    <div class="timeline-icon">🎮</div>
+                    <div class="timeline-title">Interactive Learning System</div>
+                    <div class="timeline-description">Launched comprehensive platform combining all technologies. Introduced story-driven learning with French literature themes. Added AR features for real-world object recognition and translation. Implemented advanced progress tracking with personalized goals.</div>
+                    <div class="timeline-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">50+</div>
+                            <div class="stat-label">Learning Paths</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">98%</div>
+                            <div class="stat-label">Retention Rate</div>
+                        </div>
+                    </div>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">AR Features</span>
+                        <span class="timeline-tag">Story Learning</span>
+                        <span class="timeline-tag">Personalization</span>
+                    </div>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">2024 Q1</div>
+                    <div class="timeline-icon">🌍</div>
+                    <div class="timeline-title">Global Platform Launch</div>
+                    <div class="timeline-description">Released full platform with complete A1-C1 curriculum. Integrated edge AI for offline learning capabilities. Added neural translation and dialect recognition. Implemented blockchain-verified certificates and achievement system. Expanded cultural context awareness across French-speaking regions.</div>
+                    <div class="timeline-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">100+</div>
+                            <div class="stat-label">Active Users</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">99.9%</div>
+                            <div class="stat-label">Platform Uptime</div>
+                        </div>
+                    </div>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">Full Launch</span>
+                        <span class="timeline-tag">Complete Curriculum</span>
+                        <span class="timeline-tag">Global Scale</span>
+                    </div>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">2024 Q2</div>
+                    <div class="timeline-icon">🎓</div>
+                    <div class="timeline-title">Academic Integration</div>
+                    <div class="timeline-description">Partnered with universities for credit-bearing French courses. Launched specialized modules for academic French and research writing. Developed AI-powered academic writing assistant with DELF/DALF exam preparation features. Introduced virtual French academic conferences and workshops.</div>
+                    <div class="timeline-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">5+</div>
+                            <div class="stat-label">Agency Partners</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">95%</div>
+                            <div class="stat-label">Exam Pass Rate</div>
+                        </div>
+                    </div>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">Academic French</span>
+                        <span class="timeline-tag">DELF/DALF</span>
+                        <span class="timeline-tag">Research Writing</span>
+                    </div>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">2024 Q3</div>
+                    <div class="timeline-icon">💼</div>
+                    <div class="timeline-title">Professional Suite Launch</div>
+                    <div class="timeline-description">Released comprehensive business French modules with industry-specific vocabulary. Introduced virtual business networking events in French-speaking environments. Added professional certification tracks with major French companies. Launched AI-powered business communication assistant.</div>
+                    <div class="timeline-stats">
+                        <div class="stat-item">
+
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">10+</div>
+                            <div class="stat-label">Professional Developers</div>
+                        </div>
+                    </div>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">Business French</span>
+                        <span class="timeline-tag">Professional Network</span>
+                        <span class="timeline-tag">Industry Certifications</span>
+                    </div>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">2024 Q4</div>
+                    <div class="timeline-icon">🎨</div>
+                    <div class="timeline-title">Cultural Immersion 2.0</div>
+                    <div class="timeline-description">Enhanced cultural learning with AI-driven virtual tours of French regions. Launched collaborative art and music projects with French institutions. Added real-time cultural events and festivals in VR. Implemented advanced cultural context recognition in conversations.</div>
+                    <div class="timeline-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">10+</div>
+                            <div class="stat-label">Cultural Events</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">5+</div>
+                            <div class="stat-label">Partnership Built</div>
+                        </div>
+                    </div>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">Virtual Tours</span>
+                        <span class="timeline-tag">Cultural Projects</span>
+                        <span class="timeline-tag">Live Events</span>
+                    </div>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">2025 Q1</div>
+                    <div class="timeline-icon">🔬</div>
+                    <div class="timeline-title">Advanced Learning Intelligence</div>
+                    <div class="timeline-description">Launched next-generation learning algorithms with predictive analytics. Implemented quantum computing for complex language pattern recognition. Added emotional intelligence to AI tutors for enhanced engagement. Introduced personalized neurolinguistic learning paths.</div>
+                    <div class="timeline-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">99.9%</div>
+                            <div class="stat-label">Learning Accuracy</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">10+</div>
+                            <div class="stat-label">Active Developers</div>
+                        </div>
+                    </div>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">Quantum AI</span>
+                        <span class="timeline-tag">Emotional AI</span>
+                        <span class="timeline-tag">Predictive Learning</span>
+                    </div>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">2025 April</div>
+                    <div class="timeline-icon">✨</div>
+                    <div class="timeline-title">Complete Platform Maturity</div>
+                    <div class="timeline-description">Achieved full integration of all learning technologies and methodologies. Established largest online French learning ecosystem globally. Reached milestone of helping learners achieve fluency across all CEFR levels. Created seamless learning experiences across all devices and platforms.</div>
+                    <div class="timeline-stats">
+                        <div class="stat-item">
+
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">97%</div>
+                            <div class="stat-label">Success Rate</div>
+                        </div>
+                    </div>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">Full Integration</span>
+                        <span class="timeline-tag">Global Leader</span>
+                        <span class="timeline-tag">Complete Solution</span>
+                    </div>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">Beyond 2025</div>
+                    <div class="timeline-icon">🥚</div>
+                    <div class="timeline-title">Future Good Things Incubating...</div>
+                    <div class="timeline-description">Exciting innovations in development: Brain-computer interfaces for intuitive language acquisition, Holographic French tutors with advanced emotional intelligence, Nano-learning modules for instant vocabulary absorption, and much more on the horizon. Stay tuned for the next chapter of our journey!</div>
+                    <div class="timeline-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">∞</div>
+                            <div class="stat-label">Possibilities</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">3+</div>
+                            <div class="stat-label">Secret Projects</div>
+                        </div>
+                    </div>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">Innovation</span>
+                        <span class="timeline-tag">Future Tech</span>
+                        <span class="timeline-tag">Coming Soon</span>
+                    </div>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function isElementInViewport(el) {
+            const rect = el.getBoundingClientRect();
+            return (
+                rect.top >= 0 &&
+                rect.left >= 0 &&
+                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+            );
+        }
+
+        function handleScroll() {
+            const timelineItems = document.querySelectorAll('.timeline-item');
+            timelineItems.forEach(item => {
+                if (isElementInViewport(item)) {
+                    item.classList.add('visible');
+                }
+            });
+        }
+
+        // Initial check
+        handleScroll();
+
+        // Add scroll event listener
+        window.addEventListener('scroll', handleScroll);
+        window.addEventListener('resize', handleScroll);
+    </script>
+</body>
+</html> 
