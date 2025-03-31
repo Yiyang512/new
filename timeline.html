@@ -28,55 +28,41 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1000px;
             margin: 0 auto;
-            padding: 4rem 2rem;
+            padding: 2rem 1.5rem;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 6rem;
+            margin-bottom: 4rem;
             opacity: 0;
             transform: translateY(30px);
             animation: fadeInUp 0.8s ease forwards;
         }
 
         .section-badge {
-            background: rgba(0, 255, 155, 0.1);
-            border: 1px solid rgba(0, 255, 155, 0.2);
-            padding: 0.5rem 1.5rem;
-            border-radius: 50px;
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: var(--accent-color);
-            display: inline-block;
-            margin-bottom: 1.5rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            backdrop-filter: blur(10px);
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
         }
 
         h1 {
-            font-size: 3.5rem;
-            font-weight: 700;
-            background: linear-gradient(120deg, #ffffff, var(--accent-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 1.5rem;
-            line-height: 1.2;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            line-height: 1.1;
         }
 
         .subtitle {
-            font-size: 1.2rem;
-            color: var(--text-dim);
-            max-width: 600px;
-            margin: 0 auto;
-            line-height: 1.6;
+            font-size: 1rem;
+            max-width: 500px;
+            line-height: 1.4;
         }
 
         .timeline {
             position: relative;
-            padding: 2rem 0;
+            padding: 1.5rem 0;
         }
 
         .timeline::before {
@@ -93,7 +79,7 @@
         .timeline-item {
             display: flex;
             justify-content: center;
-            padding: 3rem 0;
+            padding: 2rem 0;
             width: 100%;
             position: relative;
             opacity: 0;
@@ -107,11 +93,11 @@
         }
 
         .timeline-content {
-            width: 45%;
-            padding: 2rem;
+            width: 42%;
+            padding: 1.5rem;
             background: rgba(0, 255, 155, 0.03);
             border: 1px solid rgba(0, 255, 155, 0.15);
-            border-radius: 20px;
+            border-radius: 16px;
             position: relative;
             transition: all 0.3s ease;
             backdrop-filter: blur(8px);
@@ -141,10 +127,10 @@
             transform: translateY(-50%);
             background: rgba(0, 255, 155, 0.9);
             color: rgba(0, 0, 0, 0.9);
-            padding: 0.75rem 1.5rem;
+            padding: 0.5rem 1.2rem;
             border-radius: 30px;
             font-weight: 600;
-            font-size: 0.875rem;
+            font-size: 0.8rem;
             box-shadow: 0 0 20px rgba(0, 255, 155, 0.2);
             z-index: 1;
             backdrop-filter: blur(4px);
@@ -152,17 +138,17 @@
         }
 
         .timeline-item:nth-child(odd) .timeline-date {
-            right: -85px;
+            right: -75px;
         }
 
         .timeline-item:nth-child(even) .timeline-date {
-            left: -85px;
+            left: -75px;
         }
 
         .timeline-dot {
             position: absolute;
-            width: 20px;
-            height: 20px;
+            width: 16px;
+            height: 16px;
             background: var(--accent-color);
             border-radius: 50%;
             top: 50%;
@@ -174,8 +160,8 @@
         .timeline-dot::before {
             content: '';
             position: absolute;
-            width: 40px;
-            height: 40px;
+            width: 32px;
+            height: 32px;
             border: 2px solid var(--accent-color);
             border-radius: 50%;
             top: 50%;
@@ -187,28 +173,28 @@
 
         .timeline-title {
             color: var(--accent-color);
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             font-weight: 700;
-            margin-bottom: 1rem;
+            margin-bottom: 0.75rem;
             letter-spacing: -0.5px;
         }
 
         .timeline-description {
             color: var(--text-dim);
-            font-size: 1.1rem;
-            line-height: 1.7;
-            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
         }
 
         .timeline-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
+            font-size: 2rem;
+            margin-bottom: 1rem;
         }
 
         .timeline-stats {
             display: flex;
-            gap: 1.5rem;
-            margin-top: 1.5rem;
+            gap: 1.2rem;
+            margin-top: 1rem;
             justify-content: flex-end;
         }
 
@@ -221,14 +207,14 @@
         }
 
         .stat-number {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             font-weight: 700;
             color: var(--accent-color);
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.2rem;
         }
 
         .stat-label {
-            font-size: 0.875rem;
+            font-size: 0.75rem;
             color: var(--text-dim);
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -236,12 +222,12 @@
 
         .timeline-tag {
             display: inline-block;
-            padding: 0.35rem 1rem;
+            padding: 0.3rem 0.8rem;
             background: rgba(0, 255, 155, 0.1);
             border-radius: 20px;
-            font-size: 0.875rem;
+            font-size: 0.75rem;
             color: var(--accent-color);
-            margin: 0.5rem;
+            margin: 0.3rem;
         }
 
         @keyframes fadeInUp {
