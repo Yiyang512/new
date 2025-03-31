@@ -31,11 +31,14 @@
             overflow: hidden;
             height: 100%;
             background-color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .hemiya-banner {
             width: 100%;
-            height: 120px;
+            height: 140px;
             background-color: #ffffff;
             position: relative;
             display: flex;
@@ -44,6 +47,7 @@
             border-bottom: none;
             overflow: hidden;
             margin: 0;
+            padding: 20px 0;
         }
         
         .banner-bg {
@@ -53,8 +57,8 @@
             width: 100%;
             height: 100%;
             background-image: radial-gradient(var(--accent-color) 1px, transparent 1px);
-            background-size: 28px 28px;
-            opacity: 0.15;
+            background-size: 32px 32px;
+            opacity: 0.12;
             pointer-events: none;
             z-index: 1;
         }
@@ -98,12 +102,12 @@
         }
         
         .avatar-container {
-            width: 100px;
-            height: 100px;
+            width: 90px;
+            height: 90px;
             border-radius: 50%;
             overflow: hidden;
-            border: 3px solid var(--accent-color);
-            margin-right: 20px;
+            border: 2.5px solid var(--accent-color);
+            margin-right: 24px;
             flex-shrink: 0;
             background-color: white;
             box-shadow: 0 0 15px var(--shadow-color);
@@ -126,10 +130,12 @@
             align-items: center;
             justify-content: space-between;
             width: 100%;
-            max-width: 1400px;
-            padding: 0 40px;
+            max-width: 1200px;
+            padding: 0 60px;
             position: relative;
             z-index: 2;
+            margin: 0 auto;
+            gap: 40px;
         }
         
         .text-section {
@@ -139,6 +145,8 @@
             padding: 10px 10px 10px 0;
             transition: transform 0.3s ease;
             position: relative;
+            flex: 1;
+            max-width: 800px;
         }
         
         .text-section:hover {
@@ -149,12 +157,14 @@
             position: relative;
             background: var(--bg-light);
             color: var(--text-dark);
-            border-radius: 14px;
-            padding: 14px 22px;
+            border-radius: 16px;
+            padding: 18px 28px;
             margin-left: 14px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-            max-width: 420px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            max-width: 460px;
             border: 1px solid var(--border-light);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
         
         .speech-bubble::before {
@@ -183,36 +193,39 @@
         
         .banner-text {
             color: var(--text-dark);
-            font-size: 1.5rem;
-            font-weight: 800;
-            letter-spacing: 0.2px;
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
             line-height: 1.4;
         }
         
         .button-group {
             display: flex;
-            gap: 16px;
+            gap: 18px;
+            flex-shrink: 0;
         }
         
         .banner-button {
             background: linear-gradient(135deg, #00EFAB, #00A865);
             color: white;
             border: none;
-            padding: 12px 28px;
-            border-radius: 12px;
+            padding: 14px 32px;
+            border-radius: 14px;
             font-weight: 600;
-            font-size: 1.05rem;
+            font-size: 1.1rem;
             cursor: pointer;
             transition: all 0.3s ease;
             text-decoration: none;
             white-space: nowrap;
             box-shadow: 0 4px 12px rgba(0, 204, 122, 0.25);
-            letter-spacing: 0.3px;
+            letter-spacing: 0.4px;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
             overflow: hidden;
+            min-width: 160px;
+            text-align: center;
         }
         
         .banner-button:hover {
@@ -279,26 +292,30 @@
         /* Responsive adjustments */
         @media (max-width: 768px) {
             .hemiya-banner {
-                height: 90px;
+                height: auto;
+                min-height: 100px;
+                padding: 15px 0;
             }
             
             .banner-content {
-                padding: 0 20px;
+                padding: 0 24px;
+                gap: 20px;
             }
             
             .banner-text {
-                font-size: 1.3rem;
+                font-size: 1.25rem;
+                line-height: 1.3;
             }
             
             .button-group {
-                gap: 8px;
+                gap: 12px;
             }
             
             .banner-button {
-                padding: 8px 16px;
-                font-size: 0.8rem;
-                border-radius: 10px;
-                box-shadow: 0 3px 8px rgba(0, 204, 122, 0.2);
+                padding: 10px 20px;
+                font-size: 0.9rem;
+                border-radius: 12px;
+                min-width: 120px;
             }
             
             .banner-button.secondary {
@@ -306,14 +323,16 @@
             }
             
             .avatar-container {
-                width: 56px;
-                height: 56px;
-                margin-right: 12px;
+                width: 60px;
+                height: 60px;
+                margin-right: 16px;
+                border-width: 2px;
             }
             
             .speech-bubble {
-                max-width: 250px;
-                padding: 8px 12px;
+                max-width: 280px;
+                padding: 12px 18px;
+                border-radius: 14px;
             }
         }
         
