@@ -47,13 +47,13 @@
         }
 
         .section-badge {
-            background: rgba(0, 255, 0, 0.1);
-            border: 1px solid rgba(0, 255, 0, 0.2);
+            background: rgba(0, 255, 155, 0.1);
+            border: 1px solid rgba(0, 255, 155, 0.2);
             padding: 0.5rem 1.5rem;
             border-radius: 50px;
             font-size: 0.875rem;
             font-weight: 500;
-            color: #00ff00;
+            color: #00FF9B;
             margin-bottom: 2rem;
             letter-spacing: 1px;
             text-transform: uppercase;
@@ -65,7 +65,7 @@
             text-align: center;
             line-height: 1.2;
             margin-bottom: 2rem;
-            background: linear-gradient(120deg, #ffffff, #00ff00);
+            background: linear-gradient(120deg, #ffffff, #00FF9B);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             letter-spacing: -1px;
@@ -80,8 +80,8 @@
         }
 
         .value-card {
-            background: rgba(0, 255, 0, 0.05);
-            border: 1px solid rgba(0, 255, 0, 0.1);
+            background: rgba(0, 255, 155, 0.05);
+            border: 1px solid rgba(0, 255, 155, 0.1);
             border-radius: 16px;
             padding: 1.5rem;
             transition: all 0.3s ease;
@@ -89,12 +89,12 @@
 
         .value-card:hover {
             transform: translateY(-5px);
-            background: rgba(0, 255, 0, 0.08);
-            border-color: rgba(0, 255, 0, 0.2);
+            background: rgba(0, 255, 155, 0.08);
+            border-color: rgba(0, 255, 155, 0.2);
         }
 
         .value-title {
-            color: #00ff00;
+            color: #00FF9B;
             font-size: 1.25rem;
             font-weight: 600;
             margin-bottom: 0.5rem;
@@ -103,7 +103,7 @@
         .value-icon {
             font-size: 2rem;
             margin-bottom: 1rem;
-            background: linear-gradient(45deg, #00ff00, #00ff00);
+            background: linear-gradient(45deg, #00FF9B, #00FF9B);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -127,8 +127,8 @@
             position: relative;
             padding: 2rem;
             border-radius: 16px;
-            background: rgba(0, 255, 0, 0.05);
-            border: 1px solid rgba(0, 255, 0, 0.1);
+            background: rgba(0, 255, 155, 0.05);
+            border: 1px solid rgba(0, 255, 155, 0.1);
         }
 
         .mission-text::before,
@@ -136,7 +136,7 @@
             content: '"';
             font-size: 4rem;
             position: absolute;
-            color: rgba(0, 255, 0, 0.3);
+            color: rgba(0, 255, 155, 0.3);
             font-family: serif;
         }
 
@@ -343,8 +343,8 @@
             }
 
             draw(ctx) {
-                const greenValue = 180 + Math.floor(75 * this.brightness);
-                ctx.fillStyle = `rgba(0, ${greenValue}, 0, ${this.alpha})`;
+                const greenValue = Math.floor(255 * this.brightness);
+                ctx.fillStyle = `rgba(0, ${greenValue}, 155, ${this.alpha})`;
                 
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
