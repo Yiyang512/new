@@ -316,119 +316,154 @@
             }
             
             .courses-container {
-                padding: 15px;
-                margin-bottom: 12px;
-                gap: 8px;
-                max-width: 95%;
-                border-radius: 12px;
+                padding: 5px;
+                margin-bottom: 5px;
+                gap: 3px;
+                max-width: 85%;
+                border-radius: 8px;
                 box-shadow: none;
             }
             
             .courses-title {
-                font-size: 1.3rem;
-                margin-bottom: 10px;
+                font-size: 0.85rem;
+                margin-bottom: 4px;
             }
             
             .courses-list {
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                gap: 8px;
+                display: grid !important;
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 3px !important;
             }
             
             .course-item {
-                font-size: 0.8rem;
-                padding: 8px 10px;
-                width: 100%;
-                min-width: unset;
-                border-radius: 8px;
-                letter-spacing: 0.3px;
-                min-height: 40px;
+                font-size: 0.6rem;
+                padding: 3px 4px;
+                width: 100% !important;
+                min-width: unset !important;
+                border-radius: 5px;
+                letter-spacing: 0px;
+                min-height: 25px;
+                border-width: 0.5px;
             }
             
             .course-fire {
-                margin-right: 6px;
-                font-size: 0.9rem;
+                margin-right: 3px;
+                font-size: 0.65rem;
             }
             
             /* Hide desktop-only items on mobile */
             .desktop-only {
                 display: none;
             }
+            
+            /* Hide more than 4 courses on mobile */
+            .course-item:nth-child(n+5):not(.show-more) {
+                display: none !important;
+            }
+            
+            .show-more-btn {
+                grid-column: span 2;
+                text-align: center;
+                font-size: 0.6rem;
+                color: var(--accent-color);
+                background: rgba(0, 255, 155, 0.05);
+                border: 1px solid rgba(0, 255, 155, 0.15);
+                border-radius: 4px;
+                padding: 2px;
+                margin-top: 2px;
+                cursor: pointer;
+            }
         }
 
         @media (max-width: 576px) {
             .main-container {
-                padding: 15px;
+                padding: 8px;
+                gap: 10px;
             }
             
             .courses-container {
-                padding: 12px;
-                border-radius: 10px;
-                margin-bottom: 10px;
-                gap: 6px;
+                padding: 3px;
+                border-radius: 6px;
+                margin-bottom: 4px;
+                gap: 2px;
+                max-width: 90%;
             }
             
             .courses-title {
-                font-size: 1.1rem;
-                margin-bottom: 8px;
+                font-size: 0.7rem;
+                margin-bottom: 3px;
             }
             
             .courses-list {
-                gap: 6px;
-                grid-template-columns: repeat(2, 1fr);
+                gap: 2px !important;
             }
             
             .course-item {
-                font-size: 0.7rem;
-                padding: 5px 8px;
-                border-radius: 5px;
+                font-size: 0.5rem;
+                padding: 2px 3px;
+                border-radius: 3px;
                 height: auto;
-                min-height: 30px;
+                min-height: 20px;
             }
             
             .course-fire {
-                margin-right: 5px;
-                font-size: 0.8rem;
+                margin-right: 2px;
+                font-size: 0.55rem;
             }
 
             .course-item.disabled::after {
-                font-size: 0.55rem;
-                bottom: 2px;
-                right: 4px;
+                font-size: 0.4rem;
+                bottom: 1px;
+                right: 2px;
+            }
+            
+            .show-more-btn {
+                font-size: 0.5rem;
+                border-radius: 3px;
+                padding: 1px;
             }
         }
 
         /* Extra small screens */
         @media (max-width: 380px) {
             .courses-container {
-                padding: 10px;
-                border-radius: 8px;
-                margin-bottom: 8px;
-                gap: 5px;
+                padding: 2px;
+                border-radius: 4px;
+                margin-bottom: 3px;
+                gap: 1px;
             }
             
             .courses-title {
-                font-size: 1rem;
-                margin-bottom: 6px;
+                font-size: 0.6rem;
+                margin-bottom: 2px;
             }
             
             .courses-list {
-                gap: 5px;
+                gap: 1px !important;
             }
             
             .course-item {
-                font-size: 0.65rem;
-                padding: 4px 6px;
-                min-height: 28px;
+                font-size: 0.45rem;
+                padding: 1px 2px;
+                min-height: 18px;
+                border-width: 0.5px;
+                border-radius: 2px;
             }
             
             .course-fire {
-                margin-right: 4px;
-                font-size: 0.75rem;
+                margin-right: 1px;
+                font-size: 0.5rem;
             }
 
             .course-item.disabled::after {
-                font-size: 0.5rem;
+                font-size: 0.35rem;
+                bottom: 0;
+                right: 1px;
+            }
+            
+            .show-more-btn {
+                font-size: 0.45rem;
+                border-radius: 2px;
             }
         }
 
@@ -636,8 +671,8 @@
                     <a href="https://simplefrenchwithhems.com/b/oe9rR" target="_blank" class="course-item">B1 French Verbs</a>
                     <a href="https://simplefrenchwithhems.com/b/nzTma" target="_blank" class="course-item">B1 Vocabulary</a>
                     <span class="course-item disabled">B2 Courses</span>
-                    <span class="course-item disabled">A0 - B2 Bundle</span>
                 </div>
+                <div class="show-more-btn">Show more</div>
             </div>
         </div>
     </div>
@@ -687,6 +722,15 @@
                 box.style.setProperty('--x', `${x}%`);
                 box.style.setProperty('--y', `${y}%`);
             });
+        });
+
+        // Show more button functionality
+        document.querySelector('.show-more-btn').addEventListener('click', function() {
+            const courseItems = document.querySelectorAll('.course-item');
+            courseItems.forEach(item => {
+                item.style.display = 'flex';
+            });
+            this.style.display = 'none';
         });
     </script>
 </body>
