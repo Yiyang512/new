@@ -18,6 +18,8 @@
                           0 0 20px rgba(0, 255, 155, 0.3),
                           0 0 30px rgba(0, 255, 155, 0.3),
                           0 0 40px rgba(0, 255, 155, 0.3);
+            --heading-font: 'Poppins', sans-serif;
+            --body-font: 'Poppins', sans-serif;
         }
         
         * {
@@ -27,14 +29,21 @@
         }
         
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #001102;
+            font-family: var(--body-font);
+            background-color: var(--dark-bg);
             color: var(--text-light);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
+            overflow-x: hidden;
+            overflow-y: auto;
+            line-height: 1.5;
+            background-image: 
+                radial-gradient(rgba(0, 255, 155, 0.05) 2px, transparent 2px),
+                radial-gradient(rgba(0, 255, 155, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px, 25px 25px;
+            background-position: 0 0, 25px 25px;
         }
 
         /* Remove grid background and orbs */
@@ -42,19 +51,59 @@
             display: none;
         }
 
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            gap: 30px;
+            padding: 20px;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .main-container::before {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(0, 255, 155, 0.4) 0%, transparent 70%);
+            top: -100px;
+            right: -100px;
+            border-radius: 50%;
+            filter: blur(50px);
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        .main-container::after {
+            content: '';
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, rgba(0, 255, 155, 0.3) 0%, transparent 70%);
+            bottom: -100px;
+            left: -100px;
+            border-radius: 50%;
+            filter: blur(60px);
+            z-index: -1;
+            opacity: 0.4;
+        }
+
         .stats-container {
             display: flex;
             justify-content: center;
             gap: 40px;
-            flex-wrap: nowrap;
+            flex-wrap: wrap;
             padding: 20px;
             position: relative;
             z-index: 1;
             perspective: 1000px;
             transform-style: preserve-3d;
-            width: 100%;
-            max-width: 1400px;
-            margin: 0 auto;
+            max-width: 1200px;
         }
 
         .stat-box {
@@ -72,8 +121,8 @@
             overflow: hidden;
             transform-style: preserve-3d;
             transform: perspective(1000px) translateZ(0);
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 0 30px rgba(0, 255, 155, 0.1);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 30px rgba(0, 255, 155, 0.1);
         }
 
         /* Sparkle container */
@@ -220,8 +269,8 @@
                 text-shadow: 0 0 20px rgba(0, 255, 155, 0.3);
             }
             50% { 
-                transform: scale(1.05) translateZ(20px); 
-                text-shadow: 0 0 40px rgba(0, 255, 155, 0.6);
+                transform: scale(1.03) translateZ(10px); 
+                text-shadow: 0 0 30px rgba(0, 255, 155, 0.5);
             }
         }
 
@@ -258,35 +307,23 @@
         @media (max-width: 1200px) {
             .stats-container {
                 gap: 20px;
-                padding: 15px;
             }
-
-            .stat-box {
-                width: 240px;
-            }
-
-            .stat-number::after {
-                font-size: 2.2rem;
-                right: -25px;
+            
+            .course-item {
+                width: calc(25% - 8px);
+                padding: 10px 12px;
+                font-size: 1rem;
+                min-width: 170px;
             }
         }
-
+        
         @media (max-width: 992px) {
-            .stats-container {
-                gap: 15px;
-                padding: 10px;
-            }
-
-            .stat-box {
-                width: 220px;
-            }
-
-            .stat-number::after {
-                font-size: 2rem;
-                right: -22px;
+            .course-item {
+                width: calc(25% - 8px);
+                min-width: 150px;
             }
         }
-
+        
         @media (max-width: 768px) {
             .stats-container {
                 flex-wrap: wrap;
@@ -316,32 +353,121 @@
                 font-size: 1rem;
                 letter-spacing: 1px;
             }
+            
+            .courses-container {
+                padding: 15px;
+                margin-bottom: 12px;
+                gap: 8px;
+                max-width: 95%;
+                border-radius: 12px;
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), 0 0 15px rgba(0, 255, 155, 0.08);
+            }
+            
+            .courses-title {
+                font-size: 1.3rem;
+                margin-bottom: 10px;
+            }
+            
+            .courses-list {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+            
+            .course-item {
+                font-size: 0.8rem;
+                padding: 8px 10px;
+                width: 100%;
+                min-width: unset;
+                border-radius: 8px;
+                letter-spacing: 0.3px;
+                min-height: 40px;
+            }
+            
+            .course-fire {
+                margin-right: 6px;
+                font-size: 0.9rem;
+            }
+            
+            /* Hide desktop-only items on mobile */
+            .desktop-only {
+                display: none;
+            }
         }
 
-        @media (max-width: 480px) {
-            .stats-container {
-                gap: 10px;
+        @media (max-width: 576px) {
+            .main-container {
+                padding: 15px;
+            }
+            
+            .courses-container {
+                padding: 12px;
+                border-radius: 10px;
+                margin-bottom: 10px;
+                gap: 6px;
+            }
+            
+            .courses-title {
+                font-size: 1.1rem;
+                margin-bottom: 8px;
+            }
+            
+            .courses-list {
+                gap: 6px;
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .course-item {
+                font-size: 0.7rem;
+                padding: 5px 8px;
+                border-radius: 5px;
+                height: auto;
+                min-height: 30px;
+            }
+            
+            .course-fire {
+                margin-right: 5px;
+                font-size: 0.8rem;
+            }
+
+            .course-item.disabled::after {
+                font-size: 0.55rem;
+                bottom: 2px;
+                right: 4px;
+            }
+        }
+
+        /* Extra small screens */
+        @media (max-width: 380px) {
+            .courses-container {
                 padding: 10px;
+                border-radius: 8px;
+                margin-bottom: 8px;
+                gap: 5px;
+            }
+            
+            .courses-title {
+                font-size: 1rem;
+                margin-bottom: 6px;
+            }
+            
+            .courses-list {
+                gap: 5px;
+            }
+            
+            .course-item {
+                font-size: 0.65rem;
+                padding: 4px 6px;
+                min-height: 28px;
+            }
+            
+            .course-fire {
+                margin-right: 4px;
+                font-size: 0.75rem;
             }
 
-            .stat-box {
-                width: calc(50% - 5px);
-                height: 160px;
-            }
-
-            .stat-number {
-                font-size: 3rem;
-            }
-
-            .stat-number::after {
-                font-size: 1.6rem;
-                right: -18px;
-                top: 2px;
-            }
-
-            .stat-label {
-                font-size: 0.9rem;
-                letter-spacing: 0.5px;
+            .course-item.disabled::after {
+                font-size: 0.5rem;
             }
         }
 
@@ -351,82 +477,210 @@
             scroll-behavior: unset;
             -webkit-overflow-scrolling: unset;
         }
+
+        /* Course list styles */
+        .courses-container {
+            width: 100%;
+            max-width: 1000px;
+            background: rgba(5, 15, 10, 0.95);
+            border: 1px solid rgba(0, 255, 155, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 0 0 30px rgba(0, 255, 155, 0.1);
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        
+        .courses-title {
+            color: var(--accent-color);
+            font-size: 1.8rem;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 600;
+            font-family: var(--heading-font);
+            text-shadow: 0 0 10px rgba(0, 255, 155, 0.3);
+            letter-spacing: 1px;
+        }
+        
+        .courses-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+        
+        .course-item {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 14px 16px;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+            background: rgba(0, 255, 155, 0.05);
+            border: 1px solid rgba(0, 255, 155, 0.15);
+            width: calc(25% - 12px);
+            min-width: 180px;
+            letter-spacing: 0.5px;
+        }
+        
+        .course-item:hover {
+            background: rgba(0, 255, 155, 0.1);
+            transform: translateY(-3px) translateX(3px);
+            box-shadow: 0 5px 15px rgba(0, 255, 155, 0.15);
+        }
+        
+        .course-fire {
+            margin-right: 10px;
+            font-size: 1rem;
+        }
+
+        /* Disabled course button */
+        .course-item.disabled {
+            background: rgba(50, 60, 55, 0.4);
+            border-color: rgba(100, 100, 100, 0.3);
+            color: rgba(170, 170, 170, 0.7);
+            cursor: not-allowed;
+            pointer-events: none;
+            transform: none;
+            box-shadow: none;
+            position: relative;
+        }
+        
+        .course-item.disabled::after {
+            content: 'Coming soon';
+            position: absolute;
+            bottom: 3px;
+            right: 5px;
+            font-size: 0.6rem;
+            opacity: 0.7;
+        }
+
+        /* Desktop-only items container */
+        .desktop-only {
+            display: contents; /* Makes children behave as direct children of parent grid/flex */
+        }
+
+        @media (min-width: 769px) {
+            .courses-list {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 10px;
+                justify-content: center;
+            }
+            
+            .course-item {
+                width: 100%;
+                min-width: unset;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="grid-background"></div>
     
-    <div class="stats-container">
-        <div class="stat-box">
-            <div class="sparkle-container">
-                <div class="sparkle"></div>
-                <div class="sparkle"></div>
-                <div class="sparkle"></div>
-                <div class="sparkle"></div>
-                <div class="sparkle"></div>
-                <div class="sparkle"></div>
-                <div class="sparkle"></div>
-                <div class="twinkle"></div>
-                <div class="twinkle"></div>
-                <div class="twinkle"></div>
-                <div class="twinkle"></div>
+    <div class="main-container">
+        <div class="stats-container">
+            <div class="stat-box">
+                <div class="sparkle-container">
+                    <div class="sparkle"></div>
+                    <div class="sparkle"></div>
+                    <div class="sparkle"></div>
+                    <div class="sparkle"></div>
+                    <div class="sparkle"></div>
+                    <div class="sparkle"></div>
+                    <div class="sparkle"></div>
+                    <div class="twinkle"></div>
+                    <div class="twinkle"></div>
+                    <div class="twinkle"></div>
+                    <div class="twinkle"></div>
+                </div>
+                <div class="stat-number" data-target="5000">0</div>
+                <div class="stat-label">Quizzes</div>
             </div>
-            <div class="stat-number" data-target="5000">0</div>
-            <div class="stat-label">Quizzes</div>
+            <div class="stat-box">
+                <div class="sparkle-container">
+                    <div class="sparkle"></div>
+                    <div class="sparkle"></div>
+                    <div class="sparkle"></div>
+                    <div class="sparkle"></div>
+                    <div class="sparkle"></div>
+                    <div class="sparkle"></div>
+                    <div class="sparkle"></div>
+                    <div class="twinkle"></div>
+                    <div class="twinkle"></div>
+                    <div class="twinkle"></div>
+                    <div class="twinkle"></div>
+                </div>
+                <div class="stat-number" data-target="400">0</div>
+                <div class="stat-label">Grammar Videos</div>
+            </div>
+            <div class="stat-box">
+                <div class="sparkle-container">
+                    <div class="sparkle"></div>
+                    <div class="sparkle"></div>
+                    <div class="sparkle"></div>
+                    <div class="sparkle"></div>
+                    <div class="sparkle"></div>
+                    <div class="sparkle"></div>
+                    <div class="sparkle"></div>
+                    <div class="twinkle"></div>
+                    <div class="twinkle"></div>
+                    <div class="twinkle"></div>
+                    <div class="twinkle"></div>
+                </div>
+                <div class="stat-number" data-target="50">0</div>
+                <div class="stat-label">Animated Stories</div>
+            </div>
+            <div class="stat-box">
+                <div class="sparkle-container">
+                    <div class="sparkle"></div>
+                    <div class="sparkle"></div>
+                    <div class="sparkle"></div>
+                    <div class="sparkle"></div>
+                    <div class="sparkle"></div>
+                    <div class="sparkle"></div>
+                    <div class="sparkle"></div>
+                    <div class="twinkle"></div>
+                    <div class="twinkle"></div>
+                    <div class="twinkle"></div>
+                    <div class="twinkle"></div>
+                </div>
+                <div class="stat-number" data-target="10">0</div>
+                <div class="stat-label">Ebooks</div>
+            </div>
         </div>
-        <div class="stat-box">
-            <div class="sparkle-container">
-                <div class="sparkle"></div>
-                <div class="sparkle"></div>
-                <div class="sparkle"></div>
-                <div class="sparkle"></div>
-                <div class="sparkle"></div>
-                <div class="sparkle"></div>
-                <div class="sparkle"></div>
-                <div class="twinkle"></div>
-                <div class="twinkle"></div>
-                <div class="twinkle"></div>
-                <div class="twinkle"></div>
+        
+        <!-- Course list section -->
+        <div class="courses-container">
+            <h3 class="courses-title">Our French Courses</h3>
+            <div class="courses-list">
+                <a href="https://simplefrenchwithhems.com/b/bundlealevel" target="_blank" class="course-item"><span class="course-fire">🔥</span> A0 - A2 Bundle</a>
+                <a href="https://simplefrenchwithhems.com/b/a1-introduction" target="_blank" class="course-item"><span class="course-fire">🔥</span> A1</a>
+                <a href="https://simplefrenchwithhems.com/b/gvLT3" target="_blank" class="course-item">A1 French Verbs</a>
+                <a href="https://simplefrenchwithhems.com/b/bVHXq" target="_blank" class="course-item">A1 Vocabulary</a>
+                <a href="https://simplefrenchwithhems.com/b/a2-french" target="_blank" class="course-item"><span class="course-fire">🔥</span> A2</a>
+                <a href="https://simplefrenchwithhems.com/b/proV1" target="_blank" class="course-item">A2 French Verbs</a>
+                <!-- Items below will be hidden on mobile -->
+                <div class="desktop-only">
+                    <a href="https://simplefrenchwithhems.com/b/TpkbM" target="_blank" class="course-item">A2 Vocabulary</a>
+                    <a href="https://simplefrenchwithhems.com/b/ZDM4I" target="_blank" class="course-item"><span class="course-fire">🔥</span> B1</a>
+                    <a href="https://simplefrenchwithhems.com/b/oe9rR" target="_blank" class="course-item">B1 French Verbs</a>
+                    <a href="https://simplefrenchwithhems.com/b/nzTma" target="_blank" class="course-item">B1 Vocabulary</a>
+                    <span class="course-item disabled">B2 Courses</span>
+                    <span class="course-item disabled">A0 - B2 Bundle</span>
+                </div>
             </div>
-            <div class="stat-number" data-target="400">0</div>
-            <div class="stat-label">Grammar Videos</div>
-        </div>
-        <div class="stat-box">
-            <div class="sparkle-container">
-                <div class="sparkle"></div>
-                <div class="sparkle"></div>
-                <div class="sparkle"></div>
-                <div class="sparkle"></div>
-                <div class="sparkle"></div>
-                <div class="sparkle"></div>
-                <div class="sparkle"></div>
-                <div class="twinkle"></div>
-                <div class="twinkle"></div>
-                <div class="twinkle"></div>
-                <div class="twinkle"></div>
-            </div>
-            <div class="stat-number" data-target="50">0</div>
-            <div class="stat-label">Animated Stories</div>
-        </div>
-        <div class="stat-box">
-            <div class="sparkle-container">
-                <div class="sparkle"></div>
-                <div class="sparkle"></div>
-                <div class="sparkle"></div>
-                <div class="sparkle"></div>
-                <div class="sparkle"></div>
-                <div class="sparkle"></div>
-                <div class="sparkle"></div>
-                <div class="twinkle"></div>
-                <div class="twinkle"></div>
-                <div class="twinkle"></div>
-                <div class="twinkle"></div>
-            </div>
-            <div class="stat-number" data-target="10">0</div>
-            <div class="stat-label">Ebooks</div>
         </div>
     </div>
-
+    
     <script>
         // Intersection Observer to start counting when stats are visible
         const observer = new IntersectionObserver((entries) => {
