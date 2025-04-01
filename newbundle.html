@@ -417,15 +417,15 @@
 
         .products {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 3rem;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
             margin-bottom: 7rem;
         }
 
         .product-card {
             background-color: var(--card-bg);
-            border-radius: 20px;
-            padding: 2.5rem;
+            border-radius: 15px;
+            padding: 1.8rem;
             transition: all 0.3s ease;
             opacity: 0;
             transform: translateY(20px);
@@ -443,70 +443,70 @@
         }
 
         .product-card h3 {
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
             color: var(--primary);
             font-weight: 600;
             letter-spacing: -0.5px;
         }
 
         .product-card p.description {
-            margin-bottom: 2rem;
-            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
             color: var(--text-secondary);
-            font-size: 1.1rem;
+            font-size: 0.95rem;
         }
 
         .product-card ul {
             list-style-type: none;
-            margin-bottom: 2.5rem;
+            margin-bottom: 1.5rem;
         }
 
         .product-card li {
-            margin-bottom: 1rem;
+            margin-bottom: 0.8rem;
             display: flex;
             align-items: flex-start;
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             color: var(--text-secondary);
         }
 
         .product-card li i {
             color: var(--primary);
-            margin-right: 0.8rem;
-            font-size: 1.1rem;
+            margin-right: 0.6rem;
+            font-size: 0.95rem;
             margin-top: 0.2rem;
         }
 
         .price {
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: 700;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             color: var(--primary);
         }
 
         .original-price {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             text-decoration: line-through;
             color: var(--text-secondary);
-            margin-right: 1rem;
+            margin-right: 0.8rem;
         }
 
         .sale-badge {
             position: absolute;
-            top: 20px;
-            right: -30px;
+            top: 15px;
+            right: -25px;
             background: linear-gradient(90deg, #ff6b6b, #ff9e9e);
             color: white;
-            padding: 0.7rem 3rem;
+            padding: 0.5rem 2.5rem;
             transform: rotate(45deg);
             font-weight: 600;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            font-size: 0.9rem;
+            font-size: 0.8rem;
         }
 
         .button {
             display: inline-block;
-            padding: 1rem 2rem;
+            padding: 0.8rem 1.5rem;
             background-color: var(--primary);
             color: var(--dark-bg);
             font-weight: 600;
@@ -516,6 +516,7 @@
             text-align: center;
             letter-spacing: 0.5px;
             box-shadow: 0 5px 15px var(--shadow-color);
+            font-size: 0.9rem;
         }
 
         .button:hover {
@@ -1088,82 +1089,6 @@
             <a href="#pricing" class="cta-button">Get Started Today</a>
         </div>
 
-        <h2 class="section-title">Why Choose Our French Learning Bundle?</h2>
-        
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-graduation-cap"></i>
-                </div>
-                <h3>Comprehensive Curriculum</h3>
-                <p>From absolute beginner (A0) to intermediate (A2) level, our structured curriculum follows CEFR standards and exam requirements.</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-robot"></i>
-                </div>
-                <h3>AI-Powered Learning</h3>
-                <p>24/7 AI tutor providing personalized feedback, pronunciation analysis, and adaptive learning paths.</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-chart-line"></i>
-                </div>
-                <h3>Progress Tracking</h3>
-                <p>Detailed analytics and progress reports to monitor your improvement and identify areas for focus.</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-users"></i>
-                </div>
-                <h3>Community Support</h3>
-                <p>Join our active community of learners, share experiences, and practice together.</p>
-            </div>
-        </div>
-
-        <h2 class="section-title">Course Structure & Learning Path</h2>
-        
-        <div class="learning-path">
-            <div class="path-step">
-                <div class="step-number">1</div>
-                <h3>A0 Fundamentals</h3>
-                <p>Start your journey with essential French basics, perfect for absolute beginners.</p>
-                <ul>
-                    <li>Basic pronunciation and alphabet</li>
-                    <li>Essential greetings and expressions</li>
-                    <li>Numbers and basic counting</li>
-                    <li>Simple present tense verbs</li>
-                </ul>
-            </div>
-
-            <div class="path-step">
-                <div class="step-number">2</div>
-                <h3>A1 Mastery</h3>
-                <p>Build confidence with everyday French conversation and grammar fundamentals.</p>
-                <ul>
-                    <li>Present tense and basic past tense</li>
-                    <li>Daily routine and activities</li>
-                    <li>Family and relationships</li>
-                    <li>Food and dining</li>
-                </ul>
-            </div>
-
-            <div class="path-step">
-                <div class="step-number">3</div>
-                <h3>A2 Advancement</h3>
-                <p>Advance to intermediate level with complex grammar and expanded vocabulary.</p>
-                <ul>
-                    <li>Past tenses and future tense</li>
-                    <li>Travel and transportation</li>
-                    <li>Work and career</li>
-                    <li>Cultural topics and current events</li>
-                </ul>
-            </div>
-        </div>
-
         <h2 class="section-title">Success Stories</h2>
         
         <div class="success-stories">
@@ -1273,13 +1198,11 @@
                 <div class="shimmer"></div>
                 <div class="sale-badge">ON SALE</div>
                 <h3>A0 French Fundamentals</h3>
-                <p class="description">Our 3-day introductory course designed to kickstart your French learning journey with essential basics. Perfect for absolute beginners wanting to establish a solid foundation.</p>
+                <p class="description">3-day introductory course for absolute beginners to establish essential French basics.</p>
                 <ul>
-                    <li><i class="fas fa-check"></i> 50+ Grammar Topics including subject pronouns and basic verb conjugations</li>
-                    <li><i class="fas fa-check"></i> 3 Days structured curriculum with guided practice sessions</li>
-                    <li><i class="fas fa-check"></i> Lessons on French alphabets, numbers, colors, and essential expressions</li>
-                    <li><i class="fas fa-check"></i> Interactive exercises and dictation tests to reinforce learning</li>
-                    <li><i class="fas fa-check"></i> Totally FREE with certificate of completion</li>
+                    <li><i class="fas fa-check"></i> Basic grammar and verb conjugations</li>
+                    <li><i class="fas fa-check"></i> Essential expressions and numbers</li>
+                    <li><i class="fas fa-check"></i> Interactive exercises with feedback</li>
                 </ul>
                 <div class="price">$0.00 CAD</div>
                 <a href="https://simplefrenchwithhems.com/b/freefrench" target="_blank" class="button">Video Courses</a>
@@ -1288,14 +1211,11 @@
             <div class="product-card">
                 <div class="shimmer"></div>
                 <h3>A1 French Mastery</h3>
-                <p class="description">A comprehensive course that takes you from beginner to elementary proficiency (A1 CEFR level). Build confidence with everyday French conversation and grammar fundamentals.</p>
+                <p class="description">Comprehensive beginner to elementary course with DELF/TEF exam preparation.</p>
                 <ul>
-                    <li><i class="fas fa-check"></i> 50+ Animated Stories with native speaker audio for authentic pronunciation</li>
-                    <li><i class="fas fa-check"></i> 100+ Grammar Videos covering all A1 requirements including present tense verbs, articles, and adjectives</li>
-                    <li><i class="fas fa-check"></i> 1000+ Graded Quizzes structured by difficulty with instant feedback</li>
-                    <li><i class="fas fa-check"></i> 100+ DELF and TEF Practice/MOCK Tests in reading, writing, listening, and speaking</li>
-                    <li><i class="fas fa-check"></i> DELF and TEF Exam simulation with answer keys and scoring system</li>
-                    <li><i class="fas fa-check"></i> Personalized study plans following official exam syllabus</li>
+                    <li><i class="fas fa-check"></i> 50+ Stories & 100+ Grammar Videos</li>
+                    <li><i class="fas fa-check"></i> 1000+ Practice Exercises</li>
+                    <li><i class="fas fa-check"></i> DELF/TEF Mock Tests & Simulations</li>
                 </ul>
                 <div class="price">From $399.99 CAD</div>
                 <a href="https://simplefrenchwithhems.com/b/a1-introduction" target="_blank" class="button">Video Courses</a>
@@ -1304,14 +1224,11 @@
             <div class="product-card">
                 <div class="shimmer"></div>
                 <h3>A2 French Mastery</h3>
-                <p class="description">Advance your French to an elementary-intermediate level (A2 CEFR). Learn to express yourself in past tense, discuss future plans, and navigate daily situations with ease.</p>
+                <p class="description">Advanced elementary course focusing on past tense, future plans, and daily conversations.</p>
                 <ul>
-                    <li><i class="fas fa-check"></i> 50+ Animated Stories with cultural contexts and interactive dialogues</li>
-                    <li><i class="fas fa-check"></i> 100+ Grammar Videos on past tenses, future tense, and complex sentence structures</li>
-                    <li><i class="fas fa-check"></i> 1000+ Graded Quizzes with detailed explanations for each answer</li>
-                    <li><i class="fas fa-check"></i> Comprehensive DELF A2 and TEF Canada exam preparation materials</li>
-                    <li><i class="fas fa-check"></i> Writing and speaking practice with model answers and correction guides</li>
-                    <li><i class="fas fa-check"></i> TEF Canada CLB correlation guides for immigration purposes</li>
+                    <li><i class="fas fa-check"></i> Advanced Grammar & Cultural Context</li>
+                    <li><i class="fas fa-check"></i> Writing & Speaking Practice</li>
+                    <li><i class="fas fa-check"></i> TEF Canada CLB Preparation</li>
                 </ul>
                 <div class="price">From $599.00 CAD</div>
                 <a href="https://simplefrenchwithhems.com/b/a2-french" target="_blank" class="button">Video Courses</a>
@@ -1321,13 +1238,11 @@
                 <div class="shimmer"></div>
                 <div class="sale-badge">ON SALE</div>
                 <h3>A1 Vocabulary</h3>
-                <p class="description">A comprehensive e-book covering essential vocabulary needed for A1 level proficiency. Organized by themes for easy learning and retention.</p>
+                <p class="description">Essential vocabulary e-book for A1 level, organized by themes.</p>
                 <ul>
-                    <li><i class="fas fa-check"></i> 800+ carefully selected words with pronunciation guides</li>
-                    <li><i class="fas fa-check"></i> Thematic organization for contextual learning (family, travel, food, etc.)</li>
-                    <li><i class="fas fa-check"></i> Example sentences showing practical usage of each word</li>
-                    <li><i class="fas fa-check"></i> Review sections and memory tricks for better retention</li>
-                    <li><i class="fas fa-check"></i> Downloadable PDF format for offline study</li>
+                    <li><i class="fas fa-check"></i> 800+ Words with Pronunciation</li>
+                    <li><i class="fas fa-check"></i> Example Sentences & Usage</li>
+                    <li><i class="fas fa-check"></i> Downloadable PDF Format</li>
                 </ul>
                 <div class="price">
                     <span class="original-price">$66.65 CAD</span>
@@ -1340,13 +1255,11 @@
                 <div class="shimmer"></div>
                 <div class="sale-badge">ON SALE</div>
                 <h3>A2 Vocabulary</h3>
-                <p class="description">Expand your French vocabulary to A2 level with this comprehensive e-book. Includes more advanced terms and expressions for greater fluency.</p>
+                <p class="description">Advanced vocabulary e-book with intermediate-level terms and expressions.</p>
                 <ul>
-                    <li><i class="fas fa-check"></i> 800+ intermediate-level words with gender indicators and pronunciation notes</li>
-                    <li><i class="fas fa-check"></i> Advanced thematic sections including workplace, emotions, and opinions</li>
-                    <li><i class="fas fa-check"></i> Common expressions and idioms used in everyday French</li>
-                    <li><i class="fas fa-check"></i> Vocabulary specifically selected for DELF A2 and TEF exam success</li>
-                    <li><i class="fas fa-check"></i> Digital flashcards included for spaced repetition practice</li>
+                    <li><i class="fas fa-check"></i> 800+ Advanced Words</li>
+                    <li><i class="fas fa-check"></i> Common Expressions & Idioms</li>
+                    <li><i class="fas fa-check"></i> Digital Flashcards Included</li>
                 </ul>
                 <div class="price">
                     <span class="original-price">$79.99 CAD</span>
@@ -1358,69 +1271,14 @@
             <div class="product-card">
                 <div class="shimmer"></div>
                 <h3>13 French Pronunciation Steps</h3>
-                <p class="description">Master French pronunciation with this specialized course. Perfect your accent with systematic training from basic sounds to complex speech patterns.</p>
+                <p class="description">Master French pronunciation from basic sounds to complex patterns.</p>
                 <ul>
-                    <li><i class="fas fa-check"></i> 13 Progressive steps from basic vowels to complex sound combinations</li>
-                    <li><i class="fas fa-check"></i> Detailed mouth position diagrams for accurate sound production</li>
-                    <li><i class="fas fa-check"></i> Comparison exercises between similar French sounds</li>
-                    <li><i class="fas fa-check"></i> Rhythm and intonation training for natural-sounding speech</li>
-                    <li><i class="fas fa-check"></i> Listening exercises to improve sound discrimination</li>
-                    <li><i class="fas fa-check"></i> Applicable across all levels from A0 to B2</li>
+                    <li><i class="fas fa-check"></i> Progressive Learning Path</li>
+                    <li><i class="fas fa-check"></i> Detailed Pronunciation Guides</li>
+                    <li><i class="fas fa-check"></i> Practice Exercises & Audio</li>
                 </ul>
                 <div class="price">$69.99 CAD</div>
                 <a href="https://simplefrenchwithhems.com/b/0q9SR" target="_blank" class="button">Video Courses</a>
-            </div>
-        </div>
-
-        <h2 class="section-title">What Our Students Say</h2>
-        
-        <div class="testimonials">
-            <div class="testimonial-card">
-                <div class="shimmer"></div>
-                <div class="testimonial-header">
-                    <div class="avatar">MK</div>
-                    <div class="testimonial-info">
-                        <h4>Marie</h4>
-                        <p>• DELF A2 • Montreal</p>
-                    </div>
-                </div>
-                <div class="stars">★★★★★</div>
-                <div class="testimonial-content">
-                    "The immersive learning approach made French feel natural and engaging. I especially loved the cultural scenarios and interactive dialogues - they provided real context! After 4 months, I was confidently speaking with native speakers."
-                </div>
-                <div class="testimonial-badge">Passed DELF A2 with 89/100</div>
-            </div>
-
-            <div class="testimonial-card">
-                <div class="shimmer"></div>
-                <div class="testimonial-header">
-                    <div class="avatar">JT</div>
-                    <div class="testimonial-info">
-                        <h4>James</h4>
-                        <p>• TEF Canada • Vancouver</p>
-                    </div>
-                </div>
-                <div class="stars">★★★★★</div>
-                <div class="testimonial-content">
-                    "The structured approach from A0 to A2 was exactly what I needed. The AI tutor helped me practice conversations 24/7, and the pronunciation course transformed my accent. The exam simulation tests perfectly prepared me for the real TEF. Worth every penny!"
-                </div>
-                <div class="testimonial-badge">TEF Score: 350/450</div>
-            </div>
-
-            <div class="testimonial-card">
-                <div class="shimmer"></div>
-                <div class="testimonial-header">
-                    <div class="avatar">LP</div>
-                    <div class="testimonial-info">
-                        <h4>Lisa</h4>
-                        <p>• Business French • Toronto</p>
-                    </div>
-                </div>
-                <div class="stars">★★★★★</div>
-                <div class="testimonial-content">
-                    "Started with zero French knowledge. The vocabulary e-books and animated stories made learning fun and effective. The grammar videos explained concepts clearly with practical examples. Now I can confidently handle business meetings in French. The progress tracking kept me motivated throughout."
-                </div>
-                <div class="testimonial-badge">Achieved Business Fluency in 6 months</div>
             </div>
         </div>
 
