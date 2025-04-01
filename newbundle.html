@@ -2,9 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="Master French from A0 to A2 with our comprehensive DELF & TEF Success Bundle">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DELF & TEF Success Bundle | A0 to A2</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -22,27 +20,12 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Poppins', sans-serif;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
         }
 
-        html, body {
-            width: 100%;
-            min-height: 100vh;
-            overflow-x: hidden;
+        body {
             background-color: var(--dark-bg);
             color: var(--text-primary);
             line-height: 1.6;
-        }
-
-        /* Force hardware acceleration */
-        body {
-            transform: translateZ(0);
-            -webkit-transform: translateZ(0);
-            backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
-            perspective: 1000;
-            -webkit-perspective: 1000;
         }
 
         /* Hero Section Enhanced */
@@ -592,9 +575,10 @@
 
         /* Course Cards Section */
         .courses {
-            padding: 3rem 2rem;  /* Reduced from 4rem */
-            max-width: 1000px;  /* Reduced from 1100px */
+            padding: 4rem 2rem;
+            max-width: 1200px;
             margin: 0 auto;
+            position: relative;
         }
 
         .section-title {
@@ -611,9 +595,9 @@
 
         .course-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));  /* Reduced from 300px */
-            gap: 1.4rem;  /* Reduced from 1.8rem */
-            margin-bottom: 2.5rem;  /* Reduced from 3rem */
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+            margin-bottom: 4rem;
         }
 
         .course-card {
@@ -622,12 +606,14 @@
                 rgba(0, 0, 0, 0.3)
             );
             border: 1px solid rgba(0, 255, 155, 0.1);
-            border-radius: 16px;  /* Reduced from 20px */
-            padding: 1.4rem;  /* Reduced from 1.8rem */
+            border-radius: 24px;
+            padding: 2.5rem;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             backdrop-filter: blur(12px);
             position: relative;
             overflow: hidden;
+            transform-style: preserve-3d;
+            perspective: 1000px;
         }
 
         .course-card::before {
@@ -688,25 +674,25 @@
         }
 
         .course-title {
-            font-size: 1.5rem;  /* Reduced from 1.8rem */
+            font-size: 1.8rem;
             font-weight: 600;
             color: var(--neon-mint);
-            margin-bottom: 1rem;  /* Reduced from 1.5rem */
+            margin-bottom: 1.5rem;
             letter-spacing: -0.01em;
         }
 
         .course-features {
             list-style: none;
-            margin-bottom: 1.5rem;  /* Reduced from 2rem */
+            margin-bottom: 2rem;
         }
 
         .course-features li {
-            margin-bottom: 0.6rem;  /* Reduced from 0.8rem */
+            margin-bottom: 0.8rem;
             display: flex;
             align-items: center;
-            gap: 0.6rem;  /* Reduced from 0.8rem */
+            gap: 0.8rem;
             color: var(--text-secondary);
-            font-size: 0.95rem;  /* Reduced from 1.05rem */
+            font-size: 1.05rem;
         }
 
         .course-features li::before {
@@ -716,10 +702,10 @@
         }
 
         .course-price {
-            font-size: 1.5rem;  /* Reduced from 1.8rem */
+            font-size: 1.8rem;
             font-weight: 600;
             color: var(--text-primary);
-            margin-bottom: 1.5rem;  /* Reduced from 2rem */
+            margin-bottom: 2rem;
         }
 
         /* Pricing Section */
@@ -1193,35 +1179,6 @@
             transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Add animation order to cards */
-        .feature-card, .course-card, .pricing-card {
-            --animation-order: 0;
-        }
-
-        /* Animated Progress Bar */
-        .progress-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, var(--neon-mint), var(--purple-accent));
-            transform-origin: 0%;
-            z-index: 1000;
-        }
-
-        /* Floating Elements Animation */
-        @keyframes floatAnimation {
-            0%, 100% { transform: translateY(0) rotate(0); }
-            25% { transform: translateY(-5px) rotate(2deg); }
-            75% { transform: translateY(5px) rotate(-2deg); }
-        }
-
-        .hero-badge {
-            animation: floatAnimation 3s ease-in-out infinite;
-            animation-delay: calc(var(--badge-order) * 0.2s);
-        }
-
         /* Glowing Border Effect */
         .pricing-card::after {
             content: '';
@@ -1244,130 +1201,26 @@
             50% { opacity: 1; }
         }
 
-        /* Add this script at the end of the body */
-        <script>
-        // Mouse move effect for feature cards
-        document.querySelectorAll('.feature-card').forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = ((e.clientX - rect.left) / rect.width) * 100;
-                const y = ((e.clientY - rect.top) / rect.height) * 100;
-                card.style.setProperty('--mouse-x', `${x}%`);
-                card.style.setProperty('--mouse-y', `${y}%`);
-            });
-        });
+        @media (max-width: 480px) {
+            .pricing-card {
+                padding: 1.5rem;
+            }
 
-        // Add animation order to cards
-        document.querySelectorAll('.feature-card, .course-card, .pricing-card').forEach((card, index) => {
-            card.style.setProperty('--animation-order', index);
-        });
+            .pricing-badge {
+                font-size: 0.8rem;
+                padding: 0.4rem 1rem;
+            }
 
-        // Particle effect
-        function createParticles() {
-            const particles = document.createElement('div');
-            particles.className = 'particles';
-            document.body.appendChild(particles);
+            .current-price {
+                font-size: 1.8rem;
+            }
 
-            for (let i = 0; i < 50; i++) {
-                const particle = document.createElement('div');
-                particle.style.cssText = `
-                    position: absolute;
-                    width: 2px;
-                    height: 2px;
-                    background: rgba(0, 255, 155, ${Math.random() * 0.5});
-                    left: ${Math.random() * 100}vw;
-                    top: ${Math.random() * 100}vh;
-                    pointer-events: none;
-                    border-radius: 50%;
-                    animation: particleFloat ${5 + Math.random() * 10}s linear infinite;
-                `;
-                particles.appendChild(particle);
+            .sub-features {
+                font-size: 0.85rem;
             }
         }
 
-        createParticles();
-
-        // Enhanced scroll animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '20px'
-        };
-
-        const fadeObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = 1;
-                    entry.target.style.transform = 'translateY(0) scale(1)';
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.feature-card, .course-card, .pricing-card, .testimonial').forEach((el) => {
-            el.style.opacity = 0;
-            el.style.transform = 'translateY(30px) scale(0.95)';
-            el.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
-            fadeObserver.observe(el);
-        });
-
-        // Progress bar
-        const progressBar = document.createElement('div');
-        progressBar.className = 'progress-bar';
-        document.body.appendChild(progressBar);
-
-        window.addEventListener('scroll', () => {
-            const windowHeight = document.documentElement.scrollHeight - window.innerHeight;
-            const progress = (window.scrollY / windowHeight) * 100;
-            progressBar.style.transform = `scaleX(${progress / 100})`;
-        });
-
-        // Enhanced particle effect
-        function createEnhancedParticles() {
-            const particles = document.querySelector('.particles');
-            if (!particles) return;
-
-            for (let i = 0; i < 30; i++) {
-                const particle = document.createElement('div');
-                const size = Math.random() * 3 + 1;
-                particle.style.cssText = `
-                    position: absolute;
-                    width: ${size}px;
-                    height: ${size}px;
-                    background: ${Math.random() > 0.5 ? 'var(--neon-mint)' : 'var(--purple-accent)'};
-                    left: ${Math.random() * 100}vw;
-                    top: ${Math.random() * 100}vh;
-                    pointer-events: none;
-                    border-radius: 50%;
-                    filter: blur(1px);
-                    animation: particleFloat ${10 + Math.random() * 20}s linear infinite;
-                    opacity: ${Math.random() * 0.6};
-                `;
-                particles.appendChild(particle);
-            }
-        }
-
-        createEnhancedParticles();
-
-        // 3D card tilt effect
-        document.querySelectorAll('.course-card, .pricing-card').forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = ((e.clientX - rect.left) / rect.width - 0.5) * 20;
-                const y = ((e.clientY - rect.top) / rect.height - 0.5) * 20;
-                card.style.transform = `perspective(1000px) rotateX(${-y}deg) rotateY(${x}deg) translateZ(10px)`;
-            });
-
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateZ(0)';
-            });
-        });
-
-        // Add floating animation delays to badges
-        document.querySelectorAll('.hero-badge').forEach((badge, index) => {
-            badge.style.setProperty('--badge-order', index);
-        });
-        </script>
-
-        /* Add these keyframes at the end of the style section */
+        /* Essential Keyframe Animations */
         @keyframes particleFloat {
             0% {
                 transform: translateY(0) scale(1);
@@ -1388,529 +1241,45 @@
             100% { text-shadow: 0 0 10px rgba(0, 255, 155, 0.5); }
         }
 
-        @keyframes backgroundShift {
-            0% { background-position: 0 0, 0 0, 0 0; }
-            100% { background-position: 0 0, 60px 60px, -60px -60px; }
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
         }
 
-        /* Add these styles in the style section */
+        /* Essential Styles for Course Cards */
         .subtitle {
             color: var(--neon-mint);
-            font-size: 0.8rem;  /* Reduced from 0.85rem */
-            margin-bottom: 0.6rem;  /* Reduced from 0.8rem */
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
             opacity: 0.8;
         }
 
         .vocab-count {
             color: var(--neon-mint);
-            font-size: 1.3rem;  /* Reduced from 1.5rem */
-            margin: 0.6rem 0;  /* Reduced from 0.8rem */
+            font-size: 1.8rem;
+            margin: 1rem 0;
         }
 
         .original-price {
             text-decoration: line-through;
             color: rgba(255,255,255,0.6);
-            font-size: 0.75rem;  /* Reduced from 0.8rem */
-            display: block;
-            margin-bottom: 0.3rem;  /* Reduced from 0.5rem */
-        }
-
-        .reviews {
-            padding: 8rem 2rem;
-            position: relative;
-            background: linear-gradient(180deg, var(--card-bg), transparent);
-            overflow: hidden;
-        }
-
-        .reviews::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--neon-mint), transparent);
-        }
-
-        .reviews-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 3rem;
-            max-width: 1200px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-
-        .review-card {
-            background: linear-gradient(145deg, 
-                rgba(0, 255, 155, 0.03), 
-                rgba(0, 0, 0, 0.4)
-            );
-            border: 1px solid rgba(0, 255, 155, 0.08);
-            border-radius: 30px;
-            padding: 2.5rem;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            backdrop-filter: blur(12px);
-            position: relative;
-            overflow: hidden;
-            transform-style: preserve-3d;
-            perspective: 1000px;
-        }
-
-        .review-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
-                        rgba(0, 255, 155, 0.1) 0%, 
-                        transparent 60%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            pointer-events: none;
-        }
-
-        .review-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            border-color: var(--neon-mint);
-            box-shadow: 
-                0 20px 40px rgba(0, 255, 155, 0.1),
-                0 0 120px rgba(0, 255, 155, 0.1);
-        }
-
-        .review-card:hover::before {
-            opacity: 1;
-        }
-
-        .review-header {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-            position: relative;
-        }
-
-        .review-avatar {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, var(--neon-mint), #00E5B0);
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            font-size: 1.2rem;
-            color: var(--dark-bg);
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 8px 16px rgba(0, 255, 155, 0.2);
-        }
-
-        .review-avatar::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                45deg,
-                transparent,
-                rgba(255, 255, 255, 0.3),
-                transparent
-            );
-            transform: rotate(45deg);
-            animation: shimmer 3s infinite;
-        }
-
-        .review-info {
-            flex: 1;
-        }
-
-        .review-info h3 {
-            font-size: 1.3rem;
-            color: var(--text-primary);
-            margin-bottom: 0.4rem;
-            font-weight: 600;
-            letter-spacing: -0.01em;
-        }
-
-        .review-meta {
-            font-size: 0.95rem;
-            color: var(--neon-mint);
-            opacity: 0.9;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .review-meta::before {
-            content: '';
-            display: inline-block;
-            width: 6px;
-            height: 6px;
-            background: var(--neon-mint);
-            border-radius: 50%;
-            opacity: 0.8;
-        }
-
-        .review-rating {
-            position: absolute;
-            top: 0;
-            right: 0;
-            color: var(--neon-mint);
-            font-size: 1.2rem;
-            letter-spacing: 2px;
-            filter: drop-shadow(0 0 8px rgba(0, 255, 155, 0.4));
-        }
-
-        .review-text {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-            line-height: 1.7;
-            margin-bottom: 2rem;
-            position: relative;
-            padding-left: 1.5rem;
-            border-left: 2px solid rgba(0, 255, 155, 0.2);
-        }
-
-        .review-highlight {
-            display: inline-block;
-            background: rgba(0, 255, 155, 0.08);
-            color: var(--neon-mint);
-            padding: 0.8rem 1.5rem;
-            border-radius: 100px;
-            font-size: 0.95rem;
-            font-weight: 500;
-            border: 1px solid rgba(0, 255, 155, 0.15);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .review-highlight::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                45deg,
-                transparent,
-                rgba(0, 255, 155, 0.1),
-                transparent
-            );
-            transform: rotate(45deg);
-            animation: shimmer 6s infinite;
-        }
-
-        .review-card:hover .review-highlight {
-            background: rgba(0, 255, 155, 0.12);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 255, 155, 0.15);
-        }
-
-        .review-highlight::before {
-            display: none;
-        }
-
-        @media (max-width: 768px) {
-            .reviews-grid {
-                grid-template-columns: 1fr;
-                gap: 2.5rem;
-                padding: 0 1rem;
-            }
-
-            .review-card {
-                padding: 2rem;
-            }
-
-            .review-avatar {
-                width: 50px;
-                height: 50px;
-                font-size: 1rem;
-            }
-
-            .review-text {
-                font-size: 1rem;
-                padding-left: 1rem;
-            }
-        }
-
-        /* Optimize animations by using GPU-accelerated properties */
-        .course-card, .review-card, .pricing-card {
-            will-change: transform;
-            transform: translateZ(0);
-            backface-visibility: hidden;
-        }
-
-        /* Reduce number of particles and optimize particle animation */
-        .particles {
-            pointer-events: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            opacity: 0.6;
-        }
-
-        /* Optimize review card animations */
-        .review-card {
-            transform: translateZ(0);
-            will-change: transform, opacity;
-            transition: transform 0.3s ease, opacity 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .review-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 255, 155, 0.1);
-        }
-
-        /* Remove complex gradients and simplify effects */
-        .review-avatar::after,
-        .review-highlight::before,
-        .hero::before {
-            display: none;
-        }
-
-        /* Optimize background patterns */
-        .hero::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 50% 50%, rgba(0, 255, 155, 0.1) 0%, transparent 70%);
-            pointer-events: none;
-        }
-
-        /* Simplify card hover effects */
-        .course-card:hover,
-        .pricing-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 255, 155, 0.1);
-        }
-
-        /* Enhanced Pricing Styles */
-        .pricing-badge {
-            position: absolute;
-            top: -15px;
-            right: 20px;
-            background: var(--purple-accent);
-            color: white;
-            padding: 0.5rem 1.5rem;
-            border-radius: 20px;
             font-size: 0.9rem;
-            font-weight: 500;
-            box-shadow: 0 4px 12px rgba(176, 38, 255, 0.3);
-        }
-
-        .pricing-card {
-            position: relative;
-            padding: 3rem;
-        }
-
-        .save-text {
             display: block;
-            color: var(--neon-mint);
-            font-size: 1rem;
-            margin-top: 0.5rem;
-            font-weight: 500;
-        }
-
-        .duration {
-            display: block;
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            margin-top: 0.5rem;
-        }
-
-        .current-price {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            display: block;
-        }
-
-        .sub-features {
-            list-style: none;
-            margin-left: 1.5rem;
-            margin-top: 0.5rem;
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
-
-        .sub-features li::before {
-            content: "•";
-            color: var(--neon-mint);
-            margin-right: 0.5rem;
-        }
-
-        .feature-highlight {
-            color: var(--neon-mint) !important;
-            font-weight: 500;
-        }
-
-        .guarantee {
-            margin: 2rem 0;
-            padding: 1rem;
-            border: 1px solid rgba(0, 255, 155, 0.2);
-            border-radius: 12px;
-            text-align: center;
-            color: var(--neon-mint);
-            font-size: 0.9rem;
-            background: rgba(0, 255, 155, 0.05);
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--purple-accent), #D042FF);
-        }
-
-        @media (max-width: 768px) {
-            .pricing-card {
-                padding: 2rem;
-            }
-
-            .sub-features {
-                margin-left: 1rem;
-                margin-top: 0.3rem;
-            }
-
-            .current-price {
-                font-size: 2rem;
-            }
-
-            .pricing-features {
-                font-size: 0.9rem;
-            }
-
-            .guarantee {
-                margin: 1.5rem 0;
-                padding: 0.8rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .pricing-card {
-                padding: 1.5rem;
-            }
-
-            .pricing-badge {
-                font-size: 0.8rem;
-                padding: 0.4rem 1rem;
-            }
-
-            .current-price {
-                font-size: 1.8rem;
-            }
-
-            .sub-features {
-                font-size: 0.85rem;
-            }
-        }
-
-        /* Optimize animations for embedded context */
-        @media (prefers-reduced-motion: reduce) {
-            *,
-            ::before,
-            ::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-                scroll-behavior: auto !important;
-            }
-        }
-
-        /* Fix embedded context issues */
-        .embedded-context {
-            max-width: 100vw;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Ensure proper stacking in embedded context */
-        .hero,
-        .courses,
-        .reviews,
-        .pricing {
-            position: relative;
-            z-index: 2;
-            width: 100%;
-        }
-
-        /* Additional styles for embedded contexts */
-        html.embedded, 
-        body.embedded-context {
-            width: 100%;
-            overflow-x: hidden;
-            max-width: 100%;
-            margin: 0;
-            padding: 0;
-        }
-
-        /* Fix width issues when embedded */
-        .embedded-context .hero-content,
-        .embedded-context .courses,
-        .embedded-context .reviews-grid,
-        .embedded-context .pricing-cards {
-            max-width: 100%;
-            padding-left: 1rem;
-            padding-right: 1rem;
-            box-sizing: border-box;
-        }
-
-        /* Enhanced mobile optimization for embedded views */
-        @media (max-width: 768px) {
-            .embedded-context .hero-content {
-                padding: 1rem;
-            }
-            
-            .embedded-context .course-grid,
-            .embedded-context .reviews-grid,
-            .embedded-context .pricing-cards {
-                grid-template-columns: 1fr;
-            }
+            margin-bottom: 0.5rem;
         }
     </style>
 </head>
-<body class="embedded-context">
-    <script>
-        // Set HTML class for embedding context
-        document.documentElement.classList.add('embedded');
-        
-        // Function to adjust for iframe embedding
-        function adjustForEmbedding() {
-            // Check if we're in an iframe
-            if (window.self !== window.top) {
-                document.body.classList.add('embedded');
-                
-                // Send height to parent
-                setInterval(() => {
-                    const height = document.body.scrollHeight;
-                    window.parent.postMessage({ frameHeight: height }, '*');
-                }, 500);
-            }
-        }
-        
-        // Run once DOM is ready
-        document.addEventListener('DOMContentLoaded', adjustForEmbedding);
-    </script>
-    
+<body>
     <section class="hero">
         <div class="hero-content">
             <div class="hero-text">
                 <div class="hero-badges">
                     <span class="hero-badge">DELF Focused</span>
                     <span class="hero-badge">TEF Focused</span>
-                    <span class="hero-badge">CLB 5 Guaranteed</span>
+                    <span class="hero-badge">VR Enhanced</span>
                 </div>
                 <h1>Everything You Need for DELF & TEF Success</h1>
-                <p>Master French from A0 to A2 in One Comprehensive Course. Featuring 200+ grammar videos, 2500+ quizzes, 50+ mock exams, AI-powered tutoring, and proven study methods for guaranteed success.</p>
+                <p>Master French from A0 to A2 in One Comprehensive Course. Featuring VR immersion, AI-powered tutoring, and proven study methods for guaranteed success.</p>
                 <a href="#pricing" class="btn">Get Started Today</a>
             </div>
             <div class="hero-image">
@@ -1927,125 +1296,76 @@
             <div class="course-card">
                 <span class="sale-badge">ON SALE</span>
                 <h3 class="course-title">A0 French Fundamentals</h3>
-                <p class="subtitle">Perfect for Complete Beginners</p>
                 <ul class="course-features">
-                    <li>50+ Interactive Topics</li>
-                    <li>72hr+ Learning Content</li>
-                    <li>French Alphabet Mastery</li>
-                    <li>Basic Grammar Foundations</li>
-                    <li>Essential Vocabulary</li>
-                    <li>Daily Practice Exercises</li>
-                    <li>Lifetime Updates</li>
+                    <li>50+ Topics</li>
+                    <li>72hr+ Learning</li>
+                    <li>FREE</li>
                 </ul>
                 <div class="course-price">$0.00 CAD</div>
-                <div class="duration">Complete in 3 Days</div>
-                <a href="https://simplefrenchwithhems.com/b/freefrench" target="_blank" rel="noopener noreferrer" class="btn">Start Now</a>
+                <a href="#" class="btn">Video Courses</a>
             </div>
 
             <div class="course-card">
                 <h3 class="course-title">A1 French Mastery</h3>
-                <p class="subtitle">Comprehensive DELF/TEF Preparation</p>
+                <p class="subtitle">Comprehensive</p>
                 <ul class="course-features">
-                    <li>50+ Animated Story Lessons</li>
-                    <li>100+ Grammar Video Tutorials</li>
-                    <li>1000+ Graded Practice Quizzes</li>
-                    <li>20+ DELF Practice Tests</li>
-                    <li>15+ TEF Practice Tests</li>
-                    <li>AI-Powered Speaking Practice - Hemiya</li>
-                    <li>Real-time Pronunciation Feedback</li>
-                    <li>Interactive Writing Exercises</li>
-                    <li>Native Speaker Audio Library - Hemiya</li>
+                    <li>50+ Animated Stories</li>
+                    <li>100+ Grammar Videos</li>
+                    <li>1000+ Graded Quizzes</li>
+                    <li>DELF and TEF Practice Tests</li>
+                    <li>DELF and TEF Exam Based Syllabus</li>
                 </ul>
                 <div class="course-price">From $399.99 CAD</div>
-                <div class="duration">4-Month Structured Program</div>
-                <a href="https://simplefrenchwithhems.com/b/a1-introduction" target="_blank" rel="noopener noreferrer" class="btn">See More</a>
+                <a href="#" class="btn">Video Courses</a>
             </div>
 
             <div class="course-card">
                 <h3 class="course-title">A2 French Mastery</h3>
-                <p class="subtitle">Advanced DELF/TEF Preparation</p>
+                <p class="subtitle">Comprehensive</p>
                 <ul class="course-features">
-                    <li>50+ Advanced Story Scenarios</li>
-                    <li>100+ In-depth Grammar Lessons</li>
-                    <li>1000+ Advanced Quizzes</li>
-                    <li>25+ DELF A2 Mock Exams</li>
-                    <li>20+ TEF Practice Sessions</li>
-                    <li>Business French Modules</li>
-                    <li>Cultural Context Training</li>
-                    <li>Accent Refinement Tools - Hemiya</li>
-                    <li>Writing Workshop Access - Hemiya</li>
+                    <li>50+ Animated Stories</li>
+                    <li>100+ Grammar Videos</li>
+                    <li>1000+ Graded Quizzes</li>
+                    <li>DELF and TEF Practice Tests</li>
+                    <li>DELF and TEF Exam Based Syllabus</li>
                 </ul>
                 <div class="course-price">From $599.00 CAD</div>
-                <div class="duration">6-Month Comprehensive Program</div>
-                <a href="https://simplefrenchwithhems.com/b/a2-french" target="_blank" rel="noopener noreferrer" class="btn">Master A2 Level</a>
+                <a href="#" class="btn">Video Courses</a>
             </div>
 
             <div class="course-card">
                 <span class="sale-badge">ON SALE</span>
                 <h3 class="course-title">A1 Vocabulary</h3>
-                <h2 class="vocab-count">800+ Essential Words</h2>
-                <ul class="course-features">
-                    <li>Thematic Word Groups</li>
-                    <li>Audio Pronunciations</li>
-                    <li>Context Examples</li>
-                    <li>Memory Techniques</li>
-                    <li>Practice Exercises</li>
-                    <li>Spaced Repetition System</li>
-                    <li>Downloadable PDFs</li>
-                </ul>
+                <h2 class="vocab-count">800+ words</h2>
                 <div class="course-price">
                     <span class="original-price">$66.65 CAD</span>
                     $49.99 CAD
                 </div>
-                <div class="duration">Lifetime Access</div>
-                <a href="https://simplefrenchwithhems.com/b/bVHXq" target="_blank" rel="noopener noreferrer" class="btn">Get E-BOOK</a>
+                <a href="#" class="btn">E-BOOK</a>
             </div>
 
             <div class="course-card">
                 <span class="sale-badge">ON SALE</span>
                 <h3 class="course-title">A2 Vocabulary</h3>
-                <h2 class="vocab-count">800+ Advanced Words</h2>
-                <ul class="course-features">
-                    <li>Advanced Word Categories</li>
-                    <li>Native Pronunciations</li>
-                    <li>Idiomatic Expressions</li>
-                    <li>Contextual Learning</li>
-                    <li>Usage Examples</li>
-                    <li>Interactive Exercises</li>
-                    <li>Vocabulary Games</li>
-                    <li>Digital Study Tools</li>
-                </ul>
+                <h2 class="vocab-count">800+ words</h2>
                 <div class="course-price">
                     <span class="original-price">$79.99 CAD</span>
                     $59.99 CAD
                 </div>
-                <div class="duration">Lifetime Access</div>
-                <a href="https://simplefrenchwithhems.com/b/TpkbM" target="_blank" rel="noopener noreferrer" class="btn">Get E-BOOK</a>
+                <a href="#" class="btn">E-BOOK</a>
             </div>
 
             <div class="course-card">
                 <h3 class="course-title">13 French Pronunciation Steps</h3>
                 <p class="subtitle">Levels A0-B2</p>
-                <ul class="course-features">
-                    <li>13 Core Pronunciation Rules</li>
-                    <li>Native Speaker Audio</li>
-                    <li>Video Demonstrations</li>
-                    <li>Mouth Position Guides</li>
-                    <li>Practice Exercises</li>
-                    <li>Common Error Fixes</li>
-                    <li>Accent Reduction Tips</li>
-                    <li>Progress Assessments</li>
-                    <li>Regional Variations</li>
-                </ul>
                 <div class="course-price">$69.99 CAD</div>
-                <div class="duration">Self-Paced Learning</div>
-                <a href="https://simplefrenchwithhems.com/b/0q9SR" target="_blank" rel="noopener noreferrer" class="btn">Start Now</a>
+                <a href="#" class="btn">Video Courses</a>
             </div>
         </div>
 
         <!-- Testimonial -->
         <div class="testimonial">
-            <p class="testimonial-text">"The French immersion technology made learning French feel natural and engaging. I especially loved the cultural scenarios - it felt like I was actually in France! After 4 months, I was confidently speaking with native speakers."</p>
+            <p class="testimonial-text">"The VR immersion really made a difference in my learning journey. I went from zero French knowledge to passing my DELF A2 exam in just 6 months!"</p>
             <p class="testimonial-author">- Sarah M., DELF A2 Certified</p>
         </div>
     </section>
@@ -2063,7 +1383,7 @@
                     </div>
                     <div class="review-rating">★★★★★</div>
                 </div>
-                <p class="review-text">"The Simple French with Hems immersion technology made learning French feel natural and engaging. I especially loved the cultural scenarios - it felt like I was actually in France! After 4 months, I was confidently speaking with native speakers."</p>
+                <p class="review-text">"The VR immersion technology made learning French feel natural and engaging. I especially loved the cultural scenarios - it felt like I was actually in France! After 4 months, I was confidently speaking with native speakers."</p>
                 <div class="review-highlight">Passed DELF A2 with 89/100</div>
             </div>
 
@@ -2102,37 +1422,36 @@
                 <div class="pricing-badge">Most Popular</div>
                 <h3 class="pricing-title">Pay Once - Win Double</h3>
                 <div class="pricing-price">
-                    <span class="original-price">CAD $1,699</span>
+                    <span class="original-price">CAD $1,600</span>
                     <span class="current-price">CAD $999.99</span>
                     <span class="save-text">Save CAD $600</span>
                 </div>
                 <ul class="pricing-features">
-                    <li class="feature-highlight">Flexible Learning Journey</li>
-                    <li>Full access to all courses
+                    <li class="feature-highlight">Complete A0 to A2 Course Bundle</li>
+                    <li>Lifetime access to all 6 courses</li>
+                    <li>800+ VR practice scenarios</li>
+                    <li>24/7 AI tutor with premium features
                         <ul class="sub-features">
-                            <li>A0 Fundamentals</li>
-                            <li>A1 & A2 Mastery</li>
-                            <li>5+ Vocabulary E-Books</li>
+                            <li>Accent analysis</li>
+                            <li>Personalized study plans</li>
+                            <li>Progress tracking</li>
                         </ul>
                     </li>
-                    <li>AI tutor with basic features - Hemiya
+                    <li>DELF & TEF exam materials
                         <ul class="sub-features">
-                            <li>Basic pronunciation feedback</li>
-                            <li>Weekly progress reviews</li>
+                            <li>20+ mock exams</li>
+                            <li>200+ practice exercises</li>
+                            <li>Score prediction</li>
                         </ul>
                     </li>
-                    <li>DELF & TEF preparation
-                        <ul class="sub-features">
-                            <li>50+ MOCK exams</li>
-                            <li>2500+ practice exercises</li>
-                        </ul>
-                    </li>
-                    <li>Standard support (24h response)</li>
-                    <li>ALL Online study materials</li>
-                    <li>French SpeakersCommunity access - Slack</li>
+                    <li>Priority support (24h response)</li>
+                    <li>Downloadable study materials</li>
+                    <li>Mobile app access</li>
+                    <li>Community access</li>
                     <li class="feature-highlight">Free lifetime updates</li>
                 </ul>
-                <a href="https://simplefrenchwithhems.com/order?link=otyDq&pricing_plan=ANzpQyxdBX" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Get Lifetime Access →</a>
+                <div class="guarantee">30-Day Money-Back Guarantee</div>
+                <a href="#" class="btn btn-primary">Get Lifetime Access →</a>
             </div>
 
             <div class="pricing-card">
@@ -2147,90 +1466,138 @@
                         <ul class="sub-features">
                             <li>A0 Fundamentals</li>
                             <li>A1 & A2 Mastery</li>
-                            <li>5+ Vocabulary E-Books</li>
+                            <li>Vocabulary E-Books</li>
                         </ul>
                     </li>
-                    <li>AI tutor with basic features - Hemiya
+                    <li>200+ VR session credits monthly</li>
+                    <li>AI tutor with basic features
                         <ul class="sub-features">
                             <li>Basic pronunciation feedback</li>
-                            <li>Weekly progress reviews</li>
+                            <li>Weekly progress reports</li>
                         </ul>
                     </li>
                     <li>DELF & TEF preparation
                         <ul class="sub-features">
-                            <li>50+ MOCK exams</li>
-                            <li>2500+ practice exercises</li>
+                            <li>10 mock exams</li>
+                            <li>100+ practice exercises</li>
                         </ul>
                     </li>
-                    <li>Standard support (24h response)</li>
-                    <li>ALL Online study materials</li>
-                    <li>French SpeakersCommunity access - Slack</li>
+                    <li>Standard support (48h response)</li>
+                    <li>Online study materials</li>
+                    <li>Mobile app access</li>
+                    <li>Community access</li>
                 </ul>
-                <a href="https://simplefrenchwithhems.com/order?link=otyDq&pricing_plan=4lW504qwG3" target="_blank" rel="noopener noreferrer" class="btn">Start Your Journey →</a>
+                <div class="guarantee">Cancel Anytime</div>
+                <a href="#" class="btn">Start Your Journey →</a>
             </div>
         </div>
     </section>
 
     <script>
-        // Optimize performance for embedded context
-        document.addEventListener('DOMContentLoaded', function() {
-            // Intersection Observer for performance
-            const observerOptions = {
-                root: null,
-                rootMargin: '50px',
-                threshold: 0.1
-            };
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                        observer.unobserve(entry.target);
+        // Optimize scroll handling with requestAnimationFrame
+        let ticking = false;
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const scrollY = window.scrollY;
+                    const particles = document.querySelector('.particles');
+                    if (particles) {
+                        particles.style.transform = `translateY(${scrollY * 0.5}px)`;
                     }
+                    ticking = false;
                 });
-            }, observerOptions);
+                ticking = true;
+            }
+        });
 
-            // Batch DOM operations
-            const elements = document.querySelectorAll('.course-card, .pricing-card, .review-card');
-            elements.forEach(el => {
-                el.style.opacity = '0';
-                el.style.transform = 'translateY(20px)';
-                observer.observe(el);
-            });
-
-            // Optimize scroll handling
-            let scrollTimeout;
-            const progressBar = document.createElement('div');
-            progressBar.className = 'progress-bar';
-            document.body.appendChild(progressBar);
-
-            window.addEventListener('scroll', () => {
-                if (!scrollTimeout) {
-                    scrollTimeout = setTimeout(() => {
-                        const windowHeight = document.documentElement.scrollHeight - window.innerHeight;
-                        const progress = (window.scrollY / windowHeight) * 100;
-                        progressBar.style.transform = `scaleX(${progress / 100})`;
-                        scrollTimeout = null;
-                    }, 16);
+        // Optimize intersection observer
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                    observer.unobserve(entry.target); // Stop observing after animation
                 }
-            }, { passive: true });
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '50px'
+        });
 
-            // Optimize smooth scroll
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const target = document.querySelector(this.getAttribute('href'));
-                    if (target) {
-                        target.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
-                    }
-                });
+        // Batch DOM operations
+        const elements = document.querySelectorAll('.course-card, .pricing-card, .review-card');
+        elements.forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            observer.observe(el);
+        });
+
+        // Particle effect
+        function createParticles() {
+            const particles = document.createElement('div');
+            particles.className = 'particles';
+            particles.style.position = 'fixed';
+            particles.style.top = '0';
+            particles.style.left = '0';
+            particles.style.width = '100%';
+            particles.style.height = '100%';
+            particles.style.pointerEvents = 'none';
+            particles.style.zIndex = '0';
+
+            const fragment = document.createDocumentFragment();
+            for (let i = 0; i < 100; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.position = 'absolute';
+                particle.style.width = '2px';
+                particle.style.height = '2px';
+                particle.style.background = 'var(--neon-mint)';
+                particle.style.left = `${Math.random() * 100}vw`;
+                particle.style.top = `${Math.random() * 100}vh`;
+                particle.style.borderRadius = '50%';
+                particle.style.opacity = String(Math.random() * 0.3);
+                particle.style.transform = 'translateZ(0)';
+                particle.style.willChange = 'transform';
+                particle.style.animation = `particleFloat ${10 + Math.random() * 10}s linear infinite`;
+                fragment.appendChild(particle);
+            }
+            
+            particles.appendChild(fragment);
+            document.body.appendChild(particles);
+        }
+
+        // Add animation to cards
+        document.querySelectorAll('.feature-card, .course-card, .pricing-card').forEach((card, index) => {
+            card.style.setProperty('--animation-order', index);
+        });
+
+        // Mouse move effect for cards
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width) * 100;
+                const y = ((e.clientY - rect.top) / rect.height) * 100;
+                card.style.setProperty('--mouse-x', `${x}%`);
+                card.style.setProperty('--mouse-y', `${y}%`);
+            });
+        });
+
+        // Initialize particles
+        createParticles();
+
+        // Optimize smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
             });
         });
     </script>
 </body>
-</html> 
-
+</html>
