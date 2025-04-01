@@ -29,7 +29,7 @@
     .container {
       text-align: left;
       width: 100%;
-      max-width: 1000px;
+      max-width: 1400px;
     }
 
     .line {
@@ -51,7 +51,7 @@
       animation-delay: 0.2s;
       font-size: 3.8vw;
       margin-bottom: 0.8vh;
-      white-space: normal;
+      white-space: nowrap;
       letter-spacing: 1.5px;
     }
     
@@ -101,7 +101,18 @@
     /* Media query for larger screens */
     @media (min-width: 1200px) {
       .line:nth-child(1) {
-        font-size: 3.2vw;
+        font-size: 5.2vw;
+      }
+      .line:nth-child(2) {
+        font-size: 4.2vw;
+      }
+      .line:nth-child(3) {
+        font-size: 3.6vw;
+        background: linear-gradient(90deg, #ffffff, #e6e6e6, #ffffff);
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
       }
     }
 
@@ -118,6 +129,11 @@
       .line:nth-child(3) {
         font-size: 3.8vw;
         white-space: normal;
+        background: linear-gradient(90deg, #ffffff, #e6e6e6, #ffffff);
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
       }
     }
 
@@ -134,6 +150,11 @@
       .line:nth-child(3) {
         font-size: 4.3vw;
         white-space: normal;
+        background: linear-gradient(90deg, #ffffff, #e6e6e6, #ffffff);
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
       }
     }
   </style>
