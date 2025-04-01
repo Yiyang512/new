@@ -1,0 +1,2171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DELF & TEF Success Bundle | A0 to A2</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-mint: #00FF9B;
+            --dark-bg: #001A0F;
+            --purple-accent: #B026FF;
+            --card-bg: rgba(0, 255, 155, 0.03);
+            --text-primary: #FFFFFF;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* Hero Section Enhanced */
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(135deg, rgba(0,26,15,0.95), rgba(0,26,15,0.85)),
+                        url('https://images.unsplash.com/photo-1617396900799-f4ec2b43c7ae?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWd2fHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Enhanced Background Effects */
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(0, 255, 155, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(176, 38, 255, 0.08) 0%, transparent 50%),
+                repeating-linear-gradient(45deg, rgba(0, 255, 155, 0.03) 25%, transparent 25%, transparent 75%, rgba(0, 255, 155, 0.03) 75%),
+                repeating-linear-gradient(-45deg, rgba(0, 255, 155, 0.03) 25%, transparent 25%, transparent 75%, rgba(0, 255, 155, 0.03) 75%);
+            background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+            animation: patternShift 20s linear infinite;
+            opacity: 0.7;
+            mix-blend-mode: overlay;
+        }
+
+        /* Animated Gradient Overlay */
+        .hero::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(circle at 30% 20%, rgba(0, 255, 155, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(176, 38, 255, 0.15) 0%, transparent 50%),
+                linear-gradient(45deg, rgba(0, 255, 155, 0.1) 0%, transparent 100%);
+            filter: blur(60px);
+            animation: glowShift 15s ease-in-out infinite alternate;
+            mix-blend-mode: screen;
+        }
+
+        /* Enhanced Hero Content */
+        .hero-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 6rem;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Enhanced Text Styles */
+        .hero-text h1 {
+            font-size: 5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, 
+                var(--neon-mint) 0%,
+                #80FFDB 50%,
+                var(--neon-mint) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientFlow 8s ease infinite;
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .hero-text h1::after {
+            content: attr(data-text);
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: -1;
+            background: linear-gradient(135deg, var(--neon-mint), #80FFDB);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: blur(40px);
+            opacity: 0.5;
+        }
+
+        .hero-text p {
+            font-size: 1.4rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            font-weight: 300;
+            letter-spacing: 0.3px;
+            line-height: 1.8;
+            position: relative;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        /* Enhanced Badge Styles */
+        .hero-badges {
+            display: flex;
+            gap: 1.2rem;
+            margin-bottom: 3rem;
+            perspective: 1000px;
+        }
+
+        .hero-badge {
+            background: rgba(0, 255, 155, 0.1);
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            font-size: 1rem;
+            color: var(--neon-mint);
+            border: 1px solid rgba(0, 255, 155, 0.2);
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            animation: badgeFloat 6s ease-in-out infinite;
+            animation-delay: calc(var(--badge-order) * 0.3s);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 255, 155, 0.1);
+        }
+
+        .hero-badge::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(0, 255, 155, 0.2), 
+                transparent
+            );
+            animation: shimmerEffect 3s linear infinite;
+            transform: translateX(-100%);
+        }
+
+        /* New Animations */
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes badgeFloat {
+            0%, 100% { transform: translateY(0) rotateX(0) rotateY(0); }
+            25% { transform: translateY(-10px) rotateX(5deg) rotateY(5deg); }
+            75% { transform: translateY(5px) rotateX(-5deg) rotateY(-5deg); }
+        }
+
+        @keyframes shimmerEffect {
+            0% { transform: translateX(-100%) skewX(-15deg); }
+            100% { transform: translateX(200%) skewX(-15deg); }
+        }
+
+        /* Enhanced Button Styles */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            background: linear-gradient(135deg, 
+                var(--neon-mint), 
+                #00E5B0, 
+                var(--neon-mint)
+            );
+            background-size: 200% 100%;
+            color: var(--dark-bg);
+            padding: 1.2rem 3rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.2rem;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+            isolation: isolate;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 
+                0 8px 24px rgba(0, 255, 155, 0.2),
+                0 2px 4px rgba(0, 255, 155, 0.1),
+                inset 0 2px 4px rgba(255, 255, 255, 0.4);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px) scale(1.02);
+            background-position: 100% 0;
+            box-shadow: 
+                0 12px 32px rgba(0, 255, 155, 0.3),
+                0 4px 8px rgba(0, 255, 155, 0.2),
+                inset 0 2px 4px rgba(255, 255, 255, 0.4);
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.4), 
+                transparent
+            );
+            transform: translateX(-100%) skewX(-15deg);
+            animation: buttonShimmer 3s infinite;
+        }
+
+        @keyframes buttonShimmer {
+            0% { transform: translateX(-100%) skewX(-15deg); }
+            100% { transform: translateX(200%) skewX(-15deg); }
+        }
+
+        /* Responsive Enhancements */
+        @media (max-width: 1200px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 4rem;
+                text-align: center;
+                padding: 3rem 1.5rem;
+            }
+
+            .hero-text h1 {
+                font-size: 4rem;
+            }
+
+            .hero-badges {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 1rem;
+                padding: 1.5rem 1rem;
+                margin-top: 1rem;
+            }
+
+            .hero-text h1 {
+                font-size: 2rem;
+                margin-bottom: 0.75rem;
+                line-height: 1.2;
+            }
+
+            .hero-text p {
+                font-size: 0.95rem;
+                margin-bottom: 1.25rem;
+                line-height: 1.5;
+            }
+
+            .hero-badges {
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 0.4rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .hero-badge {
+                font-size: 0.75rem;
+                padding: 0.35rem 0.75rem;
+                border-radius: 15px;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+                margin-bottom: 1.25rem;
+                padding: 0 0.75rem;
+            }
+
+            .courses {
+                padding: 2rem 0.75rem;
+            }
+
+            .course-grid {
+                gap: 1rem;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
+
+            .course-card {
+                padding: 1.25rem;
+                border-radius: 16px;
+            }
+
+            .course-title {
+                font-size: 1.2rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .course-features li {
+                font-size: 0.85rem;
+                margin-bottom: 0.4rem;
+                gap: 0.4rem;
+            }
+
+            .course-price {
+                font-size: 1.2rem;
+                margin-bottom: 1rem;
+            }
+
+            .vocab-count {
+                font-size: 1.2rem;
+                margin: 0.6rem 0;
+            }
+
+            .sale-badge {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.7rem;
+                top: 0.75rem;
+                right: 0.75rem;
+                border-radius: 12px;
+            }
+
+            .reviews {
+                padding: 3rem 0.75rem;
+            }
+
+            .reviews-grid {
+                gap: 1rem;
+                grid-template-columns: 1fr;
+            }
+
+            .review-card {
+                padding: 1.25rem;
+                border-radius: 16px;
+            }
+
+            .review-header {
+                gap: 0.75rem;
+                margin-bottom: 1rem;
+            }
+
+            .review-avatar {
+                width: 40px;
+                height: 40px;
+                font-size: 0.9rem;
+                border-radius: 12px;
+            }
+
+            .review-info h3 {
+                font-size: 1rem;
+            }
+
+            .review-meta {
+                font-size: 0.8rem;
+            }
+
+            .review-text {
+                font-size: 0.85rem;
+                line-height: 1.5;
+                margin-bottom: 1rem;
+                padding-left: 0.75rem;
+            }
+
+            .review-highlight {
+                font-size: 0.8rem;
+                padding: 0.4rem 0.75rem;
+                border-radius: 12px;
+            }
+
+            .pricing {
+                padding: 3rem 0.75rem;
+            }
+
+            .pricing-cards {
+                gap: 1rem;
+            }
+
+            .pricing-card {
+                padding: 1.25rem;
+                border-radius: 16px;
+            }
+
+            .pricing-title {
+                font-size: 1.3rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .pricing-price {
+                font-size: 1.8rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .pricing-features {
+                font-size: 0.85rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .sub-features {
+                margin-left: 0.75rem;
+                margin-top: 0.25rem;
+                font-size: 0.8rem;
+            }
+
+            .pricing-badge {
+                font-size: 0.7rem;
+                padding: 0.3rem 0.75rem;
+                top: -12px;
+                right: 15px;
+                border-radius: 12px;
+            }
+
+            .guarantee {
+                margin: 1.25rem 0;
+                padding: 0.6rem;
+                font-size: 0.8rem;
+                border-radius: 8px;
+            }
+
+            .btn {
+                padding: 0.75rem 1.25rem;
+                font-size: 0.9rem;
+                border-radius: 8px;
+            }
+
+            .save-text {
+                font-size: 0.85rem;
+                margin-top: 0.4rem;
+            }
+
+            .duration {
+                font-size: 0.8rem;
+                margin-top: 0.4rem;
+            }
+
+            .original-price {
+                font-size: 0.8rem;
+                margin-bottom: 0.3rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-text h1 {
+                font-size: 1.75rem;
+            }
+
+            .hero-text p {
+                font-size: 0.85rem;
+                line-height: 1.4;
+            }
+
+            .section-title {
+                font-size: 1.3rem;
+            }
+
+            .course-card, .review-card, .pricing-card {
+                padding: 1rem;
+                border-radius: 12px;
+            }
+
+            .course-title {
+                font-size: 1.1rem;
+            }
+
+            .course-features li {
+                font-size: 0.8rem;
+            }
+
+            .review-text {
+                font-size: 0.8rem;
+                padding-left: 0.6rem;
+            }
+
+            .pricing-title {
+                font-size: 1.2rem;
+            }
+
+            .pricing-price {
+                font-size: 1.6rem;
+            }
+
+            .btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.85rem;
+            }
+
+            .hero-badges {
+                margin-bottom: 1rem;
+            }
+
+            .hero-badge {
+                font-size: 0.7rem;
+                padding: 0.3rem 0.6rem;
+            }
+        }
+
+        /* Optimize touch targets for mobile */
+        @media (hover: none) {
+            .btn, 
+            .hero-badge,
+            .course-card,
+            .review-card,
+            .pricing-card {
+                min-height: 44px; /* Minimum touch target size */
+            }
+
+            .btn {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                min-width: 44px;
+            }
+
+            .course-features li,
+            .pricing-features li {
+                padding: 0.5rem 0;
+                margin: 0;
+            }
+        }
+
+        /* Performance optimizations for mobile */
+        @media (max-width: 768px) {
+            .hero::before,
+            .hero::after,
+            .review-card::before,
+            .pricing-card::after {
+                display: none; /* Disable complex gradients on mobile */
+            }
+
+            .particles {
+                opacity: 0.3; /* Reduce particle effect intensity */
+            }
+
+            .course-card:hover,
+            .review-card:hover,
+            .pricing-card:hover {
+                transform: none;
+                box-shadow: none;
+            }
+
+            .btn:hover {
+                transform: none;
+            }
+
+            /* Simplify animations */
+            .hero-badge,
+            .course-card,
+            .pricing-card {
+                animation: none;
+            }
+
+            /* Use simpler transitions */
+            .btn,
+            .course-card,
+            .review-card,
+            .pricing-card {
+                transition: opacity 0.3s ease;
+            }
+        }
+
+        /* Course Cards Section */
+        .courses {
+            padding: 3rem 2rem;  /* Reduced from 4rem */
+            max-width: 1000px;  /* Reduced from 1100px */
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--neon-mint);
+            margin-bottom: 2rem;
+            letter-spacing: -0.01em;
+            position: relative;
+            text-shadow: 0 0 10px rgba(0, 255, 155, 0.5);
+            animation: glowPulse 2s infinite;
+        }
+
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));  /* Reduced from 300px */
+            gap: 1.4rem;  /* Reduced from 1.8rem */
+            margin-bottom: 2.5rem;  /* Reduced from 3rem */
+        }
+
+        .course-card {
+            background: linear-gradient(145deg, 
+                rgba(0, 255, 155, 0.05), 
+                rgba(0, 0, 0, 0.3)
+            );
+            border: 1px solid rgba(0, 255, 155, 0.1);
+            border-radius: 16px;  /* Reduced from 20px */
+            padding: 1.4rem;  /* Reduced from 1.8rem */
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(12px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .course-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--neon-mint), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .course-card:hover {
+            transform: translateY(-8px) rotateX(5deg) rotateY(5deg);
+            border-color: var(--neon-mint);
+            box-shadow: 0 20px 40px rgba(0, 255, 155, 0.15);
+        }
+
+        .course-card:hover::before {
+            opacity: 1;
+        }
+
+        .course-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 24px;
+            padding: 2px;
+            background: linear-gradient(145deg, rgba(0, 255, 155, 0.3), transparent);
+            -webkit-mask: 
+                linear-gradient(#fff 0 0) content-box, 
+                linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .course-card:hover::after {
+            opacity: 1;
+        }
+
+        .sale-badge {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: var(--purple-accent);
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 30px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 12px rgba(176, 38, 255, 0.3);
+        }
+
+        .course-title {
+            font-size: 1.5rem;  /* Reduced from 1.8rem */
+            font-weight: 600;
+            color: var(--neon-mint);
+            margin-bottom: 1rem;  /* Reduced from 1.5rem */
+            letter-spacing: -0.01em;
+        }
+
+        .course-features {
+            list-style: none;
+            margin-bottom: 1.5rem;  /* Reduced from 2rem */
+        }
+
+        .course-features li {
+            margin-bottom: 0.6rem;  /* Reduced from 0.8rem */
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;  /* Reduced from 0.8rem */
+            color: var(--text-secondary);
+            font-size: 0.95rem;  /* Reduced from 1.05rem */
+        }
+
+        .course-features li::before {
+            content: "✓";
+            color: var(--neon-mint);
+            font-weight: 600;
+        }
+
+        .course-price {
+            font-size: 1.5rem;  /* Reduced from 1.8rem */
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;  /* Reduced from 2rem */
+        }
+
+        /* Pricing Section */
+        .pricing {
+            padding: 6rem 2rem;
+            background: linear-gradient(180deg, transparent, var(--card-bg));
+            position: relative;
+        }
+
+        .pricing::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--neon-mint), transparent);
+        }
+
+        .pricing-cards {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+        }
+
+        .pricing-card {
+            background: linear-gradient(145deg, 
+                rgba(0, 0, 0, 0.4), 
+                rgba(0, 0, 0, 0.6)
+            );
+            border: 1px solid rgba(0, 255, 155, 0.15);
+            border-radius: 24px;
+            padding: 3rem;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-8px) rotateX(5deg) rotateY(5deg);
+            border-color: var(--neon-mint);
+            box-shadow: 0 20px 40px rgba(0, 255, 155, 0.1);
+        }
+
+        .pricing-title {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--neon-mint);
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.01em;
+        }
+
+        .pricing-price {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 2.5rem;
+            line-height: 1.2;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin-bottom: 2.5rem;
+            text-align: left;
+            color: var(--text-secondary);
+        }
+
+        .pricing-features li {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .pricing-features li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--neon-mint);
+        }
+
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--neon-mint), #00E5B0);
+            color: var(--dark-bg);
+            padding: 1rem 2.5rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+            border: none;
+            isolation: isolate;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 255, 155, 0.3);
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(45deg, 
+                transparent 25%, 
+                rgba(255, 255, 255, 0.2) 50%, 
+                transparent 75%
+            );
+            transform: translateX(-100%) rotate(45deg);
+            transition: transform 0.6s ease;
+        }
+
+        .btn:hover::after {
+            transform: translateX(100%) rotate(45deg);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 1.5rem;
+                padding: 1rem;
+            }
+
+            .hero-text h1 {
+                font-size: 2.2rem;
+                margin-bottom: 1rem;
+            }
+
+            .hero-text p {
+                font-size: 1rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .hero-badges {
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+
+            .hero-badge {
+                font-size: 0.8rem;
+                padding: 0.4rem 0.8rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+                margin-bottom: 1.5rem;
+                padding: 0 1rem;
+            }
+
+            .courses {
+                padding: 2rem 1rem;
+            }
+
+            .course-grid {
+                gap: 1.5rem;
+            }
+
+            .course-card {
+                padding: 1.5rem;
+                border-radius: 20px;
+            }
+
+            .course-title {
+                font-size: 1.4rem;
+                margin-bottom: 1rem;
+            }
+
+            .course-features li {
+                font-size: 0.95rem;
+                margin-bottom: 0.5rem;
+                gap: 0.5rem;
+            }
+
+            .course-price {
+                font-size: 1.4rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .vocab-count {
+                font-size: 1.4rem;
+                margin: 0.8rem 0;
+            }
+
+            .sale-badge {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.8rem;
+                top: 1rem;
+                right: 1rem;
+            }
+
+            .reviews {
+                padding: 4rem 1rem;
+            }
+
+            .reviews-grid {
+                gap: 1.5rem;
+            }
+
+            .review-card {
+                padding: 1.5rem;
+                border-radius: 20px;
+            }
+
+            .review-header {
+                gap: 1rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .review-avatar {
+                width: 45px;
+                height: 45px;
+                font-size: 1rem;
+                border-radius: 15px;
+            }
+
+            .review-info h3 {
+                font-size: 1.1rem;
+            }
+
+            .review-meta {
+                font-size: 0.85rem;
+            }
+
+            .review-text {
+                font-size: 0.95rem;
+                line-height: 1.6;
+                margin-bottom: 1.5rem;
+                padding-left: 1rem;
+            }
+
+            .review-highlight {
+                font-size: 0.85rem;
+                padding: 0.6rem 1rem;
+            }
+
+            .pricing {
+                padding: 4rem 1rem;
+            }
+
+            .pricing-cards {
+                gap: 1.5rem;
+            }
+
+            .pricing-card {
+                padding: 1.5rem;
+                border-radius: 20px;
+            }
+
+            .pricing-title {
+                font-size: 1.6rem;
+                margin-bottom: 1rem;
+            }
+
+            .pricing-price {
+                font-size: 2.2rem;
+                margin-bottom: 2rem;
+            }
+
+            .pricing-features {
+                font-size: 0.95rem;
+                margin-bottom: 2rem;
+            }
+
+            .btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 1rem;
+                border-radius: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-text h1 {
+                font-size: 1.8rem;
+            }
+
+            .hero-text p {
+                font-size: 0.95rem;
+            }
+
+            .section-title {
+                font-size: 1.6rem;
+            }
+
+            .course-card, .review-card, .pricing-card {
+                padding: 1.2rem;
+                border-radius: 16px;
+            }
+
+            .course-title {
+                font-size: 1.3rem;
+            }
+
+            .course-features li {
+                font-size: 0.9rem;
+            }
+
+            .review-text {
+                font-size: 0.9rem;
+                padding-left: 0.8rem;
+            }
+
+            .pricing-title {
+                font-size: 1.4rem;
+            }
+
+            .pricing-price {
+                font-size: 2rem;
+            }
+
+            .btn {
+                padding: 0.7rem 1.2rem;
+                font-size: 0.95rem;
+            }
+        }
+
+        /* Optimize touch interactions for mobile */
+        @media (hover: none) {
+            .course-card:hover,
+            .review-card:hover,
+            .pricing-card:hover {
+                transform: none;
+                box-shadow: none;
+            }
+
+            .btn:hover {
+                transform: none;
+            }
+
+            .review-highlight:hover {
+                transform: none;
+            }
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .feature-card {
+            background: linear-gradient(145deg, rgba(0, 255, 155, 0.05), rgba(0, 0, 0, 0.3));
+            border: 1px solid rgba(0, 255, 155, 0.2);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(12px);
+            padding: 2rem;
+            border-radius: 24px;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
+                        rgba(0, 255, 155, 0.1) 0%, 
+                        transparent 50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-icon {
+            position: relative;
+            z-index: 1;
+            transition: transform 0.3s ease;
+            font-size: 3rem;
+            background: linear-gradient(135deg, var(--neon-mint), #80FFDB);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 10px rgba(0, 255, 155, 0.3));
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: scale(1.2) rotate(5deg);
+        }
+
+        .feature-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--neon-mint);
+        }
+
+        .feature-description {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .testimonial {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 4rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .testimonial-text {
+            font-size: 1.2rem;
+            font-style: italic;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .testimonial-author {
+            color: var(--neon-mint);
+            font-weight: 500;
+        }
+
+        .testimonial::before {
+            content: '"';
+            position: absolute;
+            top: -20px;
+            left: 20px;
+            font-size: 120px;
+            color: rgba(0, 255, 155, 0.1);
+            font-family: serif;
+            line-height: 1;
+        }
+
+        /* Particle Effect */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Floating Animation for Cards */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .feature-card, .course-card, .pricing-card {
+            animation: float 6s ease-in-out infinite;
+            animation-delay: calc(var(--animation-order) * 0.1s);
+        }
+
+        /* Add animation order to cards */
+        .feature-card, .course-card, .pricing-card {
+            --animation-order: 0;
+        }
+
+        /* Enhanced scroll animations */
+        .feature-card, .course-card, .pricing-card, .testimonial {
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Add animation order to cards */
+        .feature-card, .course-card, .pricing-card {
+            --animation-order: 0;
+        }
+
+        /* Animated Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--neon-mint), var(--purple-accent));
+            transform-origin: 0%;
+            z-index: 1000;
+        }
+
+        /* Floating Elements Animation */
+        @keyframes floatAnimation {
+            0%, 100% { transform: translateY(0) rotate(0); }
+            25% { transform: translateY(-5px) rotate(2deg); }
+            75% { transform: translateY(5px) rotate(-2deg); }
+        }
+
+        .hero-badge {
+            animation: floatAnimation 3s ease-in-out infinite;
+            animation-delay: calc(var(--badge-order) * 0.2s);
+        }
+
+        /* Glowing Border Effect */
+        .pricing-card::after {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            background: linear-gradient(45deg, 
+                transparent, 
+                rgba(0, 255, 155, 0.3), 
+                transparent, 
+                rgba(176, 38, 255, 0.3), 
+                transparent
+            );
+            border-radius: 24px;
+            z-index: -1;
+            animation: borderGlow 3s linear infinite;
+        }
+
+        @keyframes borderGlow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* Add this script at the end of the body */
+        <script>
+        // Mouse move effect for feature cards
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width) * 100;
+                const y = ((e.clientY - rect.top) / rect.height) * 100;
+                card.style.setProperty('--mouse-x', `${x}%`);
+                card.style.setProperty('--mouse-y', `${y}%`);
+            });
+        });
+
+        // Add animation order to cards
+        document.querySelectorAll('.feature-card, .course-card, .pricing-card').forEach((card, index) => {
+            card.style.setProperty('--animation-order', index);
+        });
+
+        // Particle effect
+        function createParticles() {
+            const particles = document.createElement('div');
+            particles.className = 'particles';
+            document.body.appendChild(particles);
+
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.style.cssText = `
+                    position: absolute;
+                    width: 2px;
+                    height: 2px;
+                    background: rgba(0, 255, 155, ${Math.random() * 0.5});
+                    left: ${Math.random() * 100}vw;
+                    top: ${Math.random() * 100}vh;
+                    pointer-events: none;
+                    border-radius: 50%;
+                    animation: particleFloat ${5 + Math.random() * 10}s linear infinite;
+                `;
+                particles.appendChild(particle);
+            }
+        }
+
+        createParticles();
+
+        // Enhanced scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '20px'
+        };
+
+        const fadeObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0) scale(1)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.feature-card, .course-card, .pricing-card, .testimonial').forEach((el) => {
+            el.style.opacity = 0;
+            el.style.transform = 'translateY(30px) scale(0.95)';
+            el.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+            fadeObserver.observe(el);
+        });
+
+        // Progress bar
+        const progressBar = document.createElement('div');
+        progressBar.className = 'progress-bar';
+        document.body.appendChild(progressBar);
+
+        window.addEventListener('scroll', () => {
+            const windowHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = (window.scrollY / windowHeight) * 100;
+            progressBar.style.transform = `scaleX(${progress / 100})`;
+        });
+
+        // Enhanced particle effect
+        function createEnhancedParticles() {
+            const particles = document.querySelector('.particles');
+            if (!particles) return;
+
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                const size = Math.random() * 3 + 1;
+                particle.style.cssText = `
+                    position: absolute;
+                    width: ${size}px;
+                    height: ${size}px;
+                    background: ${Math.random() > 0.5 ? 'var(--neon-mint)' : 'var(--purple-accent)'};
+                    left: ${Math.random() * 100}vw;
+                    top: ${Math.random() * 100}vh;
+                    pointer-events: none;
+                    border-radius: 50%;
+                    filter: blur(1px);
+                    animation: particleFloat ${10 + Math.random() * 20}s linear infinite;
+                    opacity: ${Math.random() * 0.6};
+                `;
+                particles.appendChild(particle);
+            }
+        }
+
+        createEnhancedParticles();
+
+        // 3D card tilt effect
+        document.querySelectorAll('.course-card, .pricing-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width - 0.5) * 20;
+                const y = ((e.clientY - rect.top) / rect.height - 0.5) * 20;
+                card.style.transform = `perspective(1000px) rotateX(${-y}deg) rotateY(${x}deg) translateZ(10px)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateZ(0)';
+            });
+        });
+
+        // Add floating animation delays to badges
+        document.querySelectorAll('.hero-badge').forEach((badge, index) => {
+            badge.style.setProperty('--badge-order', index);
+        });
+        </script>
+
+        /* Add these keyframes at the end of the style section */
+        @keyframes particleFloat {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) scale(0);
+                opacity: 0;
+            }
+        }
+
+        @keyframes glowPulse {
+            0% { text-shadow: 0 0 10px rgba(0, 255, 155, 0.5); }
+            50% { text-shadow: 0 0 20px rgba(0, 255, 155, 0.8); }
+            100% { text-shadow: 0 0 10px rgba(0, 255, 155, 0.5); }
+        }
+
+        @keyframes backgroundShift {
+            0% { background-position: 0 0, 0 0, 0 0; }
+            100% { background-position: 0 0, 60px 60px, -60px -60px; }
+        }
+
+        /* Add these styles in the style section */
+        .subtitle {
+            color: var(--neon-mint);
+            font-size: 0.8rem;  /* Reduced from 0.85rem */
+            margin-bottom: 0.6rem;  /* Reduced from 0.8rem */
+            opacity: 0.8;
+        }
+
+        .vocab-count {
+            color: var(--neon-mint);
+            font-size: 1.3rem;  /* Reduced from 1.5rem */
+            margin: 0.6rem 0;  /* Reduced from 0.8rem */
+        }
+
+        .original-price {
+            text-decoration: line-through;
+            color: rgba(255,255,255,0.6);
+            font-size: 0.75rem;  /* Reduced from 0.8rem */
+            display: block;
+            margin-bottom: 0.3rem;  /* Reduced from 0.5rem */
+        }
+
+        .reviews {
+            padding: 8rem 2rem;
+            position: relative;
+            background: linear-gradient(180deg, var(--card-bg), transparent);
+            overflow: hidden;
+        }
+
+        .reviews::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--neon-mint), transparent);
+        }
+
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .review-card {
+            background: linear-gradient(145deg, 
+                rgba(0, 255, 155, 0.03), 
+                rgba(0, 0, 0, 0.4)
+            );
+            border: 1px solid rgba(0, 255, 155, 0.08);
+            border-radius: 30px;
+            padding: 2.5rem;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(12px);
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .review-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
+                        rgba(0, 255, 155, 0.1) 0%, 
+                        transparent 60%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .review-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: var(--neon-mint);
+            box-shadow: 
+                0 20px 40px rgba(0, 255, 155, 0.1),
+                0 0 120px rgba(0, 255, 155, 0.1);
+        }
+
+        .review-card:hover::before {
+            opacity: 1;
+        }
+
+        .review-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .review-avatar {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--neon-mint), #00E5B0);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: var(--dark-bg);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 16px rgba(0, 255, 155, 0.2);
+        }
+
+        .review-avatar::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent,
+                rgba(255, 255, 255, 0.3),
+                transparent
+            );
+            transform: rotate(45deg);
+            animation: shimmer 3s infinite;
+        }
+
+        .review-info {
+            flex: 1;
+        }
+
+        .review-info h3 {
+            font-size: 1.3rem;
+            color: var(--text-primary);
+            margin-bottom: 0.4rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        .review-meta {
+            font-size: 0.95rem;
+            color: var(--neon-mint);
+            opacity: 0.9;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .review-meta::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background: var(--neon-mint);
+            border-radius: 50%;
+            opacity: 0.8;
+        }
+
+        .review-rating {
+            position: absolute;
+            top: 0;
+            right: 0;
+            color: var(--neon-mint);
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            filter: drop-shadow(0 0 8px rgba(0, 255, 155, 0.4));
+        }
+
+        .review-text {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 2rem;
+            position: relative;
+            padding-left: 1.5rem;
+            border-left: 2px solid rgba(0, 255, 155, 0.2);
+        }
+
+        .review-highlight {
+            display: inline-block;
+            background: rgba(0, 255, 155, 0.08);
+            color: var(--neon-mint);
+            padding: 0.8rem 1.5rem;
+            border-radius: 100px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            border: 1px solid rgba(0, 255, 155, 0.15);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .review-highlight::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent,
+                rgba(0, 255, 155, 0.1),
+                transparent
+            );
+            transform: rotate(45deg);
+            animation: shimmer 6s infinite;
+        }
+
+        .review-card:hover .review-highlight {
+            background: rgba(0, 255, 155, 0.12);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 255, 155, 0.15);
+        }
+
+        .review-highlight::before {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .reviews-grid {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+                padding: 0 1rem;
+            }
+
+            .review-card {
+                padding: 2rem;
+            }
+
+            .review-avatar {
+                width: 50px;
+                height: 50px;
+                font-size: 1rem;
+            }
+
+            .review-text {
+                font-size: 1rem;
+                padding-left: 1rem;
+            }
+        }
+
+        /* Optimize animations by using GPU-accelerated properties */
+        .course-card, .review-card, .pricing-card {
+            will-change: transform;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+        }
+
+        /* Reduce number of particles and optimize particle animation */
+        .particles {
+            pointer-events: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.6;
+        }
+
+        /* Optimize review card animations */
+        .review-card {
+            transform: translateZ(0);
+            will-change: transform, opacity;
+            transition: transform 0.3s ease, opacity 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .review-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 255, 155, 0.1);
+        }
+
+        /* Remove complex gradients and simplify effects */
+        .review-avatar::after,
+        .review-highlight::before,
+        .hero::before {
+            display: none;
+        }
+
+        /* Optimize background patterns */
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(0, 255, 155, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        /* Simplify card hover effects */
+        .course-card:hover,
+        .pricing-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 255, 155, 0.1);
+        }
+
+        /* Enhanced Pricing Styles */
+        .pricing-badge {
+            position: absolute;
+            top: -15px;
+            right: 20px;
+            background: var(--purple-accent);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(176, 38, 255, 0.3);
+        }
+
+        .pricing-card {
+            position: relative;
+            padding: 3rem;
+        }
+
+        .save-text {
+            display: block;
+            color: var(--neon-mint);
+            font-size: 1rem;
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+
+        .duration {
+            display: block;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .current-price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: block;
+        }
+
+        .sub-features {
+            list-style: none;
+            margin-left: 1.5rem;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .sub-features li::before {
+            content: "•";
+            color: var(--neon-mint);
+            margin-right: 0.5rem;
+        }
+
+        .feature-highlight {
+            color: var(--neon-mint) !important;
+            font-weight: 500;
+        }
+
+        .guarantee {
+            margin: 2rem 0;
+            padding: 1rem;
+            border: 1px solid rgba(0, 255, 155, 0.2);
+            border-radius: 12px;
+            text-align: center;
+            color: var(--neon-mint);
+            font-size: 0.9rem;
+            background: rgba(0, 255, 155, 0.05);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--purple-accent), #D042FF);
+        }
+
+        @media (max-width: 768px) {
+            .pricing-card {
+                padding: 2rem;
+            }
+
+            .sub-features {
+                margin-left: 1rem;
+                margin-top: 0.3rem;
+            }
+
+            .current-price {
+                font-size: 2rem;
+            }
+
+            .pricing-features {
+                font-size: 0.9rem;
+            }
+
+            .guarantee {
+                margin: 1.5rem 0;
+                padding: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .pricing-card {
+                padding: 1.5rem;
+            }
+
+            .pricing-badge {
+                font-size: 0.8rem;
+                padding: 0.4rem 1rem;
+            }
+
+            .current-price {
+                font-size: 1.8rem;
+            }
+
+            .sub-features {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <div class="hero-badges">
+                    <span class="hero-badge">DELF Focused</span>
+                    <span class="hero-badge">TEF Focused</span>
+                    <span class="hero-badge">CLB 5 Guaranteed</span>
+                </div>
+                <h1>Everything You Need for DELF & TEF Success</h1>
+                <p>Master French from A0 to A2 in One Comprehensive Course. Featuring 200+ grammar videos, 2500+ quizzes, 50+ mock exams, AI-powered tutoring, and proven study methods for guaranteed success.</p>
+                <a href="#pricing" class="btn">Get Started Today</a>
+            </div>
+            <div class="hero-image">
+                <!-- VR Image placeholder -->
+            </div>
+        </div>
+    </section>
+
+    <section class="courses">
+        <h2 class="section-title">Here are all the products included in your bundle</h2>
+        
+        <!-- Course Cards -->
+        <div class="course-grid">
+            <div class="course-card">
+                <span class="sale-badge">ON SALE</span>
+                <h3 class="course-title">A0 French Fundamentals</h3>
+                <p class="subtitle">Perfect for Complete Beginners</p>
+                <ul class="course-features">
+                    <li>50+ Interactive Topics</li>
+                    <li>72hr+ Learning Content</li>
+                    <li>French Alphabet Mastery</li>
+                    <li>Basic Grammar Foundations</li>
+                    <li>Essential Vocabulary</li>
+                    <li>Daily Practice Exercises</li>
+                    <li>Lifetime Updates</li>
+                </ul>
+                <div class="course-price">$0.00 CAD</div>
+                <div class="duration">Complete in 3 Days</div>
+                <a href="https://simplefrenchwithhems.com/b/freefrench" target="_blank" rel="noopener noreferrer" class="btn">Start Now</a>
+            </div>
+
+            <div class="course-card">
+                <h3 class="course-title">A1 French Mastery</h3>
+                <p class="subtitle">Comprehensive DELF/TEF Preparation</p>
+                <ul class="course-features">
+                    <li>50+ Animated Story Lessons</li>
+                    <li>100+ Grammar Video Tutorials</li>
+                    <li>1000+ Graded Practice Quizzes</li>
+                    <li>20+ DELF Practice Tests</li>
+                    <li>15+ TEF Practice Tests</li>
+                    <li>AI-Powered Speaking Practice - Hemiya</li>
+                    <li>Real-time Pronunciation Feedback</li>
+                    <li>Interactive Writing Exercises</li>
+                    <li>Native Speaker Audio Library - Hemiya</li>
+                </ul>
+                <div class="course-price">From $399.99 CAD</div>
+                <div class="duration">4-Month Structured Program</div>
+                <a href="https://simplefrenchwithhems.com/b/a1-introduction" target="_blank" rel="noopener noreferrer" class="btn">See More</a>
+            </div>
+
+            <div class="course-card">
+                <h3 class="course-title">A2 French Mastery</h3>
+                <p class="subtitle">Advanced DELF/TEF Preparation</p>
+                <ul class="course-features">
+                    <li>50+ Advanced Story Scenarios</li>
+                    <li>100+ In-depth Grammar Lessons</li>
+                    <li>1000+ Advanced Quizzes</li>
+                    <li>25+ DELF A2 Mock Exams</li>
+                    <li>20+ TEF Practice Sessions</li>
+                    <li>Business French Modules</li>
+                    <li>Cultural Context Training</li>
+                    <li>Accent Refinement Tools - Hemiya</li>
+                    <li>Writing Workshop Access - Hemiya</li>
+                </ul>
+                <div class="course-price">From $599.00 CAD</div>
+                <div class="duration">6-Month Comprehensive Program</div>
+                <a href="https://simplefrenchwithhems.com/b/a2-french" target="_blank" rel="noopener noreferrer" class="btn">Master A2 Level</a>
+            </div>
+
+            <div class="course-card">
+                <span class="sale-badge">ON SALE</span>
+                <h3 class="course-title">A1 Vocabulary</h3>
+                <h2 class="vocab-count">800+ Essential Words</h2>
+                <ul class="course-features">
+                    <li>Thematic Word Groups</li>
+                    <li>Audio Pronunciations</li>
+                    <li>Context Examples</li>
+                    <li>Memory Techniques</li>
+                    <li>Practice Exercises</li>
+                    <li>Spaced Repetition System</li>
+                    <li>Downloadable PDFs</li>
+                </ul>
+                <div class="course-price">
+                    <span class="original-price">$66.65 CAD</span>
+                    $49.99 CAD
+                </div>
+                <div class="duration">Lifetime Access</div>
+                <a href="https://simplefrenchwithhems.com/b/bVHXq" target="_blank" rel="noopener noreferrer" class="btn">Get E-BOOK</a>
+            </div>
+
+            <div class="course-card">
+                <span class="sale-badge">ON SALE</span>
+                <h3 class="course-title">A2 Vocabulary</h3>
+                <h2 class="vocab-count">800+ Advanced Words</h2>
+                <ul class="course-features">
+                    <li>Advanced Word Categories</li>
+                    <li>Native Pronunciations</li>
+                    <li>Idiomatic Expressions</li>
+                    <li>Contextual Learning</li>
+                    <li>Usage Examples</li>
+                    <li>Interactive Exercises</li>
+                    <li>Vocabulary Games</li>
+                    <li>Digital Study Tools</li>
+                </ul>
+                <div class="course-price">
+                    <span class="original-price">$79.99 CAD</span>
+                    $59.99 CAD
+                </div>
+                <div class="duration">Lifetime Access</div>
+                <a href="https://simplefrenchwithhems.com/b/TpkbM" target="_blank" rel="noopener noreferrer" class="btn">Get E-BOOK</a>
+            </div>
+
+            <div class="course-card">
+                <h3 class="course-title">13 French Pronunciation Steps</h3>
+                <p class="subtitle">Levels A0-B2</p>
+                <ul class="course-features">
+                    <li>13 Core Pronunciation Rules</li>
+                    <li>Native Speaker Audio</li>
+                    <li>Video Demonstrations</li>
+                    <li>Mouth Position Guides</li>
+                    <li>Practice Exercises</li>
+                    <li>Common Error Fixes</li>
+                    <li>Accent Reduction Tips</li>
+                    <li>Progress Assessments</li>
+                    <li>Regional Variations</li>
+                </ul>
+                <div class="course-price">$69.99 CAD</div>
+                <div class="duration">Self-Paced Learning</div>
+                <a href="https://simplefrenchwithhems.com/b/0q9SR" target="_blank" rel="noopener noreferrer" class="btn">Start Now</a>
+            </div>
+        </div>
+
+        <!-- Testimonial -->
+        <div class="testimonial">
+            <p class="testimonial-text">"The French immersion technology made learning French feel natural and engaging. I especially loved the cultural scenarios - it felt like I was actually in France! After 4 months, I was confidently speaking with native speakers."</p>
+            <p class="testimonial-author">- Sarah M., DELF A2 Certified</p>
+        </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section class="reviews">
+        <h2 class="section-title">What Our Students Say</h2>
+        <div class="reviews-grid">
+            <div class="review-card">
+                <div class="review-header">
+                    <div class="review-avatar">MK</div>
+                    <div class="review-info">
+                        <h3>Marie</h3>
+                        <div class="review-meta">DELF A2 • Montreal</div>
+                    </div>
+                    <div class="review-rating">★★★★★</div>
+                </div>
+                <p class="review-text">"The Simple French with Hems immersion technology made learning French feel natural and engaging. I especially loved the cultural scenarios - it felt like I was actually in France! After 4 months, I was confidently speaking with native speakers."</p>
+                <div class="review-highlight">Passed DELF A2 with 89/100</div>
+            </div>
+
+            <div class="review-card">
+                <div class="review-header">
+                    <div class="review-avatar">JT</div>
+                    <div class="review-info">
+                        <h3>James</h3>
+                        <div class="review-meta">TEF Canada • Vancouver</div>
+                    </div>
+                    <div class="review-rating">★★★★★</div>
+                </div>
+                <p class="review-text">"The structured approach from A0 to A2 was exactly what I needed. The AI tutor helped me practice conversations 24/7, and the pronunciation course transformed my accent. Worth every penny!"</p>
+                <div class="review-highlight">TEF Score: 350/450</div>
+            </div>
+
+            <div class="review-card">
+                <div class="review-header">
+                    <div class="review-avatar">LP</div>
+                    <div class="review-info">
+                        <h3>Lisa</h3>
+                        <div class="review-meta">Business French • Toronto</div>
+                    </div>
+                    <div class="review-rating">★★★★★</div>
+                </div>
+                <p class="review-text">"Started with zero French knowledge. The vocabulary e-books and animated stories made learning fun and effective. Now I can confidently handle business meetings in French. The progress tracking kept me motivated throughout."</p>
+                <div class="review-highlight">Achieved Business Fluency in 6 months</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="pricing" id="pricing">
+        <h2 class="section-title">Choose Your Learning Path</h2>
+        <div class="pricing-cards">
+            <div class="pricing-card">
+                <div class="pricing-badge">Most Popular</div>
+                <h3 class="pricing-title">Pay Once - Win Double</h3>
+                <div class="pricing-price">
+                    <span class="original-price">CAD $1,699</span>
+                    <span class="current-price">CAD $999.99</span>
+                    <span class="save-text">Save CAD $600</span>
+                </div>
+                <ul class="pricing-features">
+                    <li class="feature-highlight">Flexible Learning Journey</li>
+                    <li>Full access to all courses
+                        <ul class="sub-features">
+                            <li>A0 Fundamentals</li>
+                            <li>A1 & A2 Mastery</li>
+                            <li>5+ Vocabulary E-Books</li>
+                        </ul>
+                    </li>
+                    <li>AI tutor with basic features - Hemiya
+                        <ul class="sub-features">
+                            <li>Basic pronunciation feedback</li>
+                            <li>Weekly progress reviews</li>
+                        </ul>
+                    </li>
+                    <li>DELF & TEF preparation
+                        <ul class="sub-features">
+                            <li>50+ MOCK exams</li>
+                            <li>2500+ practice exercises</li>
+                        </ul>
+                    </li>
+                    <li>Standard support (24h response)</li>
+                    <li>ALL Online study materials</li>
+                    <li>French SpeakersCommunity access - Slack</li>
+                    <li class="feature-highlight">Free lifetime updates</li>
+                </ul>
+                <a href="https://simplefrenchwithhems.com/order?link=otyDq&pricing_plan=ANzpQyxdBX" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Get Lifetime Access →</a>
+            </div>
+
+            <div class="pricing-card">
+                <h3 class="pricing-title">Victory in Stages</h3>
+                <div class="pricing-price">
+                    <span class="current-price">CAD $89.99/month</span>
+                    <span class="duration">14 Months Journey</span>
+                </div>
+                <ul class="pricing-features">
+                    <li class="feature-highlight">Flexible Learning Journey</li>
+                    <li>Full access to all courses
+                        <ul class="sub-features">
+                            <li>A0 Fundamentals</li>
+                            <li>A1 & A2 Mastery</li>
+                            <li>5+ Vocabulary E-Books</li>
+                        </ul>
+                    </li>
+                    <li>AI tutor with basic features - Hemiya
+                        <ul class="sub-features">
+                            <li>Basic pronunciation feedback</li>
+                            <li>Weekly progress reviews</li>
+                        </ul>
+                    </li>
+                    <li>DELF & TEF preparation
+                        <ul class="sub-features">
+                            <li>50+ MOCK exams</li>
+                            <li>2500+ practice exercises</li>
+                        </ul>
+                    </li>
+                    <li>Standard support (24h response)</li>
+                    <li>ALL Online study materials</li>
+                    <li>French SpeakersCommunity access - Slack</li>
+                </ul>
+                <a href="https://simplefrenchwithhems.com/order?link=otyDq&pricing_plan=4lW504qwG3" target="_blank" rel="noopener noreferrer" class="btn">Start Your Journey →</a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Optimize scroll handling with requestAnimationFrame
+        let ticking = false;
+        const progressBar = document.createElement('div');
+        progressBar.className = 'progress-bar';
+        document.body.appendChild(progressBar);
+
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    const windowHeight = document.documentElement.scrollHeight - window.innerHeight;
+                    const progress = (window.scrollY / windowHeight) * 100;
+                    progressBar.style.transform = `scaleX(${progress / 100})`;
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        });
+
+        // Optimize intersection observer
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                    observer.unobserve(entry.target); // Stop observing after animation
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '50px'
+        });
+
+        // Batch DOM operations
+        const elements = document.querySelectorAll('.course-card, .pricing-card, .review-card');
+        elements.forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            observer.observe(el);
+        });
+
+        // Optimize particle effect
+        function createOptimizedParticles() {
+            const particles = document.createElement('div');
+            particles.className = 'particles';
+            const fragment = document.createDocumentFragment();
+            
+            // Reduce number of particles
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                const size = Math.random() * 2 + 1;
+                particle.style.cssText = `
+                    position: absolute;
+                    width: ${size}px;
+                    height: ${size}px;
+                    background: var(--neon-mint);
+                    left: ${Math.random() * 100}vw;
+                    top: ${Math.random() * 100}vh;
+                    border-radius: 50%;
+                    opacity: ${Math.random() * 0.3};
+                    transform: translateZ(0);
+                    will-change: transform;
+                    animation: particleFloat ${10 + Math.random() * 10}s linear infinite;
+                `;
+                fragment.appendChild(particle);
+            }
+            
+            particles.appendChild(fragment);
+            document.body.appendChild(particles);
+        }
+
+        // Lazy load particles
+        if ('IntersectionObserver' in window) {
+            const lazyParticles = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        createOptimizedParticles();
+                        lazyParticles.disconnect();
+                    }
+                });
+            });
+            lazyParticles.observe(document.querySelector('.hero'));
+        }
+
+        // Optimize smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html> 
+
