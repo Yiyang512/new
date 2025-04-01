@@ -3,420 +3,679 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>School Pulse™ VR Game - Simple French with Hems</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>School Pulse™ - VR Language Learning Adventure</title>
     <style>
-        /* Reset for embedding */
-        html, body, div, section {
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         :root {
-            --accent-color: #00FF9B;
-            --accent-color-muted: rgba(0, 255, 155, 0.8);
-            --dark-bg: #000000;
-            --text-light: #ffffff;
-            --text-muted: rgba(255, 255, 255, 0.8);
-        }
-        
-        html, body {
-            height: 100%;
-            width: 100%;
-            overflow-x: hidden;
-            /* Force override any parent styles when embedded */
-            max-width: 100vw !important;
-            margin: 0 !important;
-            padding: 0 !important;
-        }
-        
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--dark-bg);
-            color: var(--text-light);
-            line-height: 1.6;
-            position: relative;
-        }
-        
-        /* Full-screen Hero Section with embedding fixes */
-        .hero-section {
-            height: 100vh;
-            width: 100vw; /* Use viewport width instead of % */
-            max-width: 100vw !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            background: linear-gradient(45deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.45) 100%),
-                        url('https://yiyang512.github.io/new/vrbg.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            display: flex;
-            align-items: center;
-            position: fixed;
-            left: 0;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            overflow: auto;
+            --primary: #00FF9B;
+            --bg-dark: #001102;
+            --text-color: #00FF9B;
         }
 
-        /* Background overlay with grid effect */
-        .bg-grid {
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: transparent;
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 2rem;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Shining dots animation */
+        @keyframes shine {
+            0% { opacity: 0.2; }
+            50% { opacity: 0.7; }
+            100% { opacity: 0.2; }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
+
+        .container {
+            max-width: 2000px;
+            width: 100%;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .game-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            animation: float 2s ease-in-out infinite;
+        }
+
+        .game-title {
+            color: var(--text-color);
+            font-size: 6rem;
+            font-weight: 800;
+            text-shadow: 0 0 20px rgba(0, 255, 155, 0.5);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+            letter-spacing: 2px;
+        }
+
+        .game-title::before,
+        .game-title::after {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 2px;
+            background: var(--text-color);
+            top: 50%;
+            transform: translateY(-50%);
+            box-shadow: 0 0 10px rgba(0, 255, 155, 0.5);
+        }
+
+        .game-title::before {
+            left: -120px;
+        }
+
+        .game-title::after {
+            right: -120px;
+        }
+
+        .game-subtitle {
+            color: var(--text-color);
+            font-size: 2.5rem;
+            font-weight: 500;
+            text-shadow: 0 0 10px rgba(0, 255, 155, 0.3);
+            letter-spacing: 1px;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 2rem;
+        }
+
+        .panel {
+            background: rgba(0, 17, 2, 0.7);
+            border-radius: 30px;
+            padding: 2.5rem;
+            position: relative;
+            border: 1px solid rgba(0, 255, 155, 0.2);
+            box-shadow: 
+                0 0 30px rgba(0, 255, 155, 0.1),
+                inset 0 0 20px rgba(0, 255, 155, 0.05);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .panel:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 10px 40px rgba(0, 255, 155, 0.2),
+                inset 0 0 30px rgba(0, 255, 155, 0.1);
+            border-color: rgba(0, 255, 155, 0.3);
+        }
+
+        .panel::before {
+            content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             background-image: 
-                linear-gradient(rgba(0, 255, 155, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 255, 155, 0.03) 1px, transparent 1px);
-            background-size: 40px 40px;
+                radial-gradient(circle at center, var(--primary) 1px, transparent 1px),
+                radial-gradient(circle at top right, rgba(0, 255, 155, 0.1), transparent 70%);
+            background-size: 50px 50px, 100% 100%;
+            background-position: 0 0, 0 0;
+            opacity: 0.15;
+            animation: shine 3s infinite;
             pointer-events: none;
         }
 
-        .container {
-            width: 100%;
-            max-width: 1440px;
-            margin: 0 auto;
-            padding: 0 5%;
-            position: relative;
-            z-index: 2;
-        }
-
-        /* Left side content */
-        .hero-content {
-            max-width: 650px;
-            position: relative;
-            animation: fadeInUp 1s ease-out;
-        }
-
-        .vertical-accent {
+        .panel::after {
+            content: '';
             position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent,
+                rgba(0, 255, 155, 0.05),
+                transparent
+            );
+            transform: rotate(45deg);
+            animation: panelShine 3s infinite;
+        }
+
+        @keyframes panelShine {
+            0% {
+                top: -50%;
+                left: -50%;
+            }
+            100% {
+                top: 150%;
+                left: 150%;
+            }
+        }
+
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature-item {
+            background: rgba(0, 255, 155, 0.05);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border: 1px solid rgba(0, 255, 155, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+        }
+
+        .feature-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
             left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 6px;
-            height: 120px;
-            background-color: var(--accent-color);
-            border-radius: 3px;
-            box-shadow: 0 0 20px rgba(0, 255, 155, 0.4);
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary), transparent);
+            box-shadow: 0 0 15px rgba(0, 255, 155, 0.5);
         }
 
-        .hero-title {
-            font-size: 4.2rem;
-            line-height: 1.15;
-            margin-bottom: 2rem;
-            position: relative;
-            padding-left: 40px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
+        .feature-item:hover {
+            transform: translateY(-5px);
+            background: rgba(0, 255, 155, 0.1);
+            border-color: rgba(0, 255, 155, 0.3);
+            box-shadow: 0 0 20px rgba(0, 255, 155, 0.2);
         }
 
-        .hero-subtitle {
-            font-size: 1.35rem;
-            font-weight: 400;
-            line-height: 1.8;
-            padding-left: 40px;
-            position: relative;
-            color: var(--text-muted);
-            max-width: 580px;
-        }
-        
-        /* French vocabulary elements with animations */
-        .vocab-item {
-            position: absolute;
-            z-index: 2;
-        }
-        
-        .vocab-arbre {
-            right: 15%;
-            bottom: 28%;
+        .feature-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(0, 255, 155, 0.1);
+            border-radius: 10px;
             display: flex;
             align-items: center;
-            animation: floatElement 6s ease-in-out infinite;
+            justify-content: center;
+            margin-bottom: 1rem;
+            position: relative;
+            border: 1px solid rgba(0, 255, 155, 0.2);
+            overflow: hidden;
         }
-        
-        .vocab-arbre img {
-            width: 70px;
-            height: 70px;
-            margin-right: 15px;
-            filter: drop-shadow(0 0 10px rgba(60, 80, 255, 0.5));
-        }
-        
-        .vocab-arbre-text {
-            font-size: 3rem;
-            color: rgba(255, 255, 255, 0.9);
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-        }
-        
-        .vocab-maison {
-            left: 50%;
-            bottom: 18%;
-            font-size: 2.2rem;
-            color: rgba(255, 255, 255, 0.8);
-            animation: floatElement 8s ease-in-out infinite reverse;
-            animation-delay: 1s;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-        }
-        
-        /* Car graphic with animation */
-        .car-graphic {
+
+        .feature-icon::before {
+            content: '';
             position: absolute;
-            left: 25%;
-            bottom: 18%;
-            width: 120px;
-            opacity: 0.8;
-            z-index: 2;
-            animation: slideCar 20s linear infinite;
-            filter: drop-shadow(0 0 8px rgba(60, 100, 255, 0.4));
+            width: 150%;
+            height: 150%;
+            background: conic-gradient(
+                from 0deg,
+                transparent,
+                var(--primary),
+                transparent
+            );
+            animation: rotate 4s linear infinite;
         }
-        
-        /* Professional navigation */
-        .navbar {
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .feature-item h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .feature-item p {
+            font-size: 1.1rem;
+            opacity: 0.8;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-item {
+            background: rgba(0, 255, 155, 0.05);
+            padding: 1.8rem;
+            border-radius: 15px;
+            border: 1px solid rgba(0, 255, 155, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+        }
+
+        .stat-item::before {
+            content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 30px 5%;
-            z-index: 10;
+            height: 100%;
+            background: radial-gradient(
+                circle at top right,
+                rgba(0, 255, 155, 0.1),
+                transparent 70%
+            );
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
-        
-        .logo {
-            font-weight: 700;
-            font-size: 4rem;
-            color: var(--text-light);
-            display: flex;
-            align-items: center;
+
+        .stat-item:hover::before {
+            opacity: 1;
         }
-        
-        .logo-accent {
-            color: var(--accent-color);
+
+        .stat-item:hover {
+            transform: translateY(-3px);
+            background: rgba(0, 255, 155, 0.1);
+            border-color: rgba(0, 255, 155, 0.3);
+            box-shadow: 0 5px 20px rgba(0, 255, 155, 0.2);
         }
-        
-        .logo::before {
-            content: "";
-            display: inline-block;
-            width: 18px;
-            height: 18px;
-            background: var(--accent-color);
-            margin-right: 18px;
-            border-radius: 50%;
-            box-shadow: 0 0 20px var(--accent-color);
+
+        .stat-label {
+            color: var(--text-color);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            opacity: 0.8;
         }
-        
-        /* Subtle corner accents */
-        .corner-accent {
+
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: 500;
+            text-shadow: 0 0 10px rgba(0, 255, 155, 0.3);
+        }
+
+        .difficulty-meter {
+            position: relative;
+            height: 6px;
+            background: rgba(0, 255, 155, 0.1);
+            border-radius: 3px;
+            margin-top: 1rem;
+            overflow: hidden;
+            box-shadow: inset 0 0 5px rgba(0, 255, 155, 0.2);
+        }
+
+        .difficulty-fill {
             position: absolute;
-            width: 100px;
-            height: 100px;
-            border: 2px solid rgba(0, 255, 155, 0.15);
-            z-index: 1;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 40%;
+            background: linear-gradient(90deg, var(--text-color), #4dffc3);
+            border-radius: 3px;
+            box-shadow: 
+                0 0 10px rgba(0, 255, 155, 0.5),
+                inset 0 0 5px rgba(255, 255, 255, 0.2);
+            animation: pulse 2s infinite;
         }
-        
-        .corner-accent-top-left {
-            top: 50px;
-            left: 50px;
-            border-right: none;
-            border-bottom: none;
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.8; }
+            100% { opacity: 1; }
         }
-        
-        .corner-accent-bottom-right {
-            bottom: 50px;
-            right: 50px;
-            border-left: none;
-            border-top: none;
-        }
-        
-        /* Animation keyframes */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        @keyframes floatElement {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-20px);
-            }
-        }
-        
-        @keyframes slideCar {
-            0% {
-                transform: translateX(-100px);
-            }
-            100% {
-                transform: translateX(1000px);
-            }
-        }
-        
-        /* Responsive styles */
-        @media (max-width: 1200px) {
-            .hero-title {
-                font-size: 3.5rem;
-            }
-            
-            .vertical-accent {
-                height: 100px;
-            }
-        }
-        
-        @media (max-width: 992px) {
-            .hero-title {
-                font-size: 3rem;
-            }
-            
-            .hero-subtitle {
-                font-size: 1.2rem;
-            }
-            
-            .corner-accent {
-                width: 80px;
-                height: 80px;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .hero-title {
-                font-size: 2.5rem;
-                padding-left: 30px;
-            }
-            
-            .hero-subtitle {
-                font-size: 1.1rem;
-                padding-left: 30px;
-            }
-            
-            .vertical-accent {
-                height: 80px;
-            }
-            
-            .vocab-arbre, .vocab-maison {
-                display: none;
-            }
-            
-            .corner-accent {
-                width: 60px;
-                height: 60px;
-            }
-        }
-        
-        @media (max-width: 576px) {
-            .hero-title {
-                font-size: 2rem;
-                padding-left: 25px;
-            }
-            
-            .hero-subtitle {
-                font-size: 1rem;
-                padding-left: 25px;
-            }
-            
-            .vertical-accent {
-                height: 60px;
-                width: 4px;
-            }
-            
-            .navbar {
-                padding: 20px 5%;
-            }
-            
-            .logo {
-                font-size: 2.6rem;
-            }
-            
-            .corner-accent {
-                display: none;
-            }
-        }
-        
-        /* Fix for embedding in iframes or other containers */
-        #vr-game-wrapper {
-            width: 100vw;
-            height: 100vh;
-            overflow: auto;
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-top: 1rem;
             position: relative;
             z-index: 1;
+        }
+
+        .tag {
+            background: rgba(0, 255, 155, 0.05);
+            padding: 0.5rem 1.2rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            border: 1px solid rgba(0, 255, 155, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-shadow: 0 0 5px rgba(0, 255, 155, 0.3);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+        }
+
+        .tag:hover {
+            background: rgba(0, 255, 155, 0.1);
+            border-color: rgba(0, 255, 155, 0.3);
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 255, 155, 0.2);
+        }
+
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .panel {
+                padding: 1.2rem;
+            }
+
+            .game-image-container {
+                height: 250px;
+            }
+
+            .game-header {
+                margin-bottom: 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 0.8rem;
+            }
+
+            .container {
+                gap: 0.8rem;
+            }
+
+            .game-header {
+                margin-bottom: 1rem;
+            }
+
+            .game-title {
+                font-size: 3rem;
+                margin-bottom: 0.3rem;
+            }
+
+            .game-subtitle {
+                font-size: 1rem;
+            }
+
+            .game-image-container {
+                height: 150px;
+                margin-bottom: 0.8rem;
+            }
+
+            .panel {
+                padding: 1rem;
+            }
+
+            .feature-list {
+                gap: 0.8rem;
+                margin-top: 0.8rem;
+            }
+
+            .feature-item {
+                padding: 0.8rem;
+            }
+
+            .feature-icon {
+                width: 28px;
+                height: 28px;
+                margin-bottom: 0.5rem;
+            }
+
+            .feature-item h3 {
+                font-size: 0.9rem;
+                margin-bottom: 0.2rem;
+            }
+
+            .feature-item p {
+                font-size: 0.8rem;
+                line-height: 1.4;
+            }
+
+            .stats-grid {
+                gap: 0.8rem;
+            }
+
+            .stat-item {
+                padding: 0.8rem;
+            }
+
+            .stat-label {
+                font-size: 0.75rem;
+                margin-bottom: 0.2rem;
+            }
+
+            .stat-value {
+                font-size: 0.9rem;
+            }
+
+            .tags {
+                gap: 0.4rem;
+                margin-top: 0.6rem;
+            }
+
+            .tag {
+                padding: 0.25rem 0.6rem;
+                font-size: 0.75rem;
+            }
+
+            .game-description {
+                font-size: 0.85rem;
+                margin-bottom: 0.8rem;
+                line-height: 1.4;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 0.6rem;
+            }
+
+            .game-title {
+                font-size: 2.75rem;
+            }
+
+            .game-subtitle {
+                font-size: 1.3rem;
+            }
+
+            .game-image-container {
+                height: 120px;
+            }
+
+            .panel {
+                padding: 0.8rem;
+            }
+
+            .feature-item,
+            .stat-item {
+                padding: 0.6rem;
+            }
+
+            .feature-icon {
+                width: 24px;
+                height: 24px;
+            }
+
+            .feature-item h3 {
+                font-size: 0.85rem;
+            }
+
+            .feature-item p {
+                font-size: 0.75rem;
+            }
+
+            .stat-label {
+                font-size: 0.7rem;
+            }
+
+            .stat-value {
+                font-size: 0.85rem;
+            }
+
+            .tag {
+                padding: 0.2rem 0.5rem;
+                font-size: 0.7rem;
+            }
+        }
+
+        .game-image-container {
+            width: 100%;
+            height: 500px;
+            margin-bottom: 2rem;
+            position: relative;
+            border-radius: 30px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 255, 155, 0.2);
+            box-shadow: 0 0 30px rgba(0, 255, 155, 0.1);
+        }
+
+        .game-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .game-image:hover {
+            transform: scale(1.05);
+        }
+
+        .game-image-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                to bottom,
+                transparent 60%,
+                rgba(0, 17, 2, 0.8)
+            );
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .game-image-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 1px solid rgba(0, 255, 155, 0.2);
+            box-shadow: inset 0 0 30px rgba(0, 255, 155, 0.1);
+            border-radius: 30px;
+            z-index: 2;
+            pointer-events: none;
         }
     </style>
 </head>
 <body>
-    <div id="vr-game-wrapper">
-        <section class="hero-section">
-            <div class="bg-grid"></div>
-            <div class="corner-accent corner-accent-top-left"></div>
-            <div class="corner-accent corner-accent-bottom-right"></div>
-            
-            <nav class="navbar">
-                <div class="logo">School<span class="logo-accent">Pulse™</span></div>
-            </nav>
-            
-            <div class="container">
-                <div class="hero-content">
-                    <div class="vertical-accent"></div>
-                    <h1 class="hero-title">Professional French Mastery Through Immersive Technology</h1>
-                    <h2 class="hero-subtitle">
-                        School Pulse™ combines cutting-edge VR technology with proven language acquisition methodologies
-                        to deliver measurable results for professionals and immigrants.
-                    </h2>
+    <div class="container">
+        <header class="game-header">
+            <h1 class="game-title">SCHOOL PULSE™</h1>
+            <h2 class="game-subtitle">LEVEL 1 - Ready for the adventure?</h2>
+        </header>
+
+        <div class="game-image-container">
+            <img src="https://yiyang512.github.io/new/vrbg.jpg" alt="School Pulse VR Game" class="game-image">
+        </div>
+
+        <div class="content-grid">
+            <div class="panel">
+                <p class="game-description">
+                    Step into School Pulse LEVEL 1, where learning French becomes an interactive VR adventure set in Pierre's home. Taking place on the second floor, bathroom, bedroom, living room, and kitchen, this level challenges you to complete daily tasks while mastering French pronunciation, vocabulary, and grammar.
+                </p>
+
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <div class="feature-icon"></div>
+                        <h3>AI-Powered Learning</h3>
+                        <p>Advanced pronunciation quizzes with three difficulty levels</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon"></div>
+                        <h3>Interactive Environment</h3>
+                        <p>Fully explorable home with interactive objects</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon"></div>
+                        <h3>Escape Room Elements</h3>
+                        <p>Engaging puzzles and challenges</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon"></div>
+                        <h3>Story-Driven</h3>
+                        <p>Learn through immersive storytelling</p>
+                    </div>
                 </div>
             </div>
-            
-            <div class="vocab-item vocab-arbre">
-                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSIzMCIgY3k9IjMwIiByPSIyOCIgZmlsbD0icmdiYSg2MCwgODAsIDI1NSwgMC43KSIvPjwvc3ZnPg==" alt="Blue flower">
-                <span class="vocab-arbre-text">arbre</span>
+
+            <div class="panel">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-label">PLAYERS</div>
+                        <div class="stat-value">Single Player</div>
+                    </div>
+
+                    <div class="stat-item">
+                        <div class="stat-label">EST. TIME</div>
+                        <div class="stat-value">30-45 minutes</div>
+                    </div>
+
+                    <div class="stat-item">
+                        <div class="stat-label">DIFFICULTY</div>
+                        <div class="stat-value">Intermediate</div>
+                        <div class="difficulty-meter">
+                            <div class="difficulty-fill"></div>
+                        </div>
+                    </div>
+
+                    <div class="stat-item">
+                        <div class="stat-label">SUPPORTED ON</div>
+                        <div class="stat-value">
+                            Meta Quest 2/3/Pro/s
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tags">
+                    <span class="tag">Educational</span>
+                    <span class="tag">Language Learning</span>
+                    <span class="tag">French</span>
+                    <span class="tag">Interactive</span>
+                    <span class="tag">AI-Powered</span>
+                    <span class="tag">VR Experience</span>
+                </div>
             </div>
-            
-            <div class="vocab-item vocab-maison">la maison</div>
-            
-            <div class="car-graphic">
-                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjUwIiB2aWV3Qm94PSIwIDAgMTAwIDUwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik0xMCAzNUgyMEwyNSAyMEg4MEw5MCAzNUg5NVY0MEg4MFY0NUgzMFY0MEgxMFYzNVoiIGZpbGw9InJnYmEoNjAsIDEwMCwgMjU1LCAwLjQpIi8+PGNpcmNsZSBjeD0iMjUiIGN5PSI0MCIgcj0iOCIgZmlsbD0icmdiYSg1MCwgNTAsIDUwLCAwLjYpIi8+PGNpcmNsZSBjeD0iNzUiIGN5PSI0MCIgcj0iOCIgZmlsbD0icmdiYSg1MCwgNTAsIDUwLCAwLjYpIi8+PC9zdmc+" alt="Car graphic">
-            </div>
-        </section>
+        </div>
     </div>
-    
-    <script>
-        // Force full-bleed behavior when embedded
-        (function() {
-            function setFullBleed() {
-                // Handle iframe embedding
-                if (window.self !== window.top) {
-                    document.documentElement.style.overflow = 'hidden';
-                    document.body.style.overflow = 'hidden';
-                    document.body.style.height = '100vh';
-                    document.body.style.width = '100vw';
-                    
-                    // Force container to full viewport
-                    const wrapper = document.getElementById('vr-game-wrapper');
-                    if (wrapper) {
-                        wrapper.style.width = '100vw';
-                        wrapper.style.height = '100vh';
-                        wrapper.style.position = 'absolute';
-                        wrapper.style.top = '0';
-                        wrapper.style.left = '0';
-                    }
-                }
-            }
-            
-            // Run on load
-            window.addEventListener('load', setFullBleed);
-            // Run immediately
-            setFullBleed();
-        })();
-    </script>
 </body>
 </html> 
