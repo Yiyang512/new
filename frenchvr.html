@@ -42,7 +42,7 @@
       color: transparent;
       margin: 0;
       opacity: 0;
-      overflow: hidden;
+      overflow: visible;
       white-space: nowrap;
       animation: fadeIn 0.8s forwards, subtle-pulse 4s ease-in-out infinite 1s;
     }
@@ -72,7 +72,7 @@
 
     .line:nth-child(1) {
       animation-delay: 0.2s;
-      font-size: 7vw;
+      font-size: 4.5vw;
       margin-bottom: 0.8vh;
       white-space: nowrap;
       letter-spacing: 1.5px;
@@ -81,14 +81,14 @@
     
     .line:nth-child(2) {
       animation-delay: 0.6s;
-      font-size: 6vw;
+      font-size: 4vw;
       margin-bottom: 1.2vh;
       --i: 2;
     }
     
     .line:nth-child(3) {
       animation-delay: 1s;
-      font-size: 5vw;
+      font-size: 3.5vw;
       --i: 3;
     }
 
@@ -123,29 +123,29 @@
     /* Media query for larger screens */
     @media (min-width: 1400px) {
       .line:nth-child(1) {
-        font-size: 8vw;
+        font-size: 5vw;
         white-space: nowrap;
       }
       .line:nth-child(2) {
-        font-size: 7vw;
+        font-size: 4.5vw;
       }
       .line:nth-child(3) {
-        font-size: 6vw;
+        font-size: 4vw;
       }
     }
 
     /* Media query for tablets */
     @media (max-width: 1024px) {
       .line:nth-child(1) { 
-        font-size: 8vw;
+        font-size: 5.5vw;
         white-space: normal;
       }
       .line:nth-child(2) {
-        font-size: 7vw;
+        font-size: 5vw;
         white-space: normal;
       }
       .line:nth-child(3) {
-        font-size: 6vw;
+        font-size: 4.5vw;
         white-space: normal;
       }
     }
