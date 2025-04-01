@@ -1,179 +1,165 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simple French with Hems - Online French Courses with AI & VR</title>
-  
-  <link href="https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online French School</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap');
 
-<style>
-    body {
-        background-color: transparent;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-        font-family: 'Audiowide', cursive;
-        color: #fff;
-        padding-left: 4vw;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    .container {
-      text-align: left;
-      width: 100%;
-      max-width: 1400px;
-    }
+        body {
+            min-height: 100vh;
+            min-height: -webkit-fill-available;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            font-family: 'Orbitron', sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
 
-    .line {
-      position: relative;
-      display: block;
-      font-weight: 900;
-      background: linear-gradient(90deg, #00ff66, #00f5ff, #99ff00, #ccff33);
-      background-clip: text;
-      -webkit-background-clip: text;
-      color: transparent;
-      margin: 0;
-      opacity: 0;
-      overflow: visible;
-      white-space: nowrap;
-      animation: fadeIn 0.8s forwards, subtle-pulse 4s ease-in-out infinite 1s;
-    }
+        html {
+            height: -webkit-fill-available;
+        }
 
-    .line::before {
-      content: attr(data-text);
-      position: absolute;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, #00ff66, #00f5ff, #99ff00, #ccff33);
-      background-clip: text;
-      -webkit-background-clip: text;
-      color: transparent;
-      animation: typewriter 2s steps(40) forwards;
-      animation-delay: calc(var(--i) * 0.5s);
-    }
+        .content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-    @keyframes typewriter {
-      from {
-        width: 0;
-      }
-      to {
-        width: 100%;
-      }
-    }
+        .text-container {
+            display: flex;
+            flex-direction: column;
+            gap: clamp(0.5rem, 2vw, 1.5rem);
+            animation: fadeIn 2s ease-out;
+            padding: 2rem;
+        }
 
-    .line:nth-child(1) {
-      animation-delay: 0.2s;
-      font-size: 4.5vw;
-      margin-bottom: 0.8vh;
-      white-space: nowrap;
-      letter-spacing: 1.5px;
-      --i: 1;
-    }
-    
-    .line:nth-child(2) {
-      animation-delay: 0.6s;
-      font-size: 4vw;
-      margin-bottom: 1.2vh;
-      --i: 2;
-    }
-    
-    .line:nth-child(3) {
-      animation-delay: 1s;
-      font-size: 3.5vw;
-      --i: 3;
-    }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-    @keyframes fadeIn {
-      0% { opacity: 0; transform: translateY(10px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
+        @keyframes glow {
+            0% {
+                text-shadow: 0 0 10px rgba(0, 255, 155, 0.7),
+                           0 0 20px rgba(0, 255, 155, 0.5),
+                           0 0 30px rgba(0, 255, 155, 0.3);
+            }
+            50% {
+                text-shadow: 0 0 20px rgba(0, 255, 155, 0.8),
+                           0 0 30px rgba(0, 255, 155, 0.6),
+                           0 0 40px rgba(0, 255, 155, 0.4),
+                           0 0 50px rgba(0, 255, 155, 0.2);
+            }
+            100% {
+                text-shadow: 0 0 10px rgba(0, 255, 155, 0.7),
+                           0 0 20px rgba(0, 255, 155, 0.5),
+                           0 0 30px rgba(0, 255, 155, 0.3);
+            }
+        }
 
-    @keyframes subtle-pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.03); }
-    }
+        .text-line {
+            color: #00FF9B;
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: clamp(2px, 0.5vw, 4px);
+            animation: glow 3s infinite;
+            white-space: normal;
+            line-height: 1.2;
+            text-shadow: 0 0 10px rgba(0, 255, 155, 0.7);
+            transition: all 0.3s ease;
+            position: relative;
+        }
 
-    /* Small shine effect */
-    .line::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 50%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(0, 255, 102, 0.2), transparent);
-      animation: shine 3s infinite;
-      animation-delay: calc(var(--i) * 0.5s);
-    }
+        .text-line:nth-child(2) {
+            font-size: clamp(1.8rem, 4.5vw, 3.5rem);
+            animation-delay: 0.2s;
+            opacity: 0.9;
+        }
 
-    @keyframes shine {
-      0% { left: -100%; }
-      100% { left: 200%; }
-    }
+        .text-line:nth-child(3) {
+            font-size: clamp(1.6rem, 4vw, 3rem);
+            animation-delay: 0.4s;
+            opacity: 0.8;
+        }
 
-    /* Media query for larger screens */
-    @media (min-width: 1400px) {
-      .line:nth-child(1) {
-        font-size: 5vw;
-        white-space: nowrap;
-      }
-      .line:nth-child(2) {
-        font-size: 4.5vw;
-      }
-      .line:nth-child(3) {
-        font-size: 4vw;
-      }
-    }
+        @media (max-width: 768px) {
+            .content {
+                padding: 1rem;
+                margin: 1rem;
+            }
 
-    /* Media query for tablets */
-    @media (max-width: 1024px) {
-      .line:nth-child(1) { 
-        font-size: 5.5vw;
-        white-space: normal;
-      }
-      .line:nth-child(2) {
-        font-size: 5vw;
-        white-space: normal;
-      }
-      .line:nth-child(3) {
-        font-size: 4.5vw;
-        white-space: normal;
-      }
-    }
+            .text-container {
+                gap: 1rem;
+                padding: 1.5rem;
+            }
 
-    /* Media query for mobile */
-    @media (max-width: 768px) {
-      .line:nth-child(1) { 
-        font-size: 7vw; 
-        white-space: normal;
-      }
-      .line:nth-child(2) {
-        font-size: 4.8vw;
-        white-space: normal;
-      }
-      .line:nth-child(3) {
-        font-size: 4.3vw;
-        white-space: normal;
-      }
-    }
-  </style>
+            .text-line {
+                padding: 0 0.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .content {
+                padding: 0.8rem;
+                margin: 0.8rem;
+            }
+
+            .text-container {
+                padding: 1rem;
+            }
+        }
+
+        @media (orientation: landscape) and (max-height: 500px) {
+            .content {
+                padding: 0.5rem;
+            }
+
+            .text-container {
+                gap: 0.5rem;
+                padding: 1rem;
+            }
+
+            .text-line {
+                font-size: clamp(1.5rem, 4vw, 3rem);
+            }
+
+            .text-line:nth-child(2) {
+                font-size: clamp(1.3rem, 3.5vw, 2.5rem);
+            }
+
+            .text-line:nth-child(3) {
+                font-size: clamp(1.1rem, 3vw, 2rem);
+            }
+        }
+    </style>
 </head>
 <body>
-
-<div class="container">
-  <div class="line" data-text="Online French School">Online French School</div>
-  <div class="line" data-text="with AI & VR Technology">with AI & VR Technology</div>
-  <div class="line" data-text="Simple French with Hems">Simple French with Hems</div>
-</div>
-
+    <div class="content">
+        <div class="text-container">
+            <div class="text-line">Online French School</div>
+            <div class="text-line">With AI & VR Technology</div>
+            <div class="text-line">Simple French with HEMS</div>
+        </div>
+    </div>
 </body>
-</html>
+</html> 
