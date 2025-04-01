@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A1 French Success Stories - Student Achievements</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #42e695;
+            --secondary: #3bb2b8;
+            --dark-bg: #0a1e1c;
+            --card-bg: rgba(18, 34, 32, 0.95);
+            --hover-color: #5ef7a6;
+            --text-color: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+            --border-color: rgba(66, 230, 149, 0.2);
+            --shadow-color: rgba(66, 230, 149, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #001102;
+            color: var(--text-color);
+            overflow-x: hidden;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -2;
+            background: 
+                radial-gradient(3px 3px at 20px 30px, var(--primary) 50%, rgba(0,0,0,0)),
+                radial-gradient(3px 3px at 40px 70px, var(--primary) 50%, rgba(0,0,0,0)),
+                radial-gradient(3px 3px at 50px 160px, var(--primary) 50%, rgba(0,0,0,0));
+            background-repeat: repeat;
+            animation: stars 8s linear infinite;
+            opacity: 0.6;
+            filter: blur(0.5px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 4rem;
+            opacity: 0;
+            transform: translateY(-20px);
+            animation: fadeInDown 1s forwards 0.2s;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 5rem;
+            opacity: 0;
+            animation: fadeIn 1s forwards 0.8s;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 2rem;
+            line-height: 1.2;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            line-height: 1.6;
+        }
+
+        .success-stories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            margin-bottom: 7rem;
+        }
+
+        .success-card {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s forwards;
+        }
+
+        .success-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 30px rgba(66, 230, 149, 0.2);
+        }
+
+        .success-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .success-avatar {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-right: 1rem;
+        }
+
+        .success-info h4 {
+            font-size: 1.3rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .success-info p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .success-content {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+
+        .success-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            text-align: center;
+        }
+
+        .metric {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .success-card:nth-child(1) { animation-delay: 0.2s; }
+        .success-card:nth-child(2) { animation-delay: 0.4s; }
+        .success-card:nth-child(3) { animation-delay: 0.6s; }
+        .success-card:nth-child(4) { animation-delay: 0.8s; }
+        .success-card:nth-child(5) { animation-delay: 1s; }
+        .success-card:nth-child(6) { animation-delay: 1.2s; }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .success-stories {
+                gap: 2rem;
+            }
+
+            .success-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <div class="success-stories">
+            <div class="success-card">
+                <div class="success-header">
+                    <div class="success-avatar">EM</div>
+                    <div class="success-info">
+                        <h4>Emma</h4>
+                        <p>• Student • Vancouver</p>
+                    </div>
+                </div>
+                <div class="success-content">
+                    "Starting from zero French knowledge, I completed A1 in just 4 months! The structured lessons and daily practice exercises made learning enjoyable. Now I can confidently have basic conversations in French."
+                </div>
+                <div class="success-metrics">
+                    <div class="metric">
+                        <span class="metric-value">4</span>
+                        <span class="metric-label">Months</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">A1</span>
+                        <span class="metric-label">Level</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">92%</span>
+                        <span class="metric-label">Score</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="success-card">
+                <div class="success-header">
+                    <div class="success-avatar">RK</div>
+                    <div class="success-info">
+                        <h4>Raj</h4>
+                        <p>• Professional • Toronto</p>
+                    </div>
+                </div>
+                <div class="success-content">
+                    "The AI pronunciation tutor was a game-changer! After 3 months of dedicated practice, I passed my DELF A1 exam with flying colors. The real-life conversation scenarios were particularly helpful."
+                </div>
+                <div class="success-metrics">
+                    <div class="metric">
+                        <span class="metric-value">3</span>
+                        <span class="metric-label">Months</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">DELF A1</span>
+                        <span class="metric-label">Achieved</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">88%</span>
+                        <span class="metric-label">Score</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="success-card">
+                <div class="success-header">
+                    <div class="success-avatar">LC</div>
+                    <div class="success-info">
+                        <h4>Lucy</h4>
+                        <p>• Remote Worker • Montreal</p>
+                    </div>
+                </div>
+                <div class="success-content">
+                    "As someone working remotely with French-speaking clients, this course was perfect. In 5 months, I went from knowing nothing to handling basic client communications in French!"
+                </div>
+                <div class="success-metrics">
+                    <div class="metric">
+                        <span class="metric-value">5</span>
+                        <span class="metric-label">Months</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">A1+</span>
+                        <span class="metric-label">Level</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">95%</span>
+                        <span class="metric-label">Score</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="success-card">
+                <div class="success-header">
+                    <div class="success-avatar">JT</div>
+                    <div class="success-info">
+                        <h4>James</h4>
+                        <p>• Retiree • Ottawa</p>
+                    </div>
+                </div>
+                <div class="success-content">
+                    "At 65, I thought learning French would be challenging, but the course's step-by-step approach made it accessible. The vocabulary e-books and audio lessons were particularly helpful for my learning style."
+                </div>
+                <div class="success-metrics">
+                    <div class="metric">
+                        <span class="metric-value">6</span>
+                        <span class="metric-label">Months</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">A1</span>
+                        <span class="metric-label">Level</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">85%</span>
+                        <span class="metric-label">Score</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="success-card">
+                <div class="success-header">
+                    <div class="success-avatar">AM</div>
+                    <div class="success-info">
+                        <h4>Ana</h4>
+                        <p>• Student • Edmonton</p>
+                    </div>
+                </div>
+                <div class="success-content">
+                    "The interactive exercises and cultural lessons made learning French fun! I completed A1 in 4 months and can now watch French movies with basic understanding."
+                </div>
+                <div class="success-metrics">
+                    <div class="metric">
+                        <span class="metric-value">4</span>
+                        <span class="metric-label">Months</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">A1</span>
+                        <span class="metric-label">Level</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">90%</span>
+                        <span class="metric-label">Score</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="success-card">
+                <div class="success-header">
+                    <div class="success-avatar">DM</div>
+                    <div class="success-info">
+                        <h4>David</h4>
+                        <p>• Business Owner • Calgary</p>
+                    </div>
+                </div>
+                <div class="success-content">
+                    "The business-focused vocabulary modules were exactly what I needed. Within 5 months, I could introduce myself and my company in French at networking events!"
+                </div>
+                <div class="success-metrics">
+                    <div class="metric">
+                        <span class="metric-value">5</span>
+                        <span class="metric-label">Months</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">A1</span>
+                        <span class="metric-label">Level</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">87%</span>
+                        <span class="metric-label">Score</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 
