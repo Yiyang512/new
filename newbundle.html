@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="iframe-version" content="true">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="Master French from A0 to A2 with our comprehensive DELF & TEF Success Bundle">
     <title>DELF & TEF Success Bundle | A0 to A2</title>
@@ -28,9 +27,8 @@
         }
 
         html, body {
-            height: auto;
-            min-height: auto;
             width: 100%;
+            min-height: 100vh;
             overflow-x: hidden;
             background-color: var(--dark-bg);
             color: var(--text-primary);
@@ -45,15 +43,11 @@
             -webkit-backface-visibility: hidden;
             perspective: 1000;
             -webkit-perspective: 1000;
-            max-width: 100vw;
-            margin: 0;
-            padding: 0;
         }
 
         /* Hero Section Enhanced */
         .hero {
-            min-height: auto;
-            padding: 3rem 0;
+            min-height: 100vh;
             background: linear-gradient(135deg, rgba(0,26,15,0.95), rgba(0,26,15,0.85)),
                         url('https://images.unsplash.com/photo-1617396900799-f4ec2b43c7ae?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWd2fHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
             background-size: cover;
@@ -97,11 +91,12 @@
 
         /* Enhanced Hero Content */
         .hero-content {
-            grid-template-columns: 1fr;
-            max-width: 100%;
-            padding: 1rem;
-            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
             display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 6rem;
             align-items: center;
             position: relative;
             z-index: 1;
@@ -109,7 +104,7 @@
 
         /* Enhanced Text Styles */
         .hero-text h1 {
-            font-size: 2.5rem;
+            font-size: 5rem;
             font-weight: 800;
             line-height: 1.1;
             letter-spacing: -0.03em;
@@ -138,9 +133,9 @@
         }
 
         .hero-text p {
-            font-size: 1rem;
+            font-size: 1.4rem;
             color: var(--text-secondary);
-            margin-bottom: 1.5rem;
+            margin-bottom: 3rem;
             font-weight: 300;
             letter-spacing: 0.3px;
             line-height: 1.8;
@@ -597,9 +592,8 @@
 
         /* Course Cards Section */
         .courses {
-            padding: 2rem 1rem;
-            max-width: 100%;
-            width: 100%;
+            padding: 3rem 2rem;  /* Reduced from 4rem */
+            max-width: 1000px;  /* Reduced from 1100px */
             margin: 0 auto;
         }
 
@@ -617,10 +611,9 @@
 
         .course-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2.5rem;
-            width: 100%;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));  /* Reduced from 300px */
+            gap: 1.4rem;  /* Reduced from 1.8rem */
+            margin-bottom: 2.5rem;  /* Reduced from 3rem */
         }
 
         .course-card {
@@ -629,8 +622,8 @@
                 rgba(0, 0, 0, 0.3)
             );
             border: 1px solid rgba(0, 255, 155, 0.1);
-            border-radius: 16px;
-            padding: 1.4rem;
+            border-radius: 16px;  /* Reduced from 20px */
+            padding: 1.4rem;  /* Reduced from 1.8rem */
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             backdrop-filter: blur(12px);
             position: relative;
@@ -695,25 +688,25 @@
         }
 
         .course-title {
-            font-size: 1.5rem;
+            font-size: 1.5rem;  /* Reduced from 1.8rem */
             font-weight: 600;
             color: var(--neon-mint);
-            margin-bottom: 1rem;
+            margin-bottom: 1rem;  /* Reduced from 1.5rem */
             letter-spacing: -0.01em;
         }
 
         .course-features {
             list-style: none;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.5rem;  /* Reduced from 2rem */
         }
 
         .course-features li {
-            margin-bottom: 0.6rem;
+            margin-bottom: 0.6rem;  /* Reduced from 0.8rem */
             display: flex;
             align-items: center;
-            gap: 0.6rem;
+            gap: 0.6rem;  /* Reduced from 0.8rem */
             color: var(--text-secondary);
-            font-size: 0.95rem;
+            font-size: 0.95rem;  /* Reduced from 1.05rem */
         }
 
         .course-features li::before {
@@ -723,10 +716,10 @@
         }
 
         .course-price {
-            font-size: 1.5rem;
+            font-size: 1.5rem;  /* Reduced from 1.8rem */
             font-weight: 600;
             color: var(--text-primary);
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.5rem;  /* Reduced from 2rem */
         }
 
         /* Pricing Section */
@@ -752,7 +745,6 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 3rem;
-            width: 100%;
         }
 
         .pricing-card {
@@ -1252,6 +1244,129 @@
             50% { opacity: 1; }
         }
 
+        /* Add this script at the end of the body */
+        <script>
+        // Mouse move effect for feature cards
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width) * 100;
+                const y = ((e.clientY - rect.top) / rect.height) * 100;
+                card.style.setProperty('--mouse-x', `${x}%`);
+                card.style.setProperty('--mouse-y', `${y}%`);
+            });
+        });
+
+        // Add animation order to cards
+        document.querySelectorAll('.feature-card, .course-card, .pricing-card').forEach((card, index) => {
+            card.style.setProperty('--animation-order', index);
+        });
+
+        // Particle effect
+        function createParticles() {
+            const particles = document.createElement('div');
+            particles.className = 'particles';
+            document.body.appendChild(particles);
+
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.style.cssText = `
+                    position: absolute;
+                    width: 2px;
+                    height: 2px;
+                    background: rgba(0, 255, 155, ${Math.random() * 0.5});
+                    left: ${Math.random() * 100}vw;
+                    top: ${Math.random() * 100}vh;
+                    pointer-events: none;
+                    border-radius: 50%;
+                    animation: particleFloat ${5 + Math.random() * 10}s linear infinite;
+                `;
+                particles.appendChild(particle);
+            }
+        }
+
+        createParticles();
+
+        // Enhanced scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '20px'
+        };
+
+        const fadeObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0) scale(1)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.feature-card, .course-card, .pricing-card, .testimonial').forEach((el) => {
+            el.style.opacity = 0;
+            el.style.transform = 'translateY(30px) scale(0.95)';
+            el.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+            fadeObserver.observe(el);
+        });
+
+        // Progress bar
+        const progressBar = document.createElement('div');
+        progressBar.className = 'progress-bar';
+        document.body.appendChild(progressBar);
+
+        window.addEventListener('scroll', () => {
+            const windowHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = (window.scrollY / windowHeight) * 100;
+            progressBar.style.transform = `scaleX(${progress / 100})`;
+        });
+
+        // Enhanced particle effect
+        function createEnhancedParticles() {
+            const particles = document.querySelector('.particles');
+            if (!particles) return;
+
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                const size = Math.random() * 3 + 1;
+                particle.style.cssText = `
+                    position: absolute;
+                    width: ${size}px;
+                    height: ${size}px;
+                    background: ${Math.random() > 0.5 ? 'var(--neon-mint)' : 'var(--purple-accent)'};
+                    left: ${Math.random() * 100}vw;
+                    top: ${Math.random() * 100}vh;
+                    pointer-events: none;
+                    border-radius: 50%;
+                    filter: blur(1px);
+                    animation: particleFloat ${10 + Math.random() * 20}s linear infinite;
+                    opacity: ${Math.random() * 0.6};
+                `;
+                particles.appendChild(particle);
+            }
+        }
+
+        createEnhancedParticles();
+
+        // 3D card tilt effect
+        document.querySelectorAll('.course-card, .pricing-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width - 0.5) * 20;
+                const y = ((e.clientY - rect.top) / rect.height - 0.5) * 20;
+                card.style.transform = `perspective(1000px) rotateX(${-y}deg) rotateY(${x}deg) translateZ(10px)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateZ(0)';
+            });
+        });
+
+        // Add floating animation delays to badges
+        document.querySelectorAll('.hero-badge').forEach((badge, index) => {
+            badge.style.setProperty('--badge-order', index);
+        });
+        </script>
+
         /* Add these keyframes at the end of the style section */
         @keyframes particleFloat {
             0% {
@@ -1728,82 +1843,64 @@
             width: 100%;
         }
 
-        /* Specific styles for iframe embedding */
-        .in-iframe {
-            max-width: 100% !important;
-            width: 100% !important;
-            overflow-x: hidden !important;
+        /* Additional styles for embedded contexts */
+        html.embedded, 
+        body.embedded-context {
+            width: 100%;
+            overflow-x: hidden;
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
         }
 
-        .in-iframe .hero {
-            min-height: auto !important;
-            padding: 2rem 0 !important;
-            background-attachment: scroll !important;
+        /* Fix width issues when embedded */
+        .embedded-context .hero-content,
+        .embedded-context .courses,
+        .embedded-context .reviews-grid,
+        .embedded-context .pricing-cards {
+            max-width: 100%;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            box-sizing: border-box;
         }
 
-        .in-iframe .hero-content {
-            grid-template-columns: 1fr !important;
-            gap: 1.5rem !important;
-            padding: 1rem !important;
-        }
-
-        .in-iframe .hero-text h1 {
-            font-size: 2.2rem !important;
-            margin-bottom: 1rem !important;
-        }
-
-        .in-iframe .hero-text p {
-            font-size: 1rem !important;
-            margin-bottom: 1.5rem !important;
-        }
-
-        .in-iframe .courses,
-        .in-iframe .reviews,
-        .in-iframe .pricing {
-            padding: 2rem 1rem !important;
-        }
-
-        .in-iframe .course-grid,
-        .in-iframe .reviews-grid,
-        .in-iframe .pricing-cards {
-            width: 100% !important;
-            display: grid !important;
-            gap: 1.2rem !important;
-        }
-
-        .in-iframe .course-card,
-        .in-iframe .review-card,
-        .in-iframe .pricing-card {
-            transform: none !important;
-            transition: none !important;
-            animation: none !important;
-        }
-
-        .in-iframe .section-title {
-            font-size: 1.8rem !important;
-        }
-
-        /* Disable all heavy animations in iframe */
-        .in-iframe .hero::before,
-        .in-iframe .hero::after,
-        .in-iframe .particles,
-        .in-iframe .hero-badge::before,
-        .in-iframe .btn::after {
-            display: none !important;
-        }
-
-        /* Force hardware acceleration */
-        .in-iframe {
-            -webkit-transform: translateZ(0);
-            -webkit-backface-visibility: hidden;
-            -webkit-perspective: 1000;
-            transform: translateZ(0);
-            backface-visibility: hidden;
-            perspective: 1000;
+        /* Enhanced mobile optimization for embedded views */
+        @media (max-width: 768px) {
+            .embedded-context .hero-content {
+                padding: 1rem;
+            }
+            
+            .embedded-context .course-grid,
+            .embedded-context .reviews-grid,
+            .embedded-context .pricing-cards {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body class="embedded-context">
+    <script>
+        // Set HTML class for embedding context
+        document.documentElement.classList.add('embedded');
+        
+        // Function to adjust for iframe embedding
+        function adjustForEmbedding() {
+            // Check if we're in an iframe
+            if (window.self !== window.top) {
+                document.body.classList.add('embedded');
+                
+                // Send height to parent
+                setInterval(() => {
+                    const height = document.body.scrollHeight;
+                    window.parent.postMessage({ frameHeight: height }, '*');
+                }, 500);
+            }
+        }
+        
+        // Run once DOM is ready
+        document.addEventListener('DOMContentLoaded', adjustForEmbedding);
+    </script>
+    
     <section class="hero">
         <div class="hero-content">
             <div class="hero-text">
@@ -2132,34 +2229,6 @@
                     }
                 });
             });
-
-            // Check if we're in an iframe
-            const isInIframe = window.self !== window.top;
-            if (isInIframe) {
-                document.body.classList.add('in-iframe');
-                
-                // Notify parent about size
-                const sendHeight = function() {
-                    const height = document.documentElement.scrollHeight;
-                    window.parent.postMessage({ type: 'resize', height: height }, '*');
-                };
-                
-                // Send height on events that might change content size
-                sendHeight();
-                window.addEventListener('resize', sendHeight);
-                window.addEventListener('load', sendHeight);
-                
-                // Reduce animation complexity
-                document.documentElement.style.setProperty('--reduced-motion', 'reduce');
-                
-                // Disable animations that could cause performance issues
-                const elements = document.querySelectorAll('.course-card, .review-card, .pricing-card');
-                elements.forEach(el => {
-                    el.style.transform = 'none';
-                    el.style.animation = 'none';
-                    el.style.transition = 'opacity 0.3s ease';
-                });
-            }
         });
     </script>
 </body>
