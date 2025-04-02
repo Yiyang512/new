@@ -394,7 +394,7 @@
             }
 
             .game-image-container {
-                height: 250px;
+                max-height: 500px;
             }
 
             .game-header {
@@ -425,8 +425,7 @@
             }
 
             .game-image-container {
-                height: 150px;
-                margin-bottom: 0.8rem;
+                max-height: 400px;
             }
 
             .panel {
@@ -506,7 +505,7 @@
             }
 
             .game-image-container {
-                height: 120px;
+                max-height: 300px;
             }
 
             .panel {
@@ -545,26 +544,90 @@
             }
         }
 
+        @keyframes glowingFrame {
+            0% {
+                box-shadow: 0 0 10px #ff0000,
+                           0 0 20px #ff0000,
+                           0 0 30px #ff0000,
+                           inset 0 0 10px rgba(255, 0, 0, 0.5);
+                border-color: rgba(255, 0, 0, 0.8);
+            }
+            50% {
+                box-shadow: 0 0 15px #ff3333,
+                           0 0 30px #ff3333,
+                           0 0 45px #ff3333,
+                           inset 0 0 20px rgba(255, 51, 51, 0.7);
+                border-color: rgba(255, 51, 51, 1);
+            }
+            100% {
+                box-shadow: 0 0 10px #ff0000,
+                           0 0 20px #ff0000,
+                           0 0 30px #ff0000,
+                           inset 0 0 10px rgba(255, 0, 0, 0.5);
+                border-color: rgba(255, 0, 0, 0.8);
+            }
+        }
+
         .game-image-container {
             width: 100%;
-            height: 500px;
-            margin-bottom: 2rem;
+            height: auto;
+            max-height: 600px;
+            margin: 2rem auto;
             position: relative;
-            border-radius: 30px;
+            border-radius: 20px;
             overflow: hidden;
-            border: 1px solid rgba(0, 255, 155, 0.2);
-            box-shadow: 0 0 30px rgba(0, 255, 155, 0.1);
+            border: 2px solid rgba(255, 0, 0, 0.8);
+            background: rgba(0, 17, 2, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 8px;
+            animation: glowingFrame 2s infinite;
+        }
+
+        .game-image-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                45deg,
+                transparent 40%,
+                rgba(255, 0, 0, 0.1) 45%,
+                rgba(255, 0, 0, 0.2) 50%,
+                rgba(255, 0, 0, 0.1) 55%,
+                transparent 60%
+            );
+            z-index: 1;
+            animation: shimmer 3s infinite linear;
+            pointer-events: none;
+        }
+
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(100%);
+            }
         }
 
         .game-image {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
+            height: auto;
+            max-height: 600px;
+            object-fit: contain;
+            display: block;
             transition: transform 0.5s ease;
+            position: relative;
+            z-index: 0;
+            border-radius: 12px;
         }
 
         .game-image:hover {
-            transform: scale(1.05);
+            transform: scale(1.02);
         }
 
         .game-image-container::after {
@@ -576,25 +639,44 @@
             bottom: 0;
             background: linear-gradient(
                 to bottom,
-                transparent 60%,
-                rgba(0, 17, 2, 0.8)
+                transparent 80%,
+                rgba(255, 0, 0, 0.1)
             );
             pointer-events: none;
-            z-index: 1;
+            z-index: 2;
+            border-radius: 20px;
         }
 
-        .game-image-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            border: 1px solid rgba(0, 255, 155, 0.2);
-            box-shadow: inset 0 0 30px rgba(0, 255, 155, 0.1);
-            border-radius: 30px;
-            z-index: 2;
-            pointer-events: none;
+        @media (max-width: 1024px) {
+            .game-image-container {
+                max-height: 500px;
+                margin: 1.5rem auto;
+            }
+            .game-image {
+                max-height: 500px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .game-image-container {
+                max-height: 400px;
+                margin: 1rem auto;
+                padding: 6px;
+            }
+            .game-image {
+                max-height: 400px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-image-container {
+                max-height: 300px;
+                margin: 0.8rem auto;
+                padding: 4px;
+            }
+            .game-image {
+                max-height: 300px;
+            }
         }
     </style>
 </head>
@@ -606,7 +688,7 @@
         </header>
 
         <div class="game-image-container">
-            <img src="https://yiyang512.github.io/new/vrbg.jpg" alt="School Pulse VR Game" class="game-image">
+            <img src="https://yiyang512.github.io/new/vrcover1.jpg" alt="School Pulse VR Game Cover" class="game-image">
         </div>
 
         <div class="content-grid">
