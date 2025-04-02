@@ -4,166 +4,176 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simple French with Hems - Who Are We?</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        :root {
+            --primary: #42e695;
+            --secondary: #3bb2b8;
+            --dark-bg: #0a1e1c;
+            --text-color: #ffffff;
+        }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-        }
-
-        :root {
-            --primary: #00FF9B;
-            --bg-dark: #001102;
-            --text-color: #00FF9B;
+            font-family: 'Poppins', sans-serif;
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background: transparent;
+            background-color: transparent;
             color: var(--text-color);
-            line-height: 1.6;
-            padding: 2rem;
+            overflow-x: hidden;
+            position: relative;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
-            overflow-x: hidden;
         }
 
-        /* Shining dots animation */
-        @keyframes shine {
-            0% { opacity: 0.2; }
-            50% { opacity: 0.7; }
-            100% { opacity: 0.2; }
+        /* Large dots layer */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -2;
+            background: 
+                radial-gradient(4px 4px at 20px 30px, var(--primary) 50%, rgba(0,0,0,0)),
+                radial-gradient(4px 4px at 40px 70px, var(--primary) 50%, rgba(0,0,0,0)),
+                radial-gradient(4px 4px at 50px 160px, var(--primary) 50%, rgba(0,0,0,0)),
+                radial-gradient(4px 4px at 90px 40px, var(--primary) 50%, rgba(0,0,0,0)),
+                radial-gradient(4px 4px at 130px 80px, var(--primary) 50%, rgba(0,0,0,0)),
+                radial-gradient(4px 4px at 160px 120px, var(--primary) 50%, rgba(0,0,0,0));
+            background-repeat: repeat;
+            animation: stars 8s linear infinite;
+            opacity: 0.8;
+            filter: blur(0.2px);
         }
 
-        @keyframes float {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0); }
+        /* Small dots layer */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -3;
+            background: 
+                radial-gradient(2px 2px at 150px 50px, var(--primary) 50%, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 200px 120px, var(--primary) 50%, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 250px 80px, var(--primary) 50%, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 300px 160px, var(--primary) 50%, rgba(0,0,0,0));
+            background-repeat: repeat;
+            animation: starsReverse 12s linear infinite;
+            opacity: 0.6;
+            filter: blur(0.1px);
         }
 
         .container {
-            max-width: 2000px;
-            width: 100%;
+            max-width: 1400px;
             margin: 0 auto;
+            padding: 3rem;
+            position: relative;
+        }
+
+        .hero {
+            text-align: center;
+            opacity: 0;
+            animation: fadeIn 1s forwards 0.8s;
             position: relative;
             z-index: 1;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2rem;
         }
 
-        .game-header {
-            text-align: center;
-            margin-bottom: 3rem;
-            position: relative;
-            animation: float 2s ease-in-out infinite;
+        .hero h1 {
+            font-size: 5rem;
+            background: linear-gradient(90deg, var(--primary), #3bb2b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 2rem;
+            line-height: 1.2;
         }
 
-        .game-title {
+        .hero p {
+            font-size: 1.3rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            line-height: 1.6;
             color: var(--text-color);
-            font-size: 6rem;
-            font-weight: 800;
-            text-shadow: 0 0 20px rgba(0, 255, 155, 0.5);
-            margin-bottom: 1rem;
-            position: relative;
-            display: inline-block;
-            letter-spacing: 2px;
         }
 
-        .game-title::before,
-        .game-title::after {
+        .video-container {
+            margin-top: 3rem;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 12px;
+            overflow: hidden;
+            opacity: 0;
+            animation: fadeIn 1s forwards 1.2s;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            padding: 4px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            z-index: 1;
+        }
+
+        .video-container::before {
             content: '';
             position: absolute;
-            width: 100px;
-            height: 2px;
-            background: var(--text-color);
-            top: 50%;
-            transform: translateY(-50%);
-            box-shadow: 0 0 10px rgba(0, 255, 155, 0.5);
+            inset: -2px;
+            background: linear-gradient(90deg, 
+                var(--primary), 
+                var(--secondary), 
+                #3bb2b8, 
+                #42e695, 
+                var(--primary)
+            );
+            border-radius: 14px;
+            padding: 4px;
+            animation: rotate 4s linear infinite;
+            background-size: 300% 100%;
+            z-index: -1;
         }
 
-        .game-title::before {
-            left: -120px;
-        }
-
-        .game-title::after {
-            right: -120px;
-        }
-
-        .game-subtitle {
-            color: var(--text-color);
-            font-size: 2.5rem;
-            font-weight: 500;
-            text-shadow: 0 0 10px rgba(0, 255, 155, 0.3);
-            letter-spacing: 1px;
+        .video-container video {
+            width: 100%;
+            display: block;
+            background-color: #000;
+            border-radius: 8px;
+            position: relative;
+            z-index: 3;
+            box-shadow: 0 8px 32px rgba(66, 230, 149, 0.2);
         }
 
         .content-grid {
             display: grid;
             grid-template-columns: 1.5fr 1fr;
             gap: 2rem;
+            margin-top: 3rem;
+            opacity: 0;
+            animation: fadeIn 1s forwards 1.6s;
         }
 
         .panel {
-            background: rgba(0, 17, 2, 0.7);
-            border-radius: 30px;
-            padding: 2.5rem;
-            position: relative;
-            border: 1px solid rgba(0, 255, 155, 0.2);
-            box-shadow: 
-                0 0 30px rgba(0, 255, 155, 0.1),
-                inset 0 0 20px rgba(0, 255, 155, 0.05);
-            overflow: hidden;
+            background: rgba(10, 30, 28, 0.7);
+            border-radius: 12px;
+            padding: 2rem;
             backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
+            border: 1px solid rgba(66, 230, 149, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .panel:hover {
             transform: translateY(-5px);
-            box-shadow: 
-                0 10px 40px rgba(0, 255, 155, 0.2),
-                inset 0 0 30px rgba(0, 255, 155, 0.1);
-            border-color: rgba(0, 255, 155, 0.3);
-        }
-
-        .panel::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                radial-gradient(circle at center, var(--primary) 1px, transparent 1px),
-                radial-gradient(circle at top right, rgba(0, 255, 155, 0.1), transparent 70%);
-            background-size: 50px 50px, 100% 100%;
-            background-position: 0 0, 0 0;
-            opacity: 0.15;
-            animation: shine 3s infinite;
-            pointer-events: none;
-        }
-
-        .video-container {
-            width: 100%;
-            height: auto;
-            max-height: 1500px;
-            margin: 2rem auto;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .video-container video {
-            width: 100%;
-            height: 100%;
-            min-height: 400px;
+            box-shadow: 0 8px 32px rgba(66, 230, 149, 0.2);
         }
 
         .feature-list {
@@ -171,366 +181,206 @@
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 1.5rem;
             margin-top: 2rem;
-            position: relative;
-            z-index: 1;
         }
 
         .feature-item {
-            background: rgba(0, 255, 155, 0.05);
+            background: rgba(66, 230, 149, 0.1);
             padding: 1.5rem;
-            border-radius: 15px;
-            border: 1px solid rgba(0, 255, 155, 0.2);
+            border-radius: 8px;
+            border: 1px solid rgba(66, 230, 149, 0.2);
             transition: all 0.3s ease;
-            position: relative;
-            z-index: 1;
-            overflow: hidden;
-            backdrop-filter: blur(5px);
-        }
-
-        .feature-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: linear-gradient(to bottom, var(--primary), transparent);
-            box-shadow: 0 0 15px rgba(0, 255, 155, 0.5);
         }
 
         .feature-item:hover {
-            transform: translateY(-5px);
-            background: rgba(0, 255, 155, 0.1);
-            border-color: rgba(0, 255, 155, 0.3);
-            box-shadow: 0 0 20px rgba(0, 255, 155, 0.2);
-        }
-
-        .feature-icon {
-            width: 10px;
-            height: 10px;
-            background: rgba(0, 255, 155, 0.1);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1rem;
-            position: relative;
-            border: 1px solid rgba(0, 255, 155, 0.2);
-            overflow: hidden;
+            transform: translateY(-3px);
+            background: rgba(66, 230, 149, 0.15);
+            border-color: rgba(66, 230, 149, 0.3);
         }
 
         .feature-item h3 {
-            font-size: 1.2rem;
+            color: var(--primary);
             margin-bottom: 0.5rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
+            font-size: 1.2rem;
         }
 
         .feature-item p {
-            font-size: 1.1rem;
-            opacity: 0.8;
-            color: white;
+            color: var(--text-color);
+            opacity: 0.9;
         }
 
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 1.5rem;
-            position: relative;
-            z-index: 1;
         }
 
         .stat-item {
-            background: rgba(0, 255, 155, 0.05);
-            padding: 1.8rem;
-            border-radius: 15px;
-            border: 1px solid rgba(0, 255, 155, 0.2);
+            background: rgba(66, 230, 149, 0.1);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid rgba(66, 230, 149, 0.2);
             transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            backdrop-filter: blur(5px);
         }
 
         .stat-label {
-            color: var(--text-color);
+            color: var(--primary);
             font-size: 0.9rem;
             text-transform: uppercase;
             margin-bottom: 0.5rem;
-            font-weight: 500;
-            letter-spacing: 0.05em;
-            opacity: 0.8;
         }
 
         .stat-value {
+            color: var(--text-color);
             font-size: 1.2rem;
             font-weight: 500;
-            text-shadow: 0 0 10px rgba(0, 255, 155, 0.3);
         }
 
         .tags {
             display: flex;
             flex-wrap: wrap;
             gap: 0.8rem;
-            margin-top: 1rem;
-            position: relative;
-            z-index: 1;
+            margin-top: 1.5rem;
         }
 
         .tag {
-            background: rgba(0, 17, 2, 0.8);
-            padding: 0.5rem 1.2rem;
+            background: rgba(66, 230, 149, 0.1);
+            padding: 0.5rem 1rem;
             border-radius: 20px;
+            color: var(--primary);
             font-size: 0.9rem;
-            border: 1px solid rgba(0, 255, 155, 0.2);
             transition: all 0.3s ease;
-            cursor: pointer;
-            text-shadow: 0 0 5px rgba(0, 255, 155, 0.3);
-            position: relative;
-            overflow: hidden;
-            backdrop-filter: blur(5px);
         }
 
         .tag:hover {
-            background: rgba(0, 255, 155, 0.15);
-            border-color: rgba(0, 255, 155, 0.4);
-            transform: translateY(-2px) scale(1.05);
-            box-shadow: 0 5px 15px rgba(0, 255, 155, 0.2);
+            background: rgba(66, 230, 149, 0.2);
+            transform: translateY(-2px);
         }
 
-        @media (max-width: 1024px) {
-            .content-grid {
-                grid-template-columns: 1fr;
-                gap: 1rem;
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
             }
-
-            .panel {
-                padding: 1.2rem;
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
+        }
 
-            .video-container {
-                max-height: 500px;
+        @keyframes stars {
+            from {
+                transform: translateY(0);
             }
+            to {
+                transform: translateY(-200px);
+            }
+        }
 
-            .game-header {
-                margin-bottom: 1rem;
+        @keyframes starsReverse {
+            from {
+                transform: translateY(-200px);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes rotate {
+            0% {
+                background-position: 0% 50%;
+            }
+            100% {
+                background-position: 300% 50%;
             }
         }
 
         @media (max-width: 768px) {
-            body {
-                padding: 0.8rem;
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
             }
 
             .container {
-                gap: 0.8rem;
-            }
-
-            .game-header {
-                margin-bottom: 1rem;
-            }
-
-            .game-title {
-                font-size: 3rem;
-                margin-bottom: 0.3rem;
-            }
-
-            .game-subtitle {
-                font-size: 1rem;
-            }
-
-            .video-container {
-                max-height: 400px;
-                margin: 1rem auto;
-                padding: 6px;
-            }
-
-            .panel {
-                padding: 1rem;
-            }
-
-            .feature-list {
-                gap: 0.8rem;
-                margin-top: 0.8rem;
-            }
-
-            .feature-item {
-                padding: 0.8rem;
-            }
-
-            .feature-icon {
-                width: 28px;
-                height: 28px;
-                margin-bottom: 0.5rem;
-            }
-
-            .feature-item h3 {
-                font-size: 0.9rem;
-                margin-bottom: 0.2rem;
-            }
-
-            .feature-item p {
-                font-size: 0.8rem;
-                line-height: 1.4;
-            }
-
-            .stats-grid {
-                gap: 0.8rem;
-            }
-
-            .stat-item {
-                padding: 0.8rem;
-            }
-
-            .stat-label {
-                font-size: 0.75rem;
-                margin-bottom: 0.2rem;
-            }
-
-            .stat-value {
-                font-size: 0.9rem;
-            }
-
-            .tags {
-                gap: 0.4rem;
-                margin-top: 0.6rem;
-            }
-
-            .tag {
-                padding: 0.25rem 0.6rem;
-                font-size: 0.75rem;
+                padding: 1.5rem;
             }
         }
 
         @media (max-width: 480px) {
-            body {
-                padding: 0.6rem;
+            .hero h1 {
+                font-size: 2.25rem;
             }
 
-            .game-title {
-                font-size: 2.75rem;
-            }
-
-            .game-subtitle {
-                font-size: 1.3rem;
-            }
-
-            .video-container {
-                max-height: 300px;
-                margin: 0.8rem auto;
-                padding: 4px;
-            }
-
-            .panel {
-                padding: 0.8rem;
-            }
-
-            .feature-item,
-            .stat-item {
-                padding: 0.6rem;
-            }
-
-            .feature-icon {
-                width: 24px;
-                height: 24px;
-            }
-
-            .feature-item h3 {
-                font-size: 0.85rem;
-            }
-
-            .feature-item p {
-                font-size: 0.75rem;
-            }
-
-            .stat-label {
-                font-size: 0.7rem;
-            }
-
-            .stat-value {
-                font-size: 0.85rem;
-            }
-
-            .tag {
-                padding: 0.2rem 0.5rem;
-                font-size: 0.7rem;
+            .container {
+                padding: 1rem;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <header class="game-header">
-            <h1 class="game-title">SIMPLE FRENCH WITH HEMS</h1>
-            <h2 class="game-subtitle">Who Are We?</h2>
-        </header>
-
-        <div class="video-container">
-            <video autoplay loop playsinline controls>
-                <source src="https://yiyang512.github.io/new/introus.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-        </div>
-
-        <div class="content-grid">
-            <div class="panel">
-                <p class="game-description">
-                    We are a passionate team dedicated to transforming language learning. Our mission is to make learning French accessible, engaging, and effective for everyone, through VR technology and AI.
-                </p>
-
-                <div class="feature-list">
-                    <div class="feature-item">
-                        <div class="feature-icon"></div>
-                        <h3>Our Vision</h3>
-                        <p>Revolutionize language learning with immersive technology</p>
-                    </div>
-                    <div class="feature-item">
-                        <div class="feature-icon"></div>
-                        <h3>Our Mission</h3>
-                        <p>Make learning French accessible and fun for everyone</p>
-                    </div>
-                    <div class="feature-item">
-                        <div class="feature-icon"></div>
-                        <h3>Our Approach</h3>
-                        <p>Combine VR, AI, and innovative pedagogy</p>
-                    </div>
-                    <div class="feature-item">
-                        <div class="feature-icon"></div>
-                        <h3>Our Team</h3>
-                        <p>Experts in education, technology, and design</p>
-                    </div>
-                </div>
+        <div class="hero">
+            <h1>Simple French with Hems</h1>
+            <p>We are a passionate team dedicated to transforming language learning. Our mission is to make learning French accessible, engaging, and effective for everyone, through VR technology and AI.</p>
+            <div class="video-container">
+                <video controls playsinline>
+                    <source src="https://yiyang512.github.io/new/introus.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
             </div>
-
-            <div class="panel">
-                <div class="stats-grid">
-                    <div class="stat-item">
-                        <div class="stat-label">FOUNDED IN</div>
-                        <div class="stat-value">2023</div>
-                    </div>
-
-                    <div class="stat-item">
-                        <div class="stat-label">TEAM</div>
-                        <div class="stat-value">10+ Experts</div>
-                    </div>
-
-                    <div class="stat-item">
-                        <div class="stat-label">LOCATION</div>
-                        <div class="stat-value">Worldwide</div>
-                    </div>
-
-                    <div class="stat-item">
-                        <div class="stat-label">LANGUAGES</div>
-                        <div class="stat-value">French, English</div>
+            
+            <div class="content-grid">
+                <div class="panel">
+                    <div class="feature-list">
+                        <div class="feature-item">
+                            <h3>Our Vision</h3>
+                            <p>Revolutionize language learning with immersive technology</p>
+                        </div>
+                        <div class="feature-item">
+                            <h3>Our Mission</h3>
+                            <p>Make learning French accessible and fun for everyone</p>
+                        </div>
+                        <div class="feature-item">
+                            <h3>Our Approach</h3>
+                            <p>Combine VR, AI, and innovative pedagogy</p>
+                        </div>
+                        <div class="feature-item">
+                            <h3>Our Team</h3>
+                            <p>Experts in education, technology, and design</p>
+                        </div>
                     </div>
                 </div>
 
-                <div class="tags">
-                    <span class="tag">Education</span>
-                    <span class="tag">Innovation</span>
-                    <span class="tag">Technology</span>
-                    <span class="tag">VR</span>
-                    <span class="tag">AI</span>
-                    <span class="tag">French</span>
+                <div class="panel">
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-label">FOUNDED IN</div>
+                            <div class="stat-value">2023</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">TEAM</div>
+                            <div class="stat-value">10+ Experts</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">LOCATION</div>
+                            <div class="stat-value">Worldwide</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">LANGUAGES</div>
+                            <div class="stat-value">French, English</div>
+                        </div>
+                    </div>
+
+                    <div class="tags">
+                        <span class="tag">Education</span>
+                        <span class="tag">Innovation</span>
+                        <span class="tag">Technology</span>
+                        <span class="tag">VR</span>
+                        <span class="tag">AI</span>
+                        <span class="tag">French</span>
+                    </div>
                 </div>
             </div>
         </div>
