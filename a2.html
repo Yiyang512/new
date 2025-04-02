@@ -21,7 +21,7 @@
         }
 
         body {
-            background-color: #001102;
+            background-color: transparent;
             color: var(--text-color);
             overflow-x: hidden;
             position: relative;
@@ -101,8 +101,8 @@
             height: 100%;
             pointer-events: none;
             z-index: -1;
-            background: radial-gradient(circle at center, transparent 30%, rgba(0, 17, 2, 0.8) 70%, #001102 100%);
-            animation: pulse 4s ease-in-out infinite;
+            background: none;
+            animation: none;
         }
 
         .container {
@@ -145,41 +145,171 @@
             margin-right: auto;
             border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 8px 32px rgba(66, 230, 149, 0.2);
             opacity: 0;
             animation: fadeIn 1s forwards 1.2s;
             position: relative;
             cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .video-container:hover {
-            transform: scale(1.02);
-            box-shadow: 0 12px 40px rgba(66, 230, 149, 0.3);
+            transition: transform 0.3s ease;
+            padding: 4px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            z-index: 1;
         }
 
         .video-container::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.6) 100%);
+            inset: -2px;
+            background: linear-gradient(90deg, 
+                var(--primary), 
+                var(--secondary), 
+                #3bb2b8, 
+                #42e695, 
+                var(--primary)
+            );
+            border-radius: 14px;
+            padding: 4px;
+            animation: rotate 4s linear infinite;
+            background-size: 300% 100%;
+            z-index: -1;
+        }
+
+        .video-container::after {
+            content: '';
+            position: absolute;
+            inset: 2px;
+            background: linear-gradient(45deg, 
+                rgba(66, 230, 149, 0.5), 
+                rgba(59, 178, 184, 0.5)
+            );
+            border-radius: 10px;
+            animation: pulseGlow 2s ease-in-out infinite;
+            z-index: 2;
             opacity: 0;
             transition: opacity 0.3s ease;
-            pointer-events: none;
-            z-index: 1;
+            backdrop-filter: blur(5px);
+        }
+
+        .video-container:hover::after {
+            opacity: 1;
+        }
+
+        @keyframes rotate {
+            0% {
+                background-position: 0% 50%;
+            }
+            100% {
+                background-position: 300% 50%;
+            }
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% {
+                opacity: 0;
+                filter: brightness(1) blur(5px);
+            }
+            50% {
+                opacity: 0.3;
+                filter: brightness(1.5) blur(2px);
+            }
+        }
+
+        .video-container:hover {
+            transform: scale(1.02);
         }
 
         .video-container:hover::before {
-            opacity: 1;
+            animation: rotate 2s linear infinite;
         }
 
         .video-container video {
             width: 100%;
             display: block;
             background-color: #000;
+            border-radius: 8px;
+            position: relative;
+            z-index: 3;
+            box-shadow: 0 8px 32px rgba(66, 230, 149, 0.2);
+        }
+
+        /* Add corner decorations */
+        .video-container .corner {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--primary);
+            z-index: 4;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+        }
+
+        .video-container .corner-tl {
+            top: 8px;
+            left: 8px;
+            border-right: 0;
+            border-bottom: 0;
+        }
+
+        .video-container .corner-tr {
+            top: 8px;
+            right: 8px;
+            border-left: 0;
+            border-bottom: 0;
+        }
+
+        .video-container .corner-bl {
+            bottom: 8px;
+            left: 8px;
+            border-right: 0;
+            border-top: 0;
+        }
+
+        .video-container .corner-br {
+            bottom: 8px;
+            right: 8px;
+            border-left: 0;
+            border-top: 0;
+        }
+
+        .video-container:hover .corner {
+            transform: scale(1.2);
+            opacity: 1;
+        }
+
+        /* Add reminder text styles */
+        .video-container .reminder {
+            position: absolute;
+            bottom: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            padding: 12px 24px;
+            border-radius: 20px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 500;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 5;
+            white-space: nowrap;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(66, 230, 149, 0.3);
+            animation: pulseReminder 2s ease-in-out infinite;
+        }
+
+        .video-container:hover .reminder {
+            opacity: 1;
+            bottom: 25%;
+        }
+
+        @keyframes pulseReminder {
+            0%, 100% {
+                transform: translateX(-50%) scale(1);
+                box-shadow: 0 0 20px rgba(66, 230, 149, 0.2);
+            }
+            50% {
+                transform: translateX(-50%) scale(1.05);
+                box-shadow: 0 0 30px rgba(66, 230, 149, 0.4);
+            }
         }
 
         .video-container .play-button {
@@ -251,18 +381,6 @@
             }
         }
 
-        @keyframes pulse {
-            0% {
-                opacity: 0.7;
-            }
-            50% {
-                opacity: 0.9;
-            }
-            100% {
-                opacity: 0.7;
-            }
-        }
-
         @media (max-width: 768px) {
             .hero h1 {
                 font-size: 3rem;
@@ -321,7 +439,12 @@
             <h1>French A2 - Elevate Your French Skills</h1>
             <p>Take your French to the next level with our intermediate A2 course. Perfect for those who have mastered the basics and are ready to enhance their conversational abilities.</p>
             <div class="video-container">
+                <div class="corner corner-tl"></div>
+                <div class="corner corner-tr"></div>
+                <div class="corner corner-bl"></div>
+                <div class="corner corner-br"></div>
                 <div class="play-button"></div>
+                <div class="reminder">Click to view course details</div>
                 <video 
                     controls 
                     preload="metadata"
