@@ -191,7 +191,7 @@
             color: #FFFFFF;
             border-radius: 20px;
             padding: 20px 32px;
-            margin-left: 14px;
+            margin: 2px 0 2px 14px;
             box-shadow: none;
             max-width: 460px;
             border: 1px solid rgba(0, 204, 122, 0.3);
@@ -201,7 +201,9 @@
             animation: fadeInScale 0.5s var(--animation-timing);
             transform-origin: left center;
             position: relative;
-            overflow: hidden;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
         }
         
         .speech-bubble::before {
