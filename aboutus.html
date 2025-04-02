@@ -296,7 +296,17 @@
 
         @media (max-width: 768px) {
             .hero h1 {
-                font-size: 3rem;
+                font-size: 2.5rem;
+                margin-bottom: 1rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+                padding: 0 1rem;
+            }
+
+            .video-container {
+                margin-top: 1.5rem;
             }
 
             .content-grid {
@@ -304,17 +314,46 @@
             }
 
             .container {
-                padding: 1.5rem;
+                padding: 1rem;
+            }
+
+            .tags {
+                margin-top: 1.5rem;
+            }
+
+            .tag {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.8rem;
             }
         }
 
         @media (max-width: 480px) {
             .hero h1 {
-                font-size: 2.25rem;
+                font-size: 2rem;
+                margin-bottom: 0.8rem;
+            }
+
+            .hero p {
+                font-size: 0.9rem;
+                padding: 0 0.5rem;
+            }
+
+            .video-container {
+                margin-top: 1rem;
             }
 
             .container {
-                padding: 1rem;
+                padding: 0.8rem;
+            }
+
+            .tags {
+                margin-top: 1rem;
+                gap: 0.5rem;
+            }
+
+            .tag {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.75rem;
             }
         }
     </style>
@@ -330,58 +369,13 @@
                     Your browser does not support the video tag.
                 </video>
             </div>
-            
-            <div class="content-grid">
-                <div class="panel">
-                    <div class="feature-list">
-                        <div class="feature-item">
-                            <h3>Our Vision</h3>
-                            <p>Revolutionize language learning with immersive technology</p>
-                        </div>
-                        <div class="feature-item">
-                            <h3>Our Mission</h3>
-                            <p>Make learning French accessible and fun for everyone</p>
-                        </div>
-                        <div class="feature-item">
-                            <h3>Our Approach</h3>
-                            <p>Combine VR, AI, and innovative pedagogy</p>
-                        </div>
-                        <div class="feature-item">
-                            <h3>Our Team</h3>
-                            <p>Experts in education, technology, and design</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="panel">
-                    <div class="stats-grid">
-                        <div class="stat-item">
-                            <div class="stat-label">FOUNDED IN</div>
-                            <div class="stat-value">2023</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-label">TEAM</div>
-                            <div class="stat-value">10+ Experts</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-label">LOCATION</div>
-                            <div class="stat-value">Worldwide</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-label">LANGUAGES</div>
-                            <div class="stat-value">French, English</div>
-                        </div>
-                    </div>
-
-                    <div class="tags">
-                        <span class="tag">Education</span>
-                        <span class="tag">Innovation</span>
-                        <span class="tag">Technology</span>
-                        <span class="tag">VR</span>
-                        <span class="tag">AI</span>
-                        <span class="tag">French</span>
-                    </div>
-                </div>
+            <div class="tags" style="margin-top: 2rem; justify-content: center;">
+                <span class="tag">Education</span>
+                <span class="tag">Innovation</span>
+                <span class="tag">Technology</span>
+                <span class="tag">VR</span>
+                <span class="tag">AI</span>
+                <span class="tag">French</span>
             </div>
         </div>
     </div>
