@@ -20,65 +20,96 @@
             font-family: 'Poppins', sans-serif;
         }
 
-        html, body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background-color: #000;
-        }
-
         body {
+            background-color: transparent;
             color: var(--text-color);
+            overflow-x: hidden;
             position: relative;
+            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        /* Background Video */
-        .bg-video {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        .bg-video video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            position: absolute;
-            top: 0;
-            left: 0;
-            opacity: 0.6;
-        }
-
-        /* Dark overlay */
-        .bg-video::after {
+        /* Large dots layer */
+        body::before {
             content: '';
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1;
+            pointer-events: none;
+            z-index: -2;
+            background: 
+                radial-gradient(4px 4px at 20px 30px, var(--primary) 50%, rgba(0,0,0,0)),
+                radial-gradient(4px 4px at 40px 70px, var(--primary) 50%, rgba(0,0,0,0)),
+                radial-gradient(4px 4px at 50px 160px, var(--primary) 50%, rgba(0,0,0,0)),
+                radial-gradient(4px 4px at 90px 40px, var(--primary) 50%, rgba(0,0,0,0)),
+                radial-gradient(4px 4px at 130px 80px, var(--primary) 50%, rgba(0,0,0,0)),
+                radial-gradient(4px 4px at 160px 120px, var(--primary) 50%, rgba(0,0,0,0)),
+                radial-gradient(4px 4px at 200px 150px, var(--primary) 50%, rgba(0,0,0,0)),
+                radial-gradient(4px 4px at 250px 90px, var(--primary) 50%, rgba(0,0,0,0)),
+                radial-gradient(4px 4px at 300px 200px, var(--primary) 50%, rgba(0,0,0,0)),
+                radial-gradient(4px 4px at 350px 120px, var(--primary) 50%, rgba(0,0,0,0)),
+                radial-gradient(4px 4px at 400px 180px, var(--primary) 50%, rgba(0,0,0,0)),
+                radial-gradient(4px 4px at 450px 140px, var(--primary) 50%, rgba(0,0,0,0)),
+                radial-gradient(4px 4px at 500px 160px, var(--primary) 50%, rgba(0,0,0,0)),
+                radial-gradient(4px 4px at 550px 100px, var(--primary) 50%, rgba(0,0,0,0)),
+                radial-gradient(4px 4px at 600px 220px, var(--primary) 50%, rgba(0,0,0,0)),
+                radial-gradient(4px 4px at 650px 70px, var(--primary) 50%, rgba(0,0,0,0));
+            background-repeat: repeat;
+            animation: stars 8s linear infinite;
+            opacity: 0.8;
+            filter: blur(0.2px);
+        }
+
+        /* Small dots layer */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -3;
+            background: 
+                radial-gradient(2px 2px at 150px 50px, var(--primary) 50%, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 200px 120px, var(--primary) 50%, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 250px 80px, var(--primary) 50%, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 300px 160px, var(--primary) 50%, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 350px 90px, var(--primary) 50%, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 400px 140px, var(--primary) 50%, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 450px 70px, var(--primary) 50%, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 500px 130px, var(--primary) 50%, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 550px 180px, var(--primary) 50%, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 600px 100px, var(--primary) 50%, rgba(0,0,0,0));
+            background-repeat: repeat;
+            animation: starsReverse 12s linear infinite;
+            opacity: 0.6;
+            filter: blur(0.1px);
+        }
+
+        /* Vignette overlay */
+        .container::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            background: none;
+            animation: none;
         }
 
         .container {
-            width: 100%;
-            height: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem;
             position: relative;
-            z-index: 2;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
         }
 
         .hero {
@@ -86,30 +117,239 @@
             opacity: 0;
             animation: fadeIn 1s forwards 0.8s;
             position: relative;
-            backdrop-filter: blur(5px);
-            padding: 2rem;
-            width: 100%;
-            max-width: 1200px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 15px;
+            z-index: 1;
         }
 
         .hero h1 {
-            font-size: clamp(2rem, 5vw, 4rem);
+            font-size: 5rem;
             background: linear-gradient(90deg, var(--primary), #3bb2b8);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
             line-height: 1.2;
         }
 
         .hero p {
-            font-size: clamp(1rem, 2vw, 1.3rem);
-            max-width: 800px;
+            font-size: 1.3rem;
+            max-width: 1000px;
             margin: 0 auto;
             line-height: 1.6;
             color: var(--text-color);
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .video-container {
+            margin-top: 3rem;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 12px;
+            overflow: hidden;
+            opacity: 0;
+            animation: fadeIn 1s forwards 1.2s;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            padding: 4px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            z-index: 1;
+        }
+
+        .video-container::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(90deg, 
+                var(--primary), 
+                var(--secondary), 
+                #3bb2b8, 
+                #42e695, 
+                var(--primary)
+            );
+            border-radius: 14px;
+            padding: 4px;
+            animation: rotate 4s linear infinite;
+            background-size: 300% 100%;
+            z-index: -1;
+        }
+
+        .video-container::after {
+            content: '';
+            position: absolute;
+            inset: 2px;
+            background: linear-gradient(45deg, 
+                rgba(66, 230, 149, 0.5), 
+                rgba(59, 178, 184, 0.5)
+            );
+            border-radius: 10px;
+            animation: pulseGlow 2s ease-in-out infinite;
+            z-index: 2;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .video-container:hover::after {
+            opacity: 1;
+        }
+
+        @keyframes rotate {
+            0% {
+                background-position: 0% 50%;
+            }
+            100% {
+                background-position: 300% 50%;
+            }
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% {
+                opacity: 0;
+                filter: brightness(1) blur(5px);
+            }
+            50% {
+                opacity: 0.3;
+                filter: brightness(1.5) blur(2px);
+            }
+        }
+
+        .video-container:hover {
+            transform: scale(1.02);
+        }
+
+        .video-container:hover::before {
+            animation: rotate 2s linear infinite;
+        }
+
+        .video-container video {
+            width: 100%;
+            display: block;
+            background-color: #000;
+            border-radius: 8px;
+            position: relative;
+            z-index: 3;
+            box-shadow: 0 8px 32px rgba(66, 230, 149, 0.2);
+        }
+
+        /* Add corner decorations */
+        .video-container .corner {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--primary);
+            z-index: 4;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+        }
+
+        .video-container .corner-tl {
+            top: 8px;
+            left: 8px;
+            border-right: 0;
+            border-bottom: 0;
+        }
+
+        .video-container .corner-tr {
+            top: 8px;
+            right: 8px;
+            border-left: 0;
+            border-bottom: 0;
+        }
+
+        .video-container .corner-bl {
+            bottom: 8px;
+            left: 8px;
+            border-right: 0;
+            border-top: 0;
+        }
+
+        .video-container .corner-br {
+            bottom: 8px;
+            right: 8px;
+            border-left: 0;
+            border-top: 0;
+        }
+
+        .video-container:hover .corner {
+            transform: scale(1.2);
+            opacity: 1;
+        }
+
+        /* Add reminder text styles */
+        .video-container .reminder {
+            position: absolute;
+            bottom: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            padding: 12px 24px;
+            border-radius: 20px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 500;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 5;
+            white-space: nowrap;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(66, 230, 149, 0.3);
+            animation: pulseReminder 2s ease-in-out infinite;
+        }
+
+        .video-container:hover .reminder {
+            opacity: 1;
+            bottom: 25%;
+        }
+
+        @keyframes pulseReminder {
+            0%, 100% {
+                transform: translateX(-50%) scale(1);
+                box-shadow: 0 0 20px rgba(66, 230, 149, 0.2);
+            }
+            50% {
+                transform: translateX(-50%) scale(1.05);
+                box-shadow: 0 0 30px rgba(66, 230, 149, 0.4);
+            }
+        }
+
+        .video-container .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            width: 80px;
+            height: 80px;
+            background: rgba(66, 230, 149, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 2;
+        }
+
+        .video-container:hover .play-button {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .video-container .play-button::before {
+            content: '';
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 15px 0 15px 25px;
+            border-color: transparent transparent transparent #ffffff;
+            margin-left: 5px;
+        }
+
+        .video-container.playing .play-button {
+            display: none;
+        }
+
+        video::-webkit-media-controls-panel {
+            background: linear-gradient(0deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
         }
 
         @keyframes fadeIn {
@@ -123,43 +363,100 @@
             }
         }
 
+        @keyframes stars {
+            from {
+                transform: translateY(0);
+            }
+            to {
+                transform: translateY(-200px);
+            }
+        }
+
+        @keyframes starsReverse {
+            from {
+                transform: translateY(-200px);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+
         @media (max-width: 768px) {
-            .container {
-                padding: 0.75rem;
+            .hero h1 {
+                font-size: 3rem;
+                margin-bottom: 1.5rem;
             }
 
-            .hero {
+            .hero p {
+                font-size: 0.95rem;
+                padding: 0 1rem;
+                line-height: 1.5;
+            }
+
+            .container {
                 padding: 1.5rem;
+            }
+
+            .video-container {
+                margin-top: 2rem;
+            }
+
+            .video-container .play-button {
+                width: 60px;
+                height: 60px;
+            }
+
+            .video-container .play-button::before {
+                border-width: 12px 0 12px 20px;
+                margin-left: 4px;
             }
         }
 
         @media (max-width: 480px) {
-            .container {
-                padding: 0.5rem;
+            .hero h1 {
+                font-size: 2.25rem;
+                margin-bottom: 1rem;
             }
 
-            .hero {
+            .hero p {
+                font-size: 0.9rem;
+                padding: 0 0.5rem;
+            }
+
+            .container {
                 padding: 1rem;
+            }
+
+            .video-container {
+                margin-top: 1.5rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="bg-video">
-        <video 
-            autoplay 
-            muted 
-            loop 
-            playsinline
-        >
-            <source src="https://yiyang512.github.io/new/b1.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-    </div>
     <div class="container">
         <div class="hero">
             <h1>French B1 - Advance Your French Journey</h1>
             <p>Take your French to the next level with our intermediate B1 course. Perfect for learners ready to engage in complex conversations and express themselves with confidence.</p>
+            <div class="video-container">
+                <div class="corner corner-tl"></div>
+                <div class="corner corner-tr"></div>
+                <div class="corner corner-bl"></div>
+                <div class="corner corner-br"></div>
+                <div class="play-button"></div>
+                <div class="reminder">Click to view course details</div>
+                <video 
+                    controls 
+                    preload="metadata"
+                    playsinline
+                    muted
+                    loop
+                    poster="https://yiyang512.github.io/new/b1.jpg"
+                >
+                    <source src="https://yiyang512.github.io/new/b1.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
         </div>
     </div>
     <script>
