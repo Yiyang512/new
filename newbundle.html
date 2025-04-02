@@ -547,14 +547,12 @@
             transition: all 0.3s ease;
             text-align: center;
             letter-spacing: 0.5px;
-            box-shadow: 0 5px 15px var(--shadow-color);
             font-size: 0.9rem;
         }
 
         .button:hover {
             background-color: var(--hover-color);
             transform: translateY(-3px);
-            box-shadow: 0 8px 20px var(--shadow-color);
         }
 
         .testimonials {
@@ -662,7 +660,6 @@
             opacity: 0;
             transform: translateY(20px);
             animation: fadeInUp 0.8s forwards;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
             position: relative;
             border: 1px solid rgba(66, 230, 149, 0.1);
             backdrop-filter: blur(10px);
@@ -672,12 +669,10 @@
         .pricing-card.popular {
             border: 2px solid var(--primary);
             transform: scale(1.05);
-            box-shadow: 0 25px 50px rgba(66, 230, 149, 0.2);
         }
 
         .pricing-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 30px 60px rgba(66, 230, 149, 0.25);
             border-color: rgba(66, 230, 149, 0.3);
         }
 
@@ -806,23 +801,14 @@
 
         .pricing-card .cta-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(66, 230, 149, 0.4);
         }
 
         .pricing-card .cta-button::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transform: translateX(-100%);
-            transition: transform 0.6s ease;
+            display: none;
         }
 
         .pricing-card .cta-button:hover::after {
-            transform: translateX(100%);
+            display: none;
         }
 
         .testimonials {
@@ -1300,6 +1286,129 @@
             </div>
         </div>
 
+        <h2 class="section-title" id="pricing">Choose Your Learning Path</h2>
+        
+        <div class="pricing">
+            <div class="pricing-card popular">
+                <div class="shimmer"></div>
+                <div class="popular-badge">Most Popular</div>
+                <div class="pricing-header">
+                    <h3>Pay Once - Win Double</h3>
+                    <div class="pricing-original">CAD $1,600</div>
+                    <div class="pricing-price">CAD $999.99</div>
+                    <span class="pricing-save">Save CAD $600</span>
+                </div>
+                <div class="pricing-features">
+                    <div class="pricing-feature">
+                        <i class="fas fa-arrow-right"></i>
+                        <div>Complete A0 to A2 Course Bundle</div>
+                    </div>
+                    <div class="pricing-feature">
+                        <i class="fas fa-arrow-right"></i>
+                        <div>Lifetime access to all 6 products</div>
+                    </div>
+                    <div class="pricing-feature">
+                        <i class="fas fa-arrow-right"></i>
+                        <div>100+ interactive practice dialogues</div>
+                    </div>
+                    <div class="pricing-feature">
+                        <i class="fas fa-arrow-right"></i>
+                        <div>24/7 AI tutor with premium features</div>
+                        <ul>
+                            <li class="feature-detail">Accent analysis</li>
+                            <li class="feature-detail">Personalized study plans</li>
+                            <li class="feature-detail">Progress tracking</li>
+                        </ul>
+                    </div>
+                    <div class="pricing-feature">
+                        <i class="fas fa-arrow-right"></i>
+                        <div>DELF & TEF exam materials</div>
+                        <ul>
+                            <li class="feature-detail">50+ mock exams</li>
+                            <li class="feature-detail">1000+ practice exercises</li>
+                            <li class="feature-detail">Score prediction</li>
+                        </ul>
+                    </div>
+                    <div class="pricing-feature">
+                        <i class="fas fa-arrow-right"></i>
+                        <div>Priority support (24h response)</div>
+                    </div>
+                    <div class="pricing-feature">
+                        <i class="fas fa-arrow-right"></i>
+                        <div>Downloadable study materials</div>
+                    </div>
+
+                    <div class="pricing-feature">
+                        <i class="fas fa-arrow-right"></i>
+                        <div>Community access</div>
+                    </div>
+                    <div class="pricing-feature">
+                        <i class="fas fa-arrow-right"></i>
+                        <div>Free lifetime updates</div>
+                    </div>
+                </div>
+                <a href="https://simplefrenchwithhems.com/order?link=otyDq&pricing_plan=ANzpQyxdBX" target="_blank" class="cta-button" style="width: 100%;">Get Lifetime Access →</a>
+            </div>
+
+            <div class="pricing-card">
+                <div class="shimmer"></div>
+                <div class="pricing-header">
+                    <h3>Victory in Stages</h3>
+                    <div class="pricing-price">CAD $89.99/month</div>
+                    <span>14 Months Journey</span>
+                </div>
+                <div class="pricing-features">
+                    <div class="pricing-feature">
+                        <i class="fas fa-arrow-right"></i>
+                        <div>Flexible Learning Journey</div>
+                    </div>
+                    <div class="pricing-feature">
+                        <i class="fas fa-arrow-right"></i>
+                        <div>Full access to all courses</div>
+                        <ul>
+                            <li class="feature-detail">A0 Fundamentals</li>
+                            <li class="feature-detail">A1 & A2 Mastery</li>
+                            <li class="feature-detail">Vocabulary E-Books</li>
+                        </ul>
+                    </div>
+                    <div class="pricing-feature">
+                        <i class="fas fa-arrow-right"></i>
+                        <div>Interactive dialogues and cultural scenarios</div>
+                    </div>
+                    <div class="pricing-feature">
+                        <i class="fas fa-arrow-right"></i>
+                        <div>AI tutor with basic features</div>
+                        <ul>
+                            <li class="feature-detail">Basic pronunciation feedback</li>
+                            <li class="feature-detail">Weekly progress reports</li>
+                        </ul>
+                    </div>
+                    <div class="pricing-feature">
+                        <i class="fas fa-arrow-right"></i>
+                        <div>DELF & TEF preparation</div>
+                        <ul>
+                            <li class="feature-detail">50+ mock exams</li>
+                            <li class="feature-detail">1000+ practice exercises</li>
+                        </ul>
+                    </div>
+                    <div class="pricing-feature">
+                        <i class="fas fa-arrow-right"></i>
+                        <div>Standard support (48h response)</div>
+                    </div>
+                    <div class="pricing-feature">
+                        <i class="fas fa-arrow-right"></i>
+                        <div>Online study materials</div>
+                    </div>
+                    <div class="pricing-feature">
+                        <i class="fas fa-arrow-right"></i>
+                        <div>Community access</div>
+                    </div>
+                </div>
+
+                <a href="https://simplefrenchwithhems.com/order?link=otyDq&pricing_plan=4lW504qwG3" target="_blank" class="cta-button" style="width: 100%;">Start Now →</a>
+            </div>
+        </div>
+
         <h2 class="section-title">Success Stories</h2>
         
         <div class="success-stories">
@@ -1490,129 +1599,6 @@
                 </ul>
                 <div class="price">$69.99 CAD</div>
                 <a href="https://simplefrenchwithhems.com/b/0q9SR" target="_blank" class="button">Video Courses</a>
-            </div>
-        </div>
-
-        <h2 class="section-title" id="pricing">Choose Your Learning Path</h2>
-        
-        <div class="pricing">
-            <div class="pricing-card popular">
-                <div class="shimmer"></div>
-                <div class="popular-badge">Most Popular</div>
-                <div class="pricing-header">
-                    <h3>Pay Once - Win Double</h3>
-                    <div class="pricing-original">CAD $1,600</div>
-                    <div class="pricing-price">CAD $999.99</div>
-                    <span class="pricing-save">Save CAD $600</span>
-                </div>
-                <div class="pricing-features">
-                    <div class="pricing-feature">
-                        <i class="fas fa-arrow-right"></i>
-                        <div>Complete A0 to A2 Course Bundle</div>
-                    </div>
-                    <div class="pricing-feature">
-                        <i class="fas fa-arrow-right"></i>
-                        <div>Lifetime access to all 6 products</div>
-                    </div>
-                    <div class="pricing-feature">
-                        <i class="fas fa-arrow-right"></i>
-                        <div>100+ interactive practice dialogues</div>
-                    </div>
-                    <div class="pricing-feature">
-                        <i class="fas fa-arrow-right"></i>
-                        <div>24/7 AI tutor with premium features</div>
-                        <ul>
-                            <li class="feature-detail">Accent analysis</li>
-                            <li class="feature-detail">Personalized study plans</li>
-                            <li class="feature-detail">Progress tracking</li>
-                        </ul>
-                    </div>
-                    <div class="pricing-feature">
-                        <i class="fas fa-arrow-right"></i>
-                        <div>DELF & TEF exam materials</div>
-                        <ul>
-                            <li class="feature-detail">50+ mock exams</li>
-                            <li class="feature-detail">1000+ practice exercises</li>
-                            <li class="feature-detail">Score prediction</li>
-                        </ul>
-                    </div>
-                    <div class="pricing-feature">
-                        <i class="fas fa-arrow-right"></i>
-                        <div>Priority support (24h response)</div>
-                    </div>
-                    <div class="pricing-feature">
-                        <i class="fas fa-arrow-right"></i>
-                        <div>Downloadable study materials</div>
-                    </div>
-
-                    <div class="pricing-feature">
-                        <i class="fas fa-arrow-right"></i>
-                        <div>Community access</div>
-                    </div>
-                    <div class="pricing-feature">
-                        <i class="fas fa-arrow-right"></i>
-                        <div>Free lifetime updates</div>
-                    </div>
-                </div>
-                <a href="https://simplefrenchwithhems.com/order?link=otyDq&pricing_plan=ANzpQyxdBX" target="_blank" class="cta-button" style="width: 100%;">Get Lifetime Access →</a>
-            </div>
-
-            <div class="pricing-card">
-                <div class="shimmer"></div>
-                <div class="pricing-header">
-                    <h3>Victory in Stages</h3>
-                    <div class="pricing-price">CAD $89.99/month</div>
-                    <span>14 Months Journey</span>
-                </div>
-                <div class="pricing-features">
-                    <div class="pricing-feature">
-                        <i class="fas fa-arrow-right"></i>
-                        <div>Flexible Learning Journey</div>
-                    </div>
-                    <div class="pricing-feature">
-                        <i class="fas fa-arrow-right"></i>
-                        <div>Full access to all courses</div>
-                        <ul>
-                            <li class="feature-detail">A0 Fundamentals</li>
-                            <li class="feature-detail">A1 & A2 Mastery</li>
-                            <li class="feature-detail">Vocabulary E-Books</li>
-                        </ul>
-                    </div>
-                    <div class="pricing-feature">
-                        <i class="fas fa-arrow-right"></i>
-                        <div>Interactive dialogues and cultural scenarios</div>
-                    </div>
-                    <div class="pricing-feature">
-                        <i class="fas fa-arrow-right"></i>
-                        <div>AI tutor with basic features</div>
-                        <ul>
-                            <li class="feature-detail">Basic pronunciation feedback</li>
-                            <li class="feature-detail">Weekly progress reports</li>
-                        </ul>
-                    </div>
-                    <div class="pricing-feature">
-                        <i class="fas fa-arrow-right"></i>
-                        <div>DELF & TEF preparation</div>
-                        <ul>
-                            <li class="feature-detail">50+ mock exams</li>
-                            <li class="feature-detail">1000+ practice exercises</li>
-                        </ul>
-                    </div>
-                    <div class="pricing-feature">
-                        <i class="fas fa-arrow-right"></i>
-                        <div>Standard support (48h response)</div>
-                    </div>
-                    <div class="pricing-feature">
-                        <i class="fas fa-arrow-right"></i>
-                        <div>Online study materials</div>
-                    </div>
-                    <div class="pricing-feature">
-                        <i class="fas fa-arrow-right"></i>
-                        <div>Community access</div>
-                    </div>
-                </div>
-
-                <a href="https://simplefrenchwithhems.com/order?link=otyDq&pricing_plan=4lW504qwG3" target="_blank" class="cta-button" style="width: 100%;">Start Now →</a>
             </div>
         </div>
     </div>
