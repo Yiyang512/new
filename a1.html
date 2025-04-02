@@ -121,7 +121,7 @@
         }
 
         .hero h1 {
-            font-size: 4rem;
+            font-size: 5rem;
             background: linear-gradient(90deg, var(--primary), #3bb2b8);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -135,6 +135,91 @@
             margin: 0 auto;
             line-height: 1.6;
             color: var(--text-color);
+        }
+
+        .video-container {
+            margin-top: 3rem;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(66, 230, 149, 0.2);
+            opacity: 0;
+            animation: fadeIn 1s forwards 1.2s;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .video-container:hover {
+            transform: scale(1.02);
+            box-shadow: 0 12px 40px rgba(66, 230, 149, 0.3);
+        }
+
+        .video-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.6) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .video-container:hover::before {
+            opacity: 1;
+        }
+
+        .video-container video {
+            width: 100%;
+            display: block;
+            background-color: #000;
+        }
+
+        .video-container .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            width: 80px;
+            height: 80px;
+            background: rgba(66, 230, 149, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 2;
+        }
+
+        .video-container:hover .play-button {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .video-container .play-button::before {
+            content: '';
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 15px 0 15px 25px;
+            border-color: transparent transparent transparent #ffffff;
+            margin-left: 5px;
+        }
+
+        .video-container.playing .play-button {
+            display: none;
+        }
+
+        video::-webkit-media-controls-panel {
+            background: linear-gradient(0deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
         }
 
         @keyframes fadeIn {
@@ -180,12 +265,52 @@
 
         @media (max-width: 768px) {
             .hero h1 {
-                font-size: 2.5rem;
+                font-size: 3rem;
+                margin-bottom: 1.5rem;
             }
 
             .hero p {
-                font-size: 1.1rem;
+                font-size: 0.95rem;
                 padding: 0 1rem;
+                line-height: 1.5;
+            }
+
+            .container {
+                padding: 1.5rem;
+            }
+
+            .video-container {
+                margin-top: 2rem;
+            }
+
+            .video-container .play-button {
+                width: 60px;
+                height: 60px;
+            }
+
+            .video-container .play-button::before {
+                border-width: 12px 0 12px 20px;
+                margin-left: 4px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2.25rem;
+                margin-bottom: 1rem;
+            }
+
+            .hero p {
+                font-size: 0.9rem;
+                padding: 0 0.5rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .video-container {
+                margin-top: 1.5rem;
             }
         }
     </style>
@@ -195,6 +320,19 @@
         <div class="hero">
             <h1>French A1 - Your Gateway to French Fluency</h1>
             <p>Master elementary French with our comprehensive A1 course. Perfect for beginners aiming to build a strong foundation in French language skills.</p>
+            <div class="video-container">
+                <div class="play-button"></div>
+                <video 
+                    controls 
+                    preload="metadata"
+                    playsinline
+                    muted
+                    loop
+                >
+                    <source src="https://yiyang512.github.io/new/a1.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
         </div>
     </div>
 </body>
