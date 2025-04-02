@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A1 Course Component Summary</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+        :root {
+            --primary-green: #00FF9B;
+            --container-bg: rgba(0, 17, 2, 0.7);
+            --text-color: #00FF9B;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: transparent;
+            position: relative;
+            overflow-x: hidden;
+            color: var(--text-color);
+            padding: 1rem 0.5rem;
+        }
+
+        .title {
+            text-align: center;
+            margin-bottom: 1rem;
+            font-size: 1.75rem;
+            font-weight: 600;
+            background: linear-gradient(to right, var(--primary-green), #4dffc3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 900px;
+            background: var(--container-bg);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 255, 155, 0.1);
+            padding: 1.25rem;
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 255, 155, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: transparent;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(0, 255, 155, 0.1);
+        }
+
+        th {
+            background-color: rgba(0, 255, 155, 0.1);
+            font-weight: 600;
+            color: var(--primary-green);
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            color: var(--text-color);
+        }
+
+        tr:hover {
+            background-color: rgba(0, 255, 155, 0.05);
+        }
+
+        /* Animated background dots */
+        .dots {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .dot {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: var(--primary-green);
+            border-radius: 50%;
+            animation: float 6s infinite;
+            opacity: 0.2;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 0.2;
+            }
+            50% {
+                transform: translateY(-100px) scale(1.5);
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-200px) scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .title {
+                font-size: 1.5rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .container {
+                width: 98%;
+                padding: 0.75rem;
+            }
+
+            th, td {
+                padding: 0.6rem;
+                font-size: 0.85rem;
+            }
+
+            th {
+                font-size: 0.75rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .title {
+                font-size: 1.25rem;
+            }
+
+            .container {
+                padding: 0.5rem;
+            }
+
+            th, td {
+                padding: 0.5rem 0.4rem;
+                font-size: 0.8rem;
+            }
+
+            th {
+                font-size: 0.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated dots background -->
+    <div class="dots" id="dots"></div>
+
+    <h1 class="title">Detailed A1 Course Component Summary</h1>
+
+    <div class="container">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Category</th>
+                    <th>Count</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Grammar Videos</td>
+                    <td>55</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Exercises (Grammar & Vocabulary)</td>
+                    <td>67</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Vocabulary Quizzes</td>
+                    <td>5</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>Listening Tests - Main</td>
+                    <td>4</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>Listening Tests - B Versions</td>
+                    <td>4</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>Reading Tests - Main</td>
+                    <td>4</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>Reading Tests - B Versions</td>
+                    <td>4</td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td>Writing Tests - Main</td>
+                    <td>4</td>
+                </tr>
+                <tr>
+                    <td>9</td>
+                    <td>Writing Tests - B Versions</td>
+                    <td>4</td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td>Writing Sample Answers</td>
+                    <td>7</td>
+                </tr>
+                <tr>
+                    <td>11</td>
+                    <td>Speaking Tests - Main</td>
+                    <td>3</td>
+                </tr>
+                <tr>
+                    <td>12</td>
+                    <td>Speaking Tests - B Versions</td>
+                    <td>3</td>
+                </tr>
+                <tr>
+                    <td>13</td>
+                    <td>Speaking Sample Animations</td>
+                    <td>6</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Create animated dots
+        function createDots() {
+            const dotsContainer = document.getElementById('dots');
+            const numberOfDots = 50;
+
+            for (let i = 0; i < numberOfDots; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'dot';
+                dot.style.left = `${Math.random() * 100}%`;
+                dot.style.animationDelay = `${Math.random() * 5}s`;
+                dotsContainer.appendChild(dot);
+            }
+        }
+
+        // Initialize dots on page load
+        window.addEventListener('load', createDots);
+    </script>
+</body>
+</html> 
