@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testimonials and Results</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #42e695;
+            --secondary: #3bb2b8;
+            --dark-bg: #0a1e1c;
+            --text-color: #ffffff;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --card-border: rgba(66, 230, 149, 0.1);
+            --card-shadow: rgba(66, 230, 149, 0.1);
+            --hover-shadow: rgba(66, 230, 149, 0.2);
+            --modal-bg: rgba(10, 30, 28, 0.95);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            background-color: transparent;
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            position: relative;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 4.5rem;
+            font-weight: 600;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+
+        .section-description {
+            text-align: center;
+            max-width: 800px;
+            margin: -2rem auto 3rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.4rem;
+            line-height: 1.8;
+        }
+
+        .results-grid, .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+            perspective: 1000px;
+        }
+
+        .result-card, .testimonial-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px var(--card-shadow);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            border: 1px solid var(--card-border);
+            position: relative;
+            transform-style: preserve-3d;
+            will-change: transform;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .result-card::before, .testimonial-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                45deg,
+                transparent,
+                rgba(66, 230, 149, 0.1),
+                transparent
+            );
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .result-card:hover, .testimonial-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px var(--hover-shadow);
+            border-color: rgba(66, 230, 149, 0.3);
+        }
+
+        .result-card:hover::before, .testimonial-card:hover::before {
+            opacity: 1;
+        }
+
+        .result-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform;
+        }
+
+        .result-card:hover img {
+            transform: scale(1.02);
+        }
+
+        .result-card .card-content {
+            padding: 1.2rem;
+            background: var(--card-bg);
+            color: var(--text-color);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-top: 1px solid var(--card-border);
+        }
+
+        .result-card:hover .card-content {
+            background: rgba(66, 230, 149, 0.05);
+        }
+
+        .result-card .score {
+            color: var(--primary);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            margin: 3rem 0 2rem;
+            color: var(--primary);
+            font-size: 2.2rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .section-subtitle::before,
+        .section-subtitle::after {
+            content: '';
+            height: 2px;
+            width: 50px;
+            background: linear-gradient(90deg, transparent, var(--primary));
+            border-radius: 1px;
+        }
+
+        .section-subtitle::after {
+            background: linear-gradient(90deg, var(--primary), transparent);
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--modal-bg);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(8px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90vh;
+            position: relative;
+            transform: scale(0.95);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-content img {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transform: scale(1.2);
+            transition: transform 0.3s ease;
+        }
+
+        .modal.active .modal-content img {
+            transform: scale(1.5);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            color: var(--text-color);
+            font-size: 35px;
+            cursor: pointer;
+            background: rgba(66, 230, 149, 0.1);
+            border: 1px solid rgba(66, 230, 149, 0.2);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            padding: 0;
+            line-height: 1;
+        }
+
+        .close-modal:hover {
+            color: var(--primary);
+            background: rgba(66, 230, 149, 0.2);
+            transform: rotate(90deg);
+        }
+
+        /* Loading animation */
+        .loading-spinner {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(66, 230, 149, 0.1);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* Background dots animation */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            background: 
+                radial-gradient(4px 4px at 20px 30px, var(--primary) 50%, rgba(0,0,0,0)),
+                radial-gradient(4px 4px at 40px 70px, var(--primary) 50%, rgba(0,0,0,0)),
+                radial-gradient(4px 4px at 50px 160px, var(--primary) 50%, rgba(0,0,0,0)),
+                radial-gradient(4px 4px at 80px 120px, var(--primary) 50%, rgba(0,0,0,0)),
+                radial-gradient(4px 4px at 110px 50px, var(--primary) 50%, rgba(0,0,0,0)),
+                radial-gradient(4px 4px at 140px 180px, var(--primary) 50%, rgba(0,0,0,0));
+            background-repeat: repeat;
+            animation: stars 15s linear infinite;
+            opacity: 0.1;
+            filter: blur(0.2px);
+        }
+
+        @keyframes stars {
+            from { transform: translateY(0); }
+            to { transform: translateY(-100px); }
+        }
+
+        /* Card count badges */
+        .grid-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .count-badge {
+            background: rgba(66, 230, 149, 0.1);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: var(--primary);
+            border: 1px solid rgba(66, 230, 149, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .updating-dot {
+            width: 6px;
+            height: 6px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            display: inline-block;
+            animation: pulse 2s infinite;
+        }
+
+        .updating-text {
+            font-size: 0.8rem;
+            opacity: 0.9;
+            color: var(--primary);
+            margin-left: 0.5rem;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.5);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Specific styles for testimonials grid on larger screens */
+        @media (min-width: 1024px) {
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+                max-width: 100%;
+                margin-left: 0;
+                margin-right: 0;
+            }
+
+            .testimonial-card img {
+                width: 100%;
+                height: auto;
+                object-fit: cover;
+            }
+
+            .section-title {
+                font-size: 4rem;
+            }
+
+            .section-subtitle {
+                font-size: 2.5rem;
+            }
+        }
+
+        /* Adjust medium screens */
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+                max-width: 100%;
+                margin-left: 0;
+                margin-right: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 2rem 1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .section-description {
+                font-size: 1rem;
+                padding: 0 1rem;
+            }
+
+            .results-grid, .testimonials-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .modal-content {
+                width: 95%;
+            }
+
+            .close-modal {
+                top: -45px;
+                right: 0;
+            }
+
+            .section-subtitle {
+                font-size: 1.5rem;
+            }
+
+            .section-subtitle::before,
+            .section-subtitle::after {
+                width: 30px;
+            }
+
+            .result-card .card-content {
+                opacity: 1;
+                transform: translateY(0);
+                font-size: 0.85rem;
+                padding: 0.8rem;
+            }
+
+            .testimonial-card {
+                aspect-ratio: auto;
+            }
+        }
+
+        /* Click reminder styles */
+        .testimonial-card::after {
+            content: '';
+        }
+
+        .testimonial-card:hover::after {
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-title">Our Success Stories</h1>
+        <p class="section-description">Discover how our students have achieved their French language goals through dedication and our comprehensive learning approach.</p>
+        
+        <h2 class="section-subtitle">TEF Test Results</h2>
+        <div class="grid-header">
+            <span class="count-badge">
+                9 Success Stories
+                <span class="updating-dot"></span>
+                <span class="updating-text">Updated Regularly</span>
+            </span>
+        </div>
+        <div class="results-grid">
+            <div class="result-card">
+                <img src="https://yiyang512.github.io/new/tef1.jpg" alt="TEF Test Result 1">
+                <div class="card-content">
+                    <div class="score">Score: B2-C1</div>
+                    Achieved B2 level in just 3 months through intensive study and dedication.
+                </div>
+            </div>
+            <div class="result-card">
+                <img src="https://yiyang512.github.io/new/tef2.jpg" alt="TEF Test Result 2">
+                <div class="card-content">
+                    <div class="score">Score: C1</div>
+                    WOW! From beginner to C1 in 6 months, perfect for immigration requirements!!
+                </div>
+            </div>
+            <div class="result-card">
+                <img src="https://yiyang512.github.io/new/tef3.jpg" alt="TEF Test Result 3">
+                <div class="card-content">
+                    <div class="score">Score: B1</div>
+                    Exceeded immigration requirements with strong speaking and listening scores.
+                </div>
+            </div>
+            <div class="result-card">
+                <img src="https://yiyang512.github.io/new/tef4.jpg" alt="TEF Test Result 4">
+                <div class="card-content">
+                    <div class="score">Score: B2-C1</div>
+                    Balanced performance across all skills, especially strong in comprehension.
+                </div>
+            </div>
+            <div class="result-card">
+                <img src="https://yiyang512.github.io/new/tef5.jpg" alt="TEF Test Result 5">
+                <div class="card-content">
+                    <div class="score">Score: B1-B2</div>
+                    Outstanding progress in written expression and comprehension.
+                </div>
+            </div>
+            <div class="result-card">
+                <img src="https://yiyang512.github.io/new/tef6.jpg" alt="TEF Test Result 6">
+                <div class="card-content">
+                    <div class="score">Score: B2</div>
+                    Exceptional improvement in speaking skills after focused practice.
+                </div>
+            </div>
+            <div class="result-card">
+                <img src="https://yiyang512.github.io/new/tef7.jpg" alt="TEF Test Result 7">
+                <div class="card-content">
+                    <div class="score">Score: B2-C1</div>
+                    Achieved target score with excellent oral comprehension results.
+                </div>
+            </div>
+            <div class="result-card">
+                <img src="https://yiyang512.github.io/new/tef9.jpg" alt="TEF Test Result 9">
+                <div class="card-content">
+                    <div class="score">Score: A2-B1</div>
+                    Remarkable progress in written expression and comprehension skills.
+                </div>
+            </div>
+            <div class="result-card">
+                <img src="https://yiyang512.github.io/new/tef10.jpg" alt="TEF Test Result 10">
+                <div class="card-content">
+                    <div class="score">Score: B1</div>
+                    Successfully achieved B1 level with consistent performance across all areas.
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-subtitle">Student Reviews</h2>
+        <div class="grid-header">
+            <span class="count-badge">
+                6 Testimonials
+                <span class="updating-dot"></span>
+                <span class="updating-text">Reviews Added Regularly</span>
+            </span>
+        </div>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <img src="https://yiyang512.github.io/new/re1.png" alt="Student Review 1">
+            </div>
+            <div class="testimonial-card">
+                <img src="https://yiyang512.github.io/new/re2.png" alt="Student Review 2">
+            </div>
+            <div class="testimonial-card">
+                <img src="https://yiyang512.github.io/new/re3.png" alt="Student Review 3">
+            </div>
+            <div class="testimonial-card">
+                <img src="https://yiyang512.github.io/new/re4.png" alt="Student Review 4">
+            </div>
+            <div class="testimonial-card">
+                <img src="https://yiyang512.github.io/new/re5.png" alt="Student Review 5">
+            </div>
+            <div class="testimonial-card">
+                <img src="https://yiyang512.github.io/new/re6.png" alt="Student Review 6">
+            </div>
+        </div>
+    </div>
+
+    <footer style="text-align: center; padding: 1rem; background-color: var(--dark-bg); color: var(--text-color); font-size: 0.9rem;">
+        © All images are the property of Simple French with Hems and are credited to our students. Unauthorized use or reproduction is prohibited and may result in legal action.
+    </footer>
+
+    <!-- Modal for image zoom -->
+    <div class="modal" id="imageModal">
+        <div class="modal-content">
+            <button class="close-modal">&times;</button>
+            <div class="loading-spinner"></div>
+            <img id="modalImage" src="" alt="Zoomed image">
+        </div>
+    </div>
+
+    <script>
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        const closeBtn = document.querySelector('.close-modal');
+        const spinner = document.querySelector('.loading-spinner');
+
+        // Handle TEF Test Results images
+        const resultImages = document.querySelectorAll('.result-card img');
+        resultImages.forEach(img => {
+            img.addEventListener('click', () => {
+                modal.classList.add('active');
+                spinner.style.display = 'block';
+                modalImg.style.opacity = '0';
+                modalImg.src = img.src;
+            });
+        });
+
+        // Handle Student Reviews images
+        const reviewImages = document.querySelectorAll('.testimonial-card img');
+        reviewImages.forEach(img => {
+            img.addEventListener('click', () => {
+                modal.classList.add('active');
+                spinner.style.display = 'block';
+                modalImg.style.opacity = '0';
+                modalImg.src = img.src;
+            });
+        });
+
+        modalImg.addEventListener('load', () => {
+            spinner.style.display = 'none';
+            modalImg.style.opacity = '1';
+            modalImg.style.transition = 'opacity 0.3s ease';
+        });
+
+        closeBtn.addEventListener('click', () => {
+            modal.classList.remove('active');
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                modal.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html> 
