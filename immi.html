@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Immigration & French - Simple French with Hems</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #42e695;
+            --secondary: #3bb2b8;
+            --dark-bg: #0a1e1c;
+            --text-color: #ffffff;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --card-border: rgba(66, 230, 149, 0.1);
+            --card-shadow: rgba(66, 230, 149, 0.1);
+            --hover-shadow: rgba(66, 230, 149, 0.2);
+            --modal-bg: rgba(10, 30, 28, 0.95);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            background-color: transparent;
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(66, 230, 149, 0.1), rgba(59, 178, 184, 0.1));
+            border-radius: 20px;
+            border: 1px solid var(--card-border);
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+        }
+
+        .section {
+            margin-bottom: 4rem;
+            padding: 2rem;
+            background: var(--card-bg);
+            border-radius: 15px;
+            border: 1px solid var(--card-border);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid var(--card-border);
+            transition: all 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px var(--hover-shadow);
+        }
+
+        .info-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .info-card p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 1rem;
+        }
+
+        .calculator {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid var(--card-border);
+            margin-top: 2rem;
+        }
+
+        .calculator h3 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        .form-group select,
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+
+        .result {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(66, 230, 149, 0.1);
+            border-radius: 10px;
+            border: 1px solid var(--primary);
+        }
+
+        .result h4 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .result p {
+            font-size: 1.2rem;
+            color: var(--text-color);
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: var(--dark-bg);
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px var(--hover-shadow);
+        }
+
+        .resources-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .resources-list li {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border: 1px solid var(--card-border);
+        }
+
+        .resources-list a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .resources-list a:hover {
+            color: var(--secondary);
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .container {
+                padding: 1.5rem 1rem;
+            }
+
+            .section {
+                padding: 1.5rem;
+                margin-bottom: 2rem;
+            }
+
+            .info-card {
+                padding: 1.2rem;
+            }
+
+            .info-card h3 {
+                font-size: 1.2rem;
+                margin-bottom: 0.8rem;
+            }
+
+            .info-card p {
+                font-size: 0.9rem;
+                margin-bottom: 0.8rem;
+            }
+
+            .calculator {
+                padding: 1.2rem;
+            }
+
+            .calculator h3 {
+                font-size: 1.2rem;
+                margin-bottom: 1rem;
+            }
+
+            .form-group {
+                margin-bottom: 1rem;
+            }
+
+            .form-group label {
+                font-size: 0.9rem;
+                margin-bottom: 0.3rem;
+            }
+
+            .form-group select,
+            .form-group input {
+                padding: 0.6rem;
+                font-size: 0.9rem;
+            }
+
+            .cta-button {
+                padding: 0.8rem 1.5rem;
+                font-size: 0.9rem;
+            }
+
+            .result {
+                padding: 1rem;
+                margin-top: 1.5rem;
+            }
+
+            .result h4 {
+                font-size: 1.1rem;
+                margin-bottom: 0.8rem;
+            }
+
+            .result p {
+                font-size: 1rem;
+            }
+
+            .resources-list li {
+                padding: 0.8rem;
+                margin-bottom: 0.8rem;
+            }
+
+            .resources-list a {
+                font-size: 0.9rem;
+            }
+
+            .info-grid {
+                gap: 1rem;
+            }
+
+            ul {
+                font-size: 0.9rem;
+            }
+
+            li {
+                margin-bottom: 0.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 1.8rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+
+            .section-title {
+                font-size: 1.3rem;
+            }
+
+            .info-card {
+                padding: 1rem;
+            }
+
+            .info-card h3 {
+                font-size: 1.1rem;
+            }
+
+            .info-card p {
+                font-size: 0.85rem;
+            }
+
+            .calculator {
+                padding: 1rem;
+            }
+
+            .calculator h3 {
+                font-size: 1.1rem;
+            }
+
+            .form-group label {
+                font-size: 0.85rem;
+            }
+
+            .form-group select,
+            .form-group input {
+                padding: 0.5rem;
+                font-size: 0.85rem;
+            }
+
+            .cta-button {
+                padding: 0.7rem 1.2rem;
+                font-size: 0.85rem;
+            }
+
+            .result h4 {
+                font-size: 1rem;
+            }
+
+            .result p {
+                font-size: 0.9rem;
+            }
+
+            .resources-list li {
+                padding: 0.7rem;
+            }
+
+            .resources-list a {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hero-section">
+            <h1 class="hero-title">French Language & Canadian Immigration</h1>
+            <p class="hero-subtitle">Your Pathway to Success in Canada</p>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Why French Matters for Immigration</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>Express Entry Advantage</h3>
+                    <p>French language skills can significantly boost your Comprehensive Ranking System (CRS) score, increasing your chances of receiving an Invitation to Apply (ITA).</p>
+                </div>
+                <div class="info-card">
+                    <h3>Bilingual Bonus Points</h3>
+                    <p>Demonstrating proficiency in both English and French can earn you up to 50 additional CRS points, giving you a competitive edge in the Express Entry pool.</p>
+                </div>
+                <div class="info-card">
+                    <h3>Provincial Nomination Programs</h3>
+                    <p>Many provinces, especially Quebec, prioritize candidates with French language skills, offering additional pathways to permanent residence.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">TEF/TCF Requirements</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>TEF Canada</h3>
+                    <p>The Test d'Évaluation de Français (TEF) is the official French language test for Canadian immigration. It assesses reading, writing, listening, and speaking skills.</p>
+                </div>
+                <div class="info-card">
+                    <h3>TCF Canada</h3>
+                    <p>The Test de Connaissance du Français (TCF) is another accepted French language test for Canadian immigration purposes.</p>
+                </div>
+                <div class="info-card">
+                    <h3>Minimum Requirements</h3>
+                    <p>For Express Entry, you need at least CLB 7 (NCLC 7) in French to be eligible. Higher scores can significantly increase your CRS points.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">CRS Points Calculator</h2>
+            <div class="calculator">
+                <h3>Calculate Your Potential CRS Points</h3>
+                <div class="form-group">
+                    <label for="french-level">French Language Level (CLB/NCLC)</label>
+                    <select id="french-level">
+                        <option value="0">Select Level</option>
+                        <option value="4">CLB 4</option>
+                        <option value="5">CLB 5</option>
+                        <option value="6">CLB 6</option>
+                        <option value="7">CLB 7</option>
+                        <option value="8">CLB 8</option>
+                        <option value="9">CLB 9</option>
+                        <option value="10">CLB 10</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="english-level">English Language Level (CLB)</label>
+                    <select id="english-level">
+                        <option value="0">Select Level</option>
+                        <option value="4">CLB 4</option>
+                        <option value="5">CLB 5</option>
+                        <option value="6">CLB 6</option>
+                        <option value="7">CLB 7</option>
+                        <option value="8">CLB 8</option>
+                        <option value="9">CLB 9</option>
+                        <option value="10">CLB 10</option>
+                    </select>
+                </div>
+                <button class="cta-button" onclick="calculatePoints()">Calculate Points</button>
+                <div class="result" id="result" style="display: none;">
+                    <h4>Your Estimated CRS Points</h4>
+                    <p id="points-result">0 points</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Detailed CRS Points Breakdown</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>Core Points</h3>
+                    <ul style="color: rgba(255, 255, 255, 0.8); list-style-type: none;">
+                        <li>• Age (up to 100 points)</li>
+                        <li>• Education (up to 150 points)</li>
+                        <li>• Work Experience (up to 80 points)</li>
+                        <li>• Language Skills (up to 160 points)</li>
+                    </ul>
+                </div>
+                <div class="info-card">
+                    <h3>Additional Points</h3>
+                    <ul style="color: rgba(255, 255, 255, 0.8); list-style-type: none;">
+                        <li>• French Language Skills (up to 50 points)</li>
+                        <li>• Bilingual Bonus (50 points)</li>
+                        <li>• Canadian Education (up to 30 points)</li>
+                        <li>• Canadian Work Experience (up to 50 points)</li>
+                    </ul>
+                </div>
+                <div class="info-card">
+                    <h3>Transferability Points</h3>
+                    <ul style="color: rgba(255, 255, 255, 0.8); list-style-type: none;">
+                        <li>• Education + Language (up to 50 points)</li>
+                        <li>• Education + Work (up to 50 points)</li>
+                        <li>• Foreign Work + Language (up to 50 points)</li>
+                        <li>• Canadian Work + Language (up to 50 points)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Quebec Immigration Programs</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>Quebec Skilled Worker Program</h3>
+                    <p>The QSWP is a points-based system that prioritizes French language skills. Minimum French level B2 is required for principal applicants.</p>
+                    <ul style="color: rgba(255, 255, 255, 0.8); margin-top: 1rem; list-style-type: none;">
+                        <li>• Points for French proficiency</li>
+                        <li>• Points for education</li>
+                        <li>• Points for work experience</li>
+                        <li>• Points for age and adaptability</li>
+                    </ul>
+                </div>
+                <div class="info-card">
+                    <h3>Quebec Experience Program</h3>
+                    <p>For temporary workers and international students in Quebec. French language proficiency is a key requirement.</p>
+                    <ul style="color: rgba(255, 255, 255, 0.8); margin-top: 1rem; list-style-type: none;">
+                        <li>• Must have intermediate French</li>
+                        <li>• Work or study experience in Quebec</li>
+                        <li>• Valid job offer (for workers)</li>
+                        <li>• Quebec diploma (for students)</li>
+                    </ul>
+                </div>
+                <div class="info-card">
+                    <h3>Quebec Business Immigration</h3>
+                    <p>For entrepreneurs, investors, and self-employed individuals. French language requirements vary by program.</p>
+                    <ul style="color: rgba(255, 255, 255, 0.8); margin-top: 1rem; list-style-type: none;">
+                        <li>• Investor Program</li>
+                        <li>• Entrepreneur Program</li>
+                        <li>• Self-Employed Program</li>
+                        <li>• Start-up Visa Program</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Language Test Comparison</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>TEF Canada</h3>
+                    <ul style="color: rgba(255, 255, 255, 0.8); list-style-type: none;">
+                        <li>• Reading: 60 minutes</li>
+                        <li>• Listening: 40 minutes</li>
+                        <li>• Writing: 60 minutes</li>
+                        <li>• Speaking: 15 minutes</li>
+                        <li>• Cost: ~$400 CAD</li>
+                        <li>• Validity: 2 years</li>
+                    </ul>
+                </div>
+                <div class="info-card">
+                    <h3>TCF Canada</h3>
+                    <ul style="color: rgba(255, 255, 255, 0.8); list-style-type: none;">
+                        <li>• Reading: 60 minutes</li>
+                        <li>• Listening: 35 minutes</li>
+                        <li>• Writing: 60 minutes</li>
+                        <li>• Speaking: 12 minutes</li>
+                        <li>• Cost: ~$350 CAD</li>
+                        <li>• Validity: 2 years</li>
+                    </ul>
+                </div>
+                <div class="info-card">
+                    <h3>Test Preparation</h3>
+                    <ul style="color: rgba(255, 255, 255, 0.8); list-style-type: none;">
+                        <li>• Official practice materials</li>
+                        <li>• Sample test questions</li>
+                        <li>• Test format guides</li>
+                        <li>• Scoring system explanation</li>
+                        <li>• Test center locations</li>
+                        <li>• Registration process</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Success Stories</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>Express Entry Success</h3>
+                    <p>"Achieved CLB 9 in French and received ITA within 2 months. The bilingual bonus was crucial for my application."</p>
+                    <p style="color: var(--primary); margin-top: 1rem;">- Sarah K., PR since 2022</p>
+                </div>
+                <div class="info-card">
+                    <h3>Quebec Immigration</h3>
+                    <p>"French language skills helped me qualify for the Quebec Experience Program. Now working in Montreal."</p>
+                    <p style="color: var(--primary); margin-top: 1rem;">- Miguel R., PR since 2023</p>
+                </div>
+                <div class="info-card">
+                    <h3>Provincial Nomination</h3>
+                    <p>"Received Ontario nomination thanks to my French skills. The additional points made all the difference."</p>
+                    <p style="color: var(--primary); margin-top: 1rem;">- Aisha M., PR since 2021</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Comprehensive Resources</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>Official Government Resources</h3>
+                    <ul class="resources-list">
+                        <li>
+                            <a href="https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/works.html" target="_blank">
+                                How Express Entry Works
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/eligibility/federal-skilled-workers.html" target="_blank">
+                                Federal Skilled Worker Program
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.immigration-quebec.gouv.qc.ca/en/immigrate-settle/permanent-workers/index.html" target="_blank">
+                                Quebec Immigration Programs
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="info-card">
+                    <h3>Language Test Resources</h3>
+                    <ul class="resources-list">
+                        <li>
+                            <a href="https://www.france-education-international.fr/en/tef-canada" target="_blank">
+                                TEF Canada Official Site
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.france-education-international.fr/en/tcf-canada" target="_blank">
+                                TCF Canada Official Site
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/documents/language-requirements/language-testing.html" target="_blank">
+                                Language Test Requirements
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="info-card">
+                    <h3>Additional Support</h3>
+                    <ul class="resources-list">
+                        <li>
+                            <a href="https://www.canada.ca/en/immigration-refugees-citizenship/services/new-immigrants/new-life-canada/prepare-life-canada.html" target="_blank">
+                                Prepare for Life in Canada
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.canada.ca/en/immigration-refugees-citizenship/services/new-immigrants/new-life-canada/prepare-life-canada.html" target="_blank">
+                                Settlement Services
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/works.html" target="_blank">
+                                Express Entry Step-by-Step Guide
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculatePoints() {
+            const frenchLevel = parseInt(document.getElementById('french-level').value);
+            const englishLevel = parseInt(document.getElementById('english-level').value);
+            let points = 0;
+
+            // Calculate French points
+            if (frenchLevel >= 7) {
+                points += 25; // Base points for CLB 7
+                if (frenchLevel >= 9) {
+                    points += 25; // Additional points for CLB 9+
+                }
+            }
+
+            // Calculate bilingual bonus
+            if (frenchLevel >= 7 && englishLevel >= 5) {
+                points += 50; // Bilingual bonus
+            }
+
+            // Show result
+            const resultDiv = document.getElementById('result');
+            const pointsResult = document.getElementById('points-result');
+            pointsResult.textContent = points + ' points';
+            resultDiv.style.display = 'block';
+        }
+    </script>
+</body>
+</html> 
