@@ -1,0 +1,1866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>French Glossary & Dictionary - Simple French with Hems</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #42e695;
+            --secondary: #3bb2b8;
+            --dark-bg: #0a1e1c;
+            --text-color: #ffffff;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --card-border: rgba(66, 230, 149, 0.1);
+            --card-shadow: rgba(66, 230, 149, 0.1);
+            --hover-shadow: rgba(66, 230, 149, 0.2);
+            --modal-bg: rgba(10, 30, 28, 0.95);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            background-color: transparent;
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(66, 230, 149, 0.1), rgba(59, 178, 184, 0.1));
+            border-radius: 20px;
+            border: 1px solid var(--card-border);
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+        }
+
+        .search-section {
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: var(--card-bg);
+            border-radius: 15px;
+            border: 1px solid var(--card-border);
+        }
+
+        .search-container {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+
+        .search-button {
+            padding: 1rem 2rem;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: var(--dark-bg);
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .search-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px var(--hover-shadow);
+        }
+
+        .alphabet-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .alphabet-link {
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--card-border);
+            border-radius: 5px;
+            color: var(--text-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .alphabet-link:hover {
+            background: var(--primary);
+            color: var(--dark-bg);
+        }
+
+        .glossary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .glossary-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border: 1px solid var(--card-border);
+            transition: all 0.3s ease;
+        }
+
+        .glossary-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px var(--hover-shadow);
+        }
+
+        .glossary-term {
+            color: var(--primary);
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .glossary-phonetic {
+            color: rgba(255, 255, 255, 0.6);
+            font-style: italic;
+            margin-bottom: 1rem;
+        }
+
+        .glossary-definition {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 1rem;
+        }
+
+        .glossary-example {
+            color: var(--secondary);
+            font-style: italic;
+            padding-left: 1rem;
+            border-left: 2px solid var(--secondary);
+            margin-bottom: 1rem;
+        }
+
+        .glossary-category {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background: rgba(66, 230, 149, 0.1);
+            border-radius: 15px;
+            color: var(--primary);
+            font-size: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        .category-section {
+            margin-bottom: 4rem;
+        }
+
+        .category-title {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--card-border);
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 1.5rem;
+                margin-bottom: 0.3rem;
+            }
+
+            .hero-subtitle {
+                font-size: 0.9rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .container {
+                padding: 0.5rem 0.3rem;
+            }
+
+            .hero-section {
+                margin-bottom: 1rem;
+                padding: 0.5rem;
+            }
+
+            .search-section {
+                margin-bottom: 1rem;
+                padding: 0.5rem;
+            }
+
+            .search-container {
+                flex-direction: row;
+                gap: 0.3rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .search-input {
+                padding: 0.3rem;
+                font-size: 0.8rem;
+                height: 2rem;
+            }
+
+            .search-button {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.8rem;
+                height: 2rem;
+            }
+
+            .alphabet-nav {
+                gap: 0.1rem;
+                margin-bottom: 0.5rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .alphabet-link {
+                padding: 0.15rem 0.25rem;
+                font-size: 0.7rem;
+                min-width: 1.5rem;
+                text-align: center;
+            }
+
+            .category-section {
+                margin-bottom: 1rem;
+            }
+
+            .category-title {
+                font-size: 1.2rem;
+                margin-bottom: 0.5rem;
+                padding-bottom: 0.3rem;
+            }
+
+            .glossary-grid {
+                gap: 0.5rem;
+                grid-template-columns: 1fr;
+            }
+
+            .glossary-card {
+                padding: 0.5rem;
+                display: grid;
+                grid-template-columns: 1fr auto;
+                grid-template-areas: 
+                    "term category"
+                    "phonetic phonetic"
+                    "definition definition"
+                    "example example";
+                gap: 0.2rem;
+            }
+
+            .glossary-term {
+                font-size: 1rem;
+                margin-bottom: 0;
+                grid-area: term;
+            }
+
+            .glossary-category {
+                font-size: 0.6rem;
+                padding: 0.1rem 0.3rem;
+                margin-top: 0;
+                grid-area: category;
+                align-self: center;
+                white-space: nowrap;
+            }
+
+            .glossary-phonetic {
+                font-size: 0.7rem;
+                margin-bottom: 0.2rem;
+                grid-area: phonetic;
+            }
+
+            .glossary-definition {
+                font-size: 0.8rem;
+                margin-bottom: 0.2rem;
+                grid-area: definition;
+            }
+
+            .glossary-example {
+                font-size: 0.75rem;
+                padding-left: 0.3rem;
+                margin-bottom: 0;
+                grid-area: example;
+                border-left-width: 1px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 1.2rem;
+            }
+
+            .hero-subtitle {
+                font-size: 0.8rem;
+            }
+
+            .container {
+                padding: 0.3rem 0.2rem;
+            }
+
+            .hero-section {
+                margin-bottom: 0.8rem;
+                padding: 0.5rem;
+            }
+
+            .search-section {
+                margin-bottom: 0.8rem;
+                padding: 0.5rem;
+            }
+
+            .search-input {
+                padding: 0.2rem;
+                font-size: 0.75rem;
+                height: 1.8rem;
+            }
+
+            .search-button {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+                height: 1.8rem;
+            }
+
+            .alphabet-nav {
+                gap: 0.1rem;
+            }
+
+            .alphabet-link {
+                padding: 0.1rem 0.2rem;
+                font-size: 0.65rem;
+                min-width: 1.3rem;
+            }
+
+            .category-section {
+                margin-bottom: 0.8rem;
+            }
+
+            .category-title {
+                font-size: 1.1rem;
+                margin-bottom: 0.4rem;
+                padding-bottom: 0.2rem;
+            }
+
+            .glossary-grid {
+                gap: 0.4rem;
+            }
+
+            .glossary-card {
+                padding: 0.4rem;
+                gap: 0.15rem;
+            }
+
+            .glossary-term {
+                font-size: 0.9rem;
+            }
+
+            .glossary-phonetic {
+                font-size: 0.65rem;
+            }
+
+            .glossary-definition {
+                font-size: 0.75rem;
+            }
+
+            .glossary-example {
+                font-size: 0.7rem;
+                padding-left: 0.2rem;
+            }
+
+            .glossary-category {
+                font-size: 0.55rem;
+                padding: 0.1rem 0.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hero-section">
+            <h1 class="hero-title">French Glossary & Dictionary</h1>
+            <p class="hero-subtitle">Your Comprehensive Guide to French Language Terms</p>
+        </div>
+
+        <div class="search-section">
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search for a French term..." id="searchInput">
+                <button class="search-button" onclick="searchTerm()">Search</button>
+            </div>
+            <div class="alphabet-nav">
+                <a href="#A" class="alphabet-link">A</a>
+                <a href="#B" class="alphabet-link">B</a>
+                <a href="#C" class="alphabet-link">C</a>
+                <a href="#D" class="alphabet-link">D</a>
+                <a href="#E" class="alphabet-link">E</a>
+                <a href="#F" class="alphabet-link">F</a>
+                <a href="#G" class="alphabet-link">G</a>
+                <a href="#H" class="alphabet-link">H</a>
+                <a href="#I" class="alphabet-link">I</a>
+                <a href="#J" class="alphabet-link">J</a>
+                <a href="#K" class="alphabet-link">K</a>
+                <a href="#L" class="alphabet-link">L</a>
+                <a href="#M" class="alphabet-link">M</a>
+                <a href="#N" class="alphabet-link">N</a>
+                <a href="#O" class="alphabet-link">O</a>
+                <a href="#P" class="alphabet-link">P</a>
+                <a href="#Q" class="alphabet-link">Q</a>
+                <a href="#R" class="alphabet-link">R</a>
+                <a href="#S" class="alphabet-link">S</a>
+                <a href="#T" class="alphabet-link">T</a>
+                <a href="#U" class="alphabet-link">U</a>
+                <a href="#V" class="alphabet-link">V</a>
+                <a href="#W" class="alphabet-link">W</a>
+                <a href="#X" class="alphabet-link">X</a>
+                <a href="#Y" class="alphabet-link">Y</a>
+                <a href="#Z" class="alphabet-link">Z</a>
+            </div>
+        </div>
+
+        <div class="category-section">
+            <h2 class="category-title" id="A">Common French Phrases</h2>
+            <div class="glossary-grid">
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Bonjour</h3>
+                    <div class="glossary-phonetic">/bɔ̃.ʒuʁ/</div>
+                    <p class="glossary-definition">A common greeting meaning "hello" or "good day". Used during the day until evening.</p>
+                    <p class="glossary-example">"Bonjour, comment allez-vous?" (Hello, how are you?)</p>
+                    <span class="glossary-category">Greetings</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Au revoir</h3>
+                    <div class="glossary-phonetic">/o ʁə.vwaʁ/</div>
+                    <p class="glossary-definition">A formal way to say "goodbye". Literally means "until we see each other again".</p>
+                    <p class="glossary-example">"Au revoir, à bientôt!" (Goodbye, see you soon!)</p>
+                    <span class="glossary-category">Greetings</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">S'il vous plaît</h3>
+                    <div class="glossary-phonetic">/sil vu plɛ/</div>
+                    <p class="glossary-definition">The formal way to say "please". Used in polite or formal situations.</p>
+                    <p class="glossary-example">"Un café, s'il vous plaît." (A coffee, please.)</p>
+                    <span class="glossary-category">Politeness</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Comment ça va?</h3>
+                    <div class="glossary-phonetic">/kɔ.mɑ̃ sa va/</div>
+                    <p class="glossary-definition">Informal way to ask "how are you?" or "how's it going?"</p>
+                    <p class="glossary-example">"Salut! Comment ça va aujourd'hui?" (Hi! How are you today?)</p>
+                    <span class="glossary-category">Greetings</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Enchanté(e)</h3>
+                    <div class="glossary-phonetic">/ɑ̃.ʃɑ̃.te/</div>
+                    <p class="glossary-definition">"Nice to meet you" or "delighted" - used when meeting someone for the first time.</p>
+                    <p class="glossary-example">"Bonjour, je m'appelle Marie. - Enchantée!"</p>
+                    <span class="glossary-category">Greetings</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Excusez-moi</h3>
+                    <div class="glossary-phonetic">/ɛk.sky.ze mwa/</div>
+                    <p class="glossary-definition">Formal way to say "excuse me" or "I'm sorry".</p>
+                    <p class="glossary-example">"Excusez-moi, où est la gare?" (Excuse me, where is the train station?)</p>
+                    <span class="glossary-category">Politeness</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Je ne comprends pas</h3>
+                    <div class="glossary-phonetic">/ʒə nə kɔ̃.pʁɑ̃ pa/</div>
+                    <p class="glossary-definition">"I don't understand" - useful phrase when learning French.</p>
+                    <p class="glossary-example">"Je ne comprends pas, pouvez-vous répéter?"</p>
+                    <span class="glossary-category">Communication</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Parlez-vous anglais?</h3>
+                    <div class="glossary-phonetic">/paʁ.le vu ɑ̃.ɡlɛ/</div>
+                    <p class="glossary-definition">"Do you speak English?" - helpful when you need to switch languages.</p>
+                    <p class="glossary-example">"Excusez-moi, parlez-vous anglais?"</p>
+                    <span class="glossary-category">Communication</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">À bientôt</h3>
+                    <div class="glossary-phonetic">/a bjɛ̃.to/</div>
+                    <p class="glossary-definition">"See you soon" - casual way to say goodbye.</p>
+                    <p class="glossary-example">"Merci pour votre aide, à bientôt!"</p>
+                    <span class="glossary-category">Greetings</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Comment allez-vous?</h3>
+                    <div class="glossary-phonetic">/kɔ.mɑ̃ ta.le vu/</div>
+                    <p class="glossary-definition">Formal way to ask "how are you?"</p>
+                    <p class="glossary-example">"Bonjour, comment allez-vous aujourd'hui?"</p>
+                    <span class="glossary-category">Greetings</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Je m'appelle</h3>
+                    <div class="glossary-phonetic">/ʒə ma.pɛl/</div>
+                    <p class="glossary-definition">"My name is" - used when introducing yourself.</p>
+                    <p class="glossary-example">"Bonjour, je m'appelle Sophie."</p>
+                    <span class="glossary-category">Introduction</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Où est...?</h3>
+                    <div class="glossary-phonetic">/u ɛ/</div>
+                    <p class="glossary-definition">"Where is...?" - used to ask for directions.</p>
+                    <p class="glossary-example">"Où est la gare la plus proche?"</p>
+                    <span class="glossary-category">Directions</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Combien ça coûte?</h3>
+                    <div class="glossary-phonetic">/kɔ̃.bjɛ̃ sa kut/</div>
+                    <p class="glossary-definition">"How much does it cost?" - asking about price.</p>
+                    <p class="glossary-example">"Cette robe est jolie, combien ça coûte?"</p>
+                    <span class="glossary-category">Shopping</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Je voudrais</h3>
+                    <div class="glossary-phonetic">/ʒə vu.dʁɛ/</div>
+                    <p class="glossary-definition">"I would like" - polite way to make a request.</p>
+                    <p class="glossary-example">"Je voudrais un café, s'il vous plaît."</p>
+                    <span class="glossary-category">Politeness</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Quelle heure est-il?</h3>
+                    <div class="glossary-phonetic">/kɛl œʁ ɛ.til/</div>
+                    <p class="glossary-definition">"What time is it?" - asking for the time.</p>
+                    <p class="glossary-example">"Excusez-moi, quelle heure est-il?"</p>
+                    <span class="glossary-category">Time</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Je ne sais pas</h3>
+                    <div class="glossary-phonetic">/ʒə nə sɛ pa/</div>
+                    <p class="glossary-definition">"I don't know" - expressing uncertainty.</p>
+                    <p class="glossary-example">"Désolé, je ne sais pas où c'est."</p>
+                    <span class="glossary-category">Communication</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Pouvez-vous m'aider?</h3>
+                    <div class="glossary-phonetic">/pu.ve vu mɛ.de/</div>
+                    <p class="glossary-definition">"Can you help me?" - asking for assistance.</p>
+                    <p class="glossary-example">"Excusez-moi, pouvez-vous m'aider?"</p>
+                    <span class="glossary-category">Help</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Je suis désolé(e)</h3>
+                    <div class="glossary-phonetic">/ʒə sɥi de.zɔ.le/</div>
+                    <p class="glossary-definition">"I'm sorry" - apologizing.</p>
+                    <p class="glossary-example">"Je suis désolé pour le retard."</p>
+                    <span class="glossary-category">Politeness</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Merci beaucoup</h3>
+                    <div class="glossary-phonetic">/mɛʁ.si bo.ku/</div>
+                    <p class="glossary-definition">"Thank you very much" - expressing gratitude.</p>
+                    <p class="glossary-example">"Merci beaucoup pour votre aide!"</p>
+                    <span class="glossary-category">Politeness</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">De rien</h3>
+                    <div class="glossary-phonetic">/də ʁjɛ̃/</div>
+                    <p class="glossary-definition">"You're welcome" - responding to thanks.</p>
+                    <p class="glossary-example">"Merci! - De rien!"</p>
+                    <span class="glossary-category">Politeness</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Je suis perdu(e)</h3>
+                    <div class="glossary-phonetic">/ʒə sɥi pɛʁ.dy/</div>
+                    <p class="glossary-definition">"I'm lost" - when you need directions.</p>
+                    <p class="glossary-example">"Excusez-moi, je suis perdu. Où est la gare?"</p>
+                    <span class="glossary-category">Directions</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Je ne parle pas français</h3>
+                    <div class="glossary-phonetic">/ʒə nə paʁl pa fʁɑ̃.sɛ/</div>
+                    <p class="glossary-definition">"I don't speak French" - when you need to switch languages.</p>
+                    <p class="glossary-example">"Désolé, je ne parle pas français."</p>
+                    <span class="glossary-category">Communication</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Parlez plus lentement</h3>
+                    <div class="glossary-phonetic">/paʁ.le ply lɑ̃t.mɑ̃/</div>
+                    <p class="glossary-definition">"Please speak more slowly" - when you need clarification.</p>
+                    <p class="glossary-example">"Pouvez-vous parler plus lentement, s'il vous plaît?"</p>
+                    <span class="glossary-category">Communication</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Je ne comprends pas</h3>
+                    <div class="glossary-phonetic">/ʒə nə kɔ̃.pʁɑ̃ pa/</div>
+                    <p class="glossary-definition">"I don't understand" - when you need clarification.</p>
+                    <p class="glossary-example">"Je ne comprends pas, pouvez-vous répéter?"</p>
+                    <span class="glossary-category">Communication</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="category-section">
+            <h2 class="category-title" id="B">Immigration Terms</h2>
+            <div class="glossary-grid">
+                <div class="glossary-card">
+                    <h3 class="glossary-term">TEF Canada</h3>
+                    <div class="glossary-phonetic">/tef ka.na.da/</div>
+                    <p class="glossary-definition">Test d'Évaluation de Français Canada - The official French language test for Canadian immigration.</p>
+                    <p class="glossary-example">"J'ai passé le TEF Canada pour mon dossier d'immigration."</p>
+                    <span class="glossary-category">Immigration</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">CRS</h3>
+                    <div class="glossary-phonetic">/se.ɛʁ.ɛs/</div>
+                    <p class="glossary-definition">Comprehensive Ranking System - The points-based system used to assess Express Entry candidates.</p>
+                    <p class="glossary-example">"Mon score CRS a augmenté grâce à mes compétences en français."</p>
+                    <span class="glossary-category">Immigration</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">NCLC</h3>
+                    <div class="glossary-phonetic">/ɛn.se.ɛl.se/</div>
+                    <p class="glossary-definition">Niveaux de compétence linguistique canadiens - Canadian Language Benchmarks for French.</p>
+                    <p class="glossary-example">"J'ai atteint le niveau NCLC 7 en français."</p>
+                    <span class="glossary-category">Immigration</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">TCF Canada</h3>
+                    <div class="glossary-phonetic">/te.se.ɛf ka.na.da/</div>
+                    <p class="glossary-definition">Test de Connaissance du Français Canada - Another accepted French language test for Canadian immigration.</p>
+                    <p class="glossary-example">"Le TCF Canada est reconnu par Immigration Canada."</p>
+                    <span class="glossary-category">Immigration</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">ITA</h3>
+                    <div class="glossary-phonetic">/i.te.a/</div>
+                    <p class="glossary-definition">Invitation to Apply - The document received when selected from the Express Entry pool.</p>
+                    <p class="glossary-example">"J'ai reçu mon ITA après avoir amélioré mon score CRS."</p>
+                    <span class="glossary-category">Immigration</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">PNP</h3>
+                    <div class="glossary-phonetic">/pe.ɛn.pe/</div>
+                    <p class="glossary-definition">Provincial Nominee Program - Immigration programs run by individual Canadian provinces.</p>
+                    <p class="glossary-example">"Le PNP de l'Ontario favorise les candidats bilingues."</p>
+                    <span class="glossary-category">Immigration</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">CSQ</h3>
+                    <div class="glossary-phonetic">/se.ɛs.ky/</div>
+                    <p class="glossary-definition">Certificat de sélection du Québec - Quebec Selection Certificate.</p>
+                    <p class="glossary-example">"J'ai reçu mon CSQ après avoir passé l'entretien."</p>
+                    <span class="glossary-category">Immigration</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">PR</h3>
+                    <div class="glossary-phonetic">/pe.ɛʁ/</div>
+                    <p class="glossary-definition">Permanent Resident - status granted to immigrants.</p>
+                    <p class="glossary-example">"Je suis devenu PR en 2023."</p>
+                    <span class="glossary-category">Immigration</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">CIC</h3>
+                    <div class="glossary-phonetic">/se.i.se/</div>
+                    <p class="glossary-definition">Citizenship and Immigration Canada - government department.</p>
+                    <p class="glossary-example">"Le CIC a mis à jour les critères d'immigration."</p>
+                    <span class="glossary-category">Immigration</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">EE</h3>
+                    <div class="glossary-phonetic">/ə.ə/</div>
+                    <p class="glossary-definition">Express Entry - Canada's immigration selection system.</p>
+                    <p class="glossary-example">"J'ai soumis mon profil EE hier."</p>
+                    <span class="glossary-category">Immigration</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">FSW</h3>
+                    <div class="glossary-phonetic">/ɛf.ɛs.dubl.ve/</div>
+                    <p class="glossary-definition">Federal Skilled Worker - immigration program for skilled workers.</p>
+                    <p class="glossary-example">"Je postule via le programme FSW."</p>
+                    <span class="glossary-category">Immigration</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">CEC</h3>
+                    <div class="glossary-phonetic">/se.ə.se/</div>
+                    <p class="glossary-definition">Canadian Experience Class - for those with Canadian work experience.</p>
+                    <p class="glossary-example">"Je suis éligible pour le CEC."</p>
+                    <span class="glossary-category">Immigration</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">AOR</h3>
+                    <div class="glossary-phonetic">/a.o.ɛʁ/</div>
+                    <p class="glossary-definition">Acknowledgement of Receipt - confirmation of application receipt.</p>
+                    <p class="glossary-example">"J'ai reçu mon AOR la semaine dernière."</p>
+                    <span class="glossary-category">Immigration</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">COPR</h3>
+                    <div class="glossary-phonetic">/se.o.pe.ɛʁ/</div>
+                    <p class="glossary-definition">Confirmation of Permanent Residence - final approval document.</p>
+                    <p class="glossary-example">"Mon COPR est arrivé par courrier."</p>
+                    <span class="glossary-category">Immigration</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">LMIA</h3>
+                    <div class="glossary-phonetic">/ɛl.ɛm.i.a/</div>
+                    <p class="glossary-definition">Labour Market Impact Assessment - required for some work permits.</p>
+                    <p class="glossary-example">"Mon employeur a obtenu un LMIA positif."</p>
+                    <span class="glossary-category">Immigration</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">PGWP</h3>
+                    <div class="glossary-phonetic">/pe.ʒe.dubl.ve.pe/</div>
+                    <p class="glossary-definition">Post-Graduation Work Permit - for international graduates.</p>
+                    <p class="glossary-example">"Je peux demander un PGWP après mes études."</p>
+                    <span class="glossary-category">Immigration</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">IRCC</h3>
+                    <div class="glossary-phonetic">/i.ɛʁ.se.se/</div>
+                    <p class="glossary-definition">Immigration, Refugees and Citizenship Canada - government department.</p>
+                    <p class="glossary-example">"J'ai contacté l'IRCC pour une mise à jour."</p>
+                    <span class="glossary-category">Immigration</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">BOWP</h3>
+                    <div class="glossary-phonetic">/be.o.dubl.ve.pe/</div>
+                    <p class="glossary-definition">Bridging Open Work Permit - for PR applicants with expiring work permits.</p>
+                    <p class="glossary-example">"J'ai demandé un BOWP en attendant ma PR."</p>
+                    <span class="glossary-category">Immigration</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">NOC</h3>
+                    <div class="glossary-phonetic">/ɛn.o.se/</div>
+                    <p class="glossary-definition">National Occupational Classification - system for classifying jobs.</p>
+                    <p class="glossary-example">"Mon NOC est 2173 - Ingénieur logiciel."</p>
+                    <span class="glossary-category">Immigration</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">ECA</h3>
+                    <div class="glossary-phonetic">/ə.se.a/</div>
+                    <p class="glossary-definition">Educational Credential Assessment - evaluation of foreign education.</p>
+                    <p class="glossary-example">"J'ai besoin d'une ECA pour mon diplôme."</p>
+                    <span class="glossary-category">Immigration</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">PCC</h3>
+                    <div class="glossary-phonetic">/pe.se.se/</div>
+                    <p class="glossary-definition">Police Clearance Certificate - criminal record check.</p>
+                    <p class="glossary-example">"J'ai obtenu mon PCC de mon pays d'origine."</p>
+                    <span class="glossary-category">Immigration</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">MED</h3>
+                    <div class="glossary-phonetic">/ɛm.ə.de/</div>
+                    <p class="glossary-definition">Medical Exam - required health check for immigration.</p>
+                    <p class="glossary-example">"J'ai passé mon MED la semaine dernière."</p>
+                    <span class="glossary-category">Immigration</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">RPRF</h3>
+                    <div class="glossary-phonetic">/ɛʁ.pe.ɛʁ.ɛf/</div>
+                    <p class="glossary-definition">Right of Permanent Residence Fee - final payment for PR.</p>
+                    <p class="glossary-example">"J'ai payé le RPRF avec ma demande."</p>
+                    <span class="glossary-category">Immigration</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">PPR</h3>
+                    <div class="glossary-phonetic">/pe.pe.ɛʁ/</div>
+                    <p class="glossary-definition">Passport Request - final step before PR visa.</p>
+                    <p class="glossary-example">"J'ai reçu mon PPR aujourd'hui!"</p>
+                    <span class="glossary-category">Immigration</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="category-section">
+            <h2 class="category-title" id="C">Grammar Terms</h2>
+            <div class="glossary-grid">
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Subjonctif</h3>
+                    <div class="glossary-phonetic">/syb.ʒɔ̃k.tif/</div>
+                    <p class="glossary-definition">The subjunctive mood - used to express doubt, desire, or uncertainty.</p>
+                    <p class="glossary-example">"Il faut que je fasse mes devoirs." (I must do my homework.)</p>
+                    <span class="glossary-category">Grammar</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Accord</h3>
+                    <div class="glossary-phonetic">/a.kɔʁ/</div>
+                    <p class="glossary-definition">Agreement - the matching of gender and number between words.</p>
+                    <p class="glossary-example">"Les belles fleurs" (The beautiful flowers)</p>
+                    <span class="glossary-category">Grammar</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Pronom</h3>
+                    <div class="glossary-phonetic">/pʁɔ.nɔ̃/</div>
+                    <p class="glossary-definition">Pronoun - a word that replaces a noun in a sentence.</p>
+                    <p class="glossary-example">"Je, tu, il, elle, nous, vous, ils, elles"</p>
+                    <span class="glossary-category">Grammar</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Conjugaison</h3>
+                    <div class="glossary-phonetic">/kɔ̃.ʒy.ɡɛ.zjɔ̃/</div>
+                    <p class="glossary-definition">Verb conjugation - changing the form of a verb to match its subject and tense.</p>
+                    <p class="glossary-example">"Je mange, tu manges, il/elle mange" (I eat, you eat, he/she eats)</p>
+                    <span class="glossary-category">Grammar</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Genre</h3>
+                    <div class="glossary-phonetic">/ʒɑ̃ʁ/</div>
+                    <p class="glossary-definition">Gender - French nouns are either masculine or feminine.</p>
+                    <p class="glossary-example">"Le livre (masculine), la table (feminine)"</p>
+                    <span class="glossary-category">Grammar</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Article</h3>
+                    <div class="glossary-phonetic">/aʁ.tikl/</div>
+                    <p class="glossary-definition">Article - words like 'le', 'la', 'les' (the) and 'un', 'une', 'des' (a/some).</p>
+                    <p class="glossary-example">"Le chat, la maison, les enfants"</p>
+                    <span class="glossary-category">Grammar</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Adjectif</h3>
+                    <div class="glossary-phonetic">/ad.ʒɛk.tif/</div>
+                    <p class="glossary-definition">Adjective - word that describes a noun.</p>
+                    <p class="glossary-example">"Grand, petit, beau, belle" (Big, small, beautiful)</p>
+                    <span class="glossary-category">Grammar</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Verbe</h3>
+                    <div class="glossary-phonetic">/vɛʁb/</div>
+                    <p class="glossary-definition">Verb - action word in a sentence.</p>
+                    <p class="glossary-example">"Manger, dormir, parler" (To eat, to sleep, to speak)</p>
+                    <span class="glossary-category">Grammar</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Temps</h3>
+                    <div class="glossary-phonetic">/tɑ̃/</div>
+                    <p class="glossary-definition">Tense - indicates when an action takes place.</p>
+                    <p class="glossary-example">"Présent, passé, futur" (Present, past, future)</p>
+                    <span class="glossary-category">Grammar</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Préposition</h3>
+                    <div class="glossary-phonetic">/pʁe.po.zi.sjɔ̃/</div>
+                    <p class="glossary-definition">Preposition - word that shows relationship between words.</p>
+                    <p class="glossary-example">"à, de, dans, sur, sous" (to, of, in, on, under)</p>
+                    <span class="glossary-category">Grammar</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Adverbe</h3>
+                    <div class="glossary-phonetic">/ad.vɛʁb/</div>
+                    <p class="glossary-definition">Adverb - word that modifies a verb, adjective, or other adverb.</p>
+                    <p class="glossary-example">"rapidement, lentement, bien, mal" (quickly, slowly, well, badly)</p>
+                    <span class="glossary-category">Grammar</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Conjonction</h3>
+                    <div class="glossary-phonetic">/kɔ̃.ʒɔ̃k.sjɔ̃/</div>
+                    <p class="glossary-definition">Conjunction - word that connects words or clauses.</p>
+                    <p class="glossary-example">"et, ou, mais, car" (and, or, but, because)</p>
+                    <span class="glossary-category">Grammar</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Participe</h3>
+                    <div class="glossary-phonetic">/paʁ.ti.sip/</div>
+                    <p class="glossary-definition">Participle - verb form used as an adjective.</p>
+                    <p class="glossary-example">"mangé, fini, vu" (eaten, finished, seen)</p>
+                    <span class="glossary-category">Grammar</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Infinitif</h3>
+                    <div class="glossary-phonetic">/ɛ̃.fi.ni.tif/</div>
+                    <p class="glossary-definition">Infinitive - basic form of a verb.</p>
+                    <p class="glossary-example">"manger, dormir, parler" (to eat, to sleep, to speak)</p>
+                    <span class="glossary-category">Grammar</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Conditionnel</h3>
+                    <div class="glossary-phonetic">/kɔ̃.di.sjɔ.nɛl/</div>
+                    <p class="glossary-definition">Conditional - verb mood for hypothetical situations.</p>
+                    <p class="glossary-example">"Je mangerais, tu dormirais" (I would eat, you would sleep)</p>
+                    <span class="glossary-category">Grammar</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Imparfait</h3>
+                    <div class="glossary-phonetic">/ɛ̃.paʁ.fɛ/</div>
+                    <p class="glossary-definition">Imperfect - past tense for ongoing or habitual actions.</p>
+                    <p class="glossary-example">"Je mangeais, tu dormais" (I was eating, you were sleeping)</p>
+                    <span class="glossary-category">Grammar</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Passé composé</h3>
+                    <div class="glossary-phonetic">/pa.se kɔ̃.po.ze/</div>
+                    <p class="glossary-definition">Compound past - past tense for completed actions.</p>
+                    <p class="glossary-example">"J'ai mangé, tu as dormi" (I ate, you slept)</p>
+                    <span class="glossary-category">Grammar</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Futur simple</h3>
+                    <div class="glossary-phonetic">/fy.tyʁ sɛ̃pl/</div>
+                    <p class="glossary-definition">Simple future - tense for future actions.</p>
+                    <p class="glossary-example">"Je mangerai, tu dormiras" (I will eat, you will sleep)</p>
+                    <span class="glossary-category">Grammar</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Plus-que-parfait</h3>
+                    <div class="glossary-phonetic">/plys kə paʁ.fɛ/</div>
+                    <p class="glossary-definition">Pluperfect - past tense for actions before other past actions.</p>
+                    <p class="glossary-example">"J'avais mangé, tu avais dormi" (I had eaten, you had slept)</p>
+                    <span class="glossary-category">Grammar</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Pronom relatif</h3>
+                    <div class="glossary-phonetic">/pʁɔ.nɔ̃ ʁə.la.tif/</div>
+                    <p class="glossary-definition">Relative pronoun - connects clauses.</p>
+                    <p class="glossary-example">"qui, que, dont, où" (who, whom, whose, where)</p>
+                    <span class="glossary-category">Grammar</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Pronom démonstratif</h3>
+                    <div class="glossary-phonetic">/pʁɔ.nɔ̃ de.mɔ̃s.tʁa.tif/</div>
+                    <p class="glossary-definition">Demonstrative pronoun - points to specific things.</p>
+                    <p class="glossary-example">"celui, celle, ceux, celles" (this one, that one, these, those)</p>
+                    <span class="glossary-category">Grammar</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Pronom possessif</h3>
+                    <div class="glossary-phonetic">/pʁɔ.nɔ̃ pɔ.sɛ.sif/</div>
+                    <p class="glossary-definition">Possessive pronoun - shows ownership.</p>
+                    <p class="glossary-example">"le mien, la tienne, les nôtres" (mine, yours, ours)</p>
+                    <span class="glossary-category">Grammar</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Pronom indéfini</h3>
+                    <div class="glossary-phonetic">/pʁɔ.nɔ̃ ɛ̃.de.fi.ni/</div>
+                    <p class="glossary-definition">Indefinite pronoun - refers to unspecified things.</p>
+                    <p class="glossary-example">"quelqu'un, quelque chose, tout" (someone, something, everything)</p>
+                    <span class="glossary-category">Grammar</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Pronom interrogatif</h3>
+                    <div class="glossary-phonetic">/pʁɔ.nɔ̃ ɛ̃.tɛ.ʁɔ.ga.tif/</div>
+                    <p class="glossary-definition">Interrogative pronoun - used in questions.</p>
+                    <p class="glossary-example">"qui, que, quoi, lequel" (who, what, which)</p>
+                    <span class="glossary-category">Grammar</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="category-section">
+            <h2 class="category-title" id="D">Everyday Vocabulary</h2>
+            <div class="glossary-grid">
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Métro</h3>
+                    <div class="glossary-phonetic">/me.tʁo/</div>
+                    <p class="glossary-definition">Subway or underground train system.</p>
+                    <p class="glossary-example">"Je prends le métro pour aller au travail."</p>
+                    <span class="glossary-category">Transportation</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Boulangerie</h3>
+                    <div class="glossary-phonetic">/bu.lɑ̃ʒ.ʁi/</div>
+                    <p class="glossary-definition">Bakery - where bread and pastries are sold.</p>
+                    <p class="glossary-example">"Je vais à la boulangerie acheter une baguette."</p>
+                    <span class="glossary-category">Food</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Pharmacie</h3>
+                    <div class="glossary-phonetic">/faʁ.ma.si/</div>
+                    <p class="glossary-definition">Pharmacy or drugstore.</p>
+                    <p class="glossary-example">"La pharmacie est ouverte jusqu'à 20h."</p>
+                    <span class="glossary-category">Services</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Supermarché</h3>
+                    <div class="glossary-phonetic">/sy.pɛʁ.maʁ.ʃe/</div>
+                    <p class="glossary-definition">Supermarket - large grocery store.</p>
+                    <p class="glossary-example">"Je vais au supermarché faire les courses."</p>
+                    <span class="glossary-category">Shopping</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Banque</h3>
+                    <div class="glossary-phonetic">/bɑ̃k/</div>
+                    <p class="glossary-definition">Bank - financial institution.</p>
+                    <p class="glossary-example">"Je dois aller à la banque pour ouvrir un compte."</p>
+                    <span class="glossary-category">Services</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Poste</h3>
+                    <div class="glossary-phonetic">/pɔst/</div>
+                    <p class="glossary-definition">Post office - mail service facility.</p>
+                    <p class="glossary-example">"Je vais à la poste pour envoyer une lettre."</p>
+                    <span class="glossary-category">Services</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Magasin</h3>
+                    <div class="glossary-phonetic">/ma.ɡa.zɛ̃/</div>
+                    <p class="glossary-definition">Store or shop - place to buy goods.</p>
+                    <p class="glossary-example">"Je vais au magasin pour acheter du pain."</p>
+                    <span class="glossary-category">Shopping</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Marché</h3>
+                    <div class="glossary-phonetic">/maʁ.ʃe/</div>
+                    <p class="glossary-definition">Market - place to buy fresh produce and goods.</p>
+                    <p class="glossary-example">"Le marché est ouvert tous les samedis matin."</p>
+                    <span class="glossary-category">Shopping</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">École</h3>
+                    <div class="glossary-phonetic">/e.kɔl/</div>
+                    <p class="glossary-definition">School - educational institution.</p>
+                    <p class="glossary-example">"Les enfants vont à l'école à 8h."</p>
+                    <span class="glossary-category">Education</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Église</h3>
+                    <div class="glossary-phonetic">/e.ɡliz/</div>
+                    <p class="glossary-definition">Church - place of worship.</p>
+                    <p class="glossary-example">"L'église est au centre du village."</p>
+                    <span class="glossary-category">Places</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Parc</h3>
+                    <div class="glossary-phonetic">/paʁk/</div>
+                    <p class="glossary-definition">Park - public green space.</p>
+                    <p class="glossary-example">"Nous allons nous promener dans le parc."</p>
+                    <span class="glossary-category">Places</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Bibliothèque</h3>
+                    <div class="glossary-phonetic">/bi.bli.jɔ.tɛk/</div>
+                    <p class="glossary-definition">Library - place to borrow books.</p>
+                    <p class="glossary-example">"Je vais à la bibliothèque pour étudier."</p>
+                    <span class="glossary-category">Places</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Cinéma</h3>
+                    <div class="glossary-phonetic">/si.ne.ma/</div>
+                    <p class="glossary-definition">Cinema or movie theater.</p>
+                    <p class="glossary-example">"Nous allons au cinéma ce soir."</p>
+                    <span class="glossary-category">Entertainment</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Musée</h3>
+                    <div class="glossary-phonetic">/my.ze/</div>
+                    <p class="glossary-definition">Museum - place to view art and exhibits.</p>
+                    <p class="glossary-example">"Le musée est gratuit le premier dimanche du mois."</p>
+                    <span class="glossary-category">Places</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Restaurant</h3>
+                    <div class="glossary-phonetic">/ʁɛs.to.ʁɑ̃/</div>
+                    <p class="glossary-definition">Restaurant - place to eat out.</p>
+                    <p class="glossary-example">"Nous avons réservé une table au restaurant."</p>
+                    <span class="glossary-category">Food</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Café</h3>
+                    <div class="glossary-phonetic">/ka.fe/</div>
+                    <p class="glossary-definition">Café - place to drink coffee and socialize.</p>
+                    <p class="glossary-example">"Je vais prendre un café au café du coin."</p>
+                    <span class="glossary-category">Food</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Hôpital</h3>
+                    <div class="glossary-phonetic">/o.pi.tal/</div>
+                    <p class="glossary-definition">Hospital - medical treatment facility.</p>
+                    <p class="glossary-example">"L'hôpital est à 10 minutes en voiture."</p>
+                    <span class="glossary-category">Healthcare</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Commissariat</h3>
+                    <div class="glossary-phonetic">/kɔ.mi.sa.ʁja/</div>
+                    <p class="glossary-definition">Police station.</p>
+                    <p class="glossary-example">"Le commissariat est ouvert 24h/24."</p>
+                    <span class="glossary-category">Services</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Mairie</h3>
+                    <div class="glossary-phonetic">/mɛ.ʁi/</div>
+                    <p class="glossary-definition">Town hall - local government office.</p>
+                    <p class="glossary-example">"Je dois aller à la mairie pour mes papiers."</p>
+                    <span class="glossary-category">Services</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Gare</h3>
+                    <div class="glossary-phonetic">/ɡaʁ/</div>
+                    <p class="glossary-definition">Train station.</p>
+                    <p class="glossary-example">"La gare est à 5 minutes à pied."</p>
+                    <span class="glossary-category">Transportation</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Aéroport</h3>
+                    <div class="glossary-phonetic">/a.e.ʁo.pɔʁ/</div>
+                    <p class="glossary-definition">Airport - for air travel.</p>
+                    <p class="glossary-example">"L'aéroport est à 30 minutes en voiture."</p>
+                    <span class="glossary-category">Transportation</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="category-section">
+            <h2 class="category-title" id="E">Business & Work</h2>
+            <div class="glossary-grid">
+                <div class="glossary-card">
+                    <h3 class="glossary-term">CV</h3>
+                    <div class="glossary-phonetic">/se.ve/</div>
+                    <p class="glossary-definition">Curriculum Vitae - résumé or CV for job applications.</p>
+                    <p class="glossary-example">"J'ai envoyé mon CV à plusieurs entreprises."</p>
+                    <span class="glossary-category">Employment</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Entretien</h3>
+                    <div class="glossary-phonetic">/ɑ̃.tʁə.tjɛ̃/</div>
+                    <p class="glossary-definition">Job interview or meeting.</p>
+                    <p class="glossary-example">"J'ai un entretien d'embauche demain."</p>
+                    <span class="glossary-category">Employment</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Salaire</h3>
+                    <div class="glossary-phonetic">/sa.lɛʁ/</div>
+                    <p class="glossary-definition">Salary or wage.</p>
+                    <p class="glossary-example">"Quel est le salaire brut pour ce poste?"</p>
+                    <span class="glossary-category">Employment</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Contrat</h3>
+                    <div class="glossary-phonetic">/kɔ̃.tʁa/</div>
+                    <p class="glossary-definition">Contract - work agreement between employer and employee.</p>
+                    <p class="glossary-example">"J'ai signé mon contrat de travail hier."</p>
+                    <span class="glossary-category">Employment</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Congé</h3>
+                    <div class="glossary-phonetic">/kɔ̃.ʒe/</div>
+                    <p class="glossary-definition">Leave or vacation - time off from work.</p>
+                    <p class="glossary-example">"Je prends deux semaines de congé en août."</p>
+                    <span class="glossary-category">Employment</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Réunion</h3>
+                    <div class="glossary-phonetic">/ʁe.y.njɔ̃/</div>
+                    <p class="glossary-definition">Meeting - gathering for work discussion.</p>
+                    <p class="glossary-example">"Nous avons une réunion importante à 14h."</p>
+                    <span class="glossary-category">Employment</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Emploi</h3>
+                    <div class="glossary-phonetic">/ɑ̃.plwa/</div>
+                    <p class="glossary-definition">Job or employment.</p>
+                    <p class="glossary-example">"Je cherche un emploi dans le marketing."</p>
+                    <span class="glossary-category">Employment</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Entreprise</h3>
+                    <div class="glossary-phonetic">/ɑ̃.tʁə.pʁiz/</div>
+                    <p class="glossary-definition">Company or business.</p>
+                    <p class="glossary-example">"Je travaille dans une grande entreprise."</p>
+                    <span class="glossary-category">Business</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Bureau</h3>
+                    <div class="glossary-phonetic">/by.ʁo/</div>
+                    <p class="glossary-definition">Office - workplace.</p>
+                    <p class="glossary-example">"Mon bureau est au troisième étage."</p>
+                    <span class="glossary-category">Workplace</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Collègue</h3>
+                    <div class="glossary-phonetic">/kɔ.lɛɡ/</div>
+                    <p class="glossary-definition">Colleague or coworker.</p>
+                    <p class="glossary-example">"Mes collègues sont très sympathiques."</p>
+                    <span class="glossary-category">Workplace</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Patron</h3>
+                    <div class="glossary-phonetic">/pa.tʁɔ̃/</div>
+                    <p class="glossary-definition">Boss or employer.</p>
+                    <p class="glossary-example">"Le patron est en réunion."</p>
+                    <span class="glossary-category">Employment</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Horaire</h3>
+                    <div class="glossary-phonetic">/ɔ.ʁɛʁ/</div>
+                    <p class="glossary-definition">Schedule or timetable.</p>
+                    <p class="glossary-example">"Mon horaire de travail est flexible."</p>
+                    <span class="glossary-category">Employment</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Pause</h3>
+                    <div class="glossary-phonetic">/poz/</div>
+                    <p class="glossary-definition">Break - time off from work.</p>
+                    <p class="glossary-example">"Je prends ma pause déjeuner à midi."</p>
+                    <span class="glossary-category">Employment</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Mission</h3>
+                    <div class="glossary-phonetic">/mi.sjɔ̃/</div>
+                    <p class="glossary-definition">Business trip or assignment.</p>
+                    <p class="glossary-example">"Je pars en mission à Paris la semaine prochaine."</p>
+                    <span class="glossary-category">Business</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Projet</h3>
+                    <div class="glossary-phonetic">/pʁɔ.ʒɛ/</div>
+                    <p class="glossary-definition">Project - work assignment.</p>
+                    <p class="glossary-example">"J'ai un nouveau projet à gérer."</p>
+                    <span class="glossary-category">Business</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Réunion</h3>
+                    <div class="glossary-phonetic">/ʁe.y.njɔ̃/</div>
+                    <p class="glossary-definition">Meeting - work gathering.</p>
+                    <p class="glossary-example">"Nous avons une réunion importante à 14h."</p>
+                    <span class="glossary-category">Business</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Présentation</h3>
+                    <div class="glossary-phonetic">/pʁe.zɑ̃.ta.sjɔ̃/</div>
+                    <p class="glossary-definition">Presentation - showing work to others.</p>
+                    <p class="glossary-example">"Je dois préparer une présentation pour demain."</p>
+                    <span class="glossary-category">Business</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Démission</h3>
+                    <div class="glossary-phonetic">/de.mi.sjɔ̃/</div>
+                    <p class="glossary-definition">Resignation - leaving a job.</p>
+                    <p class="glossary-example">"J'ai donné ma démission hier."</p>
+                    <span class="glossary-category">Employment</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Licenciement</h3>
+                    <div class="glossary-phonetic">/li.sɑ̃.si.mɑ̃/</div>
+                    <p class="glossary-definition">Layoff - job termination by employer.</p>
+                    <p class="glossary-example">"Il y a eu plusieurs licenciements dans l'entreprise."</p>
+                    <span class="glossary-category">Employment</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Promotion</h3>
+                    <div class="glossary-phonetic">/pʁɔ.mo.sjɔ̃/</div>
+                    <p class="glossary-definition">Promotion - advancement in job position.</p>
+                    <p class="glossary-example">"J'ai eu une promotion l'année dernière."</p>
+                    <span class="glossary-category">Employment</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Formation</h3>
+                    <div class="glossary-phonetic">/fɔʁ.ma.sjɔ̃/</div>
+                    <p class="glossary-definition">Training - professional development.</p>
+                    <p class="glossary-example">"Je suis en formation cette semaine."</p>
+                    <span class="glossary-category">Employment</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="category-section">
+            <h2 class="category-title" id="F">Education</h2>
+            <div class="glossary-grid">
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Université</h3>
+                    <div class="glossary-phonetic">/y.ni.vɛʁ.si.te/</div>
+                    <p class="glossary-definition">University - higher education institution.</p>
+                    <p class="glossary-example">"Je fais mes études à l'Université de Montréal."</p>
+                    <span class="glossary-category">Education</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Diplôme</h3>
+                    <div class="glossary-phonetic">/di.plom/</div>
+                    <p class="glossary-definition">Diploma or degree.</p>
+                    <p class="glossary-example">"J'ai obtenu mon diplôme en informatique."</p>
+                    <span class="glossary-category">Education</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Étudiant(e)</h3>
+                    <div class="glossary-phonetic">/e.ty.djɑ̃/</div>
+                    <p class="glossary-definition">Student - male or female student.</p>
+                    <p class="glossary-example">"Je suis étudiant en médecine."</p>
+                    <span class="glossary-category">Education</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Professeur</h3>
+                    <div class="glossary-phonetic">/pʁɔ.fɛ.sœʁ/</div>
+                    <p class="glossary-definition">Professor or teacher - educator at a school or university.</p>
+                    <p class="glossary-example">"Mon professeur de français est très patient."</p>
+                    <span class="glossary-category">Education</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Cours</h3>
+                    <div class="glossary-phonetic">/kuʁ/</div>
+                    <p class="glossary-definition">Course or class.</p>
+                    <p class="glossary-example">"J'ai un cours de français ce matin."</p>
+                    <span class="glossary-category">Education</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Examen</h3>
+                    <div class="glossary-phonetic">/ɛɡ.za.mɛ̃/</div>
+                    <p class="glossary-definition">Exam or test.</p>
+                    <p class="glossary-example">"J'ai un examen important demain."</p>
+                    <span class="glossary-category">Education</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Note</h3>
+                    <div class="glossary-phonetic">/nɔt/</div>
+                    <p class="glossary-definition">Grade - academic score.</p>
+                    <p class="glossary-example">"J'ai eu une bonne note en maths."</p>
+                    <span class="glossary-category">Education</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Classe</h3>
+                    <div class="glossary-phonetic">/klas/</div>
+                    <p class="glossary-definition">Classroom or class group.</p>
+                    <p class="glossary-example">"Ma classe est au premier étage."</p>
+                    <span class="glossary-category">Education</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Élève</h3>
+                    <div class="glossary-phonetic">/e.lɛv/</div>
+                    <p class="glossary-definition">Student - school pupil.</p>
+                    <p class="glossary-example">"Les élèves sont en récréation."</p>
+                    <span class="glossary-category">Education</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Enseignant</h3>
+                    <div class="glossary-phonetic">/ɑ̃.sɛ.ɲɑ̃/</div>
+                    <p class="glossary-definition">Teacher - educator.</p>
+                    <p class="glossary-example">"L'enseignant explique la leçon."</p>
+                    <span class="glossary-category">Education</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Directeur</h3>
+                    <div class="glossary-phonetic">/di.ʁɛk.tœʁ/</div>
+                    <p class="glossary-definition">Principal - school head.</p>
+                    <p class="glossary-example">"Le directeur est dans son bureau."</p>
+                    <span class="glossary-category">Education</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Récréation</h3>
+                    <div class="glossary-phonetic">/ʁe.kʁe.a.sjɔ̃/</div>
+                    <p class="glossary-definition">Recess - school break time.</p>
+                    <p class="glossary-example">"Les élèves sont en récréation."</p>
+                    <span class="glossary-category">Education</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Cantine</h3>
+                    <div class="glossary-phonetic">/kɑ̃.tin/</div>
+                    <p class="glossary-definition">Cafeteria - school dining area.</p>
+                    <p class="glossary-example">"Je mange à la cantine à midi."</p>
+                    <span class="glossary-category">Education</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Bibliothèque</h3>
+                    <div class="glossary-phonetic">/bi.bli.jɔ.tɛk/</div>
+                    <p class="glossary-definition">Library - place to study and borrow books.</p>
+                    <p class="glossary-example">"Je vais à la bibliothèque pour étudier."</p>
+                    <span class="glossary-category">Education</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Laboratoire</h3>
+                    <div class="glossary-phonetic">/la.bɔ.ʁa.twaʁ/</div>
+                    <p class="glossary-definition">Laboratory - for science experiments.</p>
+                    <p class="glossary-example">"Nous avons cours en laboratoire aujourd'hui."</p>
+                    <span class="glossary-category">Education</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Salle de classe</h3>
+                    <div class="glossary-phonetic">/sal də klas/</div>
+                    <p class="glossary-definition">Classroom - where lessons take place.</p>
+                    <p class="glossary-example">"La salle de classe est au fond du couloir."</p>
+                    <span class="glossary-category">Education</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Cours magistral</h3>
+                    <div class="glossary-phonetic">/kuʁ ma.ʒis.tʁal/</div>
+                    <p class="glossary-definition">Lecture - university teaching session.</p>
+                    <p class="glossary-example">"J'ai un cours magistral cet après-midi."</p>
+                    <span class="glossary-category">Education</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Études</h3>
+                    <div class="glossary-phonetic">/e.tyd/</div>
+                    <p class="glossary-definition">Studies - academic work.</p>
+                    <p class="glossary-example">"Je fais mes études à l'université."</p>
+                    <span class="glossary-category">Education</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Devoir</h3>
+                    <div class="glossary-phonetic">/də.vwaʁ/</div>
+                    <p class="glossary-definition">Homework - school work to do at home.</p>
+                    <p class="glossary-example">"J'ai beaucoup de devoirs ce soir."</p>
+                    <span class="glossary-category">Education</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="category-section">
+            <h2 class="category-title" id="G">Food & Dining</h2>
+            <div class="glossary-grid">
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Restaurant</h3>
+                    <div class="glossary-phonetic">/ʁɛs.to.ʁɑ̃/</div>
+                    <p class="glossary-definition">Restaurant - a place where meals are served to customers.</p>
+                    <p class="glossary-example">"Nous avons réservé une table au restaurant."</p>
+                    <span class="glossary-category">Dining</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Menu</h3>
+                    <div class="glossary-phonetic">/mə.ny/</div>
+                    <p class="glossary-definition">Menu - list of food and drinks available in a restaurant.</p>
+                    <p class="glossary-example">"Pouvez-vous me montrer le menu, s'il vous plaît?"</p>
+                    <span class="glossary-category">Dining</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Apéritif</h3>
+                    <div class="glossary-phonetic">/a.pe.ʁi.tif/</div>
+                    <p class="glossary-definition">Pre-dinner drink - usually alcoholic, served before a meal.</p>
+                    <p class="glossary-example">"Voulez-vous prendre un apéritif avant le dîner?"</p>
+                    <span class="glossary-category">Dining</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Cuisine</h3>
+                    <div class="glossary-phonetic">/kɥi.zin/</div>
+                    <p class="glossary-definition">Kitchen or cooking.</p>
+                    <p class="glossary-example">"La cuisine française est réputée dans le monde entier."</p>
+                    <span class="glossary-category">Food</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Vin</h3>
+                    <div class="glossary-phonetic">/vɛ̃/</div>
+                    <p class="glossary-definition">Wine - alcoholic beverage.</p>
+                    <p class="glossary-example">"Nous allons déguster un bon vin ce soir."</p>
+                    <span class="glossary-category">Beverage</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Fromage</h3>
+                    <div class="glossary-phonetic">/fʁɔ.maʒ/</div>
+                    <p class="glossary-definition">Cheese - dairy product.</p>
+                    <p class="glossary-example">"Le fromage est un produit typique de la France."</p>
+                    <span class="glossary-category">Food</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Pain</h3>
+                    <div class="glossary-phonetic">/pɛ̃/</div>
+                    <p class="glossary-definition">Bread - staple food.</p>
+                    <p class="glossary-example">"Je vais acheter du pain à la boulangerie."</p>
+                    <span class="glossary-category">Food</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Café</h3>
+                    <div class="glossary-phonetic">/ka.fe/</div>
+                    <p class="glossary-definition">Coffee - hot beverage.</p>
+                    <p class="glossary-example">"Je prends un café le matin."</p>
+                    <span class="glossary-category">Beverage</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Thé</h3>
+                    <div class="glossary-phonetic">/te/</div>
+                    <p class="glossary-definition">Tea - hot beverage.</p>
+                    <p class="glossary-example">"Je préfère le thé au café."</p>
+                    <span class="glossary-category">Beverage</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Eau</h3>
+                    <div class="glossary-phonetic">/o/</div>
+                    <p class="glossary-definition">Water - essential beverage.</p>
+                    <p class="glossary-example">"Je bois beaucoup d'eau pendant la journée."</p>
+                    <span class="glossary-category">Beverage</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Fruits</h3>
+                    <div class="glossary-phonetic">/fʁɥi/</div>
+                    <p class="glossary-definition">Fruits - sweet produce.</p>
+                    <p class="glossary-example">"Je mange des fruits tous les jours."</p>
+                    <span class="glossary-category">Food</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Légumes</h3>
+                    <div class="glossary-phonetic">/le.ɡym/</div>
+                    <p class="glossary-definition">Vegetables - plant-based food.</p>
+                    <p class="glossary-example">"Les légumes sont importants pour la santé."</p>
+                    <span class="glossary-category">Food</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Viande</h3>
+                    <div class="glossary-phonetic">/vjɑ̃d/</div>
+                    <p class="glossary-definition">Meat - animal protein.</p>
+                    <p class="glossary-example">"Je mange de la viande deux fois par semaine."</p>
+                    <span class="glossary-category">Food</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Poisson</h3>
+                    <div class="glossary-phonetic">/pwa.sɔ̃/</div>
+                    <p class="glossary-definition">Fish - seafood.</p>
+                    <p class="glossary-example">"Le poisson est frais aujourd'hui."</p>
+                    <span class="glossary-category">Food</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Dessert</h3>
+                    <div class="glossary-phonetic">/de.sɛʁ/</div>
+                    <p class="glossary-definition">Dessert - sweet course.</p>
+                    <p class="glossary-example">"Je vais prendre un dessert après le repas."</p>
+                    <span class="glossary-category">Food</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Apéritif</h3>
+                    <div class="glossary-phonetic">/a.pe.ʁi.tif/</div>
+                    <p class="glossary-definition">Aperitif - pre-dinner drink.</p>
+                    <p class="glossary-example">"Nous prenons l'apéritif avant le dîner."</p>
+                    <span class="glossary-category">Beverage</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Menu</h3>
+                    <div class="glossary-phonetic">/mə.ny/</div>
+                    <p class="glossary-definition">Menu - list of dishes.</p>
+                    <p class="glossary-example">"Je vais regarder le menu avant de commander."</p>
+                    <span class="glossary-category">Dining</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Service</h3>
+                    <div class="glossary-phonetic">/sɛʁ.vis/</div>
+                    <p class="glossary-definition">Service - restaurant service.</p>
+                    <p class="glossary-example">"Le service est compris dans le prix."</p>
+                    <span class="glossary-category">Dining</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="category-section">
+            <h2 class="category-title" id="H">Travel & Transportation</h2>
+            <div class="glossary-grid">
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Aéroport</h3>
+                    <div class="glossary-phonetic">/a.e.ʁo.pɔʁ/</div>
+                    <p class="glossary-definition">Airport - facility for aircraft takeoff and landing.</p>
+                    <p class="glossary-example">"Je dois être à l'aéroport à 8h."</p>
+                    <span class="glossary-category">Travel</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Gare</h3>
+                    <div class="glossary-phonetic">/ɡaʁ/</div>
+                    <p class="glossary-definition">Train station - where trains arrive and depart.</p>
+                    <p class="glossary-example">"La gare est à 10 minutes à pied."</p>
+                    <span class="glossary-category">Transportation</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Billet</h3>
+                    <div class="glossary-phonetic">/bi.jɛ/</div>
+                    <p class="glossary-definition">Ticket - for travel, events, or admission.</p>
+                    <p class="glossary-example">"J'ai acheté mon billet de train en ligne."</p>
+                    <span class="glossary-category">Travel</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Taxi</h3>
+                    <div class="glossary-phonetic">/tak.si/</div>
+                    <p class="glossary-definition">Taxi - hired car with driver.</p>
+                    <p class="glossary-example">"Je vais prendre un taxi pour aller à l'aéroport."</p>
+                    <span class="glossary-category">Transportation</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Bus</h3>
+                    <div class="glossary-phonetic">/bys/</div>
+                    <p class="glossary-definition">Bus - public transportation vehicle.</p>
+                    <p class="glossary-example">"Le bus passe toutes les 15 minutes."</p>
+                    <span class="glossary-category">Transportation</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Hôtel</h3>
+                    <div class="glossary-phonetic">/o.tɛl/</div>
+                    <p class="glossary-definition">Hotel - accommodation for travelers.</p>
+                    <p class="glossary-example">"J'ai réservé une chambre à l'hôtel pour trois nuits."</p>
+                    <span class="glossary-category">Travel</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Avion</h3>
+                    <div class="glossary-phonetic">/a.vjɔ̃/</div>
+                    <p class="glossary-definition">Airplane - aircraft.</p>
+                    <p class="glossary-example">"Je prends l'avion pour Paris."</p>
+                    <span class="glossary-category">Transportation</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Train</h3>
+                    <div class="glossary-phonetic">/tʁɛ̃/</div>
+                    <p class="glossary-definition">Train - rail transport.</p>
+                    <p class="glossary-example">"Le train part à 8h."</p>
+                    <span class="glossary-category">Transportation</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Métro</h3>
+                    <div class="glossary-phonetic">/me.tʁo/</div>
+                    <p class="glossary-definition">Subway - underground train.</p>
+                    <p class="glossary-example">"Je prends le métro pour aller au travail."</p>
+                    <span class="glossary-category">Transportation</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Bus</h3>
+                    <div class="glossary-phonetic">/bys/</div>
+                    <p class="glossary-definition">Bus - public transport.</p>
+                    <p class="glossary-example">"Le bus passe toutes les 10 minutes."</p>
+                    <span class="glossary-category">Transportation</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Taxi</h3>
+                    <div class="glossary-phonetic">/tak.si/</div>
+                    <p class="glossary-definition">Taxi - hired car.</p>
+                    <p class="glossary-example">"Je vais prendre un taxi pour l'aéroport."</p>
+                    <span class="glossary-category">Transportation</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Voiture</h3>
+                    <div class="glossary-phonetic">/vwa.tyʁ/</div>
+                    <p class="glossary-definition">Car - personal vehicle.</p>
+                    <p class="glossary-example">"Je vais à la gare en voiture."</p>
+                    <span class="glossary-category">Transportation</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Vélo</h3>
+                    <div class="glossary-phonetic">/ve.lo/</div>
+                    <p class="glossary-definition">Bicycle - pedal vehicle.</p>
+                    <p class="glossary-example">"Je vais au travail en vélo."</p>
+                    <span class="glossary-category">Transportation</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Billet</h3>
+                    <div class="glossary-phonetic">/bi.jɛ/</div>
+                    <p class="glossary-definition">Ticket - travel document.</p>
+                    <p class="glossary-example">"J'ai acheté mon billet de train."</p>
+                    <span class="glossary-category">Travel</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Passeport</h3>
+                    <div class="glossary-phonetic">/pas.pɔʁ/</div>
+                    <p class="glossary-definition">Passport - travel document.</p>
+                    <p class="glossary-example">"N'oubliez pas votre passeport."</p>
+                    <span class="glossary-category">Travel</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Valise</h3>
+                    <div class="glossary-phonetic">/va.liz/</div>
+                    <p class="glossary-definition">Suitcase - travel bag.</p>
+                    <p class="glossary-example">"Ma valise est prête pour le voyage."</p>
+                    <span class="glossary-category">Travel</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Hôtel</h3>
+                    <div class="glossary-phonetic">/o.tɛl/</div>
+                    <p class="glossary-definition">Hotel - accommodation.</p>
+                    <p class="glossary-example">"J'ai réservé une chambre à l'hôtel."</p>
+                    <span class="glossary-category">Travel</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Chambre</h3>
+                    <div class="glossary-phonetic">/ʃɑ̃bʁ/</div>
+                    <p class="glossary-definition">Room - hotel accommodation.</p>
+                    <p class="glossary-example">"La chambre est disponible à partir de 14h."</p>
+                    <span class="glossary-category">Travel</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Réservation</h3>
+                    <div class="glossary-phonetic">/ʁe.zɛʁ.va.sjɔ̃/</div>
+                    <p class="glossary-definition">Reservation - booking.</p>
+                    <p class="glossary-example">"J'ai fait une réservation pour deux nuits."</p>
+                    <span class="glossary-category">Travel</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Voyage</h3>
+                    <div class="glossary-phonetic">/vwa.jaʒ/</div>
+                    <p class="glossary-definition">Trip or journey.</p>
+                    <p class="glossary-example">"Bon voyage!"</p>
+                    <span class="glossary-category">Travel</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Destination</h3>
+                    <div class="glossary-phonetic">/dɛs.ti.na.sjɔ̃/</div>
+                    <p class="glossary-definition">Destination - travel endpoint.</p>
+                    <p class="glossary-example">"Quelle est votre destination?"</p>
+                    <span class="glossary-category">Travel</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="category-section">
+            <h2 class="category-title" id="I">Healthcare</h2>
+            <div class="glossary-grid">
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Médecin</h3>
+                    <div class="glossary-phonetic">/med.sɛ̃/</div>
+                    <p class="glossary-definition">Doctor - medical professional.</p>
+                    <p class="glossary-example">"Je dois prendre rendez-vous avec mon médecin."</p>
+                    <span class="glossary-category">Healthcare</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Hôpital</h3>
+                    <div class="glossary-phonetic">/o.pi.tal/</div>
+                    <p class="glossary-definition">Hospital - medical treatment facility.</p>
+                    <p class="glossary-example">"L'hôpital le plus proche est à 5 km."</p>
+                    <span class="glossary-category">Healthcare</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Assurance maladie</h3>
+                    <div class="glossary-phonetic">/a.sy.ʁɑ̃s ma.la.di/</div>
+                    <p class="glossary-definition">Health insurance - coverage for medical expenses.</p>
+                    <p class="glossary-example">"Avez-vous une assurance maladie valide?"</p>
+                    <span class="glossary-category">Healthcare</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Infirmier/Infirmière</h3>
+                    <div class="glossary-phonetic">/ɛ̃.fiʁ.mje/ /ɛ̃.fiʁ.mjɛʁ/</div>
+                    <p class="glossary-definition">Nurse - healthcare professional.</p>
+                    <p class="glossary-example">"L'infirmière va prendre votre tension."</p>
+                    <span class="glossary-category">Healthcare</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Médicament</h3>
+                    <div class="glossary-phonetic">/me.di.ka.mɑ̃/</div>
+                    <p class="glossary-definition">Medicine or medication - treatment for illness.</p>
+                    <p class="glossary-example">"Prenez ce médicament trois fois par jour."</p>
+                    <span class="glossary-category">Healthcare</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Rendez-vous</h3>
+                    <div class="glossary-phonetic">/ʁɑ̃.de.vu/</div>
+                    <p class="glossary-definition">Appointment - scheduled meeting with a professional.</p>
+                    <p class="glossary-example">"J'ai un rendez-vous chez le dentiste demain."</p>
+                    <span class="glossary-category">Healthcare</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Médecin</h3>
+                    <div class="glossary-phonetic">/med.sɛ̃/</div>
+                    <p class="glossary-definition">Doctor - medical professional.</p>
+                    <p class="glossary-example">"Je vais voir le médecin demain."</p>
+                    <span class="glossary-category">Healthcare</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Hôpital</h3>
+                    <div class="glossary-phonetic">/o.pi.tal/</div>
+                    <p class="glossary-definition">Hospital - medical facility.</p>
+                    <h3 class="glossary-term">Bail</h3>
+                    <div class="glossary-phonetic">/baj/</div>
+                    <p class="glossary-definition">Lease - rental agreement for housing.</p>
+                    <p class="glossary-example">"Le bail est d'une durée d'un an."</p>
+                    <span class="glossary-category">Housing</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Loyer</h3>
+                    <div class="glossary-phonetic">/lwa.je/</div>
+                    <p class="glossary-definition">Rent - monthly payment for housing.</p>
+                    <p class="glossary-example">"Le loyer est de 800 euros par mois."</p>
+                    <span class="glossary-category">Housing</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Meublé</h3>
+                    <div class="glossary-phonetic">/mø.ble/</div>
+                    <p class="glossary-definition">Furnished - apartment with furniture included.</p>
+                    <p class="glossary-example">"Je cherche un appartement meublé en centre-ville."</p>
+                    <span class="glossary-category">Housing</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Charges</h3>
+                    <div class="glossary-phonetic">/ʃaʁʒ/</div>
+                    <p class="glossary-definition">Utilities - additional costs like electricity, water, etc.</p>
+                    <p class="glossary-example">"Les charges sont incluses dans le loyer."</p>
+                    <span class="glossary-category">Housing</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Quartier</h3>
+                    <div class="glossary-phonetic">/kaʁ.tje/</div>
+                    <p class="glossary-definition">Neighborhood - area of a city or town.</p>
+                    <p class="glossary-example">"C'est un quartier très calme et familial."</p>
+                    <span class="glossary-category">Housing</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="category-section">
+            <h2 class="category-title" id="K">Technology</h2>
+            <div class="glossary-grid">
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Ordinateur</h3>
+                    <div class="glossary-phonetic">/ɔʁ.di.na.tœʁ/</div>
+                    <p class="glossary-definition">Computer - electronic device for processing data.</p>
+                    <p class="glossary-example">"J'ai besoin d'un nouvel ordinateur portable."</p>
+                    <span class="glossary-category">Technology</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Internet</h3>
+                    <div class="glossary-phonetic">/ɛ̃.tɛʁ.nɛt/</div>
+                    <p class="glossary-definition">Internet - global network of computers.</p>
+                    <p class="glossary-example">"La connexion internet est très rapide ici."</p>
+                    <span class="glossary-category">Technology</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Téléphone portable</h3>
+                    <div class="glossary-phonetic">/te.le.fɔn pɔʁ.ta.bl/</div>
+                    <p class="glossary-definition">Mobile phone - portable telephone device.</p>
+                    <p class="glossary-example">"J'ai oublié mon téléphone portable à la maison."</p>
+                    <span class="glossary-category">Technology</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Clavier</h3>
+                    <div class="glossary-phonetic">/kla.vje/</div>
+                    <p class="glossary-definition">Keyboard - input device for computers.</p>
+                    <p class="glossary-example">"J'ai besoin d'un nouveau clavier pour mon ordinateur."</p>
+                    <span class="glossary-category">Technology</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Écran</h3>
+                    <div class="glossary-phonetic">/e.kʁɑ̃/</div>
+                    <p class="glossary-definition">Screen - display device for computers and phones.</p>
+                    <p class="glossary-example">"L'écran de mon ordinateur est trop petit."</p>
+                    <span class="glossary-category">Technology</span>
+                </div>
+                <div class="glossary-card">
+                    <h3 class="glossary-term">Wi-Fi</h3>
+                    <div class="glossary-phonetic">/wi.fi/</div>
+                    <p class="glossary-definition">Wi-Fi - wireless internet connection.</p>
+                    <p class="glossary-example">"Quel est le mot de passe du Wi-Fi?"</p>
+                    <span class="glossary-category">Technology</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function searchTerm() {
+            const searchInput = document.getElementById('searchInput');
+            const searchTerm = searchInput.value.toLowerCase();
+            const glossaryCards = document.querySelectorAll('.glossary-card');
+            
+            glossaryCards.forEach(card => {
+                const term = card.querySelector('.glossary-term').textContent.toLowerCase();
+                const definition = card.querySelector('.glossary-definition').textContent.toLowerCase();
+                
+                if (term.includes(searchTerm) || definition.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Add event listener for Enter key
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchTerm();
+            }
+        });
+    </script>
+</body>
+</html> 
