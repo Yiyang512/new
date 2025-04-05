@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEF/TCF Calculator - Simple French with Hems</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #42e695;
+            --secondary: #3bb2b8;
+            --dark-bg: #0a1e1c;
+            --text-color: #ffffff;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --card-border: rgba(66, 230, 149, 0.1);
+            --card-shadow: rgba(66, 230, 149, 0.1);
+            --hover-shadow: rgba(66, 230, 149, 0.2);
+            --modal-bg: rgba(10, 30, 28, 0.95);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            background-color: transparent;
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(66, 230, 149, 0.1), rgba(59, 178, 184, 0.1));
+            border-radius: 20px;
+            border: 1px solid var(--card-border);
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+        }
+
+        .calculator-section {
+            margin-bottom: 4rem;
+            padding: 2rem;
+            background: var(--card-bg);
+            border-radius: 15px;
+            border: 1px solid var(--card-border);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .calculator-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid var(--card-border);
+        }
+
+        .calculator-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        .form-group select,
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+
+        .result-card {
+            background: rgba(66, 230, 149, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid var(--primary);
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .result-card h4 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .points-display {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 1rem 0;
+        }
+
+        .points-breakdown {
+            text-align: left;
+            margin-top: 1.5rem;
+        }
+
+        .points-breakdown h5 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .points-breakdown ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .points-breakdown li {
+            margin-bottom: 0.5rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: var(--dark-bg);
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            margin-top: 1rem;
+            width: 100%;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px var(--hover-shadow);
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid var(--card-border);
+            margin-bottom: 2rem;
+        }
+
+        .info-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .info-card p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .container {
+                padding: 1.5rem 1rem;
+            }
+
+            .calculator-section {
+                padding: 1.5rem;
+            }
+
+            .calculator-card {
+                padding: 1.2rem;
+            }
+
+            .calculator-card h3 {
+                font-size: 1.2rem;
+            }
+
+            .form-group label {
+                font-size: 0.9rem;
+            }
+
+            .form-group select,
+            .form-group input {
+                padding: 0.6rem;
+                font-size: 0.9rem;
+            }
+
+            .points-display {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hero-section">
+            <h1 class="hero-title">TEF/TCF Calculator</h1>
+            <p class="hero-subtitle">Calculate Your Potential CRS Points from French Language Skills</p>
+        </div>
+
+        <div class="calculator-section">
+            <h2 class="section-title">Language Test Calculator</h2>
+            <div class="calculator-grid">
+                <div class="calculator-card">
+                    <h3>French Language Skills</h3>
+                    <div class="form-group">
+                        <label for="french-reading">Reading (CLB/NCLC)</label>
+                        <select id="french-reading">
+                            <option value="0">Select Level</option>
+                            <option value="4">CLB 4</option>
+                            <option value="5">CLB 5</option>
+                            <option value="6">CLB 6</option>
+                            <option value="7">CLB 7</option>
+                            <option value="8">CLB 8</option>
+                            <option value="9">CLB 9</option>
+                            <option value="10">CLB 10</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="french-writing">Writing (CLB/NCLC)</label>
+                        <select id="french-writing">
+                            <option value="0">Select Level</option>
+                            <option value="4">CLB 4</option>
+                            <option value="5">CLB 5</option>
+                            <option value="6">CLB 6</option>
+                            <option value="7">CLB 7</option>
+                            <option value="8">CLB 8</option>
+                            <option value="9">CLB 9</option>
+                            <option value="10">CLB 10</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="french-listening">Listening (CLB/NCLC)</label>
+                        <select id="french-listening">
+                            <option value="0">Select Level</option>
+                            <option value="4">CLB 4</option>
+                            <option value="5">CLB 5</option>
+                            <option value="6">CLB 6</option>
+                            <option value="7">CLB 7</option>
+                            <option value="8">CLB 8</option>
+                            <option value="9">CLB 9</option>
+                            <option value="10">CLB 10</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="french-speaking">Speaking (CLB/NCLC)</label>
+                        <select id="french-speaking">
+                            <option value="0">Select Level</option>
+                            <option value="4">CLB 4</option>
+                            <option value="5">CLB 5</option>
+                            <option value="6">CLB 6</option>
+                            <option value="7">CLB 7</option>
+                            <option value="8">CLB 8</option>
+                            <option value="9">CLB 9</option>
+                            <option value="10">CLB 10</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="calculator-card">
+                    <h3>English Language Skills</h3>
+                    <div class="form-group">
+                        <label for="english-reading">Reading (CLB)</label>
+                        <select id="english-reading">
+                            <option value="0">Select Level</option>
+                            <option value="4">CLB 4</option>
+                            <option value="5">CLB 5</option>
+                            <option value="6">CLB 6</option>
+                            <option value="7">CLB 7</option>
+                            <option value="8">CLB 8</option>
+                            <option value="9">CLB 9</option>
+                            <option value="10">CLB 10</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="english-writing">Writing (CLB)</label>
+                        <select id="english-writing">
+                            <option value="0">Select Level</option>
+                            <option value="4">CLB 4</option>
+                            <option value="5">CLB 5</option>
+                            <option value="6">CLB 6</option>
+                            <option value="7">CLB 7</option>
+                            <option value="8">CLB 8</option>
+                            <option value="9">CLB 9</option>
+                            <option value="10">CLB 10</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="english-listening">Listening (CLB)</label>
+                        <select id="english-listening">
+                            <option value="0">Select Level</option>
+                            <option value="4">CLB 4</option>
+                            <option value="5">CLB 5</option>
+                            <option value="6">CLB 6</option>
+                            <option value="7">CLB 7</option>
+                            <option value="8">CLB 8</option>
+                            <option value="9">CLB 9</option>
+                            <option value="10">CLB 10</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="english-speaking">Speaking (CLB)</label>
+                        <select id="english-speaking">
+                            <option value="0">Select Level</option>
+                            <option value="4">CLB 4</option>
+                            <option value="5">CLB 5</option>
+                            <option value="6">CLB 6</option>
+                            <option value="7">CLB 7</option>
+                            <option value="8">CLB 8</option>
+                            <option value="9">CLB 9</option>
+                            <option value="10">CLB 10</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <button class="cta-button" onclick="calculatePoints()">Calculate CRS Points</button>
+
+            <div class="result-card" id="result" style="display: none;">
+                <h4>Your Estimated CRS Points</h4>
+                <div class="points-display" id="points-result">0</div>
+                <div class="points-breakdown">
+                    <h5>Points Breakdown</h5>
+                    <ul>
+                        <li>French Language Points: <span id="french-points">0</span></li>
+                        <li>Bilingual Bonus: <span id="bilingual-bonus">0</span></li>
+                        <li>Transferability Points: <span id="transferability-points">0</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="calculator-section">
+            <h2 class="section-title">Understanding Your Results</h2>
+            <div class="info-card">
+                <h3>French Language Points</h3>
+                <p>Points are awarded based on your French language proficiency levels in all four abilities (reading, writing, listening, and speaking). Higher levels in French can significantly boost your CRS score.</p>
+            </div>
+            <div class="info-card">
+                <h3>Bilingual Bonus</h3>
+                <p>You can earn up to 50 additional points if you demonstrate proficiency in both English and French. This bonus is available if you achieve CLB 7 or higher in French and CLB 5 or higher in English.</p>
+            </div>
+            <div class="info-card">
+                <h3>Transferability Points</h3>
+                <p>Additional points may be available for combinations of language skills with education and work experience. These points can further increase your CRS score.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculatePoints() {
+            // Get French scores
+            const frenchReading = parseInt(document.getElementById('french-reading').value);
+            const frenchWriting = parseInt(document.getElementById('french-writing').value);
+            const frenchListening = parseInt(document.getElementById('french-listening').value);
+            const frenchSpeaking = parseInt(document.getElementById('french-speaking').value);
+
+            // Get English scores
+            const englishReading = parseInt(document.getElementById('english-reading').value);
+            const englishWriting = parseInt(document.getElementById('english-writing').value);
+            const englishListening = parseInt(document.getElementById('english-listening').value);
+            const englishSpeaking = parseInt(document.getElementById('english-speaking').value);
+
+            // Calculate French points
+            let frenchPoints = 0;
+            if (frenchReading >= 7 && frenchWriting >= 7 && frenchListening >= 7 && frenchSpeaking >= 7) {
+                frenchPoints = 25;
+                if (frenchReading >= 9 && frenchWriting >= 9 && frenchListening >= 9 && frenchSpeaking >= 9) {
+                    frenchPoints += 25;
+                }
+            }
+
+            // Calculate bilingual bonus
+            let bilingualBonus = 0;
+            const minFrench = Math.min(frenchReading, frenchWriting, frenchListening, frenchSpeaking);
+            const minEnglish = Math.min(englishReading, englishWriting, englishListening, englishSpeaking);
+            if (minFrench >= 7 && minEnglish >= 5) {
+                bilingualBonus = 50;
+            }
+
+            // Calculate transferability points
+            let transferabilityPoints = 0;
+            if (minFrench >= 7) {
+                transferabilityPoints = 25;
+                if (minFrench >= 9) {
+                    transferabilityPoints += 25;
+                }
+            }
+
+            // Total points
+            const totalPoints = frenchPoints + bilingualBonus + transferabilityPoints;
+
+            // Update results
+            document.getElementById('points-result').textContent = totalPoints;
+            document.getElementById('french-points').textContent = frenchPoints;
+            document.getElementById('bilingual-bonus').textContent = bilingualBonus;
+            document.getElementById('transferability-points').textContent = transferabilityPoints;
+            document.getElementById('result').style.display = 'block';
+        }
+    </script>
+</body>
+</html> 
