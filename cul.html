@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>French Cultural Insights - Simple French with Hems</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #42e695;
+            --secondary: #3bb2b8;
+            --dark-bg: #0a1e1c;
+            --text-color: #ffffff;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --card-border: rgba(66, 230, 149, 0.1);
+            --card-shadow: rgba(66, 230, 149, 0.1);
+            --hover-shadow: rgba(66, 230, 149, 0.2);
+            --modal-bg: rgba(10, 30, 28, 0.95);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            background-color: transparent;
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(66, 230, 149, 0.1), rgba(59, 178, 184, 0.1));
+            border-radius: 20px;
+            border: 1px solid var(--card-border);
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+        }
+
+        .section {
+            margin-bottom: 4rem;
+            padding: 2rem;
+            background: var(--card-bg);
+            border-radius: 15px;
+            border: 1px solid var(--card-border);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid var(--card-border);
+            transition: all 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px var(--hover-shadow);
+        }
+
+        .info-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .info-card p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 1rem;
+        }
+
+        .quote {
+            font-style: italic;
+            color: var(--primary);
+            margin: 1rem 0;
+            padding: 1rem;
+            border-left: 3px solid var(--primary);
+        }
+
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            aspect-ratio: 16/9;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .gallery-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 0.5rem;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .resources-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .resources-list li {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border: 1px solid var(--card-border);
+        }
+
+        .resources-list a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .resources-list a:hover {
+            color: var(--secondary);
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .container {
+                padding: 1.5rem 1rem;
+            }
+
+            .section {
+                padding: 1.5rem;
+            }
+
+            .info-card {
+                padding: 1.2rem;
+            }
+
+            .info-card h3 {
+                font-size: 1.2rem;
+            }
+
+            .info-card p {
+                font-size: 0.9rem;
+            }
+
+            .gallery-item {
+                aspect-ratio: 1/1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hero-section">
+            <h1 class="hero-title">French Cultural Insights</h1>
+            <p class="hero-subtitle">Discover the Rich Tapestry of French Culture and Traditions</p>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">French Traditions & Customs</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>La Bise</h3>
+                    <p>The famous French cheek kiss greeting varies by region - from two kisses in Paris to four in some parts of the south. It's a cultural ritual that reflects the importance of personal connections in French society.</p>
+                    <div class="quote">"La bise is not just a greeting, it's a social art form that varies by region and relationship."</div>
+                </div>
+                <div class="info-card">
+                    <h3>L'Art de Vivre</h3>
+                    <p>The French art of living emphasizes quality over quantity, from leisurely meals to appreciation of beauty in everyday life. This philosophy influences everything from food to fashion.</p>
+                    <div class="quote">"In France, every meal is an occasion, and every occasion deserves a good meal."</div>
+                </div>
+                <div class="info-card">
+                    <h3>Fête des Rois</h3>
+                    <p>Celebrated on January 6th, this tradition involves sharing a galette des rois (king cake) with a hidden figurine. The person who finds it becomes king or queen for the day.</p>
+                    <div class="quote">"A delicious tradition that brings families together in the new year."</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">French Gastronomy</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>Regional Specialties</h3>
+                    <p>From bouillabaisse in Marseille to cassoulet in Toulouse, each region boasts its own culinary treasures. French cuisine is a UNESCO Intangible Cultural Heritage.</p>
+                    <ul style="color: rgba(255, 255, 255, 0.8); list-style-type: none;">
+                        <li>• Normandy: Camembert and cider</li>
+                        <li>• Provence: Ratatouille and bouillabaisse</li>
+                        <li>• Alsace: Choucroute and tarte flambée</li>
+                        <li>• Brittany: Crêpes and galettes</li>
+                    </ul>
+                </div>
+                <div class="info-card">
+                    <h3>Dining Etiquette</h3>
+                    <p>French dining is a ritual with specific rules: bread on the table, not on a plate; hands visible at all times; and the importance of saying "bon appétit" before eating.</p>
+                    <ul style="color: rgba(255, 255, 255, 0.8); list-style-type: none;">
+                        <li>• Keep hands on the table</li>
+                        <li>• Wait for "bon appétit"</li>
+                        <li>• Bread is for sopping, not buttering</li>
+                        <li>• Cheese before dessert</li>
+                    </ul>
+                </div>
+                <div class="info-card">
+                    <h3>Wine Culture</h3>
+                    <p>France's wine regions each tell a story of terroir and tradition. From Bordeaux to Burgundy, wine is an integral part of French culture and daily life.</p>
+                    <ul style="color: rgba(255, 255, 255, 0.8); list-style-type: none;">
+                        <li>• Bordeaux: Red blends</li>
+                        <li>• Burgundy: Pinot Noir</li>
+                        <li>• Champagne: Sparkling wines</li>
+                        <li>• Loire Valley: White wines</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">French Arts & Literature</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>Literary Giants</h3>
+                    <p>France has produced some of the world's most influential writers, from Victor Hugo to Albert Camus. French literature continues to shape global thought and culture.</p>
+                    <div class="quote">"A book must be the axe for the frozen sea within us." - Franz Kafka</div>
+                </div>
+                <div class="info-card">
+                    <h3>Visual Arts</h3>
+                    <p>From the Impressionists to modern art, France has been at the forefront of artistic movements. The Louvre, Musée d'Orsay, and Centre Pompidou showcase this rich heritage.</p>
+                    <div class="quote">"Art is not what you see, but what you make others see." - Edgar Degas</div>
+                </div>
+                <div class="info-card">
+                    <h3>Cinema</h3>
+                    <p>French cinema, from the Nouvelle Vague to contemporary films, has influenced filmmakers worldwide. The Cannes Film Festival remains a pinnacle of cinematic achievement.</p>
+                    <div class="quote">"Cinema is the most beautiful fraud in the world." - Jean-Luc Godard</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">French Language & Culture</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>Language Nuances</h3>
+                    <p>French is more than just words - it's a reflection of French culture and values. Understanding these nuances is key to truly mastering the language.</p>
+                    <ul style="color: rgba(255, 255, 255, 0.8); list-style-type: none;">
+                        <li>• Tu vs. Vous: Social hierarchy</li>
+                        <li>• Bonjour: Essential greeting</li>
+                        <li>• Merci beaucoup: Politeness</li>
+                        <li>• C'est la vie: Philosophy</li>
+                    </ul>
+                </div>
+                <div class="info-card">
+                    <h3>Cultural References</h3>
+                    <p>Common French expressions and their cultural significance. These phrases reveal much about French values and worldview.</p>
+                    <ul style="color: rgba(255, 255, 255, 0.8); list-style-type: none;">
+                        <li>• Joie de vivre: Joy of living</li>
+                        <li>• L'esprit critique: Critical thinking</li>
+                        <li>• Liberté, égalité, fraternité</li>
+                        <li>• Laïcité: Secularism</li>
+                    </ul>
+                </div>
+                <div class="info-card">
+                    <h3>Regional Variations</h3>
+                    <p>France's regions each have their own linguistic and cultural identity, from Breton in Brittany to Occitan in the south.</p>
+                    <ul style="color: rgba(255, 255, 255, 0.8); list-style-type: none;">
+                        <li>• Northern French</li>
+                        <li>• Southern French</li>
+                        <li>• Regional dialects</li>
+                        <li>• Local expressions</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Resources & Further Reading</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>Books & Literature</h3>
+                    <ul class="resources-list">
+                        <li>
+                            <a href="https://www.goodreads.com/book/show/18730289-french-children-don-t-throw-food" target="_blank">
+                                French Children Don't Throw Food
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.goodreads.com/book/show/119322.The_Elements_of_Style" target="_blank">
+                                A Year in Provence
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.goodreads.com/book/show/18730289-french-children-don-t-throw-food" target="_blank">
+                                The Bonjour Effect
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="info-card">
+                    <h3>Cultural Resources</h3>
+                    <ul class="resources-list">
+                        <li>
+                            <a href="https://www.france.fr/en" target="_blank">
+                                France Tourism Official Site
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.louvre.fr/en" target="_blank">
+                                The Louvre Museum
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.paris.fr/" target="_blank">
+                                City of Paris
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="info-card">
+                    <h3>Language & Culture</h3>
+                    <ul class="resources-list">
+                        <li>
+                            <a href="https://www.france-education-international.fr/en" target="_blank">
+                                France Éducation International
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.afparis.org/" target="_blank">
+                                Alliance Française
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.culture.gouv.fr/" target="_blank">
+                                French Ministry of Culture
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 
