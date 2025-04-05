@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>French Learning Resources</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent-color: #00CC7A;
+            --accent-color-light: #00EFAB;
+            --accent-glow: rgba(0, 204, 122, 0.25);
+            --text-dark: #001102;
+            --text-light: #E0FFF0;
+            --border-light: rgba(0, 204, 122, 0.35);
+            --shadow-color: rgba(0, 204, 122, 0.2);
+            --bg-light: rgba(0, 204, 122, 0.08);
+            --navy-dark: #001102;
+            --card-shadow: none;
+            --bg-dark: #001102;
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body, html {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            min-height: 100vh;
+            color: var(--text-light);
+        }
+        
+        .hemiya-banner {
+            width: 100%;
+            height: 140px;
+            background-color: transparent;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: none;
+            overflow: hidden;
+            margin: 0;
+            box-shadow: none;
+        }
+        
+        .banner-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(var(--accent-color) 1px, transparent 1px);
+            background-size: 28px 28px;
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .shining-dots {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .dot {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+            opacity: 0;
+            animation: dot-shine 4s infinite cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 15px 5px var(--accent-glow);
+        }
+        
+        .dot:nth-child(1) { top: 30%; left: 15%; animation-delay: 0s; }
+        .dot:nth-child(2) { top: 40%; left: 35%; animation-delay: 0.7s; }
+        .dot:nth-child(3) { top: 60%; left: 65%; animation-delay: 1.4s; }
+        .dot:nth-child(4) { top: 35%; left: 85%; animation-delay: 2.1s; }
+        .dot:nth-child(5) { top: 70%; left: 25%; animation-delay: 2.8s; }
+        .dot:nth-child(6) { top: 20%; left: 70%; animation-delay: 3.5s; }
+        .dot:nth-child(7) { top: 55%; left: 55%; animation-delay: 1.0s; }
+        .dot:nth-child(8) { top: 25%; left: 45%; animation-delay: 2.3s; }
+        
+        @keyframes dot-shine {
+            0% { transform: scale(1); opacity: 0; }
+            25% { transform: scale(2.5); opacity: 0.9; }
+            50% { transform: scale(2.0); opacity: 0.7; }
+            75% { transform: scale(2.8); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 0; }
+        }
+        
+        .avatar-container {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid var(--accent-color);
+            margin-right: 20px;
+            flex-shrink: 0;
+            background-color: white;
+            box-shadow: none;
+            transition: transform 0.3s ease;
+        }
+        
+        .text-section:hover .avatar-container {
+            transform: scale(1.05);
+            box-shadow: none;
+        }
+        
+        .avatar {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .banner-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1400px;
+            padding: 0 60px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .text-section {
+            display: flex;
+            align-items: center;
+            background: transparent;
+            padding: 10px 10px 10px 0;
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+        
+        .text-section:hover {
+            transform: translateY(-2px);
+        }
+        
+        .speech-bubble {
+            position: relative;
+            background: rgba(0, 17, 2, 0.4);
+            color: var(--text-light);
+            border-radius: 16px;
+            padding: 18px 28px;
+            margin-left: 20px;
+            box-shadow: none;
+            max-width: 480px;
+            border: 1px solid var(--border-light);
+            backdrop-filter: none;
+        }
+        
+        .speech-bubble::before {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-width: 10px 10px 10px 0;
+            border-style: solid;
+            border-color: transparent var(--border-light) transparent transparent;
+            z-index: 1;
+        }
+        
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            left: -8px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-width: 8px 8px 8px 0;
+            border-style: solid;
+            border-color: transparent rgba(0, 17, 2, 0.4) transparent transparent;
+            z-index: 2;
+        }
+        
+        .banner-text {
+            color: var(--text-light);
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 0.2px;
+            line-height: 1.4;
+        }
+        
+        .tools-container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 1300px;
+            margin: 50px auto;
+            padding: 0 30px;
+        }
+        
+        .tools-heading {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2.2rem;
+            color: var(--text-light);
+            font-weight: 700;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .tools-heading::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, var(--accent-color-light), var(--accent-color));
+            border-radius: 4px;
+        }
+        
+        .tools-description {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: rgba(224, 255, 240, 0.8);
+        }
+        
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .tool-card {
+            background-color: rgba(0, 17, 2, 0.6);
+            border-radius: 12px;
+            overflow: hidden;
+            padding: 30px;
+            color: var(--text-light);
+            box-shadow: none;
+            transition: var(--transition-smooth);
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            position: relative;
+            min-height: 130px;
+            border-left: 4px solid var(--accent-color);
+            border-top: 1px solid var(--border-light);
+            border-bottom: 1px solid var(--border-light);
+            border-right: 1px solid var(--border-light);
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-8px);
+            background-color: rgba(0, 17, 2, 0.8);
+            box-shadow: 0 8px 20px rgba(0, 204, 122, 0.15);
+            border-left: 6px solid var(--accent-color-light);
+        }
+        
+        .tool-card:active {
+            transform: translateY(-4px);
+        }
+        
+        .tool-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom right, rgba(0, 204, 122, 0.03), transparent);
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .tool-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(0, 204, 122, 0.1);
+            border-radius: 10px;
+            color: var(--accent-color-light);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            position: relative;
+            transition: var(--transition-smooth);
+            border: 1px solid var(--border-light);
+        }
+        
+        .tool-card:hover .tool-icon {
+            background-color: rgba(0, 204, 122, 0.2);
+            color: var(--accent-color-light);
+            transform: scale(1.1);
+            box-shadow: 0 0 15px 5px rgba(0, 204, 122, 0.1);
+        }
+        
+        .tool-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 2;
+            color: var(--text-light);
+            transition: var(--transition-smooth);
+        }
+        
+        .tool-card:hover .tool-title {
+            color: var(--accent-color-light);
+        }
+        
+        .tool-description {
+            font-size: 0.9rem;
+            color: rgba(224, 255, 240, 0.7);
+            line-height: 1.5;
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+        
+        .tool-link {
+            font-size: 0.85rem;
+            color: var(--accent-color);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            margin-top: auto;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: var(--transition-smooth);
+        }
+        
+        .tool-link svg {
+            margin-left: 5px;
+            transition: var(--transition-smooth);
+        }
+        
+        .tool-card:hover .tool-link {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .tool-card:hover .tool-link svg {
+            transform: translateX(4px);
+        }
+        
+        .category-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 204, 122, 0.15);
+            color: var(--accent-color-light);
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: 1px solid rgba(0, 204, 122, 0.3);
+        }
+        
+        .popular-badge {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: linear-gradient(135deg, #FFA500, #FF6347);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            z-index: 3;
+        }
+        
+        .popular-badge::before {
+            content: "🔥";
+            font-size: 0.8rem;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .hemiya-banner {
+                height: auto;
+                padding: 12px 0;
+            }
+            
+            .banner-content {
+                padding: 0 15px;
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .banner-text {
+                font-size: 1rem;
+            }
+            
+            .text-section {
+                flex-direction: column;
+                padding: 0;
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .avatar-container {
+                margin-right: 0;
+                margin-bottom: 10px;
+                width: 60px;
+                height: 60px;
+                border-width: 2px;
+            }
+            
+            .speech-bubble {
+                margin: 10px 0 0;
+                padding: 10px 15px;
+                max-width: 90%;
+            }
+            
+            .speech-bubble::before {
+                left: 50%;
+                top: -8px;
+                transform: translateX(-50%);
+                border-width: 0 8px 8px 8px;
+                border-color: transparent transparent var(--border-light) transparent;
+            }
+            
+            .speech-bubble::after {
+                left: 50%;
+                top: -6px;
+                transform: translateX(-50%);
+                border-width: 0 6px 6px 6px;
+                border-color: transparent transparent var(--bg-light) transparent;
+            }
+            
+            .tools-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+                margin-top: 15px;
+            }
+
+            .tools-container {
+                margin: 20px auto;
+                padding: 0 15px;
+            }
+
+            .tools-heading {
+                font-size: 1.3rem;
+                margin-bottom: 15px;
+                padding-bottom: 10px;
+            }
+
+            .tools-heading::after {
+                width: 60px;
+                height: 3px;
+            }
+
+            .tools-description {
+                font-size: 0.85rem;
+                margin-bottom: 15px;
+                line-height: 1.4;
+            }
+
+            .tool-card {
+                padding: 15px;
+                min-height: 100px;
+                border-left-width: 3px;
+            }
+
+            .tool-icon {
+                width: 30px;
+                height: 30px;
+                font-size: 0.9rem;
+                margin-bottom: 8px;
+            }
+
+            .tool-title {
+                font-size: 0.9rem;
+                margin-bottom: 5px;
+            }
+
+            .tool-description {
+                font-size: 0.7rem;
+                margin-bottom: 8px;
+                line-height: 1.3;
+            }
+
+            .tool-link {
+                font-size: 0.7rem;
+            }
+
+            .tool-link svg {
+                width: 10px;
+                height: 10px;
+            }
+
+            .category-badge {
+                top: 8px;
+                right: 8px;
+                font-size: 0.55rem;
+                padding: 2px 6px;
+            }
+
+            .popular-badge {
+                bottom: 8px;
+                left: 8px;
+                font-size: 0.55rem;
+                padding: 2px 6px;
+            }
+            
+            .popular-badge::before {
+                font-size: 0.6rem;
+            }
+
+            .dot {
+                width: 4px;
+                height: 4px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .banner-content {
+                padding: 0 10px;
+            }
+
+            .avatar-container {
+                width: 45px;
+                height: 45px;
+                margin-bottom: 8px;
+            }
+
+            .speech-bubble {
+                padding: 8px 12px;
+                max-width: 95%;
+            }
+
+            .banner-text {
+                font-size: 0.8rem;
+            }
+
+            .tools-heading {
+                font-size: 1.1rem;
+                margin-bottom: 12px;
+            }
+
+            .tools-description {
+                font-size: 0.75rem;
+                margin-bottom: 12px;
+            }
+
+            .tools-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+
+            .category-badge {
+                top: 6px;
+                right: 6px;
+                font-size: 0.5rem;
+                padding: 2px 5px;
+            }
+
+            .tool-card {
+                padding: 12px 10px;
+                min-height: 80px;
+                border-left-width: 2px;
+            }
+
+            .tool-icon {
+                width: 24px;
+                height: 24px;
+                font-size: 0.8rem;
+                margin-bottom: 6px;
+            }
+
+            .tool-title {
+                font-size: 0.75rem;
+                margin-bottom: 4px;
+            }
+
+            .tool-description {
+                font-size: 0.65rem;
+                margin-bottom: 5px;
+                line-height: 1.2;
+            }
+
+            .tool-link {
+                font-size: 0.65rem;
+            }
+
+            .tool-link svg {
+                width: 8px;
+                height: 8px;
+            }
+
+            .popular-badge {
+                bottom: 6px;
+                left: 6px;
+                font-size: 0.5rem;
+                padding: 2px 5px;
+            }
+            
+            .popular-badge::before {
+                font-size: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hemiya-banner">
+        <div class="banner-bg"></div>
+        <div class="shining-dots">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+        <div class="banner-content">
+            <div class="text-section">
+                <div class="avatar-container">
+                    <img src="https://yiyang512.github.io/new/hemiya.jpg" alt="Hemiya AI Assistant" class="avatar" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 width%3D%2264%22 height%3D%2264%22 viewBox%3D%220 0 24 24%22 fill%3D%22none%22 stroke%3D%22%2300CC7A%22 stroke-width%3D%222%22 stroke-linecap%3D%22round%22 stroke-linejoin%3D%22round%22%3E%3Cpath d%3D%22M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E';" />
+                </div>
+                <div class="speech-bubble">
+                    <p class="banner-text">Let's try our free French learning tools!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tools-container">
+        <h2 class="tools-heading">French Learning Resources</h2>
+        <p class="tools-description">Access our comprehensive collection of French learning resources to enhance your language journey.</p>
+        
+        <div class="tools-grid">
+            <a href="https://simplefrenchwithhems.com/french-cultural-insights" class="tool-card" target="_blank" rel="noopener noreferrer">
+                <div class="category-badge">Culture</div>
+                <div class="tool-icon">🎭</div>
+                <h3 class="tool-title">French Cultural Insights</h3>
+                <p class="tool-description">Discover the rich cultural aspects of French language and society.</p>
+                <span class="tool-link">Learn more <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </a>
+            
+            <a href="https://simplefrenchwithhems.com/french-language-canadian-immigration-details" class="tool-card" target="_blank" rel="noopener noreferrer">
+                <div class="category-badge">Immigration</div>
+                <div class="tool-icon">🍁</div>
+                <h3 class="tool-title">French Language & Canadian Immigration Details</h3>
+                <p class="tool-description">Essential information about French language requirements for Canadian immigration.</p>
+                <span class="tool-link">Explore <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </a>
+            
+            <a href="https://simplefrenchwithhems.com/tef-tcf-calculator" class="tool-card" target="_blank" rel="noopener noreferrer">
+                <div class="category-badge">Tool</div>
+                <div class="tool-icon">🧮</div>
+                <h3 class="tool-title">TEF/TCF Calculator</h3>
+                <p class="tool-description">Calculate your TEF/TCF scores and understand their implications.</p>
+                <span class="tool-link">Calculate <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </a>
+            
+            <a href="https://simplefrenchwithhems.com/french-glossary-dictionary" class="tool-card" target="_blank" rel="noopener noreferrer">
+                <div class="category-badge">Resource</div>
+                <div class="tool-icon">📚</div>
+                <h3 class="tool-title">French Glossary & Dictionary</h3>
+                <p class="tool-description">Comprehensive French-English dictionary and terminology guide.</p>
+                <span class="tool-link">Look up <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </a>
+            
+            <a href="https://simplefrenchwithhems.com/why-choose-us" class="tool-card" target="_blank" rel="noopener noreferrer">
+                <div class="category-badge">Premium</div>
+                <div class="popular-badge">$299 Value</div>
+                <div class="tool-icon">📝</div>
+                <h3 class="tool-title">Exam Preparation</h3>
+                <p class="tool-description">Comprehensive exam preparation resources and study materials.</p>
+                <span class="tool-link">Get started <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </a>
+        </div>
+    </div>
+</body>
+</html> 
