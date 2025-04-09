@@ -10,7 +10,7 @@
     <style>
         :root {
             --accent-color: #00FF9B;
-            --dark-bg: #001102;
+            --dark-bg: transparent;
             --grid-color: rgba(0, 255, 155, 0.2);
             --text-light: #ffffff;
             --card-bg: rgba(10, 25, 15, 0.8);
@@ -24,7 +24,7 @@
         
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: var(--dark-bg);
+            background-color: transparent;
             color: var(--text-light);
             line-height: 1.6;
             overflow-x: hidden;
@@ -33,6 +33,7 @@
         .hemiya-section {
             padding: 70px 0;
             position: relative;
+            background: transparent;
         }
 
         .grid-background {
@@ -155,43 +156,59 @@
         
         .hemiya-features {
             margin: 20px 0;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
         }
         
         .feature-item {
             display: flex;
-            align-items: flex-start;
-            margin-bottom: 20px;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 0;
+            padding: 20px;
+            background: var(--card-bg);
+            border-radius: 15px;
+            border: 1px solid rgba(0, 255, 155, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 255, 155, 0.2);
         }
         
         .feature-icon {
-            width: 45px;
-            height: 45px;
-            min-width: 45px;
+            width: 60px;
+            height: 60px;
+            min-width: 60px;
             background: rgba(0, 255, 155, 0.1);
-            border-radius: 10px;
+            border-radius: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-right: 15px;
+            margin-bottom: 15px;
         }
         
         .feature-icon svg {
-            width: 22px;
-            height: 22px;
+            width: 30px;
+            height: 30px;
             stroke: var(--accent-color);
         }
         
         .feature-text h3 {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             color: var(--accent-color);
-            margin-bottom: 3px;
+            margin-bottom: 8px;
             font-weight: 500;
         }
         
         .feature-text p {
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             color: rgba(255, 255, 255, 0.8);
             font-weight: 300;
+            line-height: 1.5;
         }
         
         .hemiya-images {
@@ -210,23 +227,116 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            animation: pulse-container 8s infinite;
+        }
+        
+        .image-container:nth-child(1) {
+            animation-delay: 0s;
+        }
+        
+        .image-container:nth-child(2) {
+            animation-delay: 2.5s;
+        }
+        
+        .image-container:nth-child(3) {
+            animation-delay: 5s;
+        }
+        
+        @keyframes pulse-container {
+            0%, 100% {
+                transform: translateY(0) scale(1);
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+                border-color: rgba(0, 255, 155, 0.2);
+            }
+            25% {
+                transform: translateY(-8px) scale(1.02);
+                box-shadow: 0 12px 30px rgba(0, 255, 155, 0.3);
+                border-color: var(--accent-color);
+            }
+            50% {
+                transform: translateY(0) scale(1);
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+                border-color: rgba(0, 255, 155, 0.2);
+            }
+        }
+        
+        .image-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #00FF9B, #00B8FF);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+            z-index: 3;
+            box-shadow: 0 4px 15px rgba(0, 255, 155, 0.4);
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            animation: pulse-badge 8s infinite;
+        }
+        
+        .image-badge:nth-child(1) {
+            animation-delay: 0s;
+        }
+        
+        .image-badge:nth-child(2) {
+            animation-delay: 2.5s;
+        }
+        
+        .image-badge:nth-child(3) {
+            animation-delay: 5s;
+        }
+        
+        @keyframes pulse-badge {
+            0%, 100% {
+                transform: scale(1) rotate(0deg);
+                box-shadow: 0 4px 15px rgba(0, 255, 155, 0.4);
+                background: linear-gradient(135deg, #00FF9B, #00B8FF);
+                border-color: rgba(255, 255, 255, 0.2);
+            }
+            25% {
+                transform: scale(1.1) rotate(-5deg);
+                box-shadow: 0 6px 20px rgba(0, 255, 155, 0.5);
+                background: linear-gradient(135deg, #00B8FF, #00FF9B);
+                border-color: rgba(255, 255, 255, 0.3);
+            }
+            50% {
+                transform: scale(1) rotate(0deg);
+                box-shadow: 0 4px 15px rgba(0, 255, 155, 0.4);
+                background: linear-gradient(135deg, #00FF9B, #00B8FF);
+                border-color: rgba(255, 255, 255, 0.2);
+            }
         }
         
         .image-container:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0, 255, 155, 0.2);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 12px 30px rgba(0, 255, 155, 0.3);
+            border-color: var(--accent-color);
         }
 
         .image-container:hover .image-overlay {
             opacity: 1;
+            background: rgba(0, 17, 2, 0.95);
+        }
+
+        .image-container:hover img {
+            transform: scale(1.1);
         }
         
         .image-container img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .image-overlay {
@@ -241,22 +351,121 @@
             justify-content: center;
             align-items: center;
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             padding: 20px;
             text-align: center;
+            animation: pulse-overlay 8s infinite;
+        }
+
+        .image-overlay:nth-child(1) {
+            animation-delay: 0s;
+        }
+        
+        .image-overlay:nth-child(2) {
+            animation-delay: 2.5s;
+        }
+        
+        .image-overlay:nth-child(3) {
+            animation-delay: 5s;
+        }
+        
+        @keyframes pulse-overlay {
+            0%, 100% {
+                opacity: 0;
+                background: rgba(0, 17, 2, 0.85);
+            }
+            25% {
+                opacity: 1;
+                background: rgba(0, 17, 2, 0.95);
+            }
+            50% {
+                opacity: 0;
+                background: rgba(0, 17, 2, 0.85);
+            }
         }
 
         .try-free-text {
             color: var(--accent-color);
-            font-size: 1.4rem;
+            font-size: 1.6rem;
             font-weight: 600;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
+            text-shadow: 0 0 10px rgba(0, 255, 155, 0.3);
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: pulse-text 8s infinite;
+        }
+
+        .try-free-text:nth-child(1) {
+            animation-delay: 0s;
+        }
+        
+        .try-free-text:nth-child(2) {
+            animation-delay: 2.5s;
+        }
+        
+        .try-free-text:nth-child(3) {
+            animation-delay: 5s;
+        }
+        
+        @keyframes pulse-text {
+            0%, 100% {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            25% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(20px);
+                opacity: 0;
+            }
         }
 
         .click-tip {
             color: var(--text-light);
-            font-size: 0.9rem;
-            opacity: 0.9;
+            font-size: 1rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
+            animation: pulse-tip 8s infinite;
+        }
+
+        .click-tip:nth-child(1) {
+            animation-delay: 0s;
+        }
+        
+        .click-tip:nth-child(2) {
+            animation-delay: 2.5s;
+        }
+        
+        .click-tip:nth-child(3) {
+            animation-delay: 5s;
+        }
+        
+        @keyframes pulse-tip {
+            0%, 100% {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            25% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+        }
+
+        /* Pause animations on hover */
+        .image-container:hover,
+        .image-container:hover .image-badge,
+        .image-container:hover .image-overlay,
+        .image-container:hover .try-free-text,
+        .image-container:hover .click-tip {
+            animation-play-state: paused;
         }
         
         .image-label {
@@ -264,12 +473,18 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            padding: 12px;
+            padding: 15px;
             background: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(5px);
             color: var(--accent-color);
             font-weight: 500;
             z-index: 2;
+            transition: all 0.3s ease;
+        }
+
+        .image-container:hover .image-label {
+            background: rgba(0, 0, 0, 0.9);
+            padding: 20px;
         }
         
         .floating-element {
@@ -313,6 +528,12 @@
             }
         }
         
+        @media (max-width: 1200px) {
+            .hemiya-features {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
         @media (max-width: 768px) {
             .hemiya-title {
                 font-size: 2.2rem;
@@ -323,11 +544,11 @@
             }
 
             .try-free-text {
-                font-size: 1.2rem;
+                font-size: 1.3rem;
             }
 
             .click-tip {
-                font-size: 0.8rem;
+                font-size: 0.9rem;
             }
             
             .hemiya-text {
@@ -336,29 +557,26 @@
             }
             
             .feature-item {
-                margin-bottom: 12px;
+                padding: 15px;
             }
             
             .feature-icon {
-                width: 35px;
-                height: 35px;
-                min-width: 35px;
-                margin-right: 10px;
+                width: 50px;
+                height: 50px;
+                min-width: 50px;
             }
             
             .feature-icon svg {
-                width: 18px;
-                height: 18px;
+                width: 25px;
+                height: 25px;
             }
             
             .feature-text h3 {
                 font-size: 1.1rem;
-                margin-bottom: 2px;
             }
             
             .feature-text p {
                 font-size: 0.85rem;
-                line-height: 1.4;
             }
 
             /* Make tools section smaller on mobile */
@@ -388,6 +606,23 @@
                 font-size: 0.75rem !important;
                 margin-top: 10px !important;
             }
+
+            .hemiya-features {
+                grid-template-columns: 1fr;
+            }
+
+            .image-container:hover {
+                transform: translateY(-5px) scale(1.01);
+            }
+
+            .image-badge {
+                width: 35px;
+                height: 35px;
+                font-size: 1.1rem;
+                top: 12px;
+                left: 12px;
+                border-width: 1.5px;
+            }
         }
         
         @media (max-width: 576px) {
@@ -406,24 +641,22 @@
             }
             
             .feature-item {
-                margin-bottom: 10px;
+                padding: 12px;
             }
             
             .feature-icon {
-                width: 28px;
-                height: 28px;
-                min-width: 28px;
-                margin-right: 8px;
+                width: 35px;
+                height: 35px;
+                min-width: 35px;
             }
             
             .feature-icon svg {
-                width: 14px;
-                height: 14px;
+                width: 18px;
+                height: 18px;
             }
             
             .feature-text h3 {
                 font-size: 0.9rem;
-                margin-bottom: 1px;
             }
             
             .feature-text p {
@@ -474,6 +707,23 @@
                 margin-top: 8px !important;
                 margin-bottom: 5px !important;
             }
+
+            .try-free-text {
+                font-size: 1.2rem;
+            }
+
+            .click-tip {
+                font-size: 0.8rem;
+            }
+
+            .image-badge {
+                width: 30px;
+                height: 30px;
+                font-size: 1rem;
+                top: 10px;
+                left: 10px;
+                border-width: 1px;
+            }
         }
         
         @media (max-width: 480px) {
@@ -492,24 +742,22 @@
             }
             
             .feature-item {
-                margin-bottom: 8px;
+                padding: 10px;
             }
             
             .feature-icon {
-                width: 24px;
-                height: 24px;
-                min-width: 24px;
-                margin-right: 6px;
+                width: 28px;
+                height: 28px;
+                min-width: 28px;
             }
             
             .feature-icon svg {
-                width: 12px;
-                height: 12px;
+                width: 14px;
+                height: 14px;
             }
             
             .feature-text h3 {
                 font-size: 0.8rem;
-                margin-bottom: 1px;
             }
             
             .feature-text p {
@@ -523,6 +771,23 @@
             
             .hemiya-content {
                 gap: 15px;
+            }
+
+            .try-free-text {
+                font-size: 1.2rem;
+            }
+
+            .click-tip {
+                font-size: 0.8rem;
+            }
+
+            .image-badge {
+                width: 30px;
+                height: 30px;
+                font-size: 1rem;
+                top: 10px;
+                left: 10px;
+                border-width: 1px;
             }
         }
         
@@ -620,6 +885,19 @@
                         <div class="feature-item">
                             <div class="feature-icon">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                                </svg>
+                            </div>
+                            <div class="feature-text">
+                                <h3>Reading Assistant</h3>
+                                <p>AI-powered reading comprehension practice with instant feedback and vocabulary support.</p>
+                            </div>
+                        </div>
+
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
                                 </svg>
                             </div>
@@ -659,6 +937,7 @@
                 
                 <div class="hemiya-images">
                     <a href="https://simplefrenchwithhems.com/writing-test" class="image-container" target="_blank" rel="noopener noreferrer">
+                        <div class="image-badge">1</div>
                         <img src="https://yiyang512.github.io/new/write.jpg" alt="Hemiya Writing Assistant">
                         <div class="image-overlay">
                             <div class="try-free-text">Try Writing Assistant✨</div>
@@ -668,12 +947,23 @@
                     </a>
                     
                     <a href="https://simplefrenchwithhems.com/hemiya-speaking-test" class="image-container" target="_blank" rel="noopener noreferrer">
+                        <div class="image-badge">2</div>
                         <img src="https://yiyang512.github.io/new/speak.jpg" alt="Hemiya Speaking Assistant">
                         <div class="image-overlay">
                             <div class="try-free-text">Try Speaking Assistant✨</div>
                             <div class="click-tip">Click to start your free session</div>
                         </div>
                         <div class="image-label">Try Speaking Assistant for FREE⚡</div>
+                    </a>
+
+                    <a href="https://simplefrenchwithhems.com/hemiya-ai-powered-french-reading-test-practice" class="image-container" target="_blank" rel="noopener noreferrer">
+                        <div class="image-badge">3</div>
+                        <img src="https://yiyang512.github.io/new/reading.png" alt="Hemiya Reading Assistant">
+                        <div class="image-overlay">
+                            <div class="try-free-text">Try Reading Assistant✨</div>
+                            <div class="click-tip">Click to start your free session</div>
+                        </div>
+                        <div class="image-label">Try Reading Assistant for FREE⚡</div>
                     </a>
                 </div>
             </div>
