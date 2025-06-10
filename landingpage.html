@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple French with Hems - Q&A Landing Page</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-green': '#00FF94',
+                        'brand-dark': '#0A0F1C',
+                        'brand-dark-light': '#1A2332',
+                        'brand-green-dark': '#00CC76',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0A0F1C 0%, #1A2332 100%);
+        }
+        .brand-font {
+            font-family: 'Poppins', sans-serif;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .slide-in-right {
+            animation: slideInRight 0.5s ease-out;
+        }
+        .slide-in-left {
+            animation: slideInLeft 0.5s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(30px) scale(0.9); }
+            to { opacity: 1; transform: translateX(0) scale(1); }
+        }
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-30px) scale(0.9); }
+            to { opacity: 1; transform: translateX(0) scale(1); }
+        }
+        .typing-dots {
+            animation: typing 1.5s infinite;
+        }
+        @keyframes typing {
+            0%, 60%, 100% { opacity: 0.4; }
+            30% { opacity: 1; }
+        }
+        .chat-container {
+            background: rgba(26, 35, 50, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 255, 148, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .chat-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('https://yiyang512.github.io/new/mainlogo.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.1;
+            z-index: -1;
+        }
+        .chat-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, transparent 30%, rgba(10, 15, 28, 0.8) 70%);
+            z-index: -1;
+        }
+        .chat-content {
+            position: relative;
+            z-index: 1;
+        }
+        .user-bubble {
+            background: linear-gradient(135deg, rgba(0, 255, 148, 0.1) 0%, rgba(0, 255, 148, 0.05) 100%);
+            border: 1px solid rgba(0, 255, 148, 0.2);
+            color: #00FF94;
+        }
+        .bot-bubble {
+            background: linear-gradient(135deg, #00FF94 0%, #00CC76 100%);
+            color: #0A0F1C;
+            box-shadow: 0 4px 20px rgba(0, 255, 148, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-brand-dark min-h-screen">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        const qaData = [
+            {
+                question: "How fast will I learn French?",
+                answer: "Up to 3x faster — with Simple French with Hems' step-by-step system."
+            },
+            {
+                question: "How much money can I save?",
+                answer: "Over $5,000 compared to tutors — Simple French with Hems covers it all."
+            },
+            {
+                question: "Will I pass my TEF or DELF exam?",
+                answer: "95%+ of Simple French with Hems students do."
+            },
+            {
+                question: "What if I have a busy schedule?",
+                answer: "No problem — Simple French with Hems is 100% self-paced."
+            },
+            {
+                question: "Will I really be able to speak French?",
+                answer: "Yes — our 5,000+ practice questions and AI feedback make it real."
+            },
+            {
+                question: "Can this help with immigration?",
+                answer: "Absolutely — Simple French with Hems helps boost your CRS by up to 74 points."
+            },
+            {
+                question: "Is this more affordable than a diploma?",
+                answer: "Yes — Simple French with Hems is 12x cheaper and just as effective."
+            },
+            {
+                question: "Will I see real results?",
+                answer: "Yes — students report more confidence, better jobs, and faster PR approval with Simple French with Hems."
+            }
+        ];
+
+        const ChatBubble = ({ message, isUser, isVisible }) => {
+            if (!isVisible) return null;
+
+            return (
+                <div className={`flex ${isUser ? 'justify-end' : 'justify-start'} mb-6 ${
+                    isUser ? 'slide-in-right' : 'slide-in-left'
+                }`}>
+                    <div className={`max-w-md md:max-w-xl lg:max-w-4xl px-8 py-6 rounded-2xl ${
+                        isUser 
+                            ? 'user-bubble rounded-br-md' 
+                            : 'bot-bubble rounded-bl-md'
+                    }`}>
+                        {!isUser && (
+                            <div className="flex items-center mb-6">
+                                <div className="w-12 h-12 bg-brand-dark rounded-full flex items-center justify-center mr-5 border-2 border-brand-dark overflow-hidden">
+                                    <img 
+                                        src="https://yiyang512.github.io/new/mainlogo.png" 
+                                        alt="Simple French with Hems Logo" 
+                                        className="w-full h-full object-cover rounded-full"
+                                    />
+                                </div>
+                                <span className="text-lg md:text-xl font-bold text-brand-dark brand-font">SIMPLE FRENCH WITH HEMS</span>
+                            </div>
+                        )}
+                        <p className={`text-xl md:text-2xl lg:text-3xl leading-relaxed ${
+                            isUser ? 'font-semibold text-brand-green' : 'font-semibold text-brand-dark'
+                        }`}>
+                            {message}
+                        </p>
+                    </div>
+                </div>
+            );
+        };
+
+        const LandingPage = () => {
+            const [currentIndex, setCurrentIndex] = useState(0);
+            const [showAnswer, setShowAnswer] = useState(false);
+            const [allCompleted, setAllCompleted] = useState(false);
+            const [showTyping, setShowTyping] = useState(false);
+            const chatContainerRef = useRef(null);
+
+            useEffect(() => {
+                const questionTimer = setTimeout(() => {
+                    setShowTyping(true);
+                }, 500);
+
+                const answerTimer = setTimeout(() => {
+                    setShowTyping(false);
+                    setShowAnswer(true);
+                }, 1500);
+
+                const nextPairTimer = setTimeout(() => {
+                    if (currentIndex < qaData.length - 1) {
+                        setCurrentIndex(prev => prev + 1);
+                        setShowAnswer(false);
+                    } else {
+                        setAllCompleted(true);
+                    }
+                }, 4500);
+
+                return () => {
+                    clearTimeout(questionTimer);
+                    clearTimeout(answerTimer);
+                    clearTimeout(nextPairTimer);
+                };
+            }, [currentIndex]);
+
+            useEffect(() => {
+                if (chatContainerRef.current) {
+                    setTimeout(() => {
+                        chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+                    }, 100);
+                }
+            }, [currentIndex, showAnswer]);
+
+            return (
+                <div className="min-h-screen bg-gradient-to-br from-brand-dark to-brand-dark-light flex items-center justify-center">
+                    {/* FAQ Chat Container */}
+                    <div className="w-full h-screen">
+                        <div className="chat-container h-full w-full rounded-none">
+                            <div className="chat-content h-full flex flex-col">
+                                <div className="p-8 text-center">
+                                    <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-brand-green brand-font mb-6">
+                                        Online French School With AI & VR Technology
+                                    </h2>
+                                    <p className="text-xl md:text-2xl lg:text-3xl text-gray-400">
+                                        Simple French with HEMS
+                                    </p>
+                                </div>
+                                
+                                <div 
+                                    ref={chatContainerRef}
+                                    className="flex-1 overflow-y-auto px-8 space-y-4"
+                                    style={{scrollbarWidth: 'thin', scrollbarColor: '#00FF94 transparent'}}
+                                >
+                                    {qaData.slice(0, currentIndex + 1).map((qa, index) => (
+                                        <div key={index} className="mb-12">
+                                            <ChatBubble 
+                                                message={qa.question} 
+                                                isUser={true}
+                                                isVisible={true}
+                                            />
+                                            <ChatBubble 
+                                                message={qa.answer} 
+                                                isUser={false}
+                                                isVisible={index < currentIndex || (index === currentIndex && showAnswer)}
+                                            />
+                                        </div>
+                                    ))}
+
+                                    {/* Typing indicator */}
+                                    {showTyping && !allCompleted && (
+                                        <div className="flex justify-start mb-4 fade-in">
+                                            <div className="bg-brand-dark-light border border-brand-green/20 px-5 py-4 rounded-2xl rounded-bl-md shadow-lg">
+                                                <div className="flex space-x-2">
+                                                    <div className="w-2 h-2 bg-brand-green rounded-full typing-dots"></div>
+                                                    <div className="w-2 h-2 bg-brand-green rounded-full typing-dots" style={{animationDelay: '0.2s'}}></div>
+                                                    <div className="w-2 h-2 bg-brand-green rounded-full typing-dots" style={{animationDelay: '0.4s'}}></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Progress indicator */}
+                                <div className="p-6 flex justify-center">
+                                    <div className="bg-brand-dark-light rounded-full px-8 py-4 border border-brand-green/20">
+                                        <span className="text-brand-green text-xl md:text-2xl lg:text-3xl font-bold brand-font">
+                                            Q&A Progress: {currentIndex + 1}/8
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // Wait for DOM to be ready
+        document.addEventListener('DOMContentLoaded', function() {
+            ReactDOM.render(<LandingPage />, document.getElementById('root'));
+        });
+
+        // Fallback if DOMContentLoaded already fired
+        if (document.readyState === 'loading') {
+            // Wait for DOMContentLoaded
+        } else {
+            ReactDOM.render(<LandingPage />, document.getElementById('root'));
+        }
+    </script>
+</body>
+</html>
