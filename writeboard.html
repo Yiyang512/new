@@ -161,7 +161,7 @@
             border: 3px solid var(--primary-color);
             padding: 20px;
             font-size: 18px;
-            background: rgba(0, 255, 153, 0.1);
+            background: rgba(0, 0, 0, 0.4);
             color: white !important;
             outline: none;
             border-radius: 15px;
@@ -870,7 +870,7 @@
             max-width: 800px;
             margin: 20px auto;
             padding: 20px;
-            background: rgba(0, 255, 153, 0.1);
+            background: rgba(0, 0, 0, 0.4);
             border-radius: 15px;
             border: 2px solid var(--primary-color);
         }
@@ -900,7 +900,7 @@
 
         .assessment-category {
             padding: 15px;
-            background: rgba(0, 255, 153, 0.05);
+            background: rgba(0, 0, 0, 0.3);
             border-radius: 10px;
             border: 1px solid var(--primary-color);
         }
@@ -952,6 +952,7 @@
             padding: 15px;
             border: 1px solid var(--primary-color);
             border-radius: 10px;
+            background: rgba(0, 0, 0, 0.2);
         }
 
         .vocabulary-analysis {
@@ -967,7 +968,7 @@
 
         .vocab-level {
             padding: 8px;
-            background: rgba(0, 255, 153, 0.1);
+            background: rgba(0, 0, 0, 0.3);
             border-radius: 5px;
             display: flex;
             justify-content: space-between;
@@ -982,7 +983,7 @@
 
         .metric {
             padding: 10px;
-            background: rgba(0, 255, 153, 0.05);
+            background: rgba(0, 0, 0, 0.2);
             border-radius: 8px;
             border: 1px solid var(--primary-color);
         }
@@ -1251,7 +1252,7 @@
             min-height: 200px;
             margin: 20px auto;
             padding: 20px;
-            background: rgba(0, 255, 153, 0.1);
+            background: rgba(0, 0, 0, 0.4);
             border: 2px solid var(--primary-color);
             border-radius: 10px;
             color: white;
@@ -1263,7 +1264,7 @@
 
         #textEditor:focus {
             box-shadow: 0 0 15px var(--primary-color);
-            background: rgba(0, 255, 153, 0.15);
+            background: rgba(0, 0, 0, 0.5);
         }
 
         #floating-tooltip {
@@ -1333,6 +1334,7 @@
             font-size: 16px;
             line-height: 1.5;
             overflow-y: auto;
+            white-space: pre-wrap;
         }
         
         .correction {
@@ -1434,6 +1436,8 @@
         <div class="selected-topic-box">
             <div class="topic-label">Your Topic:</div>
             <div id="selectedTopic" class="topic-text"></div>
+            <!-- Add Select Another Topic button -->
+            <button class="btn-blue" onclick="goBackToTopicSelection()">Select Another Topic</button>
         </div>
         <div class="timer-container">
             <div class="timer" id="timer">
@@ -1457,9 +1461,6 @@
         <div class="controls">
             <button class="btn-red" onclick="clearText()">Clear</button>
             <button class="btn-green" onclick="checkGrammar()">Check Grammar</button>
-            <button class="btn-blue" onclick="downloadText()">
-                <span class="icon">💾</span> Save as Text
-            </button>
         </div>
         <div id="grammar-errors"></div>
         <div class="writing-stats">
@@ -1639,46 +1640,46 @@
         // Topics data
         const topics = {
             A1: [
-                "Introduce yourself in French.",
-                "Describe your daily routine.",
-                "Write an invitation letter.",
-                "Talk about your family.",
-                "Write about your favorite food."
+                { en: "Introduce yourself in French.", fr: "Présentez-vous en français." },
+                { en: "Describe your daily routine.", fr: "Décrivez votre routine quotidienne." },
+                { en: "Write an invitation letter.", fr: "Écrivez une lettre d'invitation." },
+                { en: "Talk about your family.", fr: "Parlez de votre famille." },
+                { en: "Write about your favorite food.", fr: "Écrivez sur votre nourriture préférée." }
             ],
             A2: [
-                "Write about your last vacation.",
-                "Describe your dream house.",
-                "Book a hotel room in French.",
-                "Talk about your hobbies.",
-                "Write about your neighborhood."
+                { en: "Write about your last vacation.", fr: "Écrivez sur vos dernières vacances." },
+                { en: "Describe your dream house.", fr: "Décrivez la maison de vos rêves." },
+                { en: "Book a hotel room in French.", fr: "Réservez une chambre d'hôtel en français." },
+                { en: "Talk about your hobbies.", fr: "Parlez de vos loisirs." },
+                { en: "Write about your neighborhood.", fr: "Écrivez sur votre quartier." }
             ],
             B1: [
-                "Pros and cons of living in a big city.",
-                "Describe a moment when you helped someone.",
-                "Importance of learning French.",
-                "Describe your ideal job.",
-                "Write about a cultural experience."
+                { en: "Pros and cons of living in a big city.", fr: "Les avantages et inconvénients de vivre dans une grande ville." },
+                { en: "Describe a moment when you helped someone.", fr: "Décrivez un moment où vous avez aidé quelqu'un." },
+                { en: "Importance of learning French.", fr: "L'importance d'apprendre le français." },
+                { en: "Describe your ideal job.", fr: "Décrivez votre emploi idéal." },
+                { en: "Write about a cultural experience.", fr: "Écrivez sur une expérience culturelle." }
             ],
             B2: [
-                "Impact of social media on relationships.",
-                "Write a job application letter.",
-                "Technology makes life better - Agree or disagree?",
-                "Describe a challenge you've overcome.",
-                "Compare education systems in different countries."
+                { en: "Impact of social media on relationships.", fr: "L'impact des réseaux sociaux sur les relations." },
+                { en: "Write a job application letter.", fr: "Rédigez une lettre de candidature." },
+                { en: "Technology makes life better - Agree or disagree?", fr: "La technologie améliore la vie - Êtes-vous d'accord ou non ?" },
+                { en: "Describe a challenge you've overcome.", fr: "Décrivez un défi que vous avez surmonté." },
+                { en: "Compare education systems in different countries.", fr: "Comparez les systèmes éducatifs de différents pays." }
             ],
             C1: [
-                "Effects of climate change on the economy.",
-                "Why should students learn multiple languages?",
-                "Ethical implications of AI.",
-                "Analyze the role of media in modern society.",
-                "Discuss work-life balance in the digital age."
+                { en: "Effects of climate change on the economy.", fr: "Les effets du changement climatique sur l'économie." },
+                { en: "Why should students learn multiple languages?", fr: "Pourquoi les étudiants devraient-ils apprendre plusieurs langues ?" },
+                { en: "Ethical implications of AI.", fr: "Les implications éthiques de l'intelligence artificielle." },
+                { en: "Analyze the role of media in modern society.", fr: "Analysez le rôle des médias dans la société moderne." },
+                { en: "Discuss work-life balance in the digital age.", fr: "Discutez de l'équilibre travail-vie dans l'ère numérique." }
             ],
             C2: [
-                "Globalization and language diversity.",
-                "The role of literature in society.",
-                "The advantages and disadvantages of free speech.",
-                "Analyze philosophical perspectives on happiness.",
-                "Critique modern art movements."
+                { en: "Globalization and language diversity.", fr: "La mondialisation et la diversité linguistique." },
+                { en: "The role of literature in society.", fr: "Le rôle de la littérature dans la société." },
+                { en: "The advantages and disadvantages of free speech.", fr: "Les avantages et inconvénients de la liberté d'expression." },
+                { en: "Analyze philosophical perspectives on happiness.", fr: "Analysez les perspectives philosophiques sur le bonheur." },
+                { en: "Critique modern art movements.", fr: "Critiquez les mouvements artistiques modernes." }
             ]
         };
 
@@ -1806,26 +1807,34 @@
             }
 
             const topic = topics[level][Math.floor(Math.random() * topics[level].length)];
-            document.getElementById('writingTopic').innerText = `(${level}) ${topic}`;
+            document.getElementById('writingTopic').innerHTML = `
+                <div style="font-size: 18px; margin-bottom: 10px; color: var(--primary-color); font-weight: bold;">(${level})</div>
+                <div style="font-size: 16px; margin-bottom: 8px; color: white;">${topic.en}</div>
+                <div style="font-size: 16px; color: #00FFCC; font-style: italic;">${topic.fr}</div>
+            `;
         }
 
         function randomizeTopic() {
             const levels = Object.keys(topics);
             const randomLevel = levels[Math.floor(Math.random() * levels.length)];
             const topic = topics[randomLevel][Math.floor(Math.random() * topics[randomLevel].length)];
-            document.getElementById('writingTopic').innerText = `(${randomLevel}) ${topic}`;
+            document.getElementById('writingTopic').innerHTML = `
+                <div style="font-size: 18px; margin-bottom: 10px; color: var(--primary-color); font-weight: bold;">(${randomLevel})</div>
+                <div style="font-size: 16px; margin-bottom: 8px; color: white;">${topic.en}</div>
+                <div style="font-size: 16px; color: #00FFCC; font-style: italic;">${topic.fr}</div>
+            `;
         }
 
         // Navigation between steps
         function proceedToWriting() {
-            const topic = document.getElementById('writingTopic').innerText;
+            const topicBox = document.getElementById('writingTopic');
+            const topicContent = topicBox.innerHTML;
             const warningDiv = document.getElementById('topic-warning') || document.createElement('div');
             warningDiv.id = 'topic-warning';
             warningDiv.className = 'topic-warning';
             
-            if (topic === 'Click "Generate Topic" or "Randomize Topic"') {
+            if (topicContent === 'Click "Generate Topic" or "Randomize Topic"') {
                 warningDiv.innerText = "⚠️ Please generate a topic first!";
-                const topicBox = document.getElementById('writingTopic');
                 topicBox.parentNode.insertBefore(warningDiv, topicBox);
                 return;
             }
@@ -1835,8 +1844,8 @@
                 warningDiv.remove();
             }
             
-            // Copy the topic to the writing board
-            document.getElementById('selectedTopic').innerText = topic;
+            // Copy the topic to the writing board (keeping both languages)
+            document.getElementById('selectedTopic').innerHTML = topicContent;
             
             document.getElementById('topicSelection').classList.add('hidden');
             document.getElementById('writingBoard').classList.remove('hidden');
@@ -1850,7 +1859,7 @@
             const savedDraft = localStorage.getItem('writingDraft');
             if (savedDraft) {
                 const draft = JSON.parse(savedDraft);
-                if (draft.topic === topic) {
+                if (draft.topic === topicContent) {
                     document.getElementById('textEditor').innerText = draft.text;
                     updateWritingStats();
                 }
@@ -1889,6 +1898,12 @@
             // Clear any existing error highlights
             editor.innerHTML = text;
             correctionArea.classList.add('hidden');
+            
+            // Clear any existing correction summary
+            const existingSummary = document.querySelector('#correction-area .correction-summary');
+            if (existingSummary) {
+                existingSummary.remove();
+            }
 
             if (text.trim() === '' || text === 'Type your response in French here...') {
                 grammarErrors.innerHTML = `
@@ -1899,12 +1914,16 @@
             }
 
             try {
-                // Show checking message
+                // Show checking message with comprehensive correction notice
                 grammarErrors.innerHTML = `
                     <div class="feedback-message">
-                        <i class="fas fa-spinner fa-spin"></i> Checking grammar...
+                        <i class="fas fa-spinner fa-spin"></i> Performing comprehensive grammar analysis...
+                        <div style="font-size: 12px; margin-top: 8px; opacity: 0.8;">
+                            ✍️ Deep correction: Grammar • Structure • Verb tenses • Articles • Natural expressions
+                        </div>
                     </div>`;
 
+                // Enhanced LanguageTool API call with comprehensive rules
                 const response = await fetch('https://api.languagetool.org/v2/check', {
                     method: 'POST',
                     headers: {
@@ -1913,33 +1932,40 @@
                     body: new URLSearchParams({
                         'text': text,
                         'language': 'fr',
-                        'enabledOnly': 'false'
+                        'enabledOnly': 'false',
+                        'enabledCategories': 'GRAMMAR,TYPOS,PUNCTUATION,CASING,CONFUSED_WORDS,REDUNDANCY,STYLE,SEMANTICS',
+                        'level': 'picky' // Enable more comprehensive checking
                     })
                 });
 
                 const data = await response.json();
-                console.log('LanguageTool response:', data); // Debug log
+                console.log('LanguageTool response:', data);
 
                 if (!data.matches || data.matches.length === 0) {
                     grammarErrors.innerHTML = `
                         <div class="feedback-message" style="border-color: #00FFB3; box-shadow: 0 0 10px #00FFB3;">
-                            🎉 No grammar mistakes found! Great job!
+                            🎉 Comprehensive analysis complete - No grammar mistakes found! 
+                            <div style="font-size: 12px; margin-top: 5px; opacity: 0.8;">
+                                ✅ Grammar • Structure • Verb tenses • Articles • Natural flow
+                            </div>
                         </div>`;
                     return;
                 }
 
-                // Create a temporary div to hold the text while we make replacements
+                // Apply comprehensive correction principles
+                let correctedText = await applyComprehensiveCorrections(text, data.matches);
+                
+                // Enhanced error processing for display
                 let tempDiv = document.createElement('div');
                 tempDiv.textContent = text;
                 let html = tempDiv.innerHTML;
                 let offset = 0;
                 let errorSummary = '';
 
-                // For the corrected version
-                let correctedText = text;
-                let correctionOffset = 0;
-
-                // Sort matches by offset in reverse order (to handle offsets correctly)
+                // Categorize errors by type for better organization
+                const errorCategories = categorizeErrors(data.matches);
+                
+                // Sort matches by offset in reverse order for HTML highlighting
                 data.matches.sort((a, b) => b.offset - a.offset);
 
                 data.matches.forEach((match, index) => {
@@ -1947,178 +1973,354 @@
                     const end = start + match.length;
                     const errorText = text.substring(match.offset, match.offset + match.length);
                     
-                    // Create error span with tooltip
+                    // Enhanced tooltip with correction type
+                    const correctionType = getCorrectionType(match);
                     const replacement = `<span class="error" 
                         data-error-id="${index}"
-                        data-tooltip="${match.message}${match.replacements.length > 0 ? '\nSuggestion: ' + match.replacements[0].value : ''}"
+                        data-tooltip="${correctionType}: ${match.message}${match.replacements.length > 0 ? '\n✅ Correction: ' + match.replacements[0].value : ''}"
                         style="background-color: rgba(255, 68, 68, 0.15); border-bottom: 2px solid #FF4444;"
                         >${errorText}</span>`;
 
-                    // Insert the replacement
                     html = html.substring(0, start) + replacement + html.substring(end);
                     offset += replacement.length - match.length;
 
-                    // Add to error summary
+                    // Enhanced error summary with categories
                     errorSummary = `
                         <div class="error-item">
-                            <div style="color: #FF4444; font-weight: bold;">Error ${data.matches.length - index}:</div>
+                            <div style="color: #FF4444; font-weight: bold;">${correctionType} Error ${data.matches.length - index}:</div>
                             <div style="color: white;">"${errorText}" - ${match.message}</div>
                             ${match.replacements.length > 0 ? 
-                                `<div style="color: #00FFB3;">✓ Suggestion: "${match.replacements[0].value}"</div>` : 
+                                `<div style="color: #00FFB3;">✅ Professional correction: "${match.replacements[0].value}"</div>` : 
                                 ''}
-                            ${match.rule && match.rule.category ? 
-                                `<div style="color: rgba(255,255,255,0.7); font-size: 0.9em;">Category: ${match.rule.category.name}</div>` : 
-                                ''}
+                            <div style="color: rgba(255,255,255,0.5); font-size: 0.8em;">Category: ${correctionType}</div>
                         </div>
                     ` + errorSummary;
-
-                    // Apply correction to the corrected text version
-                    if (match.replacements && match.replacements.length > 0) {
-                        const correctionStart = match.offset + correctionOffset;
-                        const correctionEnd = correctionStart + match.length;
-                        const suggestion = match.replacements[0].value;
-                        
-                        correctedText = correctedText.substring(0, correctionStart) + suggestion + correctedText.substring(correctionEnd);
-                        correctionOffset += suggestion.length - match.length;
-                    }
                 });
 
-                // Update the editor with highlighted errors
+                // Update editor with highlighted errors
                 editor.innerHTML = html;
 
-                // Show error summary
+                // Enhanced error summary with professional analysis
                 grammarErrors.innerHTML = `
                     <div class="feedback-message" style="border-color: #FF4444; box-shadow: 0 0 10px #FF4444;">
                         <div style="font-size: 1.1em; margin-bottom: 15px;">
-                            Found ${data.matches.length} potential ${data.matches.length === 1 ? 'error' : 'errors'}:
+                            📝 Professional Grammar Analysis: Found ${data.matches.length} ${data.matches.length === 1 ? 'issue' : 'issues'}
+                        </div>
+                        <div style="font-size: 0.9em; margin-bottom: 15px; padding: 10px; background: rgba(0,255,153,0.1); border-radius: 5px;">
+                            <strong>🎯 Correction Focus:</strong><br>
+                            ${Object.entries(errorCategories).map(([category, count]) => 
+                                `• ${category}: ${count} ${count === 1 ? 'issue' : 'issues'}`
+                            ).join('<br>')}
                         </div>
                         ${errorSummary}
                         <div style="margin-top: 15px; font-size: 0.9em; color: rgba(255, 255, 255, 0.7);">
-                            💡 Hover over the highlighted text to see detailed suggestions.
+                            💡 Hover over highlighted text for detailed professional corrections.
                         </div>
                         <div style="margin-top: 15px; text-align: center;">
-                            <button id="show-corrected" class="btn btn-primary">Show Corrected Version</button>
+                            <button id="show-corrected" class="btn btn-primary">Show Professionally Corrected Version</button>
                         </div>
                     </div>
                 `;
 
-                // Prepare corrected version
-                let formattedCorrectedText = correctedText;
-                // Format the corrected text by highlighting the changes
-                data.matches.sort((a, b) => a.offset - b.offset); // Sort in ascending order for display
-                let formatOffset = 0;
+                // Set the comprehensively corrected text
+                correctedTextBox.textContent = correctedText;
                 
-                for (const match of data.matches) {
-                    if (match.replacements && match.replacements.length > 0) {
-                        const suggestion = match.replacements[0].value;
-                        const start = match.offset + formatOffset;
-                        formatOffset += suggestion.length - match.length;
-                        
-                        // Highlight the correction
-                        formattedCorrectedText = 
-                            formattedCorrectedText.substring(0, start) + 
-                            `<span class="correction" title="Original: '${match.context.text.substring(match.context.offset, match.context.offset + match.length)}'">` + 
-                            suggestion + 
-                            `</span>` + 
-                            formattedCorrectedText.substring(start + suggestion.length);
-                        
-                        formatOffset += (`<span class="correction" title="Original: '${match.context.text.substring(match.context.offset, match.context.offset + match.length)}'">`.length + `</span>`.length);
-                    }
-                }
-                
-                // Set the corrected text
-                correctedTextBox.innerHTML = formattedCorrectedText;
-                
-                // Add event listener to show corrected version
-                document.getElementById('show-corrected').addEventListener('click', function() {
-                    correctionArea.classList.remove('hidden');
-                    // Scroll to correction area
-                    correctionArea.scrollIntoView({ behavior: 'smooth' });
-                });
-                
-                // Add event listeners for the correction area buttons
-                document.getElementById('apply-corrections').addEventListener('click', function() {
-                    editor.innerHTML = correctedText;
-                    correctionArea.classList.add('hidden');
-                    grammarErrors.innerHTML = `
-                        <div class="feedback-message" style="border-color: #00FFB3; box-shadow: 0 0 10px #00FFB3;">
-                            ✅ All corrections applied successfully!
-                        </div>`;
-                });
-                
-                document.getElementById('copy-corrections').addEventListener('click', function() {
-                    navigator.clipboard.writeText(correctedText).then(function() {
-                        const copyButton = document.getElementById('copy-corrections');
-                        copyButton.textContent = "Copied!";
-                        setTimeout(() => {
-                            copyButton.textContent = "Copy Corrected Text";
-                        }, 2000);
-                    });
-                });
-                
-                document.getElementById('dismiss-corrections').addEventListener('click', function() {
-                    correctionArea.classList.add('hidden');
-                });
+                // Enhanced correction summary
+                const corrections = await getDetailedCorrections(text, data.matches);
+                const correctionSummary = document.createElement('div');
+                correctionSummary.className = 'correction-summary';
+                correctionSummary.style.cssText = `
+                    margin-top: 15px;
+                    padding: 15px;
+                    background: rgba(0, 255, 153, 0.1);
+                    border-radius: 8px;
+                    border: 1px solid var(--primary-color);
+                    font-size: 14px;
+                    color: var(--primary-color);
+                `;
+                correctionSummary.innerHTML = `
+                    <strong>✅ Professional Corrections Applied (${corrections.length}):</strong>
+                    <div style="margin-top: 10px;">
+                        ${corrections.map((corr, idx) => 
+                            `<div style="margin: 8px 0; padding: 8px; background: rgba(0,255,153,0.05); border-radius: 4px;">
+                                <strong>${idx + 1}. ${corr.type}:</strong><br>
+                                <span style="color: #FF6B6B;">"${corr.original}"</span> → 
+                                <span style="color: #4ECDC4;">"${corr.replacement}"</span>
+                                <div style="font-size: 11px; opacity: 0.8; margin-top: 4px;">${corr.explanation}</div>
+                            </div>`
+                        ).join('')}
+                    </div>
+                `;
 
-                // Add click handlers for error spans
-                document.querySelectorAll('.error').forEach(errorSpan => {
-                    errorSpan.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        
-                        const tooltip = this.getAttribute('data-tooltip');
-                        const rect = this.getBoundingClientRect();
-                        
-                        // Create or update floating tooltip
-                        let floatingTooltip = document.getElementById('floating-tooltip');
-                        if (!floatingTooltip) {
-                            floatingTooltip = document.createElement('div');
-                            floatingTooltip.id = 'floating-tooltip';
-                            document.body.appendChild(floatingTooltip);
-                        }
-                        
-                        floatingTooltip.style.cssText = `
-                            position: fixed;
-                            background: rgba(255, 68, 68, 0.95);
-                            color: white;
-                            padding: 10px;
-                            border-radius: 8px;
-                            z-index: 1000;
-                            max-width: 300px;
-                            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-                            top: ${rect.bottom + window.scrollY + 10}px;
-                            left: ${rect.left + window.scrollX}px;
-                            font-size: 14px;
-                            line-height: 1.4;
-                            pointer-events: none;
-                        `;
-                        floatingTooltip.innerHTML = tooltip.replace('\n', '<br>');
-                        floatingTooltip.style.display = 'block';
-                        
-                        // Hide tooltip when clicking elsewhere
-                        const hideTooltip = (e) => {
-                            if (!this.contains(e.target)) {
-                                floatingTooltip.style.display = 'none';
-                                document.removeEventListener('click', hideTooltip);
-                            }
-                        };
-                        document.addEventListener('click', hideTooltip);
-                    });
-                });
+                // Add event listeners and correction functionality
+                setupCorrectionHandlers(correctedText, correctionSummary);
 
             } catch (error) {
                 console.error('Grammar check error:', error);
                 grammarErrors.innerHTML = `
                     <div class="feedback-message" style="border-color: #FF4444; box-shadow: 0 0 10px #FF4444;">
-                        Error checking grammar. Please try again.
+                        Error during comprehensive analysis. Please try again.
                     </div>`;
             }
 
-            // After grammar check is complete, run comprehensive assessment with a slight delay
-            // to ensure grammar check UI displays properly first
+            // Run comprehensive assessment
             setTimeout(async () => {
                 await assessWriting();
             }, 500);
+        }
+
+        // Helper function to apply comprehensive corrections
+        async function applyComprehensiveCorrections(text, matches) {
+            let correctedText = text;
+            
+            // STEP 1: Apply STRICT GRAMMAR MODE first - fix malformed sentence starters
+            correctedText = applyStrictGrammarMode(correctedText);
+            
+            // STEP 2: Apply LanguageTool suggestions
+            const corrections = matches
+                .filter(match => match.replacements && match.replacements.length > 0)
+                .map(match => ({
+                    offset: match.offset,
+                    length: match.length,
+                    original: text.substring(match.offset, match.offset + match.length),
+                    replacement: match.replacements[0].value,
+                    type: getCorrectionType(match)
+                }))
+                .sort((a, b) => b.offset - a.offset);
+            
+            // Apply all LanguageTool corrections
+            corrections.forEach(correction => {
+                correctedText = correctedText.substring(0, correction.offset) + 
+                               correction.replacement + 
+                               correctedText.substring(correction.offset + correction.length);
+                console.log(`✅ ${correction.type}: "${correction.original}" → "${correction.replacement}"`);
+            });
+
+            return correctedText;
+        }
+
+        // 🔧 STRICT GRAMMAR MODE: Handle malformed sentence starters and redundant words
+        function applyStrictGrammarMode(text) {
+            let correctedText = text;
+            
+            // Split into sentences for individual processing
+            const sentences = correctedText.split(/([.!?]+\s*)/);
+            
+            for (let i = 0; i < sentences.length; i += 2) { // Process only sentence content, not punctuation
+                if (sentences[i] && sentences[i].trim()) {
+                    sentences[i] = fixMalformedSentenceStart(sentences[i]);
+                }
+            }
+            
+            correctedText = sentences.join('');
+            console.log('🔧 Strict Grammar Mode applied');
+            
+            return correctedText;
+        }
+
+        // Fix malformed sentence beginnings and redundant words
+        function fixMalformedSentenceStart(sentence) {
+            let fixed = sentence.trim();
+            
+            // Common French malformed patterns - prioritize grammatical accuracy
+            const strictPatterns = [
+                // ❌ "Il a y avait" → ✅ "Il y avait"
+                { pattern: /^(\s*)Il\s+a\s+y\s+avait/i, replacement: '$1Il y avait' },
+                
+                // ❌ "Elle a y a" → ✅ "Il y a" 
+                { pattern: /^(\s*)Elle\s+a\s+y\s+a/i, replacement: '$1Il y a' },
+                
+                // ❌ "Il a il y avait" → ✅ "Il y avait" (delete redundant subject/verb)
+                { pattern: /^(\s*)Il\s+a\s+il\s+y\s+avait/i, replacement: '$1Il y avait' },
+                
+                // ❌ "Je suis je vais" → ✅ "Je vais" (delete redundant subject/verb)
+                { pattern: /^(\s*)Je\s+suis\s+je\s+(vais|peux|dois|veux)/i, replacement: '$1Je $2' },
+                
+                // ❌ "Tu as tu es" → ✅ "Tu es" (delete redundant subject/verb)
+                { pattern: /^(\s*)Tu\s+as\s+tu\s+es/i, replacement: '$1Tu es' },
+                { pattern: /^(\s*)Tu\s+es\s+tu\s+(vas|peux|dois|veux)/i, replacement: '$1Tu $2' },
+                
+                // ❌ "Il est il va" → ✅ "Il va" (delete redundant subject/verb)
+                { pattern: /^(\s*)Il\s+est\s+il\s+(va|peut|doit|veut)/i, replacement: '$1Il $2' },
+                { pattern: /^(\s*)Elle\s+est\s+elle\s+(va|peut|doit|veut)/i, replacement: '$1Elle $2' },
+                
+                // ❌ "Nous sommes nous allons" → ✅ "Nous allons"
+                { pattern: /^(\s*)Nous\s+sommes\s+nous\s+(allons|pouvons|devons|voulons)/i, replacement: '$1Nous $2' },
+                
+                // ❌ "Vous êtes vous allez" → ✅ "Vous allez"
+                { pattern: /^(\s*)Vous\s+êtes\s+vous\s+(allez|pouvez|devez|voulez)/i, replacement: '$1Vous $2' },
+                
+                // ❌ "Ils sont ils vont" → ✅ "Ils vont"
+                { pattern: /^(\s*)Ils\s+sont\s+ils\s+(vont|peuvent|doivent|veulent)/i, replacement: '$1Ils $2' },
+                { pattern: /^(\s*)Elles\s+sont\s+elles\s+(vont|peuvent|doivent|veulent)/i, replacement: '$1Elles $2' },
+                
+                // ❌ "C'est c'est" → ✅ "C'est" (delete duplicate phrases)
+                { pattern: /^(\s*)C'est\s+c'est/i, replacement: '$1C\'est' },
+                
+                // ❌ "Il y a il y a" → ✅ "Il y a"
+                { pattern: /^(\s*)Il\s+y\s+a\s+il\s+y\s+a/i, replacement: '$1Il y a' },
+                
+                // ❌ "Je pense je crois" → ✅ "Je pense" (conflicting verbs, keep first)
+                { pattern: /^(\s*)Je\s+(pense|crois|suppose)\s+je\s+(pense|crois|suppose)/i, replacement: '$1Je $2' },
+                
+                // ❌ Double auxiliaries: "J'ai j'ai mangé" → ✅ "J'ai mangé"
+                { pattern: /^(\s*)J'ai\s+j'ai\s+/i, replacement: '$1J\'ai ' },
+                { pattern: /^(\s*)Tu\s+as\s+tu\s+as\s+/i, replacement: '$1Tu as ' },
+                { pattern: /^(\s*)Il\s+a\s+il\s+a\s+/i, replacement: '$1Il a ' },
+                { pattern: /^(\s*)Elle\s+a\s+elle\s+a\s+/i, replacement: '$1Elle a ' },
+                
+                // ❌ "Je vais je" → ✅ "Je vais" (incomplete repetition)
+                { pattern: /^(\s*)Je\s+(vais|peux|dois|veux)\s+je\s*$/i, replacement: '$1Je $2' },
+                
+                // ❌ Starting with articles before correction: "Le il y a" → ✅ "Il y a"
+                { pattern: /^(\s*)(Le|La|Les)\s+(il|elle)\s+/i, replacement: '$1$3 ' },
+                
+                // ❌ Malformed "qu'il y a": "que il y a" → ✅ "qu'il y a"
+                { pattern: /^(\s*)que\s+il\s+y\s+a/i, replacement: '$1qu\'il y a' },
+                
+                // ❌ Wrong negative: "Je ne pas" → ✅ "Je ne" (let other corrections handle the rest)
+                { pattern: /^(\s*)Je\s+ne\s+pas\s+(?!ne)/i, replacement: '$1Je ne ' }
+            ];
+            
+            // Apply strict grammar patterns
+            let originalFixed = fixed;
+            strictPatterns.forEach(({pattern, replacement}) => {
+                if (pattern.test(fixed)) {
+                    const beforeFix = fixed;
+                    fixed = fixed.replace(pattern, replacement);
+                    if (beforeFix !== fixed) {
+                        console.log(`🔧 STRICT: "${beforeFix.trim()}" → "${fixed.trim()}"`);
+                    }
+                }
+            });
+            
+            // Additional cleanup: remove extra spaces
+            fixed = fixed.replace(/\s+/g, ' ').trim();
+            
+            return fixed;
+        }
+
+        // Helper function to categorize errors
+        function categorizeErrors(matches) {
+            const categories = {};
+            matches.forEach(match => {
+                const type = getCorrectionType(match);
+                categories[type] = (categories[type] || 0) + 1;
+            });
+            return categories;
+        }
+
+        // Helper function to get correction type
+        function getCorrectionType(match) {
+            const category = match.rule?.category?.id || '';
+            const ruleId = match.rule?.id || '';
+            
+            if (category.includes('GRAMMAR') || ruleId.includes('AGREEMENT')) return 'Grammar & Agreement';
+            if (category.includes('TYPOS') || ruleId.includes('SPELLING')) return 'Spelling';
+            if (category.includes('PUNCTUATION')) return 'Punctuation';
+            if (ruleId.includes('VERB') || ruleId.includes('TENSE')) return 'Verb Tense';
+            if (ruleId.includes('ARTICLE') || ruleId.includes('DET')) return 'Articles';
+            if (category.includes('STYLE') || ruleId.includes('STYLE')) return 'Style & Flow';
+            if (category.includes('CONFUSED_WORDS')) return 'Word Choice';
+            if (category.includes('REDUNDANCY')) return 'Redundancy';
+            return 'General';
+        }
+
+        // Helper function to get detailed corrections
+        async function getDetailedCorrections(text, matches) {
+            return matches
+                .filter(match => match.replacements && match.replacements.length > 0)
+                .map(match => ({
+                    original: text.substring(match.offset, match.offset + match.length),
+                    replacement: match.replacements[0].value,
+                    type: getCorrectionType(match),
+                    explanation: match.message
+                }));
+        }
+
+        // Helper function to setup correction handlers
+        function setupCorrectionHandlers(correctedText, correctionSummary) {
+            // Show corrected version handler
+            document.getElementById('show-corrected').addEventListener('click', function() {
+                const correctionArea = document.getElementById('correction-area');
+                const buttonContainer = correctionArea.querySelector('.button-container');
+                correctionArea.insertBefore(correctionSummary, buttonContainer);
+                correctionArea.classList.remove('hidden');
+                correctionArea.scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            // Apply corrections handler
+            document.getElementById('apply-corrections').addEventListener('click', function() {
+                const editor = document.getElementById('textEditor');
+                editor.textContent = correctedText;
+                document.getElementById('correction-area').classList.add('hidden');
+                document.getElementById('grammar-errors').innerHTML = `
+                    <div class="feedback-message" style="border-color: #00FFB3; box-shadow: 0 0 10px #00FFB3;">
+                        ✅ Professional corrections applied successfully! Your text has been comprehensively improved.
+                    </div>`;
+                updateWritingStats();
+            });
+            
+            // Copy corrections handler
+            document.getElementById('copy-corrections').addEventListener('click', function() {
+                navigator.clipboard.writeText(correctedText).then(function() {
+                    const copyButton = document.getElementById('copy-corrections');
+                    copyButton.textContent = "Copied!";
+                    setTimeout(() => {
+                        copyButton.textContent = "Copy Corrected Text";
+                    }, 2000);
+                });
+            });
+            
+            // Dismiss corrections handler
+            document.getElementById('dismiss-corrections').addEventListener('click', function() {
+                document.getElementById('correction-area').classList.add('hidden');
+            });
+
+            // Enhanced error span handlers with professional tooltips
+            document.querySelectorAll('.error').forEach(errorSpan => {
+                errorSpan.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    const tooltip = this.getAttribute('data-tooltip');
+                    const rect = this.getBoundingClientRect();
+                    
+                    let floatingTooltip = document.getElementById('floating-tooltip');
+                    if (!floatingTooltip) {
+                        floatingTooltip = document.createElement('div');
+                        floatingTooltip.id = 'floating-tooltip';
+                        document.body.appendChild(floatingTooltip);
+                    }
+                    
+                    floatingTooltip.style.cssText = `
+                        position: fixed;
+                        background: rgba(255, 68, 68, 0.95);
+                        color: white;
+                        padding: 12px;
+                        border-radius: 8px;
+                        z-index: 1000;
+                        max-width: 320px;
+                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+                        top: ${rect.bottom + window.scrollY + 10}px;
+                        left: ${rect.left + window.scrollX}px;
+                        font-size: 14px;
+                        line-height: 1.4;
+                        pointer-events: none;
+                        border-left: 4px solid #FF4444;
+                    `;
+                    floatingTooltip.innerHTML = tooltip.replace(/\n/g, '<br>');
+                    floatingTooltip.style.display = 'block';
+                    
+                    const hideTooltip = (e) => {
+                        if (!this.contains(e.target)) {
+                            floatingTooltip.style.display = 'none';
+                            document.removeEventListener('click', hideTooltip);
+                        }
+                    };
+                    document.addEventListener('click', hideTooltip);
+                });
+            });
         }
 
         let timeLeft = 1800; // 30 minutes in seconds
@@ -2904,10 +3106,10 @@ Generated by Hemiya AI - Your French Writing Coach
             const improvementList = document.getElementById('improvementList');
             improvementList.innerHTML = '';
             
-            // Generate suggestions based on analysis
+            // Generate comprehensive and detailed suggestions
             const suggestions = [];
             
-            // Grammar suggestions
+            // 📝 GRAMMAR & STRUCTURE IMPROVEMENTS
             if (grammarAnalysis.errorCount > 0) {
                 const categories = {};
                 grammarAnalysis.errors.forEach(error => {
@@ -2917,61 +3119,174 @@ Generated by Hemiya AI - Your French Writing Coach
                     categories[error.category]++;
                 });
                 
-                // Find most common error category
+                // Most common error category with detailed advice
                 const mostCommonCategory = Object.entries(categories).sort((a, b) => b[1] - a[1])[0];
-                suggestions.push(`Focus on improving your ${formatCategoryName(mostCommonCategory[0]).toLowerCase()} - this was your most common error type.`);
+                const categoryName = formatCategoryName(mostCommonCategory[0]);
+                suggestions.push(`📝 <strong>${categoryName} Focus:</strong> This was your most frequent error type (${mostCommonCategory[1]} instances). Review ${getDetailedGrammarAdvice(categoryName)} and practice specific exercises.`);
+                
+                // Error density analysis
+                const errorDensity = grammarAnalysis.errorCount / metrics.textLength;
+                if (errorDensity > 0.1) {
+                    suggestions.push(`🎯 <strong>Accuracy Target:</strong> Your error rate is ${Math.round(errorDensity * 100)}%. Aim to reduce this by proofreading each sentence and checking verb agreements, gender concordance, and article usage.`);
+                } else if (errorDensity > 0.05) {
+                    suggestions.push(`✨ <strong>Polish Your Writing:</strong> You're doing well with only ${Math.round(errorDensity * 100)}% errors. Focus on the remaining details like prepositions and subtle grammar rules.`);
+                }
+            } else {
+                suggestions.push(`🎉 <strong>Grammar Mastery:</strong> Excellent! No grammar errors detected. Your structural accuracy is impressive for ${level} level.`);
             }
             
-            // Vocabulary suggestions
-            if (vocabAnalysis.advanced < 5 && (level === 'A2' || level === 'C1' || level === 'A2')) {
-                suggestions.push(`Incorporate more advanced vocabulary appropriate for ${level} level.`);
+            // 📚 VOCABULARY ENHANCEMENT
+            const totalWords = vocabAnalysis.advanced + vocabAnalysis.intermediate + vocabAnalysis.basic;
+            const advancedRatio = vocabAnalysis.advanced / totalWords;
+            const uniqueRatio = vocabAnalysis.uniqueWords / totalWords;
+            
+            if (advancedRatio < 0.1 && ['B2', 'C1', 'C2'].includes(level)) {
+                suggestions.push(`📚 <strong>Vocabulary Sophistication:</strong> Only ${Math.round(advancedRatio * 100)}% of your vocabulary is advanced. For ${level} level, incorporate more nuanced terms, academic vocabulary, and idiomatic expressions. Try reading French literature or newspapers.`);
+            } else if (advancedRatio < 0.05 && ['B1'].includes(level)) {
+                suggestions.push(`📚 <strong>Expand Your Lexicon:</strong> Challenge yourself with more varied vocabulary. Learn 5 new words daily and try to use synonyms instead of repeating the same terms.`);
             }
             
-            if (vocabAnalysis.uniqueWords / (vocabAnalysis.advanced + vocabAnalysis.intermediate + vocabAnalysis.basic) < 0.6) {
-                suggestions.push(`Try to use a wider range of vocabulary rather than repeating the same words.`);
+            if (uniqueRatio < 0.6) {
+                suggestions.push(`🔄 <strong>Word Variety:</strong> You repeated words frequently (${Math.round(uniqueRatio * 100)}% unique). Practice using synonyms: instead of "très" try "vraiment, extrêmement, particulièrement". Create a personal synonym dictionary.`);
+            } else if (uniqueRatio > 0.8) {
+                suggestions.push(`🌟 <strong>Lexical Richness:</strong> Outstanding vocabulary diversity (${Math.round(uniqueRatio * 100)}% unique words)! This shows excellent command of French lexicon.`);
             }
             
-            // Style suggestions
-            if (metrics.complexSentences < 0.3 && (level !== 'A1' && level !== 'A2')) {
-                suggestions.push(`Use more complex sentence structures with connecting words and clauses.`);
+            // ✍️ WRITING STYLE & FLOW
+            if (metrics.averageSentenceLength < 8 && !['A1', 'A2'].includes(level)) {
+                suggestions.push(`✍️ <strong>Sentence Development:</strong> Your average sentence length is ${Math.round(metrics.averageSentenceLength)} words. For ${level} level, aim for 12-15 words per sentence by adding descriptive details, subordinate clauses, and connecting ideas.`);
+            } else if (metrics.averageSentenceLength > 20) {
+                suggestions.push(`✂️ <strong>Sentence Clarity:</strong> Some sentences are quite long (avg: ${Math.round(metrics.averageSentenceLength)} words). Break complex ideas into clearer, more digestible sentences for better readability.`);
             }
             
-            if (metrics.sentenceLengthVariation < 0.4) {
-                suggestions.push(`Vary your sentence length to create better rhythm and flow in your writing.`);
+            if (metrics.complexSentences < 0.2 && ['B1', 'B2', 'C1', 'C2'].includes(level)) {
+                suggestions.push(`🔗 <strong>Complex Structures:</strong> Only ${Math.round(metrics.complexSentences * 100)}% of your sentences use complex structures. Practice with subordinating conjunctions (bien que, puisque, tandis que) and relative pronouns (dont, où, lequel).`);
+            } else if (metrics.complexSentences > 0.6) {
+                suggestions.push(`🎭 <strong>Structural Sophistication:</strong> Excellent use of complex sentences (${Math.round(metrics.complexSentences * 100)}%)! This demonstrates advanced French syntax mastery.`);
             }
             
-            // Add CEFR-specific suggestions
-            const cefrSuggestion = getCEFRSpecificSuggestion(level);
-            if (cefrSuggestion) {
-                suggestions.push(cefrSuggestion);
+            if (metrics.sentenceLengthVariation < 0.3) {
+                suggestions.push(`🎵 <strong>Rhythm & Flow:</strong> Your sentences have similar lengths. Create better rhythm by mixing short impact sentences with longer, detailed ones. Vary between 5-word and 15-word sentences.`);
             }
             
-            // Add suggestions to the list
+            // 🎯 LEVEL-SPECIFIC DETAILED GUIDANCE
+            const levelSpecificAdvice = getDetailedCEFRAdvice(level, metrics, vocabAnalysis);
+            suggestions.push(...levelSpecificAdvice);
+            
+            // 📖 CONTENT & COHERENCE
+            if (metrics.textLength < 100) {
+                suggestions.push(`📏 <strong>Content Development:</strong> Your text is quite concise (${metrics.textLength} words). Develop your ideas further with examples, explanations, and personal experiences to demonstrate deeper linguistic competence.`);
+            } else if (metrics.textLength > 300) {
+                suggestions.push(`📖 <strong>Comprehensive Response:</strong> Excellent length (${metrics.textLength} words)! You've demonstrated ability to sustain extended discourse in French.`);
+            }
+            
+            // 💡 PRACTICAL STUDY TIPS
+            suggestions.push(`💡 <strong>Next Steps:</strong> ${getPersonalizedStudyTips(level, grammarAnalysis, vocabAnalysis, metrics)}`);
+            
+            // 🌟 ENCOURAGING MESSAGE
+            const encouragement = getEncouragingMessage(level, grammarAnalysis.errorCount, metrics.textLength);
+            suggestions.push(`🌟 <strong>Motivation:</strong> ${encouragement}`);
+            
+            // Add all suggestions to the list with proper HTML formatting
             suggestions.forEach(suggestion => {
                 const li = document.createElement('li');
-                li.textContent = suggestion;
+                li.innerHTML = suggestion;
+                li.style.marginBottom = '12px';
+                li.style.lineHeight = '1.5';
                 improvementList.appendChild(li);
             });
-            
-            // If no suggestions were generated, add a positive message
-            if (suggestions.length === 0) {
-                const li = document.createElement('li');
-                li.textContent = `Your writing is already quite strong for the ${level} level. Keep practicing!`;
-                improvementList.appendChild(li);
-            }
         }
 
-        function getCEFRSpecificSuggestion(level) {
-            const suggestions = {
-                'A1': 'Practice using simple connectors like "et" (and), "mais" (but), and "parce que" (because).',
-                'A2': 'Try incorporating time expressions to order your ideas (d\'abord, ensuite, enfin).',
-                'B1': 'Practice expressing opinions with phrases like "Je pense que..." and "À mon avis..."',
-                'B2': 'Work on using a range of linking words to mark relationships between ideas.',
-                'C1': 'Focus on nuanced expression and precision in your vocabulary choices.',
-                'C2': 'Develop more sophisticated argumentation with complex structures and idiomatic expressions.'
+        function getDetailedGrammarAdvice(categoryName) {
+            const advice = {
+                'Grammar & Agreement': 'subject-verb agreement, gender concordance (le/la), and plural forms',
+                'Spelling': 'common French spelling patterns, accents (é, è, ç), and word endings',
+                'Punctuation': 'French punctuation rules, especially with dialogue and question marks',
+                'Verb Tense': 'tense consistency, passé composé vs imparfait usage, and subjunctive triggers',
+                'Articles': 'definite/indefinite articles (le, la, un, une), partitive articles (du, de la)',
+                'Style & Flow': 'connecting words, transition phrases, and sentence variety',
+                'Word Choice': 'context-appropriate vocabulary and avoiding false friends',
+                'Redundancy': 'concise expression and eliminating unnecessary repetition'
             };
+            return advice[categoryName] || 'grammar fundamentals';
+        }
+
+        function getDetailedCEFRAdvice(level, metrics, vocabAnalysis) {
+            const advice = {
+                'A1': [
+                    '🔤 <strong>A1 Foundation:</strong> Focus on mastering basic verb conjugations (present tense), essential vocabulary (family, numbers, time), and simple sentence structures with "Je suis, j\'ai, il y a".',
+                    '📝 <strong>A1 Practice:</strong> Write simple descriptions, practice basic conversations, and learn high-frequency words. Aim for 50-100 words per text.'
+                ],
+                'A2': [
+                    '⚡ <strong>A2 Development:</strong> Expand to past tenses (passé composé, imparfait), future simple, and time expressions (hier, demain, pendant). Practice connecting ideas with "parce que, mais, donc".',
+                    '🗣️ <strong>A2 Expression:</strong> Share opinions with "Je pense que", describe experiences, and use comparative forms (plus que, moins que).'
+                ],
+                'B1': [
+                    '🎯 <strong>B1 Advancement:</strong> Master subjunctive in common expressions, conditional tense, and complex time relationships. Practice argumentation with "d\'une part, d\'autre part".',
+                    '💭 <strong>B1 Critical Thinking:</strong> Express hypotheses, give detailed explanations, and discuss abstract topics. Aim for 150-250 words with varied sentence structures.'
+                ],
+                'B2': [
+                    '🔄 <strong>B2 Sophistication:</strong> Use advanced connectors (néanmoins, en revanche, par ailleurs), passive voice, and nuanced expressions. Practice formal vs informal registers.',
+                    '📊 <strong>B2 Argumentation:</strong> Develop complex arguments, use statistics and examples, synthesize information from multiple sources.'
+                ],
+                'C1': [
+                    '🎓 <strong>C1 Mastery:</strong> Employ subtle linguistic nuances, cultural references, and sophisticated grammatical structures. Use literary tenses (passé simple) when appropriate.',
+                    '🌍 <strong>C1 Discourse:</strong> Engage with complex social issues, demonstrate cultural awareness, and adapt style to different contexts and audiences.'
+                ],
+                'C2': [
+                    '👑 <strong>C2 Excellence:</strong> Achieve near-native fluency with idiomatic expressions, wordplay, and implicit meaning. Master all French grammatical subtleties.',
+                    '🎨 <strong>C2 Artistry:</strong> Create engaging, persuasive texts with personal style. Demonstrate creativity, humor, and sophisticated cultural knowledge.'
+                ]
+            };
+            return advice[level] || ['Continue practicing to reach the next level!'];
+        }
+
+        function getPersonalizedStudyTips(level, grammarAnalysis, vocabAnalysis, metrics) {
+            const tips = [
+                'Read French news articles daily for 10 minutes',
+                'Practice writing one paragraph daily on different topics',
+                'Use Anki or similar apps for vocabulary retention',
+                'Listen to French podcasts during commutes',
+                'Join French conversation groups or language exchanges',
+                'Watch French movies with French subtitles',
+                'Keep a French diary to practice daily expression'
+            ];
             
-            return suggestions[level];
+            // Personalize based on weaknesses
+            if (grammarAnalysis.errorCount > 5) {
+                return 'Focus on grammar exercises, especially verb conjugations. Use conjugation apps and practice 15 minutes daily.';
+            } else if (vocabAnalysis.uniqueWords / (vocabAnalysis.advanced + vocabAnalysis.intermediate + vocabAnalysis.basic) < 0.6) {
+                return 'Build vocabulary systematically: learn 5 new words daily, create sentences with them, and review weekly.';
+            } else if (metrics.complexSentences < 0.3) {
+                return 'Practice complex sentence structures by combining simple sentences using connecting words and relative pronouns.';
+            }
+            
+            return tips[Math.floor(Math.random() * tips.length)] + ' to continue your excellent progress!';
+        }
+
+        function getEncouragingMessage(level, errorCount, textLength) {
+            const messages = [
+                `You're making fantastic progress in French! Every mistake is a learning opportunity that brings you closer to fluency.`,
+                `Your dedication to practicing French writing shows tremendous commitment. Keep up this excellent momentum!`,
+                `Writing in a foreign language requires courage and you're demonstrating it beautifully. Bravo for your efforts!`,
+                `Each text you write strengthens your French skills. You're building something remarkable - don't give up!`,
+                `Your French journey is unique and valuable. Celebrate every small victory along the way to fluency!`,
+                `The fact that you're actively practicing writing shows you're serious about mastering French. That mindset will take you far!`,
+                `Remember: even native speakers make mistakes. What matters is your willingness to learn and improve continuously.`
+            ];
+            
+            let encouragement = messages[Math.floor(Math.random() * messages.length)];
+            
+            // Add specific positive reinforcement
+            if (errorCount === 0) {
+                encouragement += ' Your error-free writing demonstrates excellent command of French fundamentals!';
+            } else if (errorCount < 3) {
+                encouragement += ' With so few errors, you\'re clearly developing strong French instincts!';
+            } else if (textLength > 200) {
+                encouragement += ' Your ability to express complex ideas in French shows remarkable progress!';
+            }
+            
+            return encouragement;
         }
 
         // Add this to your DOMContentLoaded event listener
@@ -3368,6 +3683,18 @@ Generated by Hemiya AI - Your French Writing Coach
 
         // Call this function early in your code
         document.addEventListener('DOMContentLoaded', setupAudioForAutoplay);
+
+        // Add this function to go back to topic selection
+        function goBackToTopicSelection() {
+            document.getElementById('topicSelection').classList.remove('hidden');
+            document.getElementById('writingBoard').classList.add('hidden');
+            document.getElementById('step1').classList.add('active');
+            document.getElementById('step2').classList.remove('active');
+            
+            // Reset timer when going back to topic selection
+            pauseTimer();
+            resetTimer();
+        }
     </script>
 </body>
 </html> 
