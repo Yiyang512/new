@@ -1948,6 +1948,10 @@
                             <div style="font-size: 12px; margin-top: 5px; opacity: 0.8;">
                                 ✅ Grammar • Structure • Verb tenses • Articles • Natural flow
                             </div>
+                            <div style="font-size: 12px; margin-top: 8px; padding: 8px; background: rgba(0,255,153,0.05); border-radius: 5px;">
+                                🎓 <strong>Advanced C1-C2 corrections also applied:</strong><br>
+                                Enhanced agreement patterns, native vocabulary, formal register
+                            </div>
                         </div>`;
                     return;
                 }
@@ -2011,6 +2015,14 @@
                             ${Object.entries(errorCategories).map(([category, count]) => 
                                 `• ${category}: ${count} ${count === 1 ? 'issue' : 'issues'}`
                             ).join('<br>')}
+                        </div>
+                        <div style="font-size: 0.9em; margin-bottom: 15px; padding: 10px; background: rgba(0,255,153,0.05); border-radius: 5px; border-left: 3px solid var(--primary-color);">
+                            <strong>🎓 Advanced C1-C2 Corrections Applied:</strong><br>
+                            • Gender/number agreement in coordinated adjectives<br>
+                            • Passive voice participle agreement<br>
+                            • Feminine abstract noun agreement<br>
+                            • Relative pronoun agreement<br>
+                            • Anglicized vocabulary → Native French equivalents
                         </div>
                         ${errorSummary}
                         <div style="margin-top: 15px; font-size: 0.9em; color: rgba(255, 255, 255, 0.7);">
@@ -2076,7 +2088,10 @@
             // STEP 1: Apply STRICT GRAMMAR MODE first - fix malformed sentence starters
             correctedText = applyStrictGrammarMode(correctedText);
             
-            // STEP 2: Apply LanguageTool suggestions
+            // STEP 2: Apply ADVANCED C1-C2 CORRECTIONS
+            correctedText = applyAdvancedGrammarCorrections(correctedText);
+            
+            // STEP 3: Apply LanguageTool suggestions
             const corrections = matches
                 .filter(match => match.replacements && match.replacements.length > 0)
                 .map(match => ({
@@ -2114,6 +2129,324 @@
             
             correctedText = sentences.join('');
             console.log('🔧 Strict Grammar Mode applied');
+            
+            return correctedText;
+        }
+
+        // 🎓 ADVANCED C1-C2 GRAMMAR CORRECTIONS: Handle sophisticated French grammar patterns
+        function applyAdvancedGrammarCorrections(text) {
+            let correctedText = text;
+            
+            console.log('🎓 Applying Advanced C1-C2 Grammar Corrections...');
+            
+            // STEP 1: Gender and Number Agreement in Coordinated Adjectives
+            correctedText = fixCoordinatedAdjectiveAgreement(correctedText);
+            
+            // STEP 2: Passive Voice Participle Agreement
+            correctedText = fixPassiveVoiceAgreement(correctedText);
+            
+            // STEP 3: Agreement with Feminine Abstract Nouns
+            correctedText = fixFeminineAbstractNounAgreement(correctedText);
+            
+            // STEP 4: Relative Pronoun Agreement with Preceding Nouns
+            correctedText = fixRelativePronounAgreement(correctedText);
+            
+            // STEP 5: Replace Anglicized/Informal Vocabulary
+            correctedText = replaceAnglicizedVocabulary(correctedText);
+            
+            console.log('🎓 Advanced Grammar Corrections completed');
+            
+            return correctedText;
+        }
+
+        // Fix gender and number agreement in coordinated adjectives
+        function fixCoordinatedAdjectiveAgreement(text) {
+            let correctedText = text;
+            const originalText = text;
+            
+            // Pattern for coordinated adjectives with feminine plural nouns
+            const coordinatedPatterns = [
+                // écoles publiques et privé → écoles publiques et privées
+                { 
+                    pattern: /\b(écoles?|universités?|institutions?|organisations?|entreprises?|sociétés?|compagnies?)\s+(publiques?)\s+et\s+(privé)\b/gi, 
+                    replacement: (match, noun, adj1, adj2) => {
+                        const isPlural = noun.endsWith('s');
+                        const isFeminine = true; // These nouns are feminine
+                        return `${noun} ${adj1} et ${isPlural ? 'privées' : 'privée'}`;
+                    }
+                },
+                // méthodes traditionnelle et moderne → méthodes traditionnelles et modernes
+                { 
+                    pattern: /\b(méthodes?|approches?|techniques?|stratégies?|solutions?)\s+(traditionnelle?)\s+et\s+(moderne)\b/gi, 
+                    replacement: (match, noun, adj1, adj2) => {
+                        const isPlural = noun.endsWith('s');
+                        return `${noun} ${isPlural ? 'traditionnelles' : 'traditionnelle'} et ${isPlural ? 'modernes' : 'moderne'}`;
+                    }
+                },
+                // politiques économique et social → politiques économiques et sociales
+                { 
+                    pattern: /\b(politiques?)\s+(économique)\s+et\s+(social)\b/gi, 
+                    replacement: (match, noun, adj1, adj2) => {
+                        const isPlural = noun.endsWith('s');
+                        return `${noun} ${isPlural ? 'économiques' : 'économique'} et ${isPlural ? 'sociales' : 'sociale'}`;
+                    }
+                },
+                // questions importante et complexe → questions importantes et complexes
+                { 
+                    pattern: /\b(questions?|réponses?|analyses?|études?)\s+(importante?)\s+et\s+(complexe)\b/gi, 
+                    replacement: (match, noun, adj1, adj2) => {
+                        const isPlural = noun.endsWith('s');
+                        return `${noun} ${isPlural ? 'importantes' : 'importante'} et ${isPlural ? 'complexes' : 'complexe'}`;
+                    }
+                }
+            ];
+            
+            coordinatedPatterns.forEach(({pattern, replacement}) => {
+                if (typeof replacement === 'function') {
+                    correctedText = correctedText.replace(pattern, replacement);
+                } else {
+                    correctedText = correctedText.replace(pattern, replacement);
+                }
+            });
+            
+            if (originalText !== correctedText) {
+                console.log('🎯 Coordinated adjective agreements corrected');
+            }
+            
+            return correctedText;
+        }
+
+        // Fix passive voice participle agreement
+        function fixPassiveVoiceAgreement(text) {
+            let correctedText = text;
+            const originalText = text;
+            
+            // Passive voice patterns with être auxiliary
+            const passivePatterns = [
+                // soit utilisé/utilisée - agreement based on subject
+                { 
+                    pattern: /\b(elle|la\s+\w+|cette\s+\w+|une\s+\w+)\s+soit\s+(utilisé)\b/gi, 
+                    replacement: '$1 soit utilisée' 
+                },
+                { 
+                    pattern: /\b(elles|les\s+\w+)\s+soit\s+(utilisé)\b/gi, 
+                    replacement: '$1 soient utilisées' 
+                },
+                // est considéré/considérée - feminine subject agreement
+                { 
+                    pattern: /\b(la\s+question|cette\s+approche|une\s+méthode|l'analyse)\s+est\s+(considéré)\b/gi, 
+                    replacement: '$1 est considérée' 
+                },
+                { 
+                    pattern: /\b(les\s+questions|ces\s+approches|les\s+méthodes|les\s+analyses)\s+sont\s+(considéré)\b/gi, 
+                    replacement: '$1 sont considérées' 
+                },
+                // a été développé/développée - feminine subject agreement
+                { 
+                    pattern: /\b(la\s+théorie|cette\s+idée|une\s+stratégie|l'approche)\s+a\s+été\s+(développé)\b/gi, 
+                    replacement: '$1 a été développée' 
+                },
+                { 
+                    pattern: /\b(les\s+théories|ces\s+idées|les\s+stratégies|les\s+approches)\s+ont\s+été\s+(développé)\b/gi, 
+                    replacement: '$1 ont été développées' 
+                }
+            ];
+            
+            passivePatterns.forEach(({pattern, replacement}) => {
+                correctedText = correctedText.replace(pattern, replacement);
+            });
+            
+            if (originalText !== correctedText) {
+                console.log('🎯 Passive voice participle agreements corrected');
+            }
+            
+            return correctedText;
+        }
+
+        // Fix agreement with feminine abstract nouns
+        function fixFeminineAbstractNounAgreement(text) {
+            let correctedText = text;
+            const originalText = text;
+            
+            // Common feminine abstract nouns and their agreement patterns
+            const feminineAbstractPatterns = [
+                // approche centré → approche centrée
+                { pattern: /\b(approche)\s+(centré)\b/gi, replacement: '$1 centrée' },
+                { pattern: /\b(approches)\s+(centré)\b/gi, replacement: '$1 centrées' },
+                
+                // méthode utilisé → méthode utilisée
+                { pattern: /\b(méthode)\s+(utilisé|employé|appliqué)\b/gi, replacement: '$1 $2e' },
+                { pattern: /\b(méthodes)\s+(utilisé|employé|appliqué)\b/gi, replacement: '$1 $2es' },
+                
+                // stratégie adopté → stratégie adoptée
+                { pattern: /\b(stratégie)\s+(adopté|choisi|sélectionné)\b/gi, replacement: '$1 $2e' },
+                { pattern: /\b(stratégies)\s+(adopté|choisi|sélectionné)\b/gi, replacement: '$1 $2es' },
+                
+                // analyse effectué → analyse effectuée
+                { pattern: /\b(analyse)\s+(effectué|réalisé|mené)\b/gi, replacement: '$1 $2e' },
+                { pattern: /\b(analyses)\s+(effectué|réalisé|mené)\b/gi, replacement: '$1 $2es' },
+                
+                // étude mené → étude menée
+                { pattern: /\b(étude)\s+(mené|conduit|dirigé)\b/gi, replacement: '$1 menée' },
+                { pattern: /\b(études)\s+(mené|conduit|dirigé)\b/gi, replacement: '$1 menées' },
+                
+                // recherche approfondi → recherche approfondie
+                { pattern: /\b(recherche)\s+(approfondi|détaillé|spécialisé)\b/gi, replacement: '$1 $2e' },
+                { pattern: /\b(recherches)\s+(approfondi|détaillé|spécialisé)\b/gi, replacement: '$1 $2es' },
+                
+                // politique mis en place → politique mise en place
+                { pattern: /\b(politique)\s+(mis)\s+(en\s+place)\b/gi, replacement: '$1 mise $3' },
+                { pattern: /\b(politiques)\s+(mis)\s+(en\s+place)\b/gi, replacement: '$1 mises $3' }
+            ];
+            
+            feminineAbstractPatterns.forEach(({pattern, replacement}) => {
+                correctedText = correctedText.replace(pattern, replacement);
+            });
+            
+            if (originalText !== correctedText) {
+                console.log('🎯 Feminine abstract noun agreements corrected');
+            }
+            
+            return correctedText;
+        }
+
+        // Fix relative pronoun agreement with preceding feminine plural nouns
+        function fixRelativePronounAgreement(text) {
+            let correctedText = text;
+            const originalText = text;
+            
+            // Relative pronoun agreement patterns
+            const relativePronounPatterns = [
+                // questions... dont certains → questions... dont certaines
+                { 
+                    pattern: /\b(questions?)\s+([^.!?]*?)\s+dont\s+(certains?)\b/gi, 
+                    replacement: (match, noun, middle, pronoun) => {
+                        const isPlural = noun.endsWith('s');
+                        return `${noun} ${middle} dont ${isPlural ? 'certaines' : 'certaine'}`;
+                    }
+                },
+                // réponses... dont plusieurs → réponses... dont plusieurs (already correct)
+                // but: réponses... dont chacun → réponses... dont chacune
+                { 
+                    pattern: /\b(réponses?|solutions?|méthodes?|approches?)\s+([^.!?]*?)\s+dont\s+(chacun)\b/gi, 
+                    replacement: (match, noun, middle, pronoun) => {
+                        return `${noun} ${middle} dont chacune`;
+                    }
+                },
+                // analyses... dont tous → analyses... dont toutes
+                { 
+                    pattern: /\b(analyses?|études?|recherches?)\s+([^.!?]*?)\s+dont\s+(tous?)\b/gi, 
+                    replacement: (match, noun, middle, pronoun) => {
+                        const isPlural = noun.endsWith('s');
+                        return `${noun} ${middle} dont ${isPlural ? 'toutes' : 'toute'}`;
+                    }
+                },
+                // entreprises... lesquels → entreprises... lesquelles
+                { 
+                    pattern: /\b(entreprises?|sociétés?|organisations?|institutions?)\s+([^.!?]*?)\s+(lesquels?)\b/gi, 
+                    replacement: (match, noun, middle, pronoun) => {
+                        const isPlural = noun.endsWith('s');
+                        return `${noun} ${middle} ${isPlural ? 'lesquelles' : 'laquelle'}`;
+                    }
+                },
+                // théories... auxquels → théories... auxquelles
+                { 
+                    pattern: /\b(théories?|idées?|hypothèses?)\s+([^.!?]*?)\s+(auxquels?)\b/gi, 
+                    replacement: (match, noun, middle, pronoun) => {
+                        const isPlural = noun.endsWith('s');
+                        return `${noun} ${middle} ${isPlural ? 'auxquelles' : 'à laquelle'}`;
+                    }
+                }
+            ];
+            
+            relativePronounPatterns.forEach(({pattern, replacement}) => {
+                if (typeof replacement === 'function') {
+                    correctedText = correctedText.replace(pattern, replacement);
+                } else {
+                    correctedText = correctedText.replace(pattern, replacement);
+                }
+            });
+            
+            if (originalText !== correctedText) {
+                console.log('🎯 Relative pronoun agreements corrected');
+            }
+            
+            return correctedText;
+        }
+
+        // Replace anglicized and informal vocabulary with native French equivalents
+        function replaceAnglicizedVocabulary(text) {
+            let correctedText = text;
+            const originalText = text;
+            
+            // Dictionary of anglicized/informal → native French equivalents
+            const vocabularyReplacements = [
+                // Direct anglicisms
+                { pattern: /\bhobbys?\b/gi, replacement: 'loisirs' },
+                { pattern: /\bhobby\b/gi, replacement: 'passe-temps' },
+                { pattern: /\bweek-end\b/gi, replacement: 'fin de semaine' },
+                { pattern: /\bshopping\b/gi, replacement: 'achats' },
+                { pattern: /\bemail\b/gi, replacement: 'courriel' },
+                { pattern: /\bstress\b/gi, replacement: 'stress' }, // Actually accepted in French
+                { pattern: /\bfeedback\b/gi, replacement: 'retour' },
+                { pattern: /\bmeeting\b/gi, replacement: 'réunion' },
+                { pattern: /\bbusiness\b/gi, replacement: 'affaires' },
+                { pattern: /\bmanager\b/gi, replacement: 'gestionnaire' },
+                { pattern: /\bmarketing\b/gi, replacement: 'mercatique' },
+                { pattern: /\bbrand\b/gi, replacement: 'marque' },
+                { pattern: /\bbug\b/gi, replacement: 'bogue' },
+                { pattern: /\bsoftware\b/gi, replacement: 'logiciel' },
+                { pattern: /\bhardware\b/gi, replacement: 'matériel' },
+                { pattern: /\binternet\b/gi, replacement: 'Internet' }, // Capitalized in French
+                
+                // Informal to formal vocabulary
+                { pattern: /\btruc\b/gi, replacement: 'chose' },
+                { pattern: /\bmachin\b/gi, replacement: 'objet' },
+                { pattern: /\bsuper\b/gi, replacement: 'excellent' },
+                { pattern: /\bcool\b/gi, replacement: 'formidable' },
+                { pattern: /\bpas mal\b/gi, replacement: 'assez bien' },
+                { pattern: /\bpas terrible\b/gi, replacement: 'médiocre' },
+                
+                // Academic register improvements
+                { pattern: /\bbeaucoup de gens\b/gi, replacement: 'de nombreuses personnes' },
+                { pattern: /\bplein de\b/gi, replacement: 'de nombreux' },
+                { pattern: /\byl a\b/gi, replacement: 'il existe' },
+                { pattern: /\bon peut dire que\b/gi, replacement: 'il est possible d\'affirmer que' },
+                { pattern: /\bje pense que\b/gi, replacement: 'il me semble que' },
+                { pattern: /\bje crois que\b/gi, replacement: 'il convient de noter que' },
+                
+                // Redundant expressions
+                { pattern: /\bau jour d'aujourd'hui\b/gi, replacement: 'aujourd\'hui' },
+                { pattern: /\bmonter en haut\b/gi, replacement: 'monter' },
+                { pattern: /\bdescendre en bas\b/gi, replacement: 'descendre' },
+                { pattern: /\bsortir dehors\b/gi, replacement: 'sortir' },
+                { pattern: /\bentrer dedans\b/gi, replacement: 'entrer' },
+                
+                // Improve precision in academic writing
+                { pattern: /\bc'est important de\b/gi, replacement: 'il est essentiel de' },
+                { pattern: /\bc'est nécessaire de\b/gi, replacement: 'il convient de' },
+                { pattern: /\bc'est bien de\b/gi, replacement: 'il est judicieux de' },
+                { pattern: /\bc'est intéressant de\b/gi, replacement: 'il est pertinent de' },
+                
+                // False friends and common mistakes
+                { pattern: /\bactuallement\b/gi, replacement: 'en fait' }, // Often misused for "actually"
+                { pattern: /\béventuellement\b/gi, replacement: 'le cas échéant' }, // Often misused for "eventually"
+                { pattern: /\bcontrôler\b/gi, replacement: 'maîtriser' }, // Often misused for "control"
+                
+                // Improve connectors
+                { pattern: /\bet puis\b/gi, replacement: 'puis' },
+                { pattern: /\bet après\b/gi, replacement: 'ensuite' },
+                { pattern: /\bmais par contre\b/gi, replacement: 'mais en revanche' },
+                { pattern: /\bpar contre\b/gi, replacement: 'en revanche' }
+            ];
+            
+            vocabularyReplacements.forEach(({pattern, replacement}) => {
+                correctedText = correctedText.replace(pattern, replacement);
+            });
+            
+            if (originalText !== correctedText) {
+                console.log('🎯 Anglicized/informal vocabulary replaced with native equivalents');
+            }
             
             return correctedText;
         }
