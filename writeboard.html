@@ -1949,8 +1949,8 @@
                                 ✅ Grammar • Structure • Verb tenses • Articles • Natural flow
                             </div>
                             <div style="font-size: 12px; margin-top: 8px; padding: 8px; background: rgba(0,255,153,0.05); border-radius: 5px;">
-                                🎓 <strong>Advanced C1-C2 corrections also applied:</strong><br>
-                                Enhanced agreement patterns, native vocabulary, formal register
+                                🎓 <strong>14-Rule C1-C2 System also applied:</strong><br>
+                                Advanced agreements, subjunctive, prepositions, native vocabulary, formal register
                             </div>
                         </div>`;
                     return;
@@ -2017,12 +2017,13 @@
                             ).join('<br>')}
                         </div>
                         <div style="font-size: 0.9em; margin-bottom: 15px; padding: 10px; background: rgba(0,255,153,0.05); border-radius: 5px; border-left: 3px solid var(--primary-color);">
-                            <strong>🎓 Advanced C1-C2 Corrections Applied:</strong><br>
-                            • Gender/number agreement in coordinated adjectives<br>
-                            • Passive voice participle agreement<br>
-                            • Feminine abstract noun agreement<br>
-                            • Relative pronoun agreement<br>
-                            • Anglicized vocabulary → Native French equivalents
+                            <strong>🎓 14-Rule C1-C2 Grammar System Applied:</strong><br>
+                            • Past participle agreements (passive & reflexive)<br>
+                            • Gender/number agreements (nouns, adjectives, pronouns)<br>
+                            • Quantity expressions & subjunctive triggers<br>
+                            • Preposition accuracy & pronoun placement<br>
+                            • Anglicized vocabulary → Native French equivalents<br>
+                            • Spelling, accents & person/number consistency
                         </div>
                         ${errorSummary}
                         <div style="margin-top: 15px; font-size: 0.9em; color: rgba(255, 255, 255, 0.7);">
@@ -2133,28 +2134,55 @@
             return correctedText;
         }
 
-        // 🎓 ADVANCED C1-C2 GRAMMAR CORRECTIONS: Handle sophisticated French grammar patterns
+        // 🎓 ADVANCED C1-C2 GRAMMAR CORRECTIONS: 14-Rule Comprehensive French Grammar System
         function applyAdvancedGrammarCorrections(text) {
             let correctedText = text;
             
-            console.log('🎓 Applying Advanced C1-C2 Grammar Corrections...');
+            console.log('🎓 Applying 14-Rule C1-C2 Grammar Correction System...');
             
-            // STEP 1: Gender and Number Agreement in Coordinated Adjectives
+            // RULE 1: Past Participle Agreement (Passive Voice)
+            correctedText = fixPassiveVoiceParticiples(correctedText);
+            
+            // RULE 2: Past Participle Agreement (Reflexive Verbs)
+            correctedText = fixReflexiveVerbParticiples(correctedText);
+            
+            // RULE 3: Reflexive Pronouns Must Match Subject
+            correctedText = fixReflexivePronouns(correctedText);
+            
+            // RULE 4: Noun Gender Agreement
+            correctedText = fixNounGenderAgreement(correctedText);
+            
+            // RULE 5: Adjective Agreement (Gender and Number)
+            correctedText = fixAdjectiveAgreement(correctedText);
+            
+            // RULE 6: Adjective Agreement in Coordinated Pairs
             correctedText = fixCoordinatedAdjectiveAgreement(correctedText);
             
-            // STEP 2: Passive Voice Participle Agreement
-            correctedText = fixPassiveVoiceAgreement(correctedText);
+            // RULE 7: Quantity Expressions + Article Rules
+            correctedText = fixQuantityExpressions(correctedText);
             
-            // STEP 3: Agreement with Feminine Abstract Nouns
-            correctedText = fixFeminineAbstractNounAgreement(correctedText);
+            // RULE 8: Use Subjunctive After Specific Triggers
+            correctedText = fixSubjunctiveTriggers(correctedText);
             
-            // STEP 4: Relative Pronoun Agreement with Preceding Nouns
+            // RULE 9: Relative Pronoun Agreement (Gender and Number)
             correctedText = fixRelativePronounAgreement(correctedText);
             
-            // STEP 5: Replace Anglicized/Informal Vocabulary
+            // RULE 10: Preposition Accuracy in Fixed Expressions
+            correctedText = fixPrepositionAccuracy(correctedText);
+            
+            // RULE 11: Replace Anglicisms with Native French Terms
             correctedText = replaceAnglicizedVocabulary(correctedText);
             
-            console.log('🎓 Advanced Grammar Corrections completed');
+            // RULE 12: Correct Past Participle Spelling & Accents
+            correctedText = fixPastParticipleSpelling(correctedText);
+            
+            // RULE 13: Correct Pronoun Placement in Compound Tenses
+            correctedText = fixPronounPlacement(correctedText);
+            
+            // RULE 14: Person and Number Consistency
+            correctedText = fixPersonNumberConsistency(correctedText);
+            
+            console.log('🎓 14-Rule Grammar Correction System completed');
             
             return correctedText;
         }
@@ -2216,40 +2244,32 @@
             return correctedText;
         }
 
-        // Fix passive voice participle agreement
-        function fixPassiveVoiceAgreement(text) {
+        // RULE 1: Past Participle Agreement (Passive Voice)
+        function fixPassiveVoiceParticiples(text) {
             let correctedText = text;
             const originalText = text;
             
-            // Passive voice patterns with être auxiliary
+            // Comprehensive passive voice patterns with être auxiliary
             const passivePatterns = [
                 // soit utilisé/utilisée - agreement based on subject
-                { 
-                    pattern: /\b(elle|la\s+\w+|cette\s+\w+|une\s+\w+)\s+soit\s+(utilisé)\b/gi, 
-                    replacement: '$1 soit utilisée' 
-                },
-                { 
-                    pattern: /\b(elles|les\s+\w+)\s+soit\s+(utilisé)\b/gi, 
-                    replacement: '$1 soient utilisées' 
-                },
-                // est considéré/considérée - feminine subject agreement
-                { 
-                    pattern: /\b(la\s+question|cette\s+approche|une\s+méthode|l'analyse)\s+est\s+(considéré)\b/gi, 
-                    replacement: '$1 est considérée' 
-                },
-                { 
-                    pattern: /\b(les\s+questions|ces\s+approches|les\s+méthodes|les\s+analyses)\s+sont\s+(considéré)\b/gi, 
-                    replacement: '$1 sont considérées' 
-                },
-                // a été développé/développée - feminine subject agreement
-                { 
-                    pattern: /\b(la\s+théorie|cette\s+idée|une\s+stratégie|l'approche)\s+a\s+été\s+(développé)\b/gi, 
-                    replacement: '$1 a été développée' 
-                },
-                { 
-                    pattern: /\b(les\s+théories|ces\s+idées|les\s+stratégies|les\s+approches)\s+ont\s+été\s+(développé)\b/gi, 
-                    replacement: '$1 ont été développées' 
-                }
+                { pattern: /\b(elle|la\s+\w+|cette\s+\w+|une\s+\w+)\s+soit\s+(utilisé|considéré|développé|appliqué|établi|créé)\b/gi, replacement: '$1 soit $2e' },
+                { pattern: /\b(elles|les\s+\w+)\s+soit\s+(utilisé|considéré|développé|appliqué|établi|créé)\b/gi, replacement: '$1 soient $2es' },
+                
+                // est/sont + past participle - feminine agreement
+                { pattern: /\b(la\s+\w+|cette\s+\w+|une\s+\w+)\s+est\s+(utilisé|considéré|développé|appliqué|établi|créé|adopté|choisi)\b/gi, replacement: '$1 est $2e' },
+                { pattern: /\b(les\s+\w+)\s+sont\s+(utilisé|considéré|développé|appliqué|établi|créé|adopté|choisi)\b/gi, replacement: '$1 sont $2es' },
+                
+                // a été/ont été + past participle
+                { pattern: /\b(la\s+\w+|cette\s+\w+|une\s+\w+)\s+a\s+été\s+(utilisé|considéré|développé|appliqué|établi|créé|adopté|choisi)\b/gi, replacement: '$1 a été $2e' },
+                { pattern: /\b(les\s+\w+)\s+ont\s+été\s+(utilisé|considéré|développé|appliqué|établi|créé|adopté|choisi)\b/gi, replacement: '$1 ont été $2es' },
+                
+                // Special cases for irregular past participles
+                { pattern: /\b(la\s+frontière|cette\s+frontière|une\s+frontière)\s+(a\s+été|est)\s+(estompé)\b/gi, replacement: '$1 $2 estompée' },
+                { pattern: /\b(les\s+frontières)\s+(ont\s+été|sont)\s+(estompé)\b/gi, replacement: '$1 $2 estompées' },
+                
+                // Feminine abstract nouns (expanded from original)
+                { pattern: /\b(approche|méthode|stratégie|analyse|étude|recherche|politique|théorie|idée)\s+(est|a\s+été)\s+(centré|utilisé|employé|appliqué|adopté|choisi|sélectionné|effectué|réalisé|mené)\b/gi, replacement: '$1 $2 $3e' },
+                { pattern: /\b(approches|méthodes|stratégies|analyses|études|recherches|politiques|théories|idées)\s+(sont|ont\s+été)\s+(centré|utilisé|employé|appliqué|adopté|choisi|sélectionné|effectué|réalisé|mené)\b/gi, replacement: '$1 $2 $3es' }
             ];
             
             passivePatterns.forEach(({pattern, replacement}) => {
@@ -2257,54 +2277,473 @@
             });
             
             if (originalText !== correctedText) {
-                console.log('🎯 Passive voice participle agreements corrected');
+                console.log('🎯 RULE 1: Passive voice participle agreements corrected');
             }
             
             return correctedText;
         }
 
-        // Fix agreement with feminine abstract nouns
-        function fixFeminineAbstractNounAgreement(text) {
+        // RULE 2: Past Participle Agreement (Reflexive Verbs)
+        function fixReflexiveVerbParticiples(text) {
             let correctedText = text;
             const originalText = text;
             
-            // Common feminine abstract nouns and their agreement patterns
-            const feminineAbstractPatterns = [
-                // approche centré → approche centrée
-                { pattern: /\b(approche)\s+(centré)\b/gi, replacement: '$1 centrée' },
-                { pattern: /\b(approches)\s+(centré)\b/gi, replacement: '$1 centrées' },
+            // Reflexive verb participle agreement patterns
+            const reflexivePatterns = [
+                // elle s'est + past participle (feminine agreement)
+                { pattern: /\b(elle)\s+s'est\s+(blessé|coupé|levé|assis|reposé|arrêté)\b/gi, replacement: '$1 s\'est $2e' },
+                { pattern: /\b(elles)\s+se\s+sont\s+(blessé|coupé|levé|assis|reposé|arrêté)\b/gi, replacement: '$1 se sont $2es' },
                 
-                // méthode utilisé → méthode utilisée
-                { pattern: /\b(méthode)\s+(utilisé|employé|appliqué)\b/gi, replacement: '$1 $2e' },
-                { pattern: /\b(méthodes)\s+(utilisé|employé|appliqué)\b/gi, replacement: '$1 $2es' },
+                // Specific feminine nouns with reflexive verbs
+                { pattern: /\b(la\s+femme|cette\s+fille|une\s+personne)\s+s'est\s+(blessé|coupé|levé|reposé|arrêté)\b/gi, replacement: '$1 s\'est $2e' },
+                { pattern: /\b(les\s+femmes|ces\s+filles|les\s+personnes)\s+se\s+sont\s+(blessé|coupé|levé|reposé|arrêté)\b/gi, replacement: '$1 se sont $2es' },
                 
-                // stratégie adopté → stratégie adoptée
-                { pattern: /\b(stratégie)\s+(adopté|choisi|sélectionné)\b/gi, replacement: '$1 $2e' },
-                { pattern: /\b(stratégies)\s+(adopté|choisi|sélectionné)\b/gi, replacement: '$1 $2es' },
-                
-                // analyse effectué → analyse effectuée
-                { pattern: /\b(analyse)\s+(effectué|réalisé|mené)\b/gi, replacement: '$1 $2e' },
-                { pattern: /\b(analyses)\s+(effectué|réalisé|mené)\b/gi, replacement: '$1 $2es' },
-                
-                // étude mené → étude menée
-                { pattern: /\b(étude)\s+(mené|conduit|dirigé)\b/gi, replacement: '$1 menée' },
-                { pattern: /\b(études)\s+(mené|conduit|dirigé)\b/gi, replacement: '$1 menées' },
-                
-                // recherche approfondi → recherche approfondie
-                { pattern: /\b(recherche)\s+(approfondi|détaillé|spécialisé)\b/gi, replacement: '$1 $2e' },
-                { pattern: /\b(recherches)\s+(approfondi|détaillé|spécialisé)\b/gi, replacement: '$1 $2es' },
-                
-                // politique mis en place → politique mise en place
-                { pattern: /\b(politique)\s+(mis)\s+(en\s+place)\b/gi, replacement: '$1 mise $3' },
-                { pattern: /\b(politiques)\s+(mis)\s+(en\s+place)\b/gi, replacement: '$1 mises $3' }
+                // Common reflexive verbs with agreement
+                { pattern: /\b(elle|la\s+\w+)\s+s'est\s+(souvenu|rendu\s+compte|aperçu)\b/gi, replacement: '$1 s\'est souvenue de' }, // souvenir takes "de"
+                { pattern: /\b(elle|la\s+\w+)\s+s'est\s+(rendu)\s+(compte)\b/gi, replacement: '$1 s\'est rendue $3' },
+                { pattern: /\b(elle|la\s+\w+)\s+s'est\s+(aperçu)\b/gi, replacement: '$1 s\'est aperçue' }
             ];
             
-            feminineAbstractPatterns.forEach(({pattern, replacement}) => {
+            reflexivePatterns.forEach(({pattern, replacement}) => {
                 correctedText = correctedText.replace(pattern, replacement);
             });
             
             if (originalText !== correctedText) {
-                console.log('🎯 Feminine abstract noun agreements corrected');
+                console.log('🎯 RULE 2: Reflexive verb participle agreements corrected');
+            }
+            
+            return correctedText;
+        }
+
+        // RULE 3: Reflexive Pronouns Must Match Subject
+        function fixReflexivePronouns(text) {
+            let correctedText = text;
+            const originalText = text;
+            
+            // Reflexive pronoun matching patterns
+            const reflexivePronouns = [
+                // J'ai appris à mieux se gérer → me gérer
+                { pattern: /\bj'ai\s+appris\s+à\s+(\w+\s+)*se\s+(\w+)\b/gi, replacement: 'j\'ai appris à $1me $2' },
+                { pattern: /\bje\s+(\w+\s+)*à\s+(\w+\s+)*se\s+(\w+)\b/gi, replacement: 'je $1à $2me $3' },
+                
+                // Tu dois te rappeler → correct (already)
+                // Tu dois se rappeler → te rappeler
+                { pattern: /\btu\s+(\w+\s+)*se\s+(\w+)\b/gi, replacement: 'tu $1te $2' },
+                
+                // Il/Elle patterns (correct)
+                { pattern: /\b(il|elle)\s+(\w+\s+)*me\s+(\w+)\b/gi, replacement: '$1 $2se $3' },
+                { pattern: /\b(il|elle)\s+(\w+\s+)*te\s+(\w+)\b/gi, replacement: '$1 $2se $3' },
+                
+                // Nous patterns
+                { pattern: /\bnous\s+(\w+\s+)*se\s+(\w+)\b/gi, replacement: 'nous $1nous $2' },
+                { pattern: /\bnous\s+(\w+\s+)*me\s+(\w+)\b/gi, replacement: 'nous $1nous $2' },
+                
+                // Vous patterns
+                { pattern: /\bvous\s+(\w+\s+)*se\s+(\w+)\b/gi, replacement: 'vous $1vous $2' },
+                { pattern: /\bvous\s+(\w+\s+)*me\s+(\w+)\b/gi, replacement: 'vous $1vous $2' },
+                
+                // Ils/Elles patterns
+                { pattern: /\b(ils|elles)\s+(\w+\s+)*me\s+(\w+)\b/gi, replacement: '$1 $2se $3' },
+                { pattern: /\b(ils|elles)\s+(\w+\s+)*te\s+(\w+)\b/gi, replacement: '$1 $2se $3' }
+            ];
+            
+            reflexivePronouns.forEach(({pattern, replacement}) => {
+                correctedText = correctedText.replace(pattern, replacement);
+            });
+            
+            if (originalText !== correctedText) {
+                console.log('🎯 RULE 3: Reflexive pronouns corrected');
+            }
+            
+            return correctedText;
+        }
+
+        // RULE 4: Noun Gender Agreement
+        function fixNounGenderAgreement(text) {
+            let correctedText = text;
+            const originalText = text;
+            
+            // Common gender agreement errors
+            const genderPatterns = [
+                // Masculine/feminine article errors
+                { pattern: /\bun\s+(période|époque|analyse|étude|recherche|méthode|stratégie|politique|théorie|idée|approche)\b/gi, replacement: 'une $1' },
+                { pattern: /\bune\s+(problème|système|modèle|exemple|principe|concept|processus|phénomène)\b/gi, replacement: 'un $1' },
+                
+                // Le/la errors
+                { pattern: /\ble\s+(période|époque|analyse|étude|recherche|méthode|stratégie|politique|théorie|idée|approche)\b/gi, replacement: 'la $1' },
+                { pattern: /\bla\s+(problème|système|modèle|exemple|principe|concept|processus|phénomène)\b/gi, replacement: 'le $1' },
+                
+                // Ce/cette errors
+                { pattern: /\bce\s+(période|époque|analyse|étude|recherche|méthode|stratégie|politique|théorie|idée|approche)\b/gi, replacement: 'cette $1' },
+                { pattern: /\bcette\s+(problème|système|modèle|exemple|principe|concept|processus|phénomène)\b/gi, replacement: 'ce $1' },
+                
+                // Mon/ma errors (before vowels, use mon for both genders)
+                { pattern: /\bma\s+(approche|analyse|étude|idée|époque)\b/gi, replacement: 'mon $1' }, // before vowel
+                { pattern: /\bmon\s+(période|méthode|stratégie|politique|théorie|recherche)\b/gi, replacement: 'ma $1' }, // feminine, no vowel
+                
+                // Tout/toute errors
+                { pattern: /\btout\s+(la|cette|une)\s+(\w+)\b/gi, replacement: 'toute $1 $2' },
+                { pattern: /\btoute\s+(le|ce|un)\s+(\w+)\b/gi, replacement: 'tout $1 $2' }
+            ];
+            
+            genderPatterns.forEach(({pattern, replacement}) => {
+                correctedText = correctedText.replace(pattern, replacement);
+            });
+            
+            if (originalText !== correctedText) {
+                console.log('🎯 RULE 4: Noun gender agreements corrected');
+            }
+            
+            return correctedText;
+        }
+
+        // RULE 5: Adjective Agreement (Gender and Number)
+        function fixAdjectiveAgreement(text) {
+            let correctedText = text;
+            const originalText = text;
+            
+            // Comprehensive adjective agreement patterns
+            const adjectivePatterns = [
+                // Feminine singular nouns + adjectives
+                { pattern: /\b(la|cette|une)\s+(question|réponse|analyse|étude|méthode|approche|stratégie|politique|théorie|idée)\s+(important|difficile|complexe|simple|nouveau|bon|mauvais|grand|petit)\b/gi, 
+                  replacement: (match, art, noun, adj) => {
+                    const femAdj = adj.replace(/important$/i, 'importante')
+                                    .replace(/difficile$/i, 'difficile') // already correct
+                                    .replace(/complexe$/i, 'complexe') // already correct
+                                    .replace(/simple$/i, 'simple') // already correct
+                                    .replace(/nouveau$/i, 'nouvelle')
+                                    .replace(/bon$/i, 'bonne')
+                                    .replace(/mauvais$/i, 'mauvaise')
+                                    .replace(/grand$/i, 'grande')
+                                    .replace(/petit$/i, 'petite');
+                    return `${art} ${noun} ${femAdj}`;
+                  }
+                },
+                
+                // Feminine plural nouns + adjectives
+                { pattern: /\b(les|ces|des)\s+(questions|réponses|analyses|études|méthodes|approches|stratégies|politiques|théories|idées)\s+(important|difficile|complexe|simple|nouveau|bon|mauvais|grand|petit)\b/gi, 
+                  replacement: (match, art, noun, adj) => {
+                    const femPluralAdj = adj.replace(/important$/i, 'importantes')
+                                          .replace(/difficile$/i, 'difficiles')
+                                          .replace(/complexe$/i, 'complexes')
+                                          .replace(/simple$/i, 'simples')
+                                          .replace(/nouveau$/i, 'nouvelles')
+                                          .replace(/bon$/i, 'bonnes')
+                                          .replace(/mauvais$/i, 'mauvaises')
+                                          .replace(/grand$/i, 'grandes')
+                                          .replace(/petit$/i, 'petites');
+                    return `${art} ${noun} ${femPluralAdj}`;
+                  }
+                },
+                
+                // Simple pattern for common errors
+                { pattern: /\bdes\s+décisions?\s+(important)\b/gi, replacement: 'des décisions importantes' },
+                { pattern: /\bdes\s+solutions?\s+(efficace)\b/gi, replacement: 'des solutions efficaces' },
+                { pattern: /\bdes\s+personnes?\s+(intéressant)\b/gi, replacement: 'des personnes intéressantes' }
+            ];
+            
+            adjectivePatterns.forEach(({pattern, replacement}) => {
+                if (typeof replacement === 'function') {
+                    correctedText = correctedText.replace(pattern, replacement);
+                } else {
+                    correctedText = correctedText.replace(pattern, replacement);
+                }
+            });
+            
+            if (originalText !== correctedText) {
+                console.log('🎯 RULE 5: Adjective agreements corrected');
+            }
+            
+            return correctedText;
+        }
+
+        // RULE 7: Quantity Expressions + Article Rules
+        function fixQuantityExpressions(text) {
+            let correctedText = text;
+            const originalText = text;
+            
+            // Quantity expression patterns
+            const quantityPatterns = [
+                // beaucoup des → beaucoup de
+                { pattern: /\bbeaucoup\s+des\s+(\w+)\b/gi, replacement: 'beaucoup de $1' },
+                { pattern: /\bpeu\s+des\s+(\w+)\b/gi, replacement: 'peu de $1' },
+                { pattern: /\bassez\s+des\s+(\w+)\b/gi, replacement: 'assez de $1' },
+                { pattern: /\btrop\s+des\s+(\w+)\b/gi, replacement: 'trop de $1' },
+                { pattern: /\bplus\s+des\s+(\w+)\b/gi, replacement: 'plus de $1' },
+                { pattern: /\bmoins\s+des\s+(\w+)\b/gi, replacement: 'moins de $1' },
+                
+                // Uncountable nouns - keep singular
+                { pattern: /\bbeaucoup\s+de\s+(temps)\s+(libres)\b/gi, replacement: 'beaucoup de $1 libre' },
+                { pattern: /\bpeu\s+de\s+(temps)\s+(libres)\b/gi, replacement: 'peu de $1 libre' },
+                { pattern: /\bassez\s+de\s+(travails)\b/gi, replacement: 'assez de travail' },
+                { pattern: /\btrop\s+de\s+(travails)\b/gi, replacement: 'trop de travail' },
+                { pattern: /\bbeaucoup\s+d'\s*(informations)\b/gi, replacement: 'beaucoup d\'information' },
+                { pattern: /\bpeu\s+d'\s*(informations)\b/gi, replacement: 'peu d\'information' },
+                
+                // Plural count nouns after quantity expressions (correct)
+                { pattern: /\bbeaucoup\s+de\s+(personne)\b/gi, replacement: 'beaucoup de personnes' },
+                { pattern: /\bpeu\s+de\s+(personne)\b/gi, replacement: 'peu de personnes' },
+                { pattern: /\btrop\s+de\s+(étudiant)\b/gi, replacement: 'trop d\'étudiants' },
+                { pattern: /\bassez\s+de\s+(livre)\b/gi, replacement: 'assez de livres' }
+            ];
+            
+            quantityPatterns.forEach(({pattern, replacement}) => {
+                correctedText = correctedText.replace(pattern, replacement);
+            });
+            
+            if (originalText !== correctedText) {
+                console.log('🎯 RULE 7: Quantity expressions corrected');
+            }
+            
+            return correctedText;
+        }
+
+        // RULE 8: Use Subjunctive After Specific Triggers
+        function fixSubjunctiveTriggers(text) {
+            let correctedText = text;
+            const originalText = text;
+            
+            // Subjunctive trigger patterns
+            const subjunctivePatterns = [
+                // Bien que + subjunctive
+                { pattern: /\bbien\s+que\s+(c'est|il\s+est|vous\s+êtes|nous\s+sommes)\b/gi, replacement: 'bien que ce soit' },
+                { pattern: /\bbien\s+que\s+(je\s+suis)\b/gi, replacement: 'bien que je sois' },
+                { pattern: /\bbien\s+que\s+(tu\s+es)\b/gi, replacement: 'bien que tu sois' },
+                { pattern: /\bbien\s+que\s+(il\s+a|elle\s+a)\b/gi, replacement: 'bien qu\'il ait' },
+                { pattern: /\bbien\s+que\s+(nous\s+avons)\b/gi, replacement: 'bien que nous ayons' },
+                { pattern: /\bbien\s+que\s+(vous\s+avez)\b/gi, replacement: 'bien que vous ayez' },
+                { pattern: /\bbien\s+que\s+(ils\s+ont|elles\s+ont)\b/gi, replacement: 'bien qu\'ils aient' },
+                
+                // Il faut que + subjunctive
+                { pattern: /\bil\s+faut\s+que\s+(je\s+suis)\b/gi, replacement: 'il faut que je sois' },
+                { pattern: /\bil\s+faut\s+que\s+(tu\s+es)\b/gi, replacement: 'il faut que tu sois' },
+                { pattern: /\bil\s+faut\s+que\s+(il\s+est|elle\s+est)\b/gi, replacement: 'il faut qu\'il soit' },
+                { pattern: /\bil\s+faut\s+que\s+(nous\s+sommes)\b/gi, replacement: 'il faut que nous soyons' },
+                { pattern: /\bil\s+faut\s+que\s+(vous\s+êtes)\b/gi, replacement: 'il faut que vous soyez' },
+                { pattern: /\bil\s+faut\s+que\s+(ils\s+sont|elles\s+sont)\b/gi, replacement: 'il faut qu\'ils soient' },
+                
+                // Pour que + subjunctive
+                { pattern: /\bpour\s+que\s+(je\s+peux)\b/gi, replacement: 'pour que je puisse' },
+                { pattern: /\bpour\s+que\s+(tu\s+peux)\b/gi, replacement: 'pour que tu puisses' },
+                { pattern: /\bpour\s+que\s+(il\s+peut|elle\s+peut)\b/gi, replacement: 'pour qu\'il puisse' },
+                { pattern: /\bpour\s+que\s+(nous\s+pouvons)\b/gi, replacement: 'pour que nous puissions' },
+                { pattern: /\bpour\s+que\s+(vous\s+pouvez)\b/gi, replacement: 'pour que vous puissiez' },
+                { pattern: /\bpour\s+que\s+(ils\s+peuvent|elles\s+peuvent)\b/gi, replacement: 'pour qu\'ils puissent' },
+                
+                // Avant que + subjunctive
+                { pattern: /\bavant\s+que\s+(je\s+pars)\b/gi, replacement: 'avant que je parte' },
+                { pattern: /\bavant\s+que\s+(tu\s+pars)\b/gi, replacement: 'avant que tu partes' },
+                { pattern: /\bavant\s+que\s+(il\s+part|elle\s+part)\b/gi, replacement: 'avant qu\'il parte' },
+                
+                // Quoique + subjunctive
+                { pattern: /\bquoique\s+(c'est)\b/gi, replacement: 'quoique ce soit' },
+                { pattern: /\bquoique\s+(il\s+est|elle\s+est)\b/gi, replacement: 'quoique ce soit' }
+            ];
+            
+            subjunctivePatterns.forEach(({pattern, replacement}) => {
+                correctedText = correctedText.replace(pattern, replacement);
+            });
+            
+            if (originalText !== correctedText) {
+                console.log('🎯 RULE 8: Subjunctive triggers corrected');
+            }
+            
+            return correctedText;
+        }
+
+        // RULE 10: Preposition Accuracy in Fixed Expressions
+        function fixPrepositionAccuracy(text) {
+            let correctedText = text;
+            const originalText = text;
+            
+            // Fixed expression preposition patterns
+            const prepositionPatterns = [
+                // à l'ère vs dans l'ère
+                { pattern: /\bdans\s+l'ère\s+(numérique|moderne|contemporaine)\b/gi, replacement: 'à l\'ère $1' },
+                
+                // en matière de vs dans matière de
+                { pattern: /\bdans\s+(la\s+)?matière\s+de\b/gi, replacement: 'en matière de' },
+                
+                // au niveau de vs sur le niveau de
+                { pattern: /\bsur\s+le\s+niveau\s+de\b/gi, replacement: 'au niveau de' },
+                
+                // à mon avis vs dans mon avis
+                { pattern: /\bdans\s+mon\s+avis\b/gi, replacement: 'à mon avis' },
+                
+                // en fonction de vs dans fonction de
+                { pattern: /\bdans\s+(la\s+)?fonction\s+de\b/gi, replacement: 'en fonction de' },
+                
+                // par rapport à vs par rapport de
+                { pattern: /\bpar\s+rapport\s+de\b/gi, replacement: 'par rapport à' },
+                
+                // en ce qui concerne vs dans ce qui concerne
+                { pattern: /\bdans\s+ce\s+qui\s+concerne\b/gi, replacement: 'en ce qui concerne' },
+                
+                // grâce à vs grâce de
+                { pattern: /\bgrâce\s+de\b/gi, replacement: 'grâce à' },
+                
+                // à cause de vs à cause à
+                { pattern: /\bà\s+cause\s+à\b/gi, replacement: 'à cause de' },
+                
+                // dépendre de vs dépendre à
+                { pattern: /\bdépendre?\s+à\b/gi, replacement: 'dépendre de' },
+                
+                // s'adapter à vs s'adapter de
+                { pattern: /\bs'adapter?\s+de\b/gi, replacement: 's\'adapter à' },
+                
+                // consister à vs consister de
+                { pattern: /\bconsister?\s+de\b/gi, replacement: 'consister à' },
+                
+                // se concentrer sur vs se concentrer à
+                { pattern: /\bse\s+concentrer?\s+à\b/gi, replacement: 'se concentrer sur' }
+            ];
+            
+            prepositionPatterns.forEach(({pattern, replacement}) => {
+                correctedText = correctedText.replace(pattern, replacement);
+            });
+            
+            if (originalText !== correctedText) {
+                console.log('🎯 RULE 10: Preposition accuracy corrected');
+            }
+            
+            return correctedText;
+        }
+
+        // RULE 12: Correct Past Participle Spelling & Accents
+        function fixPastParticipleSpelling(text) {
+            let correctedText = text;
+            const originalText = text;
+            
+            // Past participle spelling patterns
+            const participleSpellings = [
+                // Missing accents
+                { pattern: /\bdeveloppe\b/gi, replacement: 'développé' },
+                { pattern: /\bdevelopper\b/gi, replacement: 'développer' },
+                { pattern: /\bdecide\b/gi, replacement: 'décidé' },
+                { pattern: /\bdecider\b/gi, replacement: 'décider' },
+                { pattern: /\bretabli\b/gi, replacement: 'rétabli' },
+                { pattern: /\betabli\b/gi, replacement: 'établi' },
+                { pattern: /\betudie\b/gi, replacement: 'étudié' },
+                { pattern: /\betudier\b/gi, replacement: 'étudier' },
+                { pattern: /\bprefere\b/gi, replacement: 'préféré' },
+                { pattern: /\bpreferer\b/gi, replacement: 'préférer' },
+                { pattern: /\brealise\b/gi, replacement: 'réalisé' },
+                { pattern: /\brealiser\b/gi, replacement: 'réaliser' },
+                { pattern: /\bcree\b/gi, replacement: 'créé' },
+                { pattern: /\bcreer\b/gi, replacement: 'créer' },
+                
+                // Wrong ending forms
+                { pattern: /\bdéveloppé\b/gi, replacement: 'développé' }, // Common typo
+                { pattern: /\banalysé\b/gi, replacement: 'analysé' },
+                { pattern: /\butilisé\b/gi, replacement: 'utilisé' },
+                { pattern: /\borgannisé\b/gi, replacement: 'organisé' },
+                
+                // Irregular past participles
+                { pattern: /\bappri\b/gi, replacement: 'appris' },
+                { pattern: /\bcompri\b/gi, replacement: 'compris' },
+                { pattern: /\bpri\b/gi, replacement: 'pris' },
+                { pattern: /\bmis\b/gi, replacement: 'mis' }, // already correct
+                { pattern: /\bfai\b/gi, replacement: 'fait' },
+                { pattern: /\bdit\b/gi, replacement: 'dit' }, // already correct
+                { pattern: /\bécri\b/gi, replacement: 'écrit' },
+                { pattern: /\bouver\b/gi, replacement: 'ouvert' }
+            ];
+            
+            participleSpellings.forEach(({pattern, replacement}) => {
+                correctedText = correctedText.replace(pattern, replacement);
+            });
+            
+            if (originalText !== correctedText) {
+                console.log('🎯 RULE 12: Past participle spelling corrected');
+            }
+            
+            return correctedText;
+        }
+
+        // RULE 13: Correct Pronoun Placement in Compound Tenses
+        function fixPronounPlacement(text) {
+            let correctedText = text;
+            const originalText = text;
+            
+            // Pronoun placement patterns
+            const pronounPatterns = [
+                // Wrong placement with vouloir + infinitive: je le veux dire → je veux le dire
+                { pattern: /\bje\s+(le|la|les|lui|leur)\s+(veux|peux|dois|vais)\s+(\w+)\b/gi, replacement: 'je $2 $1 $3' },
+                { pattern: /\btu\s+(le|la|les|lui|leur)\s+(veux|peux|dois|vas)\s+(\w+)\b/gi, replacement: 'tu $2 $1 $3' },
+                { pattern: /\bil\s+(le|la|les|lui|leur)\s+(veut|peut|doit|va)\s+(\w+)\b/gi, replacement: 'il $2 $1 $3' },
+                { pattern: /\belle\s+(le|la|les|lui|leur)\s+(veut|peut|doit|va)\s+(\w+)\b/gi, replacement: 'elle $2 $1 $3' },
+                
+                // Wrong placement with compound tenses: j'ai le dit → je l'ai dit
+                { pattern: /\bj'ai\s+(le|la|les)\s+(\w+)\b/gi, replacement: 'je l\'ai $2' },
+                { pattern: /\btu\s+as\s+(le|la|les)\s+(\w+)\b/gi, replacement: 'tu l\'as $2' },
+                { pattern: /\bil\s+a\s+(le|la|les)\s+(\w+)\b/gi, replacement: 'il l\'a $2' },
+                { pattern: /\belle\s+a\s+(le|la|les)\s+(\w+)\b/gi, replacement: 'elle l\'a $2' },
+                
+                // Wrong placement with être: je le suis allé → je suis allé
+                { pattern: /\bje\s+(le|la|les)\s+suis\s+(allé|parti|venu|resté)\b/gi, replacement: 'je suis $2' },
+                { pattern: /\btu\s+(le|la|les)\s+es\s+(allé|parti|venu|resté)\b/gi, replacement: 'tu es $2' },
+                
+                // Double pronouns in wrong order: me le donne → le me donne should be → me le donne (already correct)
+                // But: le me donne → me le donne
+                { pattern: /\b(le|la|les)\s+(me|te|nous|vous)\s+(donne|dit|montre)\b/gi, replacement: '$2 $1 $3' },
+                
+                // Pronoun with negation: je ne le pas veux → je ne le veux pas
+                { pattern: /\bje\s+ne\s+(le|la|les|lui|leur)\s+pas\s+(veux|peux|dois)\b/gi, replacement: 'je ne $2 $1 pas' },
+                { pattern: /\btu\s+ne\s+(le|la|les|lui|leur)\s+pas\s+(veux|peux|dois)\b/gi, replacement: 'tu ne $2 $1 pas' }
+            ];
+            
+            pronounPatterns.forEach(({pattern, replacement}) => {
+                correctedText = correctedText.replace(pattern, replacement);
+            });
+            
+            if (originalText !== correctedText) {
+                console.log('🎯 RULE 13: Pronoun placement corrected');
+            }
+            
+            return correctedText;
+        }
+
+        // RULE 14: Person and Number Consistency
+        function fixPersonNumberConsistency(text) {
+            let correctedText = text;
+            const originalText = text;
+            
+            // Person/number consistency patterns
+            const consistencyPatterns = [
+                // chacun + singular verb
+                { pattern: /\bchacun\s+(aiment|préfèrent|pensent|croient)\b/gi, replacement: 'chacun aime' },
+                { pattern: /\bchacune\s+(aiment|préfèrent|pensent|croient)\b/gi, replacement: 'chacune aime' },
+                
+                // tout le monde + singular verb
+                { pattern: /\btout\s+le\s+monde\s+(aiment|préfèrent|pensent|croient|savent|veulent|peuvent)\b/gi, replacement: 'tout le monde aime' },
+                
+                // personne + singular verb
+                { pattern: /\bpersonne\s+ne\s+(aiment|préfèrent|pensent|croient|savent|veulent|peuvent)\b/gi, replacement: 'personne n\'aime' },
+                
+                // on + singular verb (sometimes confused with nous)
+                { pattern: /\bon\s+(sommes|avons|allons|faisons|disons)\b/gi, replacement: 'on est' },
+                
+                // Subject-verb disagreement fixes
+                { pattern: /\bils\s+(est|a|va|fait|dit)\b/gi, replacement: 'ils sont' },
+                { pattern: /\belles\s+(est|a|va|fait|dit)\b/gi, replacement: 'elles sont' },
+                { pattern: /\bil\s+(sont|ont|vont|font|disent)\b/gi, replacement: 'il est' },
+                { pattern: /\belle\s+(sont|ont|vont|font|disent)\b/gi, replacement: 'elle est' },
+                
+                // Vous (formal/plural) consistency
+                { pattern: /\bvous\s+(es|est)\b/gi, replacement: 'vous êtes' },
+                { pattern: /\bvous\s+(a|as)\b/gi, replacement: 'vous avez' },
+                
+                // Nous consistency
+                { pattern: /\bnous\s+(suis|es|est)\b/gi, replacement: 'nous sommes' },
+                { pattern: /\bnous\s+(ai|as|a)\b/gi, replacement: 'nous avons' }
+            ];
+            
+            consistencyPatterns.forEach(({pattern, replacement}) => {
+                correctedText = correctedText.replace(pattern, replacement);
+            });
+            
+            if (originalText !== correctedText) {
+                console.log('🎯 RULE 14: Person/number consistency corrected');
             }
             
             return correctedText;
