@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emotional & Strategic Business Wins - French Learning</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        /* Hide scrollbar but keep scroll functionality */
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        
+        /* Smooth scroll behavior */
+        .scroll-container {
+            scroll-behavior: smooth;
+        }
+        
+        /* Card descriptions always visible */
+        .card-description {
+            opacity: 1;
+            max-height: none;
+            overflow: visible;
+            transition: all 0.3s ease-in-out;
+        }
+        
+        /* Fade overlays - updated for exact brand green */
+        .fade-left {
+            background: linear-gradient(to right, rgba(0, 255, 155, 0.9), transparent);
+        }
+        
+        .fade-right {
+            background: linear-gradient(to left, rgba(0, 255, 155, 0.9), transparent);
+        }
+        
+        /* Custom green colors matching your exact brand */
+        .bg-brand-green {
+            background-color: #00FF9B;
+        }
+        
+        .bg-brand-green-light {
+            background-color: rgba(0, 255, 155, 0.1);
+        }
+        
+        .border-brand-green {
+            border-color: rgba(0, 255, 155, 0.3);
+        }
+        
+        .text-brand-green {
+            color: #00FF9B;
+        }
+        
+        .shadow-brand {
+            box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .shadow-brand-hover {
+            box-shadow: 0 20px 40px -4px rgba(0, 0, 0, 0.15), 0 8px 16px -4px rgba(0, 255, 155, 0.2);
+        }
+        
+        /* Professional card interactions */
+        .card {
+            transition: all 0.3s ease;
+            will-change: transform, box-shadow;
+        }
+        
+        .card:hover {
+            transform: translateY(-4px);
+        }
+        
+        /* Subtle animations for professional feel */
+        .card-icon {
+            transition: transform 0.2s ease;
+        }
+        
+        .card:hover .card-icon {
+            transform: scale(1.05);
+        }
+        
+        /* Clean focus states */
+        .card:focus {
+            outline: 2px solid #00FF9B;
+            outline-offset: 2px;
+        }
+        
+        /* Professional shadows */
+        .shadow-subtle {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+        
+        .shadow-subtle-hover {
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 255, 155, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-brand-green">
+    <!-- Section Header -->
+    <section class="py-16 px-4 max-w-7xl mx-auto">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-black mb-4 tracking-tight">Emotional & Strategic Business Wins</h2>
+            <p class="text-lg text-black/70 max-w-3xl mx-auto">Discover why thousands choose our system over traditional French classes</p>
+        </div>
+        
+        <!-- Slider Container -->
+        <div class="relative">
+            <!-- Left fade overlay -->
+            <div class="absolute left-0 top-0 w-12 h-full z-10 fade-left pointer-events-none"></div>
+            
+            <!-- Right fade overlay -->
+            <div class="absolute right-0 top-0 w-12 h-full z-10 fade-right pointer-events-none"></div>
+            
+            <!-- Scrollable container -->
+            <div class="overflow-x-auto hide-scrollbar scroll-container pb-4">
+                <div class="flex gap-6 min-w-max px-6">
+                    
+                    <!-- Card 1 -->
+                    <div class="card flex-shrink-0 w-72 bg-white rounded-xl p-6 shadow-subtle hover:shadow-subtle-hover border border-brand-green group cursor-pointer" tabindex="0">
+                        <div class="card-icon mb-4">
+                            <svg class="w-10 h-10 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-3 group-hover:text-brand-green transition-colors duration-300">You're Saving Thousands</h3>
+                        <div class="card-description">
+                            <p class="text-gray-600 text-sm leading-relaxed">Without sacrificing quality — this system replaces years of overpriced classes.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Card 2 -->
+                    <div class="card flex-shrink-0 w-72 bg-white rounded-xl p-6 shadow-subtle hover:shadow-subtle-hover border border-brand-green group cursor-pointer" tabindex="0">
+                        <div class="card-icon mb-4">
+                            <svg class="w-10 h-10 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-3 group-hover:text-brand-green transition-colors duration-300">Visa-Compliant & Safe</h3>
+                        <div class="card-description">
+                            <p class="text-gray-600 text-sm leading-relaxed">You're always legally covered — no in-person restriction risks.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Card 3 -->
+                    <div class="card flex-shrink-0 w-72 bg-white rounded-xl p-6 shadow-subtle hover:shadow-subtle-hover border border-brand-green group cursor-pointer" tabindex="0">
+                        <div class="card-icon mb-4">
+                            <svg class="w-10 h-10 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-3 group-hover:text-brand-green transition-colors duration-300">Repetition Without Shame</h3>
+                        <div class="card-description">
+                            <p class="text-gray-600 text-sm leading-relaxed">Replay any lesson, any time — this is how real mastery happens.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Card 4 -->
+                    <div class="card flex-shrink-0 w-72 bg-white rounded-xl p-6 shadow-subtle hover:shadow-subtle-hover border border-brand-green group cursor-pointer" tabindex="0">
+                        <div class="card-icon mb-4">
+                            <svg class="w-10 h-10 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-3 group-hover:text-brand-green transition-colors duration-300">You Never Miss a Class</h3>
+                        <div class="card-description">
+                            <p class="text-gray-600 text-sm leading-relaxed">You own the system. No Zoom links. No stress. No missed days.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Card 5 -->
+                    <div class="card flex-shrink-0 w-72 bg-white rounded-xl p-6 shadow-subtle hover:shadow-subtle-hover border border-brand-green group cursor-pointer" tabindex="0">
+                        <div class="card-icon mb-4">
+                            <svg class="w-10 h-10 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-3 group-hover:text-brand-green transition-colors duration-300">Structured Progress</h3>
+                        <div class="card-description">
+                            <p class="text-gray-600 text-sm leading-relaxed">No shortcuts. No skipping. Every step earned, every skill built.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Card 6 -->
+                    <div class="card flex-shrink-0 w-72 bg-white rounded-xl p-6 shadow-subtle hover:shadow-subtle-hover border border-brand-green group cursor-pointer" tabindex="0">
+                        <div class="card-icon mb-4">
+                            <svg class="w-10 h-10 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-3 group-hover:text-brand-green transition-colors duration-300">Exam-Focused French</h3>
+                        <div class="card-description">
+                            <p class="text-gray-600 text-sm leading-relaxed">Nothing extra. Nothing missing. Aligned with TEF & DELF.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Card 7 -->
+                    <div class="card flex-shrink-0 w-72 bg-white rounded-xl p-6 shadow-subtle hover:shadow-subtle-hover border border-brand-green group cursor-pointer" tabindex="0">
+                        <div class="card-icon mb-4">
+                            <svg class="w-10 h-10 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-3 group-hover:text-brand-green transition-colors duration-300">Modern, Private Learning</h3>
+                        <div class="card-description">
+                            <p class="text-gray-600 text-sm leading-relaxed">No teachers staring. No judgment. Just real results.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Card 8 -->
+                    <div class="card flex-shrink-0 w-72 bg-white rounded-xl p-6 shadow-subtle hover:shadow-subtle-hover border border-brand-green group cursor-pointer" tabindex="0">
+                        <div class="card-icon mb-4">
+                            <svg class="w-10 h-10 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-3 group-hover:text-brand-green transition-colors duration-300">No Commute. No Risk.</h3>
+                        <div class="card-description">
+                            <p class="text-gray-600 text-sm leading-relaxed">Skip the coaching center. Keep your time and safety.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Card 9 -->
+                    <div class="card flex-shrink-0 w-72 bg-white rounded-xl p-6 shadow-subtle hover:shadow-subtle-hover border border-brand-green group cursor-pointer" tabindex="0">
+                        <div class="card-icon mb-4">
+                            <svg class="w-10 h-10 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-3 group-hover:text-brand-green transition-colors duration-300">No Sitting Like a Statue</h3>
+                        <div class="card-description">
+                            <p class="text-gray-600 text-sm leading-relaxed">No Zoom fatigue. Learn actively, on your terms.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Card 10 -->
+                    <div class="card flex-shrink-0 w-72 bg-white rounded-xl p-6 shadow-subtle hover:shadow-subtle-hover border border-brand-green group cursor-pointer" tabindex="0">
+                        <div class="card-icon mb-4">
+                            <svg class="w-10 h-10 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-3 group-hover:text-brand-green transition-colors duration-300">Structure You Can Trust</h3>
+                        <div class="card-description">
+                            <p class="text-gray-600 text-sm leading-relaxed">No guesswork. Just clear paths and step-by-step learning.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Card 11 -->
+                    <div class="card flex-shrink-0 w-72 bg-white rounded-xl p-6 shadow-subtle hover:shadow-subtle-hover border border-brand-green group cursor-pointer" tabindex="0">
+                        <div class="card-icon mb-4">
+                            <svg class="w-10 h-10 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-3 group-hover:text-brand-green transition-colors duration-300">Time Zone Problem? Solved.</h3>
+                        <div class="card-description">
+                            <p class="text-gray-600 text-sm leading-relaxed">You can learn from anywhere — no more missed sessions.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Card 12 -->
+                    <div class="card flex-shrink-0 w-72 bg-white rounded-xl p-6 shadow-subtle hover:shadow-subtle-hover border border-brand-green group cursor-pointer" tabindex="0">
+                        <div class="card-icon mb-4">
+                            <svg class="w-10 h-10 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-3 group-hover:text-brand-green transition-colors duration-300">One Price. Whole Family.</h3>
+                        <div class="card-description">
+                            <p class="text-gray-600 text-sm leading-relaxed">Yes — everyone in your home can learn French with one plan.</p>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <!-- Scroll hint on mobile -->
+            <div class="block md:hidden text-center mt-4">
+                <p class="text-sm text-white/60">← Swipe to explore more benefits →</p>
+            </div>
+        </div>
+    </section>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const scrollContainer = document.querySelector('.scroll-container');
+            const cardContainer = scrollContainer.querySelector('.flex');
+            let isScrolling = true;
+            let scrollSpeed = 0.5; // 0.5x speed as requested
+            let scrollPosition = 0;
+            
+            // Calculate total scroll width
+            function getMaxScroll() {
+                return cardContainer.scrollWidth - scrollContainer.clientWidth;
+            }
+            
+            // Auto-scroll function
+            function autoScroll() {
+                if (!isScrolling) return;
+                
+                const maxScroll = getMaxScroll();
+                scrollPosition += scrollSpeed;
+                
+                // Reset to beginning when reaching the end
+                if (scrollPosition >= maxScroll) {
+                    scrollPosition = 0;
+                }
+                
+                scrollContainer.scrollLeft = scrollPosition;
+                requestAnimationFrame(autoScroll);
+            }
+            
+            // Pause scrolling on hover
+            scrollContainer.addEventListener('mouseenter', () => {
+                isScrolling = false;
+            });
+            
+            // Resume scrolling when mouse leaves
+            scrollContainer.addEventListener('mouseleave', () => {
+                isScrolling = true;
+                requestAnimationFrame(autoScroll);
+            });
+            
+            // Pause on touch/interaction (mobile)
+            scrollContainer.addEventListener('touchstart', () => {
+                isScrolling = false;
+            });
+            
+            // Resume after touch ends (with delay)
+            scrollContainer.addEventListener('touchend', () => {
+                setTimeout(() => {
+                    isScrolling = true;
+                    requestAnimationFrame(autoScroll);
+                }, 2000); // 2 second delay before resuming
+            });
+            
+            // Handle manual scrolling
+            scrollContainer.addEventListener('scroll', () => {
+                if (isScrolling) {
+                    scrollPosition = scrollContainer.scrollLeft;
+                }
+            });
+            
+            // Start auto-scroll
+            requestAnimationFrame(autoScroll);
+        });
+    </script>
+</body>
+</html> 
