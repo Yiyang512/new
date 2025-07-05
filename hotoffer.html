@@ -55,7 +55,7 @@
             min-width: 280px;
             height: 100px;
             margin: 0 10px;
-            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+            background: #000000;
             border: none;
             border-radius: 12px;
             position: relative;
@@ -69,39 +69,31 @@
             font-size: 0.75rem;
             transition: all 0.3s ease;
             overflow: hidden;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
         }
 
         .coupon-item:nth-child(2n) {
-            background: linear-gradient(135deg, #2d2d2d, #1a1a1a);
+            background: #000000;
         }
 
         .coupon-item:nth-child(3n) {
-            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+            background: #000000;
         }
 
         .coupon-item:nth-child(4n) {
-            background: linear-gradient(135deg, #2d2d2d, #1a1a1a);
+            background: #000000;
         }
 
         .coupon-item:nth-child(5n) {
-            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+            background: #000000;
         }
 
         .coupon-item:hover {
             transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.4), inset 0 2px 0 rgba(255,215,0,0.2);
         }
 
         .coupon-item:hover .coupon-main {
             color: #FFED4A;
-            text-shadow: 0 3px 8px rgba(0,0,0,0.8), 0 0 30px rgba(255,215,0,0.6);
             transform: scale(1.05);
-        }
-
-        .coupon-item:nth-child(2n):hover,
-        .coupon-item:nth-child(4n):hover {
-            box-shadow: 0 8px 25px rgba(255,215,0,0.4), inset 0 2px 0 rgba(0,0,0,0.2);
         }
 
         .coupon-cutout-left {
@@ -134,7 +126,7 @@
             left: 2px;
             right: 2px;
             bottom: 2px;
-            background: linear-gradient(135deg, rgba(255,215,0,0.03), rgba(255,215,0,0.01));
+            background: transparent;
             border-radius: 10px;
             pointer-events: none;
             z-index: 1;
@@ -185,22 +177,7 @@
             border-top-color: #E74C3C;
         }
 
-        /* Add subtle shimmer effect using a child element */
-        .coupon-item .luxury-overlay::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
-            transition: left 0.5s ease;
-            z-index: 1;
-        }
 
-        .coupon-item:hover .luxury-overlay::after {
-            left: 100%;
-        }
 
         .coupon-text {
             text-align: center;
@@ -229,24 +206,11 @@
             font-weight: 900;
             color: #FFD700;
             margin: 4px 0;
-            text-shadow: 0 3px 8px rgba(0,0,0,0.8), 0 0 20px rgba(255,215,0,0.4);
             line-height: 0.9;
             letter-spacing: 1px;
             text-transform: uppercase;
             position: relative;
             z-index: 4;
-        }
-
-        .coupon-main::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -8px;
-            right: -8px;
-            bottom: -2px;
-            background: radial-gradient(ellipse at center, rgba(255,215,0,0.15), transparent);
-            border-radius: 8px;
-            z-index: -1;
         }
 
         .coupon-bottom {
