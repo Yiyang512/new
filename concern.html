@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>French Learning Concerns</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: transparent;
+            overflow-x: hidden;
+        }
+
+        .concerns-section {
+            background-color: transparent;
+            padding: 20px 0;
+            position: relative;
+        }
+
+        .slider-container {
+            position: relative;
+            width: 100%;
+            height: 180px;
+            overflow: hidden;
+            mask: linear-gradient(90deg, transparent, white 10%, white 90%, transparent);
+            -webkit-mask: linear-gradient(90deg, transparent, white 10%, white 90%, transparent);
+        }
+
+        .slider-track {
+            display: flex;
+            gap: 20px;
+            height: 100%;
+            animation: scroll 40s linear infinite;
+        }
+
+        .card {
+            flex: 0 0 280px;
+            height: 160px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .card:hover .card-inner,
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            font-size: 14px;
+            line-height: 1.4;
+            text-align: center;
+            background: linear-gradient(135deg, #fafafa, #ffffff);
+            border: 1px solid #f0f0f0;
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, #fff5f5, #ffffff);
+            color: #666;
+            font-weight: 400;
+        }
+
+        .card-back {
+            background: linear-gradient(135deg, #f0f9ff, #ffffff);
+            color: #2563eb;
+            transform: rotateY(180deg);
+            font-weight: 600;
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(calc(-280px * 10 - 200px));
+            }
+        }
+
+        .slider-track {
+            width: calc((280px + 20px) * 20);
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .concerns-section {
+                padding: 15px 0;
+            }
+
+            .slider-container {
+                height: 160px;
+            }
+
+            .card {
+                flex: 0 0 260px;
+                height: 140px;
+            }
+
+            .card-front, .card-back {
+                padding: 15px;
+                font-size: 13px;
+            }
+
+            @keyframes scroll {
+                0% {
+                    transform: translateX(0);
+                }
+                100% {
+                    transform: translateX(calc(-260px * 10 - 200px));
+                }
+            }
+
+            .slider-track {
+                width: calc((260px + 20px) * 20);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                flex: 0 0 240px;
+                height: 130px;
+            }
+
+            .card-front, .card-back {
+                padding: 12px;
+                font-size: 12px;
+            }
+
+            @keyframes scroll {
+                0% {
+                    transform: translateX(0);
+                }
+                100% {
+                    transform: translateX(calc(-240px * 10 - 200px));
+                }
+            }
+
+            .slider-track {
+                width: calc((240px + 20px) * 20);
+            }
+        }
+
+        /* Performance optimizations */
+        .slider-track {
+            will-change: transform;
+        }
+
+        .card-inner {
+            will-change: transform;
+        }
+
+        /* Pause animation on hover for better UX */
+        .slider-container:hover .slider-track {
+            animation-play-state: paused;
+        }
+    </style>
+</head>
+<body>
+    <section class="concerns-section">
+        <div class="slider-container">
+            <div class="slider-track">
+                <!-- First set of cards -->
+                <div class="card" data-card="1">
+                    <div class="card-inner">
+                        <div class="card-front">I'm too old to start.</div>
+                        <div class="card-back">Learn privately at your pace — no age limit.</div>
+                    </div>
+                </div>
+                
+                <div class="card" data-card="2">
+                    <div class="card-inner">
+                        <div class="card-front">I won't understand native speakers.</div>
+                        <div class="card-back">Our VR trains you to hear real native speech.</div>
+                    </div>
+                </div>
+                
+                <div class="card" data-card="3">
+                    <div class="card-inner">
+                        <div class="card-front">I'm scared of making mistakes.</div>
+                        <div class="card-back">Retry lessons privately — no one's judging.</div>
+                    </div>
+                </div>
+                
+                <div class="card" data-card="4">
+                    <div class="card-inner">
+                        <div class="card-front">It takes too long to see progress.</div>
+                        <div class="card-back">Every video ends with a quiz — you track growth.</div>
+                    </div>
+                </div>
+                
+                <div class="card" data-card="5">
+                    <div class="card-inner">
+                        <div class="card-front">What if I forget everything later?</div>
+                        <div class="card-back">Vocabulary reviews help you remember longer.</div>
+                    </div>
+                </div>
+                
+                <div class="card" data-card="6">
+                    <div class="card-inner">
+                        <div class="card-front">I have no one to practice with.</div>
+                        <div class="card-back">Practice aloud with our AI & VR — solo.</div>
+                    </div>
+                </div>
+                
+                <div class="card" data-card="7">
+                    <div class="card-inner">
+                        <div class="card-front">I'm not good at grammar.</div>
+                        <div class="card-back">Short grammar videos + quizzes fix that fast.</div>
+                    </div>
+                </div>
+                
+                <div class="card" data-card="8">
+                    <div class="card-inner">
+                        <div class="card-front">French pronunciation is too hard.</div>
+                        <div class="card-back">Our AI shows you exactly how to correct it.</div>
+                    </div>
+                </div>
+                
+                <div class="card" data-card="9">
+                    <div class="card-inner">
+                        <div class="card-front">I've tried before. It didn't work.</div>
+                        <div class="card-back">This system is different — results are built-in.</div>
+                    </div>
+                </div>
+                
+                <div class="card" data-card="10">
+                    <div class="card-inner">
+                        <div class="card-front">I'm too busy — I can't commit.</div>
+                        <div class="card-back">No schedule. Learn anytime, stress-free.</div>
+                    </div>
+                </div>
+                
+                <!-- Duplicate set for seamless loop -->
+                <div class="card" data-card="1">
+                    <div class="card-inner">
+                        <div class="card-front">I'm too old to start.</div>
+                        <div class="card-back">Learn privately at your pace — no age limit.</div>
+                    </div>
+                </div>
+                
+                <div class="card" data-card="2">
+                    <div class="card-inner">
+                        <div class="card-front">I won't understand native speakers.</div>
+                        <div class="card-back">Our VR trains you to hear real native speech.</div>
+                    </div>
+                </div>
+                
+                <div class="card" data-card="3">
+                    <div class="card-inner">
+                        <div class="card-front">I'm scared of making mistakes.</div>
+                        <div class="card-back">Retry lessons privately — no one's judging.</div>
+                    </div>
+                </div>
+                
+                <div class="card" data-card="4">
+                    <div class="card-inner">
+                        <div class="card-front">It takes too long to see progress.</div>
+                        <div class="card-back">Every video ends with a quiz — you track growth.</div>
+                    </div>
+                </div>
+                
+                <div class="card" data-card="5">
+                    <div class="card-inner">
+                        <div class="card-front">What if I forget everything later?</div>
+                        <div class="card-back">Vocabulary reviews help you remember longer.</div>
+                    </div>
+                </div>
+                
+                <div class="card" data-card="6">
+                    <div class="card-inner">
+                        <div class="card-front">I have no one to practice with.</div>
+                        <div class="card-back">Practice aloud with our AI & VR — solo.</div>
+                    </div>
+                </div>
+                
+                <div class="card" data-card="7">
+                    <div class="card-inner">
+                        <div class="card-front">I'm not good at grammar.</div>
+                        <div class="card-back">Short grammar videos + quizzes fix that fast.</div>
+                    </div>
+                </div>
+                
+                <div class="card" data-card="8">
+                    <div class="card-inner">
+                        <div class="card-front">French pronunciation is too hard.</div>
+                        <div class="card-back">Our AI shows you exactly how to correct it.</div>
+                    </div>
+                </div>
+                
+                <div class="card" data-card="9">
+                    <div class="card-inner">
+                        <div class="card-front">I've tried before. It didn't work.</div>
+                        <div class="card-back">This system is different — results are built-in.</div>
+                    </div>
+                </div>
+                
+                <div class="card" data-card="10">
+                    <div class="card-inner">
+                        <div class="card-front">I'm too busy — I can't commit.</div>
+                        <div class="card-back">No schedule. Learn anytime, stress-free.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Enhanced mobile touch support
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            
+            cards.forEach(card => {
+                // Touch support for mobile
+                card.addEventListener('touchstart', function(e) {
+                    e.preventDefault();
+                    this.classList.toggle('flipped');
+                }, { passive: false });
+                
+                // Click support for desktop
+                card.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    this.classList.toggle('flipped');
+                });
+                
+                // Remove flipped state when touch/click outside
+                document.addEventListener('touchstart', function(e) {
+                    if (!card.contains(e.target)) {
+                        card.classList.remove('flipped');
+                    }
+                });
+                
+                document.addEventListener('click', function(e) {
+                    if (!card.contains(e.target)) {
+                        card.classList.remove('flipped');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
