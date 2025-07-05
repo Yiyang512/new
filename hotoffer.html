@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hot Offers - Coupons</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        .coupon-section {
+            background-color: #00FF9B;
+            padding: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .coupon-title {
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 15px;
+            font-family: 'Poppins', sans-serif;
+            text-shadow: 0 1px 2px rgba(255,255,255,0.3);
+        }
+
+        .coupon-container {
+            position: relative;
+            width: 100%;
+            height: 120px;
+            overflow: hidden;
+        }
+
+        .coupon-track {
+            display: flex;
+            width: calc(300px * 14); /* 7 coupons x 2 (for seamless loop) */
+            animation: slide 35s linear infinite;
+        }
+
+        .coupon-item {
+            min-width: 280px;
+            height: 100px;
+            margin: 0 10px;
+            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+            border: none;
+            border-radius: 12px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: white;
+            font-weight: 600;
+            font-size: 0.75rem;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        .coupon-item:nth-child(2n) {
+            background: linear-gradient(135deg, #2d2d2d, #1a1a1a);
+        }
+
+        .coupon-item:nth-child(3n) {
+            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+        }
+
+        .coupon-item:nth-child(4n) {
+            background: linear-gradient(135deg, #2d2d2d, #1a1a1a);
+        }
+
+        .coupon-item:nth-child(5n) {
+            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+        }
+
+        .coupon-item:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4), inset 0 2px 0 rgba(255,215,0,0.2);
+        }
+
+        .coupon-item:hover .coupon-main {
+            color: #FFED4A;
+            text-shadow: 0 3px 8px rgba(0,0,0,0.8), 0 0 30px rgba(255,215,0,0.6);
+            transform: scale(1.05);
+        }
+
+        .coupon-item:nth-child(2n):hover,
+        .coupon-item:nth-child(4n):hover {
+            box-shadow: 0 8px 25px rgba(255,215,0,0.4), inset 0 2px 0 rgba(0,0,0,0.2);
+        }
+
+        .coupon-cutout-left {
+            position: absolute;
+            left: -8px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            background: #00FF9B;
+            border-radius: 50%;
+            z-index: 5;
+        }
+
+        .coupon-cutout-right {
+            position: absolute;
+            right: -8px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            background: #00FF9B;
+            border-radius: 50%;
+            z-index: 5;
+        }
+
+        .coupon-item .luxury-overlay {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            right: 2px;
+            bottom: 2px;
+            background: linear-gradient(135deg, rgba(255,215,0,0.03), rgba(255,215,0,0.01));
+            border-radius: 10px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Geometric decorations */
+        .coupon-item::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 20px;
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-bottom: 14px solid #FFD700;
+            opacity: 0.6;
+            z-index: 2;
+        }
+
+        .coupon-item::after {
+            content: '';
+            position: absolute;
+            right: 15px;
+            bottom: 20px;
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 16px solid #4A90E2;
+            opacity: 0.5;
+            z-index: 2;
+        }
+
+        .coupon-item:nth-child(2n)::before {
+            border-bottom-color: #4A90E2;
+        }
+
+        .coupon-item:nth-child(2n)::after {
+            border-top-color: #FFD700;
+        }
+
+        .coupon-item:nth-child(3n)::before {
+            border-bottom-color: #9B59B6;
+        }
+
+        .coupon-item:nth-child(3n)::after {
+            border-top-color: #E74C3C;
+        }
+
+        /* Add subtle shimmer effect using a child element */
+        .coupon-item .luxury-overlay::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            transition: left 0.5s ease;
+            z-index: 1;
+        }
+
+        .coupon-item:hover .luxury-overlay::after {
+            left: 100%;
+        }
+
+        .coupon-text {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 0 20px;
+            font-family: 'Poppins', sans-serif;
+            position: relative;
+            z-index: 3;
+        }
+
+        .coupon-top {
+            font-size: 0.6rem;
+            font-weight: 500;
+            color: #ffffff;
+            margin-bottom: 2px;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+        }
+
+        .coupon-main {
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: #FFD700;
+            margin: 4px 0;
+            text-shadow: 0 3px 8px rgba(0,0,0,0.8), 0 0 20px rgba(255,215,0,0.4);
+            line-height: 0.9;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            position: relative;
+            z-index: 4;
+        }
+
+        .coupon-main::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -8px;
+            right: -8px;
+            bottom: -2px;
+            background: radial-gradient(ellipse at center, rgba(255,215,0,0.15), transparent);
+            border-radius: 8px;
+            z-index: -1;
+        }
+
+        .coupon-bottom {
+            font-size: 0.55rem;
+            font-weight: 500;
+            color: #ffffff;
+            margin-top: 2px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            opacity: 0.9;
+        }
+
+
+
+        .fade-overlay {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 60px;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .fade-left {
+            left: 0;
+            background: linear-gradient(to right, #00FF9B, transparent);
+        }
+
+        .fade-right {
+            right: 0;
+            background: linear-gradient(to left, #00FF9B, transparent);
+        }
+
+        @keyframes slide {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(calc(-300px * 7));
+            }
+        }
+
+        .coupon-track:hover {
+            animation-play-state: paused;
+        }
+
+        .coupon-track.dragging {
+            animation-play-state: paused;
+            transition: transform 0.3s ease-out;
+        }
+
+        .coupon-track.no-transition {
+            transition: none;
+        }
+
+        .coupon-container {
+            cursor: grab;
+        }
+
+        .coupon-container:active {
+            cursor: grabbing;
+        }
+
+        @media (max-width: 768px) {
+            .coupon-title {
+                font-size: 1.5rem;
+                margin-bottom: 10px;
+            }
+            
+            .coupon-container {
+                height: 105px;
+            }
+            
+            .coupon-item {
+                min-width: 240px;
+                height: 90px;
+            }
+            
+            .coupon-main {
+                font-size: 1.8rem;
+            }
+            
+            .coupon-top {
+                font-size: 0.55rem;
+            }
+            
+            .coupon-bottom {
+                font-size: 0.5rem;
+            }
+            
+            .coupon-track {
+                width: calc(260px * 14);
+            }
+            
+            @keyframes slide {
+                0% {
+                    transform: translateX(0);
+                }
+                100% {
+                    transform: translateX(calc(-260px * 7));
+                }
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="coupon-section">
+        <h2 class="coupon-title">Hot Offers</h2>
+        
+        <div class="coupon-container">
+            <div class="fade-overlay fade-left"></div>
+            <div class="fade-overlay fade-right"></div>
+            
+            <div class="coupon-track">
+                <a href="https://payhip.com/b/4fE1z" class="coupon-item" target="_blank">
+                    <div class="luxury-overlay"></div>
+                    <div class="coupon-cutout-left"></div>
+                    <div class="coupon-cutout-right"></div>
+                    <div class="coupon-text">
+                        <div class="coupon-top">Discount up to</div>
+                        <div class="coupon-main">20% off</div>
+                        <div class="coupon-bottom">French Mastery</div>
+                    </div>
+                </a>
+                
+                <a href="https://payhip.com/b/3h6ux" class="coupon-item" target="_blank">
+                    <div class="luxury-overlay"></div>
+                    <div class="coupon-cutout-left"></div>
+                    <div class="coupon-cutout-right"></div>
+                    <div class="coupon-text">
+                        <div class="coupon-top">Save up to</div>
+                        <div class="coupon-main">6 CAD</div>
+                        <div class="coupon-bottom">Proficiency Test</div>
+                    </div>
+                </a>
+                
+                <a href="https://payhip.com/b/otyDq" class="coupon-item" target="_blank">
+                    <div class="luxury-overlay"></div>
+                    <div class="coupon-cutout-left"></div>
+                    <div class="coupon-cutout-right"></div>
+                    <div class="coupon-text">
+                        <div class="coupon-top">Mega Discount</div>
+                        <div class="coupon-main">600 CAD</div>
+                        <div class="coupon-bottom">CLB 5 Course</div>
+                    </div>
+                </a>
+                
+                <a href="https://payhip.com/b/gvLT3" class="coupon-item" target="_blank">
+                    <div class="luxury-overlay"></div>
+                    <div class="coupon-cutout-left"></div>
+                    <div class="coupon-cutout-right"></div>
+                    <div class="coupon-text">
+                        <div class="coupon-top">Discount up to</div>
+                        <div class="coupon-main">25% off</div>
+                        <div class="coupon-bottom">French Verbs</div>
+                    </div>
+                </a>
+                
+                <a href="https://payhip.com/b/bVHXq" class="coupon-item" target="_blank">
+                    <div class="luxury-overlay"></div>
+                    <div class="coupon-cutout-left"></div>
+                    <div class="coupon-cutout-right"></div>
+                    <div class="coupon-text">
+                        <div class="coupon-top">Discount up to</div>
+                        <div class="coupon-main">25% off</div>
+                        <div class="coupon-bottom">A1 Vocabulary</div>
+                    </div>
+                </a>
+                
+                <a href="https://payhip.com/b/TpkbM" class="coupon-item" target="_blank">
+                    <div class="luxury-overlay"></div>
+                    <div class="coupon-cutout-left"></div>
+                    <div class="coupon-cutout-right"></div>
+                    <div class="coupon-text">
+                        <div class="coupon-top">Discount up to</div>
+                        <div class="coupon-main">25% off</div>
+                        <div class="coupon-bottom">A2 Vocabulary</div>
+                    </div>
+                </a>
+                
+                <a href="https://payhip.com/b/F21fg" class="coupon-item" target="_blank">
+                    <div class="luxury-overlay"></div>
+                    <div class="coupon-cutout-left"></div>
+                    <div class="coupon-cutout-right"></div>
+                    <div class="coupon-text">
+                        <div class="coupon-top">Save up to</div>
+                        <div class="coupon-main">5% off</div>
+                        <div class="coupon-bottom">French Quest</div>
+                    </div>
+                </a>
+                
+                <!-- Duplicate set for seamless loop -->
+                <a href="https://payhip.com/b/4fE1z" class="coupon-item" target="_blank">
+                    <div class="luxury-overlay"></div>
+                    <div class="coupon-cutout-left"></div>
+                    <div class="coupon-cutout-right"></div>
+                    <div class="coupon-text">
+                        <div class="coupon-top">Discount up to</div>
+                        <div class="coupon-main">20% off</div>
+                        <div class="coupon-bottom">French Mastery</div>
+                    </div>
+                </a>
+                
+                <a href="https://payhip.com/b/3h6ux" class="coupon-item" target="_blank">
+                    <div class="luxury-overlay"></div>
+                    <div class="coupon-cutout-left"></div>
+                    <div class="coupon-cutout-right"></div>
+                    <div class="coupon-text">
+                        <div class="coupon-top">Save up to</div>
+                        <div class="coupon-main">6 CAD</div>
+                        <div class="coupon-bottom">Proficiency Test</div>
+                    </div>
+                </a>
+                
+                <a href="https://payhip.com/b/otyDq" class="coupon-item" target="_blank">
+                    <div class="luxury-overlay"></div>
+                    <div class="coupon-cutout-left"></div>
+                    <div class="coupon-cutout-right"></div>
+                    <div class="coupon-text">
+                        <div class="coupon-top">Mega Discount</div>
+                        <div class="coupon-main">600 CAD</div>
+                        <div class="coupon-bottom">CLB 5 Course</div>
+                    </div>
+                </a>
+                
+                <a href="https://payhip.com/b/gvLT3" class="coupon-item" target="_blank">
+                    <div class="luxury-overlay"></div>
+                    <div class="coupon-cutout-left"></div>
+                    <div class="coupon-cutout-right"></div>
+                    <div class="coupon-text">
+                        <div class="coupon-top">Discount up to</div>
+                        <div class="coupon-main">25% off</div>
+                        <div class="coupon-bottom">French Verbs</div>
+                    </div>
+                </a>
+                
+                <a href="https://payhip.com/b/bVHXq" class="coupon-item" target="_blank">
+                    <div class="luxury-overlay"></div>
+                    <div class="coupon-cutout-left"></div>
+                    <div class="coupon-cutout-right"></div>
+                    <div class="coupon-text">
+                        <div class="coupon-top">Discount up to</div>
+                        <div class="coupon-main">25% off</div>
+                        <div class="coupon-bottom">A1 Vocabulary</div>
+                    </div>
+                </a>
+                
+                <a href="https://payhip.com/b/TpkbM" class="coupon-item" target="_blank">
+                    <div class="luxury-overlay"></div>
+                    <div class="coupon-cutout-left"></div>
+                    <div class="coupon-cutout-right"></div>
+                    <div class="coupon-text">
+                        <div class="coupon-top">Discount up to</div>
+                        <div class="coupon-main">25% off</div>
+                        <div class="coupon-bottom">A2 Vocabulary</div>
+                    </div>
+                </a>
+                
+                <a href="https://payhip.com/b/F21fg" class="coupon-item" target="_blank">
+                    <div class="luxury-overlay"></div>
+                    <div class="coupon-cutout-left"></div>
+                    <div class="coupon-cutout-right"></div>
+                    <div class="coupon-text">
+                        <div class="coupon-top">Save up to</div>
+                        <div class="coupon-main">5% off</div>
+                        <div class="coupon-bottom">French Quest</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const couponTrack = document.querySelector('.coupon-track');
+            const couponContainer = document.querySelector('.coupon-container');
+            
+            let isDragging = false;
+            let startX = 0;
+            let currentX = 0;
+            let initialTransform = 0;
+            let animationId = null;
+            
+            // Get current transform value
+            function getCurrentTransform() {
+                const style = window.getComputedStyle(couponTrack);
+                const matrix = style.transform;
+                if (matrix === 'none') return 0;
+                const values = matrix.split('(')[1].split(')')[0].split(',');
+                return parseFloat(values[4]) || 0;
+            }
+            
+            // Start drag/touch
+            function startDrag(clientX) {
+                isDragging = true;
+                startX = clientX;
+                initialTransform = getCurrentTransform();
+                couponTrack.classList.add('dragging', 'no-transition');
+                couponContainer.style.cursor = 'grabbing';
+                
+                // Pause CSS animation
+                couponTrack.style.animationPlayState = 'paused';
+            }
+            
+            // During drag/touch
+            function duringDrag(clientX) {
+                if (!isDragging) return;
+                
+                currentX = clientX;
+                const deltaX = currentX - startX;
+                const newTransform = initialTransform + deltaX;
+                
+                // Apply transform
+                couponTrack.style.transform = `translateX(${newTransform}px)`;
+            }
+            
+            // End drag/touch
+            function endDrag() {
+                if (!isDragging) return;
+                
+                isDragging = false;
+                couponTrack.classList.remove('no-transition');
+                couponContainer.style.cursor = 'grab';
+                
+                // Resume animation after a short delay
+                setTimeout(() => {
+                    couponTrack.classList.remove('dragging');
+                    couponTrack.style.animationPlayState = 'running';
+                    couponTrack.style.transform = '';
+                }, 2000);
+            }
+            
+            // Mouse events
+            couponContainer.addEventListener('mousedown', function(e) {
+                e.preventDefault();
+                startDrag(e.clientX);
+            });
+            
+            document.addEventListener('mousemove', function(e) {
+                duringDrag(e.clientX);
+            });
+            
+            document.addEventListener('mouseup', endDrag);
+            
+            // Touch events
+            couponContainer.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                startDrag(e.touches[0].clientX);
+            });
+            
+            document.addEventListener('touchmove', function(e) {
+                if (isDragging) {
+                    e.preventDefault();
+                    duringDrag(e.touches[0].clientX);
+                }
+            });
+            
+            document.addEventListener('touchend', endDrag);
+            
+            // Prevent context menu on long press
+            couponContainer.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+            });
+            
+            // Prevent text selection while dragging
+            couponContainer.addEventListener('selectstart', function(e) {
+                e.preventDefault();
+            });
+        });
+    </script>
+</body>
+</html>
