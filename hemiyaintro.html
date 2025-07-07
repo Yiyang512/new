@@ -126,108 +126,63 @@
         
         .hemiya-slider {
             display: flex;
-            width: 300%;
+            width: 100%;
             height: 100%;
-            animation: slideShow 12s infinite;
-            transition: transform 0.5s ease;
+            gap: 10px;
+            padding: 10px;
         }
         
         .hemiya-slider:hover {
-            animation-play-state: paused;
+            /* Remove hover pause since no animation */
         }
         
         .hemiya-slider.manual {
-            animation: none;
+            /* Remove manual class since no animation */
         }
         
-        @keyframes slideShow {
-            0%, 30% { transform: translateX(0); }
-            33.33%, 63.33% { transform: translateX(-33.33%); }
-            66.66%, 96.66% { transform: translateX(-66.66%); }
-            100% { transform: translateX(0); }
-        }
+        /* Remove slideShow animation */
         
         .slider-indicators {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 15px;
+            display: none; /* Hide indicators since no sliding */
         }
         
         .indicator {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: rgba(0, 255, 155, 0.3);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(0, 255, 155, 0.5);
+            display: none; /* Hide indicators */
         }
         
         .indicator.active {
-            background: var(--accent-color);
-            transform: scale(1.2);
-            box-shadow: 0 0 10px rgba(0, 255, 155, 0.5);
+            display: none; /* Hide indicators */
         }
         
         .indicator:hover {
-            background: rgba(0, 255, 155, 0.6);
-            transform: scale(1.1);
+            display: none; /* Hide indicators */
         }
         
 
         
         .hemiya-features {
-            margin: 10px 0;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
+            display: none; /* Remove the feature boxes */
         }
         
         .feature-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            margin-bottom: 0;
-            padding: 12px 8px;
-            background: var(--card-bg);
-            border-radius: 10px;
-            border: 1px solid rgba(0, 255, 155, 0.2);
-            transition: transform 0.3s ease;
+            display: none; /* Remove the feature boxes */
         }
 
         /* Simplified hover effects for better performance */
         .feature-item:hover {
-            transform: translateY(-5px);
+            display: none; /* Remove the feature boxes */
         }
         
         .feature-icon {
-            width: 36px;
-            height: 36px;
-            min-width: 36px;
-            background: rgba(0, 255, 155, 0.1);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 8px;
-            font-size: 16px;
-            border: 1px solid rgba(0, 255, 155, 0.3);
+            display: none; /* Remove the feature boxes */
         }
         
         .feature-text h3 {
-            font-size: 1rem;
-            color: var(--accent-color);
-            margin-bottom: 4px;
-            font-weight: 500;
+            display: none; /* Remove the feature boxes */
         }
         
         .feature-text p {
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.8);
-            font-weight: 300;
-            line-height: 1.3;
+            display: none; /* Remove the feature boxes */
         }
         
         .hemiya-sub-bar {
@@ -243,7 +198,7 @@
             text-align: center;
             font-size: 1rem;
             color: var(--text-light);
-            margin-bottom: 18px;
+            margin-bottom: 0; /* Remove margin since no features below */
             font-weight: 300;
         }
         
@@ -259,7 +214,7 @@
             transition: transform 0.3s ease;
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            width: 33.33%;
+            width: calc(33.33% - 7px); /* Adjust for gap */
             height: 100%;
             flex-shrink: 0;
         }
@@ -282,6 +237,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            object-position: center;
             transition: transform 0.3s ease;
             /* Optimize image rendering */
             image-rendering: -webkit-optimize-contrast;
@@ -386,11 +342,16 @@
             }
             
             .hemiya-slider-container {
-                height: 280px;
+                height: 300px; /* Slightly smaller for tablets */
             }
             
             .hemiya-slider {
-                animation: slideShow 10s infinite;
+                gap: 8px;
+                padding: 8px;
+            }
+            
+            .image-container {
+                width: calc(33.33% - 6px); /* Maintain 3 columns but smaller gap */
             }
             
             .hemiya-sub-bar {
@@ -451,17 +412,31 @@
                 font-size: 0.85rem;
             }
 
-                        .hemiya-main-board {
+            .hemiya-main-board {
                 margin: 20px auto;
                 padding: 0 10px;
             }
             
             .hemiya-slider-container {
-                height: 240px;
+                height: auto; /* Allow height to adapt */
+                min-height: 200px;
             }
             
             .hemiya-slider {
-                animation: slideShow 8s infinite;
+                flex-direction: column; /* Change to column layout */
+                gap: 15px;
+                padding: 15px;
+            }
+            
+            .image-container {
+                width: 100%; /* Full width for each row */
+                height: 180px; /* Fixed height for mobile */
+                flex-shrink: 0;
+            }
+            
+            .image-container img {
+                object-fit: cover;
+                object-position: center;
             }
             
             .slider-indicators {
@@ -557,11 +532,25 @@
             }
 
             .hemiya-slider-container {
-                height: 200px;
+                height: auto; /* Allow height to adapt */
+                min-height: 150px;
             }
             
             .hemiya-slider {
-                animation: slideShow 7s infinite;
+                flex-direction: column; /* Maintain column layout */
+                gap: 12px;
+                padding: 12px;
+            }
+            
+            .image-container {
+                width: 100%; /* Full width for each row */
+                height: 150px; /* Smaller height for very small screens */
+                flex-shrink: 0;
+            }
+            
+            .image-container img {
+                object-fit: cover;
+                object-position: center;
             }
             
             .slider-indicators {
@@ -809,122 +798,16 @@
                         </a>
                     </div>
                 </div>
-                
-                <!-- Sliding Indicators -->
-                <div class="slider-indicators">
-                    <div class="indicator active" data-slide="0"></div>
-                    <div class="indicator" data-slide="1"></div>
-                    <div class="indicator" data-slide="2"></div>
-                </div>
             </div>
             
             <!-- Sub-bar with key features -->
             <div class="hemiya-sub-bar">
                 <p class="main-description">🚀 <strong>AI-powered French mastery</strong> • Real-time assistance • Accelerated fluency</p>
-                
-                <div class="hemiya-features">
-                    <div class="feature-item">
-                        <div class="feature-icon">📚</div>
-                        <div class="feature-text">
-                            <h3>Read</h3>
-                            <p>Smart comprehension + instant feedback</p>
-                        </div>
-                    </div>
-
-                    <div class="feature-item">
-                        <div class="feature-icon">✍️</div>
-                        <div class="feature-text">
-                            <h3>Write</h3>
-                            <p>Grammar fixes + vocabulary boost</p>
-                        </div>
-                    </div>
-                    
-                    <div class="feature-item">
-                        <div class="feature-icon">🗣️</div>
-                        <div class="feature-text">
-                            <h3>Speak</h3>
-                            <p>Pronunciation coaching + conversation</p>
-                        </div>
-                    </div>
-                    
-                    <div class="feature-item">
-                        <div class="feature-icon">🎯</div>
-                        <div class="feature-text">
-                            <h3>Learn</h3>
-                            <p>Personalized exercises + progress tracking</p>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
          </section>
     
     <script>
-        // Hemiya Slider Manual Navigation
-        let currentSlide = 0;
-        let isManual = false;
-        let autoSlideTimer;
-        
-        function initSlider() {
-            const slider = document.getElementById('hemiyaSlider');
-            const indicators = document.querySelectorAll('.indicator');
-            
-            // Auto-slide timer
-            function startAutoSlide() {
-                autoSlideTimer = setInterval(() => {
-                    if (!isManual) {
-                        currentSlide = (currentSlide + 1) % 3;
-                        updateSlider();
-                    }
-                }, 4000);
-            }
-            
-            function updateSlider() {
-                const translateX = -currentSlide * 33.33;
-                slider.style.transform = `translateX(${translateX}%)`;
-                
-                // Update indicators
-                indicators.forEach((indicator, index) => {
-                    indicator.classList.toggle('active', index === currentSlide);
-                });
-            }
-            
-            // Manual navigation
-            indicators.forEach((indicator, index) => {
-                indicator.addEventListener('click', () => {
-                    currentSlide = index;
-                    isManual = true;
-                    slider.classList.add('manual');
-                    updateSlider();
-                    
-                    // Resume auto-slide after 8 seconds
-                    clearInterval(autoSlideTimer);
-                    setTimeout(() => {
-                        isManual = false;
-                        slider.classList.remove('manual');
-                        startAutoSlide();
-                    }, 8000);
-                });
-            });
-            
-            // Pause on hover
-            slider.addEventListener('mouseenter', () => {
-                clearInterval(autoSlideTimer);
-            });
-            
-            slider.addEventListener('mouseleave', () => {
-                if (!isManual) {
-                    startAutoSlide();
-                }
-            });
-            
-            // Start auto-slide
-            startAutoSlide();
-        }
-        
-        // Initialize when page loads
-        document.addEventListener('DOMContentLoaded', initSlider);
-        
         // Optimized iframe detection
         if (window.self !== window.top) {
             document.documentElement.classList.add('in-iframe');
@@ -945,19 +828,6 @@
             // Send height on load
             window.addEventListener('load', sendHeight);
         }
-        
-        // Optional: Pause animations when page is not visible
-        document.addEventListener('visibilitychange', function() {
-            if (document.hidden) {
-                document.body.style.animationPlayState = 'paused';
-                clearInterval(autoSlideTimer);
-            } else {
-                document.body.style.animationPlayState = 'running';
-                if (!isManual) {
-                    initSlider();
-                }
-            }
-        });
     </script>
 </body>
 </html>
