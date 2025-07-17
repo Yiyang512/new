@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>French Level Estimator</title>
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #001102 60%, #00331e 100%);
+      font-family: 'Poppins', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow-x: hidden;
+    }
+    .floating-bg {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+      filter: blur(16px) brightness(0.8) saturate(1.2);
+      transform: scale(1.04);
+      background: linear-gradient(135deg, #001102 60%, #00FF9B22 100%);
+    }
+    .container {
+      background: rgba(0, 17, 2, 0.72);
+      border-radius: 28px;
+      box-shadow: 0 16px 48px 0 #00FF9B33, 0 2px 16px 0 #001102cc, 0 1.5px 8px 0 #00FF9B22;
+      max-width: 440px;
+      width: 100%;
+      margin: 32px 0;
+      padding: 38px 28px 28px 28px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      position: relative;
+      z-index: 2;
+      border: 1.5px solid #00FF9B44;
+      backdrop-filter: blur(18px) saturate(1.2);
+      -webkit-backdrop-filter: blur(18px) saturate(1.2);
+      transition: box-shadow 0.3s;
+    }
+    .greeting {
+      text-align: center;
+      color: #00FF9B;
+      font-size: 1.13rem;
+      font-weight: 500;
+      margin-bottom: 22px;
+      letter-spacing: 0.2px;
+      line-height: 1.5;
+      background: rgba(0,255,155,0.07);
+      border-radius: 16px;
+      padding: 12px 10px 10px 10px;
+      box-shadow: 0 1.5px 8px #00FF9B11;
+    }
+    .section {
+      display: none;
+      flex-direction: column;
+      gap: 26px;
+      animation: fadeIn 0.4s cubic-bezier(.4,0,.2,1);
+    }
+    .section.active {
+      display: flex;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(32px) scale(0.98); }
+      to { opacity: 1; transform: none; }
+    }
+    h1 { display: none; }
+    h2 {
+      font-size: 1.38rem;
+      margin: 0 0 12px 0;
+      font-weight: 700;
+      color: #00FF9B;
+      letter-spacing: 0.5px;
+      text-shadow: 0 2px 8px #00FF9B11;
+      line-height: 1.2;
+    }
+    label {
+      font-weight: 500;
+      margin-bottom: 4px;
+      display: block;
+      color: #00FF9B;
+      font-size: 1.07rem;
+      letter-spacing: 0.1px;
+    }
+    input[type="email"], select {
+      width: 100%;
+      padding: 14px 16px;
+      margin-bottom: 0;
+      border: 1.5px solid #00FF9B;
+      border-radius: 12px;
+      font-size: 1.08rem;
+      font-family: inherit;
+      box-sizing: border-box;
+      background: rgba(0,33,19,0.92);
+      color: #00FF9B;
+      transition: border 0.2s, box-shadow 0.2s;
+      box-shadow: 0 1.5px 8px #00FF9B11;
+      outline: none;
+    }
+    input[type="email"]:focus, select:focus {
+      border: 2px solid #00FF9B;
+      box-shadow: 0 0 0 2px #00FF9B55;
+    }
+    .card-question {
+      background: rgba(0,255,155,0.07);
+      border-radius: 18px;
+      box-shadow: 0 1.5px 8px #00FF9B11;
+      padding: 18px 14px 12px 14px;
+      margin-bottom: 0;
+      transition: box-shadow 0.2s, background 0.2s;
+      border: 1.5px solid #00FF9B22;
+    }
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .quiz-options label {
+      font-weight: 400;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      border-radius: 9px;
+      padding: 10px 12px;
+      transition: background 0.18s, box-shadow 0.18s, color 0.18s, border 0.18s;
+      color: #00FF9B;
+      border: 1.5px solid transparent;
+      font-size: 1.05rem;
+    }
+    .quiz-options label.selected, .quiz-options label:hover {
+      background: #00FF9B22;
+      box-shadow: 0 0 0 2px #00FF9B55;
+      color: #001102;
+      border: 1.5px solid #00FF9B;
+    }
+    .quiz-options input[type="radio"] {
+      accent-color: #00FF9B;
+      margin-right: 10px;
+      width: 20px;
+      height: 20px;
+    }
+    .quiz-options select {
+      margin-top: 4px;
+      width: 75%;
+      border: 1.5px solid #00FF9B;
+      color: #00FF9B;
+      background: rgba(0,33,19,0.92);
+      border-radius: 10px;
+      font-size: 1.05rem;
+      padding: 10px 12px;
+    }
+    .stepper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      margin-bottom: 30px;
+      margin-top: 2px;
+      user-select: none;
+    }
+    .step {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(0,255,155,0.13);
+      border: 2.5px solid #00FF9B;
+      color: #00FF9B;
+      font-weight: 700;
+      font-size: 1.13rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 1.5px 8px #00FF9B11;
+      transition: background 0.2s, color 0.2s, border 0.2s;
+      position: relative;
+      z-index: 1;
+    }
+    .step.active {
+      background: #00FF9B;
+      color: #001102;
+      border: 2.5px solid #00FF9B;
+    }
+    .step-line {
+      flex: 1;
+      height: 3px;
+      background: linear-gradient(90deg, #00FF9B 60%, #00e68a 100%);
+      border-radius: 2px;
+      opacity: 0.7;
+      margin: 0 -2px;
+    }
+    .nav-btns {
+      display: flex;
+      gap: 18px;
+      margin-top: 32px;
+    }
+    .nav-btns button {
+      flex: 1;
+      background: linear-gradient(90deg, #00FF9B 60%, #00e68a 100%);
+      color: #001102;
+      border: none;
+      border-radius: 999px;
+      padding: 15px 0;
+      font-size: 1.15rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.18s, color 0.18s, box-shadow 0.18s, transform 0.18s;
+      box-shadow: 0 2px 12px #00FF9b22;
+      letter-spacing: 0.5px;
+      outline: none;
+    }
+    .nav-btns button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .nav-btns button:hover:not(:disabled), .nav-btns button:focus:not(:disabled) {
+      background: linear-gradient(90deg, #00e68a 60%, #00FF9B 100%);
+      color: #001102;
+      box-shadow: 0 6px 24px #00FF9B33;
+      transform: translateY(-2px) scale(1.03);
+    }
+    .success-message {
+      background: #00FF9B22;
+      color: #00FF9B;
+      border: 1.5px solid #00FF9B;
+      border-radius: 14px;
+      padding: 20px 16px;
+      margin-top: 32px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 1.15rem;
+      display: none;
+      box-shadow: 0 2px 12px #00FF9B22;
+    }
+    .level-estimate {
+      text-align: center;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #00FF9B;
+      margin-bottom: 12px;
+      display: none;
+      letter-spacing: 0.5px;
+    }
+    .error-message {
+      color: #ff4d4f;
+      background: rgba(255,77,79,0.08);
+      border: 1.5px solid #ff4d4f44;
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin-bottom: 10px;
+      text-align: center;
+      font-size: 1.05rem;
+      font-weight: 600;
+      letter-spacing: 0.1px;
+      box-shadow: 0 1.5px 8px #ff4d4f11;
+      display: none;
+    }
+    .result-panel {
+      background: rgba(0,255,155,0.07);
+      border-radius: 18px;
+      box-shadow: 0 16px 48px 0 #00FF9B33, 0 2px 16px 0 #001102cc, 0 1.5px 8px 0 #00FF9B22;
+      padding: 28px 18px 22px 18px;
+      margin: 40px auto 0 auto;
+      text-align: center;
+      color: #00FF9B;
+      font-size: 1.13rem;
+      font-weight: 500;
+      letter-spacing: 0.1px;
+      line-height: 1.6;
+      border: 1.5px solid #00FF9B44;
+      display: none;
+      max-width: 440px;
+      width: 95vw;
+      position: relative;
+      z-index: 10;
+    }
+    @media (max-width: 600px) {
+      .container {
+        padding: 7vw 2vw 5vw 2vw;
+        max-width: 100vw;
+        border-radius: 0;
+        margin: 0;
+      }
+      h2 {
+        font-size: 1.05rem;
+      }
+      .nav-btns button {
+        font-size: 1rem;
+        padding: 12px 0;
+      }
+      .step {
+        width: 22px;
+        height: 22px;
+        font-size: 0.95rem;
+      }
+      .greeting {
+        font-size: 1rem;
+        padding: 10px 6px 8px 6px;
+      }
+      .card-question {
+        padding: 12px 6px 8px 6px;
+      }
+      .result-panel {
+        padding: 16px 4vw 12px 4vw;
+        font-size: 1.01rem;
+        max-width: 98vw;
+      }
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+</head>
+<body>
+  <div class="floating-bg"></div>
+  <form class="container" id="french-estimator-form" autocomplete="off">
+    <div class="greeting">
+      Bonjour! Welcome to your <b>free French level assessment</b> from <b>Simple French with Hems Inc.</b><br>Complete 10 quick questions to discover your estimated CEFR level and help us understand your learning goals.
+    </div>
+    <h1>🇫🇷 French Level Estimator</h1>
+    <div class="stepper">
+      <div class="step" id="step-0">1</div>
+      <div class="step-line"></div>
+      <div class="step" id="step-1">2</div>
+      <div class="step-line"></div>
+      <div class="step" id="step-2">3</div>
+    </div>
+    <div class="section" id="section-contact">
+      <h2>Contact Info</h2>
+      <label for="email">Enter your email to start <span style="color:#e53e3e">*</span></label>
+      <input type="email" id="email" name="email" required autocomplete="email" placeholder="your@email.com">
+    </div>
+    <div class="section" id="section-quiz">
+      <h2>Quick French Level Quiz</h2>
+      <div id="quiz-questions-wrapper"></div>
+      <div class="level-estimate" id="level-estimate"></div>
+    </div>
+    <div class="section" id="section-challenges">
+      <h2>Challenges + Goals <button type="button" id="section3-optional-btn" style="margin-left:10px;background:#002113;color:#00FF9B;border:1.5px solid #00FF9B;border-radius:6px;padding:4px 12px;cursor:pointer;font-family:inherit;font-size:0.95rem;">Skip (Optional)</button></h2>
+      <div id="section3-wrapper"></div>
+    </div>
+    <div class="nav-btns">
+      <div class="error-message" id="error-message"></div>
+      <button type="button" id="back-btn">Back</button>
+      <button type="button" id="next-btn">Next</button>
+      <button type="submit" id="final-submit-btn" style="display:none">Submit</button>
+    </div>
+    <div class="success-message" id="success-message">Thank you! Your submission was received. We'll be in touch soon. ✅</div>
+    <div style="text-align:center;color:#00FF9B88;font-size:0.98rem;margin-top:30px;letter-spacing:0.1px;">
+      &copy; Simple French with Hems Inc.
+    </div>
+  </form>
+  <div class="result-panel" id="result-panel" style="margin-top:32px;"></div>
+  <script>
+    (function(){
+      emailjs.init('_KKm93NyfWfCIx2nC');
+    })();
+
+    // Section navigation state
+    const sections = [
+      document.getElementById('section-contact'),
+      document.getElementById('section-quiz'),
+      document.getElementById('section-challenges')
+    ];
+    let currentSection = 0;
+    function showSection(idx) {
+      sections.forEach((sec, i) => sec.classList.toggle('active', i === idx));
+      document.getElementById('back-btn').style.display = idx === 0 ? 'none' : '';
+      document.getElementById('next-btn').style.display = idx < sections.length-1 ? '' : 'none';
+      document.getElementById('final-submit-btn').style.display = idx === sections.length-1 ? '' : 'none';
+      updateSteps(idx);
+    }
+    function updateSteps(idx) {
+      for (let i = 0; i < sections.length; i++) {
+        document.getElementById('step-' + i).classList.toggle('active', i === idx);
+      }
+    }
+    function showError(msg) {
+      const err = document.getElementById('error-message');
+      err.textContent = msg;
+      err.style.display = 'block';
+    }
+    function hideError() {
+      const err = document.getElementById('error-message');
+      err.textContent = '';
+      err.style.display = 'none';
+    }
+    document.getElementById('back-btn').onclick = function() {
+      hideError();
+      if (currentSection > 0) {
+        currentSection--;
+        showSection(currentSection);
+      }
+    };
+    document.getElementById('next-btn').onclick = function() {
+      hideError();
+      if (currentSection === 0) {
+        // Validate email
+        const email = document.getElementById('email');
+        if (!email.value || !email.checkValidity()) {
+          email.focus();
+          email.reportValidity();
+          showError('Please enter a valid email address.');
+          return;
+        }
+      }
+      if (currentSection === 1) {
+        // Validate quiz
+        if (quizAnswers.some(a => a === null || (quizQuestions[a] && quizQuestions[a].type === 'dropdown' && a === 0))) {
+          showError('Please answer all quiz questions.');
+          return;
+        }
+      }
+      if (currentSection < sections.length-1) {
+        currentSection++;
+        showSection(currentSection);
+      }
+    };
+    showSection(currentSection);
+
+    // Quiz data (Section 2)
+    const quizQuestions = [
+      { type: 'radio', label: '1. Translate “I am hungry”:', name: 'q1', options: [ { text: 'Je suis faim', value: 0 }, { text: 'J\u2019ai faim', value: 1 }, { text: 'Je faim', value: 0 }, { text: 'Il est faim', value: 0 } ] },
+      { type: 'dropdown', label: '2. Fill in the blank: “Nous ____ une maison.”', name: 'q2', options: [ { text: 'Select', value: '' }, { text: 'avons', value: 1 }, { text: 'avez', value: 0 }, { text: 'ont', value: 0 }, { text: 'ai', value: 0 } ] },
+      { type: 'radio', label: '3. Pick the correct article: “____ école”', name: 'q3', options: [ { text: 'Le', value: 0 }, { text: 'La', value: 1 }, { text: 'Les', value: 0 }, { text: 'L’', value: 0 } ] },
+      { type: 'radio', label: '4. What does “Il fait froid” mean?', name: 'q4', options: [ { text: 'He\u2019s cold', value: 0 }, { text: 'It is cold', value: 1 }, { text: 'It is hot', value: 0 }, { text: 'It rains', value: 0 } ] },
+      { type: 'radio', label: '5. Which sentence is grammatically correct?', name: 'q5', options: [ { text: 'Elle aller à la piscine', value: 0 }, { text: 'Il vais à l’école', value: 0 }, { text: 'Je vais au marché', value: 1 }, { text: 'Tu va la maison', value: 0 } ] },
+      { type: 'radio', label: '6. “Je n’ai pas de stylo” means:', name: 'q6', options: [ { text: 'I have many pens', value: 0 }, { text: 'I don’t have a pen', value: 1 }, { text: 'I forgot my pen', value: 0 }, { text: 'I like pens', value: 0 } ] },
+      { type: 'radio', label: '7. Choose the correct future tense: “Demain, je ____ au travail.”', name: 'q7', options: [ { text: 'vais aller', value: 1 }, { text: 'allerai', value: 0 }, { text: 'vais allée', value: 0 }, { text: 'va', value: 0 } ] },
+      { type: 'radio', label: '8. How do you say “We are learning French”?', name: 'q8', options: [ { text: 'Nous apprenons le français', value: 1 }, { text: 'Nous appris français', value: 0 }, { text: 'Nous apprendre français', value: 0 }, { text: 'Nous apprendre le français', value: 0 } ] },
+      { type: 'radio', label: '9. What is the past participle of “faire”?', name: 'q9', options: [ { text: 'fait', value: 1 }, { text: 'fais', value: 0 }, { text: 'faisé', value: 0 }, { text: 'faire', value: 0 } ] },
+      { type: 'radio', label: '10. You hear: “Où sont les toilettes ?” → What’s the person asking?', name: 'q10', options: [ { text: 'Where is the library?', value: 0 }, { text: 'Where are the toilets?', value: 1 }, { text: 'What time is it?', value: 0 }, { text: 'How much is this?', value: 0 } ] }
+    ];
+    let quizAnswers = Array(10).fill(null);
+    function renderQuizQuestions() {
+      const wrapper = document.getElementById('quiz-questions-wrapper');
+      wrapper.innerHTML = '';
+      quizQuestions.forEach((q, idx) => {
+        const div = document.createElement('div');
+        div.className = 'quiz-question card-question';
+        let html = `<label>${q.label}</label><div class="quiz-options">`;
+        if (q.type === 'radio') {
+          q.options.forEach((opt, oidx) => {
+            const checked = quizAnswers[idx] == oidx ? 'checked' : '';
+            const selected = quizAnswers[idx] == oidx ? 'selected' : '';
+            html += `<label class="${selected}"><input type="radio" name="${q.name}" value="${oidx}" ${checked}>${opt.text}</label>`;
+          });
+        } else if (q.type === 'dropdown') {
+          html += `<select name="${q.name}" id="${q.name}">`;
+          q.options.forEach((opt, oidx) => {
+            const selected = quizAnswers[idx] == oidx ? 'selected' : '';
+            html += `<option value="${oidx}" ${selected}>${opt.text}</option>`;
+          });
+          html += `</select>`;
+        }
+        html += `</div>`;
+        div.innerHTML = html;
+        wrapper.appendChild(div);
+      });
+      highlightSelected();
+    }
+    function highlightSelected() {
+      quizQuestions.forEach((q, idx) => {
+        if (q.type === 'radio') {
+          const radios = document.getElementsByName(q.name);
+          radios.forEach((r, oidx) => {
+            if (quizAnswers[idx] == oidx) {
+              r.parentElement.classList.add('selected');
+            } else {
+              r.parentElement.classList.remove('selected');
+            }
+          });
+        } else if (q.type === 'dropdown') {
+          const sel = document.getElementById(q.name);
+          if (sel) sel.classList.toggle('selected', quizAnswers[idx] !== null && quizAnswers[idx] !== 0);
+        }
+      });
+    }
+    document.getElementById('quiz-questions-wrapper').addEventListener('change', function(e) {
+      const name = e.target.name;
+      const idx = quizQuestions.findIndex(q => q.name === name);
+      if (idx !== -1) {
+        if (quizQuestions[idx].type === 'radio') {
+          quizAnswers[idx] = parseInt(e.target.value);
+        } else if (quizQuestions[idx].type === 'dropdown') {
+          quizAnswers[idx] = parseInt(e.target.value);
+        }
+        highlightSelected();
+      }
+    });
+    renderQuizQuestions();
+
+    // Section 3: Multiple choice options
+    const section3Questions = [
+      { label: 'Biggest challenges', name: 'challenges', type: 'radio', options: [ 'Speaking', 'Listening', 'Grammar', 'Vocabulary', 'Pronunciation', 'Confidence', 'Motivation', 'Other' ] },
+      { label: 'Methods tried', name: 'methods', type: 'radio', options: [ 'Apps', 'Classes', 'Self-study', 'Tutors', 'Language exchange', 'None', 'Other' ] },
+      { label: 'Urgency', name: 'urgency', type: 'radio', options: [ 'Very urgent', 'Somewhat urgent', 'Not urgent' ] },
+      { label: 'Goals', name: 'goals', type: 'radio', options: [ 'Conversational', 'Professional', 'Academic', 'Travel', 'Immigration', 'Other' ] },
+      { label: 'Immigration', name: 'immigration', type: 'radio', options: [ 'Yes', 'No', 'Maybe' ] },
+      { label: 'Situations', name: 'situations', type: 'radio', options: [ 'Work', 'School', 'Home', 'Travel', 'Other' ] },
+      { label: 'Experience type', name: 'experience', type: 'radio', options: [ 'Beginner', 'Intermediate', 'Advanced', 'Native speaker' ] },
+      { label: 'Age', name: 'age', type: 'dropdown', options: [ 'Under 18', '18-24', '25-34', '35-44', '45-54', '55-64', '65+' ] },
+      { label: 'How did you find us?', name: 'source', type: 'radio', options: [ 'Google', 'Friend', 'Social Media', 'Ad', 'Other' ] },
+      { label: 'Notes', name: 'notes', type: 'dropdown', options: [ 'No notes', 'I want a free consultation', 'I want to join a group', 'I want private lessons', 'Other' ] }
+    ];
+    let section3Optional = false;
+    function renderSection3() {
+      const wrapper = document.getElementById('section3-wrapper');
+      wrapper.innerHTML = '';
+      section3Questions.forEach(q => {
+        let html = `<div class="card-question"><label>${q.label}</label><div class="quiz-options">`;
+        if (q.type === 'radio') {
+          q.options.forEach((opt, oidx) => {
+            html += `<label><input type="radio" name="${q.name}" value="${opt}" ${section3Optional ? '' : 'required'} ${section3Optional ? 'disabled' : ''}>${opt}</label>`;
+          });
+        } else if (q.type === 'dropdown') {
+          html += `<select name="${q.name}" ${section3Optional ? 'disabled' : 'required'}><option value="">Select</option>`;
+          q.options.forEach(opt => {
+            html += `<option value="${opt}">${opt}</option>`;
+          });
+          html += `</select>`;
+        }
+        html += `</div></div>`;
+        wrapper.innerHTML += html;
+      });
+    }
+    document.getElementById('section3-optional-btn').onclick = function() {
+      section3Optional = !section3Optional;
+      this.textContent = section3Optional ? 'Include (Optional)' : 'Skip (Optional)';
+      renderSection3();
+    };
+    renderSection3();
+
+    // Scoring guide
+    function getLevel(score) {
+      if (score <= 2) return 'A0';
+      if (score <= 4) return 'A1';
+      if (score <= 6) return 'A2';
+      if (score <= 8) return 'B1';
+      return 'B2';
+    }
+    function calculateQuizScore() {
+      let score = 0;
+      quizQuestions.forEach((q, idx) => {
+        const ansIdx = quizAnswers[idx];
+        if (ansIdx !== null && (q.type !== 'dropdown' || ansIdx !== 0)) {
+          score += Number(q.options[ansIdx].value);
+        }
+      });
+      return score;
+    }
+    function showLevelEstimate() {
+      const score = calculateQuizScore();
+      const level = getLevel(score);
+      const el = document.getElementById('level-estimate');
+      el.textContent = `Estimated Level: ${level}`;
+      el.style.display = 'block';
+    }
+
+    // Form submit
+    document.getElementById('french-estimator-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      hideError();
+      if (quizAnswers.some(a => a === null || (quizQuestions[a] && quizQuestions[a].type === 'dropdown' && a === 0))) {
+        showError('Please answer all quiz questions.');
+        return;
+      }
+      const quiz_score = calculateQuizScore();
+      // Collect Section 3 data only if not skipped
+      const section3Data = {};
+      if (!section3Optional) {
+        section3Questions.forEach(q => {
+          const el = this.elements[q.name];
+          if (el) {
+            if (q.type === 'radio') {
+              const checked = this.querySelector(`input[name='${q.name}']:checked`);
+              section3Data[q.name] = checked ? checked.value : '';
+            } else if (q.type === 'dropdown') {
+              section3Data[q.name] = el.value;
+            }
+          } else {
+            section3Data[q.name] = '';
+          }
+        });
+      }
+      const data = {
+        to_email: this.email.value,
+        quiz_score,
+        ...section3Data,
+        level: getLevel(quiz_score)
+      };
+      emailjs.send('service_fr7pas9', 'template_t7cjir9', data)
+        .then(() => {
+          // Hide form, show result panel
+          document.getElementById('french-estimator-form').style.display = 'none';
+          const level = getLevel(quiz_score);
+          const analysis = getLevelAnalysis(level);
+          const resultPanel = document.getElementById('result-panel');
+          resultPanel.innerHTML = `<div style='font-size:1.25rem;font-weight:700;margin-bottom:10px;'>Your Estimated French Level: <span style='color:#00FF9B;'>${level}</span></div><div style='margin-bottom:18px;'>${analysis}</div><div style='font-size:1.05rem;color:#00FF9Bcc;'>Thank you for using Simple French with Hems Inc.!</div>`;
+          resultPanel.style.display = 'block';
+        }, () => {
+          showError('Submission failed. Please try again.');
+        });
+    });
+
+    function getLevelAnalysis(level) {
+      switch(level) {
+        case 'A0':
+          return 'You are at the very beginning of your French journey. You may know a few words or phrases, but have little or no ability to communicate. Start with basic greetings, numbers, and simple phrases.';
+        case 'A1':
+          return 'You can understand and use familiar everyday expressions and very basic phrases. You can introduce yourself and ask/answer simple questions. Focus on building vocabulary and confidence in simple conversations.';
+        case 'A2':
+          return 'You can communicate in simple and routine tasks. You understand frequently used expressions and can describe your background and immediate needs. Practice forming sentences and listening to slow, clear French.';
+        case 'B1':
+          return 'You can deal with most situations likely to arise while traveling. You can produce simple connected text and describe experiences, events, and plans. Work on expanding your vocabulary and using more complex sentences.';
+        case 'B2':
+          return 'You can understand the main ideas of complex text and interact with native speakers with some fluency. You can produce clear, detailed text on a wide range of topics. Focus on refining your grammar and expanding your idiomatic usage.';
+        default:
+          return '';
+      }
+    }
+  </script>
+</body>
+</html>
