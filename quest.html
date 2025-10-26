@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>French Command Quest</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --dark-bg: #001a00;
+            --neon-green: #39FF14;
+            --neon-green-glow: rgba(57, 255, 20, 0.3);
+            --neon-purple: #B514FF;
+            --neon-purple-glow: rgba(181, 20, 255, 0.3);
+            --neon-blue: #147AFF;
+            --neon-blue-glow: rgba(20, 122, 255, 0.3);
+            --neon-cyan: #14FFF7;
+            --neon-cyan-glow: rgba(20, 255, 247, 0.3);
+            --neon-red: #FF355E;
+            --neon-red-glow: rgba(255, 53, 94, 0.3);
+            --card-bg: rgba(0, 26, 0, 0.95);
+            --text-color: #ffffff;
+            --border-color: rgba(57, 255, 20, 0.3);
+            --success-color: #2ed573;
+            --error-color: #ff4757;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 5px var(--neon-green);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 0 20px var(--neon-green);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 5px var(--neon-green);
+            }
+        }
+
+        @keyframes glow {
+            0% {
+                filter: drop-shadow(0 0 5px var(--neon-green));
+            }
+            50% {
+                filter: drop-shadow(0 0 15px var(--neon-green));
+            }
+            100% {
+                filter: drop-shadow(0 0 5px var(--neon-green));
+            }
+        }
+
+        @keyframes typewriter {
+            from {
+                width: 0;
+            }
+            to {
+                width: 100%;
+            }
+        }
+
+        @keyframes blink {
+            0%, 50% {
+                opacity: 1;
+            }
+            51%, 100% {
+                opacity: 0;
+            }
+        }
+
+        @keyframes commandSuccess {
+            0% {
+                transform: scale(1);
+                background-color: var(--neon-green);
+            }
+            50% {
+                transform: scale(1.1);
+                background-color: var(--success-color);
+            }
+            100% {
+                transform: scale(1);
+                background-color: var(--neon-green);
+            }
+        }
+
+        @keyframes commandError {
+            0% {
+                transform: translateX(0);
+                background-color: var(--neon-red);
+            }
+            25% {
+                transform: translateX(-5px);
+            }
+            75% {
+                transform: translateX(5px);
+            }
+            100% {
+                transform: translateX(0);
+                background-color: var(--neon-red);
+            }
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(57, 255, 20, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(181, 20, 255, 0.1) 0%, transparent 50%);
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: var(--neon-green);
+            text-align: center;
+            margin: 1.5rem 0;
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+            animation: glow 2s infinite;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--neon-purple);
+            margin-bottom: 2rem;
+            font-size: 1.2rem;
+        }
+
+        .game-card {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: 0 0 20px rgba(57, 255, 20, 0.2);
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .level-selection {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 2rem;
+        }
+
+        .level-card {
+            background-color: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 15px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .level-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(57, 255, 20, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .level-card:hover::before {
+            left: 100%;
+        }
+
+        .level-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(57, 255, 20, 0.3);
+            border-color: var(--neon-green);
+        }
+
+        .level-card h2 {
+            color: var(--neon-green);
+            margin-bottom: 1rem;
+        }
+
+        .game-area {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .scene-container {
+            position: relative;
+            height: 500px;
+            background: linear-gradient(180deg, var(--dark-bg) 0%, rgba(0, 26, 0, 0.8) 100%);
+            border: 2px solid var(--neon-green);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .character {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--neon-green), var(--neon-cyan));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: all 0.5s ease;
+            cursor: pointer;
+            animation: pulse 2s infinite;
+        }
+
+        .character:hover {
+            transform: scale(1.1);
+        }
+
+        .object {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .object.collected {
+            opacity: 0;
+            transform: scale(0);
+        }
+
+        .command-panel {
+            background-color: var(--card-bg);
+            border: 2px solid var(--neon-purple);
+            border-radius: 15px;
+            padding: 1.5rem;
+            height: fit-content;
+        }
+
+        .command-input {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1rem;
+            background: transparent;
+            border: 2px solid var(--neon-green);
+            border-radius: 10px;
+            color: var(--text-color);
+            outline: none;
+            margin-bottom: 1rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .command-input:focus {
+            box-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
+        }
+
+        .command-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .command-history {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+        }
+
+        .command-item {
+            padding: 8px 12px;
+            margin: 5px 0;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .command-item.success {
+            background-color: rgba(46, 213, 115, 0.1);
+            border: 1px solid rgba(46, 213, 115, 0.3);
+            color: var(--success-color);
+        }
+
+        .command-item.error {
+            background-color: rgba(255, 71, 87, 0.1);
+            border: 1px solid rgba(255, 71, 87, 0.3);
+            color: var(--error-color);
+        }
+
+        .command-item.info {
+            background-color: rgba(57, 255, 20, 0.1);
+            border: 1px solid rgba(57, 255, 20, 0.3);
+            color: var(--neon-green);
+        }
+
+        .suggestions {
+            margin-top: 1rem;
+        }
+
+        .suggestion-item {
+            background-color: rgba(181, 20, 255, 0.1);
+            border: 1px solid var(--neon-purple);
+            border-radius: 8px;
+            padding: 8px 12px;
+            margin: 5px 0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .suggestion-item:hover {
+            background-color: rgba(181, 20, 255, 0.2);
+            transform: translateX(5px);
+        }
+
+        .game-ui {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: var(--card-bg);
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        .score-display {
+            color: var(--neon-green);
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .progress-bar {
+            height: 8px;
+            width: 100%;
+            background-color: rgba(57, 255, 20, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--neon-green), var(--neon-purple));
+            transition: width 0.3s ease;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .btn-primary {
+            background-color: var(--neon-green);
+            color: var(--dark-bg);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--neon-green);
+            border: 2px solid var(--neon-green);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(57, 255, 20, 0.3);
+        }
+
+        .stats-display {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--card-bg);
+            border: 2px solid var(--neon-green);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: right;
+        }
+
+        .streak-counter {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 5px;
+        }
+
+        .streak-flame {
+            color: var(--neon-green);
+            animation: pulse 1s infinite;
+        }
+
+        .xp-gain {
+            position: absolute;
+            color: var(--neon-green);
+            font-weight: bold;
+            pointer-events: none;
+            animation: floatUp 1s ease-out forwards;
+            font-size: 1.2rem;
+        }
+
+        .achievement-notification {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color: var(--card-bg);
+            border: 2px solid var(--neon-green);
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 1000;
+            transform: translateX(-120%);
+            transition: transform 0.3s ease-in-out;
+            max-width: 350px;
+        }
+
+        .achievement-notification.show {
+            transform: translateX(0);
+        }
+
+        .achievement-icon {
+            font-size: 2rem;
+            animation: pulse 1s infinite;
+        }
+
+        .achievement-details h3 {
+            color: var(--neon-green);
+            margin-bottom: 5px;
+        }
+
+        .achievement-reward {
+            color: var(--neon-green);
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .instructions {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        .instructions h3 {
+            color: var(--neon-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .key-hint {
+            background-color: var(--neon-green);
+            color: var(--dark-bg);
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-weight: bold;
+            margin: 0 2px;
+        }
+
+        .typing-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1em;
+            background-color: var(--neon-green);
+            animation: blink 1s infinite;
+            margin-left: 2px;
+        }
+
+        @media (max-width: 768px) {
+            .game-area {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .command-panel {
+                order: -1;
+            }
+
+            .scene-container {
+                height: 300px;
+            }
+
+            .game-card {
+                padding: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .level-selection {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⌨️ French Command Quest</h1>
+        <p class="subtitle">Type French commands to control characters and complete missions! 🎮✨</p>
+
+        <div id="game-content">
+            <!-- Content will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <script>
+        // Game data structure with French commands and vocabulary [[memory:10290843]]
+        const gameData = {
+            A1: {
+                title: "Basic Commands",
+                description: "Learn simple French action commands",
+                difficulty: "Easy",
+                duration: 300,
+                objectives: [
+                    { id: "move_right", description: "Move the character to the right", command: "aller à droite", hint: "Use 'aller' (to go) + 'à droite' (to the right)" },
+                    { id: "move_left", description: "Move the character to the left", command: "aller à gauche", hint: "Use 'aller' (to go) + 'à gauche' (to the left)" },
+                    { id: "collect_item", description: "Collect the item", command: "prendre l'objet", hint: "Use 'prendre' (to take) + 'l'objet' (the object)" },
+                    { id: "say_hello", description: "Make the character say hello", command: "dire bonjour", hint: "Use 'dire' (to say) + 'bonjour' (hello)" }
+                ],
+                vocabulary: [
+                    { french: "aller", english: "to go", type: "verb" },
+                    { french: "prendre", english: "to take", type: "verb" },
+                    { french: "dire", english: "to say", type: "verb" },
+                    { french: "droite", english: "right", type: "direction" },
+                    { french: "gauche", english: "left", type: "direction" },
+                    { french: "objet", english: "object", type: "noun" },
+                    { french: "bonjour", english: "hello", type: "greeting" }
+                ]
+            },
+            A2: {
+                title: "Elementary Actions",
+                description: "More complex French commands",
+                difficulty: "Medium",
+                duration: 300,
+                objectives: [
+                    { id: "open_door", description: "Open the door", command: "ouvrir la porte", hint: "Use 'ouvrir' (to open) + 'la porte' (the door)" },
+                    { id: "close_window", description: "Close the window", command: "fermer la fenêtre", hint: "Use 'fermer' (to close) + 'la fenêtre' (the window)" },
+                    { id: "read_book", description: "Read the book", command: "lire le livre", hint: "Use 'lire' (to read) + 'le livre' (the book)" },
+                    { id: "write_letter", description: "Write a letter", command: "écrire une lettre", hint: "Use 'écrire' (to write) + 'une lettre' (a letter)" }
+                ],
+                vocabulary: [
+                    { french: "ouvrir", english: "to open", type: "verb" },
+                    { french: "fermer", english: "to close", type: "verb" },
+                    { french: "lire", english: "to read", type: "verb" },
+                    { french: "écrire", english: "to write", type: "verb" },
+                    { french: "porte", english: "door", type: "noun" },
+                    { french: "fenêtre", english: "window", type: "noun" },
+                    { french: "livre", english: "book", type: "noun" },
+                    { french: "lettre", english: "letter", type: "noun" }
+                ]
+            },
+            B1: {
+                title: "Intermediate Tasks",
+                description: "Complex French command sequences",
+                difficulty: "Hard",
+                duration: 300,
+                objectives: [
+                    { id: "cook_dinner", description: "Cook dinner", command: "cuisiner le dîner", hint: "Use 'cuisiner' (to cook) + 'le dîner' (dinner)" },
+                    { id: "clean_room", description: "Clean the room", command: "nettoyer la chambre", hint: "Use 'nettoyer' (to clean) + 'la chambre' (the room)" },
+                    { id: "study_french", description: "Study French", command: "étudier le français", hint: "Use 'étudier' (to study) + 'le français' (French)" },
+                    { id: "visit_friend", description: "Visit a friend", command: "rendre visite à un ami", hint: "Use 'rendre visite à' (to visit) + 'un ami' (a friend)" }
+                ],
+                vocabulary: [
+                    { french: "cuisiner", english: "to cook", type: "verb" },
+                    { french: "nettoyer", english: "to clean", type: "verb" },
+                    { french: "étudier", english: "to study", type: "verb" },
+                    { french: "rendre visite à", english: "to visit", type: "verb" },
+                    { french: "dîner", english: "dinner", type: "noun" },
+                    { french: "chambre", english: "room", type: "noun" },
+                    { french: "français", english: "French", type: "language" },
+                    { french: "ami", english: "friend", type: "noun" }
+                ]
+            },
+            B2: {
+                title: "Advanced Missions",
+                description: "Expert-level French command mastery",
+                difficulty: "Expert",
+                duration: 300,
+                objectives: [
+                    { id: "organize_event", description: "Organize an event", command: "organiser un événement", hint: "Use 'organiser' (to organize) + 'un événement' (an event)" },
+                    { id: "negotiate_deal", description: "Negotiate a deal", command: "négocier un accord", hint: "Use 'négocier' (to negotiate) + 'un accord' (an agreement)" },
+                    { id: "analyze_data", description: "Analyze the data", command: "analyser les données", hint: "Use 'analyser' (to analyze) + 'les données' (the data)" },
+                    { id: "implement_solution", description: "Implement the solution", command: "mettre en œuvre la solution", hint: "Use 'mettre en œuvre' (to implement) + 'la solution' (the solution)" }
+                ],
+                vocabulary: [
+                    { french: "organiser", english: "to organize", type: "verb" },
+                    { french: "négocier", english: "to negotiate", type: "verb" },
+                    { french: "analyser", english: "to analyze", type: "verb" },
+                    { french: "mettre en œuvre", english: "to implement", type: "verb" },
+                    { french: "événement", english: "event", type: "noun" },
+                    { french: "accord", english: "agreement", type: "noun" },
+                    { french: "données", english: "data", type: "noun" },
+                    { french: "solution", english: "solution", type: "noun" }
+                ]
+            }
+        };
+
+        // Game state
+        let currentLevel = null;
+        let gameState = {
+            score: 0,
+            completedObjectives: 0,
+            timeLeft: 0,
+            gameTimer: null,
+            gameStarted: false,
+            gameEnded: false,
+            character: { x: 50, y: 200, collected: [] },
+            objects: [],
+            commandHistory: [],
+            currentObjective: 0
+        };
+
+        let gameStats = {
+            totalScore: 0,
+            currentStreak: 0,
+            longestStreak: 0,
+            perfectGames: 0,
+            totalGames: 0,
+            achievements: [],
+            stars: 0,
+            lastPlayDate: null,
+            bestScores: {}
+        };
+
+        // Achievement definitions
+        const achievements = {
+            commandMaster: {
+                id: 'commandMaster',
+                title: '⌨️ Command Master',
+                description: 'Complete a level using only French commands',
+                reward: 150,
+                icon: '⌨️'
+            },
+            speedTyper: {
+                id: 'speedTyper',
+                title: '⚡ Speed Typer',
+                description: 'Complete a level in under 2 minutes',
+                reward: 100,
+                icon: '⚡'
+            },
+            perfectCommands: {
+                id: 'perfectCommands',
+                title: '🎯 Perfect Commands',
+                description: 'Complete all objectives without errors',
+                reward: 125,
+                icon: '🎯'
+            },
+            frenchExpert: {
+                id: 'frenchExpert',
+                title: '🇫🇷 French Expert',
+                description: 'Complete all levels',
+                reward: 250,
+                icon: '🇫🇷'
+            },
+            streakMaster: {
+                id: 'streakMaster',
+                title: '🌟 Streak Master',
+                description: 'Maintain a 5-day streak',
+                reward: 200,
+                icon: '🌟'
+            }
+        };
+
+        // Load game stats from localStorage
+        function loadGameStats() {
+            const savedStats = localStorage.getItem('frenchCommandQuestStats');
+            if (savedStats) {
+                gameStats = JSON.parse(savedStats);
+            }
+            updateStreak();
+        }
+
+        // Save game stats to localStorage
+        function saveGameStats() {
+            localStorage.setItem('frenchCommandQuestStats', JSON.stringify(gameStats));
+        }
+
+        // Update daily streak
+        function updateStreak() {
+            const today = new Date().toDateString();
+            if (gameStats.lastPlayDate !== today) {
+                if (isConsecutiveDay(gameStats.lastPlayDate)) {
+                    gameStats.currentStreak++;
+                    gameStats.longestStreak = Math.max(gameStats.currentStreak, gameStats.longestStreak);
+                    if (gameStats.currentStreak === 5) {
+                        unlockAchievement('streakMaster');
+                    }
+                } else {
+                    gameState.currentStreak = 1;
+                }
+                gameStats.lastPlayDate = today;
+                saveGameStats();
+            }
+        }
+
+        // Check if the last play date was yesterday
+        function isConsecutiveDay(lastPlayDate) {
+            if (!lastPlayDate) return false;
+            const last = new Date(lastPlayDate);
+            const today = new Date();
+            const diffTime = Math.abs(today - last);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return diffDays === 1;
+        }
+
+        // Unlock achievement and show notification
+        function unlockAchievement(achievementId) {
+            if (!gameStats.achievements.includes(achievementId)) {
+                gameStats.achievements.push(achievementId);
+                gameStats.stars += achievements[achievementId].reward;
+                saveGameStats();
+                
+                showAchievementNotification(achievements[achievementId]);
+            }
+        }
+
+        // Show floating achievement notification
+        function showAchievementNotification(achievement) {
+            const notification = document.createElement('div');
+            notification.className = 'achievement-notification';
+            notification.innerHTML = `
+                <div class="achievement-icon">${achievement.icon}</div>
+                <div class="achievement-details">
+                    <h3>${achievement.title}</h3>
+                    <p>${achievement.description}</p>
+                    <p class="achievement-reward">+${achievement.reward} ⭐</p>
+                </div>
+            `;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 500);
+            }, 3000);
+        }
+
+        // Show level selection screen
+        function showLevelSelection() {
+            loadGameStats();
+            const content = `
+                <div class="stats-display">
+                    <div>⭐ ${gameStats.stars}</div>
+                    <div class="streak-counter">
+                        <span class="streak-flame">🔥</span>
+                        <span>${gameStats.currentStreak} days</span>
+                    </div>
+                </div>
+
+                <div class="level-selection">
+                    ${Object.entries(gameData).map(([level, data]) => `
+                        <div class="level-card" onclick="startLevel('${level}')">
+                            <h2>${data.title}</h2>
+                            <p>${data.description}</p>
+                            <div style="margin: 10px 0;">
+                                <span style="color: var(--neon-green);">Difficulty: ${data.difficulty}</span><br>
+                                <span style="color: var(--neon-purple);">Duration: ${data.duration}s</span><br>
+                                <span style="color: var(--neon-blue);">Objectives: ${data.objectives.length}</span><br>
+                                <span style="color: var(--neon-cyan);">Best: ${gameStats.bestScores[level] || 0}</span>
+                            </div>
+                            ${gameStats.achievements.includes('perfect' + level) ? 
+                                '<div style="color: var(--neon-green); font-size: 1.5rem;">🏆</div>' : ''}
+                        </div>
+                    `).join('')}
+                </div>
+
+                <div class="instructions">
+                    <h3>⌨️ How to Play</h3>
+                    <p>Type French commands to control the character and complete objectives!</p>
+                    <p>Use the command panel to type instructions like "aller à droite" (go right)</p>
+                    <p>Press <span class="key-hint">ENTER</span> to execute commands!</p>
+                </div>
+            `;
+            
+            document.getElementById('game-content').innerHTML = content;
+        }
+
+        // Start selected level
+        function startLevel(level) {
+            currentLevel = level;
+            const levelData = gameData[level];
+            
+            // Reset game state
+            gameState = {
+                score: 0,
+                completedObjectives: 0,
+                timeLeft: levelData.duration,
+                gameTimer: null,
+                gameStarted: false,
+                gameEnded: false,
+                character: { x: 50, y: 200, collected: [] },
+                objects: [],
+                commandHistory: [],
+                currentObjective: 0
+            };
+
+            // Create objects for this level
+            createObjects(levelData);
+            displayGame();
+        }
+
+        // Create objects for the level
+        function createObjects(levelData) {
+            gameState.objects = [];
+            
+            // Create objects based on objectives
+            levelData.objectives.forEach((objective, index) => {
+                if (objective.id.includes('collect') || objective.id.includes('item')) {
+                    gameState.objects.push({
+                        id: `item_${index}`,
+                        x: 200 + (index * 100),
+                        y: 200,
+                        type: 'item',
+                        collected: false,
+                        objective: objective.id
+                    });
+                }
+            });
+        }
+
+        // Display game
+        function displayGame() {
+            const levelData = gameData[currentLevel];
+            const progressPercent = (gameState.completedObjectives / levelData.objectives.length) * 100;
+            
+            const content = `
+                <div class="game-card">
+                    <button class="btn btn-primary" style="margin: 0 0 1rem 0;" onclick="showLevelSelection()">← Back to Levels</button>
+                    
+                    <div class="game-ui">
+                        <div class="score-display">Score: ${gameState.score}</div>
+                        <div class="score-display">Objectives: ${gameState.completedObjectives}/${levelData.objectives.length}</div>
+                        <div class="score-display">Time: ${gameState.timeLeft}s</div>
+                    </div>
+                    
+                    <div class="progress-bar">
+                        <div class="progress" style="width: ${progressPercent}%"></div>
+                    </div>
+
+                    <div class="game-area">
+                        <div class="scene-container" id="scene-container">
+                            <div class="character" id="character" style="left: ${gameState.character.x}px; top: ${gameState.character.y}px;">🤖</div>
+                            ${gameState.objects.map(obj => `
+                                <div class="object ${obj.collected ? 'collected' : ''}" 
+                                     id="${obj.id}" 
+                                     style="left: ${obj.x}px; top: ${obj.y}px;"
+                                     onclick="collectObject('${obj.id}')">
+                                    ${obj.type === 'item' ? '📦' : '🚪'}
+                                </div>
+                            `).join('')}
+                        </div>
+
+                        <div class="command-panel">
+                            <h3 style="color: var(--neon-purple); margin-bottom: 1rem;">Command Center</h3>
+                            
+                            <input type="text" 
+                                   id="command-input" 
+                                   class="command-input" 
+                                   placeholder="Type French command here..."
+                                   onkeypress="if(event.key === 'Enter') executeCommand()">
+                            
+                            <div class="command-history" id="command-history">
+                                ${gameState.commandHistory.map(cmd => `
+                                    <div class="command-item ${cmd.type}">
+                                        <strong>${cmd.command}</strong> - ${cmd.message}
+                                    </div>
+                                `).join('')}
+                            </div>
+
+                            <div class="suggestions">
+                                <h4 style="color: var(--neon-green); margin-bottom: 0.5rem;">Suggestions:</h4>
+                                ${levelData.objectives[gameState.currentObjective] ? `
+                                    <div class="suggestion-item" onclick="useSuggestion('${levelData.objectives[gameState.currentObjective].command}')">
+                                        ${levelData.objectives[gameState.currentObjective].command}
+                                    </div>
+                                ` : ''}
+                                ${levelData.vocabulary.slice(0, 3).map(vocab => `
+                                    <div class="suggestion-item" onclick="useSuggestion('${vocab.french}')">
+                                        ${vocab.french} (${vocab.english})
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="instructions">
+                        <h3>🎯 Current Objective</h3>
+                        <p>${levelData.objectives[gameState.currentObjective] ? levelData.objectives[gameState.currentObjective].description : 'All objectives completed!'}</p>
+                        ${levelData.objectives[gameState.currentObjective] ? `
+                            <p style="color: var(--neon-purple); font-style: italic;">
+                                💡 Hint: ${levelData.objectives[gameState.currentObjective].hint}
+                            </p>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('game-content').innerHTML = content;
+            
+            // Start the game
+            startGame();
+        }
+
+        // Start the game
+        function startGame() {
+            if (gameState.gameStarted) return;
+            
+            gameState.gameStarted = true;
+            
+            // Start game timer
+            gameState.gameTimer = setInterval(() => {
+                gameState.timeLeft--;
+                updateTimerDisplay();
+                
+                if (gameState.timeLeft <= 0) {
+                    endGame();
+                }
+            }, 1000);
+
+            // Focus on command input
+            document.getElementById('command-input').focus();
+        }
+
+        // Execute command
+        function executeCommand() {
+            const input = document.getElementById('command-input');
+            const command = input.value.trim().toLowerCase();
+            
+            if (!command) return;
+
+            const levelData = gameData[currentLevel];
+            const currentObj = levelData.objectives[gameState.currentObjective];
+            
+            // Check if command matches current objective
+            if (currentObj && command === currentObj.command.toLowerCase()) {
+                executeObjective(currentObj);
+                addCommandToHistory(command, 'success', `Objective completed: ${currentObj.description}`);
+                gameState.currentObjective++;
+                
+                // Check if level complete
+                if (gameState.currentObjective >= levelData.objectives.length) {
+                    endGame(true);
+                }
+            } else {
+                // Check for partial matches or vocabulary
+                const matchedVocab = levelData.vocabulary.find(vocab => 
+                    command.includes(vocab.french.toLowerCase())
+                );
+                
+                if (matchedVocab) {
+                    addCommandToHistory(command, 'info', `Vocabulary recognized: ${matchedVocab.french} (${matchedVocab.english})`);
+                } else {
+                    addCommandToHistory(command, 'error', 'Command not recognized. Try using the suggestions!');
+                }
+            }
+
+            input.value = '';
+            updateDisplay();
+        }
+
+        // Execute objective
+        function executeObjective(objective) {
+            const character = document.getElementById('character');
+            const points = 100 + (gameState.timeLeft * 2);
+            gameState.score += points;
+            
+            // Visual feedback
+            character.style.animation = 'commandSuccess 0.5s ease-in-out';
+            setTimeout(() => {
+                character.style.animation = 'pulse 2s infinite';
+            }, 500);
+
+            // Execute specific actions based on objective
+            switch (objective.id) {
+                case 'move_right':
+                    gameState.character.x = Math.min(gameState.character.x + 50, 400);
+                    break;
+                case 'move_left':
+                    gameState.character.x = Math.max(gameState.character.x - 50, 0);
+                    break;
+                case 'collect_item':
+                    // Find and collect nearest item
+                    const nearestItem = gameState.objects.find(obj => !obj.collected);
+                    if (nearestItem) {
+                        nearestItem.collected = true;
+                        gameState.character.collected.push(nearestItem.id);
+                    }
+                    break;
+            }
+
+            gameState.completedObjectives++;
+            showXPGain(points);
+        }
+
+        // Add command to history
+        function addCommandToHistory(command, type, message) {
+            gameState.commandHistory.push({
+                command: command,
+                type: type,
+                message: message,
+                timestamp: new Date().toLocaleTimeString()
+            });
+
+            // Keep only last 10 commands
+            if (gameState.commandHistory.length > 10) {
+                gameState.commandHistory.shift();
+            }
+        }
+
+        // Use suggestion
+        function useSuggestion(suggestion) {
+            document.getElementById('command-input').value = suggestion;
+            document.getElementById('command-input').focus();
+        }
+
+        // Collect object
+        function collectObject(objectId) {
+            const obj = gameState.objects.find(o => o.id === objectId);
+            if (obj && !obj.collected) {
+                obj.collected = true;
+                gameState.character.collected.push(objectId);
+                updateDisplay();
+            }
+        }
+
+        // Update display
+        function updateDisplay() {
+            const character = document.getElementById('character');
+            if (character) {
+                character.style.left = gameState.character.x + 'px';
+            }
+
+            // Update objects
+            gameState.objects.forEach(obj => {
+                const objElement = document.getElementById(obj.id);
+                if (objElement) {
+                    objElement.classList.toggle('collected', obj.collected);
+                }
+            });
+
+            // Update command history
+            const historyElement = document.getElementById('command-history');
+            if (historyElement) {
+                historyElement.innerHTML = gameState.commandHistory.map(cmd => `
+                    <div class="command-item ${cmd.type}">
+                        <strong>${cmd.command}</strong> - ${cmd.message}
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Update timer display
+        function updateTimerDisplay() {
+            const timerElements = document.querySelectorAll('.score-display');
+            if (timerElements.length >= 3) {
+                timerElements[2].textContent = `Time: ${gameState.timeLeft}s`;
+            }
+        }
+
+        // Show XP gain animation
+        function showXPGain(points) {
+            const xpElement = document.createElement('div');
+            xpElement.className = 'xp-gain';
+            xpElement.textContent = `+${points}`;
+            xpElement.style.left = '50%';
+            xpElement.style.top = '50%';
+            xpElement.style.transform = 'translate(-50%, -50%)';
+            document.body.appendChild(xpElement);
+
+            setTimeout(() => {
+                document.body.removeChild(xpElement);
+            }, 1000);
+        }
+
+        // End game
+        function endGame(won = false) {
+            if (gameState.gameEnded) return;
+            
+            gameState.gameEnded = true;
+            clearInterval(gameState.gameTimer);
+            
+            // Update stats
+            gameStats.totalGames++;
+            gameStats.totalScore += gameState.score;
+            
+            // Check for achievements
+            if (won && gameState.completedObjectives === gameData[currentLevel].objectives.length) {
+                gameStats.perfectGames++;
+                unlockAchievement('perfectCommands');
+            }
+            
+            if (gameState.timeLeft > 120) {
+                unlockAchievement('speedTyper');
+            }
+            
+            // Update best score
+            if (!gameStats.bestScores[currentLevel] || gameState.score > gameStats.bestScores[currentLevel]) {
+                gameStats.bestScores[currentLevel] = gameState.score;
+            }
+            
+            saveGameStats();
+            showResults(won);
+        }
+
+        // Show results
+        function showResults(won) {
+            const levelData = gameData[currentLevel];
+            const percentage = Math.round((gameState.completedObjectives / levelData.objectives.length) * 100);
+            
+            let resultMessage;
+            if (won && percentage === 100) {
+                resultMessage = "Magnifique! Perfect command execution! ⌨️✨";
+            } else if (won) {
+                resultMessage = "Très bien! Great French commands! 🎮";
+            } else {
+                resultMessage = "Keep practicing! Try again! 💪";
+            }
+            
+            const content = `
+                <div class="game-card">
+                    <h2 style="text-align: center; color: var(--neon-green); margin-bottom: 1.5rem;">
+                        ${won ? 'Mission Complete!' : 'Time\'s Up!'}
+                    </h2>
+                    
+                    <div style="text-align: center; margin-bottom: 2rem;">
+                        <div style="font-size: 4rem; color: var(--neon-green); margin-bottom: 0.5rem;">
+                            ${percentage}%
+                        </div>
+                        <p>${resultMessage}</p>
+                        <div style="margin-top: 1rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
+                            <div style="background: var(--card-bg); padding: 1rem; border-radius: 10px; border: 1px solid var(--border-color);">
+                                <h4 style="color: var(--neon-green);">Score</h4>
+                                <p style="font-size: 1.5rem; font-weight: bold;">${gameState.score}</p>
+                            </div>
+                            <div style="background: var(--card-bg); padding: 1rem; border-radius: 10px; border: 1px solid var(--border-color);">
+                                <h4 style="color: var(--neon-purple);">Objectives</h4>
+                                <p style="font-size: 1.5rem; font-weight: bold;">${gameState.completedObjectives}/${levelData.objectives.length}</p>
+                            </div>
+                            <div style="background: var(--card-bg); padding: 1rem; border-radius: 10px; border: 1px solid var(--border-color);">
+                                <h4 style="color: var(--neon-blue);">Commands Used</h4>
+                                <p style="font-size: 1.5rem; font-weight: bold;">${gameState.commandHistory.length}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: center; gap: 15px;">
+                        <button onclick="showLevelSelection()" class="btn btn-primary">
+                            Choose Another Mission
+                        </button>
+                        <button onclick="startLevel(currentLevel)" class="btn btn-secondary">
+                            Retry Mission
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('game-content').innerHTML = content;
+        }
+
+        // Initialize game
+        window.addEventListener('DOMContentLoaded', showLevelSelection);
+    </script>
+</body>
+</html>
