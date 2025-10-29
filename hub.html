@@ -17,6 +17,8 @@
             --text-secondary: #94A3B8;
             --border: rgba(148, 163, 184, 0.1);
             --shadow: rgba(0, 0, 0, 0.3);
+            --gradient-primary: linear-gradient(135deg, #00FFB3 0%, #00D9FF 100%);
+            --gradient-card: linear-gradient(135deg, rgba(0, 255, 179, 0.05) 0%, rgba(0, 217, 255, 0.05) 100%);
         }
 
         @keyframes fadeIn {
@@ -27,6 +29,21 @@
         @keyframes slideIn {
             from { transform: translateX(-20px); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
         }
 
         * {
@@ -42,6 +59,41 @@
             min-height: 100vh;
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 20% 20%, rgba(0, 255, 179, 0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(0, 217, 255, 0.08) 0%, transparent 50%);
+            animation: gradientShift 15s ease infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            width: 800px;
+            height: 800px;
+            background-image: url('mainlogo-modified.png');
+            background-size: contain;
+            background-position: center center;
+            background-repeat: no-repeat;
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 0;
         }
 
         /* Navigation */
@@ -50,7 +102,7 @@
             top: 0;
             left: 0;
             right: 0;
-            background: rgba(26, 31, 46, 0.8);
+            background: rgba(26, 31, 46, 0.95);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border);
             padding: 1rem 2rem;
@@ -58,6 +110,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
         }
 
         .nav-logo {
@@ -102,6 +155,8 @@
             max-width: 1400px;
             margin: 0 auto;
             padding: 2rem;
+            position: relative;
+            z-index: 1;
         }
 
         /* Main Menu */
@@ -113,49 +168,105 @@
         /* Header Section */
         .header-section {
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 4rem;
+            padding: 3rem 0;
+            position: relative;
+        }
+
+        .header-section::before {
+            content: '🇫🇷';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 4rem;
+            opacity: 0.1;
+            animation: float 3s ease-in-out infinite;
         }
 
         .main-title {
-            font-size: 2.5rem;
+            font-size: 3.5rem;
             font-weight: 700;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            background: var(--gradient-primary);
+            background-size: 200% 200%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 0.5rem;
+            margin-bottom: 1rem;
+            animation: gradientShift 3s ease infinite;
+            letter-spacing: -1px;
         }
 
         .main-subtitle {
-            font-size: 1.125rem;
+            font-size: 1.25rem;
             color: var(--text-secondary);
             font-weight: 400;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.8;
         }
 
         /* Quick Stats Bar */
         .quick-stats {
             display: flex;
             justify-content: center;
-            gap: 3rem;
-            margin: 2rem 0 3rem;
+            gap: 2rem;
+            margin: 0 auto 4rem;
             flex-wrap: wrap;
+            max-width: 800px;
         }
 
         .quick-stat {
             text-align: center;
+            background: var(--gradient-card);
+            padding: 1.5rem 2.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quick-stat::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 179, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .quick-stat:hover::before {
+            left: 100%;
+        }
+
+        .quick-stat:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0, 255, 179, 0.3);
+            box-shadow: 0 8px 24px rgba(0, 255, 179, 0.15);
         }
 
         .quick-stat-number {
-            font-size: 2rem;
+            font-size: 2.5rem;
             font-weight: 700;
-            color: var(--primary);
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             display: block;
+            line-height: 1.2;
         }
 
         .quick-stat-label {
             font-size: 0.875rem;
             color: var(--text-secondary);
-            margin-top: 0.25rem;
+            margin-top: 0.5rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         /* Games Grid */
@@ -174,14 +285,15 @@
         }
 
         .game-card {
-            background: var(--bg-card);
+            background: var(--gradient-card);
             border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.5rem;
+            border-radius: 16px;
+            padding: 1.75rem;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
+            backdrop-filter: blur(10px);
         }
 
         .game-card::before {
@@ -190,20 +302,39 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+            height: 4px;
+            background: var(--gradient-primary);
             transform: scaleX(0);
             transition: transform 0.3s;
+            border-radius: 16px 16px 0 0;
+        }
+
+        .game-card::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 255, 179, 0.1) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
         }
 
         .game-card:hover::before {
             transform: scaleX(1);
         }
 
+        .game-card:hover::after {
+            width: 500px;
+            height: 500px;
+        }
+
         .game-card:hover {
-            border-color: rgba(0, 255, 179, 0.3);
-            transform: translateY(-4px);
-            box-shadow: 0 8px 24px var(--shadow);
+            border-color: rgba(0, 255, 179, 0.4);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 12px 40px rgba(0, 255, 179, 0.2), 0 0 0 1px rgba(0, 255, 179, 0.1);
         }
 
         .game-card-header {
@@ -215,13 +346,23 @@
 
         .game-icon {
             font-size: 2.5rem;
-            width: 60px;
-            height: 60px;
+            width: 64px;
+            height: 64px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(0, 255, 179, 0.1);
-            border-radius: 12px;
+            background: var(--gradient-card);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .game-card:hover .game-icon {
+            transform: scale(1.1) rotate(5deg);
+            border-color: rgba(0, 255, 179, 0.3);
+            box-shadow: 0 4px 16px rgba(0, 255, 179, 0.2);
         }
 
         .game-card-title {
@@ -280,23 +421,33 @@
             color: var(--primary);
             border: none;
             padding: 0;
-            font-size: 0.875rem;
+            font-size: 0.9375rem;
             font-weight: 600;
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 0.5rem;
             font-family: 'Poppins', sans-serif;
-            transition: gap 0.2s;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
         }
 
         .play-btn:hover {
             gap: 0.75rem;
+            color: var(--primary-light);
+            transform: translateX(2px);
         }
 
         .play-btn::after {
             content: '→';
-            font-size: 1rem;
+            font-size: 1.125rem;
+            transition: transform 0.3s ease;
+            display: inline-block;
+        }
+
+        .play-btn:hover::after {
+            transform: translateX(4px);
         }
 
         /* Game Container */
@@ -319,30 +470,47 @@
 
         /* Coming Soon Section */
         .coming-soon-section {
-            margin-top: 4rem;
+            margin-top: 6rem;
+            padding-top: 4rem;
         }
 
         .section-divider {
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--border), transparent);
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 179, 0.3), transparent);
             margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-divider::before {
+            content: '✨';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--bg-primary);
+            padding: 0 1rem;
+            font-size: 1.5rem;
         }
 
         .coming-soon-header {
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 3rem;
         }
 
         .coming-soon-title {
-            font-size: 1.75rem;
+            font-size: 2rem;
             font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.75rem;
         }
 
         .coming-soon-subtitle {
-            font-size: 1rem;
+            font-size: 1.125rem;
             color: var(--text-secondary);
+            font-weight: 400;
         }
 
         /* Locked Cards */
@@ -389,20 +557,39 @@
 
         .premium-btn {
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: var(--text-primary);
-            padding: 0.5rem 1.5rem;
+            color: #000;
+            padding: 0.625rem 1.75rem;
             border: none;
-            border-radius: 6px;
-            font-size: 0.875rem;
+            border-radius: 8px;
+            font-size: 0.9375rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s;
             font-family: 'Poppins', sans-serif;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .premium-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            transition: left 0.3s;
+            z-index: -1;
+        }
+
+        .premium-btn:hover::before {
+            left: 0;
         }
 
         .premium-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 255, 179, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 255, 179, 0.4);
         }
 
         /* Modal */
@@ -413,8 +600,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(12px);
             z-index: 2000;
             align-items: center;
             justify-content: center;
@@ -425,15 +612,16 @@
         }
 
         .modal-content {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            max-width: 500px;
+            background: var(--bg-secondary);
+            border: 1px solid rgba(0, 255, 179, 0.2);
+            border-radius: 24px;
+            max-width: 540px;
             width: 90%;
             max-height: 90vh;
             overflow-y: auto;
             position: relative;
             animation: fadeIn 0.3s ease-out;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(0, 255, 179, 0.1);
         }
 
         .modal-close {
@@ -547,21 +735,41 @@
         .purchase-btn {
             width: 100%;
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: var(--bg-primary);
-            padding: 1rem;
+            color: #000;
+            padding: 1.125rem;
             border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
+            border-radius: 12px;
+            font-size: 1.0625rem;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s;
             font-family: 'Poppins', sans-serif;
             margin-bottom: 1rem;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .purchase-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            transition: left 0.3s;
+            z-index: -1;
+        }
+
+        .purchase-btn:hover::before {
+            left: 0;
         }
 
         .purchase-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 16px rgba(0, 255, 179, 0.4);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 24px rgba(0, 255, 179, 0.5);
         }
 
         .price-note {
@@ -580,8 +788,13 @@
                 padding: 1rem;
             }
 
+            .header-section {
+                padding: 2rem 0;
+                margin-bottom: 2.5rem;
+            }
+
             .main-title {
-                font-size: 2rem;
+                font-size: 2.25rem;
             }
 
             .main-subtitle {
@@ -589,20 +802,34 @@
             }
 
             .quick-stats {
-                gap: 2rem;
+                gap: 1rem;
+                margin-bottom: 2.5rem;
+            }
+
+            .quick-stat {
+                padding: 1.25rem 1.75rem;
             }
 
             .quick-stat-number {
-                font-size: 1.5rem;
+                font-size: 2rem;
             }
 
             .games-grid {
                 grid-template-columns: 1fr;
-                gap: 1rem;
+                gap: 1.25rem;
             }
 
             .game-card {
-                padding: 1.25rem;
+                padding: 1.5rem;
+            }
+
+            .coming-soon-section {
+                margin-top: 4rem;
+            }
+
+            .modal-content {
+                padding: 2rem;
+                border-radius: 20px;
             }
 
             .modal-content {
@@ -1007,3 +1234,4 @@
     </script>
 </body>
 </html>
+
