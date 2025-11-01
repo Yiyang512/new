@@ -15,9 +15,10 @@
             --text-light: #ffffff;
             --card-bg: rgba(10, 25, 15, 0.8);
             --neon-shadow: 0 0 10px rgba(0, 255, 155, 0.3),
-                          0 0 20px rgba(0, 255, 155, 0.3),
-                          0 0 30px rgba(0, 255, 155, 0.3),
-                          0 0 40px rgba(0, 255, 155, 0.3);
+                          0 0 20px rgba(138, 43, 226, 0.4),
+                          0 0 30px rgba(138, 43, 226, 0.5),
+                          0 0 40px rgba(138, 43, 226, 0.6),
+                          0 0 60px rgba(138, 43, 226, 0.4);
         }
         
         * {
@@ -61,7 +62,7 @@
             width: 280px;
             height: 200px;
             background: var(--card-bg);
-            border: 1px solid rgba(0, 255, 155, 0.2);
+            border: 1px solid rgba(138, 43, 226, 0.4);
             border-radius: 15px;
             padding: 20px;
             display: flex;
@@ -72,8 +73,55 @@
             overflow: display;
             transform-style: preserve-3d;
             transform: perspective(1000px) translateZ(0);
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 0 30px rgba(0, 255, 155, 0.1);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 30px rgba(0, 255, 155, 0.1), 0 0 20px rgba(138, 43, 226, 0.5), 0 0 40px rgba(138, 43, 226, 0.4), 0 0 60px rgba(138, 43, 226, 0.2);
+            will-change: transform, box-shadow;
+            contain: layout style paint;
+            backface-visibility: hidden;
+        }
+        
+        /* Purple corner accents */
+        .purple-corner {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            pointer-events: none;
+            z-index: 10;
+            will-change: transform, opacity;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            contain: layout style paint;
+        }
+        
+        .purple-corner.top-left {
+            border-top: 3px solid rgba(138, 43, 226, 0.8);
+            border-left: 3px solid rgba(138, 43, 226, 0.8);
+            top: 10px;
+            left: 10px;
+            border-radius: 3px 0 0 0;
+            animation: purpleCorner 3s ease-in-out infinite;
+            box-shadow: 0 0 10px rgba(138, 43, 226, 0.6);
+        }
+        
+        .purple-corner.bottom-right {
+            border-bottom: 3px solid rgba(138, 43, 226, 0.8);
+            border-right: 3px solid rgba(138, 43, 226, 0.8);
+            bottom: 10px;
+            right: 10px;
+            border-radius: 0 0 3px 0;
+            animation: purpleCorner 3s ease-in-out infinite 1.5s;
+            box-shadow: 0 0 10px rgba(138, 43, 226, 0.6);
+        }
+        
+        @keyframes purpleCorner {
+            0%, 100% { 
+                opacity: 0.6; 
+                transform: translateZ(0) scale(1); 
+            }
+            50% { 
+                opacity: 1; 
+                transform: translateZ(0) scale(1.2); 
+            }
         }
 
         /* Sparkle container */
@@ -81,18 +129,23 @@
             position: absolute;
             inset: 0;
             pointer-events: none;
+            contain: layout style paint;
+            will-change: contents;
         }
 
         /* Individual sparkle */
         .sparkle {
             position: absolute;
-            width: 3px;
-            height: 3px;
+            width: 4px;
+            height: 4px;
             border-radius: 50%;
-            background-color: var(--accent-color);
-            box-shadow: 0 0 10px var(--accent-color);
+            background: radial-gradient(circle, rgba(138, 43, 226, 0.9) 0%, var(--accent-color) 100%);
+            box-shadow: 0 0 10px var(--accent-color), 0 0 12px rgba(138, 43, 226, 1), 0 0 20px rgba(138, 43, 226, 0.8);
             animation: sparkleFloat 2s ease-in-out infinite;
             opacity: 0;
+            will-change: transform, opacity;
+            transform: translateZ(0);
+            backface-visibility: hidden;
         }
 
         /* Create multiple sparkles with different positions and delays */
@@ -106,19 +159,19 @@
 
         @keyframes sparkleFloat {
             0%, 100% {
-                transform: translate(0, 0) scale(0);
+                transform: translate3d(0, 0, 0) scale(0);
                 opacity: 0;
             }
             25% {
-                transform: translate(10px, -10px) scale(1.5);
+                transform: translate3d(10px, -10px, 0) scale(1.5);
                 opacity: 1;
             }
             50% {
-                transform: translate(20px, -20px) scale(1);
+                transform: translate3d(20px, -20px, 0) scale(1);
                 opacity: 0.5;
             }
             75% {
-                transform: translate(10px, -30px) scale(0.5);
+                transform: translate3d(10px, -30px, 0) scale(0.5);
                 opacity: 0.2;
             }
         }
@@ -131,6 +184,9 @@
             background: var(--accent-color);
             border-radius: 50%;
             animation: twinkle 1s ease-in-out infinite;
+            will-change: transform, opacity, box-shadow;
+            transform: translateZ(0);
+            backface-visibility: hidden;
         }
 
         .twinkle:nth-child(1) { left: 25%; top: 25%; animation-delay: 0.2s; }
@@ -140,42 +196,51 @@
 
         @keyframes twinkle {
             0%, 100% {
-                transform: scale(0.5);
+                transform: translateZ(0) scale(0.5);
                 opacity: 0.2;
             }
             50% {
-                transform: scale(1.5);
+                transform: translateZ(0) scale(1.5);
                 opacity: 1;
-                box-shadow: 0 0 8px var(--accent-color);
+                box-shadow: 0 0 8px var(--accent-color), 0 0 10px rgba(138, 43, 226, 1), 0 0 15px rgba(138, 43, 226, 0.8);
             }
         }
 
         /* Add internal particle effect */
-        .stat-box::before {
-            content: '';
+        .stat-box .hover-gradient {
             position: absolute;
             inset: 0;
             background: radial-gradient(circle at var(--x, 50%) var(--y, 50%),
-                rgba(0, 255, 155, 0.15) 0%,
-                transparent 50%);
+                rgba(138, 43, 226, 0.4) 0%,
+                rgba(138, 43, 226, 0.2) 15%,
+                rgba(0, 255, 155, 0.15) 30%,
+                rgba(138, 43, 226, 0.15) 45%,
+                transparent 65%);
             opacity: 0;
             transition: opacity 0.3s;
+            pointer-events: none;
+            border-radius: 15px;
+            will-change: background-position, opacity;
+            transform: translateZ(0);
+            contain: layout style paint;
         }
 
-        .stat-box:hover::before {
+        .stat-box:hover .hover-gradient {
             opacity: 1;
         }
 
-        .stat-box::after {
-            content: '';
+        .stat-box .border-glow {
             position: absolute;
             inset: 0;
             border-radius: 15px;
             padding: 2px;
             background: linear-gradient(45deg, 
                 transparent, 
+                rgba(138, 43, 226, 0.6), 
                 rgba(0, 255, 155, 0.3), 
+                rgba(138, 43, 226, 0.7),
                 transparent);
+            background-size: 200% 200%;
             -webkit-mask: 
                 linear-gradient(#fff 0 0) content-box, 
                 linear-gradient(#fff 0 0);
@@ -183,10 +248,15 @@
             mask-composite: exclude;
             pointer-events: none;
             animation: borderGlow 2s linear infinite;
+            will-change: background-position;
+            transform: translateZ(0);
+            z-index: 1;
+            contain: layout style paint;
+            backface-visibility: hidden;
         }
 
         .stat-box:hover {
-            transform: perspective(1000px) translateZ(30px);
+            transform: perspective(1000px) translate3d(0, 0, 30px);
             box-shadow: var(--neon-shadow);
         }
 
@@ -195,11 +265,14 @@
             font-weight: 700;
             font-family: 'Poppins', sans-serif;
             color: var(--accent-color);
-            text-shadow: 0 0 20px rgba(0, 255, 155, 0.5);
+            text-shadow: 0 0 20px rgba(0, 255, 155, 0.5), 0 0 30px rgba(138, 43, 226, 0.7), 0 0 50px rgba(138, 43, 226, 0.5);
             margin-bottom: 15px;
             position: relative;
             animation: numberPulse 2s ease-in-out infinite;
             transform-style: preserve-3d;
+            will-change: transform, text-shadow;
+            transform: translateZ(0);
+            backface-visibility: hidden;
         }
 
         .stat-number::after {
@@ -210,28 +283,31 @@
             top: 5px;
             right: -30px;
             color: var(--accent-color);
-            text-shadow: 0 0 20px rgba(0, 255, 155, 0.5);
+            text-shadow: 0 0 20px rgba(0, 255, 155, 0.5), 0 0 30px rgba(138, 43, 226, 0.7), 0 0 45px rgba(138, 43, 226, 0.5);
             animation: plusPulse 2s ease-in-out infinite;
+            will-change: transform, opacity;
+            transform: translateZ(0);
+            backface-visibility: hidden;
         }
 
         @keyframes numberPulse {
             0%, 100% { 
-                transform: scale(1) translateZ(0px); 
-                text-shadow: 0 0 20px rgba(0, 255, 155, 0.3);
+                transform: translate3d(0, 0, 0) scale(1); 
+                text-shadow: 0 0 20px rgba(0, 255, 155, 0.3), 0 0 30px rgba(138, 43, 226, 0.5), 0 0 45px rgba(138, 43, 226, 0.4);
             }
             50% { 
-                transform: scale(1.05) translateZ(20px); 
-                text-shadow: 0 0 40px rgba(0, 255, 155, 0.6);
+                transform: translate3d(0, 0, 20px) scale(1.05); 
+                text-shadow: 0 0 40px rgba(0, 255, 155, 0.6), 0 0 60px rgba(138, 43, 226, 0.8), 0 0 80px rgba(138, 43, 226, 0.6);
             }
         }
 
         @keyframes plusPulse {
             0%, 100% { 
-                transform: scale(1) rotate(0deg);
+                transform: translateZ(0) scale(1) rotate(0deg);
                 opacity: 0.8;
             }
             50% { 
-                transform: scale(1.2) rotate(10deg);
+                transform: translateZ(0) scale(1.2) rotate(10deg);
                 opacity: 1;
             }
         }
@@ -246,13 +322,21 @@
             background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
             animation: gradientText 3s linear infinite;
+            will-change: background-position;
+            transform: translateZ(0);
         }
 
         @keyframes gradientText {
             0% { background-position: 0% center; }
             50% { background-position: 100% center; }
             100% { background-position: 0% center; }
+        }
+
+        @keyframes borderGlow {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
         }
 
         @media (max-width: 1200px) {
@@ -358,6 +442,10 @@
     
     <div class="stats-container">
         <div class="stat-box">
+            <div class="purple-corner top-left"></div>
+            <div class="purple-corner bottom-right"></div>
+            <div class="hover-gradient"></div>
+            <div class="border-glow"></div>
             <div class="sparkle-container">
                 <div class="sparkle"></div>
                 <div class="sparkle"></div>
@@ -375,6 +463,10 @@
             <div class="stat-label">Quizzes</div>
         </div>
         <div class="stat-box">
+            <div class="purple-corner top-left"></div>
+            <div class="purple-corner bottom-right"></div>
+            <div class="hover-gradient"></div>
+            <div class="border-glow"></div>
             <div class="sparkle-container">
                 <div class="sparkle"></div>
                 <div class="sparkle"></div>
@@ -392,6 +484,10 @@
             <div class="stat-label">Grammar Videos</div>
         </div>
         <div class="stat-box">
+            <div class="purple-corner top-left"></div>
+            <div class="purple-corner bottom-right"></div>
+            <div class="hover-gradient"></div>
+            <div class="border-glow"></div>
             <div class="sparkle-container">
                 <div class="sparkle"></div>
                 <div class="sparkle"></div>
@@ -409,6 +505,10 @@
             <div class="stat-label">Animated Stories</div>
         </div>
         <div class="stat-box">
+            <div class="purple-corner top-left"></div>
+            <div class="purple-corner bottom-right"></div>
+            <div class="hover-gradient"></div>
+            <div class="border-glow"></div>
             <div class="sparkle-container">
                 <div class="sparkle"></div>
                 <div class="sparkle"></div>
@@ -462,16 +562,26 @@
             }, stepDuration);
         }
 
-        // Add mouse move effect for internal gradient
+        // Add mouse move effect for internal gradient (throttled for performance)
+        const throttleDelay = 16; // ~60fps
+        
         document.querySelectorAll('.stat-box').forEach(box => {
+            const hoverGradient = box.querySelector('.hover-gradient');
+            let lastMoveTime = 0;
             box.addEventListener('mousemove', (e) => {
+                const now = performance.now();
+                if (now - lastMoveTime < throttleDelay) return;
+                lastMoveTime = now;
+                
                 const rect = box.getBoundingClientRect();
                 const x = ((e.clientX - rect.left) / rect.width) * 100;
                 const y = ((e.clientY - rect.top) / rect.height) * 100;
                 
-                box.style.setProperty('--x', `${x}%`);
-                box.style.setProperty('--y', `${y}%`);
-            });
+                if (hoverGradient) {
+                    hoverGradient.style.setProperty('--x', `${x}%`);
+                    hoverGradient.style.setProperty('--y', `${y}%`);
+                }
+            }, { passive: true });
         });
     </script>
 </body>
