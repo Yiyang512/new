@@ -11,13 +11,13 @@
         :root {
             --accent-color: #00FF9B;
             --accent-color-muted: rgba(0, 255, 155, 0.8);
-            --dark-bg: #001102;
-            --darker-bg: #001102;
-            --grid-color: rgba(0, 255, 155, 0.15);
+            --accent-color-glow: rgba(0, 255, 155, 0.3);
             --text-light: #ffffff;
-            --text-muted: rgba(255, 255, 255, 0.8);
-            --card-bg: #001102;
-            --card-border: rgba(0, 255, 155, 0.15);
+            --text-muted: rgba(255, 255, 255, 0.85);
+            --text-lighter: rgba(255, 255, 255, 0.95);
+            --card-bg: rgba(0, 17, 2, 0.4);
+            --card-border: rgba(0, 255, 155, 0.2);
+            --card-border-hover: rgba(0, 255, 155, 0.4);
         }
         
         * {
@@ -28,13 +28,11 @@
         
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: var(--dark-bg);
+            background: transparent;
             color: var(--text-light);
             line-height: 1.6;
             overflow-x: hidden;
-            background-image: none;
             width: 100%;
-            background: #001102;
         }
         
         .approach-section {
@@ -42,22 +40,8 @@
             display: flex;
             align-items: center;
             position: relative;
-            padding: 100px 0;
+            padding: 120px 0;
             width: 100%;
-        }
-
-        /* Grid Background */
-        .grid-background {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: none;
-            background-size: 40px 40px;
-            opacity: 0.1;
-            pointer-events: none;
-            z-index: 0;
         }
         
         .container {
@@ -72,48 +56,99 @@
         .two-column-layout {
             display: grid;
             grid-template-columns: 1fr 1.5fr;
-            gap: 80px;
+            gap: 100px;
             align-items: flex-start;
             width: 100%;
         }
         
         .left-column {
             position: sticky;
-            top: 50px;
+            top: 80px;
+            animation: fadeInLeft 0.8s ease-out;
+        }
+        
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
         
         .philosophy-statement {
             font-size: 2.8rem;
             font-weight: 600;
             color: var(--accent-color);
-            line-height: 1.3;
-            margin-bottom: 30px;
-            letter-spacing: -0.5px;
+            line-height: 1.25;
+            margin-bottom: 40px;
+            letter-spacing: -0.8px;
             word-wrap: break-word;
             hyphens: auto;
+            text-shadow: 0 0 20px rgba(0, 255, 155, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .philosophy-statement:hover {
+            text-shadow: 0 0 30px rgba(0, 255, 155, 0.4);
         }
         
         .philosophy-statement::after {
             content: "";
             display: block;
-            width: 80px;
-            height: 3px;
-            background: var(--accent-color);
-            margin-top: 30px;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-color), transparent);
+            margin-top: 35px;
             border-radius: 2px;
+            animation: expandWidth 1s ease-out 0.5s both;
+        }
+        
+        @keyframes expandWidth {
+            from {
+                width: 0;
+            }
+            to {
+                width: 100px;
+            }
         }
         
         .right-column {
-            padding: 40px;
+            padding: 50px;
             background: var(--card-bg);
-            border-radius: 12px;
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 20px;
             border: 1px solid var(--card-border);
             position: relative;
-            box-shadow: none;
-            backdrop-filter: none;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3),
+                        0 0 0 1px rgba(0, 255, 155, 0.1) inset;
             width: 100%;
             word-wrap: break-word;
             overflow-wrap: break-word;
+            animation: fadeInRight 0.8s ease-out 0.2s both;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .right-column:hover {
+            border-color: var(--card-border-hover);
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4),
+                        0 0 0 1px rgba(0, 255, 155, 0.2) inset,
+                        0 0 40px rgba(0, 255, 155, 0.1);
+            transform: translateY(-2px);
         }
         
         .right-column::before {
@@ -122,96 +157,168 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 3px;
-            background: var(--accent-color);
-            border-radius: 12px 12px 0 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-color), rgba(0, 255, 155, 0.3));
+            border-radius: 20px 20px 0 0;
+            box-shadow: 0 0 20px rgba(0, 255, 155, 0.5);
         }
         
         .section-header {
             color: var(--accent-color);
-            font-size: 1.75rem;
-            margin-bottom: 20px;
+            font-size: 1.85rem;
+            margin-bottom: 25px;
             font-weight: 600;
             display: flex;
             align-items: center;
             word-wrap: break-word;
+            text-shadow: 0 0 10px rgba(0, 255, 155, 0.2);
         }
         
         .section-header::before {
             content: "";
             display: inline-block;
-            width: 6px;
-            height: 20px;
+            width: 8px;
+            height: 24px;
             background: var(--accent-color);
-            margin-right: 15px;
-            border-radius: 3px;
+            margin-right: 18px;
+            border-radius: 4px;
             flex-shrink: 0;
+            box-shadow: 0 0 12px rgba(0, 255, 155, 0.6);
         }
         
         .section-divider {
             height: 1px;
-            background: var(--card-border);
-            margin: 40px 0;
+            background: linear-gradient(90deg, transparent, var(--card-border), transparent);
+            margin: 50px 0;
         }
         
         .emphasized-text {
             font-weight: 500;
             color: var(--accent-color-muted);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .emphasized-text:hover {
+            color: var(--accent-color);
+            text-shadow: 0 0 15px rgba(0, 255, 155, 0.4);
         }
         
         .regular-text {
-            font-size: 1.05rem;
-            line-height: 1.8;
+            font-size: 1.08rem;
+            line-height: 1.85;
             color: var(--text-muted);
             font-weight: 300;
             word-wrap: break-word;
+            margin-bottom: 20px;
+        }
+        
+        .service-item {
+            margin-bottom: 40px;
+            padding: 25px;
+            border-radius: 16px;
+            background: rgba(0, 255, 155, 0.02);
+            border: 1px solid rgba(0, 255, 155, 0.08);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .service-item::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: rgba(0, 255, 155, 0.05);
+            transition: width 0.4s ease;
+            z-index: 0;
+        }
+        
+        .service-item:hover {
+            background: rgba(0, 255, 155, 0.05);
+            border-color: rgba(0, 255, 155, 0.2);
+            transform: translateX(8px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2),
+                        inset 0 0 40px rgba(0, 255, 155, 0.05);
+        }
+        
+        .service-item:hover::before {
+            width: 100%;
         }
         
         .service-header {
-            font-size: 1.3rem;
-            color: var(--text-light);
-            margin-bottom: 12px;
+            font-size: 1.35rem;
+            color: var(--text-lighter);
+            margin-bottom: 15px;
             font-weight: 500;
             display: flex;
             align-items: flex-start;
             word-wrap: break-word;
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+        
+        .service-item:hover .service-header {
+            color: var(--text-light);
+            transform: translateX(4px);
         }
         
         .service-header span {
             color: var(--accent-color);
-            margin-left: 5px;
+            margin-left: 8px;
+            font-weight: 600;
         }
         
         .service-icon {
-            width: 28px;
-            height: 28px;
+            width: 32px;
+            height: 32px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-right: 15px;
-            background: rgba(0, 255, 155, 0.1);
-            border-radius: 6px;
-            padding: 5px;
+            margin-right: 18px;
+            background: rgba(0, 255, 155, 0.15);
+            border-radius: 10px;
+            padding: 6px;
             flex-shrink: 0;
+            position: relative;
+            z-index: 1;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .service-item:hover .service-icon {
+            background: rgba(0, 255, 155, 0.25);
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 4px 16px rgba(0, 255, 155, 0.3);
         }
         
         .service-icon svg {
             width: 20px;
             height: 20px;
             stroke: var(--accent-color);
+            transition: all 0.3s ease;
         }
         
         .service-description {
-            margin-bottom: 30px;
-            padding-left: 43px;
+            margin-bottom: 0;
+            padding-left: 50px;
             color: var(--text-muted);
-            font-size: 1rem;
-            line-height: 1.7;
+            font-size: 1.02rem;
+            line-height: 1.75;
             font-weight: 300;
             word-wrap: break-word;
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease;
         }
         
-        /* Subtle accent line */
+        .service-item:hover .service-description {
+            color: var(--text-lighter);
+            padding-left: 52px;
+        }
+        
         .accent-line {
             display: none;
         }
@@ -219,7 +326,7 @@
         @media (max-width: 992px) {
             .two-column-layout {
                 grid-template-columns: 1fr;
-                gap: 40px;
+                gap: 50px;
             }
             
             .left-column {
@@ -229,89 +336,126 @@
             
             .philosophy-statement {
                 font-size: 2.2rem;
+                margin-bottom: 35px;
             }
             
-            .accent-line {
-                display: none;
+            .right-column {
+                padding: 40px 30px;
             }
-
+            
+            .service-item {
+                padding: 20px;
+            }
+            
             .service-description {
-                padding-left: 43px;
+                padding-left: 50px;
             }
         }
         
         @media (max-width: 768px) {
             .approach-section {
-                padding: 60px 0;
+                padding: 80px 0;
                 min-height: auto;
             }
             
             .philosophy-statement {
-                font-size: 1.8rem;
+                font-size: 1.9rem;
+                line-height: 1.3;
             }
             
             .section-header {
-                font-size: 1.5rem;
+                font-size: 1.55rem;
             }
             
             .service-header {
-                font-size: 1.2rem;
+                font-size: 1.22rem;
             }
             
             .right-column {
-                padding: 30px 20px;
+                padding: 35px 25px;
+                border-radius: 16px;
             }
-
+            
+            .service-item {
+                padding: 18px;
+                margin-bottom: 30px;
+            }
+            
             .service-description {
-                padding-left: 40px;
+                padding-left: 48px;
+                font-size: 1rem;
             }
             
             .regular-text {
-                font-size: 1rem;
-                line-height: 1.7;
+                font-size: 1.02rem;
+                line-height: 1.75;
             }
         }
 
         @media (max-width: 576px) {
             .approach-section {
-                padding: 40px 0;
+                padding: 60px 0;
             }
             
             .philosophy-statement {
-                font-size: 1.6rem;
+                font-size: 1.65rem;
+                margin-bottom: 30px;
+            }
+            
+            .philosophy-statement::after {
+                width: 80px;
+                height: 3px;
             }
             
             .section-header {
-                font-size: 1.3rem;
+                font-size: 1.35rem;
+            }
+            
+            .section-header::before {
+                width: 6px;
+                height: 20px;
+                margin-right: 15px;
             }
             
             .service-header {
-                font-size: 1.1rem;
+                font-size: 1.15rem;
             }
             
             .right-column {
-                padding: 25px 15px;
+                padding: 28px 20px;
+                border-radius: 16px;
+            }
+            
+            .service-item {
+                padding: 16px;
+                margin-bottom: 25px;
+                border-radius: 12px;
             }
             
             .service-description {
-                padding-left: 30px;
-                font-size: 0.95rem;
+                padding-left: 45px;
+                font-size: 0.96rem;
+                line-height: 1.7;
             }
             
             .service-icon {
-                width: 24px;
-                height: 24px;
-                margin-right: 10px;
+                width: 28px;
+                height: 28px;
+                margin-right: 14px;
             }
             
             .service-icon svg {
-                width: 16px;
-                height: 16px;
+                width: 18px;
+                height: 18px;
             }
             
             .regular-text {
-                font-size: 0.95rem;
-                line-height: 1.6;
+                font-size: 0.98rem;
+                line-height: 1.7;
+            }
+            
+            .section-divider {
+                margin: 35px 0;
             }
         }
     </style>
@@ -320,7 +464,6 @@
     <div class="accent-line"></div>
     
     <section class="approach-section">
-        <div class="grid-background"></div>
         <div class="container">
             <div class="two-column-layout">
                 <div class="left-column">
@@ -332,69 +475,73 @@
                 <div class="right-column">
                     <h2 class="section-header">Our Goal</h2>
                     <p class="regular-text">
-                        At Simple French with Hems, we believe that language learning should be 
+                        At Simple French with Hems, we transform language learning into a 
                         <span class="emphasized-text">structured, engaging, and immersive</span>
-                        —not frustrating or repetitive. Traditional methods rely on memorization 
-                        without real-world application, leaving learners struggling with confidence, 
-                        pronunciation, and fluency.
+                        experience. Unlike traditional methods that rely solely on memorization, 
+                        we focus on real-world application, building confidence, pronunciation, 
+                        and fluency through practical mastery.
                     </p>
-                    <br>
                     <p class="regular-text">
-                        That's why we combine <span class="emphasized-text">expert-led courses, interactive 
-                        animated stories, and AI-powered VR technology</span> to create a comprehensive 
-                        learning experience that ensures true mastery. Our A0 to B2 curriculum provides 
-                        step-by-step progression, while AI-driven pronunciation feedback helps learners 
-                        speak with accuracy and confidence. With gamified challenges, real-world scenarios, 
-                        and adaptive learning, we empower students to think, speak, and succeed in French—faster 
-                        and more effectively than ever before.
+                        Our comprehensive approach combines <span class="emphasized-text">expert-led courses, 
+                        interactive animated stories, and AI-powered VR technology</span> to create 
+                        a learning journey that works. From A0 to B2, our curriculum offers step-by-step 
+                        progression with AI-driven pronunciation feedback, gamified challenges, and 
+                        adaptive learning—empowering you to think, speak, and succeed in French faster 
+                        and more effectively.
                     </p>
                     
                     <div class="section-divider"></div>
                     
                     <h2 class="section-header">Our Main Services</h2>
                     
-                    <h3 class="service-header">
-                        <div class="service-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
-                                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
-                            </svg>
-                        </div>
-                        <div>Online French Courses <span>(A0 to B2)</span></div>
-                    </h3>
-                    <p class="service-description">
-                        A structured, self-paced curriculum with 420+ grammar lessons, 5,220 quizzes, 
-                        and 12 textbooks, designed for DELF & TEF exam success.
-                    </p>
+                    <div class="service-item">
+                        <h3 class="service-header">
+                            <div class="service-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                                </svg>
+                            </div>
+                            <div>Online French Courses <span>(A0 to B2)</span></div>
+                        </h3>
+                        <p class="service-description">
+                            Comprehensive self-paced curriculum featuring 420+ grammar lessons, 
+                            5,220 quizzes, and 12 textbooks. Designed specifically for DELF & TEF exam success.
+                        </p>
+                    </div>
                     
-                    <h3 class="service-header">
-                        <div class="service-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <polygon points="23 7 16 12 23 17 23 7"></polygon>
-                                <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
-                            </svg>
-                        </div>
-                        <div>French Animated Story Series</div>
-                    </h3>
-                    <p class="service-description">
-                        52 engaging stories that bring real-life conversations to life, improving 
-                        comprehension, vocabulary, and listening skills.
-                    </p>
+                    <div class="service-item">
+                        <h3 class="service-header">
+                            <div class="service-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                                    <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                                </svg>
+                            </div>
+                            <div>French Animated Story Series</div>
+                        </h3>
+                        <p class="service-description">
+                            52 captivating stories that bring real-life conversations to life, 
+                            enhancing comprehension, vocabulary expansion, and listening skills.
+                        </p>
+                    </div>
                     
-                    <h3 class="service-header">
-                        <div class="service-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-                                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
-                                <line x1="12" y1="22.08" x2="12" y2="12"></line>
-                            </svg>
-                        </div>
-                        <div>AI-Powered VR Game</div>
-                    </h3>
-                    <p class="service-description">
-                        An interactive, speech-based experience where learners practice pronunciation, 
-                        conversation, and fluency in a gamified escape-room setting.
-                    </p>
+                    <div class="service-item">
+                        <h3 class="service-header">
+                            <div class="service-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                                    <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                                </svg>
+                            </div>
+                            <div>AI-Powered VR Game</div>
+                        </h3>
+                        <p class="service-description">
+                            Immersive, speech-based experience where learners practice pronunciation 
+                            and conversation skills in a gamified escape-room environment.
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
