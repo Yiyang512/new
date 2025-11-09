@@ -35,6 +35,101 @@
             overflow: hidden;
         }
 
+        .top-nav-wrapper {
+            width: 100%;
+            padding: 20px 20px 0;
+            display: flex;
+            justify-content: center;
+            position: relative;
+            z-index: 20;
+        }
+
+        .top-nav {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2.5rem;
+            background: rgba(0, 25, 15, 0.9);
+            border-radius: 18px;
+            border: 1px solid rgba(0, 255, 155, 0.2);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+        }
+
+        .top-nav .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .top-nav .nav-left img {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+        }
+
+        .top-nav .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .game-stats-compact {
+            display: none;
+            justify-content: space-between;
+            gap: 1.5rem;
+            align-items: center;
+            padding: 0.45rem 1.3rem;
+            background: rgba(0, 25, 15, 0.88);
+            border-radius: 12px;
+            border: 1px solid rgba(0, 255, 155, 0.22);
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+            width: 250px;
+            position: fixed;
+            top: 140px;
+            left: 1rem;
+            z-index: 102;
+            color: var(--accent-color);
+            font-size: 1rem;
+            letter-spacing: 0.4px;
+        }
+
+        .game-stats-compact strong {
+            color: var(--text-color);
+            margin-left: 0.35rem;
+            font-size: 1.05rem;
+        }
+
+        .nav-tag {
+            padding: 0.5rem 1rem;
+            border-radius: 999px;
+            background: rgba(0, 255, 155, 0.15);
+            border: 1px solid rgba(0, 255, 155, 0.4);
+            font-size: 0.85rem;
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        .nav-btn {
+            padding: 0.6rem 1.6rem;
+            border-radius: 999px;
+            background: var(--accent-color);
+            color: #002414;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 26px rgba(0, 255, 155, 0.35);
+        }
+
         .game-container {
             width: 100%;
             height: 100vh;
@@ -376,7 +471,134 @@
             box-shadow: 0 0 15px rgba(0, 255, 155, 0.3);
         }
 
-        /* Timer bar */
+        .control-btn.info-btn-control {
+            background: #FF4444;
+            border-color: #FF6666;
+            color: white;
+            font-weight: 700;
+            font-style: italic;
+            font-size: 1.3rem;
+            box-shadow: 0 0 10px rgba(255, 68, 68, 0.4);
+        }
+
+        .control-btn.info-btn-control:hover {
+            background: #FF6666;
+            border-color: #FF8888;
+            box-shadow: 0 0 15px rgba(255, 68, 68, 0.6);
+        }
+
+        /* Circular Timer */
+        .circular-timer-container {
+            position: fixed;
+            top: 80px;
+            right: 1rem;
+            z-index: 102;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-btn-standalone {
+            background: #FF4444;
+            border: 2px solid #FF6666;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            font-size: 1.8rem;
+            font-weight: 700;
+            font-style: italic;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(255, 68, 68, 0.5);
+            margin-bottom: 0.5rem;
+        }
+
+        .info-btn-standalone:hover {
+            transform: scale(1.15);
+            background: #FF6666;
+            border-color: #FF8888;
+            box-shadow: 0 0 25px rgba(255, 68, 68, 0.8);
+        }
+
+        .circular-timer {
+            width: 110px;
+            height: 110px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .circular-timer svg {
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+
+        .circular-timer-bg {
+            fill: none;
+            stroke: rgba(0, 255, 155, 0.2);
+            stroke-width: 8;
+        }
+
+        .circular-timer-progress {
+            fill: none;
+            stroke: var(--accent-color);
+            stroke-width: 8;
+            stroke-linecap: round;
+            stroke-dasharray: 251.2;
+            stroke-dashoffset: 0;
+            transition: stroke-dashoffset 0.1s linear;
+            filter: drop-shadow(0 0 10px var(--accent-color));
+        }
+
+        .circular-timer-progress.warning {
+            stroke: #FFD700;
+            filter: drop-shadow(0 0 8px #FFD700);
+        }
+
+        .circular-timer-progress.danger {
+            stroke: #FF4444;
+            filter: drop-shadow(0 0 8px #FF4444);
+        }
+
+        .circular-timer-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            text-shadow: 0 0 10px rgba(0, 255, 155, 0.5);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .circular-timer-text.warning {
+            color: #FFD700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .circular-timer-text.danger {
+            color: #FF4444;
+            text-shadow: 0 0 10px rgba(255, 68, 68, 0.5);
+        }
+
+        .timer-label {
+            font-size: 0.8rem;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            opacity: 0.8;
+        }
+
+        /* Timer bar - Keep for backup but hide */
         .timer-container {
             position: fixed;
             top: 60px;
@@ -384,23 +606,7 @@
             width: 100%;
             padding: 0 1rem;
             z-index: 100;
-        }
-
-        .timer-bar {
-            height: 10px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 5px;
-            overflow: hidden;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-        }
-
-        .timer-progress {
-            height: 100%;
-            background: linear-gradient(to right, var(--accent-color), #00ffff);
-            width: 100%;
-            transition: width 0.1s linear;
-            border-radius: 5px;
-            box-shadow: 0 0 8px var(--accent-color);
+            display: none; /* Hide the old timer bar */
         }
 
         /* Game intro */
@@ -520,6 +726,163 @@
             box-shadow: 0 10px 25px rgba(0, 255, 155, 0.4);
         }
 
+        /* Info Modal */
+        .info-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 17, 2, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1002;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .info-modal-content {
+            background: var(--card-bg);
+            border: 2px solid var(--accent-color);
+            border-radius: 20px;
+            padding: 2.5rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideUp 0.3s ease;
+        }
+
+        .info-modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: transparent;
+            border: none;
+            color: var(--accent-color);
+            font-size: 2.5rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            line-height: 1;
+        }
+
+        .info-modal-close:hover {
+            background: rgba(0, 255, 155, 0.2);
+            transform: rotate(90deg);
+        }
+
+        .info-modal-content h2 {
+            color: var(--accent-color);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(0, 255, 155, 0.3);
+        }
+
+        .info-section {
+            margin-bottom: 2rem;
+        }
+
+        .info-section h3 {
+            color: var(--accent-color);
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid rgba(0, 255, 155, 0.3);
+            padding-bottom: 0.5rem;
+        }
+
+        .info-description {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .level-progression {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .level-item {
+            background: rgba(0, 17, 2, 0.6);
+            border: 2px solid rgba(0, 255, 155, 0.3);
+            border-radius: 12px;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .level-item:hover {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px rgba(0, 255, 155, 0.2);
+            transform: translateX(5px);
+        }
+
+        .level-badge {
+            background: var(--accent-color);
+            color: var(--bg-color);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1rem;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .level-points {
+            flex: 1;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .level-timer {
+            color: var(--accent-color);
+            font-size: 0.9rem;
+            font-weight: 600;
+            min-width: 120px;
+            text-align: right;
+        }
+
+        .info-tips {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .info-tips li {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+            padding: 0.8rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        .info-tips li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .info-tips li:not(:last-child) {
+            border-bottom: 1px solid rgba(0, 255, 155, 0.1);
+        }
+
         /* Animations */
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -543,6 +906,25 @@
 
         /* Mobile optimizations */
         @media (max-width: 768px) {
+            .top-nav-wrapper {
+                padding: 15px 12px 0;
+            }
+
+            .top-nav {
+                flex-direction: column;
+                gap: 0.85rem;
+                padding: 0.95rem 1.4rem;
+            }
+
+            .top-nav .nav-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .nav-btn {
+                padding: 0.5rem 1.2rem;
+            }
+
             .game-header {
                 grid-template-columns: auto auto 1fr;
                 padding: 0.2rem 0.4rem;
@@ -578,16 +960,13 @@
             
             .topic-switcher {
                 position: fixed;
-                grid-column: auto;
-                justify-self: auto;
-                bottom: 0.6rem;
-                top: auto;
+                top: 50px;
                 left: 50%;
                 transform: translateX(-50%);
-                max-width: 80%;
-                padding: 0.1rem 0.3rem;
-                border-width: 1px;
-                border-radius: 8px;
+                max-width: 85%;
+                padding: 0.3rem 0.8rem;
+                border-width: 2px;
+                border-radius: 15px;
             }
             
             .current-topic {
@@ -619,12 +998,38 @@
             }
             
             .control-btn {
-                width: 20px;
-                height: 20px;
-                font-size: 0.7rem;
-                background: rgba(0, 17, 2, 0.9);
-                margin: 0 0.05rem;
-                border-width: 1px;
+                display: none;
+            }
+
+            /* Info Modal - Mobile */
+            .info-modal-content {
+                padding: 1.5rem;
+                max-width: 95%;
+            }
+
+            .info-modal-content h2 {
+                font-size: 1.5rem;
+                margin-bottom: 1rem;
+            }
+
+            .info-section h3 {
+                font-size: 1.2rem;
+            }
+
+            .level-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .level-points,
+            .level-timer {
+                text-align: left;
+                width: 100%;
+            }
+
+            .info-tips li {
+                font-size: 0.9rem;
             }
             
             .timer-container {
@@ -639,6 +1044,42 @@
             
             .timer-progress {
                 border-radius: 3px;
+            }
+
+            /* Circular Timer - Mobile */
+            .circular-timer-container {
+                top: 50px;
+                right: 0.5rem;
+            }
+
+            .info-btn-standalone {
+                width: 35px;
+                height: 35px;
+                font-size: 1.4rem;
+            }
+
+            .circular-timer {
+                width: 80px;
+                height: 80px;
+            }
+
+            .circular-timer-text {
+                font-size: 1.5rem;
+            }
+
+            .timer-label {
+                font-size: 0.65rem;
+            }
+
+            /* Change Topic Button - Mobile */
+            .change-topic-container {
+                top: 50px;
+                left: 0.5rem;
+            }
+
+            .change-topic-btn-separate {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.8rem;
             }
             
             .word-bubble {
@@ -849,7 +1290,7 @@
             padding: 1rem;
             display: grid;
             grid-template-columns: auto 1fr auto auto;
-            gap: 3rem; /* Larger gap between header elements */
+            gap: 2rem;
             align-items: center;
             background: rgba(0, 17, 2, 0.9);
             backdrop-filter: blur(10px);
@@ -866,23 +1307,49 @@
         }
 
         .topic-switcher {
-            grid-column: 2;
-            position: relative;
-            justify-self: center;
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
             display: flex;
             align-items: center;
-            background: rgba(0, 17, 2, 0.8);
+            background: rgba(0, 17, 2, 0.9);
             border: 2px solid var(--accent-color);
             border-radius: 20px;
-            padding: 0.3rem 1rem;
-            box-shadow: 0 0 15px rgba(0, 255, 155, 0.2);
-            max-width: calc(100% - 40px);
-            overflow: hidden;
+            padding: 0.5rem 1.2rem;
+            box-shadow: 0 0 20px rgba(0, 255, 155, 0.3);
+            z-index: 102;
             white-space: nowrap;
-            transform: none;
-            top: auto;
-            left: auto;
-            z-index: 101;
+        }
+
+        /* Change Topic Button - Separate Location */
+        .change-topic-container {
+            position: fixed;
+            top: 80px;
+            left: 1rem;
+            z-index: 102;
+        }
+
+        .change-topic-btn-separate {
+            background: rgba(0, 17, 2, 0.9);
+            border: 2px solid var(--accent-color);
+            color: var(--accent-color);
+            border-radius: 15px;
+            padding: 0.6rem 1.2rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 255, 155, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .change-topic-btn-separate:hover {
+            background: rgba(0, 255, 155, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 255, 155, 0.5);
         }
 
         .level-container {
@@ -1049,6 +1516,18 @@
     </style>
 </head>
 <body>
+    <div class="top-nav-wrapper">
+        <nav class="top-nav">
+            <div class="nav-left">
+                <img src="https://logozonepull.b-cdn.net/Logo-%20Circle%20Cropped.png" alt="Brain Games Logo">
+                <span>Brain Games™</span>
+            </div>
+            <div class="nav-actions">
+                <div class="nav-tag" id="navLicenseStatus">29 days remaining</div>
+                <a href="french_learning_hub.html" class="nav-btn">← Back to Home</a>
+            </div>
+        </nav>
+    </div>
     <div class="grid-background"></div>
     <div class="water"></div>
     
@@ -1092,23 +1571,37 @@
     </div>
 
     <div class="game-container">
-        <div class="game-header">
-            <div class="score-container">
-                <div class="score-icon">🏆</div>
-                <div class="score">Score: <span id="score">0</span></div>
-            </div>
-            <div class="level-container">
-                <div class="level-icon">📈</div>
-                <div class="level">Level: <span id="level">1</span></div>
-            </div>
-        </div>
-
         <div class="topic-switcher" id="topicSwitcher" style="display: none;">
             <div class="current-topic">
                 <span class="topic-icon-small" id="currentTopicIcon">🎮</span>
                 <span id="currentTopicName">Topic</span>
             </div>
-            <button class="change-topic-btn" id="changeTopicBtn">Change Topic</button>
+        </div>
+
+        <div class="game-stats-compact" id="compactStats" style="display:none;">
+            <span>Score: <strong id="score">0</strong></span>
+            <span>Level: <strong id="level">1</strong></span>
+        </div>
+
+        <!-- Separate Change Topic Button -->
+        <div class="change-topic-container" id="changeTopicContainer" style="display: none;">
+            <button class="change-topic-btn-separate" id="changeTopicBtnSeparate">
+                <span>🔄</span>
+                <span>Change Topic</span>
+            </button>
+        </div>
+
+        <!-- Circular Timer -->
+        <div class="circular-timer-container" id="circularTimerContainer" style="display: none;">
+            <button class="info-btn-standalone" id="infoBtnStandalone" title="Game Info & Leveling">i</button>
+            <div class="circular-timer" id="circularTimer">
+                <svg viewBox="0 0 100 100">
+                    <circle class="circular-timer-bg" cx="50" cy="50" r="40"></circle>
+                    <circle class="circular-timer-progress" id="timerCircle" cx="50" cy="50" r="40"></circle>
+                </svg>
+                <div class="circular-timer-text" id="timerText">20</div>
+            </div>
+            <div class="timer-label">Time Left</div>
         </div>
 
         <div class="timer-container">
@@ -1122,13 +1615,58 @@
             <div class="fishing-hook"></div>
         </div>
 
-        <div class="game-controls">
-            <button class="control-btn active" id="soundToggle" title="Toggle Sound Effects">🔊</button>
-            <button class="control-btn active" id="musicToggle" title="Toggle Background Music">🎵</button>
-            <button class="control-btn" id="pauseBtn" title="Pause Game">⏸️</button>
+        <div class="feedback" id="feedback"></div>
+
+        <!-- Info Modal -->
+        <div class="info-modal" id="infoModal" style="display: none;">
+            <div class="info-modal-content">
+                <button class="info-modal-close" id="infoModalClose">&times;</button>
+                <h2>🎮 Game Info & Leveling</h2>
+                
+                <div class="info-section">
+                    <h3>How Leveling Works</h3>
+                    <p class="info-description">Level up automatically by earning points! Catch fish and answer correctly to progress.</p>
+                    
+                    <div class="level-progression">
+                        <div class="level-item">
+                            <span class="level-badge">Level 1</span>
+                            <span class="level-points">Start (0 points)</span>
+                            <span class="level-timer">⏱️ 20 seconds</span>
+                        </div>
+                        <div class="level-item">
+                            <span class="level-badge">Level 2</span>
+                            <span class="level-points">100 points</span>
+                            <span class="level-timer">⏱️ 13 seconds</span>
+                        </div>
+                        <div class="level-item">
+                            <span class="level-badge">Level 3</span>
+                            <span class="level-points">200 points</span>
+                            <span class="level-timer">⏱️ 11 seconds</span>
+                        </div>
+                        <div class="level-item">
+                            <span class="level-badge">Level 4</span>
+                            <span class="level-points">300 points</span>
+                            <span class="level-timer">⏱️ 9 seconds</span>
+                        </div>
+                        <div class="level-item">
+                            <span class="level-badge">Level 5</span>
+                            <span class="level-points">400 points (Max)</span>
+                            <span class="level-timer">⏱️ 5 seconds</span>
+                        </div>
+                    </div>
         </div>
 
-        <div class="feedback" id="feedback"></div>
+                <div class="info-section">
+                    <h3>💡 Tips</h3>
+                    <ul class="info-tips">
+                        <li>Answer faster to earn bonus points!</li>
+                        <li>Timer gets shorter as you level up</li>
+                        <li>New fish appear when timer runs out or all fish are caught</li>
+                        <li>Change topics anytime to practice different vocabulary</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -1171,7 +1709,17 @@
                     { french: "à la prochaine", english: "until next time" },
                     { french: "bonne journée", english: "have a good day" },
                     { french: "je ne comprends pas", english: "I don't understand" },
-                    { french: "je ne parle pas français", english: "I don't speak French" }
+                    { french: "je ne parle pas français", english: "I don't speak French" },
+                    { french: "de rien", english: "you're welcome" },
+                    { french: "bonne nuit", english: "good night" },
+                    { french: "à tout à l'heure", english: "see you later" },
+                    { french: "comment ça va", english: "how are you doing" },
+                    { french: "très bien", english: "very well" },
+                    { french: "pas mal", english: "not bad" },
+                    { french: "ça va", english: "I'm fine" },
+                    { french: "merci beaucoup", english: "thank you very much" },
+                    { french: "je vous en prie", english: "you're welcome" },
+                    { french: "à demain", english: "see you tomorrow" }
                 ]
             },
             {
@@ -1198,7 +1746,17 @@
                     { french: "singe", english: "monkey" },
                     { french: "ours", english: "bear" },
                     { french: "loup", english: "wolf" },
-                    { french: "renard", english: "fox" }
+                    { french: "renard", english: "fox" },
+                    { french: "cerf", english: "deer" },
+                    { french: "écureuil", english: "squirrel" },
+                    { french: "hérisson", english: "hedgehog" },
+                    { french: "hibou", english: "owl" },
+                    { french: "canard", english: "duck" },
+                    { french: "cygne", english: "swan" },
+                    { french: "papillon", english: "butterfly" },
+                    { french: "abeille", english: "bee" },
+                    { french: "fourmi", english: "ant" },
+                    { french: "araignée", english: "spider" }
                 ]
             },
             {
@@ -1225,7 +1783,17 @@
                     { french: "beurre", english: "butter" },
                     { french: "œuf", english: "egg" },
                     { french: "sucre", english: "sugar" },
-                    { french: "sel", english: "salt" }
+                    { french: "sel", english: "salt" },
+                    { french: "viande", english: "meat" },
+                    { french: "légumes", english: "vegetables" },
+                    { french: "tomate", english: "tomato" },
+                    { french: "carotte", english: "carrot" },
+                    { french: "pomme de terre", english: "potato" },
+                    { french: "oignon", english: "onion" },
+                    { french: "chocolat", english: "chocolate" },
+                    { french: "gâteau", english: "cake" },
+                    { french: "glace", english: "ice cream" },
+                    { french: "jus", english: "juice" }
                 ]
             },
             {
@@ -1252,7 +1820,17 @@
                     { french: "bordeaux", english: "burgundy" },
                     { french: "cyan", english: "cyan" },
                     { french: "magenta", english: "magenta" },
-                    { french: "multicolore", english: "multicolored" }
+                    { french: "multicolore", english: "multicolored" },
+                    { french: "cramoisi", english: "crimson" },
+                    { french: "écarlate", english: "scarlet" },
+                    { french: "sarcelle", english: "teal" },
+                    { french: "lavande", english: "lavender" },
+                    { french: "corail", english: "coral" },
+                    { french: "ivoire", english: "ivory" },
+                    { french: "charbon", english: "charcoal" },
+                    { french: "crème", english: "cream" },
+                    { french: "pêche", english: "peach" },
+                    { french: "menthe", english: "mint" }
                 ]
             },
             {
@@ -1279,7 +1857,17 @@
                     { french: "mille", english: "thousand" },
                     { french: "million", english: "million" },
                     { french: "premier", english: "first" },
-                    { french: "deuxième", english: "second" }
+                    { french: "deuxième", english: "second" },
+                    { french: "onze", english: "eleven" },
+                    { french: "douze", english: "twelve" },
+                    { french: "treize", english: "thirteen" },
+                    { french: "quatorze", english: "fourteen" },
+                    { french: "quinze", english: "fifteen" },
+                    { french: "seize", english: "sixteen" },
+                    { french: "dix-sept", english: "seventeen" },
+                    { french: "dix-huit", english: "eighteen" },
+                    { french: "dix-neuf", english: "nineteen" },
+                    { french: "troisième", english: "third" }
                 ]
             },
             {
@@ -1306,7 +1894,17 @@
                     { french: "dent", english: "tooth" },
                     { french: "langue", english: "tongue" },
                     { french: "cou", english: "neck" },
-                    { french: "poitrine", english: "chest" }
+                    { french: "poitrine", english: "chest" },
+                    { french: "front", english: "forehead" },
+                    { french: "sourcil", english: "eyebrow" },
+                    { french: "cil", english: "eyelash" },
+                    { french: "joue", english: "cheek" },
+                    { french: "menton", english: "chin" },
+                    { french: "gorge", english: "throat" },
+                    { french: "poignet", english: "wrist" },
+                    { french: "cheville", english: "ankle" },
+                    { french: "orteil", english: "toe" },
+                    { french: "ongle", english: "nail" }
                 ]
             },
             {
@@ -1333,7 +1931,17 @@
                     { french: "comptable", english: "accountant" },
                     { french: "fermier", english: "farmer" },
                     { french: "photographe", english: "photographer" },
-                    { french: "chauffeur", english: "driver" }
+                    { french: "chauffeur", english: "driver" },
+                    { french: "dentiste", english: "dentist" },
+                    { french: "vétérinaire", english: "veterinarian" },
+                    { french: "plombier", english: "plumber" },
+                    { french: "électricien", english: "electrician" },
+                    { french: "coiffeur", english: "hairdresser" },
+                    { french: "boulanger", english: "baker" },
+                    { french: "mécanicien", english: "mechanic" },
+                    { french: "peintre", english: "painter" },
+                    { french: "secrétaire", english: "secretary" },
+                    { french: "cuisinier", english: "cook" }
                 ]
             },
             {
@@ -1360,7 +1968,17 @@
                     { french: "prendre", english: "to take" },
                     { french: "venir", english: "to come" },
                     { french: "savoir", english: "to know" },
-                    { french: "aimer", english: "to like/love" }
+                    { french: "aimer", english: "to like/love" },
+                    { french: "donner", english: "to give" },
+                    { french: "recevoir", english: "to receive" },
+                    { french: "ouvrir", english: "to open" },
+                    { french: "fermer", english: "to close" },
+                    { french: "chercher", english: "to look for" },
+                    { french: "trouver", english: "to find" },
+                    { french: "acheter", english: "to buy" },
+                    { french: "vendre", english: "to sell" },
+                    { french: "apprendre", english: "to learn" },
+                    { french: "enseigner", english: "to teach" }
                 ]
             },
             {
@@ -1387,7 +2005,17 @@
                     { french: "bateau", english: "boat" },
                     { french: "aéroport", english: "airport" },
                     { french: "gare", english: "train station" },
-                    { french: "ticket", english: "ticket" }
+                    { french: "ticket", english: "ticket" },
+                    { french: "horaire", english: "schedule" },
+                    { french: "départ", english: "departure" },
+                    { french: "arrivée", english: "arrival" },
+                    { french: "bagage", english: "luggage" },
+                    { french: "carte", english: "map" },
+                    { french: "guide", english: "guide" },
+                    { french: "monument", english: "monument" },
+                    { french: "musée", english: "museum" },
+                    { french: "église", english: "church" },
+                    { french: "cathédrale", english: "cathedral" }
                 ]
             },
             {
@@ -1414,7 +2042,17 @@
                     { french: "mardi", english: "Tuesday" },
                     { french: "janvier", english: "January" },
                     { french: "février", english: "February" },
-                    { french: "saison", english: "season" }
+                    { french: "saison", english: "season" },
+                    { french: "mercredi", english: "Wednesday" },
+                    { french: "jeudi", english: "Thursday" },
+                    { french: "vendredi", english: "Friday" },
+                    { french: "samedi", english: "Saturday" },
+                    { french: "dimanche", english: "Sunday" },
+                    { french: "mars", english: "March" },
+                    { french: "avril", english: "April" },
+                    { french: "mai", english: "May" },
+                    { french: "juin", english: "June" },
+                    { french: "juillet", english: "July" }
                 ]
             }
         ];
@@ -1581,8 +2219,14 @@
             updateScore(0);
             updateLevel(1);
             
-            // Show topic switcher
+            // Show topic switcher (current topic display only)
             document.getElementById('topicSwitcher').style.display = 'flex';
+            // Show separate change topic button
+            document.getElementById('changeTopicContainer').style.display = 'block';
+            // Show circular timer
+            document.getElementById('circularTimerContainer').style.display = 'flex';
+            // Show compact stats row
+            document.getElementById('compactStats').style.display = 'flex';
             updateTopicDisplay();
             
             createFish();
@@ -1605,6 +2249,7 @@
             const topic = topics[currentTopic || 0];
             document.getElementById('currentTopicIcon').textContent = topic.icon;
             document.getElementById('currentTopicName').textContent = topic.name;
+            document.getElementById('compactStats').style.display = 'flex';
         }
 
         // Change topic
@@ -1613,7 +2258,10 @@
             const wasPaused = gamePaused;
             if (!gamePaused) {
                 gamePaused = true;
+                if (timer) {
                 clearInterval(timer);
+                    timer = null;
+                }
                 document.querySelectorAll('.fish').forEach(fish => {
                     fish.style.animationPlayState = 'paused';
                 });
@@ -1636,6 +2284,16 @@
                 document.getElementById('topicSelection').style.display = 'none';
                 
                 if (currentTopic !== null) {
+                    // CRITICAL: Clear all existing fish before creating new ones
+                    document.querySelectorAll('.fish').forEach(fish => fish.remove());
+                    activeFish = [];
+                    
+                    // CRITICAL: Ensure timer is cleared before starting fresh
+                    if (timer) {
+                        clearInterval(timer);
+                        timer = null;
+                    }
+                    
                     // Update topic display
                     updateTopicDisplay();
                     
@@ -1656,8 +2314,24 @@
 
         // Start timer
         function startTimer() {
+            // CRITICAL: Always clear any existing timer first to prevent multiple timers running
+            if (timer) {
+                clearInterval(timer);
+                timer = null;
+            }
+            
             const timerProgress = document.getElementById('timerProgress');
+            const timerCircle = document.getElementById('timerCircle');
+            const timerText = document.getElementById('timerText');
             let timeLeft = timerValue;
+            
+            // Initialize circular timer
+            const circumference = 2 * Math.PI * 40; // radius = 40
+            timerCircle.style.strokeDasharray = circumference;
+            timerCircle.style.strokeDashoffset = 0;
+            timerText.textContent = Math.ceil(timeLeft);
+            timerText.className = 'circular-timer-text';
+            timerCircle.className = 'circular-timer-progress';
             
             timerProgress.style.width = '100%';
             
@@ -1666,9 +2340,30 @@
                 const percentage = (timeLeft / timerValue) * 100;
                 timerProgress.style.width = `${percentage}%`;
                 
+                // Update circular timer
+                const offset = circumference - (percentage / 100) * circumference;
+                timerCircle.style.strokeDashoffset = offset;
+                
+                // Update text with countdown
+                const secondsLeft = Math.ceil(timeLeft);
+                timerText.textContent = secondsLeft;
+                
+                // Change color based on time remaining
+                if (timeLeft <= 5) {
+                    timerText.className = 'circular-timer-text danger';
+                    timerCircle.className = 'circular-timer-progress danger';
+                } else if (timeLeft <= 10) {
+                    timerText.className = 'circular-timer-text warning';
+                    timerCircle.className = 'circular-timer-progress warning';
+                } else {
+                    timerText.className = 'circular-timer-text';
+                    timerCircle.className = 'circular-timer-progress';
+                }
+                
                 if (timeLeft <= 0) {
                     clearInterval(timer);
-                    if (gameActive) {
+                    timer = null;
+                    if (gameActive && !gamePaused) {
                         createFish();
                         startTimer();
                     }
@@ -1745,43 +2440,81 @@
         // Setup event listeners
         function setupEventListeners() {
             // Sound toggle
-            document.getElementById('soundToggle').addEventListener('click', () => {
+            const soundToggleBtn = document.getElementById('soundToggle');
+            if (soundToggleBtn) {
+                soundToggleBtn.addEventListener('click', () => {
                 soundEnabled = !soundEnabled;
-                const button = document.getElementById('soundToggle');
-                button.textContent = soundEnabled ? '🔊' : '🔈';
-                button.classList.toggle('active', soundEnabled);
+                    soundToggleBtn.textContent = soundEnabled ? '🔊' : '🔈';
+                    soundToggleBtn.classList.toggle('active', soundEnabled);
             });
+            }
             
             // Music toggle
-            document.getElementById('musicToggle').addEventListener('click', () => {
+            const musicToggleBtn = document.getElementById('musicToggle');
+            if (musicToggleBtn) {
+                musicToggleBtn.addEventListener('click', () => {
                 musicEnabled = !musicEnabled;
-                const button = document.getElementById('musicToggle');
-                button.textContent = musicEnabled ? '🎵' : '🎵';
-                button.classList.toggle('active', musicEnabled);
+                    musicToggleBtn.classList.toggle('active', musicEnabled);
                 toggleMusic();
             });
+            }
             
             // Pause button
-            document.getElementById('pauseBtn').addEventListener('click', () => {
+            const pauseBtn = document.getElementById('pauseBtn');
+            if (pauseBtn) {
+                pauseBtn.addEventListener('click', () => {
                 gamePaused = !gamePaused;
-                const button = document.getElementById('pauseBtn');
-                button.textContent = gamePaused ? '▶️' : '⏸️';
+                    pauseBtn.textContent = gamePaused ? '▶️' : '⏸️';
                 
                 if (gamePaused) {
+                        if (timer) {
                     clearInterval(timer);
+                            timer = null;
+                        }
                     document.querySelectorAll('.fish').forEach(fish => {
                         fish.style.animationPlayState = 'paused';
                     });
                 } else {
+                        if (gameActive) {
                     startTimer();
+                        }
                     document.querySelectorAll('.fish').forEach(fish => {
                         fish.style.animationPlayState = 'running';
                     });
                 }
             });
+            }
             
-            // Topic change button
-            document.getElementById('changeTopicBtn').addEventListener('click', changeTopic);
+            // Topic change button (new separate button)
+            document.getElementById('changeTopicBtnSeparate').addEventListener('click', changeTopic);
+            
+            // Info button (in controls)
+            const infoBtn = document.getElementById('infoBtn');
+            if (infoBtn) {
+                infoBtn.addEventListener('click', () => {
+                    document.getElementById('infoModal').style.display = 'flex';
+                });
+            }
+            
+            // Info button (standalone near timer)
+            const infoBtnStandalone = document.getElementById('infoBtnStandalone');
+            if (infoBtnStandalone) {
+                infoBtnStandalone.addEventListener('click', () => {
+                    document.getElementById('infoModal').style.display = 'flex';
+                });
+            }
+            
+            // Close info modal
+            document.getElementById('infoModalClose').addEventListener('click', () => {
+                document.getElementById('infoModal').style.display = 'none';
+            });
+            
+            // Close info modal when clicking outside
+            document.getElementById('infoModal').addEventListener('click', (e) => {
+                if (e.target.id === 'infoModal') {
+                    document.getElementById('infoModal').style.display = 'none';
+                }
+            });
             
             // Fishing rod animation
             const fishingRod = document.getElementById('fishingRod');
@@ -1799,7 +2532,11 @@
 
         // Catch fish
         function catchFish(fish) {
+            // CRITICAL: Clear timer properly
+            if (timer) {
             clearInterval(timer);
+                timer = null;
+            }
             playSound('catch');
             
             fish.classList.add('caught');
@@ -1852,10 +2589,18 @@
                             
                             // Create new fish if all are caught
                             if (activeFish.length === 0) {
+                                // CRITICAL: Ensure timer is cleared before creating new fish
+                                if (timer) {
+                                    clearInterval(timer);
+                                    timer = null;
+                                }
                                 createFish();
                             }
                             
+                            // Only start timer if game is active and not paused
+                            if (gameActive && !gamePaused) {
                             startTimer();
+                            }
                         }, 500);
                     }, 2000);
                 }
@@ -1882,6 +2627,10 @@
             
             // Adjust timer with level
             timerValue = Math.max(15 - (level - 1) * 2, 5);
+            
+            // Update timer display to show new time
+            const timerText = document.getElementById('timerText');
+            timerText.textContent = timerValue;
             
             // Show level up message
             const levelMessages = [
