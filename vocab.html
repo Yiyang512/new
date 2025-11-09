@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>French Vocabulary Trainer</title>
+    <title>Early Pronunciation Trainer</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
     <style>
         :root {
@@ -31,6 +31,73 @@
             flex-direction: column;
             align-items: center;
             padding: 20px;
+        }
+
+        .top-nav-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1.8rem;
+        }
+
+        .top-nav {
+            width: 100%;
+            max-width: 1100px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2.5rem;
+            background: rgba(0, 32, 0, 0.9);
+            border-radius: 16px;
+            border: 1px solid rgba(57, 255, 20, 0.18);
+            box-shadow: 0 14px 36px rgba(0, 0, 0, 0.45);
+        }
+
+        .top-nav .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .top-nav .nav-left img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+        }
+
+        .top-nav .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.9rem;
+        }
+
+        .nav-tag {
+            padding: 0.5rem 1rem;
+            border-radius: 999px;
+            background: rgba(57, 255, 20, 0.12);
+            border: 1px solid rgba(57, 255, 20, 0.4);
+            font-size: 0.85rem;
+            color: var(--neon-green);
+            font-weight: 600;
+        }
+
+        .nav-btn {
+            padding: 0.6rem 1.6rem;
+            border-radius: 999px;
+            background: var(--neon-green);
+            color: #012b00;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 24px rgba(57, 255, 20, 0.35);
         }
 
         .container {
@@ -284,16 +351,71 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .container {
+                padding: 0 10px;
+            }
+
+            .level-selection {
+                grid-template-columns: 1fr;
+            }
+
+            .word-card {
+                padding: 12px 16px;
+            }
+
+            .actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .top-nav {
+                flex-direction: column;
+                gap: 0.9rem;
+                padding: 1rem 1.5rem;
+            }
+
+            .top-nav .nav-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .nav-btn {
+                width: auto;
+                padding: 0.55rem 1.2rem;
+            }
+        }
     </style>
 </head>
 <body>
+    <div class="top-nav-wrapper">
+        <nav class="top-nav">
+            <div class="nav-left">
+                <img src="https://logozonepull.b-cdn.net/Logo-%20Circle%20Cropped.png" alt="Brain Games Logo">
+                <span>Brain Games™</span>
+            </div>
+            <div class="nav-actions">
+                <div class="nav-tag" id="navLicenseStatus">29 days remaining</div>
+                <a href="french_learning_hub.html" class="nav-btn">← Back to Home</a>
+            </div>
+        </nav>
+    </div>
     <div class="container">
-        <h1 style="margin-top: 2.5rem;">French Vocabulary Trainer</h1>
+        <h1 style="margin-top: 2.5rem;">Early Pronunciation Trainer</h1>
         <p style="text-align: center; color: var(--neon-green); margin-bottom: 2rem;">
             Master essential French vocabulary through interactive exercises!
         </p>
         <div id="pronunciation-notice" style="text-align: center; background: rgba(57, 255, 20, 0.1); border: 1px solid var(--neon-green); padding: 10px; border-radius: 8px; margin-bottom: 20px;">
-            <p style="margin: 0;">💡 <strong>Note:</strong> The pronunciation feature works best in Chrome and Edge browsers. If you don't hear audio, try a different browser.</p>
+            <p style="margin: 0;">💡 <strong>Note:</strong> The pronunciation feature works best in Chrome and Edge browsers. If you don't hear audio right away, click any level card (Beginner / Intermediate / Advanced) once, then press the audio button again. Browsers often need that extra click before they allow sound.</p>
         </div>
         <div id="quiz-content">
             <!-- Content will be dynamically inserted here -->
@@ -974,6 +1096,104 @@
         }
 
         // Use direct MP3 files with error handling
+        function playGoogleTTS(word) {
+            const googleTTS = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(word)}&tl=fr&client=tw-ob`;
+            const audio = new Audio(googleTTS);
+
+            const statusDiv = document.createElement('div');
+            statusDiv.textContent = 'Loading pronunciation...';
+            statusDiv.style.position = 'fixed';
+            statusDiv.style.bottom = '20px';
+            statusDiv.style.left = '50%';
+            statusDiv.style.transform = 'translateX(-50%)';
+            statusDiv.style.backgroundColor = 'rgba(57, 255, 20, 0.2)';
+            statusDiv.style.border = '1px solid var(--neon-green)';
+            statusDiv.style.borderRadius = '5px';
+            statusDiv.style.padding = '10px 20px';
+            statusDiv.style.zIndex = '1000';
+            document.body.appendChild(statusDiv);
+
+            audio.oncanplaythrough = () => {
+                statusDiv.textContent = 'Playing pronunciation...';
+            };
+
+            audio.onended = () => {
+                if (document.body.contains(statusDiv)) {
+                    document.body.removeChild(statusDiv);
+                }
+            };
+
+            audio.onerror = () => {
+                if (document.body.contains(statusDiv)) {
+                    document.body.removeChild(statusDiv);
+                }
+                playSpeechSynthesisFallback(word);
+            };
+
+            audio.play().catch(error => {
+                console.error("Google TTS error:", error);
+                if (document.body.contains(statusDiv)) {
+                    document.body.removeChild(statusDiv);
+                }
+                playSpeechSynthesisFallback(word);
+            });
+        }
+
+        function playSpeechSynthesisFallback(word) {
+            const statusDiv = document.createElement('div');
+            statusDiv.textContent = 'Using speech synthesis...';
+            statusDiv.style.position = 'fixed';
+            statusDiv.style.bottom = '20px';
+            statusDiv.style.left = '50%';
+            statusDiv.style.transform = 'translateX(-50%)';
+            statusDiv.style.backgroundColor = 'rgba(57, 255, 20, 0.2)';
+            statusDiv.style.border = '1px solid var(--neon-green)';
+            statusDiv.style.borderRadius = '5px';
+            statusDiv.style.padding = '10px 20px';
+            statusDiv.style.zIndex = '1000';
+            document.body.appendChild(statusDiv);
+
+            try {
+                if (window.speechSynthesis) {
+                    const utterance = new SpeechSynthesisUtterance(word);
+                    utterance.lang = 'fr-FR';
+
+                    const voices = window.speechSynthesis.getVoices();
+                    const frenchVoice = voices.find(voice => voice.lang.includes('fr'));
+                    if (frenchVoice) {
+                        utterance.voice = frenchVoice;
+                    }
+
+                    utterance.onend = () => {
+                        if (document.body.contains(statusDiv)) {
+                            document.body.removeChild(statusDiv);
+                        }
+                    };
+
+                    utterance.onerror = () => {
+                        statusDiv.textContent = 'Pronunciation failed. Try with Chrome or Edge.';
+                        setTimeout(() => {
+                            if (document.body.contains(statusDiv)) {
+                                document.body.removeChild(statusDiv);
+                            }
+                        }, 3000);
+                    };
+
+                    window.speechSynthesis.speak(utterance);
+                } else {
+                    throw new Error("Speech synthesis not available");
+                }
+            } catch (e) {
+                console.error("Speech synthesis error:", e);
+                statusDiv.textContent = 'Pronunciation not available. Check browser settings.';
+                setTimeout(() => {
+                    if (document.body.contains(statusDiv)) {
+                        document.body.removeChild(statusDiv);
+                    }
+                }, 3000);
+            }
+        }
+
         function playWordAudio(word) {
             // Dictionary of words with pronunciation URLs
             const pronunciationUrls = {
@@ -998,6 +1218,7 @@
                 
                 // Create and play audio
                 const audio = new Audio(url);
+                let fallbackTriggered = false;
                 
                 // Add visual feedback while loading
                 const statusDiv = document.createElement('div');
@@ -1023,32 +1244,26 @@
                 };
                 
                 audio.onerror = (e) => {
-                    statusDiv.textContent = 'Error playing audio. Try with headphones or another device.';
                     console.error("Audio error:", e);
-                    setTimeout(() => {
-                        document.body.removeChild(statusDiv);
-                    }, 3000);
+                    if (!fallbackTriggered) {
+                        fallbackTriggered = true;
+                        if (document.body.contains(statusDiv)) {
+                            document.body.removeChild(statusDiv);
+                        }
+                        playGoogleTTS(word);
+                    }
                 };
                 
                 // Actually play the audio
                 audio.play().catch(error => {
                     console.error("Audio playback error:", error);
-                    statusDiv.textContent = 'Audio blocked. Click anywhere on the page first.';
-                    
-                    // Add click handler to try again
-                    const clickHandler = () => {
-                        audio.play().catch(e => console.error("Retry failed:", e));
-                        document.removeEventListener('click', clickHandler);
-                        document.body.removeChild(statusDiv);
-                    };
-                    
-                    document.addEventListener('click', clickHandler);
-                    
-                    setTimeout(() => {
+                    if (!fallbackTriggered) {
+                        fallbackTriggered = true;
                         if (document.body.contains(statusDiv)) {
                             document.body.removeChild(statusDiv);
                         }
-                    }, 5000);
+                        playGoogleTTS(word);
+                    }
                 });
                 
                 return true;
@@ -1063,109 +1278,7 @@
             
             // First try playing from our collection of pre-recorded audio files
             if (!playWordAudio(word)) {
-                // Then try the Google Translate pronunciation API as a fallback
-                const googleTTS = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(word)}&tl=fr&client=tw-ob`;
-                
-                const audio = new Audio(googleTTS);
-                
-                // Show status
-                const statusDiv = document.createElement('div');
-                statusDiv.textContent = 'Loading pronunciation...';
-                statusDiv.style.position = 'fixed';
-                statusDiv.style.bottom = '20px';
-                statusDiv.style.left = '50%';
-                statusDiv.style.transform = 'translateX(-50%)';
-                statusDiv.style.backgroundColor = 'rgba(57, 255, 20, 0.2)';
-                statusDiv.style.border = '1px solid var(--neon-green)';
-                statusDiv.style.borderRadius = '5px';
-                statusDiv.style.padding = '10px 20px';
-                statusDiv.style.zIndex = '1000';
-                document.body.appendChild(statusDiv);
-                
-                // Set up event listeners
-                audio.oncanplaythrough = () => {
-                    statusDiv.textContent = 'Playing pronunciation...';
-                };
-                
-                audio.onended = () => {
-                    document.body.removeChild(statusDiv);
-                };
-                
-                audio.onerror = () => {
-                    // Final fallback: try the built-in speech synthesis
-                    statusDiv.textContent = 'Using speech synthesis...';
-                    
-                    try {
-                        if (window.speechSynthesis) {
-                            const utterance = new SpeechSynthesisUtterance(word);
-                            utterance.lang = 'fr-FR';
-                            
-                            // Make sure we have a French voice if possible
-                            const voices = window.speechSynthesis.getVoices();
-                            const frenchVoice = voices.find(voice => voice.lang.includes('fr'));
-                            if (frenchVoice) {
-                                utterance.voice = frenchVoice;
-                            }
-                            
-                            utterance.onend = () => {
-                                document.body.removeChild(statusDiv);
-                            };
-                            
-                            utterance.onerror = () => {
-                                statusDiv.textContent = 'Pronunciation failed. Try with headphones or check browser settings.';
-                                setTimeout(() => {
-                                    document.body.removeChild(statusDiv);
-                                }, 3000);
-                            };
-                            
-                            window.speechSynthesis.speak(utterance);
-                        } else {
-                            throw new Error("Speech synthesis not available");
-                        }
-                    } catch (e) {
-                        console.error("Speech synthesis error:", e);
-                        statusDiv.textContent = 'Pronunciation not available. Try with Chrome or Edge.';
-                        setTimeout(() => {
-                            document.body.removeChild(statusDiv);
-                        }, 3000);
-                    }
-                };
-                
-                // Try to play the audio
-                audio.play().catch(error => {
-                    console.error("Google TTS error:", error);
-                    
-                    // Try speech synthesis as last resort
-                    statusDiv.textContent = 'Trying speech synthesis...';
-                    
-                    try {
-                        if (window.speechSynthesis) {
-                            const utterance = new SpeechSynthesisUtterance(word);
-                            utterance.lang = 'fr-FR';
-                            
-                            utterance.onend = () => {
-                                document.body.removeChild(statusDiv);
-                            };
-                            
-                            utterance.onerror = () => {
-                                statusDiv.textContent = 'Pronunciation failed. Check browser audio settings.';
-                                setTimeout(() => {
-                                    document.body.removeChild(statusDiv);
-                                }, 3000);
-                            };
-                            
-                            window.speechSynthesis.speak(utterance);
-                        } else {
-                            throw new Error("Speech synthesis not available");
-                        }
-                    } catch (e) {
-                        console.error("Final fallback error:", e);
-                        statusDiv.textContent = 'Pronunciation not available in this browser.';
-                        setTimeout(() => {
-                            document.body.removeChild(statusDiv);
-                        }, 3000);
-                    }
-                });
+                playGoogleTTS(word);
             }
         }
 
