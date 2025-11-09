@@ -88,6 +88,66 @@
             margin: 0 auto;
         }
 
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2.5rem;
+            margin: 0 auto 1.5rem;
+            max-width: 900px;
+            width: 100%;
+            background: linear-gradient(135deg, rgba(0, 255, 153, 0.28), rgba(0, 120, 72, 0.22));
+            border-radius: 14px;
+            border: 1px solid rgba(0, 255, 153, 0.45);
+            box-shadow: 0 10px 28px rgba(0, 140, 90, 0.2);
+        }
+
+        .top-nav .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--text-color);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .top-nav .nav-left img {
+            width: 34px;
+            height: 34px;
+        }
+
+        .top-nav .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .nav-tag {
+            padding: 0.45rem 0.9rem;
+            border-radius: 999px;
+            background: rgba(0, 255, 153, 0.12);
+            border: 1px solid rgba(0, 255, 153, 0.4);
+            font-size: 0.85rem;
+            color: var(--neon-green);
+            font-weight: 600;
+        }
+
+        .nav-btn {
+            padding: 0.55rem 1.4rem;
+            border-radius: 999px;
+            background: var(--neon-green);
+            color: #0b3020;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            text-decoration: none;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+        }
+
         h1 {
             color: var(--neon-green);
             text-align: center;
@@ -394,6 +454,19 @@
             }
         }
 
+        @media (max-width: 768px) {
+            .top-nav {
+                flex-direction: column;
+                gap: 0.9rem;
+                padding: 1rem 1.25rem;
+            }
+
+            .top-nav .nav-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+
         @media (max-width: 600px) {
             .word-bank {
                 gap: 8px;
@@ -411,8 +484,18 @@
     </style>
 </head>
 <body>
+    <nav class="top-nav">
+        <div class="nav-left">
+            <img src="https://logozonepull.b-cdn.net/Logo-%20Circle%20Cropped.png" alt="Brain Games Logo">
+            <span>Brain Games™</span>
+        </div>
+        <div class="nav-actions">
+            <div class="nav-tag" id="navLicenseStatus">29 days remaining</div>
+            <a href="french_learning_hub.html" class="nav-btn">← Back to Home</a>
+        </div>
+    </nav>
     <div class="container">
-        <h1>French Grammar Adventure</h1>
+        <h1>French Sentence Builder</h1>
         <p style="text-align: center; color: var(--neon-purple); margin-bottom: 2rem;">
             Build correct French sentences and master grammar through fun exercises! 🎮
         </p>
@@ -462,6 +545,77 @@
                             title: "Articles in French",
                             content: "'Le' is used for masculine nouns (le chat, le chien, le livre) while 'la' is used for feminine nouns (la maison)."
                         }
+                    },
+                    {
+                        instruction: "Build a sentence with subject + verb avoir + article + noun",
+                        words: ["Nous", "avons", "Vous", "avez", "un", "une", "chat", "maison", "idee"],
+                        correctSentences: [
+                            "Nous avons un chat",
+                            "Nous avons une maison",
+                            "Nous avons une idee",
+                            "Vous avez un chat",
+                            "Vous avez une maison",
+                            "Vous avez une idee"
+                        ],
+                        hint: "Choose 'un' for masculine nouns (chat) and 'une' for feminine nouns (maison, idee)",
+                        grammarTip: {
+                            title: "Using 'avoir'",
+                            content: "'Nous' uses 'avons' and 'Vous' uses 'avez'. Remember that 'idee' stays feminine even without its accent."
+                        }
+                    },
+                    {
+                        instruction: "Create a sentence with subject + verb aimer + infinitive",
+                        words: ["Il", "Elle", "Nous", "aime", "aimons", "regarder", "lire", "voyager"],
+                        correctSentences: [
+                            "Il aime regarder",
+                            "Il aime lire",
+                            "Il aime voyager",
+                            "Elle aime regarder",
+                            "Elle aime lire",
+                            "Elle aime voyager",
+                            "Nous aimons regarder",
+                            "Nous aimons lire",
+                            "Nous aimons voyager"
+                        ],
+                        hint: "Pair 'aime' with 'Il/Elle' and 'aimons' with 'Nous'",
+                        grammarTip: {
+                            title: "Aimer + infinitive",
+                            content: "'Aime' agrees with singular subjects like 'Il' or 'Elle'. Use 'aimons' with 'Nous' to express shared interests."
+                        }
+                    },
+                    {
+                        instruction: "Build a sentence with subject + être + profession",
+                        words: ["Il", "Elle", "est", "etudiant", "etudiante", "professeur", "artiste"],
+                        correctSentences: [
+                            "Il est etudiant",
+                            "Il est professeur",
+                            "Il est artiste",
+                            "Elle est etudiante",
+                            "Elle est professeur",
+                            "Elle est artiste"
+                        ],
+                        hint: "Professions normally do not use an article in French",
+                        grammarTip: {
+                            title: "Talking about professions",
+                            content: "With 'être', simply state the profession: 'Il est professeur'. Add endings like -e to match feminine forms (etudiante)."
+                        }
+                    },
+                    {
+                        instruction: "Form a sentence with subject + aller + location",
+                        words: ["Nous", "allons", "Ils", "vont", "au", "parc", "cinema", "marche"],
+                        correctSentences: [
+                            "Nous allons au parc",
+                            "Nous allons au cinema",
+                            "Nous allons au marche",
+                            "Ils vont au parc",
+                            "Ils vont au cinema",
+                            "Ils vont au marche"
+                        ],
+                        hint: "Use 'au' (à + le) before masculine places like parc or cinema",
+                        grammarTip: {
+                            title: "Aller + lieux",
+                            content: "'Nous allons' pairs with 'au' for masculine places. 'Ils vont' works the same way for a group."
+                        }
                     }
                 ]
             },
@@ -497,6 +651,64 @@
                             title: "Negative Sentences",
                             content: "In French, negation uses two parts: 'ne' before the verb and 'pas' after it. Example: Je ne mange pas (I don't eat)."
                         }
+                    },
+                    {
+                        instruction: "Build a sentence with subject + vouloir + infinitive",
+                        words: ["Je", "Nous", "veux", "voulons", "apprendre", "etudier", "le", "francais", "la", "langue"],
+                        correctSentences: [
+                            "Je veux apprendre la langue",
+                            "Je veux etudier le francais",
+                            "Nous voulons apprendre la langue",
+                            "Nous voulons etudier le francais"
+                        ],
+                        hint: "Use 'veux' with 'Je' and 'voulons' with 'Nous'",
+                        grammarTip: {
+                            title: "Vouloir + infinitive",
+                            content: "Express wishes with 'vouloir' followed by an infinitive: 'Je veux apprendre', 'Nous voulons etudier'."
+                        }
+                    },
+                    {
+                        instruction: "Create a sentence with subject + devoir + faire + noun",
+                        words: ["Je", "Tu", "dois", "faire", "les", "devoirs", "taches"],
+                        correctSentences: [
+                            "Je dois faire les devoirs",
+                            "Je dois faire les taches",
+                            "Tu dois faire les devoirs",
+                            "Tu dois faire les taches"
+                        ],
+                        hint: "Both 'Je' and 'Tu' use the form 'dois'",
+                        grammarTip: {
+                            title: "Obligation with 'devoir'",
+                            content: "'Devoir' expresses necessity. Add an infinitive like 'faire' and the noun you must complete."
+                        }
+                    },
+                    {
+                        instruction: "Build a sentence with an indirect object pronoun",
+                        words: ["Je", "Nous", "lui", "donne", "donnons", "un", "cadeau", "conseil"],
+                        correctSentences: [
+                            "Je lui donne un cadeau",
+                            "Je lui donne un conseil",
+                            "Nous lui donnons un cadeau",
+                            "Nous lui donnons un conseil"
+                        ],
+                        hint: "Place 'lui' directly before the verb",
+                        grammarTip: {
+                            title: "Pronoun order",
+                            content: "Indirect object pronouns (lui) come before the conjugated verb: 'Je lui donne'."
+                        }
+                    },
+                    {
+                        instruction: "Form a question with 'est-ce que'",
+                        words: ["Est-ce", "que", "tu", "aimes", "le", "fromage", "film"],
+                        correctSentences: [
+                            "Est-ce que tu aimes le fromage",
+                            "Est-ce que tu aimes le film"
+                        ],
+                        hint: "Start with 'Est-ce que' then add subject + verb + object",
+                        grammarTip: {
+                            title: "Asking questions politely",
+                            content: "'Est-ce que' can introduce yes/no questions: 'Est-ce que tu aimes le fromage ?'"
+                        }
                     }
                 ]
             },
@@ -530,6 +742,65 @@
                         grammarTip: {
                             title: "Future Proche",
                             content: "The near future is formed with 'aller' + infinitive. Example: 'Je vais manger' (I am going to eat)."
+                        }
+                    },
+                    {
+                        instruction: "Form a sentence in the imparfait to describe a past state",
+                        words: ["Nous", "etions", "Ils", "etaient", "heureux", "fatigues", "ensemble"],
+                        correctSentences: [
+                            "Nous etions heureux",
+                            "Nous etions fatigues",
+                            "Nous etions ensemble",
+                            "Ils etaient heureux",
+                            "Ils etaient fatigues",
+                            "Ils etaient ensemble"
+                        ],
+                        hint: "Use 'etions' with 'Nous' and 'etaient' with 'Ils'",
+                        grammarTip: {
+                            title: "Imparfait of 'etre'",
+                            content: "The imparfait describes ongoing states in the past: 'Nous etions heureux', 'Ils etaient fatigues'."
+                        }
+                    },
+                    {
+                        instruction: "Build a sentence in the conditional present to express a wish",
+                        words: ["Je", "Nous", "aimerais", "voudrions", "visiter", "rester", "en", "la", "France", "plus", "longtemps"],
+                        correctSentences: [
+                            "Je aimerais visiter la France",
+                            "Je aimerais rester en France",
+                            "Je aimerais rester plus longtemps",
+                            "Nous voudrions visiter la France",
+                            "Nous voudrions rester en France",
+                            "Nous voudrions rester plus longtemps"
+                        ],
+                        hint: "Use 'aimerais' with 'Je' and 'voudrions' with 'Nous'",
+                        grammarTip: {
+                            title: "Conditional present",
+                            content: "Use the conditional to express polite wishes or dreams: 'Je aimerais...', 'Nous voudrions...'"
+                        }
+                    },
+                    {
+                        instruction: "Create a sentence using 'avant de' + infinitive",
+                        words: ["Avant", "de", "partir", "je", "veux", "tout", "preparer"],
+                        correctSentences: [
+                            "Avant de partir je veux tout preparer"
+                        ],
+                        hint: "Place the infinitive immediately after 'avant de'",
+                        grammarTip: {
+                            title: "Linking actions",
+                            content: "'Avant de' introduces an action that happens first: 'Avant de partir je veux tout preparer'."
+                        }
+                    },
+                    {
+                        instruction: "Build a sentence with 'depuis' to show duration",
+                        words: ["Nous", "habitons", "depuis", "trois", "ans", "ici", "a", "Paris"],
+                        correctSentences: [
+                            "Nous habitons ici depuis trois ans",
+                            "Nous habitons a Paris depuis trois ans"
+                        ],
+                        hint: "Use 'depuis' before the amount of time",
+                        grammarTip: {
+                            title: "Expressing duration",
+                            content: "'Depuis' + time expression shows something that began in the past and continues now."
                         }
                     }
                 ]
@@ -704,21 +975,6 @@
                     `).join('')}
                 </div>
 
-                <div class="achievements-showcase">
-                    <h2>🏆 Achievements</h2>
-                    <div class="achievements-grid">
-                        ${Object.values(achievements).map(achievement => `
-                            <div class="achievement-card ${gameStats.achievements.includes(achievement.id) ? 'unlocked' : 'locked'}">
-                                <div class="achievement-icon">${achievement.icon}</div>
-                                <div class="achievement-info">
-                                    <h3>${achievement.title}</h3>
-                                    <p>${achievement.description}</p>
-                                    <span class="achievement-reward">⭐ ${achievement.reward}</span>
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
             `;
             
             document.getElementById('game-content').innerHTML = content;
@@ -804,13 +1060,13 @@
 
                     <div class="sentence-builder" id="sentence-builder">
                         ${selectedWords.map(word => `
-                            <div class="word-piece selected" onclick="removeWord('${word}')">${word}</div>
+                            <div class="word-piece selected" onclick='removeWord(${JSON.stringify(word)})'>${word}</div>
                         `).join('')}
                     </div>
 
                     <div class="word-bank">
                         ${exercise.words.map(word => `
-                            <div class="word-piece" onclick="addWord('${word}')">${word}</div>
+                            <div class="word-piece" onclick='addWord(${JSON.stringify(word)})'>${word}</div>
                         `).join('')}
                     </div>
 
@@ -952,7 +1208,37 @@
         }
 
         // Initialize game
-        window.addEventListener('DOMContentLoaded', showLevelSelection);
+        function updateNavLicenseStatus() {
+            const statusElement = document.getElementById('navLicenseStatus');
+            if (!statusElement) return;
+
+            try {
+                const stored = localStorage.getItem('validatedLicense');
+                if (!stored) return;
+
+                const licenseData = JSON.parse(stored);
+                if (!licenseData || !licenseData.expiryDate) return;
+
+                const expiry = new Date(licenseData.expiryDate);
+                const today = new Date();
+                const diff = Math.ceil((expiry - today) / (1000 * 60 * 60 * 24));
+
+                if (diff < 0) {
+                    statusElement.textContent = 'Expired';
+                } else if (diff === 1) {
+                    statusElement.textContent = '1 day remaining';
+                } else {
+                    statusElement.textContent = `${diff} days remaining`;
+                }
+            } catch (error) {
+                console.warn('Could not update license status', error);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            updateNavLicenseStatus();
+            showLevelSelection();
+        });
     </script>
 </body>
 </html>
