@@ -885,13 +885,13 @@
                     <button class="btn btn-primary" style="margin: 0 0 1rem 0;" onclick="showLevelSelection()">← Back to Levels</button>
                     
                     <div class="game-ui">
-                        <div class="score-display">Score: ${gameState.score}</div>
-                        <div class="score-display">Objectives: ${gameState.completedObjectives}/${levelData.objectives.length}</div>
-                        <div class="score-display">Time: ${gameState.timeLeft}s</div>
+                        <div class="score-display" id="scoreDisplay">Score: ${gameState.score}</div>
+                        <div class="score-display" id="objectiveDisplay">Objectives: ${gameState.completedObjectives}/${levelData.objectives.length}</div>
+                        <div class="score-display" id="timeDisplay">Time: ${gameState.timeLeft}s</div>
                     </div>
                     
                     <div class="progress-bar">
-                        <div class="progress" style="width: ${progressPercent}%"></div>
+                        <div class="progress" id="objectivesProgress" style="width: ${progressPercent}%"></div>
                     </div>
 
                     <div class="game-area">
@@ -924,23 +924,27 @@
                                 `).join('')}
                             </div>
 
-                            <div class="suggestions">
+                            <div class="suggestions" id="suggestionsContainer">
                                 <h4 style="color: var(--neon-green); margin-bottom: 0.5rem;">Suggestions:</h4>
-                                ${levelData.objectives[gameState.currentObjective] ? `
-                                    <div class="suggestion-item" onclick="useSuggestion('${levelData.objectives[gameState.currentObjective].command}')">
-                                        ${levelData.objectives[gameState.currentObjective].command}
-                                    </div>
-                                ` : ''}
-                                ${levelData.vocabulary.slice(0, 3).map(vocab => `
-                                    <div class="suggestion-item" onclick="useSuggestion('${vocab.french}')">
-                                        ${vocab.french} (${vocab.english})
-                                    </div>
-                                `).join('')}
+                                <div id="primarySuggestion">
+                                    ${levelData.objectives[gameState.currentObjective] ? `
+                                        <div class="suggestion-item" onclick="useSuggestion('${levelData.objectives[gameState.currentObjective].command}')">
+                                            ${levelData.objectives[gameState.currentObjective].command}
+                                        </div>
+                                    ` : '<div class="suggestion-item">All objectives completed!</div>'}
+                                </div>
+                                <div id="vocabSuggestions">
+                                    ${levelData.vocabulary.slice(0, 3).map(vocab => `
+                                        <div class="suggestion-item" onclick="useSuggestion('${vocab.french}')">
+                                            ${vocab.french} (${vocab.english})
+                                        </div>
+                                    `).join('')}
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="instructions">
+                    <div class="instructions" id="currentObjectivePanel">
                         <h3>🎯 Current Objective</h3>
                         <p>${levelData.objectives[gameState.currentObjective] ? levelData.objectives[gameState.currentObjective].description : 'All objectives completed!'}</p>
                         ${levelData.objectives[gameState.currentObjective] ? `
@@ -1087,6 +1091,55 @@
                 character.style.left = gameState.character.x + 'px';
             }
 
+            const levelData = gameData[currentLevel];
+            if (levelData) {
+                const scoreDisplay = document.getElementById('scoreDisplay');
+                if (scoreDisplay) {
+                    scoreDisplay.textContent = `Score: ${gameState.score}`;
+                }
+
+                const objectiveDisplay = document.getElementById('objectiveDisplay');
+                if (objectiveDisplay) {
+                    objectiveDisplay.textContent = `Objectives: ${gameState.completedObjectives}/${levelData.objectives.length}`;
+                }
+
+                const progressElement = document.getElementById('objectivesProgress');
+                if (progressElement) {
+                    const progressPercent = (gameState.completedObjectives / levelData.objectives.length) * 100;
+                    progressElement.style.width = `${progressPercent}%`;
+                }
+
+                const currentObjective = levelData.objectives[gameState.currentObjective];
+                const primarySuggestion = document.getElementById('primarySuggestion');
+                if (primarySuggestion) {
+                    primarySuggestion.innerHTML = currentObjective
+                        ? `<div class="suggestion-item" onclick="useSuggestion('${currentObjective.command}')">${currentObjective.command}</div>`
+                        : `<div class="suggestion-item">All objectives completed!</div>`;
+                }
+
+                const vocabSuggestions = document.getElementById('vocabSuggestions');
+                if (vocabSuggestions) {
+                    vocabSuggestions.innerHTML = levelData.vocabulary.slice(0, 3).map(vocab => `
+                        <div class="suggestion-item" onclick="useSuggestion('${vocab.french}')">
+                            ${vocab.french} (${vocab.english})
+                        </div>
+                    `).join('');
+                }
+
+                const objectivePanel = document.getElementById('currentObjectivePanel');
+                if (objectivePanel) {
+                    objectivePanel.innerHTML = `
+                        <h3>🎯 Current Objective</h3>
+                        <p>${currentObjective ? currentObjective.description : 'All objectives completed!'}</p>
+                        ${currentObjective ? `
+                            <p style="color: var(--neon-purple); font-style: italic;">
+                                💡 Hint: ${currentObjective.hint}
+                            </p>
+                        ` : ''}
+                    `;
+                }
+            }
+
             // Update objects
             gameState.objects.forEach(obj => {
                 const objElement = document.getElementById(obj.id);
@@ -1108,9 +1161,9 @@
 
         // Update timer display
         function updateTimerDisplay() {
-            const timerElements = document.querySelectorAll('.score-display');
-            if (timerElements.length >= 3) {
-                timerElements[2].textContent = `Time: ${gameState.timeLeft}s`;
+            const timeDisplay = document.getElementById('timeDisplay');
+            if (timeDisplay) {
+                timeDisplay.textContent = `Time: ${gameState.timeLeft}s`;
             }
         }
 
