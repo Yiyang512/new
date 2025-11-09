@@ -34,6 +34,66 @@
             border: 1px solid rgba(57, 255, 20, 0.2);
         }
 
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2.5rem;
+            margin: 0 auto 1.5rem;
+            max-width: 900px;
+            width: 100%;
+            background: linear-gradient(135deg, rgba(0, 255, 153, 0.28), rgba(0, 120, 72, 0.22));
+            border-radius: 14px;
+            border: 1px solid rgba(0, 255, 153, 0.45);
+            box-shadow: 0 10px 28px rgba(0, 140, 90, 0.2);
+        }
+
+        .top-nav .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--text-color);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .top-nav .nav-left img {
+            width: 34px;
+            height: 34px;
+        }
+
+        .top-nav .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .nav-tag {
+            padding: 0.45rem 0.9rem;
+            border-radius: 999px;
+            background: rgba(0, 255, 153, 0.12);
+            border: 1px solid rgba(0, 255, 153, 0.4);
+            font-size: 0.85rem;
+            color: var(--neon-green);
+            font-weight: 600;
+        }
+
+        .nav-btn {
+            padding: 0.55rem 1.4rem;
+            border-radius: 999px;
+            background: var(--neon-green);
+            color: #0b3020;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            text-decoration: none;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+        }
+
         h1 {
             color: var(--neon-green);
             font-size: 2.5rem;
@@ -208,6 +268,16 @@
     </style>
 </head>
 <body>
+    <nav class="top-nav">
+        <div class="nav-left">
+            <img src="https://logozonepull.b-cdn.net/Logo-%20Circle%20Cropped.png" alt="Brain Games Logo">
+            <span>Brain Games™</span>
+        </div>
+        <div class="nav-actions">
+            <div class="nav-tag" id="navLicenseStatus">29 days remaining</div>
+            <a href="french_learning_hub.html" class="nav-btn">← Back to Home</a>
+        </div>
+    </nav>
     <div class="container">
         <h1>French Verb Conjugation Trainer</h1>
         <p style="text-align: center; color: var(--neon-green); margin-bottom: 2rem;">
@@ -224,140 +294,140 @@
                 {
                     verb: "Parler (to speak)",
                     tense: "present tense",
-                    prompt: "Conjugate for 'je' (I)",
+                    prompt: "'je' (I)",
                     answer: "je parle",
                     explanation: "For -er verbs in present tense, 'je' form ends in 'e'"
                 },
                 {
                     verb: "Être (to be)",
                     tense: "present tense",
-                    prompt: "Conjugate for 'nous' (we)",
+                    prompt: "'nous' (we)",
                     answer: "nous sommes",
                     explanation: "Être is irregular, 'nous' form is 'sommes'"
                 },
                 {
                     verb: "Avoir (to have)",
                     tense: "present tense",
-                    prompt: "Conjugate for 'tu' (you)",
+                    prompt: "'tu' (you)",
                     answer: "tu as",
                     explanation: "Avoir is irregular, 'tu' form is 'as'"
                 },
                 {
                     verb: "Finir (to finish)",
                     tense: "present tense",
-                    prompt: "Conjugate for 'ils/elles' (they)",
+                    prompt: "'ils/elles' (they)",
                     answer: "ils finissent",
                     explanation: "For -ir verbs, 'ils/elles' form adds 'issent'"
                 },
                 {
                     verb: "Aller (to go)",
                     tense: "present tense",
-                    prompt: "Conjugate for 'vous' (you formal/plural)",
+                    prompt: "'vous' (you formal/plural)",
                     answer: "vous allez",
                     explanation: "Aller is irregular, 'vous' form is 'allez'"
                 },
                 {
                     verb: "Manger (to eat)",
                     tense: "present tense",
-                    prompt: "Conjugate for 'nous' (we)",
+                    prompt: "'nous' (we)",
                     answer: "nous mangeons",
                     explanation: "For verbs ending in -ger, add 'e' before 'ons'"
                 },
                 {
                     verb: "Faire (to do/make)",
                     tense: "present tense",
-                    prompt: "Conjugate for 'il/elle' (he/she)",
+                    prompt: "'il/elle' (he/she)",
                     answer: "il fait",
                     explanation: "Faire is irregular, 'il/elle' form is 'fait'"
                 },
                 {
                     verb: "Venir (to come)",
                     tense: "present tense",
-                    prompt: "Conjugate for 'je' (I)",
+                    prompt: "'je' (I)",
                     answer: "je viens",
                     explanation: "Venir is irregular, 'je' form is 'viens'"
                 },
                 {
                     verb: "Prendre (to take)",
                     tense: "present tense",
-                    prompt: "Conjugate for 'vous' (you formal/plural)",
+                    prompt: "'vous' (you formal/plural)",
                     answer: "vous prenez",
                     explanation: "Prendre drops 'd' in plural forms"
                 },
                 {
                     verb: "Voir (to see)",
                     tense: "present tense",
-                    prompt: "Conjugate for 'tu' (you)",
+                    prompt: "'tu' (you)",
                     answer: "tu vois",
                     explanation: "Voir is irregular, 'tu' form is 'vois'"
                 },
                 {
                     verb: "Dormir (to sleep)",
                     tense: "present tense",
-                    prompt: "Conjugate for 'ils/elles' (they)",
+                    prompt: "'ils/elles' (they)",
                     answer: "ils dorment",
                     explanation: "Dormir is irregular, 'ils/elles' form is 'dorment'"
                 },
                 {
                     verb: "Lire (to read)",
                     tense: "present tense",
-                    prompt: "Conjugate for 'nous' (we)",
+                    prompt: "'nous' (we)",
                     answer: "nous lisons",
                     explanation: "Lire follows regular pattern for 'nous' form"
                 },
                 {
                     verb: "Écrire (to write)",
                     tense: "present tense",
-                    prompt: "Conjugate for 'je' (I)",
+                    prompt: "'je' (I)",
                     answer: "j'écris",
                     explanation: "Écrire is irregular, 'je' form is 'écris'"
                 },
                 {
                     verb: "Pouvoir (can/to be able)",
                     tense: "present tense",
-                    prompt: "Conjugate for 'il/elle' (he/she)",
+                    prompt: "'il/elle' (he/she)",
                     answer: "il peut",
                     explanation: "Pouvoir is irregular, 'il/elle' form is 'peut'"
                 },
                 {
                     verb: "Vouloir (to want)",
                     tense: "present tense",
-                    prompt: "Conjugate for 'vous' (you formal/plural)",
+                    prompt: "'vous' (you formal/plural)",
                     answer: "vous voulez",
                     explanation: "Vouloir is irregular, 'vous' form is 'voulez'"
                 },
                 {
                     verb: "Savoir (to know)",
                     tense: "present tense",
-                    prompt: "Conjugate for 'tu' (you)",
+                    prompt: "'tu' (you)",
                     answer: "tu sais",
                     explanation: "Savoir is irregular, 'tu' form is 'sais'"
                 },
                 {
                     verb: "Mettre (to put)",
                     tense: "present tense",
-                    prompt: "Conjugate for 'nous' (we)",
+                    prompt: "'nous' (we)",
                     answer: "nous mettons",
                     explanation: "Mettre doubles 't' in plural forms"
                 },
                 {
                     verb: "Dire (to say)",
                     tense: "present tense",
-                    prompt: "Conjugate for 'ils/elles' (they)",
+                    prompt: "'ils/elles' (they)",
                     answer: "ils disent",
                     explanation: "Dire is irregular, 'ils/elles' form is 'disent'"
                 },
                 {
                     verb: "Comprendre (to understand)",
                     tense: "present tense",
-                    prompt: "Conjugate for 'je' (I)",
+                    prompt: "'je' (I)",
                     answer: "je comprends",
                     explanation: "Comprendre adds 's' in singular forms"
                 },
                 {
                     verb: "Devoir (must/to have to)",
                     tense: "present tense",
-                    prompt: "Conjugate for 'vous' (you formal/plural)",
+                    prompt: "'vous' (you formal/plural)",
                     answer: "vous devez",
                     explanation: "Devoir is irregular, 'vous' form is 'devez'"
                 }
@@ -366,140 +436,140 @@
                 {
                     verb: "Finir (to finish)",
                     tense: "imparfait",
-                    prompt: "Conjugate for 'je' (I)",
+                    prompt: "'je' (I)",
                     answer: "je finissais",
                     explanation: "In imparfait, -ir verbs use stem + -issais for 'je' form"
                 },
                 {
                     verb: "Prendre (to take)",
                     tense: "passé composé",
-                    prompt: "Conjugate for 'nous' (we)",
+                    prompt: "'nous' (we)",
                     answer: "nous avons pris",
                     explanation: "Prendre uses 'avoir' auxiliary and past participle 'pris'"
                 },
                 {
                     verb: "Venir (to come)",
                     tense: "passé composé",
-                    prompt: "Conjugate for 'elle' (she)",
+                    prompt: "'elle' (she)",
                     answer: "elle est venue",
                     explanation: "Venir uses 'être' auxiliary and agrees with subject gender"
                 },
                 {
                     verb: "Boire (to drink)",
                     tense: "future simple",
-                    prompt: "Conjugate for 'vous' (you)",
+                    prompt: "'vous' (you)",
                     answer: "vous boirez",
                     explanation: "Future simple uses infinitive + -ez for 'vous' form"
                 },
                 {
                     verb: "Conduire (to drive)",
                     tense: "imparfait",
-                    prompt: "Conjugate for 'tu' (you)",
+                    prompt: "'tu' (you)",
                     answer: "tu conduisais",
                     explanation: "In imparfait, -re verbs use stem + -ais for 'tu' form"
                 },
                 {
                     verb: "Partir (to leave)",
                     tense: "passé composé",
-                    prompt: "Conjugate for 'ils' (they)",
+                    prompt: "'ils' (they)",
                     answer: "ils sont partis",
                     explanation: "Partir uses 'être' auxiliary and agrees with plural subjects"
                 },
                 {
                     verb: "Choisir (to choose)",
                     tense: "future simple",
-                    prompt: "Conjugate for 'je' (I)",
+                    prompt: "'je' (I)",
                     answer: "je choisirai",
                     explanation: "Future simple uses infinitive + -ai for 'je' form"
                 },
                 {
                     verb: "Répondre (to answer)",
                     tense: "imparfait",
-                    prompt: "Conjugate for 'nous' (we)",
+                    prompt: "'nous' (we)",
                     answer: "nous répondions",
                     explanation: "In imparfait, -re verbs use stem + -ions for 'nous' form"
                 },
                 {
                     verb: "Descendre (to descend)",
                     tense: "passé composé",
-                    prompt: "Conjugate for 'je' (I)",
+                    prompt: "'je' (I)",
                     answer: "je suis descendu",
                     explanation: "Descendre uses 'être' auxiliary in passé composé"
                 },
                 {
                     verb: "Ouvrir (to open)",
                     tense: "future simple",
-                    prompt: "Conjugate for 'ils' (they)",
+                    prompt: "'ils' (they)",
                     answer: "ils ouvriront",
                     explanation: "Future simple uses infinitive + -ont for 'ils/elles' form"
                 },
                 {
                     verb: "Servir (to serve)",
                     tense: "imparfait",
-                    prompt: "Conjugate for 'vous' (you)",
+                    prompt: "'vous' (you)",
                     answer: "vous serviez",
                     explanation: "In imparfait, -ir verbs use stem + -iez for 'vous' form"
                 },
                 {
                     verb: "Sortir (to go out)",
                     tense: "passé composé",
-                    prompt: "Conjugate for 'tu' (you)",
+                    prompt: "'tu' (you)",
                     answer: "tu es sorti",
                     explanation: "Sortir uses 'être' auxiliary in passé composé"
                 },
                 {
                     verb: "Attendre (to wait)",
                     tense: "future simple",
-                    prompt: "Conjugate for 'nous' (we)",
+                    prompt: "'nous' (we)",
                     answer: "nous attendrons",
                     explanation: "Future simple uses infinitive + -ons for 'nous' form"
                 },
                 {
                     verb: "Perdre (to lose)",
                     tense: "imparfait",
-                    prompt: "Conjugate for 'il' (he)",
+                    prompt: "'il' (he)",
                     answer: "il perdait",
                     explanation: "In imparfait, -re verbs use stem + -ait for 'il/elle' form"
                 },
                 {
                     verb: "Dormir (to sleep)",
                     tense: "passé composé",
-                    prompt: "Conjugate for 'vous' (you)",
+                    prompt: "'vous' (you)",
                     answer: "vous avez dormi",
                     explanation: "Dormir uses 'avoir' auxiliary in passé composé"
                 },
                 {
                     verb: "Sentir (to feel)",
                     tense: "future simple",
-                    prompt: "Conjugate for 'elle' (she)",
+                    prompt: "'elle' (she)",
                     answer: "elle sentira",
                     explanation: "Future simple uses infinitive + -a for 'il/elle' form"
                 },
                 {
                     verb: "Rendre (to return/give back)",
                     tense: "imparfait",
-                    prompt: "Conjugate for 'ils' (they)",
+                    prompt: "'ils' (they)",
                     answer: "ils rendaient",
                     explanation: "In imparfait, -re verbs use stem + -aient for 'ils/elles' form"
                 },
                 {
                     verb: "Monter (to go up)",
                     tense: "passé composé",
-                    prompt: "Conjugate for 'nous' (we)",
+                    prompt: "'nous' (we)",
                     answer: "nous sommes montés",
                     explanation: "Monter uses 'être' auxiliary and agrees with plural subjects"
                 },
                 {
                     verb: "Réussir (to succeed)",
                     tense: "future simple",
-                    prompt: "Conjugate for 'tu' (you)",
+                    prompt: "'tu' (you)",
                     answer: "tu réussiras",
                     explanation: "Future simple uses infinitive + -as for 'tu' form"
                 },
                 {
                     verb: "Vendre (to sell)",
                     tense: "imparfait",
-                    prompt: "Conjugate for 'je' (I)",
+                    prompt: "'je' (I)",
                     answer: "je vendais",
                     explanation: "In imparfait, -re verbs use stem + -ais for 'je' form"
                 }
@@ -508,140 +578,140 @@
                 {
                     verb: "Acquérir (to acquire)",
                     tense: "subjunctive present",
-                    prompt: "Conjugate for 'que je' (that I)",
+                    prompt: "'que je' (that I)",
                     answer: "que j'acquière",
                     explanation: "Acquérir changes stem in subjunctive present"
                 },
                 {
                     verb: "Mourir (to die)",
                     tense: "plus-que-parfait",
-                    prompt: "Conjugate for 'il' (he)",
+                    prompt: "'il' (he)",
                     answer: "il était mort",
                     explanation: "Mourir uses 'être' auxiliary and past participle 'mort'"
                 },
                 {
                     verb: "Craindre (to fear)",
                     tense: "conditional present",
-                    prompt: "Conjugate for 'nous' (we)",
+                    prompt: "'nous' (we)",
                     answer: "nous craindrions",
                     explanation: "Conditional uses infinitive + conditional endings (-ions)"
                 },
                 {
                     verb: "Résoudre (to resolve)",
                     tense: "subjunctive past",
-                    prompt: "Conjugate for 'que vous' (that you)",
+                    prompt: "'que vous' (that you)",
                     answer: "que vous ayez résolu",
                     explanation: "Past subjunctive uses subjunctive of avoir/être + past participle"
                 },
                 {
                     verb: "Pleuvoir (to rain)",
                     tense: "conditional past",
-                    prompt: "Conjugate impersonally",
+                    prompt: "impersonal form",
                     answer: "il aurait plu",
                     explanation: "Conditional past uses conditional of avoir + past participle"
                 },
                 {
                     verb: "Croître (to grow)",
                     tense: "plus-que-parfait",
-                    prompt: "Conjugate for 'elles' (they)",
+                    prompt: "'elles' (they)",
                     answer: "elles avaient crû",
                     explanation: "Croître takes circumflex in past participle to distinguish from 'croire'"
                 },
                 {
                     verb: "Décevoir (to disappoint)",
                     tense: "subjunctive present",
-                    prompt: "Conjugate for 'qu'il' (that he)",
+                    prompt: "'qu'il' (that he)",
                     answer: "qu'il déçoive",
                     explanation: "Décevoir changes 'c' to 'ç' before 'o' in subjunctive"
                 },
                 {
                     verb: "Joindre (to join)",
                     tense: "conditional past",
-                    prompt: "Conjugate for 'tu' (you)",
+                    prompt: "'tu' (you)",
                     answer: "tu aurais joint",
                     explanation: "Conditional past uses conditional of avoir + past participle 'joint'"
                 },
                 {
                     verb: "Naître (to be born)",
                     tense: "plus-que-parfait",
-                    prompt: "Conjugate for 'je' (I)",
+                    prompt: "'je' (I)",
                     answer: "j'étais né",
                     explanation: "Naître uses 'être' auxiliary and agrees with subject"
                 },
                 {
                     verb: "Conclure (to conclude)",
                     tense: "subjunctive past",
-                    prompt: "Conjugate for 'que nous' (that we)",
+                    prompt: "'que nous' (that we)",
                     answer: "que nous ayons conclu",
                     explanation: "Past subjunctive uses subjunctive of avoir + past participle"
                 },
                 {
                     verb: "Vaincre (to conquer)",
                     tense: "conditional present",
-                    prompt: "Conjugate for 'ils' (they)",
+                    prompt: "'ils' (they)",
                     answer: "ils vaincraient",
                     explanation: "Vaincre is irregular but follows conditional endings"
                 },
                 {
                     verb: "Suffire (to suffice)",
                     tense: "subjunctive present",
-                    prompt: "Conjugate for 'qu'elles' (that they)",
+                    prompt: "'qu'elles' (that they)",
                     answer: "qu'elles suffisent",
                     explanation: "Suffire is irregular in subjunctive present"
                 },
                 {
                     verb: "Absoudre (to absolve)",
                     tense: "plus-que-parfait",
-                    prompt: "Conjugate for 'vous' (you)",
+                    prompt: "'vous' (you)",
                     answer: "vous aviez absous",
                     explanation: "Absoudre has irregular past participle 'absous'"
                 },
                 {
                     verb: "Médire (to speak ill)",
                     tense: "conditional past",
-                    prompt: "Conjugate for 'elle' (she)",
+                    prompt: "'elle' (she)",
                     answer: "elle aurait médit",
                     explanation: "Médire follows dire conjugation but has different past participle"
                 },
                 {
                     verb: "Émouvoir (to move/touch)",
                     tense: "subjunctive present",
-                    prompt: "Conjugate for 'que je' (that I)",
+                    prompt: "'que je' (that I)",
                     answer: "que j'émeuve",
                     explanation: "Émouvoir changes stem in subjunctive present"
                 },
                 {
                     verb: "Dissoudre (to dissolve)",
                     tense: "plus-que-parfait",
-                    prompt: "Conjugate for 'ils' (they)",
+                    prompt: "'ils' (they)",
                     answer: "ils avaient dissous",
                     explanation: "Dissoudre has irregular past participle 'dissous'"
                 },
                 {
                     verb: "Choir (to fall)",
                     tense: "conditional present",
-                    prompt: "Conjugate for 'je' (I)",
+                    prompt: "'je' (I)",
                     answer: "je choirais",
                     explanation: "Choir is a rare verb, used mainly in conditional and infinitive"
                 },
                 {
                     verb: "Clore (to close)",
                     tense: "subjunctive past",
-                    prompt: "Conjugate for 'qu'il' (that he)",
+                    prompt: "'qu'il' (that he)",
                     answer: "qu'il ait clos",
                     explanation: "Clore has defective conjugation, past participle 'clos'"
                 },
                 {
                     verb: "Paître (to graze)",
                     tense: "conditional past",
-                    prompt: "Conjugate for 'nous' (we)",
+                    prompt: "'nous' (we)",
                     answer: "nous aurions pu",
                     explanation: "Paître has limited tenses, uses past participle 'pu'"
                 },
                 {
                     verb: "Sourdre (to spring forth)",
                     tense: "subjunctive present",
-                    prompt: "Conjugate for 'qu'elles' (that they)",
+                    prompt: "'qu'elles' (that they)",
                     answer: "qu'elles sourdent",
                     explanation: "Sourdre is defective, used mainly in third person"
                 }
@@ -709,7 +779,6 @@
                     </div>
                     <p><strong>Verb: "${questionData.verb}"</strong></p>
                     <p>Conjugate in the ${questionData.tense} for ${questionData.prompt}:</p>
-                    ${questionData.example ? `<p class="example-text">${questionData.example}</p>` : ''}
                     <input type="text" id="userAnswer" placeholder="Type your answer here">
                     <div style="display: flex; gap: 10px; margin-top: 10px;">
                         <button onclick="checkAnswer()">Submit Answer</button>
@@ -748,7 +817,6 @@
                 result.innerHTML = `
                     <strong>Correct! 🎉</strong><br>
                     ${questionData.explanation}
-                    ${questionData.example ? `<br><em>Example: ${questionData.example}</em>` : ''}
                 `;
                 result.className = 'correct';
                 
@@ -770,7 +838,6 @@
                     <strong>Not quite right!</strong><br>
                     The correct answer is '${questionData.answer}'.<br>
                     ${questionData.explanation}
-                    ${questionData.example ? `<br><em>Example: ${questionData.example}</em>` : ''}
                 `;
                 result.className = 'incorrect';
             }
@@ -831,9 +898,9 @@
             displayQuestion();
         }
 
-        // Initialize with level selection and update verb data
+        // Initialize with level selection
         window.onload = () => {
-            updateVerbData();
+            updateNavLicenseStatus();
             showLevelSelection();
         };
 
@@ -844,25 +911,31 @@
             }
         });
 
-        // Update the verb data to include examples and pronunciation
-        function updateVerbData() {
-            // Add to basic level
-            quizLevels.basic.forEach(q => {
-                if (q.verb === "Parler (to speak)") {
-                    q.example = "Je parle français avec mes amis. (I speak French with my friends.)";
-                } else if (q.verb === "Être (to be)") {
-                    q.example = "Nous sommes étudiants. (We are students.)";
-                }
-                // ... add for other verbs
-            });
+        function updateNavLicenseStatus() {
+            const statusElement = document.getElementById('navLicenseStatus');
+            if (!statusElement) return;
 
-            // Add to intermediate level
-            quizLevels.intermediate.forEach(q => {
-                if (q.verb === "Finir (to finish)") {
-                    q.example = "Je finissais mes devoirs quand il est arrivé. (I was finishing my homework when he arrived.)";
+            try {
+                const storedData = localStorage.getItem('validatedLicense');
+                if (!storedData) return;
+
+                const licenseData = JSON.parse(storedData);
+                if (!licenseData || !licenseData.expiryDate) return;
+
+                const expiry = new Date(licenseData.expiryDate);
+                const today = new Date();
+                const diff = Math.ceil((expiry - today) / (1000 * 60 * 60 * 24));
+
+                if (diff < 0) {
+                    statusElement.textContent = 'Expired';
+                } else if (diff === 1) {
+                    statusElement.textContent = '1 day remaining';
+                } else {
+                    statusElement.textContent = `${diff} days remaining`;
                 }
-                // ... add for other verbs
-            });
+            } catch (error) {
+                console.warn('Could not update license status', error);
+            }
         }
 
         // Add local storage functions
