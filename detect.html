@@ -24,12 +24,11 @@
         }
 
         body {
-            background-color: var(--background-color);
+            background-color: #050d18;
             color: var(--text-color);
             padding: 20px;
             min-height: 100vh;
-            background: radial-gradient(circle at top right, rgba(0, 255, 153, 0.1), transparent 60%),
-                        radial-gradient(circle at bottom left, rgba(0, 204, 122, 0.1), transparent 60%);
+            background: linear-gradient(160deg, #03070f 0%, #071526 50%, #03070f 100%);
         }
 
         .container {
@@ -84,11 +83,12 @@
         .level-selector, .topic-selector {
             flex: 1;
             min-width: 300px;
-            background: rgba(0, 255, 153, 0.05);
+            background: rgba(7, 22, 34, 0.85);
             border-radius: 16px;
             padding: 1.5rem;
-            border: 1px solid rgba(0, 255, 153, 0.2);
-            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 255, 153, 0.18);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(12px);
         }
 
         .selector-title {
@@ -103,7 +103,7 @@
             padding: 1rem;
             border: 2px solid var(--primary-color);
             border-radius: 12px;
-            background-color: rgba(0, 255, 153, 0.1);
+            background-color: rgba(5, 18, 28, 0.9);
             color: var(--text-color);
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -132,34 +132,39 @@
 
         .level-btn.active, .topic-btn.active {
             animation: pulse 2s infinite;
-            box-shadow: 0 0 15px var(--primary-color);
+            background-color: rgba(0, 255, 153, 0.1);
+            border-color: #FFB347;
+            box-shadow: 0 0 18px rgba(255, 174, 0, 0.6);
+            color: #FFE9B0;
         }
 
         .game-container {
-            background: rgba(0, 255, 153, 0.05);
-            border-radius: 16px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            border: 1px solid rgba(0, 255, 153, 0.2);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 8px 32px rgba(0, 255, 153, 0.1);
+            background: rgba(7, 22, 34, 0.85);
+            border-radius: 22px;
+            padding: 3rem 3.5rem;
+            margin: 0 auto 3rem;
+            border: 1px solid rgba(0, 255, 153, 0.18);
+            backdrop-filter: blur(14px);
+            box-shadow: 0 20px 48px rgba(0, 0, 0, 0.55);
             animation: fadeInUp 0.8s ease-out;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            max-width: 1200px;
         }
 
         .game-container:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 255, 153, 0.15);
+            transform: translateY(-8px);
+            box-shadow: 0 22px 44px rgba(0, 255, 153, 0.2);
         }
 
         .game-stats {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1rem;
-            padding: 1rem;
-            background: rgba(0, 204, 122, 0.1);
-            border-radius: 8px;
+            margin-bottom: 1.75rem;
+            padding: 1.5rem 1.75rem;
+            background: rgba(5, 18, 28, 0.82);
+            border-radius: 12px;
+            border: 1px solid rgba(0, 255, 153, 0.18);
         }
 
         .stat-item {
@@ -172,23 +177,23 @@
         }
 
         .stat-label {
-            font-size: 0.9rem;
+            font-size: 1rem;
             color: var(--accent-color);
         }
 
         .stat-value {
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             color: var(--primary-color);
-            font-weight: bold;
+            font-weight: 700;
         }
 
         .question-container {
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
         }
 
         .question-text {
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
+            font-size: 1.65rem;
+            margin-bottom: 1.75rem;
             color: var(--accent-color);
             text-align: center;
             animation: fadeInUp 0.5s ease-out;
@@ -196,22 +201,23 @@
 
         .options-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-top: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.4rem;
+            margin-top: 1.4rem;
         }
 
         .option-btn {
-            padding: 1rem;
+            padding: 1.2rem 1.5rem;
             border: 2px solid var(--secondary-color);
-            border-radius: 8px;
-            background-color: rgba(0, 255, 153, 0.1);
+            border-radius: 12px;
+            background-color: rgba(0, 255, 153, 0.12);
             color: var(--text-color);
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             text-align: center;
             position: relative;
             overflow: hidden;
+            font-size: 1.12rem;
         }
 
         .option-btn::before {
@@ -235,8 +241,8 @@
         }
 
         .option-btn:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 10px 20px rgba(0, 255, 153, 0.2);
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 18px 28px rgba(0, 255, 153, 0.25);
         }
 
         .option-btn.correct {
@@ -294,16 +300,18 @@
         }
 
         .hint-btn {
-            padding: 0.5rem 1rem;
-            background: transparent;
+            padding: 0.75rem 2rem;
             border: 1px solid var(--accent-color);
             color: var(--accent-color);
-            border-radius: 4px;
+            border-radius: 50px;
             cursor: pointer;
-            margin-top: 1rem;
+            margin: 1.5rem auto 0;
             transition: all 0.3s ease;
-            display: block;
-            margin: 1rem auto;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            background: transparent;
             position: relative;
             overflow: hidden;
         }
@@ -391,6 +399,17 @@
             font-weight: bold;
         }
 
+        @media (max-width: 900px) {
+            .game-container {
+                padding: 2.25rem 2.5rem;
+                max-width: 95%;
+            }
+
+            .options-container {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+        }
+
         @media (max-width: 768px) {
             body {
                 padding: 10px;
@@ -400,25 +419,46 @@
                 font-size: 2em;
             }
 
-            .game-setup {
-                flex-direction: column;
-            }
-
-            .level-selector, .topic-selector {
-                width: 100%;
-            }
-
             .game-container {
+                padding: 1.75rem 1.5rem;
+                margin: 0 auto 2rem;
+                border-radius: 16px;
+                max-width: 100%;
+            }
+
+            .game-stats {
+                flex-direction: column;
+                gap: 0.75rem;
                 padding: 1rem;
+            }
+
+            .stat-label {
+                font-size: 0.85rem;
+            }
+
+            .stat-value {
+                font-size: 1.1rem;
+            }
+
+            .question-text {
+                font-size: 1.25rem;
+                margin-bottom: 1.25rem;
             }
 
             .options-container {
                 grid-template-columns: 1fr;
+                gap: 0.9rem;
             }
 
-            .level-complete {
-                width: 95%;
-                padding: 1rem;
+            .option-btn {
+                padding: 0.95rem;
+                font-size: 1rem;
+                border-radius: 10px;
+            }
+
+            .hint-btn {
+                padding: 0.6rem 1.5rem;
+                font-size: 0.9rem;
             }
         }
 
@@ -479,39 +519,101 @@
         .stat-value.updating {
             animation: scoreIncrease 0.5s ease;
         }
+
+        /** New navigation bar **/
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2.5rem;
+            margin-bottom: 1.5rem;
+            background: rgba(5, 12, 22, 0.85);
+            border-radius: 14px;
+            border: 1px solid rgba(0, 255, 153, 0.15);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+        }
+
+        .top-nav .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--text-color);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .top-nav .nav-left img {
+            width: 34px;
+            height: 34px;
+        }
+
+        .top-nav .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .nav-tag {
+            padding: 0.45rem 0.9rem;
+            border-radius: 999px;
+            background: rgba(0, 255, 153, 0.12);
+            border: 1px solid rgba(0, 255, 153, 0.4);
+            font-size: 0.85rem;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .nav-btn {
+            padding: 0.55rem 1.4rem;
+            border-radius: 999px;
+            background: var(--primary-color);
+            color: #001b12;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 255, 153, 0.35);
+        }
+
+        @media (max-width: 768px) {
+            .top-nav {
+                flex-direction: column;
+                gap: 0.9rem;
+                padding: 1rem 1.25rem;
+            }
+
+            .top-nav .nav-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .nav-btn {
+                padding: 0.5rem 1rem;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
+        <nav class="top-nav">
+            <div class="nav-left">
+                <img src="https://logozonepull.b-cdn.net/Logo-%20Circle%20Cropped.png" alt="Brain Games Logo">
+                <span>Brain Games™</span>
+            </div>
+            <div class="nav-actions">
+                <div class="nav-tag" id="navLicenseStatus">29 days remaining</div>
+                <a href="french_learning_hub.html" class="nav-btn">← Back to Home</a>
+            </div>
+        </nav>
         <header>
             <h1>French Word Detective</h1>
             <p>Solve word puzzles and master French vocabulary!</p>
         </header>
-
-        <div class="game-setup">
-            <div class="level-selector">
-                <div class="selector-title">Difficulty Level</div>
-                <button class="level-btn active" data-level="beginner">Beginner</button>
-                <button class="level-btn" data-level="intermediate">Intermediate</button>
-                <button class="level-btn" data-level="advanced">Advanced</button>
-            </div>
-
-            <div class="topic-selector">
-                <div class="selector-title">Topic</div>
-                <button class="topic-btn active" data-topic="general">General</button>
-                <button class="topic-btn" data-topic="food">Food & Dining</button>
-                <button class="topic-btn" data-topic="travel">Travel & Tourism</button>
-                <button class="topic-btn" data-topic="business">Business & Work</button>
-                <button class="topic-btn" data-topic="culture">Culture & Arts</button>
-                <button class="topic-btn" data-topic="family">Family & Relationships</button>
-                <button class="topic-btn" data-topic="health">Health & Wellness</button>
-                <button class="topic-btn" data-topic="technology">Technology & Internet</button>
-                <button class="topic-btn" data-topic="sports">Sports & Activities</button>
-                <button class="topic-btn" data-topic="education">Education & Learning</button>
-                <button class="topic-btn" data-topic="nature">Nature & Environment</button>
-                <button class="topic-btn" data-topic="fashion">Fashion & Shopping</button>
-            </div>
-        </div>
 
         <div class="game-container">
             <div class="game-stats">
@@ -902,17 +1004,69 @@
                         type: "vocabulary"
                     }
                 ]
+            },
+            bonus: {
+                mix: [
+                    {
+                        question: "Translate to French: 'neighborhood'",
+                        options: ["quartier", "banlieue", "rue", "ville"],
+                        correct: "quartier",
+                        hint: "Often paired with the adjective 'calme'",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Translate to French: 'to improve'",
+                        options: ["améliorer", "aggraver", "diminuer", "réduire"],
+                        correct: "améliorer",
+                        hint: "Verb begins with 'amé-'",
+                        type: "verbs"
+                    },
+                    {
+                        question: "Which phrase means 'on the other hand' in French?",
+                        options: ["d'un autre côté", "par conséquent", "en revanche", "de toute façon"],
+                        correct: "d'un autre côté",
+                        hint: "Literally 'from another side'",
+                        type: "phrases"
+                    },
+                    {
+                        question: "Translate to French: 'sustainable development'",
+                        options: ["développement durable", "croissance rapide", "projet viable", "plan écologique"],
+                        correct: "développement durable",
+                        hint: "Two words starting with 'd'",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Translate to French: 'brainstorming session'",
+                        options: ["séance de remue-méninges", "réunion d'urgence", "atelier de suivi", "table ronde"],
+                        correct: "séance de remue-méninges",
+                        hint: "Expression literally means 'shake brains'",
+                        type: "phrases"
+                    },
+                    {
+                        question: "Translate to French: 'highlight of the evening'",
+                        options: ["temps fort de la soirée", "fin de soirée", "début de soirée", "soirée complète"],
+                        correct: "temps fort de la soirée",
+                        hint: "Includes the word for 'strong time'",
+                        type: "phrases"
+                    },
+                    {
+                        question: "Translate to French: 'key takeaway'",
+                        options: ["point clé", "idée vague", "détail secondaire", "remarque annexe"],
+                        correct: "point clé",
+                        hint: "Also used in presentations",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French phrase for 'to meet a deadline'?",
+                        options: ["respecter une échéance", "retarder une échéance", "manquer une échéance", "oublier une échéance"],
+                        correct: "respecter une échéance",
+                        hint: "Use the verb meaning 'to respect'",
+                        type: "phrases"
+                    }
+                ]
             }
         };
 
-        let currentLevel = 'beginner';
-        let currentTopic = 'general';
-        let currentQuestion = 0;
-        let score = 0;
-        let streak = 0;
-
-        const levelButtons = document.querySelectorAll('.level-btn');
-        const topicButtons = document.querySelectorAll('.topic-btn');
         const questionText = document.querySelector('.question-text');
         const optionsContainer = document.querySelector('.options-container');
         const feedback = document.querySelector('.feedback');
@@ -923,12 +1077,36 @@
         const hintBtn = document.querySelector('.hint-btn');
         const hintText = document.querySelector('.hint-text');
 
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        const allQuestions = Object.values(gameData).flatMap(level =>
+            Object.values(level).flat()
+        );
+
+        let questionQueue = shuffleArray(allQuestions.map(q => ({ ...q })));
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let streak = 0;
+
         function loadQuestion() {
-            const question = gameData[currentLevel][currentTopic][currentQuestion];
+            if (currentQuestionIndex >= questionQueue.length) {
+                showQuizComplete();
+                return;
+            }
+
+            const question = questionQueue[currentQuestionIndex];
             questionText.textContent = question.question;
-            
+
             optionsContainer.innerHTML = '';
-            question.options.forEach(option => {
+            const shuffledOptions = shuffleArray([...question.options]);
+            shuffledOptions.forEach(option => {
                 const button = document.createElement('button');
                 button.className = 'option-btn';
                 button.textContent = option;
@@ -941,16 +1119,16 @@
             hintBtn.style.display = 'block';
             feedback.style.display = 'none';
 
-            progressFill.style.width = `${(currentQuestion / gameData[currentLevel][currentTopic].length) * 100}%`;
+            progressFill.style.width = `${(currentQuestionIndex / questionQueue.length) * 100}%`;
             scoreDisplay.textContent = score;
             streakDisplay.textContent = streak;
-            questionsLeftDisplay.textContent = gameData[currentLevel][currentTopic].length - currentQuestion;
+            questionsLeftDisplay.textContent = questionQueue.length - currentQuestionIndex;
         }
 
         function checkAnswer(selectedAnswer) {
-            const question = gameData[currentLevel][currentTopic][currentQuestion];
+            const question = questionQueue[currentQuestionIndex];
             const buttons = document.querySelectorAll('.option-btn');
-            
+
             buttons.forEach(button => {
                 button.disabled = true;
                 if (button.textContent === question.correct) {
@@ -980,21 +1158,24 @@
             feedback.style.display = 'block';
 
             setTimeout(() => {
-                currentQuestion++;
-                if (currentQuestion >= gameData[currentLevel][currentTopic].length) {
-                    showLevelComplete();
+                currentQuestionIndex++;
+                if (currentQuestionIndex >= questionQueue.length) {
+                    showQuizComplete();
                 } else {
                     loadQuestion();
                 }
             }, 1500);
         }
 
-        function showLevelComplete() {
-            const levelComplete = document.createElement('div');
-            levelComplete.className = 'level-complete';
-            
-            levelComplete.innerHTML = `
-                <div class="celebration-title">🎉 Level Complete! 🎉</div>
+        function showQuizComplete() {
+            progressFill.style.width = '100%';
+            questionsLeftDisplay.textContent = 0;
+
+            const quizComplete = document.createElement('div');
+            quizComplete.className = 'level-complete';
+
+            quizComplete.innerHTML = `
+                <div class="celebration-title">🎉 Quiz Complete! 🎉</div>
                 <div class="celebration-stats">
                     <div class="stat-card">
                         <div class="stat-card-title">Final Score</div>
@@ -1006,17 +1187,18 @@
                     </div>
                     <div class="stat-card">
                         <div class="stat-card-title">Questions Completed</div>
-                        <div class="stat-card-value">${gameData[currentLevel][currentTopic].length}</div>
+                        <div class="stat-card-value">${questionQueue.length}</div>
                     </div>
                 </div>
-                <button class="level-btn" onclick="this.parentElement.remove(); resetGame()">Continue</button>
+                <button class="level-btn" onclick="this.parentElement.remove(); resetGame()">Play Again</button>
             `;
-            
-            document.body.appendChild(levelComplete);
+
+            document.body.appendChild(quizComplete);
         }
 
         function resetGame() {
-            currentQuestion = 0;
+            questionQueue = shuffleArray(allQuestions.map(q => ({ ...q })));
+            currentQuestionIndex = 0;
             score = 0;
             streak = 0;
             loadQuestion();
@@ -1029,24 +1211,6 @@
                 scoreDisplay.classList.remove('updating');
             }, 500);
         }
-
-        levelButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                levelButtons.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                currentLevel = btn.dataset.level;
-                resetGame();
-            });
-        });
-
-        topicButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                topicButtons.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                currentTopic = btn.dataset.topic;
-                resetGame();
-            });
-        });
 
         hintBtn.addEventListener('click', () => {
             hintText.classList.add('show');
