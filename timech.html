@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>French Time Challenge</title>
+    <title>French Phrase Challenge</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -31,19 +31,86 @@
             flex-direction: column;
             align-items: center;
             padding: 20px;
-            background: radial-gradient(circle at top right, rgba(0, 255, 153, 0.1), transparent 60%),
-                        radial-gradient(circle at bottom left, rgba(0, 204, 122, 0.1), transparent 60%);
+            background: radial-gradient(circle at top right, rgba(0, 60, 45, 0.45), transparent 55%),
+                        radial-gradient(circle at bottom left, rgba(0, 45, 75, 0.4), transparent 55%),
+                        linear-gradient(160deg, #04111a 0%, #030a12 45%, #051d1c 100%);
+        }
+
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2.5rem;
+            margin: 0 auto 1.5rem;
+            max-width: 1100px;
+            width: 100%;
+            background: linear-gradient(135deg, rgba(0, 255, 153, 0.28), rgba(0, 120, 72, 0.22));
+            border-radius: 14px;
+            border: 1px solid rgba(0, 255, 153, 0.45);
+            box-shadow: 0 10px 28px rgba(0, 140, 90, 0.2);
+        }
+
+        .top-nav .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--text-color);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .top-nav .nav-left img {
+            width: 34px;
+            height: 34px;
+        }
+
+        .top-nav .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .nav-tag {
+            padding: 0.45rem 0.9rem;
+            border-radius: 999px;
+            background: rgba(0, 255, 153, 0.12);
+            border: 1px solid rgba(0, 255, 153, 0.4);
+            font-size: 0.85rem;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .nav-btn {
+            padding: 0.55rem 1.4rem;
+            border-radius: 999px;
+            background: var(--primary-color);
+            color: #0b3020;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            text-decoration: none;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
         }
 
         .game-container {
             max-width: 1000px;
             width: 100%;
-            background: rgba(0, 255, 153, 0.05);
+            background: linear-gradient(160deg, rgba(4, 22, 32, 0.92), rgba(3, 15, 25, 0.92));
             border-radius: 20px;
             padding: 2rem;
-            box-shadow: 0 8px 32px rgba(0, 255, 153, 0.1);
-            border: 1px solid rgba(0, 255, 153, 0.2);
-            backdrop-filter: blur(10px);
+            box-shadow: 0 18px 45px rgba(2, 22, 32, 0.55);
+            border: 1px solid rgba(0, 255, 153, 0.12);
+            backdrop-filter: blur(18px);
             margin-top: 2rem;
         }
 
@@ -77,13 +144,13 @@
             font-size: 2rem;
             font-weight: bold;
             color: var(--primary-color);
-            background: rgba(0, 255, 153, 0.1);
+            background: rgba(4, 35, 36, 0.75);
             padding: 1rem 2rem;
             border-radius: 15px;
             min-width: 150px;
             text-align: center;
             border: 2px solid var(--primary-color);
-            text-shadow: 0 0 10px rgba(0, 255, 153, 0.5);
+            text-shadow: 0 0 10px rgba(0, 255, 153, 0.45);
         }
 
         .combo-meter {
@@ -100,12 +167,13 @@
         }
 
         .phrase-container {
-            background: rgba(0, 255, 153, 0.1);
+            background: rgba(5, 30, 33, 0.85);
             border-radius: 15px;
             padding: 2rem;
             margin: 2rem 0;
             text-align: center;
-            border: 1px solid rgba(0, 255, 153, 0.2);
+            border: 1px solid rgba(0, 255, 153, 0.12);
+            box-shadow: inset 0 0 40px rgba(0, 255, 153, 0.04);
         }
 
         .french-phrase {
@@ -123,15 +191,16 @@
 
         .option-btn {
             padding: 1rem;
-            border: 2px solid var(--primary-color);
+            border: 2px solid rgba(0, 255, 153, 0.25);
             border-radius: 12px;
-            background: rgba(0, 255, 153, 0.1);
+            background: rgba(2, 24, 32, 0.85);
             color: var(--text-color);
             cursor: pointer;
             transition: all 0.3s ease;
             font-size: 1.1rem;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
         }
 
         .option-btn::before {
@@ -151,16 +220,19 @@
 
         .option-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 255, 153, 0.3);
+            box-shadow: 0 10px 22px rgba(0, 255, 153, 0.25);
+            border-color: rgba(0, 255, 153, 0.45);
         }
 
         .stats {
             display: flex;
             justify-content: space-around;
             margin-bottom: 2rem;
-            background: rgba(0, 255, 153, 0.1);
+            background: rgba(5, 30, 33, 0.7);
             padding: 1rem;
             border-radius: 12px;
+            border: 1px solid rgba(0, 255, 153, 0.12);
+            box-shadow: inset 0 0 30px rgba(0, 255, 153, 0.04);
         }
 
         .stat-item {
@@ -184,13 +256,13 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(18, 18, 18, 0.95);
+            background: rgba(4, 18, 26, 0.95);
             padding: 2rem;
             border-radius: 20px;
             text-align: center;
-            border: 2px solid var(--primary-color);
-            box-shadow: 0 0 30px rgba(0, 255, 153, 0.3);
-            backdrop-filter: blur(10px);
+            border: 2px solid rgba(0, 255, 153, 0.4);
+            box-shadow: 0 0 35px rgba(0, 255, 153, 0.25);
+            backdrop-filter: blur(14px);
             z-index: 1000;
             min-width: 300px;
         }
@@ -287,6 +359,17 @@
         }
 
         @media (max-width: 768px) {
+            .top-nav {
+                flex-direction: column;
+                gap: 0.9rem;
+                padding: 1rem 1.25rem;
+            }
+
+            .top-nav .nav-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+
             .topic-buttons {
                 grid-template-columns: repeat(2, 1fr);
             }
@@ -294,9 +377,20 @@
     </style>
 </head>
 <body>
+    <nav class="top-nav">
+        <div class="nav-left">
+            <img src="https://logozonepull.b-cdn.net/Logo-%20Circle%20Cropped.png" alt="Brain Games Logo">
+            <span>Brain Games™</span>
+        </div>
+        <div class="nav-actions">
+            <div class="nav-tag" id="navLicenseStatus">29 days remaining</div>
+            <a href="french_learning_hub.html" class="nav-btn">← Back to Home</a>
+        </div>
+    </nav>
+    <div class="container">
     <div class="game-container">
         <div class="header">
-            <h1 class="title">French Time Challenge</h1>
+            <h1 class="title">French Phrase Challenge</h1>
             <p>Race against time to translate phrases!</p>
         </div>
 
@@ -350,6 +444,7 @@
             <div class="french-phrase" id="frenchPhrase"></div>
             <div class="translation-options" id="translationOptions"></div>
         </div>
+    </div>
     </div>
 
     <script>
@@ -982,20 +1077,30 @@
             displayPhrase();
         }
 
+        // Fisher-Yates shuffle algorithm for truly random positioning
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
         function displayPhrase() {
             const phrase = getRandomPhrase();
             frenchPhraseElement.textContent = phrase.french;
             
             translationOptionsElement.innerHTML = '';
-            phrase.options
-                .sort(() => Math.random() - 0.5)
-                .forEach(option => {
-                    const button = document.createElement('button');
-                    button.className = 'option-btn';
-                    button.textContent = option;
-                    button.onclick = () => checkAnswer(option, phrase.correct);
-                    translationOptionsElement.appendChild(button);
-                });
+            // Shuffle options using Fisher-Yates algorithm for truly random positions
+            const shuffledOptions = shuffleArray(phrase.options);
+            shuffledOptions.forEach(option => {
+                const button = document.createElement('button');
+                button.className = 'option-btn';
+                button.textContent = option;
+                button.onclick = () => checkAnswer(option, phrase.correct);
+                translationOptionsElement.appendChild(button);
+            });
         }
 
         function checkAnswer(selected, correct) {
@@ -1087,6 +1192,35 @@
             displayPhrase();
         }
 
+        function updateNavLicenseStatus() {
+            const statusElement = document.getElementById('navLicenseStatus');
+            if (!statusElement) return;
+
+            try {
+                const storedData = localStorage.getItem('validatedLicense');
+                if (!storedData) return;
+
+                const licenseData = JSON.parse(storedData);
+                if (!licenseData || !licenseData.expiryDate) return;
+
+                const expiry = new Date(licenseData.expiryDate);
+                const today = new Date();
+                const diff = Math.ceil((expiry - today) / (1000 * 60 * 60 * 24));
+
+                if (diff < 0) {
+                    statusElement.textContent = 'Expired';
+                } else if (diff === 1) {
+                    statusElement.textContent = '1 day remaining';
+                } else {
+                    statusElement.textContent = `${diff} days remaining`;
+                }
+            } catch (error) {
+                console.warn('Could not update license status', error);
+            }
+        }
+
+        // Initialize UI
+        updateNavLicenseStatus();
         // Start the game
         startGame();
     </script>
