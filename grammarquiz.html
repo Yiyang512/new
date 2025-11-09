@@ -734,51 +734,48 @@
             background: linear-gradient(45deg, var(--card-bg), rgba(255, 87, 34, 0.1));
         }
 
-        // Add to the existing styles
-        const additionalStyles = `
-            .notification-history-item.milestone {
-                border-color: #9C27B0;
-            }
+        .notification-history-item.milestone {
+            border-color: #9C27B0;
+        }
 
-            .notification-history-item.summary {
-                border-color: #2196F3;
-            }
+        .notification-history-item.summary {
+            border-color: #2196F3;
+        }
 
-            .notification-history-item.level-up {
-                border-color: #FFC107;
-            }
+        .notification-history-item.level-up {
+            border-color: #FFC107;
+        }
 
-            .notification-history-item.consistency {
-                border-color: #FF5722;
-            }
+        .notification-history-item.consistency {
+            border-color: #FF5722;
+        }
 
-            .search-box {
-                flex: 1;
-                margin-right: 10px;
-            }
+        .search-box {
+            flex: 1;
+            margin-right: 10px;
+        }
 
-            .search-box input {
-                width: 100%;
-                padding: 8px;
-                border: 1px solid var(--neon-green);
-                border-radius: 4px;
-                background: rgba(255, 255, 255, 0.05);
-                color: var(--text-color);
-            }
+        .search-box input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid var(--neon-green);
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-color);
+        }
 
-            .filter-controls select {
-                padding: 8px;
-                border: 1px solid var(--neon-green);
-                border-radius: 4px;
-                background: rgba(255, 255, 255, 0.05);
-                color: var(--text-color);
-                margin-right: 10px;
-            }
+        .filter-controls select {
+            padding: 8px;
+            border: 1px solid var(--neon-green);
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-color);
+            margin-right: 10px;
+        }
 
-            .filter-controls select option {
-                background: var(--dark-bg);
-            }
-        `;
+        .filter-controls select option {
+            background: var(--dark-bg);
+        }
 
         .notification-preferences {
             padding: 20px;
@@ -1076,10 +1073,99 @@
         .trend-declined {
             color: #ff6347;
         }
+
+        /* Top navigation bar */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, rgba(0, 255, 153, 0.28), rgba(0, 120, 72, 0.22));
+            border-radius: 14px;
+            border: 1px solid rgba(0, 255, 153, 0.45);
+            box-shadow: 0 15px 40px rgba(0, 140, 90, 0.25);
+        }
+
+        .top-nav .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #ffffff;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .top-nav .nav-left img {
+            width: 34px;
+            height: 34px;
+        }
+
+        .top-nav .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .nav-tag {
+            padding: 0.45rem 0.9rem;
+            border-radius: 999px;
+            background: rgba(0, 255, 153, 0.12);
+            border: 1px solid rgba(0, 255, 153, 0.4);
+            font-size: 0.85rem;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .nav-btn {
+            padding: 0.55rem 1.4rem;
+            border-radius: 999px;
+            background: var(--primary-color);
+            color: #ffffff;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            box-shadow: none;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: none;
+            color: #ffffff;
+        }
+
+        @media (max-width: 768px) {
+            .top-nav {
+                flex-direction: column;
+                gap: 0.9rem;
+                padding: 1rem 1.25rem;
+            }
+
+            .top-nav .nav-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .nav-btn {
+                padding: 0.5rem 1rem;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
+        <nav class="top-nav">
+            <div class="nav-left">
+                <img src="https://logozonepull.b-cdn.net/Logo-%20Circle%20Cropped.png" alt="Brain Games Logo">
+                <span>Brain Games™</span>
+            </div>
+            <div class="nav-actions">
+                <div class="nav-tag" id="navLicenseStatus">29 days remaining</div>
+                <a href="french_learning_hub.html" class="nav-btn">← Back to Home</a>
+            </div>
+        </nav>
         <h1>French Grammar Trainer</h1>
         <p style="text-align: center; color: var(--neon-green); margin-bottom: 2rem;">
             Choose your level to start practicing French grammar!
@@ -1097,63 +1183,63 @@
                     prompt: "Choose the correct article: ___ livre est sur la table.",
                     answer: "le",
                     explanation: "Use 'le' for masculine singular nouns. 'Livre' (book) is masculine.",
-                    example: "Le livre est intéressant. (The book is interesting.)"
+                    example: "The book is interesting."
                 },
                 {
                     topic: "Gender Agreement",
                     prompt: "Make this adjective agree: Cette fille est _____ (intelligent).",
                     answer: "intelligente",
                     explanation: "Add 'e' to adjectives when describing feminine nouns.",
-                    example: "Marie est intelligente. (Marie is intelligent.)"
+                    example: "Marie is intelligent."
                 },
                 {
                     topic: "Prepositions",
                     prompt: "Fill in: Je vais _____ Paris.",
                     answer: "à",
                     explanation: "Use 'à' for going to cities.",
-                    example: "Je vais à Londres. (I'm going to London.)"
+                    example: "I'm going to London."
                 },
                 {
                     topic: "Possessive Adjectives",
                     prompt: "Complete: ____ père est médecin. (my, masculine)",
                     answer: "mon",
                     explanation: "Use 'mon' for masculine singular possessions.",
-                    example: "Mon frère est grand. (My brother is tall.)"
+                    example: "My brother is tall."
                 },
                 {
                     topic: "Numbers Agreement",
                     prompt: "Make plural: Le chat noir → Les chats _____",
                     answer: "noirs",
                     explanation: "Add 's' to both noun and adjective in plural form.",
-                    example: "Les chats noirs dorment. (The black cats are sleeping.)"
+                    example: "The black cats are sleeping."
                 },
                 {
                     topic: "Partitive Articles",
                     prompt: "Fill in: Je mange _____ pain.",
                     answer: "du",
                     explanation: "Use 'du' (de + le) for masculine singular nouns when expressing a quantity",
-                    example: "Je bois du lait. (I drink some milk.)"
+                    example: "I drink some milk."
                 },
                 {
                     topic: "Demonstrative Adjectives",
                     prompt: "Complete: _____ table est grande. (this/feminine)",
                     answer: "cette",
                     explanation: "Use 'cette' for feminine singular nouns",
-                    example: "Cette maison est belle. (This house is beautiful.)"
+                    example: "This house is beautiful."
                 },
                 {
                     topic: "Adjective Agreement",
                     prompt: "Make feminine: un garçon _____ (heureux)",
                     answer: "heureuse",
                     explanation: "Adjectives ending in -eux become -euse in feminine form",
-                    example: "Elle est heureuse de te voir. (She is happy to see you.)"
+                    example: "She is happy to see you."
                 },
                 {
                     topic: "Basic Negation",
                     prompt: "Make negative: Je suis content → Je _____ suis _____ content",
                     answer: "ne pas",
                     explanation: "Basic negation uses 'ne...pas' around the conjugated verb",
-                    example: "Je ne mange pas de viande. (I don't eat meat.)"
+                    example: "I don't eat meat."
                 },
                 {
                     verb: "Danser (to dance)",
@@ -1189,6 +1275,27 @@
                     prompt: "Conjugate for 'tu' (you)",
                     answer: "tu habites",
                     explanation: "Regular -er verb, 'tu' form ends in 'es'"
+                },
+                {
+                    topic: "Contracted Articles",
+                    prompt: "Fill in: Je viens _____ école.",
+                    answer: "de l'",
+                    explanation: "Use 'de l'' before singular nouns that begin with a vowel sound.",
+                    example: "I'm coming from the school."
+                },
+                {
+                    topic: "Interrogatives",
+                    prompt: "Choose the question word: _____ est-ce que tu t'appelles ?",
+                    answer: "Comment",
+                    explanation: "Use 'comment' to ask someone's name or how they are called.",
+                    example: "What is your name?"
+                },
+                {
+                    topic: "Imperatives",
+                    prompt: "Give the command to a friend: _____ patient ! (be)",
+                    answer: "Sois",
+                    explanation: "Use 'sois' for informal singular commands of the verb 'être'.",
+                    example: "Be patient!"
                 }
             ],
             intermediate: [
@@ -1197,42 +1304,63 @@
                     prompt: "Choose: C'est le livre _____ j'ai lu hier. (que/qui)",
                     answer: "que",
                     explanation: "Use 'que' when the relative pronoun is the object of the relative clause.",
-                    example: "C'est le film que j'aime. (It's the movie that I like.)"
+                    example: "It's the movie that I like."
                 },
                 {
                     topic: "Demonstrative Pronouns",
                     prompt: "Complete: Je préfère _____ de droite. (celui/celle)",
                     answer: "celui",
                     explanation: "Use 'celui' for masculine singular objects being pointed out.",
-                    example: "Celui-ci est meilleur. (This one is better.)"
+                    example: "This one is better."
                 },
                 {
                     topic: "Past Participle Agreement",
                     prompt: "Agreement: Les lettres que j'ai _____ (écrire)",
                     answer: "écrites",
                     explanation: "Past participle agrees with preceding direct object 'lettres' (feminine plural).",
-                    example: "Les pommes que j'ai mangées. (The apples that I ate.)"
+                    example: "The apples that I ate."
                 },
                 {
                     topic: "Relative Pronouns",
                     prompt: "Choose: La fille _____ parle français. (who)",
                     answer: "qui",
                     explanation: "Use 'qui' when the relative pronoun is the subject of the relative clause",
-                    example: "L'homme qui court est mon père. (The man who is running is my father.)"
+                    example: "The man who is running is my father."
                 },
                 {
                     topic: "Object Pronouns",
                     prompt: "Replace noun: Je donne le livre à Marie → Je _____ donne le livre.",
                     answer: "lui",
                     explanation: "Use 'lui' for indirect objects (to him/her)",
-                    example: "Je lui parle souvent. (I often speak to him/her.)"
+                    example: "I often speak to him/her."
                 },
                 {
                     topic: "Possessive Pronouns",
                     prompt: "Complete: Ce livre est _____ (mine).",
                     answer: "le mien",
                     explanation: "Use 'le mien' for masculine singular possessive pronouns",
-                    example: "Son chat est noir, le mien est blanc. (His cat is black, mine is white.)"
+                    example: "His cat is black, mine is white."
+                },
+                {
+                    topic: "Pronoun Y",
+                    prompt: "Replace with the correct pronoun: Tu penses à ton examen ? Oui, j'_____ pense.",
+                    answer: "y",
+                    explanation: "Use 'y' to replace phrases beginning with 'à' that refer to things or ideas.",
+                    example: "Yes, I'm thinking about it."
+                },
+                {
+                    topic: "Comparatives",
+                    prompt: "Complete: Elle est _____ organisée que son frère. (more)",
+                    answer: "plus",
+                    explanation: "Use 'plus ... que' to form the comparative of superiority.",
+                    example: "She is more organized than her brother."
+                },
+                {
+                    topic: "Pronoun EN",
+                    prompt: "Replace: Tu as beaucoup de travail ? Oui, j'_____ ai.",
+                    answer: "en",
+                    explanation: "Use 'en' to replace phrases introduced by 'de' that refer to quantities.",
+                    example: "Yes, I have some."
                 },
                 {
                     verb: "Réfléchir (to think)",
@@ -1268,6 +1396,27 @@
                     prompt: "Conjugate for 'ils' (they)",
                     answer: "ils ont bu",
                     explanation: "Irregular past participle 'bu'"
+                },
+                {
+                    topic: "Imparfait Usage",
+                    prompt: "Choose the correct form: Quand j'étais petit, je _____ (jouer) dans le parc tous les jours.",
+                    answer: "jouais",
+                    explanation: "Use the imparfait for repeated past actions; 'jouer' becomes 'je jouais'.",
+                    example: "When I was little, I played in the park every day."
+                },
+                {
+                    topic: "Relative Pronoun 'où'",
+                    prompt: "Complete: C'est la ville _____ j'ai grandi.",
+                    answer: "où",
+                    explanation: "Use 'où' to introduce a relative clause referring to a place or time.",
+                    example: "That's the town where I grew up."
+                },
+                {
+                    topic: "Advanced Negation",
+                    prompt: "Transform: Elle voyage souvent → Elle ne voyage _____.",
+                    answer: "jamais",
+                    explanation: "Use 'ne ... jamais' to express 'never' in negative sentences.",
+                    example: "She never travels."
                 }
             ],
             advanced: [
@@ -1276,42 +1425,63 @@
                     prompt: "Complete: Il faut que tu _____ (faire) tes devoirs.",
                     answer: "fasses",
                     explanation: "After 'il faut que', use subjunctive. 'Faire' becomes 'fasses' in subjunctive.",
-                    example: "Il faut que nous soyons patients. (We must be patient.)"
+                    example: "We must be patient."
                 },
                 {
                     topic: "Conditional Perfect",
                     prompt: "Transform: Si j'avais su, je _____ (venir).",
                     answer: "serais venu",
                     explanation: "In conditional perfect, use conditional of être/avoir + past participle.",
-                    example: "Si j'avais su, je serais resté. (If I had known, I would have stayed.)"
+                    example: "If I had known, I would have stayed."
                 },
                 {
                     topic: "Complex Negation",
                     prompt: "Make negative: J'ai vu quelqu'un → Je n'ai vu _____",
                     answer: "personne",
                     explanation: "Replace indefinite pronouns with their negative counterparts.",
-                    example: "Je n'ai rien mangé. (I didn't eat anything.)"
+                    example: "I didn't eat anything."
                 },
                 {
                     topic: "Subjunctive Triggers",
                     prompt: "Complete: Je veux que tu _____ (prendre) ton temps.",
                     answer: "prennes",
                     explanation: "After 'vouloir que', use subjunctive. 'Prendre' becomes 'prennes'",
-                    example: "Il faut que tu viennes maintenant. (You must come now.)"
+                    example: "You must come now."
                 },
                 {
                     topic: "Double Pronouns",
                     prompt: "Replace nouns: Je donne le livre à Marie → Je _____ _____ donne.",
                     answer: "le lui",
                     explanation: "With double pronouns, direct object comes before indirect object",
-                    example: "Je le lui ai donné. (I gave it to him/her.)"
+                    example: "I gave it to him/her."
+                },
+                {
+                    topic: "Si Clauses",
+                    prompt: "Complete: Si tu étais venu, nous _____ (pouvoir) commencer.",
+                    answer: "aurions pu",
+                    explanation: "With a past contrary-to-fact 'si' clause, use plus-que-parfait and conditional perfect.",
+                    example: "We would have been able to start."
+                },
+                {
+                    topic: "Inversion Questions",
+                    prompt: "Rewrite: Ils ont fini ? → _____-ils fini ?",
+                    answer: "Ont",
+                    explanation: "Move the conjugated verb before the subject and connect with a hyphen.",
+                    example: "Have they finished?"
+                },
+                {
+                    topic: "Relative Pronoun 'dont'",
+                    prompt: "Choose: Voici le professeur _____ je t'ai parlé.",
+                    answer: "dont",
+                    explanation: "Use 'dont' to replace 'de + noun' when the noun is the object of the preposition.",
+                    example: "Here is the teacher I told you about."
                 },
                 {
                     topic: "Gerund",
                     prompt: "Form gerund: Il parle _____ marchant. (while walking)",
                     answer: "en",
                     explanation: "French gerund uses 'en' + present participle",
-                    example: "Elle écoute de la musique en travaillant. (She listens to music while working.)"
+                    example: "She listens to music while working."
                 },
                 {
                     verb: "Mourir (to die)",
@@ -1347,6 +1517,27 @@
                     prompt: "Conjugate for 'nous' (we)",
                     answer: "nous résoudrions",
                     explanation: "Conditional of irregular -re verb"
+                },
+                {
+                    topic: "Subjunctive after Emotion",
+                    prompt: "Complete: Je suis content que tu _____ (venir).",
+                    answer: "viennes",
+                    explanation: "After expressions of emotion, use the subjunctive; 'venir' becomes 'viennes'.",
+                    example: "I'm happy that you're coming."
+                },
+                {
+                    topic: "Passive Voice",
+                    prompt: "Change to passive: Marie écrit la lettre → La lettre _____ par Marie.",
+                    answer: "est écrite",
+                    explanation: "Form the present passive with 'être' + past participle; agreement with the subject.",
+                    example: "The letter is written by Marie."
+                },
+                {
+                    topic: "Past Anterior",
+                    prompt: "Complete: Dès qu'il _____ (finir) son travail, il partit.",
+                    answer: "eut fini",
+                    explanation: "The past anterior uses the passé simple of the auxiliary + past participle.",
+                    example: "As soon as he had finished his work, he left."
                 }
             ]
         };
@@ -2628,57 +2819,15 @@
                             style="background: rgba(57, 255, 20, 0.2); color: var(--neon-green);">
                         View Statistics
                     </button>
-                    <button onclick="showWeeklyProgress()" 
-                            style="background: rgba(57, 255, 20, 0.2); color: var(--neon-green);">
-                        Weekly Progress
-                    </button>
-                    <button onclick="showLearningRecommendations()" 
-                            style="background: rgba(57, 255, 20, 0.2); color: var(--neon-green);">
-                        Learning Path
-                    </button>
-                    <button onclick="showStudySchedule()" 
-                            style="background: rgba(57, 255, 20, 0.2); color: var(--neon-green);">
-                        Study Schedule
-                    </button>
-                    <button onclick="reviewScheduler.showReviewSession()" 
-                            style="background: rgba(57, 255, 20, 0.2); color: var(--neon-green);">
-                        Review Due Questions
-                    </button>
                     <button onclick="showGrammarReference()"
                             style="background: rgba(57, 255, 20, 0.2); color: var(--neon-green);">
                         Grammar Reference
-                    </button>
-                    <button onclick="showNotificationHistory()" 
-                            style="background: rgba(57, 255, 20, 0.2); color: var(--neon-green);">
-                        Notification History
-                    </button>
-                    <button onclick="notificationSystem.showPreferences()" 
-                            style="background: rgba(57, 255, 20, 0.2); color: var(--neon-green);">
-                        Notification Settings
-                    </button>
-                    <button onclick="notificationSystem.showAnalyticsDashboard()" 
-                            style="background: rgba(57, 255, 20, 0.2); color: var(--neon-green);">
-                        Notification Analytics
-                    </button>
-                    <button onclick="notificationSystem.showCustomReport()" 
-                            style="background: rgba(57, 255, 20, 0.2); color: var(--neon-green); margin-top: 20px;">
-                        Generate Custom Report
                     </button>
                 </div>
             `;
             
             document.getElementById('quiz-content').innerHTML = content;
             
-            // Add notification controls
-            const controls = `
-                <div class="notification-controls">
-                    <button class="notification-settings-btn">Notification Settings</button>
-                    <button class="analytics-btn">Analytics Dashboard</button>
-                    <button class="custom-report-btn">Custom Report</button>
-                </div>
-            `;
-            
-            document.querySelector('.level-selection').insertAdjacentHTML('afterend', controls);
         }
 
         function startQuiz(level) {
@@ -3611,4 +3760,3 @@
     </script>
 </body>
 </html>
-
