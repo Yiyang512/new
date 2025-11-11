@@ -3,8 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced French Word Drop</title>
+    <title>Neon Vocabulary Catch</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
+        :root {
+            color-scheme: dark;
+            --accent: #00ffd4;
+            --accent-strong: rgba(0, 255, 212, 0.4);
+            --bg: radial-gradient(circle at top, rgba(0, 255, 212, 0.16), rgba(4, 12, 16, 0.96));
+            --panel: rgba(8, 18, 22, 0.92);
+            --panel-border: rgba(0, 255, 212, 0.3);
+            --text: #f2fffb;
+            --muted: rgba(242, 255, 251, 0.7);
+            --success: #8bffc6;
+            --danger: #ff6b6b;
+            --shadow: 0 24px 48px rgba(0, 0, 0, 0.55);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -12,67 +27,309 @@
         }
 
         body {
-            background-color: #000;
-            color: #fff;
+            min-height: 100vh;
             display: flex;
-            justify-content: center;
             align-items: center;
-            height: 100vh;
-            font-family: Arial, sans-serif;
+            justify-content: center;
+            padding: clamp(2rem, 5vw, 3.5rem) 1.5rem;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Poppins', sans-serif;
             overflow: hidden;
         }
 
-        .game-container {
+        .game-shell {
+            width: min(920px, 100%);
+            display: flex;
+            flex-direction: column;
+            gap: 1.75rem;
+        }
+
+        .game-header {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .game-header h1 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            text-transform: uppercase;
+            letter-spacing: 1.3px;
+            text-shadow: 0 0 28px rgba(0, 255, 212, 0.35);
+        }
+
+        .game-header p {
+            color: var(--muted);
+            font-size: 1rem;
+        }
+
+        .game-panel {
+            border-radius: 24px;
+            border: 1px solid var(--panel-border);
+            background: var(--panel);
+            padding: clamp(1.6rem, 4vw, 2.4rem);
+            box-shadow: var(--shadow);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.8rem;
+        }
+
+        .hud {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            min-width: 260px;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .stat-pill {
+            display: flex;
+            align-items: baseline;
+            gap: 0.6rem;
+            padding: 0.7rem 1.2rem;
+            border-radius: 999px;
+            border: 1px solid var(--panel-border);
+            background: linear-gradient(135deg, rgba(0, 255, 212, 0.16), rgba(0, 0, 0, 0.35));
+            box-shadow: 0 16px 32px rgba(0, 255, 212, 0.18);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            letter-spacing: 0.7px;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .target-card {
+            border-radius: 18px;
+            border: 1px solid rgba(0, 255, 212, 0.18);
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1.2rem 1.4rem;
+            display: grid;
+            gap: 0.6rem;
+        }
+
+        .target-card h2 {
+            margin: 0;
+            font-size: 1.1rem;
+            color: var(--muted);
+        }
+
+        .target-word {
+            font-size: 1.6rem;
+            color: var(--accent);
+            letter-spacing: 0.2px;
+        }
+
+        .target-pronounce {
+            font-size: 0.9rem;
+            color: var(--muted);
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .control-btn {
+            padding: 0.75rem 1.8rem;
+            border-radius: 999px;
+            border: 1px solid var(--accent-strong);
+            background: linear-gradient(145deg, rgba(0, 255, 212, 0.7), rgba(0, 123, 255, 0.7));
+            color: #021b15;
+            font-weight: 600;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+        }
+
+        .control-btn.alt {
+            background: rgba(0, 0, 0, 0.4);
+            border-color: rgba(0, 255, 212, 0.22);
+            color: var(--accent);
+        }
+
+        .control-btn:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .control-btn:not(:disabled):hover {
+            transform: translateY(-3px);
+            box-shadow: 0 22px 48px rgba(0, 255, 212, 0.32);
+            filter: brightness(1.05);
+        }
+
+        .playfield {
             position: relative;
-            width: 500px;
-            height: 700px;
-            background-color: #111;
-            border: 3px solid #FFD700;
+            width: min(460px, 100%);
+            margin: 0 auto;
+        }
+
+        .drop-area {
+            position: relative;
+            width: 100%;
+            padding-top: 140%;
+            border-radius: 24px;
+            border: 1px solid rgba(0, 255, 212, 0.18);
+            background: radial-gradient(circle at center, rgba(0, 20, 28, 0.85), rgba(0, 0, 0, 0.95));
+            box-shadow: inset 0 0 0 1px rgba(0, 255, 212, 0.08);
+            overflow: hidden;
+        }
+
+        #game-container {
+            position: absolute;
+            inset: 1.5rem;
+            border-radius: 20px;
             overflow: hidden;
         }
 
         .word {
             position: absolute;
-            font-size: 0.9em; /* Reduced font size */
-            color: violet;
-            white-space: nowrap; /* Prevent line breaks within words */
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text);
+            padding: 0.35rem 0.6rem;
+            border-radius: 999px;
+            background: rgba(0, 255, 212, 0.22);
+            box-shadow: 0 12px 24px rgba(0, 255, 212, 0.18);
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .word.correct {
+            background: rgba(0, 255, 166, 0.7);
+            color: #021b15;
+        }
+
+        .word.wrong {
+            background: rgba(255, 92, 92, 0.7);
         }
 
         .basket {
             position: absolute;
-            bottom: 10px;
-            width: 40px;
-            height: 20px;
-            background-color: #00FFFF;
-            border-radius: 5px;
+            bottom: 0.75rem;
+            width: 88px;
+            height: 22px;
+            border-radius: 12px;
+            background: linear-gradient(145deg, rgba(0, 255, 212, 0.85), rgba(0, 123, 255, 0.85));
+            box-shadow: 0 14px 32px rgba(0, 255, 212, 0.35);
         }
 
-        .score {
+        .miss-flag {
             position: absolute;
-            top: 10px;
-            left: 10px;
-            font-size: 1.2em;
+            bottom: 0;
+            left: 50%;
+            transform: translate(-50%, 120%);
+            font-size: 0.85rem;
+            letter-spacing: 0.3px;
+            color: var(--muted);
+            opacity: 0;
+            transition: opacity 0.25s ease;
         }
 
-        .target-word {
+        .miss-flag.show {
+            opacity: 1;
+        }
+
+        .toast {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 1.2em;
-            color: #00FF00;
+            top: 1.2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 0.55rem 1.1rem;
+            border-radius: 14px;
+            background: rgba(0, 0, 0, 0.55);
+            border: 1px solid rgba(0, 255, 212, 0.24);
+            font-size: 0.95rem;
+            color: var(--accent);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.25s ease, transform 0.25s ease;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(-6px);
+        }
+
+        @media (max-width: 680px) {
+            .game-panel {
+                grid-template-columns: 1fr;
+            }
+
+            .playfield {
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="game-shell">
+        <header class="game-header">
+            <h1>Neon Vocabulary Catch</h1>
+            <p>Slide the glowing basket to catch the matching French term. Stay focused to maintain your streak and accelerate the drop.</p>
+        </header>
 
-    <div class="game-container" id="game-container">
-        <div class="score" id="score">Score: 0</div>
-        <div class="target-word" id="target-word"></div>
-        <div class="basket" id="basket"></div>
+        <section class="game-panel" aria-live="polite">
+            <div class="hud">
+                <div class="stat-grid">
+                    <div class="stat-pill">
+                        <span class="stat-label">Score</span>
+                        <span class="stat-value" id="score-value">0</span>
+                    </div>
+                    <div class="stat-pill">
+                        <span class="stat-label">Streak</span>
+                        <span class="stat-value" id="streak-value">0</span>
+                    </div>
+                    <div class="stat-pill">
+                        <span class="stat-label">Misses</span>
+                        <span class="stat-value" id="miss-value">0</span>
+                    </div>
+                </div>
+
+                <div class="target-card">
+                    <h2>Catch this translation</h2>
+                    <div class="target-word" id="target-word">Loading…</div>
+                    <div class="target-pronounce" id="target-hint"></div>
+                </div>
+
+                <div class="controls">
+                    <button class="control-btn alt" id="toggle-mouse-btn" type="button">Mouse Control: On</button>
+                    <button class="control-btn" id="restart-btn" type="button">Restart Run</button>
+                    <button class="control-btn" id="speed-btn" type="button">Speed: Normal</button>
+                </div>
+            </div>
+
+            <div class="playfield">
+                <div class="drop-area">
+                    <div id="game-container">
+                        <div class="basket" id="basket"></div>
+                        <div class="miss-flag" id="miss-flag">Miss</div>
+                        <div class="toast" id="toast"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
 
     <script>
-        const frenchWords = [
+        const words = [
             { english: "Perseverance", french: "Persévérance" },
             { english: "Achievement", french: "Accomplissement" },
             { english: "Determination", french: "Détermination" },
@@ -92,83 +349,285 @@
             { english: "Leadership", french: "Leadership" },
             { english: "Motivation", french: "Motivation" },
             { english: "Persistence", french: "Persistance" },
-            { english: "Creativity", french: "Créativité" }
+            { english: "Creativity", french: "Créativité" },
+            { english: "Strategy", french: "Stratégie" },
+            { english: "Empathy", french: "Empathie" },
+            { english: "Respect", french: "Respect" },
+            { english: "Generosity", french: "Générosité" },
+            { english: "Clarity", french: "Clarté" },
+            { english: "Courage", french: "Courage" },
+            { english: "Balance", french: "Équilibre" },
+            { english: "Gratitude", french: "Gratitude" },
+            { english: "Wisdom", french: "Sagesse" },
+            { english: "Focus", french: "Concentration" },
+            { english: "Vision", french: "Vision" },
+            { english: "Synergy", french: "Synergie" },
+            { english: "Ingenuity", french: "Ingéniosité" },
+            { english: "Momentum", french: "Élan" },
+            { english: "Stability", french: "Stabilité" },
+            { english: "Foresight", french: "Anticipation" },
+            { english: "Unity", french: "Unité" },
+            { english: "Reliability", french: "Fiabilité" },
+            { english: "Adaptability", french: "Adaptabilité" },
+            { english: "Resilience", french: "Résilience" },
+            { english: "Collaboration", french: "Collaboration" },
+            { english: "Efficiency", french: "Efficacité" },
+            { english: "Inclusivity", french: "Inclusivité" },
+            { english: "Opportunity", french: "Opportunité" },
+            { english: "Partnership", french: "Partenariat" },
+            { english: "Sustainability", french: "Durabilité" },
+            { english: "Accountability", french: "Responsabilisation" },
+            { english: "Transformation", french: "Transformation" }
         ];
 
-        let score = 0;
-        let fallingSpeed = 2;
+        const speeds = [
+            { label: "Chill", multiplier: 0.8 },
+            { label: "Normal", multiplier: 1 },
+            { label: "Swift", multiplier: 1.3 },
+            { label: "Turbo", multiplier: 1.6 }
+        ];
+
         const gameContainer = document.getElementById("game-container");
         const basket = document.getElementById("basket");
-        const scoreDisplay = document.getElementById("score");
+        const scoreValue = document.getElementById("score-value");
+        const streakValue = document.getElementById("streak-value");
+        const missValue = document.getElementById("miss-value");
         const targetWordDisplay = document.getElementById("target-word");
+        const targetHintDisplay = document.getElementById("target-hint");
+        const missFlag = document.getElementById("miss-flag");
+        const toast = document.getElementById("toast");
+        const restartBtn = document.getElementById("restart-btn");
+        const speedBtn = document.getElementById("speed-btn");
+        const toggleMouseBtn = document.getElementById("toggle-mouse-btn");
 
-        let targetWord = getRandomWord();
-        targetWordDisplay.innerText = `Catch: ${targetWord.english}`;
+        const basketBounds = () => ({
+            width: basket.offsetWidth,
+            height: basket.offsetHeight,
+            maxX: gameContainer.offsetWidth - basket.offsetWidth
+        });
 
-        function getRandomWord() {
-            return frenchWords[Math.floor(Math.random() * frenchWords.length)];
+        let activeWords = [];
+        let basketX = 0;
+        let score = 0;
+        let streak = 0;
+        let misses = 0;
+        let running = false;
+        let lastTimestamp = null;
+        let spawnTimer = 0;
+        let spawnInterval = 1600;
+        let speedIndex = 1;
+        let targetWord = null;
+        let useMouseControl = true;
+
+        function clamp(value, min, max) {
+            return Math.max(min, Math.min(max, value));
+        }
+
+        function chooseTarget() {
+            targetWord = words[Math.floor(Math.random() * words.length)];
+            targetWordDisplay.textContent = targetWord.english;
+            targetHintDisplay.textContent = `Catch the French word: ${targetWord.french}`;
         }
 
         function createWord() {
-            const wordDiv = document.createElement("div");
-            wordDiv.classList.add("word");
-            const randomWord = frenchWords[Math.floor(Math.random() * frenchWords.length)];
-            wordDiv.innerText = randomWord.french;
-            wordDiv.dataset.french = randomWord.french;
+            const wordData = words[Math.floor(Math.random() * words.length)];
+            const wordEl = document.createElement("div");
+            wordEl.className = "word";
+            wordEl.textContent = wordData.french;
+            gameContainer.appendChild(wordEl);
 
-            // Adjust position to avoid overcrowding
-            wordDiv.style.left = `${Math.random() * (gameContainer.offsetWidth - 100)}px`;
-            gameContainer.appendChild(wordDiv);
-            moveWordDown(wordDiv);
+            const startX = Math.random() * (gameContainer.offsetWidth - wordEl.offsetWidth);
+            wordEl.style.left = `${startX}px`;
+            wordEl.style.top = "-40px";
+
+            activeWords.push({
+                el: wordEl,
+                x: startX,
+                y: -40,
+                speed: (80 + Math.random() * 40) * speeds[speedIndex].multiplier,
+                data: wordData
+            });
         }
 
-        function moveWordDown(wordDiv) {
-            let position = 0;
-            const interval = setInterval(() => {
-                if (position > gameContainer.offsetHeight) {
-                    wordDiv.remove();
-                    clearInterval(interval);
-                } else {
-                    position += fallingSpeed;
-                    wordDiv.style.top = `${position}px`;
+        function updateWords(delta) {
+            const bounds = basketBounds();
+            const removeList = [];
 
-                    const wordRect = wordDiv.getBoundingClientRect();
-                    const basketRect = basket.getBoundingClientRect();
+            activeWords.forEach((wordObj, index) => {
+                wordObj.y += wordObj.speed * delta;
+                wordObj.el.style.transform = `translateY(${wordObj.y}px)`;
 
-                    if (
-                        wordRect.bottom >= basketRect.top &&
-                        wordRect.right >= basketRect.left &&
-                        wordRect.left <= basketRect.right
-                    ) {
-                        if (wordDiv.dataset.french === targetWord.french) {
-                            score += 10;
-                            scoreDisplay.innerText = `Score: ${score}`;
-                            targetWord = getRandomWord();
-                            targetWordDisplay.innerText = `Catch: ${targetWord.english}`;
-                        } else {
-                            score -= 5;
-                            scoreDisplay.innerText = `Score: ${score}`;
-                        }
-                        wordDiv.remove();
-                        clearInterval(interval);
+                const wordBottom = wordObj.y + wordObj.el.offsetHeight;
+                const basketTop = gameContainer.offsetHeight - bounds.height - 12;
+
+                if (wordBottom >= basketTop) {
+                    const wordLeft = wordObj.x;
+                    const wordRight = wordObj.x + wordObj.el.offsetWidth;
+                    const basketLeft = basketX;
+                    const basketRight = basketX + bounds.width;
+
+                    if (wordRight >= basketLeft && wordLeft <= basketRight) {
+                        handleCatch(wordObj);
+                        removeList.push(index);
+                    } else if (wordBottom > gameContainer.offsetHeight + 40) {
+                        handleMiss(wordObj);
+                        removeList.push(index);
                     }
+                } else if (wordBottom > gameContainer.offsetHeight + 60) {
+                    handleMiss(wordObj);
+                    removeList.push(index);
                 }
-            }, 30);
-        }
+            });
 
-        function moveBasket(event) {
-            const basketWidth = basket.offsetWidth;
-            const gameWidth = gameContainer.offsetWidth;
-
-            if (event.key === "ArrowLeft" && basket.offsetLeft > 0) {
-                basket.style.left = `${basket.offsetLeft - 20}px`;
-            } else if (event.key === "ArrowRight" && basket.offsetLeft < gameWidth - basketWidth) {
-                basket.style.left = `${basket.offsetLeft + 20}px`;
+            for (let i = removeList.length - 1; i >= 0; i--) {
+                const wordObj = activeWords.splice(removeList[i], 1)[0];
+                wordObj.el.remove();
             }
         }
 
-        setInterval(createWord, 1500); // Adjust drop speed here
-        window.addEventListener("keydown", moveBasket);
+        function handleCatch(wordObj) {
+            const isCorrect = wordObj.data.french === targetWord.french;
+            wordObj.el.classList.add(isCorrect ? "correct" : "wrong");
+
+            if (isCorrect) {
+                streak += 1;
+                score += 12 + (streak - 1) * 3;
+                showToast(`+${12 + (streak - 1) * 3}`, "success");
+                chooseTarget();
+                spawnInterval = Math.max(900, spawnInterval - 30);
+            } else {
+                streak = 0;
+                score = Math.max(0, score - 6);
+                misses += 1;
+                showToast("Wrong catch!", "error");
+            }
+
+            updateHud();
+        }
+
+        function handleMiss(wordObj) {
+            if (wordObj.data.french === targetWord.french) {
+                streak = 0;
+                score = Math.max(0, score - 8);
+                misses += 1;
+                showToast("Missed the target!", "error");
+                chooseTarget();
+                spawnInterval = Math.min(1800, spawnInterval + 60);
+            } else {
+                showToast("Skipped a decoy", "muted");
+            }
+            missFlag.classList.add("show");
+            setTimeout(() => missFlag.classList.remove("show"), 450);
+            updateHud();
+        }
+
+        function showToast(message, type) {
+            toast.textContent = message;
+            toast.style.color = type === "success" ? "var(--success)" : type === "error" ? "var(--danger)" : "var(--accent)";
+            toast.classList.add("show");
+            clearTimeout(showToast.timeout);
+            showToast.timeout = setTimeout(() => toast.classList.remove("show"), 800);
+        }
+
+        function updateHud() {
+            scoreValue.textContent = score;
+            streakValue.textContent = streak;
+            missValue.textContent = misses;
+        }
+
+        function moveBasket(deltaX) {
+            const bounds = basketBounds();
+            basketX = clamp(basketX + deltaX, 0, bounds.maxX);
+            basket.style.transform = `translateX(${basketX}px)`;
+        }
+
+        function handleKeydown(event) {
+            if (!running) return;
+            const { key } = event;
+            if (key === "ArrowLeft") {
+                moveBasket(-36);
+            } else if (key === "ArrowRight") {
+                moveBasket(36);
+            }
+        }
+
+        function handleMouseMove(event) {
+            if (!running || !useMouseControl) return;
+            const rect = gameContainer.getBoundingClientRect();
+            const relativeX = event.clientX - rect.left - basket.offsetWidth / 2;
+            const bounds = basketBounds();
+            basketX = clamp(relativeX, 0, bounds.maxX);
+            basket.style.transform = `translateX(${basketX}px)`;
+        }
+
+        function toggleMouseControl() {
+            useMouseControl = !useMouseControl;
+            toggleMouseBtn.textContent = `Mouse Control: ${useMouseControl ? "On" : "Off"}`;
+        }
+
+        function toggleSpeed() {
+            speedIndex = (speedIndex + 1) % speeds.length;
+            speedBtn.textContent = `Speed: ${speeds[speedIndex].label}`;
+        }
+
+        function resetGame() {
+            activeWords.forEach((wordObj) => wordObj.el.remove());
+            activeWords = [];
+            basketX = (gameContainer.offsetWidth - basket.offsetWidth) / 2;
+            basket.style.transform = `translateX(${basketX}px)`;
+            score = 0;
+            streak = 0;
+            misses = 0;
+            spawnInterval = 1500;
+            chooseTarget();
+            updateHud();
+            lastTimestamp = null;
+            spawnTimer = 0;
+        }
+
+        function startGame() {
+            if (running) return;
+            running = true;
+            resetGame();
+            requestAnimationFrame(loop);
+        }
+
+        function stopGame() {
+            running = false;
+        }
+
+        function loop(timestamp) {
+            if (!running) return;
+            if (!lastTimestamp) lastTimestamp = timestamp;
+            const delta = (timestamp - lastTimestamp) / 1000;
+            lastTimestamp = timestamp;
+
+            spawnTimer += timestamp - (lastTimestamp - delta * 1000);
+            if (spawnTimer >= spawnInterval) {
+                createWord();
+                spawnTimer = 0;
+            }
+
+            updateWords(delta);
+            requestAnimationFrame(loop);
+        }
+
+        window.addEventListener("keydown", handleKeydown);
+        window.addEventListener("mousemove", handleMouseMove);
+        window.addEventListener("touchmove", (event) => {
+            if (!running || !useMouseControl) return;
+            const touch = event.touches[0];
+            handleMouseMove({ clientX: touch.clientX });
+        }, { passive: true });
+
+        toggleMouseBtn.addEventListener("click", toggleMouseControl);
+        speedBtn.addEventListener("click", toggleSpeed);
+        restartBtn.addEventListener("click", () => {
+            stopGame();
+            startGame();
+        });
+
+        startGame();
     </script>
 </body>
 </html>
