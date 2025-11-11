@@ -3,194 +3,915 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>French Quiz Puzzle Game - VR Style with Levels</title>
+  <title>Neon Sentence Builder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    /* VR-inspired style */
+    :root {
+      color-scheme: dark;
+      --accent: #00ffd4;
+      --accent-strong: rgba(0, 255, 212, 0.45);
+      --accent-soft: rgba(0, 255, 212, 0.18);
+      --bg: radial-gradient(circle at top, rgba(0, 255, 212, 0.16), rgba(3, 10, 16, 0.95));
+      --panel: rgba(8, 18, 22, 0.92);
+      --panel-border: rgba(0, 255, 212, 0.3);
+      --text: #f2fffb;
+      --muted: rgba(242, 255, 251, 0.7);
+      --shadow: 0 22px 48px rgba(0, 0, 0, 0.55);
+      --danger: #ff6b6b;
+      --success: #8bffc6;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: clamp(2rem, 5vw, 4rem) 1.5rem;
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .game-shell {
+      width: min(960px, 100%);
       display: flex;
       flex-direction: column;
+      gap: 1.85rem;
+    }
+
+    .game-header {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .game-header h1 {
+      font-size: clamp(2.1rem, 4vw, 3.1rem);
+      text-transform: uppercase;
+      letter-spacing: 1.3px;
+      text-shadow: 0 0 28px rgba(0, 255, 212, 0.35);
+    }
+
+    .game-header p {
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .game-panel {
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: clamp(1.8rem, 4vw, 2.8rem);
+      display: flex;
+      flex-direction: column;
+      gap: 1.75rem;
+    }
+
+    .scoreboard {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .stat-pill {
+      display: flex;
+      align-items: baseline;
+      gap: 0.65rem;
+      padding: 0.7rem 1.4rem;
+      border-radius: 999px;
+      border: 1px solid var(--panel-border);
+      background: linear-gradient(135deg, rgba(0, 255, 212, 0.16), rgba(0, 0, 0, 0.35));
+      box-shadow: 0 16px 32px rgba(0, 255, 212, 0.18);
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .stat-value {
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .progress-wrap {
+      flex: 1;
+      min-width: 240px;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 11px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 999px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, rgba(0, 255, 212, 0.85), rgba(0, 123, 255, 0.85));
+      box-shadow: 0 0 22px rgba(0, 255, 212, 0.45);
+      border-radius: inherit;
+      transition: width 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .progress-label {
+      margin-top: 0.4rem;
+      font-size: 0.92rem;
+      color: var(--muted);
+      letter-spacing: 0.45px;
+    }
+
+    .play-area {
+      display: grid;
+      gap: 1.4rem;
+    }
+
+    .sentence-card {
+      position: relative;
+      border-radius: 20px;
+      padding: clamp(1.6rem, 4vw, 2.1rem);
+      border: 1px solid rgba(0, 255, 212, 0.18);
+      background: rgba(0, 0, 0, 0.32);
+      box-shadow: inset 0 0 0 1px rgba(0, 255, 212, 0.08);
+    }
+
+    .sentence-text {
+      font-size: clamp(1.4rem, 3vw, 1.85rem);
+      line-height: 1.65;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+    }
+
+    .blank-slot {
+      min-width: clamp(120px, 20vw, 180px);
+      padding: 0.35rem 0.4rem;
+      border-radius: 14px;
+      border: 1px dashed rgba(0, 255, 212, 0.45);
+      background: rgba(0, 0, 0, 0.45);
+      text-align: center;
+      color: var(--muted);
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .blank-slot.active {
+      border-style: solid;
+      border-color: var(--accent);
+      box-shadow: 0 0 18px rgba(0, 255, 212, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .blank-slot.filled {
+      border-color: rgba(0, 255, 166, 0.8);
+      background: rgba(0, 255, 166, 0.12);
+      color: var(--accent);
+      font-weight: 600;
+      letter-spacing: 0.4px;
+    }
+
+    .bank-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .bank-header h2 {
+      margin: 0;
+      font-size: 1.05rem;
+      letter-spacing: 0.4px;
+      color: var(--muted);
+    }
+
+    .word-bank {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 0.9rem;
+    }
+
+    .word-chip {
+      border-radius: 14px;
+      border: 1px solid rgba(0, 255, 212, 0.2);
+      background: linear-gradient(145deg, rgba(0, 255, 212, 0.2), rgba(0, 0, 0, 0.6));
+      color: var(--text);
+      font-size: 1.05rem;
+      font-weight: 500;
+      padding: 0.85rem 1.05rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: grab;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+      user-select: none;
+    }
+
+    .word-chip:hover:not(.used) {
+      transform: translateY(-3px);
+      border-color: rgba(0, 255, 212, 0.45);
+      box-shadow: 0 18px 36px rgba(0, 255, 212, 0.22);
+    }
+
+    .word-chip.dragging {
+      opacity: 0.65;
+      cursor: grabbing;
+    }
+
+    .word-chip.used {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: scale(0.9);
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: center;
+    }
+
+    .control-btn {
+      padding: 0.85rem 1.6rem;
+      border-radius: 999px;
+      border: 1px solid var(--accent-strong);
+      background: linear-gradient(145deg, rgba(0, 255, 212, 0.7), rgba(0, 123, 255, 0.7));
+      color: #021b15;
+      font-weight: 600;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease, opacity 0.25s ease;
+    }
+
+    .control-btn.alt {
+      background: rgba(0, 0, 0, 0.4);
+      border-color: rgba(0, 255, 212, 0.26);
+      color: var(--accent);
+    }
+
+    .control-btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    }
+
+    .control-btn:not(:disabled):hover {
+      transform: translateY(-3px);
+      box-shadow: 0 22px 48px rgba(0, 255, 212, 0.32);
+      filter: brightness(1.05);
+    }
+
+    .feedback {
+      text-align: center;
+      font-size: 0.98rem;
+      color: var(--muted);
+      min-height: 1.5rem;
+      transition: color 0.3s ease;
+    }
+
+    .feedback.success {
+      color: var(--success);
+    }
+
+    .feedback.error {
+      color: var(--danger);
+    }
+
+    .completion-banner {
+      display: none;
       align-items: center;
       justify-content: center;
-      height: 100vh;
-      margin: 0;
-      background-color: #000;
-      color: #00FFDD;
+      gap: 0.8rem;
+      background: linear-gradient(135deg, rgba(0, 255, 212, 0.16), rgba(0, 0, 0, 0.4));
+      border: 1px solid rgba(0, 255, 212, 0.3);
+      border-radius: 16px;
+      padding: 0.9rem 1.4rem;
+      color: var(--accent);
+      font-weight: 600;
+      letter-spacing: 0.45px;
     }
 
-    h1 {
-      color: #00FFDD;
-      text-shadow: 0 0 10px #00FFDD, 0 0 20px #00FFDD, 0 0 30px #00FFDD;
-    }
-
-    .sentence {
-      margin: 20px;
-      font-size: 18px;
-      color: #00FFDD;
-    }
-
-    .blank {
-      display: inline-block;
-      width: 100px;
-      height: 30px;
-      border-bottom: 2px solid #00FFDD;
-      text-align: center;
-      color: #00FFDD;
-      text-shadow: 0 0 5px #00FFDD, 0 0 10px #00FFDD;
-    }
-
-    .words {
-      margin-top: 20px;
+    .completion-banner[aria-hidden="false"] {
       display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      max-width: 400px;
-      justify-content: center;
     }
 
-    .word {
-      padding: 8px 16px;
-      background-color: #333;
-      color: #00FFDD;
-      border-radius: 4px;
-      cursor: grab;
-      font-size: 18px;
-      box-shadow: 0 0 5px #00FFDD, 0 0 10px #00FFDD;
-      text-shadow: 0 0 5px #00FFDD, 0 0 10px #00FFDD;
+    .shake {
+      animation: shake 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97);
     }
 
-    .word.dragging {
-      opacity: 0.5;
+    @keyframes shake {
+      10%, 90% {
+        transform: translate3d(-1px, 0, 0);
+      }
+
+      20%, 80% {
+        transform: translate3d(2px, 0, 0);
+      }
+
+      30%, 50%, 70% {
+        transform: translate3d(-4px, 0, 0);
+      }
+
+      40%, 60% {
+        transform: translate3d(4px, 0, 0);
+      }
     }
 
-    #next-level-btn {
-      display: none;
-      margin-top: 20px;
-      padding: 10px 20px;
-      background-color: #00FFDD;
-      color: #000;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 18px;
-      font-weight: bold;
+    @media (max-width: 640px) {
+      .game-panel {
+        padding: 1.5rem;
+      }
+
+      .scoreboard {
+        gap: 0.75rem;
+      }
+
+      .stat-pill {
+        padding: 0.6rem 1.1rem;
+      }
     }
   </style>
 </head>
 <body>
+  <div class="game-shell">
+    <header class="game-header">
+      <h1>Neon Sentence Builder</h1>
+      <p>Drag the glowing word chips into the blank slots to complete each French sentence. Complete all twenty rounds to master the puzzle.</p>
+    </header>
 
-<h1>French VR Quiz Puzzle - Level <span id="level-number">1</span></h1>
+    <section class="game-panel" aria-live="polite">
+      <div class="scoreboard">
+        <div class="stat-pill" aria-live="polite">
+          <span class="stat-label">Level</span>
+          <span class="stat-value" id="level-value">1</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-label">Score</span>
+          <span class="stat-value" id="score-value">0</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-label">Streak</span>
+          <span class="stat-value" id="streak-value">0</span>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-track" role="progressbar" aria-label="Level progress" aria-valuemin="1" aria-valuemax="20" aria-valuenow="1">
+            <div class="progress-fill" id="progress-fill"></div>
+          </div>
+          <div class="progress-label" id="progress-label">Level 1 of 20</div>
+        </div>
+      </div>
 
-<div id="level-container">
-  <!-- Level 1 -->
-  <div class="sentence" data-level="1">
-    Je m'appelle <span class="blank" data-answer="Jean"></span> et j'habite en <span class="blank" data-answer="France"></span>.
+      <div class="completion-banner" id="completion-banner" aria-hidden="true">
+        <span>✨ All blanks filled! Click next to advance.</span>
+      </div>
+
+      <div class="play-area">
+        <article class="sentence-card" id="sentence-card">
+          <div class="sentence-text" id="sentence-text">
+            <!-- Sentence pieces injected here -->
+          </div>
+        </article>
+
+        <div class="bank-header">
+          <h2>Word Bank</h2>
+          <button class="control-btn alt" id="shuffle-btn" type="button">Shuffle Words</button>
+        </div>
+
+        <div class="word-bank" id="word-bank">
+          <!-- Word chips injected here -->
+        </div>
+      </div>
+
+      <p class="feedback" id="feedback">Drag a neon chip onto a matching slot to begin.</p>
+
+      <div class="controls">
+        <button class="control-btn alt" id="reset-btn" type="button">Reset Level</button>
+        <button class="control-btn" id="next-btn" type="button" disabled>Next Level</button>
+      </div>
+    </section>
   </div>
 
-  <!-- Level 2 -->
-  <div class="sentence" data-level="2" style="display: none;">
-    J'aime manger <span class="blank" data-answer="des croissants"></span> et boire <span class="blank" data-answer="du café"></span>.
-  </div>
+  <script>
+    const levels = [
+      {
+        id: 1,
+        sentence: [
+          "Je m'appelle",
+          { answer: "Jean" },
+          "et j'habite en",
+          { answer: "France" },
+          "."
+        ],
+        options: ["Jean", "France", "Paris", "Canada"]
+      },
+      {
+        id: 2,
+        sentence: [
+          "J'aime manger",
+          { answer: "des croissants" },
+          "et boire",
+          { answer: "du café" },
+          "."
+        ],
+        options: ["des croissants", "du café", "eau", "jus"]
+      },
+      {
+        id: 3,
+        sentence: [
+          "Mon animal préféré est le",
+          { answer: "chat" },
+          ", mais j'aime aussi le",
+          { answer: "chien" },
+          "."
+        ],
+        options: ["chat", "chien", "oiseau", "poisson"]
+      },
+      {
+        id: 4,
+        sentence: [
+          "En été, j'adore aller à la",
+          { answer: "plage" },
+          "et nager dans la",
+          { answer: "mer" },
+          "."
+        ],
+        options: ["plage", "mer", "montagne", "forêt"]
+      },
+      {
+        id: 5,
+        sentence: [
+          "Mes parents",
+          { answer: "habitent" },
+          "dans un",
+          { answer: "petit village" },
+          "."
+        ],
+        options: ["habitent", "vivent", "petit village", "petite ville", "restent", "grand immeuble"]
+      },
+      {
+        id: 6,
+        sentence: [
+          "Demain,",
+          { answer: "nous" },
+          { answer: "prenons" },
+          "le train pour",
+          { answer: "Lyon" },
+          "."
+        ],
+        options: ["nous", "ils", "prenons", "prend", "Lyon", "Paris"]
+      },
+      {
+        id: 7,
+        sentence: [
+          "Elle",
+          { answer: "travaille" },
+          "comme",
+          { answer: "ingénieure" },
+          "dans cette",
+          { answer: "entreprise" },
+          "."
+        ],
+        options: ["travaille", "travaillons", "ingénieure", "enseignante", "entreprise", "école"]
+      },
+      {
+        id: 8,
+        sentence: [
+          "Après le dîner,",
+          { answer: "ils" },
+          { answer: "regardent" },
+          "un film",
+          { answer: "ensemble" },
+          "."
+        ],
+        options: ["ils", "nous", "regardent", "écoutent", "ensemble", "seuls"]
+      },
+      {
+        id: 9,
+        sentence: [
+          "Demain matin,",
+          { answer: "je" },
+          { answer: "prendrai" },
+          "le",
+          { answer: "métro" },
+          "pour aller au",
+          { answer: "bureau" },
+          "."
+        ],
+        options: ["je", "nous", "prendrai", "prend", "métro", "bus", "bureau", "cinéma"]
+      },
+      {
+        id: 10,
+        sentence: [
+          "Chaque semaine,",
+          { answer: "nous" },
+          { answer: "organisons" },
+          "une",
+          { answer: "réunion" },
+          "avec nos",
+          { answer: "partenaires" },
+          "."
+        ],
+        options: ["nous", "ils", "organisons", "organise", "réunion", "pauses", "partenaires", "collègues"]
+      },
+      {
+        id: 11,
+        sentence: [
+          "Cette année,",
+          { answer: "ils" },
+          { answer: "lancent" },
+          "un",
+          { answer: "programme" },
+          { answer: "innovant" },
+          "pour soutenir les",
+          { answer: "étudiants" },
+          "."
+        ],
+        options: ["ils", "nous", "lancent", "lance", "programme", "projet", "innovant", "classique", "étudiants", "athlètes"]
+      },
+      {
+        id: 12,
+        sentence: [
+          "En fin de journée,",
+          { answer: "nous" },
+          { answer: "partageons" },
+          "les",
+          { answer: "résultats" },
+          "avec toute",
+          { answer: "l'équipe" },
+          "afin de",
+          { answer: "célébrer" },
+          "les succès."
+        ],
+        options: ["nous", "ils", "partageons", "partage", "résultats", "réunions", "l'équipe", "le groupe", "célébrer", "oublier"]
+      },
+      {
+        id: 13,
+        sentence: [
+          "Le comité analyse les",
+          { answer: "résultats" },
+          "statistiques pour",
+          { answer: "ajuster" },
+          "le",
+          { answer: "plan" },
+          "."
+        ],
+        options: ["résultats", "rapports", "ajuster", "maintenir", "plan", "budget", "corriger", "programme"]
+      },
+      {
+        id: 14,
+        sentence: [
+          "Nous avons mis en place des",
+          { answer: "ateliers" },
+          { answer: "collaboratifs" },
+          "chaque",
+          { answer: "semaine" },
+          "."
+        ],
+        options: ["ateliers", "sessions", "collaboratifs", "individuels", "semaine", "jour", "réunion", "agenda"]
+      },
+      {
+        id: 15,
+        sentence: [
+          "Les participants partagent leurs",
+          { answer: "retours" },
+          "via une",
+          { answer: "plateforme" },
+          { answer: "interactive" },
+          "."
+        ],
+        options: ["retours", "avis", "plateforme", "table", "interactive", "papier", "messages", "scène"]
+      },
+      {
+        id: 16,
+        sentence: [
+          "À la fin de la session, chacun propose une",
+          { answer: "action" },
+          { answer: "concrète" },
+          "à",
+          { answer: "réaliser" },
+          "."
+        ],
+        options: ["action", "idée", "concrète", "symbolique", "réaliser", "discuter", "résoudre", "évaluer"]
+      },
+      {
+        id: 17,
+        sentence: [
+          "La commission publie un",
+          { answer: "compte rendu" },
+          { answer: "détaillé" },
+          "chaque",
+          { answer: "trimestre" },
+          "."
+        ],
+        options: ["compte rendu", "rapport", "détaillé", "bref", "trimestre", "semaine", "mois", "année"]
+      },
+      {
+        id: 18,
+        sentence: [
+          "Notre équipe maintient un",
+          { answer: "dialogue" },
+          { answer: "constant" },
+          "avec les",
+          { answer: "parties prenantes" },
+          "."
+        ],
+        options: ["dialogue", "silence", "constant", "ponctuel", "parties prenantes", "spectateurs", "collègues", "visiteurs"]
+      },
+      {
+        id: 19,
+        sentence: [
+          "Nous évaluons les",
+          { answer: "indicateurs" },
+          { answer: "clés" },
+          "afin de",
+          { answer: "mesurer" },
+          "l'",
+          { answer: "impact" },
+          "."
+        ],
+        options: ["indicateurs", "signaux", "clés", "secondaires", "mesurer", "ignorer", "impact", "résultat"]
+      },
+      {
+        id: 20,
+        sentence: [
+          "Chaque membre formule une",
+          { answer: "recommandation" },
+          { answer: "stratégique" },
+          "pour la",
+          { answer: "prochaine étape" },
+          "."
+        ],
+        options: ["recommandation", "question", "stratégique", "simple", "prochaine étape", "ancienne étape", "phase initiale", "pause"]
+      }
+    ];
 
-  <!-- Level 3 -->
-  <div class="sentence" data-level="3" style="display: none;">
-    Mon animal préféré est le <span class="blank" data-answer="chat"></span>, mais j'aime aussi le <span class="blank" data-answer="chien"></span>.
-  </div>
-  
-  <!-- Level 4 -->
-  <div class="sentence" data-level="4" style="display: none;">
-    En été, j'adore aller à la <span class="blank" data-answer="plage"></span> et nager dans la <span class="blank" data-answer="mer"></span>.
-  </div>
-</div>
+    const totalLevels = levels.length;
+    let currentLevelIndex = 0;
+    let score = 0;
+    let currentStreak = 0;
+    let bestStreak = 0;
+    let blanksFilled = 0;
 
-<div class="words" id="words-container">
-  <!-- Words for Level 1 -->
-  <div class="word" draggable="true" data-word="Jean">Jean</div>
-  <div class="word" draggable="true" data-word="France">France</div>
-  <div class="word" draggable="true" data-word="Paris">Paris</div>
-  <div class="word" draggable="true" data-word="Canada">Canada</div>
-</div>
+    const sentenceText = document.getElementById("sentence-text");
+    const wordBank = document.getElementById("word-bank");
+    const feedbackDisplay = document.getElementById("feedback");
+    const nextBtn = document.getElementById("next-btn");
+    const shuffleBtn = document.getElementById("shuffle-btn");
+    const resetBtn = document.getElementById("reset-btn");
+    const progressFill = document.getElementById("progress-fill");
+    const progressLabel = document.getElementById("progress-label");
+    const levelValue = document.getElementById("level-value");
+    const scoreValue = document.getElementById("score-value");
+    const streakValue = document.getElementById("streak-value");
+    const completionBanner = document.getElementById("completion-banner");
 
-<button id="next-level-btn">Next Level</button>
+    function shuffle(array) {
+      const copy = [...array];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
 
-<script>
-  let currentLevel = 1;
-  const maxLevel = 4;
+    function resetGameState() {
+      blanksFilled = 0;
+      updateNextButton(false);
+      setFeedback("Drag a neon chip onto a matching slot to begin.", null);
+      completionBanner.setAttribute("aria-hidden", "true");
+    }
 
-  const wordsContainer = document.getElementById('words-container');
-  const levelNumberDisplay = document.getElementById('level-number');
-  const nextLevelButton = document.getElementById('next-level-btn');
+    function renderLevel() {
+      const level = levels[currentLevelIndex];
+      levelValue.textContent = level.id;
+      progressLabel.textContent = `Level ${level.id} of ${totalLevels}`;
+      progressFill.style.width = `${(level.id - 1) / totalLevels * 100}%`;
+      document.querySelector(".progress-track").setAttribute("aria-valuenow", level.id);
 
-  function loadWords(level) {
-    wordsContainer.innerHTML = ''; // Clear previous words
-    const wordsByLevel = {
-      1: ['Jean', 'France', 'Paris', 'Canada'],
-      2: ['des croissants', 'du café', 'eau', 'jus'],
-      3: ['chat', 'chien', 'oiseau', 'poisson'],
-      4: ['plage', 'mer', 'montagne', 'forêt']
-    };
+      sentenceText.innerHTML = "";
+      wordBank.innerHTML = "";
 
-    wordsByLevel[level].forEach(word => {
-      const wordElement = document.createElement('div');
-      wordElement.className = 'word';
-      wordElement.draggable = true;
-      wordElement.textContent = word;
-      wordElement.dataset.word = word;
+      level.sentence.forEach((part, index) => {
+        if (typeof part === "string") {
+          const span = document.createElement("span");
+          span.textContent = part;
+          sentenceText.appendChild(span);
+        } else if (typeof part === "object" && part.answer) {
+          const blank = document.createElement("span");
+          blank.className = "blank-slot";
+          blank.dataset.answer = part.answer;
+          blank.dataset.index = index;
+          blank.setAttribute("role", "textbox");
+          blank.setAttribute("aria-label", `Blank for ${part.answer}`);
 
-      // Add drag events
-      wordElement.addEventListener('dragstart', () => wordElement.classList.add('dragging'));
-      wordElement.addEventListener('dragend', () => wordElement.classList.remove('dragging'));
+          addBlankEvents(blank);
+          sentenceText.appendChild(blank);
+        }
+      });
 
-      wordsContainer.appendChild(wordElement);
-    });
-  }
+      const shuffledOptions = shuffle(level.options);
+      shuffledOptions.forEach((option) => {
+        const chip = document.createElement("button");
+        chip.type = "button";
+        chip.className = "word-chip";
+        chip.textContent = option;
+        chip.draggable = true;
+        chip.dataset.word = option;
+        addChipEvents(chip);
+        wordBank.appendChild(chip);
+      });
 
-  function setupLevel(level) {
-    // Hide all sentences, then show the current level
-    document.querySelectorAll('.sentence').forEach(sentence => {
-      sentence.style.display = sentence.dataset.level == level ? 'block' : 'none';
-    });
-    levelNumberDisplay.textContent = level;
-    loadWords(level);
-    nextLevelButton.style.display = 'none';
-  }
+      resetGameState();
+    }
 
-  function checkCompletion() {
-    const blanks = document.querySelectorAll(`.sentence[data-level="${currentLevel}"] .blank`);
-    return Array.from(blanks).every(blank => blank.textContent === blank.dataset.answer);
-  }
+    function addChipEvents(chip) {
+      chip.addEventListener("dragstart", (event) => {
+        chip.classList.add("dragging");
+        event.dataTransfer.setData("text/plain", chip.dataset.word);
+        event.dataTransfer.effectAllowed = "move";
+      });
 
-  document.querySelectorAll('.blank').forEach(blank => {
-    blank.addEventListener('dragover', (e) => e.preventDefault());
+      chip.addEventListener("dragend", () => {
+        chip.classList.remove("dragging");
+      });
 
-    blank.addEventListener('drop', (e) => {
-      const draggingWord = document.querySelector('.word.dragging');
-      const answer = blank.getAttribute('data-answer');
-      const selectedWord = draggingWord.getAttribute('data-word');
+      chip.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          const blank = Array.from(document.querySelectorAll(".blank-slot")).find(
+            (slot) => !slot.classList.contains("filled")
+          );
+          if (blank) {
+            attemptDrop(blank, chip.dataset.word, chip);
+          }
+        }
+      });
+    }
 
-      if (selectedWord === answer) {
-        blank.textContent = selectedWord;
-        draggingWord.style.visibility = 'hidden';
+    function addBlankEvents(blank) {
+      blank.addEventListener("dragover", (event) => {
+        event.preventDefault();
+        event.dataTransfer.dropEffect = "move";
+        blank.classList.add("active");
+      });
 
-        if (checkCompletion()) {
-          nextLevelButton.style.display = 'block';
+      blank.addEventListener("dragleave", () => {
+        blank.classList.remove("active");
+      });
+
+      blank.addEventListener("drop", (event) => {
+        event.preventDefault();
+        const word = event.dataTransfer.getData("text/plain");
+        const chip = document.querySelector(`.word-chip.dragging[data-word="${CSS.escape(word)}"]`);
+        attemptDrop(blank, word, chip);
+        blank.classList.remove("active");
+      });
+
+      blank.addEventListener("click", () => {
+        if (blank.classList.contains("filled")) {
+          const word = blank.textContent.trim();
+          const chip = Array.from(document.querySelectorAll(".word-chip.used")).find(
+            (item) => item.dataset.word === word
+          );
+          if (chip) {
+            chip.classList.remove("used");
+            chip.removeAttribute("aria-hidden");
+            chip.focus();
+          }
+          blank.textContent = "";
+          blank.classList.remove("filled");
+          blanksFilled = Math.max(blanksFilled - 1, 0);
+          updateNextButton(false);
+          setFeedback("Slot cleared. Try another word.", null);
+        }
+      });
+    }
+
+    function attemptDrop(blank, word, chip) {
+      if (!chip || blank.classList.contains("filled")) {
+        return;
+      }
+
+      const correctAnswer = blank.dataset.answer;
+
+      if (word === correctAnswer) {
+        blank.textContent = word;
+        blank.classList.add("filled");
+        chip.classList.add("used");
+        chip.setAttribute("aria-hidden", "true");
+        blanksFilled += 1;
+        currentStreak += 1;
+        bestStreak = Math.max(bestStreak, currentStreak);
+        updateScore(12);
+        updateStreakDisplay();
+        setFeedback(`Nice! "${word}" fits perfectly.`, "success");
+
+        if (areAllBlanksFilled()) {
+          handleLevelComplete();
         }
       } else {
-        alert("Incorrect, try again!");
+        currentStreak = 0;
+        updateStreakDisplay();
+        setFeedback(`Not quite. "${word}" doesn't match this slot.`, "error");
+        blank.classList.add("shake");
+        setTimeout(() => blank.classList.remove("shake"), 450);
       }
-    });
-  });
-
-  nextLevelButton.addEventListener('click', () => {
-    if (currentLevel < maxLevel) {
-      currentLevel++;
-      setupLevel(currentLevel);
     }
-  });
 
-  // Initialize level 1
-  setupLevel(currentLevel);
-</script>
+    function areAllBlanksFilled() {
+      const blanks = document.querySelectorAll(".blank-slot");
+      return Array.from(blanks).every((blank) => blank.classList.contains("filled"));
+    }
 
+    function handleLevelComplete() {
+      updateNextButton(true);
+      completionBanner.setAttribute("aria-hidden", "false");
+      progressFill.style.width = `${(levels[currentLevelIndex].id) / totalLevels * 100}%`;
+    }
+
+    function updateScore(increment) {
+      score += increment;
+      scoreValue.textContent = score;
+    }
+
+    function updateStreakDisplay() {
+      streakValue.textContent = `${currentStreak}`;
+    }
+
+    function updateNextButton(isEnabled) {
+      nextBtn.disabled = !isEnabled;
+    }
+
+    function setFeedback(message, state) {
+      feedbackDisplay.textContent = message;
+      feedbackDisplay.classList.remove("success", "error");
+      if (state) {
+        feedbackDisplay.classList.add(state);
+      }
+    }
+
+    function goToNextLevel() {
+      if (currentLevelIndex < totalLevels - 1) {
+        currentLevelIndex += 1;
+        renderLevel();
+      } else {
+        setFeedback("🎉 All levels complete! Replay to sharpen your speed.", "success");
+        nextBtn.textContent = "Play Again";
+        nextBtn.removeEventListener("click", goToNextLevel);
+        nextBtn.addEventListener("click", resetExperience, { once: true });
+        nextBtn.disabled = false;
+      }
+    }
+
+    function resetExperience() {
+      score = 0;
+      currentStreak = 0;
+      bestStreak = 0;
+      currentLevelIndex = 0;
+      nextBtn.textContent = "Next Level";
+      scoreValue.textContent = score;
+      updateStreakDisplay();
+      renderLevel();
+      nextBtn.removeEventListener("click", resetExperience);
+      nextBtn.addEventListener("click", goToNextLevel);
+    }
+
+    function resetLevel() {
+      currentStreak = 0;
+      updateStreakDisplay();
+      renderLevel();
+      setFeedback("Level reset. Give it another go!", null);
+    }
+
+    shuffleBtn.addEventListener("click", () => {
+      const chips = Array.from(document.querySelectorAll(".word-chip:not(.used)"));
+      const shuffledWords = shuffle(chips.map((chip) => chip.dataset.word));
+      chips.forEach((chip, index) => {
+        chip.textContent = shuffledWords[index];
+        chip.dataset.word = shuffledWords[index];
+      });
+    });
+
+    resetBtn.addEventListener("click", resetLevel);
+    nextBtn.addEventListener("click", goToNextLevel);
+
+    renderLevel();
+  </script>
 </body>
 </html>
