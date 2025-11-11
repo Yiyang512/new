@@ -3,11 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>French Grammar Quiz</title>
-    <!-- Import Google Font Poppins -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <title>Neon Grammar Duel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        /* Basic styling for the quiz */
+        :root {
+            color-scheme: dark;
+            --accent: #00ffd4;
+            --accent-strong: rgba(0, 255, 212, 0.4);
+            --accent-soft: rgba(0, 255, 212, 0.18);
+            --bg: radial-gradient(circle at top, rgba(0, 255, 212, 0.16), rgba(4, 12, 16, 0.95));
+            --panel: rgba(8, 18, 22, 0.92);
+            --panel-border: rgba(0, 255, 212, 0.3);
+            --text: #f2fffb;
+            --muted: rgba(242, 255, 251, 0.7);
+            --danger: #ff6b6b;
+            --success: #8bffc6;
+            --shadow: 0 24px 56px rgba(0, 0, 0, 0.55);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -15,199 +28,474 @@
         }
 
         body {
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            background-color: #000;
+            padding: clamp(2rem, 6vw, 4rem) 1.5rem;
             font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .game-shell {
+            width: min(780px, 100%);
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+
+        .game-header {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 0.65rem;
+        }
+
+        .game-header h1 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            text-transform: uppercase;
+            letter-spacing: 1.3px;
+            text-shadow: 0 0 24px rgba(0, 255, 212, 0.35);
+        }
+
+        .game-header p {
+            color: var(--muted);
+            font-size: 1rem;
+        }
+
+        .game-panel {
+            border: 1px solid var(--panel-border);
+            border-radius: 24px;
+            background: var(--panel);
+            box-shadow: var(--shadow);
+            padding: clamp(1.8rem, 4vw, 2.6rem);
+            display: flex;
+            flex-direction: column;
+            gap: 1.6rem;
+        }
+
+        .scoreboard {
+            display: flex;
+            flex-wrap: wrap;
+            gap: clamp(0.75rem, 2vw, 1.1rem);
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stat-pill {
+            display: flex;
+            align-items: baseline;
+            gap: 0.65rem;
+            padding: 0.65rem 1.25rem;
+            border-radius: 999px;
+            border: 1px solid var(--panel-border);
+            background: linear-gradient(135deg, rgba(0, 255, 212, 0.16), rgba(0, 0, 0, 0.35));
+            box-shadow: 0 16px 32px rgba(0, 255, 212, 0.18);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            letter-spacing: 0.75px;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .progress-wrap {
+            flex: 1;
+            min-width: 220px;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 10px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.08);
             overflow: hidden;
         }
 
-        .quiz-container {
-            background: #333;
-            border-radius: 15px;
-            padding: 40px;
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
-            color: white;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.6), 0 0 25px rgba(0, 255, 255, 0.4), 0 0 35px rgba(0, 255, 255, 0.3);
-            margin: 0 auto;
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, rgba(0, 255, 212, 0.85), rgba(0, 123, 255, 0.85));
+            box-shadow: 0 0 18px rgba(0, 255, 212, 0.45);
+            transition: width 0.45s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .question {
-            font-size: 1.5em;
-            margin-bottom: 20px;
+        .progress-label {
+            margin-top: 0.35rem;
+            font-size: 0.9rem;
+            color: var(--muted);
+            letter-spacing: 0.45px;
         }
 
-        .flip-card-container {
+        .question-card {
+            border-radius: 20px;
+            border: 1px solid rgba(0, 255, 212, 0.18);
+            background: rgba(0, 0, 0, 0.32);
+            padding: clamp(1.4rem, 3.5vw, 1.9rem);
+            box-shadow: inset 0 0 0 1px rgba(0, 255, 212, 0.08);
+        }
+
+        .question-text {
+            font-size: clamp(1.35rem, 3vw, 1.75rem);
+            line-height: 1.6;
+            letter-spacing: 0.35px;
+        }
+
+        .options-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-top: 20px;
+            gap: 0.9rem;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
         }
 
-        .flip-card {
-            background-color: transparent;
-            width: 100%;
-            height: 150px;
-            perspective: 1000px;
+        .option-btn {
+            border-radius: 14px;
+            border: 1px solid rgba(0, 255, 212, 0.24);
+            background: linear-gradient(145deg, rgba(0, 255, 212, 0.18), rgba(0, 0, 0, 0.6));
+            color: var(--text);
+            font-size: 1.05rem;
+            font-weight: 500;
+            padding: 0.85rem 0.9rem;
+            cursor: pointer;
+            transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease, filter 0.22s ease;
         }
 
-        .flip-card-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
+        .option-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            border-color: rgba(0, 255, 212, 0.5);
+            box-shadow: 0 18px 34px rgba(0, 255, 212, 0.22);
+            filter: brightness(1.05);
+        }
+
+        .option-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.65;
+        }
+
+        .option-btn.correct {
+            border-color: rgba(0, 255, 166, 0.85);
+            background: linear-gradient(145deg, rgba(0, 255, 166, 0.7), rgba(0, 48, 64, 0.9));
+            box-shadow: 0 18px 40px rgba(0, 255, 166, 0.35);
+            color: #021c16;
+            font-weight: 600;
+        }
+
+        .option-btn.wrong {
+            border-color: rgba(255, 100, 100, 0.8);
+            background: linear-gradient(145deg, rgba(255, 120, 120, 0.68), rgba(50, 0, 0, 0.9));
+            box-shadow: 0 18px 38px rgba(255, 120, 120, 0.32);
+        }
+
+        .feedback {
             text-align: center;
-            transition: transform 0.6s;
-            transform-style: preserve-3d;
-            cursor: pointer;
+            font-size: 0.96rem;
+            min-height: 1.5rem;
+            color: var(--muted);
+            transition: color 0.3s ease;
         }
 
-        .flip-card:hover .flip-card-inner {
-            transform: rotateY(180deg);
+        .feedback.success {
+            color: var(--success);
         }
 
-        .flip-card-front, .flip-card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-            border-radius: 10px;
+        .feedback.error {
+            color: var(--danger);
+        }
+
+        .controls {
             display: flex;
-            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
             justify-content: center;
-            font-size: 1.2em;
-            color: black;
         }
 
-        .flip-card-front {
-            background-color: #FF00FF;
-        }
-
-        .flip-card-back.correct {
-            background-color: #28a745;
-            color: white;
-        }
-
-        .flip-card-back.wrong {
-            background-color: #dc3545;
-            color: white;
-        }
-
-        .flip-card-back {
-            transform: rotateY(180deg);
-        }
-
-        .score {
-            margin-top: 20px;
-            font-size: 1.5em;
-        }
-
-        .next-btn {
-            margin-top: 25px;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 8px;
-            background-color: #007bff;
-            color: #fff;
-            font-size: 1.2em;
+        .control-btn {
+            padding: 0.85rem 2.2rem;
+            border-radius: 999px;
+            border: 1px solid var(--accent-strong);
+            background: linear-gradient(145deg, rgba(0, 255, 212, 0.7), rgba(0, 123, 255, 0.7));
+            color: #021b15;
+            font-weight: 600;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
             cursor: pointer;
-            font-family: 'Poppins', sans-serif;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease, opacity 0.25s ease;
         }
 
-        .next-btn:hover {
-            background-color: #0056b3;
+        .control-btn.alt {
+            background: rgba(0, 0, 0, 0.4);
+            border-color: rgba(0, 255, 212, 0.25);
+            color: var(--accent);
         }
 
-        @media (max-width: 500px) {
-            .flip-card-container {
-                grid-template-columns: 1fr;
-            }
+        .control-btn:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
 
-            .quiz-container {
-                padding: 20px;
-            }
+        .control-btn:not(:disabled):hover {
+            transform: translateY(-3px);
+            box-shadow: 0 22px 48px rgba(0, 255, 212, 0.32);
+            filter: brightness(1.05);
+        }
 
-            .flip-card {
-                height: 100px;
+        .completion-banner {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            gap: 0.7rem;
+            border-radius: 16px;
+            border: 1px solid rgba(0, 255, 212, 0.26);
+            background: linear-gradient(135deg, rgba(0, 255, 212, 0.16), rgba(0, 0, 0, 0.4));
+            padding: 0.75rem 1.2rem;
+            color: var(--accent);
+            font-weight: 600;
+            letter-spacing: 0.4px;
+        }
+
+        .completion-banner[aria-hidden="false"] {
+            display: flex;
+        }
+
+        @media (max-width: 580px) {
+            .game-panel {
+                padding: 1.5rem;
             }
         }
     </style>
 </head>
 <body>
+    <div class="game-shell">
+        <header class="game-header">
+            <h1>Neon Grammar Duel</h1>
+            <p>Answer fifty rapid-fire questions to test your French grammar instincts. Earn streak bonuses and complete the series to become a grammar champ.</p>
+        </header>
 
-    <div class="quiz-container">
-        <div class="question" id="question">Select the correct article for "chat".</div>
-        <div class="flip-card-container" id="options">
-            <!-- Flip cards will be added dynamically here -->
-        </div>
-        <div class="score" id="score">Score: 0</div>
-        <button class="next-btn" onclick="nextQuestion()">Next Question</button>
+        <section class="game-panel" aria-live="polite">
+            <div class="scoreboard">
+                <div class="stat-pill" aria-live="polite">
+                    <span class="stat-label">Question</span>
+                    <span class="stat-value" id="question-counter">1 / 50</span>
+                </div>
+                <div class="stat-pill">
+                    <span class="stat-label">Score</span>
+                    <span class="stat-value" id="score-value">0</span>
+                </div>
+                <div class="stat-pill">
+                    <span class="stat-label">Streak</span>
+                    <span class="stat-value" id="streak-value">0</span>
+                </div>
+                <div class="progress-wrap">
+                    <div class="progress-track" role="progressbar" aria-label="Quiz progress" aria-valuemin="1" aria-valuemax="50" aria-valuenow="1">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                    <div class="progress-label" id="progress-label">Keep going…</div>
+                </div>
+            </div>
+
+            <div class="completion-banner" id="completion-banner" aria-hidden="true">
+                <span>✨ Round complete! Hit next for the following challenge.</span>
+            </div>
+
+            <article class="question-card">
+                <p class="question-text" id="question-text">Select the correct article for "chat".</p>
+            </article>
+
+            <div class="options-grid" id="options-grid">
+                <!-- Option buttons injected here -->
+            </div>
+
+            <p class="feedback" id="feedback">Choose the best answer to start the duel.</p>
+
+            <div class="controls">
+                <button class="control-btn alt" id="retry-btn" type="button">Restart Quiz</button>
+                <button class="control-btn" id="next-btn" type="button" disabled>Next Question</button>
+            </div>
+        </section>
     </div>
 
     <script>
         const questions = [
-            { question: "Select the correct article for \"chat\".", correctAnswer: "le", options: ["la", "le", "les", "un"] },
-            { question: "Choose the correct conjugation of \"être\" for \"il\".", correctAnswer: "est", options: ["es", "est", "suis", "sommes"] },
-            { question: "Choose the plural form of \"chien\".", correctAnswer: "chiens", options: ["chien", "chiens", "chiennes", "chienss"] },
-            { question: "Select the correct translation for \"I eat\".", correctAnswer: "je mange", options: ["je mange", "je manges", "moi mange", "je manger"] },
-            { question: "Select the negative form: \"Je parle français\".", correctAnswer: "Je ne parle pas français", options: ["Je ne parle pas français", "Je n'ai pas parlé français", "Je parle pas français", "Je non parle français"] },
-            { question: "Choose the correct form of \"avoir\" for \"nous\".", correctAnswer: "avons", options: ["avez", "avons", "ont", "ai"] },
-            { question: "Select the feminine form of \"petit\".", correctAnswer: "petite", options: ["petite", "petits", "petites", "petitee"] },
-            { question: "Translate to French: \"They are\" (masculine).", correctAnswer: "ils sont", options: ["ils sont", "elles sont", "ils est", "elles est"] },
-            { question: "Choose the correct article for \"amie\".", correctAnswer: "l'", options: ["la", "le", "les", "l'"] },
-            { question: "Select the correct possessive for \"my book\".", correctAnswer: "mon livre", options: ["ma livre", "mon livre", "mes livre", "le livre"] }
+            { question: 'Select the correct article for "chat".', correctAnswer: "le", options: ["la", "le", "les", "un"] },
+            { question: 'Choose the correct conjugation of "être" for "il".', correctAnswer: "est", options: ["es", "est", "suis", "sommes"] },
+            { question: 'Choose the plural form of "chien".', correctAnswer: "chiens", options: ["chien", "chiens", "chiennes", "chienss"] },
+            { question: 'Select the correct translation for "I eat".', correctAnswer: "je mange", options: ["je mange", "je manges", "moi mange", "je manger"] },
+            { question: 'Select the negative form: "Je parle français".', correctAnswer: "Je ne parle pas français", options: ["Je ne parle pas français", "Je n'ai pas parlé français", "Je parle pas français", "Je non parle français"] },
+            { question: 'Choose the correct form of "avoir" for "nous".', correctAnswer: "avons", options: ["avez", "avons", "ont", "ai"] },
+            { question: 'Select the feminine form of "petit".', correctAnswer: "petite", options: ["petite", "petits", "petites", "petitee"] },
+            { question: 'Translate to French: "They are" (masculine).', correctAnswer: "ils sont", options: ["ils sont", "elles sont", "ils est", "elles est"] },
+            { question: 'Choose the correct article for "amie".', correctAnswer: "l'", options: ["la", "le", "les", "l'"] },
+            { question: 'Select the correct possessive for "my book".', correctAnswer: "mon livre", options: ["ma livre", "mon livre", "mes livre", "le livre"] },
+            { question: 'Select the correct article for "hôtel".', correctAnswer: "l'", options: ["le", "la", "l'", "les"] },
+            { question: 'Choose the correct conjugation of "aller" for "vous".', correctAnswer: "allez", options: ["allez", "allons", "va", "vais"] },
+            { question: 'What is the feminine plural of "heureux"?', correctAnswer: "heureuses", options: ["heureux", "heureuse", "heureuses", "heureuxes"] },
+            { question: 'Choose the correct past participle: "Nous avons ____" (voir).', correctAnswer: "vu", options: ["vu", "vus", "vue", "voir"] },
+            { question: 'Select the correct preposition: "Je viens ___ France."', correctAnswer: "de", options: ["de", "à", "en", "sur"] },
+            { question: 'Choose the correct relative pronoun: "La personne ___ parle".', correctAnswer: "qui", options: ["qui", "que", "dont", "où"] },
+            { question: 'Select the correct translation for "She must".', correctAnswer: "elle doit", options: ["elle doit", "elle doitt", "elle devoir", "elle doit être"] },
+            { question: 'Which is the imparfait form of "finir" for "nous"?', correctAnswer: "finissions", options: ["finissions", "finissons", "finirons", "finirions"] },
+            { question: 'Choose the correct placement: "Il ne mange ___ poisson".', correctAnswer: "pas de", options: ["pas de", "pas des", "pas du", "pas la"] },
+            { question: 'Translate to French: "I would like".', correctAnswer: "je voudrais", options: ["je voudrais", "je veux", "je voudrai", "je voulus"] },
+            { question: 'Select the correct auxiliary: "Elles ___ arrivées hier."', correctAnswer: "sont", options: ["ont", "sont", "étaient", "seront"] },
+            { question: 'Choose the correct tense: "Si j\'avais le temps, je ___ voyager.".', correctAnswer: "voudrais", options: ["veux", "voudrais", "voulais", "voudrai"] },
+            { question: 'Pick the correct agreement: "Les fleurs sont très ___."', correctAnswer: "belles", options: ["beaux", "belles", "bel", "belle"] },
+            { question: 'Select the correct pronoun: "___ veux-tu que je fasse?"', correctAnswer: "Que", options: ["Que", "Qui", "Dont", "Où"] },
+            { question: 'Choose the right mood: "Il faut que tu ___ à l\'heure."', correctAnswer: "sois", options: ["es", "sois", "seras", "soit"] },
+            { question: 'Select the proper placement: "Je le lui ai ___ hier."', correctAnswer: "donné", options: ["donné", "donner", "donnais", "donne"] },
+            { question: 'Pick the correct expression: "Nous sommes en train de ___."', correctAnswer: "manger", options: ["manger", "mangeons", "mangé", "mange"] },
+            { question: 'Choose the right article: "___ Europe est un continent."', correctAnswer: "L\'", options: ["La", "Le", "Les", "L\'"] },
+            { question: 'Select the correct verb: "Ils se ___ à l\'université."', correctAnswer: "sont inscrits", options: ["sont inscrits", "ont inscrits", "inscrivent", "inscrirent"] },
+            { question: 'Pick the right structure: "Plus je travaille, ___ je progresse."', correctAnswer: "plus", options: ["plus", "aussi", "autant", "moins"] },
+            { question: 'Identify the correct connective: "Il a réussi ___ il a travaillé dur."', correctAnswer: "parce qu\'", options: ["parce qu\'", "donc", "même si", "tandis que"] },
+            { question: 'Select the correct future form: "Demain nous ___ le rapport."', correctAnswer: "enverrons", options: ["envoyons", "enverrons", "enverrait", "envoyions"] },
+            { question: 'Choose the right possessive: "Ils ont perdu ___ clés."', correctAnswer: "leurs", options: ["leur", "leurs", "les", "des"] },
+            { question: 'Pick the correct comparative: "Elle est plus rapide ___ lui."', correctAnswer: "que", options: ["de", "que", "à", "pour"] },
+            { question: 'Select the correct passive voice: "Le projet ___ par l\'équipe."', correctAnswer: "est géré", options: ["est géré", "gère", "a géré", "sera gérer"] },
+            { question: 'Choose the correct subjunctive: "Bien qu\'ils ___ fatigués."', correctAnswer: "soient", options: ["sont", "soient", "étaient", "seront"] },
+            { question: 'Identify the proper negation: "Il n\'y a ___ problème."', correctAnswer: "aucun", options: ["pas", "plus", "aucun", "jamais"] },
+            { question: 'Select the right expression: "Ils viennent ___ Italie."', correctAnswer: "d\'", options: ["de", "d\'", "du", "des"] },
+            { question: 'Choose the correct imperative: "___ le formulaire !"', correctAnswer: "Remplis", options: ["Remplis", "Remplit", "Remplissez", "Remplir"] }
         ];
 
-        let currentQuestion = 0;
+        const totalQuestions = questions.length;
+        let currentIndex = 0;
         let score = 0;
+        let streak = 0;
 
-        function loadQuestion() {
-            const questionElement = document.getElementById("question");
-            const optionsContainer = document.getElementById("options");
-            optionsContainer.innerHTML = "";
+        const questionText = document.getElementById("question-text");
+        const optionsGrid = document.getElementById("options-grid");
+        const feedbackDisplay = document.getElementById("feedback");
+        const nextBtn = document.getElementById("next-btn");
+        const retryBtn = document.getElementById("retry-btn");
+        const questionCounter = document.getElementById("question-counter");
+        const progressFill = document.getElementById("progress-fill");
+        const progressLabel = document.getElementById("progress-label");
+        const scoreValue = document.getElementById("score-value");
+        const streakValue = document.getElementById("streak-value");
+        const completionBanner = document.getElementById("completion-banner");
+        const progressTrack = document.querySelector(".progress-track");
 
-            questionElement.innerText = questions[currentQuestion].question;
-            questions[currentQuestion].options.forEach(optionText => {
-                const isCorrect = optionText === questions[currentQuestion].correctAnswer;
-
-                const flipCard = document.createElement("div");
-                flipCard.className = "flip-card";
-                flipCard.innerHTML = `
-                    <div class="flip-card-inner" onclick="flipCard(this, ${isCorrect})">
-                        <div class="flip-card-front">${optionText}</div>
-                        <div class="flip-card-back ${isCorrect ? 'correct' : 'wrong'}">
-                            ${isCorrect ? 'Correct!' : 'Incorrect!'}
-                        </div>
-                    </div>
-                `;
-                optionsContainer.appendChild(flipCard);
-            });
-        }
-
-        function flipCard(card, isCorrect) {
-            card.style.transform = "rotateY(180deg)";
-            if (isCorrect) score++;
-            document.getElementById("score").innerText = "Score: " + score;
-        }
-
-        function nextQuestion() {
-            currentQuestion++;
-            if (currentQuestion < questions.length) {
-                loadQuestion();
-            } else {
-                alert("Quiz Completed! Your final score is " + score + " out of " + questions.length);
-                currentQuestion = 0;
-                score = 0;
+        function shuffle(array) {
+            const copy = [...array];
+            for (let i = copy.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [copy[i], copy[j]] = [copy[j], copy[i]];
             }
-            document.getElementById("score").innerText = "Score: " + score;
-            loadQuestion();
+            return copy;
         }
 
-        loadQuestion();
-    </script>
+        function setFeedback(message, type) {
+            feedbackDisplay.textContent = message;
+            feedbackDisplay.classList.remove("success", "error");
+            if (type) {
+                feedbackDisplay.classList.add(type);
+            }
+        }
 
+        function updateStatus() {
+            questionCounter.textContent = `${currentIndex + 1} / ${totalQuestions}`;
+            progressFill.style.width = `${(currentIndex / totalQuestions) * 100}%`;
+            progressLabel.textContent = `Question ${currentIndex + 1} of ${totalQuestions}`;
+            progressTrack.setAttribute("aria-valuenow", currentIndex + 1);
+            scoreValue.textContent = score;
+            streakValue.textContent = streak;
+        }
+
+        function renderQuestion() {
+            const { question, options, correctAnswer } = questions[currentIndex];
+            questionText.textContent = question;
+            optionsGrid.innerHTML = "";
+            completionBanner.setAttribute("aria-hidden", "true");
+            nextBtn.disabled = true;
+
+            const shuffledOptions = shuffle(options);
+
+            shuffledOptions.forEach((option) => {
+                const button = document.createElement("button");
+                button.type = "button";
+                button.className = "option-btn";
+                button.textContent = option;
+                button.dataset.answer = option;
+                button.addEventListener("click", () => checkAnswer(button, correctAnswer));
+                optionsGrid.appendChild(button);
+            });
+
+            setFeedback("Choose the best answer to start the duel.", null);
+            updateStatus();
+        }
+
+        function checkAnswer(selectedButton, correctAnswer) {
+            if (selectedButton.classList.contains("correct") || selectedButton.classList.contains("wrong")) {
+                return;
+            }
+
+            const buttons = optionsGrid.querySelectorAll(".option-btn");
+            buttons.forEach((button) => button.disabled = true);
+
+            if (selectedButton.dataset.answer === correctAnswer) {
+                selectedButton.classList.add("correct");
+                streak += 1;
+                score += 10 + Math.max(streak - 1, 0) * 2;
+                setFeedback(`Correct! "${correctAnswer}" is the right choice.`, "success");
+                completionBanner.setAttribute("aria-hidden", "false");
+            } else {
+                selectedButton.classList.add("wrong");
+                streak = 0;
+                const correctButton = Array.from(buttons).find((btn) => btn.dataset.answer === correctAnswer);
+                if (correctButton) {
+                    correctButton.classList.add("correct");
+                }
+                setFeedback(`Not quite. The correct answer is "${correctAnswer}".`, "error");
+            }
+
+            scoreValue.textContent = score;
+            streakValue.textContent = streak;
+            nextBtn.disabled = false;
+        }
+
+        function handleNext() {
+            if (nextBtn.disabled) return;
+            if (currentIndex < totalQuestions - 1) {
+                currentIndex += 1;
+                renderQuestion();
+            } else {
+                finishQuiz();
+            }
+        }
+
+        function finishQuiz() {
+            progressFill.style.width = "100%";
+            progressLabel.textContent = "Quiz complete!";
+            setFeedback(`Quiz complete! You scored ${score} / ${totalQuestions * 10}. Hit restart to try again.`, "success");
+            nextBtn.textContent = "Play Again";
+            nextBtn.removeEventListener("click", handleNext);
+            nextBtn.addEventListener("click", restartQuiz, { once: true });
+            nextBtn.disabled = false;
+        }
+
+        function restartQuiz() {
+            currentIndex = 0;
+            score = 0;
+            streak = 0;
+            nextBtn.textContent = "Next Question";
+            nextBtn.addEventListener("click", handleNext);
+            renderQuestion();
+        }
+
+        retryBtn.addEventListener("click", restartQuiz);
+        nextBtn.addEventListener("click", handleNext);
+
+        renderQuestion();
+    </script>
 </body>
 </html>
