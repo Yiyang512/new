@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Vocabulary Flip Quiz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            color-scheme: dark;
+            --accent: #00ffd4;
+            --accent-strong: rgba(0, 255, 212, 0.45);
+            --bg: radial-gradient(circle at top, rgba(0, 255, 212, 0.16), rgba(4, 12, 16, 0.96));
+            --panel: rgba(8, 18, 22, 0.92);
+            --panel-border: rgba(0, 255, 212, 0.3);
+            --text: #f2fffb;
+            --muted: rgba(242, 255, 251, 0.72);
+            --success: #8bffc6;
+            --danger: #ff6b6b;
+            --shadow: 0 24px 48px rgba(0, 0, 0, 0.55);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: clamp(2.5rem, 6vw, 4rem) 1.5rem;
+            background: var(--bg);
+            font-family: 'Poppins', sans-serif;
+            color: var(--text);
+        }
+
+        .game-shell {
+            width: min(880px, 100%);
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+
+        .game-header {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .game-header h1 {
+            font-size: clamp(2.1rem, 4vw, 3rem);
+            text-transform: uppercase;
+            letter-spacing: 1.3px;
+            text-shadow: 0 0 28px rgba(0, 255, 212, 0.35);
+        }
+
+        .game-header p {
+            color: var(--muted);
+            font-size: 1rem;
+        }
+
+        .game-panel {
+            border-radius: 24px;
+            border: 1px solid var(--panel-border);
+            background: var(--panel);
+            box-shadow: var(--shadow);
+            padding: clamp(1.8rem, 4vw, 2.6rem);
+            display: flex;
+            flex-direction: column;
+            gap: 1.6rem;
+        }
+
+        .scoreboard {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stat-pill {
+            display: flex;
+            align-items: baseline;
+            gap: 0.6rem;
+            padding: 0.7rem 1.2rem;
+            border-radius: 999px;
+            border: 1px solid var(--panel-border);
+            background: linear-gradient(135deg, rgba(0, 255, 212, 0.16), rgba(0, 0, 0, 0.35));
+            box-shadow: 0 16px 32px rgba(0, 255, 212, 0.18);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .progress-wrap {
+            flex: 1;
+            min-width: 220px;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 11px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.08);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, rgba(0, 255, 212, 0.85), rgba(0, 125, 255, 0.85));
+            box-shadow: 0 0 20px rgba(0, 255, 212, 0.45);
+            transition: width 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .progress-label {
+            margin-top: 0.4rem;
+            font-size: 0.92rem;
+            letter-spacing: 0.45px;
+            color: var(--muted);
+        }
+
+        .question-card {
+            border-radius: 20px;
+            border: 1px solid rgba(0, 255, 212, 0.18);
+            background: rgba(0, 0, 0, 0.28);
+            padding: clamp(1.35rem, 4vw, 1.9rem);
+            box-shadow: inset 0 0 0 1px rgba(0, 255, 212, 0.08);
+        }
+
+        .question-text {
+            font-size: clamp(1.45rem, 3vw, 1.9rem);
+            letter-spacing: 0.45px;
+            font-weight: 600;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1rem;
+        }
+
+        .card-btn {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 3 / 4;
+            border: none;
+            background: none;
+            perspective: 1200px;
+            cursor: pointer;
+        }
+
+        .card-inner {
+            position: absolute;
+            inset: 0;
+            border-radius: 18px;
+            border: 1px solid rgba(0, 255, 212, 0.22);
+            background: linear-gradient(160deg, rgba(0, 255, 212, 0.16), rgba(0, 0, 0, 0.75));
+            box-shadow: 0 18px 36px rgba(0, 255, 212, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text);
+            transition: transform 0.6s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+            transform-style: preserve-3d;
+        }
+
+        .card-btn:hover .card-inner:not(.locked) {
+            transform: translateY(-6px);
+            border-color: rgba(0, 255, 212, 0.45);
+            box-shadow: 0 24px 48px rgba(0, 255, 212, 0.3);
+        }
+
+        .card-face {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backface-visibility: hidden;
+            border-radius: inherit;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .card-face.back {
+            transform: rotateY(180deg);
+        }
+
+        .card-inner.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-inner.correct {
+            border-color: rgba(0, 255, 166, 0.8);
+            background: linear-gradient(165deg, rgba(0, 255, 166, 0.7), rgba(0, 45, 60, 0.9));
+            color: #021b15;
+        }
+
+        .card-inner.wrong {
+            border-color: rgba(255, 120, 120, 0.8);
+            background: linear-gradient(165deg, rgba(255, 120, 120, 0.72), rgba(45, 0, 0, 0.85));
+        }
+
+        .card-inner.locked {
+            cursor: not-allowed;
+        }
+
+        .feedback {
+            font-size: 0.98rem;
+            min-height: 1.5rem;
+            color: var(--muted);
+            transition: color 0.3s ease;
+        }
+
+        .feedback.success {
+            color: var(--success);
+        }
+
+        .feedback.error {
+            color: var(--danger);
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            margin-top: 0.5rem;
+        }
+
+        .next-btn {
+            padding: 0.95rem 2.8rem;
+            border-radius: 999px;
+            border: 1px solid var(--accent-strong);
+            background: linear-gradient(145deg, rgba(0, 255, 212, 0.7), rgba(0, 125, 255, 0.7));
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 0.65px;
+            text-transform: uppercase;
+            color: #021711;
+            cursor: pointer;
+            box-shadow: 0 20px 44px rgba(0, 255, 212, 0.32);
+            transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease, filter 0.25s ease;
+        }
+
+        .next-btn:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .next-btn:not(:disabled):hover {
+            transform: translateY(-4px);
+            box-shadow: 0 26px 56px rgba(0, 255, 212, 0.4);
+            filter: brightness(1.05);
+        }
+
+        @media (max-width: 640px) {
+            .game-panel {
+                padding: 1.6rem;
+            }
+
+            .card-grid {
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-shell">
+        <header class="game-header">
+            <h1>Neon Vocabulary Flip Quiz</h1>
+            <p>Select the glowing cards to reveal the correct translation. Stay accurate across sixty rounds to build streak bonuses.</p>
+        </header>
+
+        <section class="game-panel" aria-live="polite">
+            <div class="scoreboard">
+                <div class="stat-pill">
+                    <span class="stat-label">Question</span>
+                    <span class="stat-value" id="question-counter">1 / 60</span>
+                </div>
+                <div class="stat-pill">
+                    <span class="stat-label">Score</span>
+                    <span class="stat-value" id="score-value">0</span>
+                </div>
+                <div class="stat-pill">
+                    <span class="stat-label">Streak</span>
+                    <span class="stat-value" id="streak-value">0</span>
+                </div>
+                <div class="progress-wrap">
+                    <div class="progress-track" role="progressbar" aria-label="Quiz progress" aria-valuemin="1" aria-valuemax="60" aria-valuenow="1">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                    <div class="progress-label" id="progress-label">Flip to begin…</div>
+                </div>
+            </div>
+
+            <article class="question-card">
+                <p class="question-text" id="question-text">Question placeholder</p>
+            </article>
+
+            <div class="card-grid" id="card-grid"></div>
+
+            <p class="feedback" id="feedback">Flip one of the cards to reveal your answer.</p>
+
+            <div class="controls">
+                <button class="next-btn" id="next-btn" type="button" disabled>Next Question</button>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const questions = [
+            { question: "What is the French word for 'Good morning'?", correctAnswer: "Bonjour", options: ["Bonjour", "Bonsoir", "Merci", "Salut"] },
+            { question: "What is the French word for 'Apple'?", correctAnswer: "Pomme", options: ["Banane", "Pomme", "Orange", "Raisin"] },
+            { question: "What is the French word for 'Book'?", correctAnswer: "Livre", options: ["Stylo", "Cahier", "Livre", "Crayon"] },
+            { question: "What is the French word for 'Car'?", correctAnswer: "Voiture", options: ["Bateau", "Voiture", "Avion", "Train"] },
+            { question: "What is the French word for 'Dog'?", correctAnswer: "Chien", options: ["Chat", "Poisson", "Chien", "Oiseau"] },
+            { question: "What is the French word for 'School'?", correctAnswer: "École", options: ["Université", "École", "Classe", "Gymnase"] },
+            { question: "What is the French word for 'Teacher'?", correctAnswer: "Professeur", options: ["Élève", "Professeur", "Directeur", "Parent"] },
+            { question: "What is the French word for 'Street'?", correctAnswer: "Rue", options: ["Rue", "Parc", "Maison", "Pont"] },
+            { question: "What is the French word for 'Door'?", correctAnswer: "Porte", options: ["Fenêtre", "Mur", "Porte", "Plafond"] },
+            { question: "What is the French word for 'Table'?", correctAnswer: "Table", options: ["Chaise", "Table", "Lit", "Sofa"] },
+            { question: "What is the French word for 'Window'?", correctAnswer: "Fenêtre", options: ["Fenêtre", "Mur", "Plancher", "Plafond"] },
+            { question: "Translate to French: 'Friend'", correctAnswer: "Ami", options: ["Ami", "Frère", "Voisin", "Collègue"] },
+            { question: "Translate to French: 'Family'", correctAnswer: "Famille", options: ["Famille", "Famillon", "Famine", "Familleux"] },
+            { question: "What is the French word for 'Library'?", correctAnswer: "Bibliothèque", options: ["Bibliothèque", "Librairie", "Magasin", "Cinéma"] },
+            { question: "Translate to French: 'Breakfast'", correctAnswer: "Petit-déjeuner", options: ["Déjeuner", "Soupé", "Petit-déjeuner", "Goûter"] },
+            { question: "What is the French word for 'Train station'?", correctAnswer: "Gare", options: ["Métro", "Arrêt", "Gare", "Station"] },
+            { question: "Translate to French: 'Rain'", correctAnswer: "Pluie", options: ["Neige", "Vent", "Pluie", "Orage"] },
+            { question: "What is the French word for 'Mountain'?", correctAnswer: "Montagne", options: ["Montagne", "Colline", "Rivière", "Plage"] },
+            { question: "Translate to French: 'Shoes'", correctAnswer: "Chaussures", options: ["Chaussures", "Chaussettes", "Bottes", "Souliers"] },
+            { question: "What is the French word for 'Computer'?", correctAnswer: "Ordinateur", options: ["Clavier", "Ordinateur", "Écran", "Souris"] },
+            { question: "Translate to French: 'Airport'", correctAnswer: "Aéroport", options: ["Aéroport", "Avion", "Pilote", "Vol"] },
+            { question: "What is the French word for 'Hospital'?", correctAnswer: "Hôpital", options: ["Clinique", "Pharmacie", "Hôpital", "Cabinet"] },
+            { question: "Translate to French: 'Weather'", correctAnswer: "Météo", options: ["Climat", "Saison", "Météo", "Tempête"] },
+            { question: "What is the French word for 'Forest'?", correctAnswer: "Forêt", options: ["Forêt", "Champ", "Désert", "Plage"] },
+            { question: "Translate to French: 'Bicycle'", correctAnswer: "Vélo", options: ["Vélo", "Moto", "Voiture", "Trottinette"] },
+            { question: "What is the French word for 'Bridge'?", correctAnswer: "Pont", options: ["Pont", "Port", "Pente", "Ponton"] },
+            { question: "Translate to French: 'Dinner'", correctAnswer: "Dîner", options: ["Déjeuner", "Dîner", "Souper", "Collation"] },
+            { question: "What is the French word for 'Museum'?", correctAnswer: "Musée", options: ["Musée", "Bibliothèque", "Théâtre", "Galerie"] },
+            { question: "Translate to French: 'Language'", correctAnswer: "Langue", options: ["Langage", "Langue", "Dialecte", "Parole"] },
+            { question: "What is the French word for 'Garden'?", correctAnswer: "Jardin", options: ["Parc", "Jardin", "Cour", "Terrasse"] },
+            { question: "Translate to French: 'Luggage'", correctAnswer: "Bagages", options: ["Bagage", "Bagages", "Valise", "Sacs"] },
+            { question: "What is the French word for 'Coffee'?", correctAnswer: "Café", options: ["Café", "Thé", "Lait", "Eau"] },
+            { question: "Translate to French: 'Passport'", correctAnswer: "Passeport", options: ["Passeport", "Visa", "Carte", "Billet"] },
+            { question: "What is the French word for 'Desk'?", correctAnswer: "Bureau", options: ["Bureau", "Chaise", "Table", "Salon"] },
+            { question: "Translate to French: 'Homework'", correctAnswer: "Devoirs", options: ["Cours", "Leçon", "Devoirs", "Examen"] },
+            { question: "What is the French word for 'Ticket'?", correctAnswer: "Billet", options: ["Billet", "Ticket", "Place", "Entrée"] },
+            { question: "Translate to French: 'Vacation'", correctAnswer: "Vacances", options: ["Voyage", "Vacances", "Repos", "Séjour"] },
+            { question: "What is the French word for 'Keyboard'?", correctAnswer: "Clavier", options: ["Clavier", "Souris", "Écran", "Ordinateur"] },
+            { question: "Translate to French: 'Cloud'", correctAnswer: "Nuage", options: ["Nuage", "Pluie", "Brouillard", "Vent"] },
+            { question: "What is the French word for 'Beach'?", correctAnswer: "Plage", options: ["Plage", "Rivage", "Port", "Lac"] },
+            { question: "Translate to French: 'Island'", correctAnswer: "Île", options: ["Île", "Côte", "Presqu'île", "Continent"] },
+            { question: "What is the French word for 'Castle'?", correctAnswer: "Château", options: ["Château", "Manoir", "Palais", "Fort"] },
+            { question: "Translate to French: 'Elevator'", correctAnswer: "Ascenseur", options: ["Ascenseur", "Escalier", "Rampe", "Hall"] },
+            { question: "What is the French word for 'Newspaper'?", correctAnswer: "Journal", options: ["Journal", "Magazine", "Livre", "Article"] },
+            { question: "Translate to French: 'Schedule'", correctAnswer: "Emploi du temps", options: ["Calendrier", "Programme", "Emploi du temps", "Agenda"] },
+            { question: "What is the French word for 'Library card'?", correctAnswer: "Carte de bibliothèque", options: ["Carte de bibliothèque", "Carte de lecteur", "Carte d'abonnement", "Carte de membre"] },
+            { question: "Translate to French: 'Traffic'", correctAnswer: "Circulation", options: ["Trafic", "Circulation", "Embouteillage", "Déviation"] },
+            { question: "What is the French word for 'Suitcase'?", correctAnswer: "Valise", options: ["Sac", "Bagage", "Valise", "Malle"] },
+            { question: "Translate to French: 'Receipt'", correctAnswer: "Reçu", options: ["Facture", "Ticket", "Reçu", "Note"] },
+            { question: "What is the French word for 'Headphones'?", correctAnswer: "Casque", options: ["Écouteurs", "Casque", "Micro", "Haut-parleur"] },
+            { question: "Translate to French: 'Meeting room'", correctAnswer: "Salle de réunion", options: ["Bureau", "Salle de réunion", "Salle d'attente", "Hall"] },
+            { question: "What is the French word for 'Package'?", correctAnswer: "Colis", options: ["Paquet", "Colis", "Lettre", "Boîte"] },
+            { question: "Translate to French: 'Lightning'", correctAnswer: "Éclair", options: ["Tonnerre", "Éclair", "Orage", "Tempête"] },
+            { question: "What is the French word for 'Discount'?", correctAnswer: "Réduction", options: ["Promo", "Réduction", "Bon d'achat", "Baisse"] },
+            { question: "Translate to French: 'Overtime'", correctAnswer: "Heures supplémentaires", options: ["Heures tardives", "Temps additionnel", "Heures supplémentaires", "Temps prolongé"] },
+            { question: "What is the French word for 'Toolbox'?", correctAnswer: "Boîte à outils", options: ["Malette", "Boîte à outils", "Coffre", "Sacoche"] },
+            { question: "Translate to French: 'Scholarship'", correctAnswer: "Bourse", options: ["Subvention", "Bourse", "Prime", "Récompense"] },
+            { question: "What is the French word for 'Invoice'?", correctAnswer: "Facture", options: ["Ticket", "Note", "Facture", "Reçu"] },
+            { question: "Translate to French: 'Slide deck'", correctAnswer: "Diaporama", options: ["Présentation", "Diaporama", "Projection", "Affiche"] }
+        ];
+
+        const totalQuestions = questions.length;
+        let currentIndex = 0;
+        let score = 0;
+        let streak = 0;
+        let questionCompleted = false;
+
+        const questionText = document.getElementById("question-text");
+        const cardGrid = document.getElementById("card-grid");
+        const feedbackDisplay = document.getElementById("feedback");
+        const nextBtn = document.getElementById("next-btn");
+        const scoreValue = document.getElementById("score-value");
+        const streakValue = document.getElementById("streak-value");
+        const questionCounter = document.getElementById("question-counter");
+        const progressFill = document.getElementById("progress-fill");
+        const progressLabel = document.getElementById("progress-label");
+        const progressTrack = document.querySelector(".progress-track");
+
+        function shuffle(array) {
+            const copy = [...array];
+            for (let i = copy.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [copy[i], copy[j]] = [copy[j], copy[i]];
+            }
+            return copy;
+        }
+
+        function setFeedback(message, status) {
+            feedbackDisplay.textContent = message;
+            feedbackDisplay.classList.remove("success", "error");
+            if (status) {
+                feedbackDisplay.classList.add(status);
+            }
+        }
+
+        function updateScoreboard(didAnswer = false) {
+            const answered = currentIndex + (didAnswer ? 1 : 0);
+            questionCounter.textContent = `${Math.min(currentIndex + 1, totalQuestions)} / ${totalQuestions}`;
+            progressFill.style.width = `${(answered / totalQuestions) * 100}%`;
+            progressLabel.textContent = answered >= totalQuestions ? "Quiz complete!" : `Question ${Math.min(currentIndex + 1, totalQuestions)} of ${totalQuestions}`;
+            progressTrack.setAttribute("aria-valuenow", Math.min(answered, totalQuestions));
+            scoreValue.textContent = score;
+            streakValue.textContent = streak;
+        }
+
+        function renderQuestion() {
+            questionCompleted = false;
+            const { question, options } = questions[currentIndex];
+            questionText.textContent = question;
+            cardGrid.innerHTML = "";
+            setFeedback("Flip one of the cards to reveal your answer.", null);
+            nextBtn.disabled = true;
+            nextBtn.dataset.mode = "advance";
+            nextBtn.textContent = currentIndex === totalQuestions - 1 ? "Finish Quiz" : "Next Question";
+
+            const shuffledOptions = shuffle(options);
+            shuffledOptions.forEach((option) => {
+                const cardBtn = document.createElement("button");
+                cardBtn.type = "button";
+                cardBtn.className = "card-btn";
+                cardBtn.dataset.value = option;
+
+                const inner = document.createElement("div");
+                inner.className = "card-inner";
+
+                const front = document.createElement("div");
+                front.className = "card-face front";
+                front.textContent = option;
+
+                const back = document.createElement("div");
+                back.className = "card-face back";
+                back.textContent = option;
+
+                inner.append(front, back);
+                cardBtn.appendChild(inner);
+                cardBtn.addEventListener("click", () => handleSelection(cardBtn, option));
+                cardGrid.appendChild(cardBtn);
+            });
+
+            updateScoreboard(false);
+        }
+
+        function lockCards() {
+            cardGrid.querySelectorAll(".card-inner").forEach((inner) => inner.classList.add("locked"));
+            cardGrid.querySelectorAll(".card-btn").forEach((btn) => (btn.disabled = true));
+        }
+
+        function handleSelection(cardBtn, option) {
+            if (questionCompleted || cardBtn.disabled) {
+                return;
+            }
+
+            const currentQuestion = questions[currentIndex];
+            const isCorrect = option === currentQuestion.correctAnswer;
+            const inner = cardBtn.querySelector(".card-inner");
+            inner.classList.add("flipped");
+
+            cardGrid.querySelectorAll(".card-btn").forEach((btn) => {
+                btn.disabled = true;
+                btn.querySelector(".card-inner").classList.add("locked");
+            });
+
+            if (isCorrect) {
+                inner.classList.add("correct");
+                streak += 1;
+                score += 10 + Math.max(streak - 1, 0) * 2;
+                setFeedback(`Correct! "${option}" is the right choice.`, "success");
+            } else {
+                inner.classList.add("wrong");
+                streak = 0;
+                const correctCard = Array.from(cardGrid.querySelectorAll(".card-btn")).find(
+                    (btn) => btn.dataset.value === currentQuestion.correctAnswer
+                );
+                if (correctCard) {
+                    correctCard.querySelector(".card-inner").classList.add("flipped", "correct");
+                }
+                setFeedback(`Not quite. The correct answer is "${currentQuestion.correctAnswer}".`, "error");
+            }
+
+            questionCompleted = true;
+            nextBtn.disabled = false;
+            updateScoreboard(true);
+        }
+
+        function showCompletion() {
+            setFeedback(`Quiz complete! You scored ${score} / ${totalQuestions * 10}. Tap restart to try again.`, "success");
+            questionText.textContent = "Bravo ! Tu maîtrises ce vocabulaire.";
+            cardGrid.innerHTML = "";
+            nextBtn.dataset.mode = "restart";
+            nextBtn.textContent = "Play Again";
+            nextBtn.disabled = false;
+        }
+
+        function resetQuiz() {
+            currentIndex = 0;
+            score = 0;
+            streak = 0;
+            renderQuestion();
+        }
+
+        function handleAdvance() {
+            if (nextBtn.dataset.mode === "restart") {
+                resetQuiz();
+                return;
+            }
+
+            if (!questionCompleted) {
+                return;
+            }
+
+            if (currentIndex < totalQuestions - 1) {
+                currentIndex += 1;
+                renderQuestion();
+            } else {
+                showCompletion();
+            }
+        }
+
+        nextBtn.addEventListener("click", handleAdvance);
+
+        renderQuestion();
+    </script>
+</body>
+</html>

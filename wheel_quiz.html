@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Vocabulary Wheel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            color-scheme: dark;
+            --accent: #00ffd4;
+            --accent-strong: rgba(0, 255, 212, 0.45);
+            --accent-soft: rgba(0, 255, 212, 0.18);
+            --bg: radial-gradient(circle at top, rgba(0, 255, 212, 0.16), rgba(4, 12, 16, 0.96));
+            --panel: rgba(8, 18, 22, 0.92);
+            --panel-border: rgba(0, 255, 212, 0.3);
+            --text: #f2fffb;
+            --muted: rgba(242, 255, 251, 0.72);
+            --success: #8bffc6;
+            --danger: #ff6b6b;
+            --shadow: 0 24px 48px rgba(0, 0, 0, 0.55);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: clamp(2.5rem, 6vw, 4rem) 1.5rem;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .game-shell {
+            width: min(960px, 100%);
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+
+        .game-header {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 0.65rem;
+        }
+
+        .game-header h1 {
+            font-size: clamp(2.1rem, 4vw, 3rem);
+            text-transform: uppercase;
+            letter-spacing: 1.3px;
+            text-shadow: 0 0 28px rgba(0, 255, 212, 0.35);
+        }
+
+        .game-header p {
+            color: var(--muted);
+            font-size: 1rem;
+        }
+
+        .game-panel {
+            border-radius: 24px;
+            border: 1px solid var(--panel-border);
+            background: var(--panel);
+            padding: clamp(1.8rem, 4vw, 2.6rem);
+            box-shadow: var(--shadow);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.75rem;
+        }
+
+        .wheel-stage {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            align-items: center;
+        }
+
+        .wheel-frame {
+            position: relative;
+            width: min(360px, 100%);
+        }
+
+        .pointer {
+            position: absolute;
+            top: -24px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 18px solid transparent;
+            border-right: 18px solid transparent;
+            border-bottom: 32px solid var(--accent);
+            filter: drop-shadow(0 6px 12px rgba(0, 255, 212, 0.45));
+            z-index: 2;
+        }
+
+        .wheel {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            border-radius: 50%;
+            position: relative;
+            border: 2px solid rgba(0, 255, 212, 0.22);
+            box-shadow: inset 0 0 0 1px rgba(0, 255, 212, 0.16), 0 22px 44px rgba(0, 255, 212, 0.28);
+            background: conic-gradient(
+                rgba(0, 255, 212, 0.4) 0deg 45deg,
+                rgba(255, 60, 172, 0.5) 45deg 90deg,
+                rgba(43, 255, 136, 0.45) 90deg 135deg,
+                rgba(255, 215, 0, 0.5) 135deg 180deg,
+                rgba(233, 75, 60, 0.5) 180deg 225deg,
+                rgba(51, 204, 255, 0.45) 225deg 270deg,
+                rgba(148, 0, 211, 0.5) 270deg 315deg,
+                rgba(255, 165, 0, 0.5) 315deg 360deg
+            );
+            transition: transform 4.2s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .wheel::after {
+            content: "";
+            position: absolute;
+            inset: 14%;
+            border-radius: 50%;
+            background: radial-gradient(circle at center, rgba(0, 0, 0, 0.8), transparent 65%);
+        }
+
+        .segment-label {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            top: 50%;
+            left: 50%;
+            transform-origin: 0% 0%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text);
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+            pointer-events: none;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            justify-content: center;
+        }
+
+        .control-btn {
+            padding: 0.85rem 2.2rem;
+            border-radius: 999px;
+            border: 1px solid var(--accent-strong);
+            background: linear-gradient(145deg, rgba(0, 255, 212, 0.7), rgba(0, 123, 255, 0.7));
+            color: #021b15;
+            font-weight: 600;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease, opacity 0.25s ease;
+        }
+
+        .control-btn.alt {
+            background: rgba(0, 0, 0, 0.4);
+            border-color: rgba(0, 255, 212, 0.22);
+            color: var(--accent);
+        }
+
+        .control-btn:disabled {
+            opacity: 0.55;
+            cursor: progress;
+            box-shadow: none;
+        }
+
+        .control-btn:not(:disabled):hover {
+            transform: translateY(-3px);
+            box-shadow: 0 22px 48px rgba(0, 255, 212, 0.32);
+            filter: brightness(1.05);
+        }
+
+        .hud-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .prompt-card {
+            border-radius: 20px;
+            border: 1px solid rgba(0, 255, 212, 0.18);
+            background: rgba(0, 0, 0, 0.32);
+            padding: clamp(1.3rem, 3vw, 1.7rem);
+            box-shadow: inset 0 0 0 1px rgba(0, 255, 212, 0.08);
+            display: grid;
+            gap: 0.65rem;
+        }
+
+        .prompt-card h2 {
+            margin: 0;
+            font-size: 1.1rem;
+            color: var(--muted);
+            letter-spacing: 0.35px;
+        }
+
+        .prompt-card p {
+            margin: 0;
+            font-size: 1.3rem;
+            color: var(--accent);
+        }
+
+        .response-panel {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .answer-input {
+            flex: 1;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 255, 212, 0.24);
+            background: rgba(0, 0, 0, 0.35);
+            color: var(--text);
+            font-size: 1.05rem;
+            padding: 0.7rem 1rem;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .answer-input:focus {
+            outline: none;
+            border-color: rgba(0, 255, 212, 0.55);
+            box-shadow: 0 0 0 3px rgba(0, 255, 212, 0.16);
+        }
+
+        .submit-btn {
+            padding: 0.7rem 1.5rem;
+            border-radius: 999px;
+            border: 1px solid rgba(0, 255, 212, 0.36);
+            background: linear-gradient(145deg, rgba(0, 255, 212, 0.65), rgba(0, 123, 255, 0.65));
+            color: #021b15;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 16px 32px rgba(0, 255, 212, 0.28);
+        }
+
+        .feedback {
+            font-size: 0.95rem;
+            min-height: 1.4rem;
+            color: var(--muted);
+        }
+
+        .feedback.success {
+            color: var(--success);
+        }
+
+        .feedback.error {
+            color: var(--danger);
+        }
+
+        .history-list {
+            display: grid;
+            gap: 0.45rem;
+            font-size: 0.92rem;
+            color: var(--muted);
+            max-height: 160px;
+            overflow-y: auto;
+            padding-right: 0.35rem;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            gap: 0.6rem;
+            padding: 0.45rem 0.65rem;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.28);
+            border: 1px solid rgba(0, 255, 212, 0.16);
+        }
+
+        @media (max-width: 640px) {
+            .game-panel {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-shell">
+        <header class="game-header">
+            <h1>Neon Vocabulary Wheel</h1>
+            <p>Spin the luminous wheel, translate the highlighted concept, and keep your streak alive for bonus points.</p>
+        </header>
+
+        <section class="game-panel" aria-live="polite">
+            <div class="wheel-stage">
+                <div class="wheel-frame">
+                    <div class="pointer"></div>
+                    <div class="wheel" id="wheel"></div>
+                </div>
+                <div class="controls">
+                    <button class="control-btn" id="spin-btn" type="button">Spin the Wheel</button>
+                    <button class="control-btn alt" id="reset-btn" type="button">Reset Score</button>
+                </div>
+            </div>
+
+            <div class="hud-panel">
+                <div class="stat-grid">
+                    <div class="stat-pill">
+                        <span class="stat-label">Score</span>
+                        <span class="stat-value" id="score-value">0</span>
+                    </div>
+                    <div class="stat-pill">
+                        <span class="stat-label">Streak</span>
+                        <span class="stat-value" id="streak-value">0</span>
+                    </div>
+                    <div class="stat-pill">
+                        <span class="stat-label">Spins</span>
+                        <span class="stat-value" id="spin-count">0</span>
+                    </div>
+                </div>
+
+                <div class="prompt-card">
+                    <h2>Translate to French</h2>
+                    <p id="prompt-text">Spin the wheel to draw a prompt.</p>
+                </div>
+
+                <div class="response-panel">
+                    <div class="input-row">
+                        <input type="text" id="answer-input" class="answer-input" placeholder="Type the French word…" disabled>
+                        <button class="submit-btn" id="submit-btn" type="button" disabled>Submit</button>
+                    </div>
+                    <div class="feedback" id="feedback">Your feedback appears here.</div>
+                </div>
+
+                <div class="prompt-card">
+                    <h2>Recent spins</h2>
+                    <div class="history-list" id="history"></div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const segments = [
+            { label: "Chat", prompt: "Cat", answer: "chat" },
+            { label: "Maison", prompt: "House", answer: "maison" },
+            { label: "Livre", prompt: "Book", answer: "livre" },
+            { label: "Arbre", prompt: "Tree", answer: "arbre" },
+            { label: "Amour", prompt: "Love", answer: "amour" },
+            { label: "Soleil", prompt: "Sun", answer: "soleil" },
+            { label: "Eau", prompt: "Water", answer: "eau" },
+            { label: "Jardin", prompt: "Garden", answer: "jardin" },
+            { label: "Montagne", prompt: "Mountain", answer: "montagne" },
+            { label: "Musique", prompt: "Music", answer: "musique" },
+            { label: "Voyage", prompt: "Trip", answer: "voyage" },
+            { label: "Étoile", prompt: "Star", answer: "étoile" },
+            { label: "Rivière", prompt: "River", answer: "rivière" },
+            { label: "Cuisine", prompt: "Kitchen", answer: "cuisine" },
+            { label: "Ville", prompt: "City", answer: "ville" },
+            { label: "Océan", prompt: "Ocean", answer: "océan" },
+            { label: "Bibliothèque", prompt: "Library", answer: "bibliothèque" },
+            { label: "Théâtre", prompt: "Theatre", answer: "théâtre" },
+            { label: "Marché", prompt: "Market", answer: "marché" },
+            { label: "Pont", prompt: "Bridge", answer: "pont" }
+        ];
+
+        const wheelColors = [
+            "rgba(0, 255, 212, 0.4)",
+            "rgba(255, 60, 172, 0.5)",
+            "rgba(43, 255, 136, 0.45)",
+            "rgba(255, 215, 0, 0.5)",
+            "rgba(233, 75, 60, 0.5)",
+            "rgba(51, 204, 255, 0.45)",
+            "rgba(148, 0, 211, 0.5)",
+            "rgba(255, 165, 0, 0.5)"
+        ];
+
+        const wheel = document.getElementById("wheel");
+        const spinBtn = document.getElementById("spin-btn");
+        const resetBtn = document.getElementById("reset-btn");
+        const answerInput = document.getElementById("answer-input");
+        const submitBtn = document.getElementById("submit-btn");
+        const feedbackDisplay = document.getElementById("feedback");
+        const promptText = document.getElementById("prompt-text");
+        const historyList = document.getElementById("history");
+
+        const scoreDisplay = document.getElementById("score-value");
+        const streakDisplay = document.getElementById("streak-value");
+        const spinCountDisplay = document.getElementById("spin-count");
+
+        let isSpinning = false;
+        let currentRotation = 0;
+        let currentSegmentIndex = null;
+        let spinCount = 0;
+        let score = 0;
+        let streak = 0;
+
+        function updateHud() {
+            scoreDisplay.textContent = score;
+            streakDisplay.textContent = streak;
+            spinCountDisplay.textContent = spinCount;
+        }
+
+        function addHistoryEntry(segment, correct) {
+            const item = document.createElement("div");
+            item.className = "history-item";
+            const timestamp = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+            item.innerHTML = `<span>${timestamp}</span><span>${segment.label} → ${segment.answer}</span><span style="color:${correct ? "var(--success)" : "var(--danger)"};">${correct ? "✓" : "✗"}</span>`;
+            historyList.prepend(item);
+            while (historyList.children.length > 6) {
+                historyList.removeChild(historyList.lastChild);
+            }
+        }
+
+        function enableInput(enable) {
+            answerInput.disabled = !enable;
+            submitBtn.disabled = !enable;
+            if (enable) {
+                answerInput.focus();
+                answerInput.select();
+            }
+        }
+
+        function buildWheelGradient() {
+            const slice = 360 / segments.length;
+            const stops = segments
+                .map((_, index) => {
+                    const start = index * slice;
+                    const end = start + slice;
+                    const color = wheelColors[index % wheelColors.length];
+                    return `${color} ${start}deg ${end}deg`;
+                })
+                .join(", ");
+            wheel.style.background = `conic-gradient(${stops})`;
+        }
+
+        function renderWheelSegments() {
+            wheel.innerHTML = "";
+            segments.forEach((segment, index) => {
+                const label = document.createElement("span");
+                label.className = "segment-label";
+                const angle = (360 / segments.length) * index + (180 / segments.length);
+                label.style.transform = `rotate(${angle}deg) translate(10%, -110%)`;
+                label.textContent = segment.label;
+                wheel.appendChild(label);
+            });
+        }
+
+        function renderWheel() {
+            buildWheelGradient();
+            renderWheelSegments();
+        }
+
+        function spinWheel() {
+            if (isSpinning) return;
+            isSpinning = true;
+            enableInput(false);
+            feedbackDisplay.textContent = "Wheel spinning…";
+            feedbackDisplay.className = "feedback";
+
+            const targetIndex = Math.floor(Math.random() * segments.length);
+            const segmentAngle = 360 / segments.length;
+            const randomOffset = Math.random() * (segmentAngle - 6) + 3;
+            const targetAngle = targetIndex * segmentAngle + randomOffset;
+
+            const spins = 4;
+            const rotation = spins * 360 + (segmentAngle * segments.length - targetAngle);
+            currentRotation = rotation;
+
+            wheel.style.transform = `rotate(${rotation}deg)`;
+            setTimeout(() => onSpinComplete(targetIndex), 4200);
+        }
+
+        function onSpinComplete(index) {
+            isSpinning = false;
+            currentSegmentIndex = index;
+            spinCount += 1;
+            updateHud();
+
+            const segment = segments[index];
+            promptText.textContent = `Translate: ${segment.prompt}`;
+            feedbackDisplay.textContent = "Type the French word and submit.";
+            feedbackDisplay.className = "feedback";
+            enableInput(true);
+        }
+
+        function checkAnswer() {
+            if (currentSegmentIndex === null) return;
+            const attempt = answerInput.value.trim().toLowerCase();
+            const segment = segments[currentSegmentIndex];
+            const correct = attempt === segment.answer.toLowerCase();
+
+            if (correct) {
+                streak += 1;
+                score += 12 + (streak - 1) * 3;
+                feedbackDisplay.textContent = "Correct ! Bien joué !";
+                feedbackDisplay.className = "feedback success";
+            } else {
+                streak = 0;
+                score = Math.max(0, score - 6);
+                feedbackDisplay.textContent = `Incorrect. The correct answer was "${segment.answer}".`;
+                feedbackDisplay.className = "feedback error";
+            }
+
+            addHistoryEntry(segment, correct);
+            updateHud();
+            enableInput(false);
+            answerInput.value = "";
+            currentSegmentIndex = null;
+        }
+
+        function resetGame() {
+            score = 0;
+            streak = 0;
+            spinCount = 0;
+            currentSegmentIndex = null;
+            feedbackDisplay.textContent = "Score reset. Spin to draw a new prompt.";
+            feedbackDisplay.className = "feedback";
+            promptText.textContent = "Spin the wheel to draw a prompt.";
+            answerInput.value = "";
+            enableInput(false);
+            historyList.innerHTML = "";
+            updateHud();
+        }
+
+        spinBtn.addEventListener("click", spinWheel);
+        resetBtn.addEventListener("click", resetGame);
+        submitBtn.addEventListener("click", checkAnswer);
+        answerInput.addEventListener("keydown", (event) => {
+            if (event.key === "Enter") {
+                checkAnswer();
+            }
+        });
+
+        renderWheel();
+        resetGame();
+    </script>
+</body>
+</html>

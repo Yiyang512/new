@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>French Sentence-Filling Quiz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            color-scheme: dark;
+            --accent: #00ffd4;
+            --accent-strong: rgba(0, 255, 212, 0.4);
+            --bg: radial-gradient(circle at top, rgba(0, 255, 212, 0.18), rgba(5, 8, 12, 0.96));
+            --panel: rgba(8, 18, 22, 0.9);
+            --panel-border: rgba(0, 255, 212, 0.28);
+            --text: #f2fffb;
+            --muted: rgba(242, 255, 251, 0.72);
+            --shadow: 0 22px 48px rgba(0, 255, 212, 0.22);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: clamp(2.5rem, 6vw, 4rem) 1.75rem;
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .game-shell {
+            width: min(720px, 100%);
+            display: flex;
+            flex-direction: column;
+            gap: 1.85rem;
+        }
+
+        .game-header {
+            text-align: center;
+        }
+
+        .game-header h1 {
+            margin: 0;
+            font-size: clamp(2rem, 4vw, 2.9rem);
+            text-transform: uppercase;
+            letter-spacing: 1.3px;
+            text-shadow: 0 0 28px rgba(0, 255, 212, 0.35);
+        }
+
+        .game-header p {
+            margin-top: 0.8rem;
+            color: var(--muted);
+            font-size: 1rem;
+        }
+
+        .game-panel {
+            background: var(--panel);
+            border-radius: 24px;
+            border: 1px solid var(--panel-border);
+            box-shadow: var(--shadow);
+            padding: clamp(1.8rem, 4vw, 2.6rem);
+            display: flex;
+            flex-direction: column;
+            gap: 1.75rem;
+        }
+
+        .scoreboard {
+            display: flex;
+            flex-wrap: wrap;
+            gap: clamp(0.75rem, 2vw, 1.25rem);
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .score-pill {
+            display: flex;
+            align-items: baseline;
+            gap: 0.75rem;
+            padding: 0.7rem 1.4rem;
+            border-radius: 999px;
+            border: 1px solid var(--panel-border);
+            background: linear-gradient(135deg, rgba(0, 255, 212, 0.18), rgba(0, 0, 0, 0.35));
+            box-shadow: 0 16px 32px rgba(0, 255, 212, 0.2);
+        }
+
+        .score-label {
+            font-size: 0.82rem;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .score-value {
+            font-size: 1.65rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .progress-wrap {
+            flex: 1;
+            min-width: 220px;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 11px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.08);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, rgba(0, 255, 212, 0.85), rgba(0, 123, 255, 0.85));
+            box-shadow: 0 0 20px rgba(0, 255, 212, 0.45);
+            transition: width 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .question-counter {
+            margin-top: 0.4rem;
+            font-size: 0.92rem;
+            color: var(--muted);
+            letter-spacing: 0.45px;
+        }
+
+        .card-stage {
+            display: grid;
+            gap: 1.25rem;
+        }
+
+        .question {
+            font-size: clamp(1.45rem, 3vw, 1.9rem);
+            font-weight: 600;
+            letter-spacing: 0.45px;
+            background: rgba(0, 0, 0, 0.24);
+            border-radius: 18px;
+            border: 1px solid rgba(0, 255, 212, 0.12);
+            padding: clamp(1.35rem, 4vw, 1.8rem);
+            box-shadow: inset 0 0 0 1px rgba(0, 255, 212, 0.08);
+        }
+
+        .option-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1rem;
+        }
+
+        .option-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.1rem 1rem;
+            border-radius: 16px;
+            border: 1px solid rgba(0, 255, 212, 0.24);
+            background: linear-gradient(145deg, rgba(0, 255, 212, 0.22), rgba(0, 0, 0, 0.65));
+            box-shadow: 0 14px 34px rgba(0, 255, 212, 0.18);
+            color: var(--text);
+            font-size: 1.15rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, filter 0.25s ease;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            transform: translateY(-4px);
+            box-shadow: 0 18px 42px rgba(0, 255, 212, 0.28);
+            border-color: rgba(0, 255, 212, 0.45);
+        }
+
+        .option-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.65;
+        }
+
+        .option-btn.is-correct {
+            background: linear-gradient(145deg, rgba(0, 255, 166, 0.75), rgba(0, 45, 60, 0.9));
+            border-color: rgba(0, 255, 166, 0.8);
+            color: #031913;
+            box-shadow: 0 18px 42px rgba(0, 255, 166, 0.35);
+        }
+
+        .option-btn.is-wrong {
+            background: linear-gradient(145deg, rgba(255, 120, 120, 0.7), rgba(45, 0, 0, 0.9));
+            border-color: rgba(255, 140, 140, 0.8);
+            color: #fff5f5;
+            box-shadow: 0 18px 42px rgba(255, 120, 120, 0.35);
+        }
+
+        .option-btn.is-disabled {
+            opacity: 0.45;
+        }
+
+        .feedback {
+            font-size: 0.98rem;
+            color: var(--muted);
+            min-height: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .feedback.success {
+            color: #9bffd8;
+        }
+
+        .feedback.error {
+            color: #ff9ea7;
+        }
+
+        .next-btn {
+            align-self: center;
+            padding: 0.95rem 2.8rem;
+            border-radius: 999px;
+            border: 1px solid var(--accent-strong);
+            background: linear-gradient(145deg, rgba(0, 255, 212, 0.7), rgba(0, 125, 255, 0.7));
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 0.65px;
+            text-transform: uppercase;
+            color: #021711;
+            cursor: pointer;
+            box-shadow: 0 20px 44px rgba(0, 255, 212, 0.32);
+            transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease, filter 0.25s ease;
+        }
+
+        .next-btn:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .next-btn:not(:disabled):hover {
+            transform: translateY(-4px);
+            box-shadow: 0 26px 56px rgba(0, 255, 212, 0.4);
+            filter: brightness(1.05);
+        }
+
+        @media (max-width: 540px) {
+            .game-panel {
+                padding: 1.5rem;
+            }
+
+            .flip-card-inner {
+                height: 96px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-shell">
+        <header class="game-header">
+            <h1>Sentence Fill Frenzy</h1>
+            <p>Flip the glowing tiles to complete each sentence. Conquer fifty prompts and nail them on the first try to keep your streak alive!</p>
+        </header>
+
+        <section class="game-panel" aria-live="polite">
+            <div class="scoreboard">
+                <div class="score-pill">
+                    <span class="score-label">Score</span>
+                    <span class="score-value" id="score-value">0</span>
+                </div>
+                <div class="score-pill">
+                    <span class="score-label">Best Streak</span>
+                    <span class="score-value" id="streak-value">0</span>
+                </div>
+                <div class="progress-wrap">
+                    <div class="progress-track">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                    <div class="question-counter" id="question-counter">Question 1 / 50</div>
+                </div>
+            </div>
+
+            <div class="card-stage">
+                <div class="question" id="question">Je ____ une pomme.</div>
+                <div class="option-grid" id="options"></div>
+            </div>
+
+            <p class="feedback" id="feedback">Tap a glowing button to pick the word that completes the sentence.</p>
+
+            <button class="next-btn" id="next-btn" type="button" disabled>Next Sentence</button>
+        </section>
+    </div>
+
+    <script>
+        const questions = [
+            { question: "Je ____ une pomme.", correctAnswer: "mange", options: ["mange", "manges", "mangent", "mangons"] },
+            { question: "Tu ____ au parc.", correctAnswer: "vas", options: ["vas", "va", "vont", "allons"] },
+            { question: "Il ____ un livre.", correctAnswer: "lit", options: ["lit", "lire", "lisons", "lis"] },
+            { question: "Nous ____ contents.", correctAnswer: "sommes", options: ["suis", "est", "êtes", "sommes"] },
+            { question: "Vous ____ une question.", correctAnswer: "posez", options: ["pose", "posez", "posons", "posent"] },
+            { question: "Ils ____ au cinéma.", correctAnswer: "vont", options: ["vais", "va", "vont", "allons"] },
+            { question: "Je ____ mon ami.", correctAnswer: "vois", options: ["vois", "voit", "voyons", "voir"] },
+            { question: "Elle ____ sa famille.", correctAnswer: "aime", options: ["aime", "aimes", "aimons", "aiment"] },
+            { question: "Nous ____ dans la classe.", correctAnswer: "parlons", options: ["parle", "parlons", "parlez", "parlent"] },
+            { question: "Ils ____ un gâteau.", correctAnswer: "mangent", options: ["mange", "manges", "mangeons", "mangent"] },
+            { question: "Ils ____ la vérité.", correctAnswer: "disent", options: ["dites", "disent", "dis", "dire"] },
+            { question: "Nous ____ une surprise.", correctAnswer: "avons", options: ["avez", "avons", "ont", "ai"] },
+            { question: "Tu ____ la porte.", correctAnswer: "ouvres", options: ["ouvre", "ouvres", "ouvrent", "ouvrons"] },
+            { question: "Elle ____ souvent la musique.", correctAnswer: "écoute", options: ["écoute", "écoutes", "écoutons", "écoutez"] },
+            { question: "Je ____ à Paris.", correctAnswer: "vis", options: ["vis", "vit", "vivons", "vivez"] },
+            { question: "Vous ____ un film ce soir.", correctAnswer: "regardez", options: ["regardes", "regarde", "regardons", "regardez"] },
+            { question: "Ils ____ le train.", correctAnswer: "prennent", options: ["prends", "prend", "prenons", "prennent"] },
+            { question: "Nous ____ nos devoirs.", correctAnswer: "faisons", options: ["faites", "faisons", "fais", "font"] },
+            { question: "Il ____ tard.", correctAnswer: "est", options: ["est", "es", "sommes", "êtes"] },
+            { question: "Tu ____ ton ami demain.", correctAnswer: "vois", options: ["voit", "voyez", "vois", "voyons"] },
+            { question: "Nous ____ en train de dîner.", correctAnswer: "sommes", options: ["êtes", "sommes", "sont", "serons"] },
+            { question: "Vous ____ de la musique douce.", correctAnswer: "écoutez", options: ["écoutes", "écoute", "écoutez", "écoutent"] },
+            { question: "Ils ____ leurs devoirs chaque soir.", correctAnswer: "font", options: ["fait", "font", "faisons", "faites"] },
+            { question: "Je ____ souvent du vélo.", correctAnswer: "fais", options: ["fais", "fait", "faisons", "faites"] },
+            { question: "Tu ____ la vérité à tes parents.", correctAnswer: "dis", options: ["dit", "dis", "disons", "dites"] },
+            { question: "Elle ____ ses amis au café.", correctAnswer: "retrouve", options: ["retrouve", "retrouves", "retrouvons", "retrouvent"] },
+            { question: "Nous ____ tôt le matin.", correctAnswer: "partons", options: ["pars", "part", "partons", "partez"] },
+            { question: "Vous ____ le match à la télévision.", correctAnswer: "regardez", options: ["regardez", "regardons", "regardent", "regardaient"] },
+            { question: "Ils ____ un cadeau à leur mère.", correctAnswer: "offrent", options: ["offre", "offres", "offront", "offrent"] },
+            { question: "Nous ____ au marché le samedi.", correctAnswer: "allons", options: ["allons", "allez", "vas", "va"] },
+            { question: "Je ____ la question maintenant.", correctAnswer: "pose", options: ["pose", "poses", "posons", "posez"] },
+            { question: "Tu ____ la porte derrière toi.", correctAnswer: "fermes", options: ["ferme", "fermes", "fermés", "fermons"] },
+            { question: "Elle ____ la vérité avec franchise.", correctAnswer: "dit", options: ["dis", "dit", "disons", "dites"] },
+            { question: "Nous ____ ce projet depuis longtemps.", correctAnswer: "suivons", options: ["suis", "suit", "suivons", "suivez"] },
+            { question: "Vous ____ toujours la même chanson.", correctAnswer: "chantez", options: ["chantez", "chantons", "chantent", "chantiez"] },
+            { question: "Ils ____ leurs idées en réunion.", correctAnswer: "partagent", options: ["partage", "partagent", "partageons", "partagez"] },
+            { question: "Je ____ ma famille ce week-end.", correctAnswer: "visite", options: ["visite", "visites", "visitons", "visitez"] },
+            { question: "Tu ____ tes exercices avant le cours.", correctAnswer: "termines", options: ["termine", "termines", "terminons", "terminez"] },
+            { question: "Elle ____ un message à son collègue.", correctAnswer: "envoie", options: ["envoie", "envoies", "envoyons", "envoyez"] },
+            { question: "Nous ____ les documents nécessaires.", correctAnswer: "préparons", options: ["prépare", "prépares", "préparons", "préparez"] },
+            { question: "Vous ____ tous les chapitres du livre.", correctAnswer: "lisez", options: ["lis", "lit", "lisons", "lisez"] },
+            { question: "Ils ____ toujours les délais imposés.", correctAnswer: "respectent", options: ["respecte", "respectent", "respectons", "respectez"] },
+            { question: "Je ____ de nouvelles compétences.", correctAnswer: "développe", options: ["développe", "développes", "développons", "développez"] },
+            { question: "Tu ____ une solution efficace.", correctAnswer: "proposes", options: ["propose", "proposes", "proposons", "proposez"] },
+            { question: "Nous ____ nos progrès chaque mois.", correctAnswer: "évaluons", options: ["évalue", "évalues", "évaluons", "évaluez"] },
+            { question: "Vous ____ souvent vos partenaires.", correctAnswer: "rencontrez", options: ["rencontre", "rencontres", "rencontrons", "rencontrez"] },
+            { question: "Ils ____ les tâches entre les membres de l'équipe.", correctAnswer: "répartissent", options: ["répartit", "répartissent", "répartissons", "répartissez"] }
+        ];
+
+        const totalQuestions = questions.length;
+        let currentQuestion = 0;
+        let score = 0;
+        let currentStreak = 0;
+        let bestStreak = 0;
+        let questionResolved = false;
+        let questionMistake = false;
+
+        const questionDisplay = document.getElementById("question");
+        const optionsContainer = document.getElementById("options");
+        const feedbackDisplay = document.getElementById("feedback");
+        const nextBtn = document.getElementById("next-btn");
+        const scoreValue = document.getElementById("score-value");
+        const streakValue = document.getElementById("streak-value");
+        const questionCounter = document.getElementById("question-counter");
+        const progressFill = document.getElementById("progress-fill");
+
+        function shuffleArray(array) {
+            return [...array].sort(() => Math.random() - 0.5);
+        }
+
+        function updateScoreboard() {
+            scoreValue.textContent = score;
+            streakValue.textContent = bestStreak;
+        }
+
+        function updateProgressBar(answeredCount = currentQuestion) {
+            const percent = (answeredCount / totalQuestions) * 100;
+            progressFill.style.width = `${percent}%`;
+
+            if (answeredCount >= totalQuestions) {
+                questionCounter.textContent = `Completed • Score ${score}/${totalQuestions}`;
+            } else {
+                questionCounter.textContent = `Question ${currentQuestion + 1} / ${totalQuestions}`;
+            }
+        }
+
+        function setFeedback(message, status) {
+            feedbackDisplay.textContent = message;
+            feedbackDisplay.classList.remove("success", "error");
+            if (status) {
+                feedbackDisplay.classList.add(status);
+            }
+        }
+
+        function renderQuestion() {
+            const { question, options } = questions[currentQuestion];
+
+            questionDisplay.textContent = question;
+            optionsContainer.innerHTML = "";
+
+            questionResolved = false;
+            questionMistake = false;
+
+            const shuffledOptions = shuffleArray(options);
+
+            shuffledOptions.forEach((option) => {
+                const optionBtn = document.createElement("button");
+                optionBtn.type = "button";
+                optionBtn.className = "option-btn";
+                optionBtn.dataset.value = option;
+                optionBtn.textContent = option;
+                optionsContainer.appendChild(optionBtn);
+
+                const isCorrect = option === questions[currentQuestion].correctAnswer;
+                optionBtn.addEventListener("click", () => handleAnswer(optionBtn, isCorrect));
+            });
+
+            setFeedback("Tap a glowing button to pick the word that completes the sentence.", null);
+            nextBtn.disabled = true;
+            nextBtn.dataset.mode = "advance";
+            nextBtn.textContent = currentQuestion === totalQuestions - 1 ? "Finish Quiz" : "Next Sentence";
+
+            updateScoreboard();
+            updateProgressBar(currentQuestion);
+        }
+
+        function handleAnswer(optionBtn, isCorrect) {
+            if (optionBtn.disabled || (questionResolved && !isCorrect)) {
+                return;
+            }
+
+            if (isCorrect) {
+                if (!questionResolved) {
+                    questionResolved = true;
+                    optionBtn.classList.add("is-correct");
+
+                    if (!questionMistake) {
+                        currentStreak += 1;
+                        bestStreak = Math.max(bestStreak, currentStreak);
+                    } else {
+                        currentStreak = 0;
+                    }
+
+                    score += 1;
+                    setFeedback(`Nice! "${questions[currentQuestion].correctAnswer}" completes the sentence.`, "success");
+
+                    optionsContainer.querySelectorAll(".option-btn").forEach((btn) => {
+                        btn.disabled = true;
+                        if (btn !== optionBtn) {
+                            btn.classList.add("is-disabled");
+                        }
+                    });
+
+                    updateScoreboard();
+                    updateProgressBar(currentQuestion + 1);
+
+                    nextBtn.disabled = false;
+                    nextBtn.textContent = currentQuestion === totalQuestions - 1 ? "See Results" : "Next Sentence";
+                    nextBtn.focus({ preventScroll: true });
+                }
+            } else {
+                optionBtn.classList.add("is-wrong");
+                optionBtn.disabled = true;
+                questionMistake = true;
+                setFeedback("Almost! Try another button to uncover the right answer.", "error");
+            }
+        }
+
+        function showCompletion() {
+            questionDisplay.textContent = "Bravo ! Tu maîtrises ces phrases.";
+            optionsContainer.innerHTML = "";
+            setFeedback(`Quiz complete! You scored ${score} out of ${totalQuestions}. Best streak: ${bestStreak}.`, "success");
+
+            updateProgressBar(totalQuestions);
+
+            nextBtn.disabled = false;
+            nextBtn.textContent = "Play Again";
+            nextBtn.dataset.mode = "restart";
+        }
+
+        function resetQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            currentStreak = 0;
+            bestStreak = 0;
+            renderQuestion();
+        }
+
+        function advanceQuiz() {
+            if (nextBtn.dataset.mode === "restart") {
+                resetQuiz();
+                return;
+            }
+
+            if (questionResolved) {
+                if (currentQuestion < totalQuestions - 1) {
+                    currentQuestion += 1;
+                    renderQuestion();
+                } else {
+                    showCompletion();
+                }
+            }
+        }
+
+        nextBtn.addEventListener("click", advanceQuiz);
+
+        renderQuestion();
+    </script>
+</body>
+</html>

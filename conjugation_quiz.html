@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conjugation Challenge - French</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            color-scheme: dark;
+            --accent: #00ffd4;
+            --accent-soft: rgba(0, 255, 212, 0.18);
+            --accent-strong: rgba(0, 255, 212, 0.35);
+            --panel: rgba(6, 15, 20, 0.94);
+            --panel-border: rgba(0, 255, 212, 0.25);
+            --text: #f2fffb;
+            --muted: rgba(242, 255, 251, 0.7);
+            --bg: radial-gradient(circle at top, rgba(0, 255, 212, 0.25), rgba(2, 6, 8, 0.92));
+            --accent-glow: 0 18px 48px rgba(0, 255, 212, 0.35);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: clamp(2rem, 6vw, 4rem) 1.5rem;
+            background: var(--bg);
+            font-family: 'Poppins', sans-serif;
+            color: var(--text);
+        }
+
+        .game-shell {
+            width: min(680px, 100%);
+            display: flex;
+            flex-direction: column;
+            gap: 1.75rem;
+        }
+
+        .game-header {
+            text-align: center;
+        }
+
+        .game-header h1 {
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            margin: 0;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            text-shadow: 0 0 28px rgba(0, 255, 212, 0.35);
+        }
+
+        .game-header p {
+            color: var(--muted);
+            margin-top: 0.75rem;
+            font-size: 1rem;
+        }
+
+        .game-panel {
+            background: var(--panel);
+            border-radius: 24px;
+            border: 1px solid var(--panel-border);
+            box-shadow: var(--accent-glow);
+            padding: clamp(1.75rem, 4vw, 2.5rem);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .scoreboard {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .score-pill {
+            display: flex;
+            align-items: baseline;
+            gap: 0.75rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 999px;
+            border: 1px solid var(--panel-border);
+            background: linear-gradient(135deg, rgba(0, 255, 212, 0.18), rgba(0, 0, 0, 0.35));
+            box-shadow: 0 12px 28px rgba(0, 255, 212, 0.18);
+        }
+
+        .score-label {
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .score-value {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .progress-wrap {
+            flex: 1;
+            min-width: 180px;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 999px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, rgba(0, 255, 212, 0.85), rgba(0, 125, 255, 0.85));
+            box-shadow: 0 0 22px rgba(0, 255, 212, 0.65);
+            border-radius: inherit;
+            transition: width 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .question-counter {
+            margin-top: 0.35rem;
+            font-size: 0.9rem;
+            letter-spacing: 0.4px;
+            color: var(--muted);
+        }
+
+        .question-card {
+            background: rgba(0, 0, 0, 0.28);
+            border-radius: 18px;
+            border: 1px solid rgba(0, 255, 212, 0.12);
+            padding: clamp(1.5rem, 4vw, 2rem);
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .question-card::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            pointer-events: none;
+            box-shadow: inset 0 0 0 1px rgba(0, 255, 212, 0.1);
+            opacity: 0.8;
+        }
+
+        .question {
+            font-size: clamp(1.35rem, 3vw, 1.8rem);
+            font-weight: 600;
+            letter-spacing: 0.4px;
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 0.85rem;
+        }
+
+        .option-btn {
+            border: 1px solid rgba(0, 255, 212, 0.22);
+            border-radius: 14px;
+            padding: 0.85rem 1rem;
+            font-size: 1.05rem;
+            font-weight: 500;
+            color: var(--text);
+            background: linear-gradient(145deg, rgba(0, 255, 212, 0.14), rgba(0, 0, 0, 0.6));
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 18px 36px rgba(0, 255, 212, 0.22);
+            border-color: rgba(0, 255, 212, 0.45);
+        }
+
+        .option-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.72;
+        }
+
+        .option-btn.correct {
+            background: linear-gradient(145deg, rgba(0, 255, 166, 0.7), rgba(0, 42, 60, 0.9));
+            border-color: rgba(0, 255, 166, 0.8);
+            box-shadow: 0 18px 42px rgba(0, 255, 166, 0.45);
+        }
+
+        .option-btn.wrong {
+            background: linear-gradient(145deg, rgba(255, 92, 92, 0.55), rgba(28, 0, 0, 0.9));
+            border-color: rgba(255, 92, 92, 0.75);
+            box-shadow: 0 18px 42px rgba(255, 92, 92, 0.35);
+        }
+
+        .feedback {
+            font-size: 0.95rem;
+            min-height: 1.4rem;
+            color: var(--muted);
+            transition: color 0.3s ease;
+        }
+
+        .feedback.success {
+            color: #8bffc6;
+        }
+
+        .feedback.error {
+            color: #ffb3b3;
+        }
+
+        .next-btn {
+            align-self: center;
+            padding: 0.85rem 2.4rem;
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            border: 1px solid rgba(0, 255, 212, 0.4);
+            border-radius: 999px;
+            background: linear-gradient(145deg, rgba(0, 255, 212, 0.65), rgba(0, 125, 255, 0.65));
+            color: #011b14;
+            cursor: pointer;
+            box-shadow: 0 16px 40px rgba(0, 255, 212, 0.32);
+            transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease, opacity 0.25s ease;
+        }
+
+        .next-btn:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .next-btn:not(:disabled):hover {
+            transform: translateY(-3px);
+            box-shadow: 0 22px 48px rgba(0, 255, 212, 0.38);
+            filter: brightness(1.05);
+        }
+
+        @media (max-width: 540px) {
+            .options {
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            }
+
+            .game-panel {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-shell">
+        <header class="game-header">
+            <h1>Conjugation Challenge</h1>
+            <p>Sharpen your French verb reflexes with fifty quick-fire prompts.</p>
+        </header>
+
+        <section class="game-panel" aria-live="polite">
+            <div class="scoreboard">
+                <div class="score-pill">
+                    <span class="score-label">Score</span>
+                    <span class="score-value" id="score">0</span>
+                </div>
+                <div class="progress-wrap">
+                    <div class="progress-track">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                    <div class="question-counter" id="question-counter">Question 1 / 50</div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question" id="question">Conjugate the verb for "Je" - "Parler"</div>
+                <div class="options" id="options"></div>
+            </div>
+
+            <p class="feedback" id="feedback">Select the correct conjugation to begin.</p>
+
+            <button class="next-btn" id="next-btn" type="button" onclick="loadNextQuestion()" disabled>Next Question</button>
+        </section>
+    </div>
+
+    <script>
+        const conjugationQuestions = [
+            { verb: "Parler", pronoun: "Je", correctAnswer: "parle", options: ["parler", "parle", "parles", "parlons"] },
+            { verb: "Être", pronoun: "Tu", correctAnswer: "es", options: ["suis", "es", "est", "êtes"] },
+            { verb: "Avoir", pronoun: "Il", correctAnswer: "a", options: ["ai", "as", "a", "avons"] },
+            { verb: "Aller", pronoun: "Nous", correctAnswer: "allons", options: ["allez", "va", "allons", "vais"] },
+            { verb: "Faire", pronoun: "Vous", correctAnswer: "faites", options: ["fais", "faisons", "faites", "font"] },
+            { verb: "Prendre", pronoun: "Ils", correctAnswer: "prennent", options: ["prends", "prend", "prenons", "prennent"] },
+            { verb: "Venir", pronoun: "Je", correctAnswer: "viens", options: ["vient", "viens", "venons", "venez"] },
+            { verb: "Manger", pronoun: "Elle", correctAnswer: "mange", options: ["manges", "mange", "mangent", "mangeons"] },
+            { verb: "Finir", pronoun: "Nous", correctAnswer: "finissons", options: ["finis", "finissons", "finissez", "finissent"] },
+            { verb: "Choisir", pronoun: "Vous", correctAnswer: "choisissez", options: ["choisis", "choisit", "choisissez", "choisissent"] },
+            { verb: "Voir", pronoun: "Tu", correctAnswer: "vois", options: ["vois", "voit", "voyons", "voyez"] },
+            { verb: "Mettre", pronoun: "Je", correctAnswer: "mets", options: ["met", "mets", "mettons", "mettez"] },
+            { verb: "Dormir", pronoun: "Nous", correctAnswer: "dormons", options: ["dors", "dort", "dormons", "dormez"] },
+            { verb: "Dire", pronoun: "Vous", correctAnswer: "dites", options: ["dis", "dit", "dites", "disent"] },
+            { verb: "Sortir", pronoun: "Elle", correctAnswer: "sort", options: ["sort", "sors", "sortons", "sortent"] },
+            { verb: "Boire", pronoun: "Vous", correctAnswer: "buvez", options: ["bois", "boit", "buvons", "buvez"] },
+            { verb: "Vouloir", pronoun: "Ils", correctAnswer: "veulent", options: ["veux", "veut", "voulons", "veulent"] },
+            { verb: "Devoir", pronoun: "Il", correctAnswer: "doit", options: ["doit", "dois", "devons", "devez"] },
+            { verb: "Écrire", pronoun: "Nous", correctAnswer: "écrivons", options: ["écris", "écrit", "écrivons", "écrivent"] },
+            { verb: "Connaître", pronoun: "Ils", correctAnswer: "connaissent", options: ["connais", "connaît", "connaissons", "connaissent"] },
+            { verb: "Envoyer", pronoun: "Je", correctAnswer: "envoie", options: ["envoie", "envoies", "envoyons", "envoyez"] },
+            { verb: "Recevoir", pronoun: "Tu", correctAnswer: "reçois", options: ["reçois", "reçoit", "recevons", "recevez"] },
+            { verb: "Ouvrir", pronoun: "Nous", correctAnswer: "ouvrons", options: ["ouvre", "ouvres", "ouvrons", "ouvrez"] },
+            { verb: "Offrir", pronoun: "Ils", correctAnswer: "offrent", options: ["offres", "offre", "offrons", "offrent"] },
+            { verb: "Savoir", pronoun: "Vous", correctAnswer: "savez", options: ["sais", "sait", "savons", "savez"] },
+            { verb: "Tenir", pronoun: "Elle", correctAnswer: "tient", options: ["tiens", "tient", "tenons", "tenez"] },
+            { verb: "Lire", pronoun: "Nous", correctAnswer: "lisons", options: ["lis", "lit", "lisons", "lisez"] },
+            { verb: "Plaire", pronoun: "Ça", correctAnswer: "plaît", options: ["plais", "plaît", "plaisons", "plaisez"] },
+            { verb: "Craindre", pronoun: "Je", correctAnswer: "crains", options: ["crains", "craint", "craignons", "craignez"] },
+            { verb: "Résoudre", pronoun: "Ils", correctAnswer: "résolvent", options: ["résous", "résout", "résolvons", "résolvent"] },
+            { verb: "Rendre", pronoun: "Nous", correctAnswer: "rendons", options: ["rendons", "rend", "rendez", "rendent"] },
+            { verb: "Traduire", pronoun: "Vous", correctAnswer: "traduisez", options: ["traduis", "traduisez", "traduissons", "traduisaient"] },
+            { verb: "Sourire", pronoun: "Elle", correctAnswer: "sourit", options: ["souris", "sourit", "sourions", "souriez"] },
+            { verb: "Servir", pronoun: "Ils", correctAnswer: "servent", options: ["sers", "sert", "servons", "servent"] },
+            { verb: "Appeler", pronoun: "Nous", correctAnswer: "appelons", options: ["appelle", "appelles", "appelons", "appelez"] },
+            { verb: "Acheter", pronoun: "Vous", correctAnswer: "achetez", options: ["achète", "achètes", "achetons", "achetez"] },
+            { verb: "Produire", pronoun: "Ils", correctAnswer: "produisent", options: ["produis", "produit", "produisons", "produisent"] },
+            { verb: "Cueillir", pronoun: "Je", correctAnswer: "cueille", options: ["cueille", "cueilles", "cueillons", "cueillez"] },
+            { verb: "Promettre", pronoun: "Nous", correctAnswer: "promettons", options: ["promets", "promet", "promettons", "promettez"] },
+            { verb: "Valoir", pronoun: "Cela", correctAnswer: "vaut", options: ["vais", "veut", "vaut", "valons"] },
+            { verb: "Croire", pronoun: "Nous", correctAnswer: "croyons", options: ["crois", "croit", "croyons", "croyez"] },
+            { verb: "Vivre", pronoun: "Ils", correctAnswer: "vivent", options: ["vis", "vit", "vivons", "vivent"] },
+            { verb: "Rire", pronoun: "Vous", correctAnswer: "riez", options: ["ris", "rit", "rions", "riez"] },
+            { verb: "Craindre", pronoun: "Tu", correctAnswer: "crains", options: ["crains", "craint", "craignons", "craignez"] },
+            { verb: "Recevoir", pronoun: "Ils", correctAnswer: "reçoivent", options: ["reçois", "reçoit", "recevons", "reçoivent"] },
+            { verb: "Bouillir", pronoun: "Ça", correctAnswer: "bout", options: ["bouille", "bout", "bouillons", "bouillez"] },
+            { verb: "Répondre", pronoun: "Nous", correctAnswer: "répondons", options: ["réponds", "répond", "répondons", "répondez"] },
+            { verb: "Conduire", pronoun: "Je", correctAnswer: "conduis", options: ["conduis", "conduit", "conduisons", "conduisez"] }
+        ];
+
+        const totalQuestions = conjugationQuestions.length;
+        let currentQuestion = 0;
+        let score = 0;
+
+        const questionDisplay = document.getElementById("question");
+        const optionsContainer = document.getElementById("options");
+        const scoreDisplay = document.getElementById("score");
+        const feedbackDisplay = document.getElementById("feedback");
+        const nextBtn = document.getElementById("next-btn");
+        const questionCounter = document.getElementById("question-counter");
+        const progressFill = document.getElementById("progress-fill");
+
+        function shuffleOptions(options) {
+            return [...options].sort(() => Math.random() - 0.5);
+        }
+
+        function updateScore() {
+            scoreDisplay.textContent = score;
+        }
+
+        function updateProgressBar(answeredCount = currentQuestion) {
+            const percent = (answeredCount / totalQuestions) * 100;
+            progressFill.style.width = `${percent}%`;
+
+            if (answeredCount >= totalQuestions) {
+                questionCounter.textContent = `Completed • Score ${score}/${totalQuestions}`;
+            } else {
+                questionCounter.textContent = `Question ${currentQuestion + 1} / ${totalQuestions}`;
+            }
+        }
+
+        function setFeedback(message, status) {
+            feedbackDisplay.textContent = message;
+            feedbackDisplay.classList.remove("success", "error");
+            if (status) {
+                feedbackDisplay.classList.add(status);
+            }
+        }
+
+        function loadQuestion() {
+            const questionData = conjugationQuestions[currentQuestion];
+            questionDisplay.textContent = `Conjugate the verb for "${questionData.pronoun}" - "${questionData.verb}"`;
+
+            const shuffledOptions = shuffleOptions(questionData.options);
+            optionsContainer.innerHTML = "";
+
+            shuffledOptions.forEach((option) => {
+                const optionBtn = document.createElement("button");
+                optionBtn.className = "option-btn";
+                optionBtn.type = "button";
+                optionBtn.textContent = option;
+                optionBtn.dataset.value = option;
+                optionBtn.addEventListener("click", () => checkAnswer(optionBtn, option));
+                optionsContainer.appendChild(optionBtn);
+            });
+
+            setFeedback("Choose the correct conjugation.", null);
+            nextBtn.disabled = true;
+            nextBtn.dataset.mode = "advance";
+            nextBtn.textContent = currentQuestion === totalQuestions - 1 ? "Finish Quiz" : "Next Question";
+
+            updateScore();
+            updateProgressBar(currentQuestion);
+        }
+
+        function checkAnswer(button, selectedAnswer) {
+            const correctAnswer = conjugationQuestions[currentQuestion].correctAnswer;
+            const buttons = optionsContainer.querySelectorAll(".option-btn");
+
+            buttons.forEach((btn) => (btn.disabled = true));
+
+            if (selectedAnswer === correctAnswer) {
+                button.classList.add("correct");
+                score++;
+                setFeedback(`Nice! "${correctAnswer}" is correct.`, "success");
+            } else {
+                button.classList.add("wrong");
+                buttons.forEach((btn) => {
+                    if (btn.dataset.value === correctAnswer) {
+                        btn.classList.add("correct");
+                    }
+                });
+                setFeedback(`Almost! The correct form is "${correctAnswer}".`, "error");
+            }
+
+            updateScore();
+            updateProgressBar(currentQuestion + 1);
+
+            nextBtn.disabled = false;
+            nextBtn.textContent = currentQuestion === totalQuestions - 1 ? "See Results" : "Next Question";
+            nextBtn.focus({ preventScroll: true });
+        }
+
+        function showCompletion() {
+            setFeedback(`Quiz complete! You scored ${score} out of ${totalQuestions}.`, "success");
+            questionDisplay.textContent = "Bravo ! Prêt·e pour un autre tour ?";
+            optionsContainer.innerHTML = "";
+
+            updateProgressBar(totalQuestions);
+
+            nextBtn.disabled = false;
+            nextBtn.textContent = "Play Again";
+            nextBtn.dataset.mode = "restart";
+        }
+
+        function resetQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            loadQuestion();
+        }
+
+        function loadNextQuestion() {
+            if (nextBtn.dataset.mode === "restart") {
+                resetQuiz();
+                return;
+            }
+
+            if (nextBtn.disabled) {
+                return;
+            }
+
+            if (currentQuestion < totalQuestions - 1) {
+                currentQuestion++;
+                loadQuestion();
+            } else {
+                showCompletion();
+            }
+        }
+
+        loadQuestion();
+    </script>
+</body>
+</html>

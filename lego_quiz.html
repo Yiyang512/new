@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Lego Language Builder</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            color-scheme: dark;
+            --accent: #00ffd4;
+            --accent-strong: rgba(0, 255, 212, 0.4);
+            --accent-soft: rgba(0, 255, 212, 0.18);
+            --bg: radial-gradient(circle at top, rgba(0, 255, 212, 0.18), rgba(4, 12, 16, 0.96));
+            --panel: rgba(8, 18, 22, 0.92);
+            --panel-border: rgba(0, 255, 212, 0.28);
+            --text: #f2fffb;
+            --muted: rgba(242, 255, 251, 0.7);
+            --success: #8bffc6;
+            --danger: #ff6b6b;
+            --shadow: 0 24px 48px rgba(0, 0, 0, 0.55);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: clamp(2.5rem, 6vw, 4rem) 1.5rem;
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .game-shell {
+            width: min(960px, 100%);
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+
+        .game-header {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 0.65rem;
+        }
+
+        .game-header h1 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            text-transform: uppercase;
+            letter-spacing: 1.3px;
+            text-shadow: 0 0 28px rgba(0, 255, 212, 0.35);
+        }
+
+        .game-header p {
+            color: var(--muted);
+            font-size: 1rem;
+        }
+
+        .game-panel {
+            border-radius: 24px;
+            border: 1px solid var(--panel-border);
+            background: var(--panel);
+            padding: clamp(1.8rem, 4vw, 2.6rem);
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 1.6rem;
+        }
+
+        .scoreboard {
+            display: flex;
+            flex-wrap: wrap;
+            gap: clamp(0.75rem, 2vw, 1.15rem);
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stat-pill {
+            display: flex;
+            align-items: baseline;
+            gap: 0.6rem;
+            padding: 0.65rem 1.3rem;
+            border-radius: 999px;
+            border: 1px solid var(--panel-border);
+            background: linear-gradient(135deg, rgba(0, 255, 212, 0.16), rgba(0, 0, 0, 0.35));
+            box-shadow: 0 16px 32px rgba(0, 255, 212, 0.18);
+        }
+
+        .stat-label {
+            font-size: 0.82rem;
+            letter-spacing: 0.7px;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .progress-wrap {
+            flex: 1;
+            min-width: 220px;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 10px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.08);
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, rgba(0, 255, 212, 0.85), rgba(0, 125, 255, 0.85));
+            box-shadow: 0 0 18px rgba(0, 255, 212, 0.45);
+            transition: width 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .progress-label {
+            margin-top: 0.35rem;
+            font-size: 0.9rem;
+            color: var(--muted);
+            letter-spacing: 0.45px;
+        }
+
+        .level-card {
+            border-radius: 20px;
+            border: 1px solid rgba(0, 255, 212, 0.18);
+            background: rgba(0, 0, 0, 0.32);
+            padding: clamp(1.4rem, 3.5vw, 1.9rem);
+            box-shadow: inset 0 0 0 1px rgba(0, 255, 212, 0.08);
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .level-title {
+            font-size: clamp(1.3rem, 3vw, 1.75rem);
+            letter-spacing: 0.4px;
+            color: var(--accent);
+        }
+
+        .lego-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1rem;
+        }
+
+        .lego-tile {
+            position: relative;
+            border-radius: 16px;
+            border: 1px solid rgba(0, 255, 212, 0.24);
+            padding: 1rem;
+            background: linear-gradient(165deg, rgba(0, 255, 212, 0.22), rgba(0, 0, 0, 0.65));
+            color: var(--text);
+            min-height: 140px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 0.75rem;
+            cursor: pointer;
+            transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+        }
+
+        .lego-tile:hover:not(.locked) {
+            transform: translateY(-4px);
+            border-color: rgba(0, 255, 212, 0.45);
+            box-shadow: 0 18px 36px rgba(0, 255, 212, 0.22);
+        }
+
+        .lego-label {
+            font-weight: 600;
+            font-size: 1.05rem;
+        }
+
+        .lego-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .lego-input {
+            flex: 1;
+            min-width: 120px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 255, 212, 0.24);
+            background: rgba(0, 0, 0, 0.35);
+            color: var(--text);
+            font-size: 0.95rem;
+            padding: 0.55rem 0.75rem;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .lego-input:focus {
+            border-color: rgba(0, 255, 212, 0.5);
+            box-shadow: 0 0 0 3px rgba(0, 255, 212, 0.16);
+        }
+
+        .lego-submit {
+            border-radius: 999px;
+            border: none;
+            background: linear-gradient(145deg, rgba(0, 255, 212, 0.7), rgba(0, 123, 255, 0.7));
+            color: #021b15;
+            font-weight: 600;
+            padding: 0.55rem 0.9rem;
+            cursor: pointer;
+            transition: transform 0.22s ease, box-shadow 0.22s ease, filter 0.22s ease;
+        }
+
+        .lego-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 16px 32px rgba(0, 255, 212, 0.28);
+            filter: brightness(1.05);
+        }
+
+        .lego-tile.correct {
+            border-color: rgba(0, 255, 166, 0.85);
+            background: linear-gradient(165deg, rgba(0, 255, 166, 0.7), rgba(0, 45, 60, 0.9));
+            color: #021b15;
+        }
+
+        .lego-tile.wrong {
+            border-color: rgba(255, 120, 120, 0.85);
+            background: linear-gradient(165deg, rgba(255, 120, 120, 0.72), rgba(45, 0, 0, 0.85));
+        }
+
+        .lego-tile.locked {
+            cursor: not-allowed;
+        }
+
+        .lego-feedback {
+            font-size: 0.85rem;
+            color: var(--muted);
+            min-height: 1.2rem;
+        }
+
+        .lego-feedback.success {
+            color: var(--success);
+        }
+
+        .lego-feedback.error {
+            color: var(--danger);
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            justify-content: center;
+        }
+
+        .control-btn {
+            padding: 0.85rem 2.2rem;
+            border-radius: 999px;
+            border: 1px solid var(--accent-strong);
+            background: linear-gradient(145deg, rgba(0, 255, 212, 0.7), rgba(0, 123, 255, 0.7));
+            color: #021b15;
+            font-weight: 600;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease, opacity 0.25s ease;
+        }
+
+        .control-btn.alt {
+            background: rgba(0, 0, 0, 0.4);
+            border-color: rgba(0, 255, 212, 0.24);
+            color: var(--accent);
+        }
+
+        .control-btn:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .control-btn:not(:disabled):hover {
+            transform: translateY(-3px);
+            box-shadow: 0 22px 48px rgba(0, 255, 212, 0.32);
+            filter: brightness(1.05);
+        }
+
+        .completion-banner {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            gap: 0.7rem;
+            border-radius: 16px;
+            border: 1px solid rgba(0, 255, 212, 0.26);
+            background: linear-gradient(135deg, rgba(0, 255, 212, 0.16), rgba(0, 0, 0, 0.4));
+            padding: 0.75rem 1.2rem;
+            color: var(--accent);
+            font-weight: 600;
+            letter-spacing: 0.4px;
+        }
+
+        .completion-banner[aria-hidden="false"] {
+            display: flex;
+        }
+
+        @media (max-width: 620px) {
+            .lego-grid {
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            }
+
+            .lego-actions {
+                flex-direction: column;
+            }
+
+            .lego-submit {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-shell">
+        <header class="game-header">
+            <h1>Neon Lego Builder</h1>
+            <p>Stack accurate translations to build your vocabulary tower. Complete all eighteen levels in style!</p>
+        </header>
+
+        <section class="game-panel" aria-live="polite">
+            <div class="scoreboard">
+                <div class="stat-pill">
+                    <span class="stat-label">Level</span>
+                    <span class="stat-value" id="level-label">1 / 18</span>
+                </div>
+                <div class="stat-pill">
+                    <span class="stat-label">Bricks Locked</span>
+                    <span class="stat-value" id="progress-count">0 / 5</span>
+                </div>
+                <div class="stat-pill">
+                    <span class="stat-label">Streak</span>
+                    <span class="stat-value" id="streak-value">0</span>
+                </div>
+                <div class="progress-wrap">
+                    <div class="progress-track" role="progressbar" aria-label="Level progress" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                    <div class="progress-label" id="progress-label">Lock all bricks to advance.</div>
+                </div>
+            </div>
+
+            <div class="completion-banner" id="completion-banner" aria-hidden="true">
+                <span>✨ Level complete! Ready for the next stack?</span>
+            </div>
+
+            <article class="level-card">
+                <h2 class="level-title" id="level-title">Level 1: Basic Vocabulary</h2>
+                <div class="lego-grid" id="lego-grid">
+                    <!-- tiles injected here -->
+                </div>
+            </article>
+
+            <div class="controls">
+                <button class="control-btn alt" id="restart-btn" type="button">Restart Level</button>
+                <button class="control-btn" id="next-btn" type="button" disabled>Next Level</button>
+        </div>
+        </section>
+    </div>
+
+    <script>
+        const levels = [
+            {
+                title: "Level 1: Basic Vocabulary",
+                bricks: [
+                    { text: "Le chat", match: "The cat" },
+                    { text: "Un livre", match: "A book" },
+                    { text: "Un enfant", match: "A child" },
+                    { text: "La maison", match: "The house" },
+                    { text: "La pomme", match: "The apple" }
+                ]
+            },
+            {
+                title: "Level 2: Simple Sentences",
+                bricks: [
+                    { text: "Le chat dort", match: "The cat sleeps" },
+                    { text: "L’enfant joue", match: "The child plays" },
+                    { text: "La maison est grande", match: "The house is big" },
+                    { text: "Le chien court", match: "The dog runs" },
+                    { text: "L’arbre est vert", match: "The tree is green" }
+                ]
+            },
+            {
+                title: "Level 3: Food Vocabulary",
+                bricks: [
+                    { text: "Une banane", match: "A banana" },
+                    { text: "Du pain", match: "Bread" },
+                    { text: "Du fromage", match: "Cheese" },
+                    { text: "Un gâteau", match: "A cake" },
+                    { text: "De l’eau", match: "Water" }
+                ]
+            },
+            {
+                title: "Level 4: Daily Routine",
+                bricks: [
+                    { text: "Je me réveille", match: "I wake up" },
+                    { text: "Je prends le petit déjeuner", match: "I have breakfast" },
+                    { text: "Je vais à l’école", match: "I go to school" },
+                    { text: "Je rentre à la maison", match: "I return home" },
+                    { text: "Je me couche", match: "I go to bed" }
+                ]
+            },
+            {
+                title: "Level 5: Weather and Nature",
+                bricks: [
+                    { text: "Il fait froid", match: "It is cold" },
+                    { text: "Il pleut", match: "It is raining" },
+                    { text: "Le soleil brille", match: "The sun is shining" },
+                    { text: "Il neige", match: "It is snowing" },
+                    { text: "Le vent souffle", match: "The wind is blowing" }
+                ]
+            },
+            {
+                title: "Level 6: Advanced Vocabulary",
+                bricks: [
+                    { text: "Une opportunité", match: "An opportunity" },
+                    { text: "Une responsabilité", match: "A responsibility" },
+                    { text: "La persévérance", match: "Perseverance" },
+                    { text: "L’intégrité", match: "Integrity" },
+                    { text: "La réussite", match: "Success" }
+                ]
+            },
+            {
+                title: "Level 7: Idiomatic Phrases",
+                bricks: [
+                    { text: "Tomber dans les pommes", match: "To faint" },
+                    { text: "Avoir le cafard", match: "To feel down" },
+                    { text: "Être dans la lune", match: "To be daydreaming" },
+                    { text: "Casser les pieds", match: "To annoy" },
+                    { text: "Faire la grasse matinée", match: "To sleep in" }
+                ]
+            },
+            {
+                title: "Level 8: Travel Essentials",
+                bricks: [
+                    { text: "Un billet aller-retour", match: "A round-trip ticket" },
+                    { text: "Une carte d'embarquement", match: "A boarding pass" },
+                    { text: "Une pièce d'identité", match: "An ID card" },
+                    { text: "La consigne automatique", match: "The luggage locker" },
+                    { text: "Le contrôle de sécurité", match: "Security screening" }
+                ]
+            },
+            {
+                title: "Level 9: Professional Life",
+                bricks: [
+                    { text: "Un entretien d'embauche", match: "A job interview" },
+                    { text: "Le télétravail", match: "Remote work" },
+                    { text: "Une réunion d'équipe", match: "A team meeting" },
+                    { text: "Un dossier de candidature", match: "An application file" },
+                    { text: "Les horaires flexibles", match: "Flexible hours" }
+                ]
+            },
+            {
+                title: "Level 10: Emotions & Attitudes",
+                bricks: [
+                    { text: "Être comblé", match: "To feel fulfilled" },
+                    { text: "Se sentir dépassé", match: "To feel overwhelmed" },
+                    { text: "Ressentir de la fierté", match: "To feel pride" },
+                    { text: "Faire preuve de patience", match: "To show patience" },
+                    { text: "Exprimer sa gratitude", match: "To express gratitude" }
+                ]
+            },
+            {
+                title: "Level 11: Technology Terms",
+                bricks: [
+                    { text: "Un traitement de texte", match: "A word processor" },
+                    { text: "La cybersécurité", match: "Cybersecurity" },
+                    { text: "La mise à jour", match: "The update" },
+                    { text: "Un réseau social", match: "A social network" },
+                    { text: "Le stockage en nuage", match: "Cloud storage" }
+                ]
+            },
+            {
+                title: "Level 12: Academic Skills",
+                bricks: [
+                    { text: "Une dissertation", match: "An essay" },
+                    { text: "Une bibliographie", match: "A bibliography" },
+                    { text: "Une synthèse", match: "A summary" },
+                    { text: "Un travail de recherche", match: "A research paper" },
+                    { text: "Un exposé oral", match: "An oral presentation" }
+                ]
+            },
+            {
+                title: "Level 13: Cultural Expressions",
+                bricks: [
+                    { text: "Un patrimoine immatériel", match: "An intangible heritage" },
+                    { text: "Une fête traditionnelle", match: "A traditional festival" },
+                    { text: "Un art de vivre", match: "A way of life" },
+                    { text: "Une gastronomie locale", match: "A local cuisine" },
+                    { text: "Une scène artistique", match: "An arts scene" }
+                ]
+            },
+            {
+                title: "Level 14: Sustainability Goals",
+                bricks: [
+                    { text: "La neutralité carbone", match: "Carbon neutrality" },
+                    { text: "La transition énergétique", match: "Energy transition" },
+                    { text: "Une économie circulaire", match: "A circular economy" },
+                    { text: "La réduction des déchets", match: "Waste reduction" },
+                    { text: "La biodiversité", match: "Biodiversity" }
+                ]
+            },
+            {
+                title: "Level 15: Project Management",
+                bricks: [
+                    { text: "Un échéancier", match: "A timeline" },
+                    { text: "Un livrable", match: "A deliverable" },
+                    { text: "La portée", match: "The scope" },
+                    { text: "Un jalon", match: "A milestone" },
+                    { text: "Une feuille de route", match: "A roadmap" }
+                ]
+            },
+            {
+                title: "Level 16: Scientific Terms",
+                bricks: [
+                    { text: "Une hypothèse", match: "A hypothesis" },
+                    { text: "Une expérience", match: "An experiment" },
+                    { text: "Le prélèvement", match: "The sample" },
+                    { text: "Une découverte", match: "A discovery" },
+                    { text: "Une méthode empirique", match: "An empirical method" }
+                ]
+            },
+            {
+                title: "Level 17: Global Challenges",
+                bricks: [
+                    { text: "La sécurité alimentaire", match: "Food security" },
+                    { text: "La justice climatique", match: "Climate justice" },
+                    { text: "Une crise sanitaire", match: "A health crisis" },
+                    { text: "La fracture numérique", match: "The digital divide" },
+                    { text: "Une politique inclusive", match: "An inclusive policy" }
+                ]
+            },
+            {
+                title: "Level 18: Personal Growth",
+                bricks: [
+                    { text: "Une prise de conscience", match: "An awareness shift" },
+                    { text: "Un objectif atteignable", match: "An achievable goal" },
+                    { text: "Le dépassement de soi", match: "Pushing oneself" },
+                    { text: "La gestion des priorités", match: "Priority management" },
+                    { text: "Un plan d'amélioration", match: "An improvement plan" }
+                ]
+            }
+        ];
+
+        const legoGrid = document.getElementById("lego-grid");
+        const levelTitle = document.getElementById("level-title");
+        const levelLabel = document.getElementById("level-label");
+        const progressCount = document.getElementById("progress-count");
+        const streakValue = document.getElementById("streak-value");
+        const progressFill = document.getElementById("progress-fill");
+        const progressLabel = document.getElementById("progress-label");
+        const completionBanner = document.getElementById("completion-banner");
+        const nextBtn = document.getElementById("next-btn");
+        const restartBtn = document.getElementById("restart-btn");
+        const progressTrack = document.querySelector(".progress-track");
+
+        let currentLevelIndex = 0;
+        let lockedCount = 0;
+        let streak = 0;
+
+        function updateScoreboard() {
+            levelLabel.textContent = `${currentLevelIndex + 1} / ${levels.length}`;
+            progressCount.textContent = `${lockedCount} / ${levels[currentLevelIndex].bricks.length}`;
+            streakValue.textContent = streak;
+            progressFill.style.width = `${(lockedCount / levels[currentLevelIndex].bricks.length) * 100}%`;
+            progressLabel.textContent = lockedCount === levels[currentLevelIndex].bricks.length ? "Level complete!" : "Lock all bricks to advance.";
+            progressTrack.setAttribute("aria-valuenow", lockedCount);
+        }
+
+        function createTile(brick) {
+            const tile = document.createElement("div");
+            tile.className = "lego-tile";
+
+            const label = document.createElement("span");
+            label.className = "lego-label";
+            label.textContent = brick.text;
+
+            const actions = document.createElement("div");
+            actions.className = "lego-actions";
+
+            const input = document.createElement("input");
+            input.type = "text";
+            input.className = "lego-input";
+            input.placeholder = "English translation";
+            input.setAttribute("aria-label", `Translate ${brick.text}`);
+
+            const submit = document.createElement("button");
+            submit.type = "button";
+            submit.className = "lego-submit";
+            submit.textContent = "Lock";
+
+            const feedback = document.createElement("div");
+            feedback.className = "lego-feedback";
+
+            submit.addEventListener("click", () => handleSubmit(tile, input, feedback, brick.match));
+            input.addEventListener("keydown", (event) => {
+                if (event.key === "Enter") {
+                    handleSubmit(tile, input, feedback, brick.match);
+                }
+            });
+
+            actions.appendChild(input);
+            actions.appendChild(submit);
+
+            tile.appendChild(label);
+            tile.appendChild(actions);
+            tile.appendChild(feedback);
+
+            return tile;
+        }
+
+        function handleSubmit(tile, input, feedback, correctAnswer) {
+            const guess = input.value.trim();
+            if (!guess) {
+                feedback.textContent = "Type a translation to lock this brick.";
+                feedback.className = "lego-feedback error";
+                return;
+            }
+
+            if (normalize(guess) === normalize(correctAnswer)) {
+                tile.classList.remove("wrong");
+                tile.classList.add("correct", "locked");
+                input.disabled = true;
+                tile.querySelector(".lego-submit").disabled = true;
+                feedback.textContent = `Locked: "${correctAnswer}"`;
+                feedback.className = "lego-feedback success";
+                lockedCount += 1;
+                streak += 1;
+            } else {
+                tile.classList.add("wrong");
+                feedback.textContent = `Not quite. Try again!`;
+                feedback.className = "lego-feedback error";
+                streak = 0;
+            }
+
+            updateScoreboard();
+            checkCompletion();
+        }
+
+        function normalize(text) {
+            return text.toLowerCase().replace(/’/g, "'").trim();
+        }
+
+        function checkCompletion() {
+            if (lockedCount === levels[currentLevelIndex].bricks.length) {
+                completionBanner.setAttribute("aria-hidden", "false");
+                nextBtn.disabled = false;
+                nextBtn.focus({ preventScroll: true });
+            }
+        }
+
+        function renderLevel() {
+            const level = levels[currentLevelIndex];
+            levelTitle.textContent = level.title;
+            legoGrid.innerHTML = "";
+            level.bricks.forEach((brick) => {
+                const tile = createTile(brick);
+                legoGrid.appendChild(tile);
+            });
+
+            lockedCount = 0;
+            streak = 0;
+            completionBanner.setAttribute("aria-hidden", "true");
+            nextBtn.disabled = true;
+            nextBtn.textContent = currentLevelIndex === levels.length - 1 ? "Celebrate!" : "Next Level";
+            updateScoreboard();
+        }
+
+        function handleNextLevel() {
+            if (currentLevelIndex < levels.length - 1) {
+                currentLevelIndex += 1;
+                renderLevel();
+            } else {
+                completionBanner.setAttribute("aria-hidden", "false");
+                completionBanner.innerHTML = "<span>🎉 Tower complete! Replay levels to stay sharp.</span>";
+                nextBtn.disabled = true;
+            }
+        }
+
+        function restartLevel() {
+            renderLevel();
+        }
+
+        nextBtn.addEventListener("click", handleNextLevel);
+        restartBtn.addEventListener("click", restartLevel);
+
+        renderLevel();
+    </script>
+</body>
+</html>
+</html>

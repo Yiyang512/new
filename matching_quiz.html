@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Matching Matrix</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            color-scheme: dark;
+            --accent: #00ffd4;
+            --accent-strong: rgba(0, 255, 212, 0.38);
+            --accent-soft: rgba(0, 255, 212, 0.18);
+            --bg: radial-gradient(circle at top, rgba(0, 255, 212, 0.16), rgba(4, 12, 16, 0.96));
+            --panel: rgba(8, 18, 22, 0.92);
+            --panel-border: rgba(0, 255, 212, 0.3);
+            --text: #f2fffb;
+            --muted: rgba(242, 255, 251, 0.7);
+            --success: #8bffc6;
+            --danger: #ff6b6b;
+            --shadow: 0 24px 48px rgba(0, 0, 0, 0.55);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: clamp(2rem, 6vw, 4rem) 1.5rem;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .game-shell {
+            width: min(960px, 100%);
+            display: flex;
+            flex-direction: column;
+            gap: 1.75rem;
+        }
+
+        .game-header {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 0.65rem;
+        }
+
+        .game-header h1 {
+            font-size: clamp(2.1rem, 4vw, 3rem);
+            text-transform: uppercase;
+            letter-spacing: 1.4px;
+            text-shadow: 0 0 28px rgba(0, 255, 212, 0.35);
+        }
+
+        .game-header p {
+            color: var(--muted);
+            font-size: 1rem;
+        }
+
+        .game-panel {
+            border-radius: 24px;
+            border: 1px solid var(--panel-border);
+            background: var(--panel);
+            padding: clamp(1.8rem, 4vw, 2.6rem);
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 1.6rem;
+        }
+
+        .scoreboard {
+            display: flex;
+            flex-wrap: wrap;
+            gap: clamp(0.75rem, 2vw, 1.2rem);
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stat-pill {
+            display: flex;
+            align-items: baseline;
+            gap: 0.6rem;
+            padding: 0.65rem 1.3rem;
+            border-radius: 999px;
+            border: 1px solid var(--panel-border);
+            background: linear-gradient(135deg, rgba(0, 255, 212, 0.16), rgba(0, 0, 0, 0.35));
+            box-shadow: 0 16px 32px rgba(0, 255, 212, 0.18);
+        }
+
+        .stat-label {
+            font-size: 0.82rem;
+            letter-spacing: 0.7px;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.2rem;
+        }
+
+        .column-card {
+            border-radius: 18px;
+            border: 1px solid rgba(0, 255, 212, 0.18);
+            background: rgba(0, 0, 0, 0.32);
+            padding: 1.2rem;
+            box-shadow: inset 0 0 0 1px rgba(0, 255, 212, 0.08);
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+        }
+
+        .column-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            letter-spacing: 0.4px;
+            color: var(--accent);
+        }
+
+        .items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.65rem;
+        }
+
+        .match-item {
+            padding: 0.9rem 1rem;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 255, 212, 0.24);
+            background: linear-gradient(145deg, rgba(0, 255, 212, 0.18), rgba(0, 0, 0, 0.6));
+            color: var(--text);
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, filter 0.2s ease;
+        }
+
+        .match-item:hover:not(.locked) {
+            transform: translateY(-3px);
+            border-color: rgba(0, 255, 212, 0.5);
+            box-shadow: 0 18px 36px rgba(0, 255, 212, 0.22);
+            filter: brightness(1.05);
+        }
+
+        .match-item.selected {
+            border-color: rgba(0, 125, 255, 0.7);
+            box-shadow: 0 0 18px rgba(0, 125, 255, 0.35);
+            background: linear-gradient(145deg, rgba(0, 125, 255, 0.28), rgba(0, 0, 0, 0.65));
+        }
+
+        .match-item.correct {
+            border-color: rgba(0, 255, 166, 0.8);
+            background: linear-gradient(145deg, rgba(0, 255, 166, 0.7), rgba(0, 55, 70, 0.9));
+            color: #021b15;
+            cursor: default;
+        }
+
+        .match-item.wrong {
+            border-color: rgba(255, 120, 120, 0.8);
+            background: linear-gradient(145deg, rgba(255, 120, 120, 0.68), rgba(45, 0, 0, 0.9));
+            color: #fff5f5;
+            cursor: default;
+        }
+
+        .match-item.locked {
+            cursor: not-allowed;
+        }
+
+        .feedback {
+            text-align: center;
+            font-size: 0.96rem;
+            color: var(--muted);
+            min-height: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .feedback.success {
+            color: var(--success);
+        }
+
+        .feedback.error {
+            color: var(--danger);
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            justify-content: center;
+        }
+
+        .control-btn {
+            padding: 0.85rem 2.2rem;
+            border-radius: 999px;
+            border: 1px solid var(--accent-strong);
+            background: linear-gradient(145deg, rgba(0, 255, 212, 0.7), rgba(0, 123, 255, 0.7));
+            color: #021b15;
+            font-weight: 600;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease, opacity 0.25s ease;
+        }
+
+        .control-btn.alt {
+            background: rgba(0, 0, 0, 0.4);
+            border-color: rgba(0, 255, 212, 0.24);
+            color: var(--accent);
+        }
+
+        .control-btn:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .control-btn:not(:disabled):hover {
+            transform: translateY(-3px);
+            box-shadow: 0 22px 48px rgba(0, 255, 212, 0.32);
+            filter: brightness(1.05);
+        }
+
+        .completion-banner {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            gap: 0.7rem;
+            border-radius: 16px;
+            border: 1px solid rgba(0, 255, 212, 0.26);
+            background: linear-gradient(135deg, rgba(0, 255, 212, 0.16), rgba(0, 0, 0, 0.4));
+            padding: 0.75rem 1.2rem;
+            color: var(--accent);
+            font-weight: 600;
+            letter-spacing: 0.4px;
+        }
+
+        .completion-banner[aria-hidden="false"] {
+            display: flex;
+        }
+
+        @media (max-width: 720px) {
+            .board {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-shell">
+        <header class="game-header">
+            <h1>Neon Matching Matrix</h1>
+            <p>Pair the English concepts with their French counterparts. Lock in perfect sets to charge up your score streak.</p>
+        </header>
+
+        <section class="game-panel" aria-live="polite">
+            <div class="scoreboard">
+                <div class="stat-pill">
+                    <span class="stat-label">Matches Locked</span>
+                    <span class="stat-value" id="match-count">0 / 40</span>
+                </div>
+                <div class="stat-pill">
+                    <span class="stat-label">Score</span>
+                    <span class="stat-value" id="score-value">0</span>
+                </div>
+                <div class="stat-pill">
+                    <span class="stat-label">Streak</span>
+                    <span class="stat-value" id="streak-value">0</span>
+                </div>
+            </div>
+
+            <div class="completion-banner" id="completion-banner" aria-hidden="true">
+                <span>✨ Grid cleared! Ready to reshuffle for another round?</span>
+            </div>
+
+            <div class="board">
+                <div class="column-card">
+                    <h2 class="column-title">English</h2>
+                    <div class="items" id="english-column"></div>
+                </div>
+                <div class="column-card">
+                    <h2 class="column-title">French</h2>
+                    <div class="items" id="french-column"></div>
+                </div>
+            </div>
+
+            <p class="feedback" id="feedback">Tap one word on each side to test a match.</p>
+
+            <div class="controls">
+                <button class="control-btn alt" id="reshuffle-btn" type="button">Reshuffle Grid</button>
+                <button class="control-btn" id="restart-btn" type="button">Restart Game</button>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const pairs = [
+            { english: "Perseverance", french: "Persévérance" },
+            { english: "Achievement", french: "Accomplissement" },
+            { english: "Determination", french: "Détermination" },
+            { english: "Responsibility", french: "Responsabilité" },
+            { english: "Innovation", french: "Innovation" },
+            { english: "Integrity", french: "Intégrité" },
+            { english: "Resilience", french: "Résilience" },
+            { english: "Sustainability", french: "Durabilité" },
+            { english: "Collaboration", french: "Collaboration" },
+            { english: "Empowerment", french: "Autonomisation" },
+            { english: "Authenticity", french: "Authenticité" },
+            { english: "Compassion", french: "Compassion" },
+            { english: "Curiosity", french: "Curiosité" },
+            { english: "Imagination", french: "Imagination" },
+            { english: "Patience", french: "Patience" },
+            { english: "Diligence", french: "Assiduité" },
+            { english: "Resourcefulness", french: "Ingéniosité" },
+            { english: "Reliability", french: "Fiabilité" },
+            { english: "Synergy", french: "Synergie" },
+            { english: "Balance", french: "Équilibre" },
+            { english: "Insight", french: "Perspicacité" },
+            { english: "Momentum", french: "Élan" },
+            { english: "Breakthrough", french: "Percée" },
+            { english: "Empathy", french: "Empathie" },
+            { english: "Clarity", french: "Clarté" },
+            { english: "Alignment", french: "Alignement" },
+            { english: "Inclusivity", french: "Inclusivité" },
+            { english: "Mentorship", french: "Mentorat" },
+            { english: "Advocacy", french: "Plaidoyer" },
+            { english: "Accountability", french: "Responsabilisation" },
+            { english: "Agility", french: "Agilité" },
+            { english: "Foresight", french: "Anticipation" },
+            { english: "Inclusivity", french: "Inclusivité" },
+            { english: "Opportunity", french: "Opportunité" },
+            { english: "Empowerment", french: "Autonomisation" },
+            { english: "Resilience", french: "Résilience" },
+            { english: "Precision", french: "Précision" },
+            { english: "Transparency", french: "Transparence" },
+            { english: "Creativity", french: "Créativité" }
+        ];
+
+        const englishColumn = document.getElementById("english-column");
+        const frenchColumn = document.getElementById("french-column");
+        const feedbackDisplay = document.getElementById("feedback");
+        const matchCountDisplay = document.getElementById("match-count");
+        const scoreValue = document.getElementById("score-value");
+        const streakValue = document.getElementById("streak-value");
+        const completionBanner = document.getElementById("completion-banner");
+        const reshuffleBtn = document.getElementById("reshuffle-btn");
+        const restartBtn = document.getElementById("restart-btn");
+
+        let score = 0;
+        let streak = 0;
+        let matchesLocked = 0;
+        let selectedEnglish = null;
+        let selectedFrench = null;
+        let availablePairs = [...pairs];
+
+        function shuffle(array) {
+            const copy = [...array];
+            for (let i = copy.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [copy[i], copy[j]] = [copy[j], copy[i]];
+            }
+            return copy;
+        }
+
+        function updateScoreboard() {
+            matchCountDisplay.textContent = `${matchesLocked} / ${pairs.length}`;
+
+            scoreValue.textContent = score;
+            streakValue.textContent = streak;
+        }
+
+        function setFeedback(message, type) {
+            feedbackDisplay.textContent = message;
+            feedbackDisplay.classList.remove("success", "error");
+            if (type) {
+                feedbackDisplay.classList.add(type);
+            }
+        }
+
+        function clearSelection() {
+            if (selectedEnglish) {
+                selectedEnglish.classList.remove("selected");
+                selectedEnglish = null;
+            }
+            if (selectedFrench) {
+                selectedFrench.classList.remove("selected");
+                selectedFrench = null;
+            }
+        }
+
+        function lockMatch(englishItem, frenchItem) {
+            englishItem.classList.add("correct", "locked");
+            englishItem.onclick = null;
+            frenchItem.classList.add("correct", "locked");
+            frenchItem.onclick = null;
+            matchesLocked += 1;
+            streak += 1;
+            score += 10 + (streak - 1) * 2;
+            updateScoreboard();
+
+            if (matchesLocked === pairs.length) {
+                completionBanner.setAttribute("aria-hidden", "false");
+                setFeedback("All matches locked! Great job.", "success");
+            } else {
+                setFeedback("Nice! Keep the streak alive.", "success");
+            }
+        }
+
+        function markWrong(englishItem, frenchItem) {
+            englishItem.classList.add("wrong");
+            frenchItem.classList.add("wrong");
+            streak = 0;
+            updateScoreboard();
+            setFeedback("Not quite – try a different combo.", "error");
+            setTimeout(() => {
+                englishItem.classList.remove("wrong");
+                frenchItem.classList.remove("wrong");
+                englishItem.classList.remove("selected");
+                frenchItem.classList.remove("selected");
+            }, 700);
+        }
+
+        function handleSelection(element, type) {
+            if (element.classList.contains("locked")) {
+                return;
+            }
+
+            if (type === "english") {
+                if (selectedEnglish && selectedEnglish !== element) {
+                    selectedEnglish.classList.remove("selected");
+                }
+                selectedEnglish = element;
+                element.classList.toggle("selected");
+                if (!element.classList.contains("selected")) {
+                    selectedEnglish = null;
+                }
+            } else {
+                if (selectedFrench && selectedFrench !== element) {
+                    selectedFrench.classList.remove("selected");
+                }
+                selectedFrench = element;
+                element.classList.toggle("selected");
+                if (!element.classList.contains("selected")) {
+                    selectedFrench = null;
+                }
+            }
+
+            if (selectedEnglish && selectedFrench) {
+                const englishWord = selectedEnglish.dataset.word;
+                const frenchWord = selectedFrench.dataset.word;
+                const isCorrect = pairs.some((pair) => pair.english === englishWord && pair.french === frenchWord);
+
+                if (isCorrect) {
+                    lockMatch(selectedEnglish, selectedFrench);
+                } else {
+                    markWrong(selectedEnglish, selectedFrench);
+                }
+
+                selectedEnglish = null;
+                selectedFrench = null;
+            }
+        }
+
+        function createItem(word, type) {
+            const div = document.createElement("button");
+            div.type = "button";
+            div.className = "match-item";
+            div.textContent = word;
+            div.dataset.word = word;
+            div.addEventListener("click", () => handleSelection(div, type));
+            return div;
+        }
+
+        function renderColumns() {
+            englishColumn.innerHTML = "";
+            frenchColumn.innerHTML = "";
+            completionBanner.setAttribute("aria-hidden", "true");
+            setFeedback("Tap one word on each side to test a match.", null);
+
+            const shuffledPairs = shuffle(availablePairs);
+            const englishWords = shuffledPairs.map((pair) => pair.english);
+            const frenchWords = shuffle(shuffledPairs.map((pair) => pair.french));
+
+            englishWords.forEach((word) => englishColumn.appendChild(createItem(word, "english")));
+            frenchWords.forEach((word) => frenchColumn.appendChild(createItem(word, "french")));
+        }
+
+        function reshuffle() {
+            availablePairs = shuffle(pairs);
+            clearSelection();
+            renderColumns();
+        }
+
+        function restartGame() {
+            availablePairs = [...pairs];
+            score = 0;
+            streak = 0;
+            matchesLocked = 0;
+            clearSelection();
+            renderColumns();
+            updateScoreboard();
+        }
+
+        reshuffleBtn.addEventListener("click", reshuffle);
+        restartBtn.addEventListener("click", restartGame);
+
+        restartGame();
+    </script>
+</body>
+</html>

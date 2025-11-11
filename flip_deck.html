@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Lexicon Flipdeck</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            color-scheme: dark;
+            --accent: #00ffd4;
+            --accent-strong: rgba(0, 255, 212, 0.45);
+            --accent-soft: rgba(0, 255, 212, 0.16);
+            --bg: radial-gradient(circle at top, rgba(0, 255, 212, 0.16), rgba(4, 12, 16, 0.96));
+            --panel: rgba(8, 18, 22, 0.92);
+            --panel-border: rgba(0, 255, 212, 0.3);
+            --text: #f2fffb;
+            --muted: rgba(242, 255, 251, 0.7);
+            --success: #8bffc6;
+            --danger: #ff6b6b;
+            --shadow: 0 24px 48px rgba(0, 0, 0, 0.55);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .game-shell {
+            width: min(1100px, 100%);
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+            padding: clamp(2rem, 5vw, 3.5rem) 1.5rem;
+        }
+
+        .game-header {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .game-header h1 {
+            font-size: clamp(2.1rem, 4vw, 3rem);
+            text-transform: uppercase;
+            letter-spacing: 1.3px;
+            text-shadow: 0 0 28px rgba(0, 255, 212, 0.35);
+        }
+
+        .game-header p {
+            color: var(--muted);
+            font-size: 1rem;
+        }
+
+        .game-panel {
+            border-radius: 24px;
+            border: 1px solid var(--panel-border);
+            background: var(--panel);
+            box-shadow: var(--shadow);
+            display: grid;
+            gap: 1.6rem;
+            padding: clamp(1.7rem, 4vw, 2.6rem);
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            justify-content: space-between;
+        }
+
+        .control-btn {
+            padding: 0.75rem 1.8rem;
+            border-radius: 999px;
+            border: 1px solid var(--accent-strong);
+            background: linear-gradient(145deg, rgba(0, 255, 212, 0.7), rgba(0, 123, 255, 0.7));
+            color: #021b15;
+            font-weight: 600;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease, opacity 0.25s ease;
+        }
+
+        .control-btn.alt {
+            background: rgba(0, 0, 0, 0.4);
+            border-color: rgba(0, 255, 212, 0.24);
+            color: var(--accent);
+        }
+
+        .control-btn:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+        }
+
+        .control-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 22px 48px rgba(0, 255, 212, 0.32);
+            filter: brightness(1.05);
+        }
+
+        .deck-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .stat-pill {
+            display: flex;
+            align-items: baseline;
+            gap: 0.6rem;
+            padding: 0.7rem 1.2rem;
+            border-radius: 999px;
+            border: 1px solid var(--panel-border);
+            background: linear-gradient(135deg, rgba(0, 255, 212, 0.16), rgba(0, 0, 0, 0.35));
+            box-shadow: 0 16px 32px rgba(0, 255, 212, 0.18);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            letter-spacing: 0.7px;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .flip-card-container {
+            display: grid;
+            gap: 1.2rem;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        }
+
+        .flip-card {
+            width: 100%;
+            aspect-ratio: 1 / 1.1;
+            perspective: 1200px;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.6s ease;
+            cursor: pointer;
+        }
+
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-face {
+            position: absolute;
+            inset: 0;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            text-align: center;
+            backface-visibility: hidden;
+            border: 1px solid rgba(0, 255, 212, 0.18);
+            box-shadow: inset 0 0 0 1px rgba(0, 255, 212, 0.08), 0 16px 32px rgba(0, 255, 212, 0.18);
+        }
+
+        .flip-face.front {
+            background: linear-gradient(160deg, rgba(0, 255, 212, 0.18), rgba(0, 0, 0, 0.75));
+        }
+
+        .flip-face.back {
+            transform: rotateY(180deg);
+            background: linear-gradient(160deg, rgba(0, 125, 255, 0.24), rgba(0, 0, 0, 0.75));
+        }
+
+        .flip-face h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            color: var(--text);
+        }
+
+        .flip-face p {
+            margin-top: 0.45rem;
+            font-size: 0.9rem;
+            color: var(--muted);
+        }
+
+        .flip-face span {
+            margin-top: 0.75rem;
+            font-size: 0.85rem;
+            letter-spacing: 0.35px;
+            color: var(--accent);
+        }
+
+        .deck-empty {
+            text-align: center;
+            padding: 1.6rem;
+            border-radius: 18px;
+            border: 1px solid rgba(0, 255, 212, 0.18);
+            background: rgba(0, 0, 0, 0.32);
+        }
+
+        @media (max-width: 640px) {
+            .game-panel {
+                padding: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-shell">
+        <header class="game-header">
+            <h1>Neon Lexicon Flipdeck</h1>
+            <p>Flip the glowing cards to pair advanced English concepts with their French counterparts. Track your mastery as you reveal the entire deck.</p>
+        </header>
+
+        <section class="game-panel" aria-live="polite">
+            <div class="controls">
+                <button class="control-btn" id="shuffle-btn" type="button">Shuffle Deck</button>
+                <button class="control-btn alt" id="show-all-btn" type="button">Reveal All</button>
+                <button class="control-btn alt" id="reset-btn" type="button">Reset Deck</button>
+            </div>
+
+            <div class="deck-stats">
+                <div class="stat-pill">
+                    <span class="stat-label">Total Cards</span>
+                    <span class="stat-value" id="total-cards">0</span>
+                </div>
+                <div class="stat-pill">
+                    <span class="stat-label">Revealed</span>
+                    <span class="stat-value" id="revealed-count">0</span>
+                </div>
+                <div class="stat-pill">
+                    <span class="stat-label">Mastered</span>
+                    <span class="stat-value" id="mastered-count">0</span>
+                </div>
+            </div>
+
+            <div id="deck" class="flip-card-container"></div>
+
+            <div id="empty-state" class="deck-empty" hidden>
+                Deck reset. Shuffle to draw new cards.
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const cards = [
+            { english: "Knowledge", french: "Connaissance", note: "f." },
+            { english: "Wisdom", french: "Sagesse", note: "f." },
+            { english: "Courage", french: "Courage", note: "m." },
+            { english: "Mystery", french: "Mystère", note: "m." },
+            { english: "Fortune", french: "Fortune", note: "f." },
+            { english: "Hope", french: "Espoir", note: "m." },
+            { english: "Freedom", french: "Liberté", note: "f." },
+            { english: "Faith", french: "Foi", note: "f." },
+            { english: "Justice", french: "Justice", note: "f." },
+            { english: "Culture", french: "Culture", note: "f." },
+            { english: "Community", french: "Communauté", note: "f." },
+            { english: "Respect", french: "Respect", note: "m." },
+            { english: "Charity", french: "Charité", note: "f." },
+            { english: "Happiness", french: "Bonheur", note: "m." },
+            { english: "Strength", french: "Force", note: "f." },
+            { english: "Love", french: "Amour", note: "m." },
+            { english: "Victory", french: "Victoire", note: "f." },
+            { english: "Harmony", french: "Harmonie", note: "f." },
+            { english: "Peace", french: "Paix", note: "f." },
+            { english: "Power", french: "Pouvoir", note: "m." },
+            { english: "Success", french: "Succès", note: "m." },
+            { english: "Adventure", french: "Aventure", note: "f." },
+            { english: "Dream", french: "Rêve", note: "m." },
+            { english: "Reality", french: "Réalité", note: "f." },
+            { english: "Nature", french: "Nature", note: "f." },
+            { english: "Leadership", french: "Leadership", note: "m." },
+            { english: "Strategy", french: "Stratégie", note: "f." },
+            { english: "Inspiration", french: "Inspiration", note: "f." },
+            { english: "Creativity", french: "Créativité", note: "f." },
+            { english: "Innovation", french: "Innovation", note: "f." },
+            { english: "Integrity", french: "Intégrité", note: "f." },
+            { english: "Efficiency", french: "Efficacité", note: "f." },
+            { english: "Scarcity", french: "Rareté", note: "f." },
+            { english: "Empathy", french: "Empathie", note: "f." },
+            { english: "Resilience", french: "Résilience", note: "f." },
+            { english: "Ambition", french: "Ambition", note: "f." },
+            { english: "Sustainability", french: "Durabilité", note: "f." },
+            { english: "Mindfulness", french: "Pleine conscience", note: "f." },
+            { english: "Gratitude", french: "Gratitude", note: "f." },
+            { english: "Authenticity", french: "Authenticité", note: "f." },
+            { english: "Simplicity", french: "Simplicité", note: "f." },
+            { english: "Flexibility", french: "Flexibilité", note: "f." },
+            { english: "Credibility", french: "Crédibilité", note: "f." },
+            { english: "Proximity", french: "Proximité", note: "f." },
+            { english: "Diversity", french: "Diversité", note: "f." },
+            { english: "Transparency", french: "Transparence", note: "f." },
+            { english: "Productivity", french: "Productivité", note: "f." },
+            { english: "Equality", french: "Égalité", note: "f." },
+            { english: "Curiosity", french: "Curiosité", note: "f." },
+            { english: "Clarity", french: "Clarté", note: "f." },
+            { english: "Serenity", french: "Sérénité", note: "f." },
+            { english: "Momentum", french: "Élan", note: "m." },
+            { english: "Insight", french: "Perspicacité", note: "f." },
+            { english: "Reliability", french: "Fiabilité", note: "f." },
+            { english: "Foresight", french: "Prévision", note: "f." },
+            { english: "Kindness", french: "Gentillesse", note: "f." },
+            { english: "Brilliance", french: "Brillance", note: "f." },
+            { english: "Collaboration", french: "Collaboration", note: "f." },
+            { english: "Perseverance", french: "Persévérance", note: "f." },
+            { english: "Compassion", french: "Compassion", note: "f." },
+            { english: "Inclusion", french: "Inclusion", note: "f." },
+            { english: "Synthesis", french: "Synthèse", note: "f." },
+            { english: "Precision", french: "Précision", note: "f." },
+            { english: "Influence", french: "Influence", note: "f." },
+            { english: "Trajectory", french: "Trajectoire", note: "f." },
+            { english: "Impetus", french: "Impulsion", note: "f." },
+            { english: "Milestone", french: "Étape clé", note: "f." },
+            { english: "Alliance", french: "Alliance", note: "f." },
+            { english: "Catalyst", french: "Catalyseur", note: "m." },
+            { english: "Continuity", french: "Continuité", note: "f." },
+            { english: "Synergy", french: "Synergie", note: "f." },
+            { english: "Coordination", french: "Coordination", note: "f." },
+            { english: "Mindset", french: "État d'esprit", note: "m." },
+            { english: "Breakthrough", french: "Percée", note: "f." },
+            { english: "Outreach", french: "Sensibilisation", note: "f." },
+            { english: "Blueprint", french: "Plan directeur", note: "m." },
+            { english: "Synopsis", french: "Synopsis", note: "m." }
+        ];
+
+        const deckEl = document.getElementById("deck");
+        const revealedCount = document.getElementById("revealed-count");
+        const masteredCount = document.getElementById("mastered-count");
+        const totalCards = document.getElementById("total-cards");
+        const emptyState = document.getElementById("empty-state");
+
+        const shuffleBtn = document.getElementById("shuffle-btn");
+        const showAllBtn = document.getElementById("show-all-btn");
+        const resetBtn = document.getElementById("reset-btn");
+
+        let deck = [];
+        let revealed = 0;
+        let mastered = 0;
+
+        function shuffle(array) {
+            const copy = [...array];
+            for (let i = copy.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [copy[i], copy[j]] = [copy[j], copy[i]];
+            }
+            return copy;
+        }
+
+        function renderDeck() {
+            deckEl.innerHTML = "";
+            deck.forEach(({ english, french, note }) => {
+                const card = document.createElement("div");
+                card.className = "flip-card";
+                card.innerHTML = `
+                    <div class="flip-card-inner">
+                        <div class="flip-face front">
+                            <h3>${english}</h3>
+                            <p>Tap to reveal the French term.</p>
+                        </div>
+                        <div class="flip-face back">
+                            <h3>${french}</h3>
+                            <span>${note ? note : ""}</span>
+                        </div>
+                    </div>
+                `;
+
+                card.addEventListener("click", () => toggleCard(card));
+                deckEl.appendChild(card);
+            });
+            totalCards.textContent = deck.length;
+            emptyState.hidden = deck.length > 0;
+        }
+
+        function toggleCard(card) {
+            const inner = card.querySelector(".flip-card-inner");
+            const alreadyFlipped = card.classList.toggle("flipped");
+            if (alreadyFlipped) {
+                revealed += 1;
+            } else {
+                revealed -= 1;
+            }
+            updateStats();
+
+            if (alreadyFlipped) {
+                card.dataset.seen = "true";
+                mastered = deckEl.querySelectorAll(".flip-card[data-seen='true']").length;
+                updateStats();
+            }
+        }
+
+        function updateStats() {
+            revealedCount.textContent = revealed;
+            masteredCount.textContent = mastered;
+        }
+
+        function initializeDeck() {
+            deck = shuffle(cards);
+            revealed = 0;
+            mastered = 0;
+            updateStats();
+            renderDeck();
+        }
+
+        function revealAll() {
+            deckEl.querySelectorAll(".flip-card").forEach((card) => {
+                if (!card.classList.contains("flipped")) {
+                    card.classList.add("flipped");
+                    card.dataset.seen = "true";
+                }
+            });
+            revealed = deck.length;
+            mastered = deck.length;
+            updateStats();
+        }
+
+        shuffleBtn.addEventListener("click", initializeDeck);
+        showAllBtn.addEventListener("click", revealAll);
+        resetBtn.addEventListener("click", initializeDeck);
+
+        initializeDeck();
+    </script>
+</body>
+</html>
