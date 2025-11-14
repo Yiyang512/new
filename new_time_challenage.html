@@ -1,0 +1,1576 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>French Phrase Challenge</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Theme colors - matching hub.html */
+            --primary: #00FFB3;
+            --primary-dark: #00CC8F;
+            --primary-light: #66FFD1;
+            --bg-primary: #0A0E1A;
+            --bg-secondary: #141824;
+            --bg-card: #1A1F2E;
+            --text-primary: #FFFFFF;
+            --text-secondary: #94A3B8;
+            --border: rgba(148, 163, 184, 0.1);
+            --gradient-primary: linear-gradient(135deg, #00FFB3 0%, #00D9FF 100%);
+            
+            /* Legacy variables for compatibility */
+            --primary-color: #00FFB3;
+            --secondary-color: #00CC8F;
+            --accent-color: #66FFD1;
+            --background-color: #0A0E1A;
+            --text-color: #FFFFFF;
+            --timer-warning: #FFD700;
+            --timer-danger: #FF4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            background: radial-gradient(circle at top right, rgba(0, 60, 45, 0.45), transparent 55%),
+                        radial-gradient(circle at bottom left, rgba(0, 45, 75, 0.4), transparent 55%),
+                        linear-gradient(160deg, #04111a 0%, #030a12 45%, #051d1c 100%);
+        }
+
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2.5rem;
+            margin: 0 auto 1.5rem;
+            max-width: 1100px;
+            width: 100%;
+            background: linear-gradient(135deg, rgba(0, 255, 153, 0.28), rgba(0, 120, 72, 0.22));
+            border-radius: 14px;
+            border: 1px solid rgba(0, 255, 153, 0.45);
+            box-shadow: 0 10px 28px rgba(0, 140, 90, 0.2);
+        }
+
+        .top-nav .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--text-color);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .top-nav .nav-left img {
+            width: 34px;
+            height: 34px;
+        }
+
+        .top-nav .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .nav-tag {
+            padding: 0.45rem 0.9rem;
+            border-radius: 999px;
+            background: rgba(0, 255, 153, 0.12);
+            border: 1px solid rgba(0, 255, 153, 0.4);
+            font-size: 0.85rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .nav-btn {
+            padding: 0.55rem 1.4rem;
+            border-radius: 999px;
+            background: var(--primary);
+            color: #0b3020;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            text-decoration: none;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .game-container {
+            max-width: 1000px;
+            width: 100%;
+            background: linear-gradient(160deg, rgba(4, 22, 32, 0.92), rgba(3, 15, 25, 0.92));
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 18px 45px rgba(2, 22, 32, 0.55);
+            border: 1px solid rgba(0, 255, 153, 0.12);
+            backdrop-filter: blur(18px);
+            margin-top: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .title {
+            font-size: 2.5rem;
+            color: var(--primary);
+            text-shadow: 0 0 10px rgba(0, 255, 179, 0.5);
+            margin-bottom: 0.5rem;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: titleGlow 2s ease-in-out infinite;
+        }
+
+        .timer-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 1rem 0;
+            gap: 1rem;
+        }
+
+        .timer {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+            background: rgba(4, 35, 36, 0.75);
+            padding: 1rem 2rem;
+            border-radius: 15px;
+            min-width: 150px;
+            text-align: center;
+            border: 2px solid var(--primary);
+            text-shadow: 0 0 10px rgba(0, 255, 153, 0.45);
+        }
+
+        .combo-meter {
+            font-size: 1.2rem;
+            color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .combo-count {
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .phrase-container {
+            background: rgba(5, 30, 33, 0.85);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+            border: 1px solid rgba(0, 255, 153, 0.12);
+            box-shadow: inset 0 0 40px rgba(0, 255, 153, 0.04);
+        }
+
+        .french-phrase {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+        }
+
+        .translation-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .option-btn {
+            padding: 1rem;
+            border: 2px solid rgba(0, 255, 153, 0.25);
+            border-radius: 12px;
+            background: rgba(2, 24, 32, 0.85);
+            color: var(--text-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
+        }
+
+        .option-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 153, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .option-btn:hover::before {
+            left: 100%;
+        }
+
+        .option-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 22px rgba(0, 255, 153, 0.25);
+            border-color: rgba(0, 255, 153, 0.45);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 2rem;
+            background: rgba(5, 30, 33, 0.7);
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 255, 153, 0.12);
+            box-shadow: inset 0 0 30px rgba(0, 255, 153, 0.04);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--accent-color);
+            margin-bottom: 0.3rem;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .game-over {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(4, 18, 26, 0.95);
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            border: 2px solid rgba(0, 255, 153, 0.4);
+            box-shadow: 0 0 35px rgba(0, 255, 153, 0.25);
+            backdrop-filter: blur(14px);
+            z-index: 1000;
+            min-width: 300px;
+        }
+
+        .game-over-title {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .restart-btn {
+            margin-top: 1rem;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            background: var(--primary);
+            color: var(--background-color);
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .restart-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 255, 153, 0.5);
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { text-shadow: 0 0 10px rgba(0, 255, 153, 0.5); }
+            50% { text-shadow: 0 0 20px rgba(0, 255, 153, 0.8); }
+        }
+
+        @media (max-width: 768px) {
+            .game-container {
+                padding: 1rem;
+            }
+
+            .title {
+                font-size: 2rem;
+            }
+
+            .french-phrase {
+                font-size: 1.5rem;
+            }
+
+            .translation-options {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .topic-selector {
+            background: rgba(0, 255, 153, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(0, 255, 153, 0.2);
+        }
+
+        .topic-title {
+            color: var(--accent-color);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .topic-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 0.8rem;
+        }
+
+        .topic-btn {
+            padding: 0.8rem;
+            border: 2px solid var(--primary);
+            border-radius: 10px;
+            background: rgba(0, 255, 153, 0.1);
+            color: var(--text-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .topic-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 153, 0.2);
+        }
+
+        .topic-btn.active {
+            background: var(--primary);
+            color: var(--background-color);
+            font-weight: bold;
+            box-shadow: 0 0 15px rgba(0, 255, 153, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .top-nav {
+                flex-direction: column;
+                gap: 0.9rem;
+                padding: 1rem 1.25rem;
+            }
+
+            .top-nav .nav-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .topic-buttons {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="top-nav">
+        <div class="nav-left">
+            <img src="https://logozonepull.b-cdn.net/Logo-%20Circle%20Cropped.png" alt="Brain Games Logo">
+            <span>Brain Games™</span>
+        </div>
+        <div class="nav-actions">
+            <div class="nav-tag" id="navLicenseStatus">29 days remaining</div>
+            <a href="french_learning_hub.html" class="nav-btn">← Back to Home</a>
+        </div>
+    </nav>
+    <div class="container">
+    <div class="game-container">
+        <div class="header">
+            <h1 class="title">French Phrase Challenge</h1>
+            <p>Race against time to translate phrases!</p>
+        </div>
+
+        <div class="topic-selector">
+            <div class="topic-title">Select a Topic</div>
+            <div class="topic-buttons">
+                <button class="topic-btn active" data-topic="all">All Topics</button>
+                <button class="topic-btn" data-topic="food">Food & Dining</button>
+                <button class="topic-btn" data-topic="travel">Travel & Tourism</button>
+                <button class="topic-btn" data-topic="shopping">Shopping</button>
+                <button class="topic-btn" data-topic="health">Health & Wellness</button>
+                <button class="topic-btn" data-topic="work">Work & Business</button>
+                <button class="topic-btn" data-topic="family">Family & Relationships</button>
+                <button class="topic-btn" data-topic="tech">Technology</button>
+                <button class="topic-btn" data-topic="weather">Weather & Nature</button>
+                <button class="topic-btn" data-topic="education">Education</button>
+                <button class="topic-btn" data-topic="sports">Sports & Activities</button>
+                <button class="topic-btn" data-topic="culture">Culture & Arts</button>
+                <button class="topic-btn" data-topic="hobbies">Hobbies & Leisure</button>
+                <button class="topic-btn" data-topic="emotions">Emotions & Feelings</button>
+                <button class="topic-btn" data-topic="numbers">Numbers & Time</button>
+                <button class="topic-btn" data-topic="transport">Transportation</button>
+                <button class="topic-btn" data-topic="housing">Housing & Home</button>
+                <button class="topic-btn" data-topic="fashion">Fashion & Clothing</button>
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-label">Score</div>
+                <div class="stat-value" id="score">0</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">High Score</div>
+                <div class="stat-value" id="highScore">0</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Combo</div>
+                <div class="stat-value" id="combo">0</div>
+            </div>
+        </div>
+
+        <div class="timer-container">
+            <div class="timer" id="timer">30</div>
+            <div class="combo-meter">
+                Combo Multiplier: <span class="combo-count" id="comboMultiplier">x1</span>
+            </div>
+        </div>
+
+        <div class="phrase-container">
+            <div class="french-phrase" id="frenchPhrase"></div>
+            <div class="translation-options" id="translationOptions"></div>
+        </div>
+    </div>
+    </div>
+
+    <script>
+        const phrases = {
+            all: [
+                {
+                    french: "Je suis en retard",
+                    options: ["I am late", "I am tired", "I am hungry", "I am ready"],
+                    correct: "I am late"
+                },
+                {
+                    french: "Il fait beau aujourd'hui",
+                    options: ["It's beautiful today", "It's cold today", "It's raining today", "It's windy today"],
+                    correct: "It's beautiful today"
+                },
+                {
+                    french: "Je voudrais un café",
+                    options: ["I would like a coffee", "I would like a tea", "I would like water", "I would like juice"],
+                    correct: "I would like a coffee"
+                },
+                {
+                    french: "Où est la bibliothèque?",
+                    options: ["Where is the library?", "Where is the restaurant?", "Where is the hotel?", "Where is the museum?"],
+                    correct: "Where is the library?"
+                },
+                {
+                    french: "Comment allez-vous?",
+                    options: ["How are you?", "What's your name?", "Where are you going?", "How old are you?"],
+                    correct: "How are you?"
+                },
+                {
+                    french: "Je ne comprends pas",
+                    options: ["I don't understand", "I don't know", "I don't want", "I don't like"],
+                    correct: "I don't understand"
+                },
+                {
+                    french: "Quelle heure est-il?",
+                    options: ["What time is it?", "What day is it?", "What's the weather?", "What's the date?"],
+                    correct: "What time is it?"
+                },
+                {
+                    french: "J'aime la musique",
+                    options: ["I like music", "I like dancing", "I like singing", "I like art"],
+                    correct: "I like music"
+                },
+                {
+                    french: "Au revoir et bonne journée",
+                    options: ["Goodbye and have a nice day", "Hello and good morning", "Good evening and goodbye", "Have a good night"],
+                    correct: "Goodbye and have a nice day"
+                },
+                {
+                    french: "Je suis désolé(e)",
+                    options: ["I am sorry", "I am happy", "I am excited", "I am worried"],
+                    correct: "I am sorry"
+                },
+                {
+                    french: "C'est très intéressant",
+                    options: ["That's very interesting", "That's very difficult", "That's very easy", "That's very boring"],
+                    correct: "That's very interesting"
+                },
+                {
+                    french: "Pouvez-vous répéter?",
+                    options: ["Can you repeat?", "Can you help?", "Can you write?", "Can you speak?"],
+                    correct: "Can you repeat?"
+                },
+                {
+                    french: "Je ne comprends pas",
+                    options: ["I don't understand", "I don't know", "I don't remember", "I don't care"],
+                    correct: "I don't understand"
+                },
+                {
+                    french: "Parlez-vous anglais?",
+                    options: ["Do you speak English?", "Do you speak French?", "Do you understand English?", "Can you help me?"],
+                    correct: "Do you speak English?"
+                },
+                {
+                    french: "Comment allez-vous?",
+                    options: ["How are you?", "How do you do?", "How is it going?", "How are things?"],
+                    correct: "How are you?"
+                },
+                {
+                    french: "Je vais bien, merci",
+                    options: ["I am fine, thank you", "I am good, thanks", "I am well, thank you", "I am okay, thanks"],
+                    correct: "I am fine, thank you"
+                },
+                {
+                    french: "À bientôt",
+                    options: ["See you soon", "See you later", "See you tomorrow", "Goodbye"],
+                    correct: "See you soon"
+                },
+                {
+                    french: "Bonne chance",
+                    options: ["Good luck", "Good day", "Good night", "Good morning"],
+                    correct: "Good luck"
+                },
+                {
+                    french: "Félicitations",
+                    options: ["Congratulations", "Thank you", "You're welcome", "Well done"],
+                    correct: "Congratulations"
+                },
+                {
+                    french: "Je suis désolé(e)",
+                    options: ["I am sorry", "I am happy", "I am sad", "I am tired"],
+                    correct: "I am sorry"
+                },
+                {
+                    french: "De rien",
+                    options: ["You're welcome", "Thank you", "Please", "Excuse me"],
+                    correct: "You're welcome"
+                }
+            ],
+            food: [
+                {
+                    french: "Je vais commander une pizza",
+                    options: ["I will order a pizza", "I will cook a pizza", "I will eat a pizza", "I will share a pizza"],
+                    correct: "I will order a pizza"
+                },
+                {
+                    french: "L'addition, s'il vous plaît",
+                    options: ["The bill, please", "The menu, please", "The wine list, please", "The dessert, please"],
+                    correct: "The bill, please"
+                },
+                {
+                    french: "Je suis végétarien(ne)",
+                    options: ["I am vegetarian", "I am vegan", "I am allergic", "I am hungry"],
+                    correct: "I am vegetarian"
+                },
+                {
+                    french: "Je voudrais un café",
+                    options: ["I would like a coffee", "I would like a tea", "I would like water", "I would like juice"],
+                    correct: "I would like a coffee"
+                },
+                {
+                    french: "Je vais faire les courses",
+                    options: ["I am going grocery shopping", "I am going to the market", "I am going to buy food", "I am going to the store"],
+                    correct: "I am going grocery shopping"
+                },
+                {
+                    french: "Je suis allergique aux noix",
+                    options: ["I am allergic to nuts", "I am allergic to dairy", "I am allergic to gluten", "I am allergic to seafood"],
+                    correct: "I am allergic to nuts"
+                },
+                {
+                    french: "Je vais faire la cuisine",
+                    options: ["I am going to cook", "I am going to bake", "I am going to eat", "I am going to prepare food"],
+                    correct: "I am going to cook"
+                },
+                {
+                    french: "Je vais préparer un repas gastronomique",
+                    options: ["I am going to prepare a gourmet meal", "I am going to cook a fancy dinner", "I am going to make a special meal", "I am going to create a culinary masterpiece"],
+                    correct: "I am going to prepare a gourmet meal"
+                },
+                {
+                    french: "Cette recette nécessite une préparation minutieuse",
+                    options: ["This recipe requires careful preparation", "This recipe needs detailed steps", "This recipe takes a long time", "This recipe is complicated"],
+                    correct: "This recipe requires careful preparation"
+                },
+                {
+                    french: "Je vais faire mariner la viande",
+                    options: ["I am going to marinate the meat", "I am going to season the meat", "I am going to cook the meat", "I am going to prepare the meat"],
+                    correct: "I am going to marinate the meat"
+                }
+            ],
+            travel: [
+                {
+                    french: "Je voudrais réserver une chambre",
+                    options: ["I would like to book a room", "I would like to see a room", "I would like to change rooms", "I would like to leave the room"],
+                    correct: "I would like to book a room"
+                },
+                {
+                    french: "Où est la gare la plus proche?",
+                    options: ["Where is the nearest train station?", "Where is the nearest bus stop?", "Where is the nearest airport?", "Where is the nearest metro?"],
+                    correct: "Where is the nearest train station?"
+                },
+                {
+                    french: "Je suis perdu(e)",
+                    options: ["I am lost", "I am late", "I am tired", "I am hungry"],
+                    correct: "I am lost"
+                },
+                {
+                    french: "Je vais faire mes bagages",
+                    options: ["I am going to pack my bags", "I am going to unpack my bags", "I am going to check my bags", "I am going to carry my bags"],
+                    correct: "I am going to pack my bags"
+                },
+                {
+                    french: "J'ai besoin d'un passeport",
+                    options: ["I need a passport", "I need a visa", "I need a ticket", "I need a reservation"],
+                    correct: "I need a passport"
+                },
+                {
+                    french: "Je vais faire le tour du monde",
+                    options: ["I am going to travel around the world", "I am going to see the world", "I am going to explore the world", "I am going to visit the world"],
+                    correct: "I am going to travel around the world"
+                },
+                {
+                    french: "J'ai réservé une chambre avec vue sur la mer",
+                    options: ["I booked a room with a sea view", "I reserved a room overlooking the sea", "I got a room with ocean view", "I chose a room facing the sea"],
+                    correct: "I booked a room with a sea view"
+                },
+                {
+                    french: "Je vais faire un voyage d'affaires",
+                    options: ["I am going on a business trip", "I am going for work", "I am going for business", "I am going for meetings"],
+                    correct: "I am going on a business trip"
+                }
+            ],
+            shopping: [
+                {
+                    french: "Combien ça coûte?",
+                    options: ["How much does it cost?", "Where can I buy it?", "Do you have it in stock?", "Can I try it on?"],
+                    correct: "How much does it cost?"
+                },
+                {
+                    french: "Je cherche un magasin",
+                    options: ["I am looking for a store", "I am looking for a restaurant", "I am looking for a hotel", "I am looking for a bank"],
+                    correct: "I am looking for a store"
+                },
+                {
+                    french: "Avez-vous ma taille?",
+                    options: ["Do you have my size?", "Do you have my color?", "Do you have my style?", "Do you have my brand?"],
+                    correct: "Do you have my size?"
+                },
+                {
+                    french: "Je voudrais essayer cette robe",
+                    options: ["I would like to try on this dress", "I would like to buy this dress", "I would like to see this dress", "I would like to return this dress"],
+                    correct: "I would like to try on this dress"
+                },
+                {
+                    french: "Avez-vous une réduction?",
+                    options: ["Do you have a discount?", "Do you have a sale?", "Do you have a promotion?", "Do you have a coupon?"],
+                    correct: "Do you have a discount?"
+                },
+                {
+                    french: "Je vais payer par carte",
+                    options: ["I will pay by card", "I will pay cash", "I will pay by check", "I will pay later"],
+                    correct: "I will pay by card"
+                },
+                {
+                    french: "Où sont les cabines d'essayage?",
+                    options: ["Where are the fitting rooms?", "Where are the restrooms?", "Where are the exits?", "Where are the elevators?"],
+                    correct: "Where are the fitting rooms?"
+                },
+                {
+                    french: "Je voudrais échanger cet article",
+                    options: ["I would like to exchange this item", "I would like to return this item", "I would like to buy this item", "I would like to see this item"],
+                    correct: "I would like to exchange this item"
+                },
+                {
+                    french: "Avez-vous la garantie?",
+                    options: ["Do you have a warranty?", "Do you have insurance?", "Do you have a receipt?", "Do you have a certificate?"],
+                    correct: "Do you have a warranty?"
+                },
+                {
+                    french: "Je vais faire des achats en ligne",
+                    options: ["I am going to shop online", "I am going to buy online", "I am going to order online", "I am going to browse online"],
+                    correct: "I am going to shop online"
+                }
+            ],
+            health: [
+                {
+                    french: "J'ai mal à la tête",
+                    options: ["I have a headache", "I have a stomachache", "I have a fever", "I have a cold"],
+                    correct: "I have a headache"
+                },
+                {
+                    french: "Je vais chez le médecin",
+                    options: ["I am going to the doctor", "I am going to the pharmacy", "I am going to the hospital", "I am going to the clinic"],
+                    correct: "I am going to the doctor"
+                },
+                {
+                    french: "Je suis allergique",
+                    options: ["I am allergic", "I am sick", "I am tired", "I am worried"],
+                    correct: "I am allergic"
+                },
+                {
+                    french: "Je vais prendre un rendez-vous",
+                    options: ["I am going to make an appointment", "I am going to see a doctor", "I am going to the hospital", "I am going to the clinic"],
+                    correct: "I am going to make an appointment"
+                },
+                {
+                    french: "J'ai besoin de médicaments",
+                    options: ["I need medicine", "I need pills", "I need treatment", "I need help"],
+                    correct: "I need medicine"
+                },
+                {
+                    french: "Je vais prendre rendez-vous avec un spécialiste",
+                    options: ["I am going to make an appointment with a specialist", "I am going to see a specialist", "I am going to meet a specialist", "I am going to visit a specialist"],
+                    correct: "I am going to make an appointment with a specialist"
+                },
+                {
+                    french: "J'ai besoin d'une ordonnance",
+                    options: ["I need a prescription", "I need a medical note", "I need a doctor's note", "I need medical papers"],
+                    correct: "I need a prescription"
+                },
+                {
+                    french: "Je vais suivre un régime alimentaire strict",
+                    options: ["I am going to follow a strict diet", "I am going to start a strict diet", "I am going to begin a strict diet", "I am going to maintain a strict diet"],
+                    correct: "I am going to follow a strict diet"
+                }
+            ],
+            work: [
+                {
+                    french: "Je suis en réunion",
+                    options: ["I am in a meeting", "I am at work", "I am on break", "I am on vacation"],
+                    correct: "I am in a meeting"
+                },
+                {
+                    french: "Je vais envoyer un email",
+                    options: ["I will send an email", "I will write a letter", "I will make a call", "I will send a message"],
+                    correct: "I will send an email"
+                },
+                {
+                    french: "Je suis en congé",
+                    options: ["I am on vacation", "I am at work", "I am sick", "I am busy"],
+                    correct: "I am on vacation"
+                },
+                {
+                    french: "Je vais démissionner",
+                    options: ["I am going to quit", "I am going to resign", "I am going to leave", "I am going to retire"],
+                    correct: "I am going to quit"
+                },
+                {
+                    french: "J'ai besoin d'une augmentation",
+                    options: ["I need a raise", "I need more money", "I need a promotion", "I need a bonus"],
+                    correct: "I need a raise"
+                },
+                {
+                    french: "Je vais présenter un projet important",
+                    options: ["I am going to present an important project", "I am going to show an important project", "I am going to explain an important project", "I am going to discuss an important project"],
+                    correct: "I am going to present an important project"
+                },
+                {
+                    french: "J'ai obtenu une promotion",
+                    options: ["I got a promotion", "I received a promotion", "I earned a promotion", "I achieved a promotion"],
+                    correct: "I got a promotion"
+                },
+                {
+                    french: "Je vais participer à une conférence internationale",
+                    options: ["I am going to attend an international conference", "I am going to join an international conference", "I am going to be in an international conference", "I am going to take part in an international conference"],
+                    correct: "I am going to attend an international conference"
+                }
+            ],
+            family: [
+                {
+                    french: "Je vais voir ma famille",
+                    options: ["I am going to see my family", "I am going to call my family", "I am going to visit my family", "I am going to miss my family"],
+                    correct: "I am going to see my family"
+                },
+                {
+                    french: "C'est mon anniversaire",
+                    options: ["It's my birthday", "It's my wedding", "It's my party", "It's my celebration"],
+                    correct: "It's my birthday"
+                },
+                {
+                    french: "Je suis marié(e)",
+                    options: ["I am married", "I am single", "I am divorced", "I am engaged"],
+                    correct: "I am married"
+                },
+                {
+                    french: "J'ai deux enfants",
+                    options: ["I have two children", "I have two brothers", "I have two sisters", "I have two parents"],
+                    correct: "I have two children"
+                },
+                {
+                    french: "Ma sœur est médecin",
+                    options: ["My sister is a doctor", "My sister is a teacher", "My sister is a nurse", "My sister is a lawyer"],
+                    correct: "My sister is a doctor"
+                },
+                {
+                    french: "Je vais rendre visite à mes grands-parents",
+                    options: ["I am going to visit my grandparents", "I am going to see my grandparents", "I am going to call my grandparents", "I am going to miss my grandparents"],
+                    correct: "I am going to visit my grandparents"
+                },
+                {
+                    french: "Nous allons célébrer Noël ensemble",
+                    options: ["We are going to celebrate Christmas together", "We are going to spend Christmas together", "We are going to have Christmas together", "We are going to enjoy Christmas together"],
+                    correct: "We are going to celebrate Christmas together"
+                },
+                {
+                    french: "Mon frère aîné habite à Paris",
+                    options: ["My older brother lives in Paris", "My younger brother lives in Paris", "My brother works in Paris", "My brother visits Paris"],
+                    correct: "My older brother lives in Paris"
+                },
+                {
+                    french: "Je suis très proche de ma mère",
+                    options: ["I am very close to my mother", "I am very far from my mother", "I am very similar to my mother", "I am very different from my mother"],
+                    correct: "I am very close to my mother"
+                },
+                {
+                    french: "Nous avons une réunion de famille",
+                    options: ["We have a family reunion", "We have a family meeting", "We have a family gathering", "We have a family party"],
+                    correct: "We have a family reunion"
+                }
+            ],
+            tech: [
+                {
+                    french: "Mon téléphone est déchargé",
+                    options: ["My phone is dead", "My phone is broken", "My phone is lost", "My phone is new"],
+                    correct: "My phone is dead"
+                },
+                {
+                    french: "Je vais télécharger l'application",
+                    options: ["I will download the app", "I will update the app", "I will delete the app", "I will share the app"],
+                    correct: "I will download the app"
+                },
+                {
+                    french: "Le wifi ne fonctionne pas",
+                    options: ["The wifi is not working", "The wifi is too slow", "The wifi is too fast", "The wifi is secure"],
+                    correct: "The wifi is not working"
+                },
+                {
+                    french: "Je vais mettre à jour mon ordinateur",
+                    options: ["I am going to update my computer", "I am going to fix my computer", "I am going to buy a new computer", "I am going to sell my computer"],
+                    correct: "I am going to update my computer"
+                },
+                {
+                    french: "Mon ordinateur portable est en panne",
+                    options: ["My laptop is broken", "My laptop is slow", "My laptop is new", "My laptop is fast"],
+                    correct: "My laptop is broken"
+                },
+                {
+                    french: "Je vais sauvegarder mes fichiers",
+                    options: ["I am going to save my files", "I am going to delete my files", "I am going to share my files", "I am going to organize my files"],
+                    correct: "I am going to save my files"
+                },
+                {
+                    french: "J'ai besoin d'un nouveau logiciel",
+                    options: ["I need new software", "I need a new program", "I need a new application", "I need a new system"],
+                    correct: "I need new software"
+                },
+                {
+                    french: "Le système est en maintenance",
+                    options: ["The system is under maintenance", "The system is working", "The system is updated", "The system is secure"],
+                    correct: "The system is under maintenance"
+                },
+                {
+                    french: "Je vais créer un compte",
+                    options: ["I am going to create an account", "I am going to delete an account", "I am going to update an account", "I am going to access an account"],
+                    correct: "I am going to create an account"
+                },
+                {
+                    french: "Mon mot de passe est oublié",
+                    options: ["My password is forgotten", "My password is changed", "My password is secure", "My password is strong"],
+                    correct: "My password is forgotten"
+                }
+            ],
+            weather: [
+                {
+                    french: "Il pleut aujourd'hui",
+                    options: ["It's raining today", "It's sunny today", "It's cloudy today", "It's windy today"],
+                    correct: "It's raining today"
+                },
+                {
+                    french: "Je vais à la plage",
+                    options: ["I am going to the beach", "I am going to the park", "I am going to the pool", "I am going to the lake"],
+                    correct: "I am going to the beach"
+                },
+                {
+                    french: "Il fait très chaud",
+                    options: ["It's very hot", "It's very cold", "It's very windy", "It's very humid"],
+                    correct: "It's very hot"
+                },
+                {
+                    french: "Il neige en hiver",
+                    options: ["It snows in winter", "It rains in winter", "It's cold in winter", "It's warm in winter"],
+                    correct: "It snows in winter"
+                },
+                {
+                    french: "Il fait beau temps",
+                    options: ["The weather is nice", "The weather is bad", "The weather is cold", "The weather is hot"],
+                    correct: "The weather is nice"
+                },
+                {
+                    french: "Je vais prendre mon parapluie",
+                    options: ["I am going to take my umbrella", "I am going to take my coat", "I am going to take my hat", "I am going to take my sunglasses"],
+                    correct: "I am going to take my umbrella"
+                },
+                {
+                    french: "Il y a du vent",
+                    options: ["It's windy", "It's sunny", "It's cloudy", "It's foggy"],
+                    correct: "It's windy"
+                },
+                {
+                    french: "La température est de vingt degrés",
+                    options: ["The temperature is twenty degrees", "The temperature is thirty degrees", "The temperature is ten degrees", "The temperature is zero degrees"],
+                    correct: "The temperature is twenty degrees"
+                },
+                {
+                    french: "Je vais regarder la météo",
+                    options: ["I am going to check the weather", "I am going to watch the weather", "I am going to see the weather", "I am going to read the weather"],
+                    correct: "I am going to check the weather"
+                },
+                {
+                    french: "Il y a un orage",
+                    options: ["There is a storm", "There is rain", "There is snow", "There is fog"],
+                    correct: "There is a storm"
+                }
+            ],
+            education: [
+                {
+                    french: "Je vais à l'université",
+                    options: ["I am going to university", "I am going to school", "I am going to college", "I am going to class"],
+                    correct: "I am going to university"
+                },
+                {
+                    french: "J'ai un examen demain",
+                    options: ["I have an exam tomorrow", "I have a test today", "I have homework tonight", "I have a project due"],
+                    correct: "I have an exam tomorrow"
+                },
+                {
+                    french: "Je fais mes devoirs",
+                    options: ["I am doing my homework", "I am studying", "I am reading", "I am writing"],
+                    correct: "I am doing my homework"
+                },
+                {
+                    french: "Je suis en cours de français",
+                    options: ["I am in French class", "I am learning French", "I am speaking French", "I am writing in French"],
+                    correct: "I am in French class"
+                },
+                {
+                    french: "Je vais passer mon diplôme",
+                    options: ["I am going to graduate", "I am going to get my degree", "I am going to finish my studies", "I am going to complete my education"],
+                    correct: "I am going to graduate"
+                },
+                {
+                    french: "J'ai réussi à l'examen avec mention",
+                    options: ["I passed the exam with distinction", "I passed the exam with honors", "I passed the exam with high marks", "I passed the exam with excellence"],
+                    correct: "I passed the exam with distinction"
+                },
+                {
+                    french: "Je vais faire une thèse de doctorat",
+                    options: ["I am going to write a doctoral thesis", "I am going to do a PhD", "I am going to complete a doctorate", "I am going to research for my PhD"],
+                    correct: "I am going to write a doctoral thesis"
+                }
+            ],
+            sports: [
+                {
+                    french: "Je joue au football",
+                    options: ["I play football", "I watch football", "I like football", "I practice football"],
+                    correct: "I play football"
+                },
+                {
+                    french: "Je vais à la salle de sport",
+                    options: ["I am going to the gym", "I am going to exercise", "I am going to train", "I am going to practice"],
+                    correct: "I am going to the gym"
+                },
+                {
+                    french: "Je fais du yoga",
+                    options: ["I do yoga", "I practice yoga", "I teach yoga", "I learn yoga"],
+                    correct: "I do yoga"
+                },
+                {
+                    french: "Je suis en forme",
+                    options: ["I am in shape", "I am fit", "I am healthy", "I am strong"],
+                    correct: "I am in shape"
+                },
+                {
+                    french: "Je vais courir dans le parc",
+                    options: ["I am going to run in the park", "I am going to walk in the park", "I am going to play in the park", "I am going to relax in the park"],
+                    correct: "I am going to run in the park"
+                },
+                {
+                    french: "Je fais de la natation",
+                    options: ["I swim", "I dive", "I surf", "I sail"],
+                    correct: "I swim"
+                },
+                {
+                    french: "Je vais participer à un marathon",
+                    options: ["I am going to participate in a marathon", "I am going to run a marathon", "I am going to train for a marathon", "I am going to finish a marathon"],
+                    correct: "I am going to participate in a marathon"
+                },
+                {
+                    french: "Je suis un fan de tennis",
+                    options: ["I am a tennis fan", "I am a tennis player", "I am a tennis coach", "I am a tennis referee"],
+                    correct: "I am a tennis fan"
+                },
+                {
+                    french: "Je vais faire de la randonnée",
+                    options: ["I am going hiking", "I am going camping", "I am going climbing", "I am going biking"],
+                    correct: "I am going hiking"
+                },
+                {
+                    french: "Je pratique le vélo tous les jours",
+                    options: ["I cycle every day", "I ride my bike every day", "I go biking every day", "I practice cycling every day"],
+                    correct: "I cycle every day"
+                }
+            ],
+            culture: [
+                {
+                    french: "Je vais au musée",
+                    options: ["I am going to the museum", "I am going to the gallery", "I am going to the exhibition", "I am going to the art show"],
+                    correct: "I am going to the museum"
+                },
+                {
+                    french: "J'aime la peinture",
+                    options: ["I like painting", "I like art", "I like drawing", "I like colors"],
+                    correct: "I like painting"
+                },
+                {
+                    french: "Je vais au théâtre",
+                    options: ["I am going to the theater", "I am going to the cinema", "I am going to the concert", "I am going to the show"],
+                    correct: "I am going to the theater"
+                },
+                {
+                    french: "C'est une tradition",
+                    options: ["It's a tradition", "It's a custom", "It's a habit", "It's a ritual"],
+                    correct: "It's a tradition"
+                },
+                {
+                    french: "Je vais visiter une exposition d'art contemporain",
+                    options: ["I am going to visit a contemporary art exhibition", "I am going to see a modern art show", "I am going to check out a contemporary art display", "I am going to look at a modern art exhibition"],
+                    correct: "I am going to visit a contemporary art exhibition"
+                },
+                {
+                    french: "J'aime la musique classique",
+                    options: ["I like classical music", "I enjoy classical music", "I prefer classical music", "I love classical music"],
+                    correct: "I like classical music"
+                },
+                {
+                    french: "Je vais assister à un spectacle de danse",
+                    options: ["I am going to attend a dance performance", "I am going to watch a dance show", "I am going to see a dance performance", "I am going to view a dance spectacle"],
+                    correct: "I am going to attend a dance performance"
+                }
+            ],
+            hobbies: [
+                {
+                    french: "Je collectionne les timbres",
+                    options: ["I collect stamps", "I collect coins", "I collect cards", "I collect books"],
+                    correct: "I collect stamps"
+                },
+                {
+                    french: "Je fais de la photographie",
+                    options: ["I do photography", "I take pictures", "I make photos", "I shoot photos"],
+                    correct: "I do photography"
+                },
+                {
+                    french: "Je joue de la guitare",
+                    options: ["I play the guitar", "I play music", "I play an instrument", "I play guitar"],
+                    correct: "I play the guitar"
+                },
+                {
+                    french: "Je fais du jardinage",
+                    options: ["I do gardening", "I plant flowers", "I work in the garden", "I grow plants"],
+                    correct: "I do gardening"
+                },
+                {
+                    french: "Je lis beaucoup de livres",
+                    options: ["I read a lot of books", "I buy a lot of books", "I collect a lot of books", "I write a lot of books"],
+                    correct: "I read a lot of books"
+                },
+                {
+                    french: "Je fais de la cuisine",
+                    options: ["I cook", "I bake", "I prepare food", "I make meals"],
+                    correct: "I cook"
+                },
+                {
+                    french: "Je pratique le dessin",
+                    options: ["I practice drawing", "I do drawing", "I make drawings", "I create drawings"],
+                    correct: "I practice drawing"
+                },
+                {
+                    french: "Je fais du tricot",
+                    options: ["I knit", "I sew", "I crochet", "I embroider"],
+                    correct: "I knit"
+                },
+                {
+                    french: "Je joue aux échecs",
+                    options: ["I play chess", "I play checkers", "I play cards", "I play board games"],
+                    correct: "I play chess"
+                },
+                {
+                    french: "Je fais de la randonnée",
+                    options: ["I go hiking", "I go walking", "I go camping", "I go climbing"],
+                    correct: "I go hiking"
+                }
+            ],
+            emotions: [
+                {
+                    french: "Je suis heureux(se)",
+                    options: ["I am happy", "I am glad", "I am pleased", "I am joyful"],
+                    correct: "I am happy"
+                },
+                {
+                    french: "Je suis triste",
+                    options: ["I am sad", "I am unhappy", "I am depressed", "I am down"],
+                    correct: "I am sad"
+                },
+                {
+                    french: "Je suis surpris(e)",
+                    options: ["I am surprised", "I am shocked", "I am amazed", "I am astonished"],
+                    correct: "I am surprised"
+                },
+                {
+                    french: "Je suis en colère",
+                    options: ["I am angry", "I am mad", "I am upset", "I am furious"],
+                    correct: "I am angry"
+                },
+                {
+                    french: "Je suis excité(e)",
+                    options: ["I am excited", "I am thrilled", "I am eager", "I am enthusiastic"],
+                    correct: "I am excited"
+                },
+                {
+                    french: "Je suis anxieux(se)",
+                    options: ["I am anxious", "I am worried", "I am nervous", "I am stressed"],
+                    correct: "I am anxious"
+                },
+                {
+                    french: "Je suis fatigué(e)",
+                    options: ["I am tired", "I am exhausted", "I am sleepy", "I am worn out"],
+                    correct: "I am tired"
+                },
+                {
+                    french: "Je suis confus(e)",
+                    options: ["I am confused", "I am puzzled", "I am lost", "I am uncertain"],
+                    correct: "I am confused"
+                },
+                {
+                    french: "Je suis fier(ère)",
+                    options: ["I am proud", "I am pleased", "I am satisfied", "I am content"],
+                    correct: "I am proud"
+                },
+                {
+                    french: "Je suis reconnaissant(e)",
+                    options: ["I am grateful", "I am thankful", "I am appreciative", "I am indebted"],
+                    correct: "I am grateful"
+                }
+            ],
+            numbers: [
+                {
+                    french: "Il est trois heures",
+                    options: ["It is three o'clock", "It is three thirty", "It is three fifteen", "It is three forty-five"],
+                    correct: "It is three o'clock"
+                },
+                {
+                    french: "J'ai vingt ans",
+                    options: ["I am twenty years old", "I am twenty", "I have twenty years", "I am twenty years"],
+                    correct: "I am twenty years old"
+                },
+                {
+                    french: "C'est le premier jour",
+                    options: ["It's the first day", "It's day one", "It's the beginning", "It's the start"],
+                    correct: "It's the first day"
+                },
+                {
+                    french: "Je vais dans cinq minutes",
+                    options: ["I am leaving in five minutes", "I am going in five minutes", "I will leave in five minutes", "I will go in five minutes"],
+                    correct: "I am leaving in five minutes"
+                },
+                {
+                    french: "Il est midi",
+                    options: ["It is noon", "It is midnight", "It is morning", "It is evening"],
+                    correct: "It is noon"
+                },
+                {
+                    french: "Il est minuit",
+                    options: ["It is midnight", "It is noon", "It is night", "It is late"],
+                    correct: "It is midnight"
+                },
+                {
+                    french: "J'ai trente ans",
+                    options: ["I am thirty years old", "I am thirty", "I have thirty years", "I am thirty years"],
+                    correct: "I am thirty years old"
+                },
+                {
+                    french: "C'est le deuxième étage",
+                    options: ["It's the second floor", "It's the third floor", "It's the first floor", "It's the fourth floor"],
+                    correct: "It's the second floor"
+                },
+                {
+                    french: "Je vais dans une heure",
+                    options: ["I am leaving in an hour", "I am going in an hour", "I will leave in an hour", "I will go in an hour"],
+                    correct: "I am leaving in an hour"
+                },
+                {
+                    french: "Il y a cent personnes",
+                    options: ["There are one hundred people", "There are fifty people", "There are two hundred people", "There are ten people"],
+                    correct: "There are one hundred people"
+                }
+            ],
+            transport: [
+                {
+                    french: "Je vais prendre le métro",
+                    options: ["I am going to take the subway", "I am going to take the bus", "I am going to take the train", "I am going to take a taxi"],
+                    correct: "I am going to take the subway"
+                },
+                {
+                    french: "Où est l'arrêt de bus?",
+                    options: ["Where is the bus stop?", "Where is the train station?", "Where is the subway station?", "Where is the taxi stand?"],
+                    correct: "Where is the bus stop?"
+                },
+                {
+                    french: "Je vais louer une voiture",
+                    options: ["I am going to rent a car", "I am going to buy a car", "I am going to borrow a car", "I am going to drive a car"],
+                    correct: "I am going to rent a car"
+                },
+                {
+                    french: "Le train est en retard",
+                    options: ["The train is late", "The train is early", "The train is full", "The train is cancelled"],
+                    correct: "The train is late"
+                },
+                {
+                    french: "Je vais louer une voiture de luxe",
+                    options: ["I am going to rent a luxury car", "I am going to hire a luxury car", "I am going to get a luxury car", "I am going to borrow a luxury car"],
+                    correct: "I am going to rent a luxury car"
+                },
+                {
+                    french: "Le vol a été annulé",
+                    options: ["The flight has been cancelled", "The flight was cancelled", "The flight is cancelled", "The flight got cancelled"],
+                    correct: "The flight has been cancelled"
+                },
+                {
+                    french: "Je vais prendre un taxi de luxe",
+                    options: ["I am going to take a luxury taxi", "I am going to get a luxury taxi", "I am going to call a luxury taxi", "I am going to order a luxury taxi"],
+                    correct: "I am going to take a luxury taxi"
+                }
+            ],
+            housing: [
+                {
+                    french: "Je cherche un appartement",
+                    options: ["I am looking for an apartment", "I am looking for a house", "I am looking for a room", "I am looking for a place"],
+                    correct: "I am looking for an apartment"
+                },
+                {
+                    french: "Le loyer est trop cher",
+                    options: ["The rent is too expensive", "The rent is too high", "The rent is too much", "The rent is too steep"],
+                    correct: "The rent is too expensive"
+                },
+                {
+                    french: "J'ai besoin d'un meuble",
+                    options: ["I need furniture", "I need a table", "I need a chair", "I need a bed"],
+                    correct: "I need furniture"
+                },
+                {
+                    french: "La climatisation ne fonctionne pas",
+                    options: ["The air conditioning is not working", "The heating is not working", "The fan is not working", "The ventilation is not working"],
+                    correct: "The air conditioning is not working"
+                },
+                {
+                    french: "Je vais rénover mon appartement",
+                    options: ["I am going to renovate my apartment", "I am going to remodel my apartment", "I am going to update my apartment", "I am going to improve my apartment"],
+                    correct: "I am going to renovate my apartment"
+                },
+                {
+                    french: "J'ai besoin d'un architecte",
+                    options: ["I need an architect", "I want an architect", "I am looking for an architect", "I would like an architect"],
+                    correct: "I need an architect"
+                },
+                {
+                    french: "Je vais installer une climatisation",
+                    options: ["I am going to install air conditioning", "I am going to put in air conditioning", "I am going to add air conditioning", "I am going to set up air conditioning"],
+                    correct: "I am going to install air conditioning"
+                }
+            ],
+            fashion: [
+                {
+                    french: "Je vais essayer cette robe",
+                    options: ["I am going to try on this dress", "I am going to buy this dress", "I am going to wear this dress", "I am going to choose this dress"],
+                    correct: "I am going to try on this dress"
+                },
+                {
+                    french: "Ces chaussures sont trop petites",
+                    options: ["These shoes are too small", "These shoes are too big", "These shoes are too tight", "These shoes are too loose"],
+                    correct: "These shoes are too small"
+                },
+                {
+                    french: "Je vais faire du shopping",
+                    options: ["I am going shopping", "I am going to buy clothes", "I am going to the mall", "I am going to the store"],
+                    correct: "I am going shopping"
+                },
+                {
+                    french: "C'est en solde",
+                    options: ["It's on sale", "It's discounted", "It's reduced", "It's cheaper"],
+                    correct: "It's on sale"
+                },
+                {
+                    french: "Je cherche un manteau",
+                    options: ["I am looking for a coat", "I am looking for a jacket", "I am looking for a sweater", "I am looking for a shirt"],
+                    correct: "I am looking for a coat"
+                },
+                {
+                    french: "Cette couleur me va bien",
+                    options: ["This color suits me well", "This color looks good on me", "This color fits me", "This color matches me"],
+                    correct: "This color suits me well"
+                },
+                {
+                    french: "Je vais porter un costume",
+                    options: ["I am going to wear a suit", "I am going to buy a suit", "I am going to try on a suit", "I am going to choose a suit"],
+                    correct: "I am going to wear a suit"
+                },
+                {
+                    french: "Ces vêtements sont à la mode",
+                    options: ["These clothes are fashionable", "These clothes are trendy", "These clothes are stylish", "These clothes are modern"],
+                    correct: "These clothes are fashionable"
+                },
+                {
+                    french: "Je vais acheter des accessoires",
+                    options: ["I am going to buy accessories", "I am going to buy jewelry", "I am going to buy bags", "I am going to buy shoes"],
+                    correct: "I am going to buy accessories"
+                },
+                {
+                    french: "Cette tenue est élégante",
+                    options: ["This outfit is elegant", "This outfit is stylish", "This outfit is beautiful", "This outfit is fashionable"],
+                    correct: "This outfit is elegant"
+                }
+            ]
+        };
+
+        let currentTopic = 'all';
+        let currentScore = 0;
+        let highScore = 0;
+        let combo = 0;
+        let timeLeft = 30;
+        let gameInterval;
+        let currentPhraseIndex;
+        let usedPhrases = new Set();
+
+        const scoreElement = document.getElementById('score');
+        const highScoreElement = document.getElementById('highScore');
+        const comboElement = document.getElementById('combo');
+        const timerElement = document.getElementById('timer');
+        const comboMultiplierElement = document.getElementById('comboMultiplier');
+        const frenchPhraseElement = document.getElementById('frenchPhrase');
+        const translationOptionsElement = document.getElementById('translationOptions');
+
+        const topicButtons = document.querySelectorAll('.topic-btn');
+
+        function getRandomPhrase() {
+            const currentPhrases = phrases[currentTopic];
+            if (usedPhrases.size === currentPhrases.length) {
+                usedPhrases.clear();
+            }
+
+            let availablePhrases = currentPhrases.filter((_, index) => !usedPhrases.has(index));
+            let randomIndex = Math.floor(Math.random() * availablePhrases.length);
+            currentPhraseIndex = currentPhrases.indexOf(availablePhrases[randomIndex]);
+            usedPhrases.add(currentPhraseIndex);
+            return currentPhrases[currentPhraseIndex];
+        }
+
+        topicButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                topicButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentTopic = btn.dataset.topic;
+                resetGame();
+            });
+        });
+
+        function resetGame() {
+            currentScore = 0;
+            combo = 0;
+            timeLeft = 30;
+            usedPhrases.clear();
+            
+            scoreElement.textContent = currentScore;
+            comboElement.textContent = combo;
+            comboMultiplierElement.textContent = 'x1';
+            
+            clearInterval(gameInterval);
+            gameInterval = setInterval(() => {
+                timeLeft--;
+                updateTimer();
+            }, 1000);
+            
+            displayPhrase();
+        }
+
+        // Fisher-Yates shuffle algorithm for truly random positioning
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        function displayPhrase() {
+            const phrase = getRandomPhrase();
+            frenchPhraseElement.textContent = phrase.french;
+            
+            translationOptionsElement.innerHTML = '';
+            // Shuffle options using Fisher-Yates algorithm for truly random positions
+            const shuffledOptions = shuffleArray(phrase.options);
+            shuffledOptions.forEach(option => {
+                const button = document.createElement('button');
+                button.className = 'option-btn';
+                button.textContent = option;
+                button.onclick = () => checkAnswer(option, phrase.correct);
+                translationOptionsElement.appendChild(button);
+            });
+        }
+
+        function checkAnswer(selected, correct) {
+            if (selected === correct) {
+                const basePoints = 100;
+                const comboMultiplier = Math.min(Math.floor(combo / 3) + 1, 5);
+                const points = basePoints * comboMultiplier;
+                
+                currentScore += points;
+                combo++;
+                
+                scoreElement.textContent = currentScore;
+                comboElement.textContent = combo;
+                comboMultiplierElement.textContent = `x${comboMultiplier}`;
+                
+                if (currentScore > highScore) {
+                    highScore = currentScore;
+                    highScoreElement.textContent = highScore;
+                }
+
+                timeLeft = Math.min(timeLeft + 2, 30);
+            } else {
+                combo = 0;
+                comboElement.textContent = combo;
+                comboMultiplierElement.textContent = 'x1';
+                timeLeft = Math.max(timeLeft - 2, 0);
+            }
+
+            displayPhrase();
+        }
+
+        function updateTimer() {
+            timerElement.textContent = timeLeft;
+            
+            if (timeLeft <= 5) {
+                timerElement.style.color = 'var(--timer-danger)';
+            } else if (timeLeft <= 10) {
+                timerElement.style.color = 'var(--timer-warning)';
+            } else {
+                timerElement.style.color = 'var(--primary-color)';
+            }
+
+            if (timeLeft <= 0) {
+                gameOver();
+            }
+        }
+
+        function gameOver() {
+            clearInterval(gameInterval);
+            
+            const gameOverScreen = document.createElement('div');
+            gameOverScreen.className = 'game-over';
+            gameOverScreen.innerHTML = `
+                <h2 class="game-over-title">Game Over!</h2>
+                <div class="stat-item">
+                    <div class="stat-label">Final Score</div>
+                    <div class="stat-value">${currentScore}</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">High Score</div>
+                    <div class="stat-value">${highScore}</div>
+                </div>
+                <button class="restart-btn" onclick="startGame()">Play Again</button>
+            `;
+            
+            document.body.appendChild(gameOverScreen);
+        }
+
+        function startGame() {
+            const existingGameOver = document.querySelector('.game-over');
+            if (existingGameOver) {
+                existingGameOver.remove();
+            }
+
+            currentScore = 0;
+            combo = 0;
+            timeLeft = 30;
+            
+            scoreElement.textContent = currentScore;
+            comboElement.textContent = combo;
+            comboMultiplierElement.textContent = 'x1';
+            
+            clearInterval(gameInterval);
+            gameInterval = setInterval(() => {
+                timeLeft--;
+                updateTimer();
+            }, 1000);
+            
+            displayPhrase();
+        }
+
+        function updateNavLicenseStatus() {
+            const statusElement = document.getElementById('navLicenseStatus');
+            if (!statusElement) return;
+
+            try {
+                const storedData = localStorage.getItem('validatedLicense');
+                if (!storedData) return;
+
+                const licenseData = JSON.parse(storedData);
+                if (!licenseData || !licenseData.expiryDate) return;
+
+                const expiry = new Date(licenseData.expiryDate);
+                const today = new Date();
+                const diff = Math.ceil((expiry - today) / (1000 * 60 * 60 * 24));
+
+                if (diff < 0) {
+                    statusElement.textContent = 'Expired';
+                } else if (diff === 1) {
+                    statusElement.textContent = '1 day remaining';
+                } else {
+                    statusElement.textContent = `${diff} days remaining`;
+                }
+            } catch (error) {
+                console.warn('Could not update license status', error);
+            }
+        }
+
+        // Initialize UI
+        updateNavLicenseStatus();
+        // Start the game
+        startGame();
+    </script>
+</body>
+</html> 

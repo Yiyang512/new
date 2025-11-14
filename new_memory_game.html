@@ -1,0 +1,1433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>French Memory Palace</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Theme colors - matching hub.html */
+            --primary: #00FFB3;
+            --primary-dark: #00CC8F;
+            --primary-light: #66FFD1;
+            --bg-primary: #0A0E1A;
+            --bg-secondary: #141824;
+            --bg-card: #1A1F2E;
+            --text-primary: #FFFFFF;
+            --text-secondary: #94A3B8;
+            --border: rgba(148, 163, 184, 0.1);
+            --gradient-primary: linear-gradient(135deg, #00FFB3 0%, #00D9FF 100%);
+            
+            /* Legacy variables for compatibility */
+            --dark-bg: #0A0E1A;
+            --neon-green: #00FFB3;
+            --neon-green-glow: rgba(0, 255, 179, 0.3);
+            --neon-purple: #00D9FF;
+            --neon-purple-glow: rgba(0, 217, 255, 0.3);
+            --neon-blue: #66FFD1;
+            --neon-blue-glow: rgba(102, 255, 209, 0.3);
+            --neon-cyan: #00D9FF;
+            --neon-cyan-glow: rgba(0, 217, 255, 0.3);
+            --card-bg: rgba(26, 31, 46, 0.95);
+            --text-color: #ffffff;
+            --border-color: rgba(148, 163, 184, 0.1);
+            --success-color: #2ed573;
+            --error-color: #ff4757;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 5px var(--neon-green);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 0 20px var(--neon-green);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 5px var(--neon-green);
+            }
+        }
+
+        @keyframes glow {
+            0% {
+                filter: drop-shadow(0 0 5px var(--neon-green));
+            }
+            50% {
+                filter: drop-shadow(0 0 15px var(--neon-green));
+            }
+            100% {
+                filter: drop-shadow(0 0 5px var(--neon-green));
+            }
+        }
+
+        @keyframes memoryReveal {
+            0% {
+                transform: rotateY(0deg);
+            }
+            100% {
+                transform: rotateY(180deg);
+            }
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(0, 255, 179, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(0, 217, 255, 0.08) 0%, transparent 50%);
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: var(--neon-green);
+            text-align: center;
+            margin: 1.5rem 0;
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+            animation: glow 2s infinite;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--neon-purple);
+            margin-bottom: 2rem;
+            font-size: 1.2rem;
+        }
+
+        .game-card {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: 0 0 20px rgba(57, 255, 20, 0.2);
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .level-selection {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 2rem;
+        }
+
+        .level-card {
+            background-color: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 15px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .level-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(57, 255, 20, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .level-card:hover::before {
+            left: 100%;
+        }
+
+        .level-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(57, 255, 20, 0.3);
+            border-color: var(--neon-green);
+        }
+
+        .level-card h2 {
+            color: var(--neon-green);
+            margin-bottom: 1rem;
+        }
+
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin: 2rem 0;
+            perspective: 1000px;
+        }
+
+        .memory-card {
+            aspect-ratio: 1;
+            background-color: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .memory-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(57, 255, 20, 0.3);
+        }
+
+        .memory-card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .memory-card.matched {
+            border-color: var(--success-color);
+            background-color: rgba(46, 213, 115, 0.1);
+            animation: pulse 1s infinite;
+        }
+
+        .memory-card.wrong {
+            border-color: var(--error-color);
+            background-color: rgba(255, 71, 87, 0.1);
+            animation: shake 0.5s ease-in-out;
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, var(--neon-green-glow), var(--neon-purple-glow));
+            color: var(--text-color);
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .card-back {
+            background: linear-gradient(135deg, var(--neon-blue-glow), var(--neon-cyan-glow));
+            color: var(--text-color);
+            transform: rotateY(180deg);
+            font-size: 1.2rem;
+        }
+
+        .memory-hint {
+            background-color: rgba(181, 20, 255, 0.1);
+            border: 1px solid var(--neon-purple);
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1rem 0;
+            text-align: center;
+            font-style: italic;
+            color: var(--neon-purple);
+        }
+
+        .progress-bar {
+            height: 8px;
+            width: 100%;
+            background-color: rgba(57, 255, 20, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--neon-green), var(--neon-purple));
+            transition: width 0.3s ease;
+        }
+
+        .score-display {
+            text-align: center;
+            color: var(--neon-green);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .timer-display {
+            background-color: var(--card-bg);
+            border: 2px solid var(--neon-green);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--neon-green);
+            animation: pulse 2s infinite;
+        }
+
+        .stats-display {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--card-bg);
+            border: 2px solid var(--neon-green);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: right;
+        }
+
+        .streak-counter {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 5px;
+        }
+
+        .streak-flame {
+            color: var(--neon-green);
+            animation: pulse 1s infinite;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .btn-primary {
+            background-color: var(--neon-green);
+            color: var(--dark-bg);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--neon-green);
+            border: 2px solid var(--neon-green);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(57, 255, 20, 0.3);
+        }
+
+        .feedback {
+            text-align: center;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 1rem;
+            font-weight: 500;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .feedback.show {
+            opacity: 1;
+        }
+
+        .feedback.correct {
+            background-color: rgba(46, 213, 115, 0.1);
+            border: 1px solid rgba(46, 213, 115, 0.3);
+            color: var(--success-color);
+        }
+
+        .feedback.incorrect {
+            background-color: rgba(255, 71, 87, 0.1);
+            border: 1px solid rgba(255, 71, 87, 0.3);
+            color: var(--error-color);
+        }
+
+        .xp-gain {
+            position: absolute;
+            color: var(--neon-green);
+            font-weight: bold;
+            pointer-events: none;
+            animation: floatUp 1s ease-out forwards;
+            font-size: 1.2rem;
+        }
+
+        .combo-display {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: var(--card-bg);
+            border: 2px solid var(--neon-green);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .combo-display.show {
+            opacity: 1;
+        }
+
+        .combo-display h3 {
+            color: var(--neon-green);
+            margin-bottom: 10px;
+        }
+
+        .combo-display .combo-number {
+            font-size: 3rem;
+            color: var(--neon-purple);
+            font-weight: bold;
+            animation: pulse 1s infinite;
+        }
+
+        .achievement-notification {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color: var(--card-bg);
+            border: 2px solid var(--neon-green);
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 1000;
+            transform: translateX(-120%);
+            transition: transform 0.3s ease-in-out;
+            max-width: 350px;
+        }
+
+        .achievement-notification.show {
+            transform: translateX(0);
+        }
+
+        .achievement-icon {
+            font-size: 2rem;
+            animation: pulse 1s infinite;
+        }
+
+        .achievement-details h3 {
+            color: var(--neon-green);
+            margin-bottom: 5px;
+        }
+
+        .achievement-reward {
+            color: var(--neon-green);
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .memory-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+            }
+
+            .game-card {
+                padding: 1rem;
+            }
+
+            .level-selection {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+        }
+
+        @media (max-width: 480px) {
+            .memory-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏰 French Memory Palace</h1>
+        <p class="subtitle">Build your vocabulary palace through memory training! 🧠✨</p>
+
+        <div id="game-content">
+            <!-- Content will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <script>
+        // Game data structure with vocabulary from different levels [[memory:10290843]]
+        const gameData = {
+            A1: {
+                title: "Beginner Palace",
+                description: "Basic everyday vocabulary",
+                difficulty: "Easy",
+                timeLimit: 120,
+                pairs: [
+                    { french: "bonjour", english: "hello", hint: "The most common greeting" },
+                    { french: "merci", english: "thank you", hint: "Being polite is important" },
+                    { french: "maison", english: "house", hint: "Where you live" },
+                    { french: "chat", english: "cat", hint: "A common pet" },
+                    { french: "chien", english: "dog", hint: "Man's best friend" },
+                    { french: "livre", english: "book", hint: "Something you read" },
+                    { french: "eau", english: "water", hint: "Essential for life" },
+                    { french: "pain", english: "bread", hint: "A staple food" },
+                    { french: "au revoir", english: "goodbye", hint: "Farewell greeting" },
+                    { french: "s'il vous plaît", english: "please", hint: "Polite request" },
+                    { french: "oui", english: "yes", hint: "Affirmative answer" },
+                    { french: "non", english: "no", hint: "Negative answer" },
+                    { french: "mère", english: "mother", hint: "Parent" },
+                    { french: "père", english: "father", hint: "Parent" },
+                    { french: "fille", english: "daughter", hint: "Female child" },
+                    { french: "fils", english: "son", hint: "Male child" },
+                    { french: "frère", english: "brother", hint: "Male sibling" },
+                    { french: "sœur", english: "sister", hint: "Female sibling" },
+                    { french: "ami", english: "friend", hint: "Companion" },
+                    { french: "école", english: "school", hint: "Place of learning" },
+                    { french: "professeur", english: "teacher", hint: "Educator" },
+                    { french: "élève", english: "student", hint: "Learner" },
+                    { french: "crayon", english: "pencil", hint: "Writing tool" },
+                    { french: "stylo", english: "pen", hint: "Writing instrument" },
+                    { french: "table", english: "table", hint: "Furniture" },
+                    { french: "chaise", english: "chair", hint: "Seating" },
+                    { french: "fenêtre", english: "window", hint: "Opening in wall" },
+                    { french: "porte", english: "door", hint: "Entryway" },
+                    { french: "voiture", english: "car", hint: "Vehicle" },
+                    { french: "vélo", english: "bicycle", hint: "Two-wheeled vehicle" },
+                    { french: "pomme", english: "apple", hint: "Fruit" },
+                    { french: "banane", english: "banana", hint: "Yellow fruit" },
+                    { french: "orange", english: "orange", hint: "Citrus fruit" },
+                    { french: "lait", english: "milk", hint: "Dairy drink" },
+                    { french: "fromage", english: "cheese", hint: "Dairy product" },
+                    { french: "beurre", english: "butter", hint: "Dairy spread" },
+                    { french: "œuf", english: "egg", hint: "Breakfast food" },
+                    { french: "café", english: "coffee", hint: "Hot beverage" },
+                    { french: "thé", english: "tea", hint: "Hot drink" },
+                    { french: "rouge", english: "red", hint: "Color" },
+                    { french: "bleu", english: "blue", hint: "Color" },
+                    { french: "vert", english: "green", hint: "Color" },
+                    { french: "jaune", english: "yellow", hint: "Color" },
+                    { french: "noir", english: "black", hint: "Color" },
+                    { french: "blanc", english: "white", hint: "Color" },
+                    { french: "un", english: "one", hint: "Number" },
+                    { french: "deux", english: "two", hint: "Number" },
+                    { french: "trois", english: "three", hint: "Number" },
+                    { french: "quatre", english: "four", hint: "Number" },
+                    { french: "cinq", english: "five", hint: "Number" }
+                ]
+            },
+            A2: {
+                title: "Elementary Palace",
+                description: "Expand your vocabulary",
+                difficulty: "Medium",
+                timeLimit: 100,
+                pairs: [
+                    { french: "restaurant", english: "restaurant", hint: "Where you go to eat" },
+                    { french: "bibliothèque", english: "library", hint: "A quiet place full of books" },
+                    { french: "ordinateur", english: "computer", hint: "You use it every day" },
+                    { french: "téléphone", english: "phone", hint: "You carry it everywhere" },
+                    { french: "voiture", english: "car", hint: "A mode of transportation" },
+                    { french: "avion", english: "airplane", hint: "Flies in the sky" },
+                    { french: "hôtel", english: "hotel", hint: "Where you stay when traveling" },
+                    { french: "magasin", english: "store", hint: "Where you buy things" },
+                    { french: "cinéma", english: "cinema", hint: "Movie theater" },
+                    { french: "théâtre", english: "theater", hint: "Performance venue" },
+                    { french: "musée", english: "museum", hint: "Art and history" },
+                    { french: "parc", english: "park", hint: "Green space" },
+                    { french: "plage", english: "beach", hint: "Sandy shore" },
+                    { french: "montagne", english: "mountain", hint: "High elevation" },
+                    { french: "rivière", english: "river", hint: "Flowing water" },
+                    { french: "lac", english: "lake", hint: "Body of water" },
+                    { french: "forêt", english: "forest", hint: "Many trees" },
+                    { french: "train", english: "train", hint: "Rail transport" },
+                    { french: "bus", english: "bus", hint: "Public transport" },
+                    { french: "métro", english: "subway", hint: "Underground train" },
+                    { french: "bateau", english: "boat", hint: "Water vessel" },
+                    { french: "vélo", english: "bicycle", hint: "Two wheels" },
+                    { french: "moto", english: "motorcycle", hint: "Two-wheeled motor" },
+                    { french: "camion", english: "truck", hint: "Large vehicle" },
+                    { french: "aéroport", english: "airport", hint: "Flight hub" },
+                    { french: "gare", english: "train station", hint: "Rail hub" },
+                    { french: "billet", english: "ticket", hint: "Travel document" },
+                    { french: "passeport", english: "passport", hint: "Travel ID" },
+                    { french: "valise", english: "suitcase", hint: "Travel bag" },
+                    { french: "carte", english: "map", hint: "Location guide" },
+                    { french: "guide", english: "guide", hint: "Tour helper" },
+                    { french: "vacances", english: "vacation", hint: "Time off" },
+                    { french: "voyage", english: "trip", hint: "Journey" },
+                    { french: "départ", english: "departure", hint: "Leaving" },
+                    { french: "arrivée", english: "arrival", hint: "Arriving" },
+                    { french: "horaire", english: "schedule", hint: "Timetable" },
+                    { french: "retard", english: "delay", hint: "Late" },
+                    { french: "annulation", english: "cancellation", hint: "Canceled" },
+                    { french: "réservation", english: "reservation", hint: "Booking" },
+                    { french: "chambre", english: "room", hint: "Hotel room" },
+                    { french: "clé", english: "key", hint: "Opens doors" },
+                    { french: "réception", english: "reception", hint: "Front desk" },
+                    { french: "ascenseur", english: "elevator", hint: "Lift" },
+                    { french: "escalier", english: "stairs", hint: "Steps" },
+                    { french: "cuisine", english: "kitchen", hint: "Cooking area" },
+                    { french: "salle de bain", english: "bathroom", hint: "Washroom" },
+                    { french: "chambre à coucher", english: "bedroom", hint: "Sleeping room" },
+                    { french: "salon", english: "living room", hint: "Sitting room" }
+                ]
+            },
+            B1: {
+                title: "Intermediate Palace",
+                description: "More complex vocabulary",
+                difficulty: "Hard",
+                timeLimit: 80,
+                pairs: [
+                    { french: "développeur", english: "developer", hint: "Someone who creates software" },
+                    { french: "environnement", english: "environment", hint: "The world around us" },
+                    { french: "apprentissage", english: "learning", hint: "The process of gaining knowledge" },
+                    { french: "communication", english: "communication", hint: "How we share information" },
+                    { french: "technologie", english: "technology", hint: "Modern tools and systems" },
+                    { french: "éducation", english: "education", hint: "The process of teaching" },
+                    { french: "santé", english: "health", hint: "Physical and mental well-being" },
+                    { french: "culture", english: "culture", hint: "Traditions and customs" },
+                    { french: "entreprise", english: "company", hint: "Business organization" },
+                    { french: "réunion", english: "meeting", hint: "Business gathering" },
+                    { french: "projet", english: "project", hint: "Work assignment" },
+                    { french: "délai", english: "deadline", hint: "Due date" },
+                    { french: "collègue", english: "colleague", hint: "Work partner" },
+                    { french: "patron", english: "boss", hint: "Manager" },
+                    { french: "salaire", english: "salary", hint: "Payment" },
+                    { french: "travail", english: "work", hint: "Job" },
+                    { french: "bureau", english: "office", hint: "Workplace" },
+                    { french: "ordinateur portable", english: "laptop", hint: "Portable computer" },
+                    { french: "clavier", english: "keyboard", hint: "Input device" },
+                    { french: "souris", english: "mouse", hint: "Computer mouse" },
+                    { french: "écran", english: "screen", hint: "Display" },
+                    { french: "imprimante", english: "printer", hint: "Printing device" },
+                    { french: "internet", english: "internet", hint: "Network" },
+                    { french: "email", english: "email", hint: "Electronic mail" },
+                    { french: "site web", english: "website", hint: "Web page" },
+                    { french: "réseau social", english: "social network", hint: "Social media" },
+                    { french: "application", english: "application", hint: "App" },
+                    { french: "logiciel", english: "software", hint: "Program" },
+                    { french: "système", english: "system", hint: "Operating system" },
+                    { french: "données", english: "data", hint: "Information" },
+                    { french: "fichier", english: "file", hint: "Document" },
+                    { french: "dossier", english: "folder", hint: "File container" },
+                    { french: "sauvegarder", english: "to save", hint: "Store data" },
+                    { french: "télécharger", english: "to download", hint: "Get from internet" },
+                    { french: "téléverser", english: "to upload", hint: "Send to internet" },
+                    { french: "recherche", english: "research", hint: "Investigation" },
+                    { french: "analyse", english: "analysis", hint: "Examination" },
+                    { french: "rapport", english: "report", hint: "Document" },
+                    { french: "présentation", english: "presentation", hint: "Slideshow" },
+                    { french: "conférence", english: "conference", hint: "Large meeting" },
+                    { french: "séminaire", english: "seminar", hint: "Workshop" },
+                    { french: "formation", english: "training", hint: "Education" },
+                    { french: "compétence", english: "skill", hint: "Ability" },
+                    { french: "expérience", english: "experience", hint: "Knowledge" },
+                    { french: "carrière", english: "career", hint: "Profession" },
+                    { french: "poste", english: "position", hint: "Job role" },
+                    { french: "entretien", english: "interview", hint: "Job interview" },
+                    { french: "CV", english: "resume", hint: "Curriculum vitae" },
+                    { french: "lettre de motivation", english: "cover letter", hint: "Application letter" },
+                    { french: "candidature", english: "application", hint: "Job application" },
+                    { french: "embauche", english: "hiring", hint: "Recruitment" },
+                    { french: "licenciement", english: "dismissal", hint: "Firing" },
+                    { french: "démission", english: "resignation", hint: "Quitting" },
+                    { french: "retraite", english: "retirement", hint: "End of career" }
+                ]
+            },
+            B2: {
+                title: "Advanced Palace",
+                description: "Challenging vocabulary",
+                difficulty: "Expert",
+                timeLimit: 60,
+                pairs: [
+                    { french: "développement", english: "development", hint: "The process of growing or advancing" },
+                    { french: "reconnaissance", english: "recognition", hint: "Showing gratitude or identification" },
+                    { french: "gouvernement", english: "government", hint: "They run the country" },
+                    { french: "responsabilité", english: "responsibility", hint: "Being accountable for something" },
+                    { french: "opportunité", english: "opportunity", hint: "A chance to do something" },
+                    { french: "professionnel", english: "professional", hint: "Related to work or career" },
+                    { french: "international", english: "international", hint: "Involving multiple countries" },
+                    { french: "organisation", english: "organization", hint: "A structured group" },
+                    { french: "société", english: "society", hint: "Community" },
+                    { french: "économie", english: "economy", hint: "Financial system" },
+                    { french: "politique", english: "politics", hint: "Government affairs" },
+                    { french: "démocratie", english: "democracy", hint: "Form of government" },
+                    { french: "liberté", english: "freedom", hint: "Independence" },
+                    { french: "égalité", english: "equality", hint: "Fairness" },
+                    { french: "fraternité", english: "fraternity", hint: "Brotherhood" },
+                    { french: "justice", english: "justice", hint: "Fairness" },
+                    { french: "droit", english: "right/law", hint: "Legal entitlement" },
+                    { french: "loi", english: "law", hint: "Legal rule" },
+                    { french: "constitution", english: "constitution", hint: "Fundamental law" },
+                    { french: "citoyen", english: "citizen", hint: "Member of state" },
+                    { french: "nation", english: "nation", hint: "Country" },
+                    { french: "patrie", english: "homeland", hint: "Native country" },
+                    { french: "identité", english: "identity", hint: "Who you are" },
+                    { french: "culturel", english: "cultural", hint: "Related to culture" },
+                    { french: "tradition", english: "tradition", hint: "Custom" },
+                    { french: "patrimoine", english: "heritage", hint: "Inheritance" },
+                    { french: "civilisation", english: "civilization", hint: "Society" },
+                    { french: "histoire", english: "history", hint: "Past events" },
+                    { french: "géographie", english: "geography", hint: "Study of earth" },
+                    { french: "sciences", english: "sciences", hint: "Scientific fields" },
+                    { french: "mathématiques", english: "mathematics", hint: "Math" },
+                    { french: "physique", english: "physics", hint: "Science of matter" },
+                    { french: "chimie", english: "chemistry", hint: "Science of substances" },
+                    { french: "biologie", english: "biology", hint: "Science of life" },
+                    { french: "médecine", english: "medicine", hint: "Medical science" },
+                    { french: "philosophie", english: "philosophy", hint: "Study of knowledge" },
+                    { french: "psychologie", english: "psychology", hint: "Study of mind" },
+                    { french: "sociologie", english: "sociology", hint: "Study of society" },
+                    { french: "anthropologie", english: "anthropology", hint: "Study of humans" },
+                    { french: "archéologie", english: "archaeology", hint: "Study of past" },
+                    { french: "linguistique", english: "linguistics", hint: "Study of language" },
+                    { french: "littérature", english: "literature", hint: "Written works" },
+                    { french: "poésie", english: "poetry", hint: "Poetic art" },
+                    { french: "roman", english: "novel", hint: "Fiction book" },
+                    { french: "théâtre", english: "theater", hint: "Drama" },
+                    { french: "cinéma", english: "cinema", hint: "Film industry" },
+                    { french: "musique", english: "music", hint: "Art of sound" },
+                    { french: "peinture", english: "painting", hint: "Visual art" },
+                    { french: "sculpture", english: "sculpture", hint: "3D art" },
+                    { french: "architecture", english: "architecture", hint: "Building design" },
+                    { french: "design", english: "design", hint: "Creative planning" },
+                    { french: "mode", english: "fashion", hint: "Style" },
+                    { french: "gastronomie", english: "gastronomy", hint: "Culinary art" },
+                    { french: "cuisine", english: "cuisine", hint: "Cooking style" },
+                    { french: "vin", english: "wine", hint: "Alcoholic beverage" },
+                    { french: "fromage", english: "cheese", hint: "Dairy product" },
+                    { french: "baguette", english: "baguette", hint: "French bread" },
+                    { french: "croissant", english: "croissant", hint: "Pastry" },
+                    { french: "macaron", english: "macaron", hint: "French cookie" },
+                    { french: "éclair", english: "éclair", hint: "Pastry" },
+                    { french: "tarte", english: "tart", hint: "Dessert" },
+                    { french: "crème brûlée", english: "crème brûlée", hint: "Dessert" },
+                    { french: "soufflé", english: "soufflé", hint: "Baked dish" },
+                    { french: "ratatouille", english: "ratatouille", hint: "Vegetable dish" },
+                    { french: "bouillabaisse", english: "bouillabaisse", hint: "Fish stew" },
+                    { french: "coq au vin", english: "coq au vin", hint: "Chicken dish" },
+                    { french: "escargot", english: "snail", hint: "French delicacy" },
+                    { french: "foie gras", english: "foie gras", hint: "Duck liver" },
+                    { french: "champagne", english: "champagne", hint: "Sparkling wine" },
+                    { french: "cognac", english: "cognac", hint: "Brandy" },
+                    { french: "bourgeoisie", english: "bourgeoisie", hint: "Middle class" },
+                    { french: "aristocratie", english: "aristocracy", hint: "Nobility" },
+                    { french: "révolution", english: "revolution", hint: "Uprising" },
+                    { french: "république", english: "republic", hint: "Form of government" },
+                    { french: "monarchie", english: "monarchy", hint: "Kingdom" },
+                    { french: "empire", english: "empire", hint: "Large state" },
+                    { french: "colonie", english: "colony", hint: "Settlement" },
+                    { french: "indépendance", english: "independence", hint: "Freedom" },
+                    { french: "souveraineté", english: "sovereignty", hint: "Autonomy" },
+                    { french: "diplomatie", english: "diplomacy", hint: "International relations" },
+                    { french: "ambassade", english: "embassy", hint: "Diplomatic mission" },
+                    { french: "consulat", english: "consulate", hint: "Diplomatic office" },
+                    { french: "visa", english: "visa", hint: "Travel permit" },
+                    { french: "douane", english: "customs", hint: "Border control" },
+                    { french: "immigration", english: "immigration", hint: "Moving to country" },
+                    { french: "émigration", english: "emigration", hint: "Leaving country" },
+                    { french: "réfugié", english: "refugee", hint: "Displaced person" },
+                    { french: "asile", english: "asylum", hint: "Refuge" },
+                    { french: "citoyenneté", english: "citizenship", hint: "Nationality" },
+                    { french: "naturalisation", english: "naturalization", hint: "Becoming citizen" },
+                    { french: "multiculturalisme", english: "multiculturalism", hint: "Cultural diversity" },
+                    { french: "intégration", english: "integration", hint: "Inclusion" },
+                    { french: "assimilation", english: "assimilation", hint: "Absorption" },
+                    { french: "discrimination", english: "discrimination", hint: "Prejudice" },
+                    { french: "racisme", english: "racism", hint: "Racial prejudice" },
+                    { french: "sexisme", english: "sexism", hint: "Gender prejudice" },
+                    { french: "stéréotype", english: "stereotype", hint: "Generalization" },
+                    { french: "préjugé", english: "prejudice", hint: "Bias" },
+                    { french: "tolérance", english: "tolerance", hint: "Acceptance" },
+                    { french: "respect", english: "respect", hint: "Consideration" },
+                    { french: "diversité", english: "diversity", hint: "Variety" },
+                    { french: "inclusion", english: "inclusion", hint: "Involvement" },
+                    { french: "exclusion", english: "exclusion", hint: "Rejection" },
+                    { french: "ségrégation", english: "segregation", hint: "Separation" },
+                    { french: "apartheid", english: "apartheid", hint: "Racial segregation" },
+                    { french: "migration", english: "migration", hint: "Movement of people" },
+                    { french: "urbanisation", english: "urbanization", hint: "City growth" },
+                    { french: "mondialisation", english: "globalization", hint: "World integration" },
+                    { french: "développement durable", english: "sustainable development", hint: "Eco-friendly growth" },
+                    { french: "environnement", english: "environment", hint: "Natural world" },
+                    { french: "écologie", english: "ecology", hint: "Environmental science" },
+                    { french: "climat", english: "climate", hint: "Weather patterns" },
+                    { french: "réchauffement", english: "warming", hint: "Temperature increase" },
+                    { french: "pollution", english: "pollution", hint: "Environmental damage" },
+                    { french: "recyclage", english: "recycling", hint: "Waste reuse" },
+                    { french: "énergie renouvelable", english: "renewable energy", hint: "Sustainable power" },
+                    { french: "biodiversité", english: "biodiversity", hint: "Species variety" },
+                    { french: "conservation", english: "conservation", hint: "Protection" },
+                    { french: "préservation", english: "preservation", hint: "Maintenance" },
+                    { french: "durabilité", english: "sustainability", hint: "Long-term viability" },
+                    { french: "responsabilité sociale", english: "social responsibility", hint: "Ethical duty" },
+                    { french: "éthique", english: "ethics", hint: "Moral principles" },
+                    { french: "valeurs", english: "values", hint: "Principles" },
+                    { french: "morale", english: "morality", hint: "Ethics" },
+                    { french: "vertu", english: "virtue", hint: "Good quality" },
+                    { french: "intégrité", english: "integrity", hint: "Honesty" },
+                    { french: "honnêteté", english: "honesty", hint: "Truthfulness" },
+                    { french: "transparence", english: "transparency", hint: "Openness" },
+                    { french: "confiance", english: "trust", hint: "Belief" },
+                    { french: "fiabilité", english: "reliability", hint: "Dependability" },
+                    { french: "crédibilité", english: "credibility", hint: "Believability" },
+                    { french: "légitimité", english: "legitimacy", hint: "Validity" },
+                    { french: "autorité", english: "authority", hint: "Power" },
+                    { french: "leadership", english: "leadership", hint: "Guidance" },
+                    { french: "gouvernance", english: "governance", hint: "Management" },
+                    { french: "administration", english: "administration", hint: "Management" },
+                    { french: "bureaucratie", english: "bureaucracy", hint: "Administrative system" },
+                    { french: "réglementation", english: "regulation", hint: "Rules" },
+                    { french: "législation", english: "legislation", hint: "Laws" },
+                    { french: "jurisprudence", english: "jurisprudence", hint: "Legal theory" },
+                    { french: "juridiction", english: "jurisdiction", hint: "Legal authority" },
+                    { french: "tribunal", english: "court", hint: "Legal institution" },
+                    { french: "jugement", english: "judgment", hint: "Decision" },
+                    { french: "verdict", english: "verdict", hint: "Court decision" },
+                    { french: "sentence", english: "sentence", hint: "Punishment" },
+                    { french: "peine", english: "penalty", hint: "Punishment" },
+                    { french: "amende", english: "fine", hint: "Monetary penalty" },
+                    { french: "prison", english: "prison", hint: "Jail" },
+                    { french: "détention", english: "detention", hint: "Confinement" },
+                    { french: "liberté conditionnelle", english: "parole", hint: "Early release" },
+                    { french: "probation", english: "probation", hint: "Supervised release" },
+                    { french: "réhabilitation", english: "rehabilitation", hint: "Reform" },
+                    { french: "réinsertion", english: "reintegration", hint: "Return to society" },
+                    { french: "délinquance", english: "delinquency", hint: "Criminal behavior" },
+                    { french: "criminalité", english: "criminality", hint: "Crime rate" },
+                    { french: "délinquant", english: "delinquent", hint: "Offender" },
+                    { french: "criminel", english: "criminal", hint: "Lawbreaker" },
+                    { french: "victime", english: "victim", hint: "Sufferer" },
+                    { french: "témoin", english: "witness", hint: "Observer" },
+                    { french: "témoignage", english: "testimony", hint: "Evidence" },
+                    { french: "preuve", english: "evidence", hint: "Proof" },
+                    { french: "enquête", english: "investigation", hint: "Inquiry" },
+                    { french: "enquêteur", english: "investigator", hint: "Detective" },
+                    { french: "détective", english: "detective", hint: "Investigator" },
+                    { french: "police", english: "police", hint: "Law enforcement" },
+                    { french: "gendarmerie", english: "gendarmerie", hint: "Military police" },
+                    { french: "sécurité", english: "security", hint: "Safety" },
+                    { french: "sûreté", english: "safety", hint: "Security" },
+                    { french: "protection", english: "protection", hint: "Defense" },
+                    { french: "défense", english: "defense", hint: "Protection" },
+                    { french: "sécurisation", english: "securing", hint: "Making safe" },
+                    { french: "surveillance", english: "surveillance", hint: "Monitoring" },
+                    { french: "contrôle", english: "control", hint: "Management" },
+                    { french: "inspection", english: "inspection", hint: "Examination" },
+                    { french: "audit", english: "audit", hint: "Review" },
+                    { french: "vérification", english: "verification", hint: "Checking" },
+                    { french: "validation", english: "validation", hint: "Approval" },
+                    { french: "certification", english: "certification", hint: "Official approval" },
+                    { french: "accréditation", english: "accreditation", hint: "Official recognition" },
+                    { french: "qualification", english: "qualification", hint: "Skill" },
+                    { french: "compétence", english: "competence", hint: "Ability" },
+                    { french: "expertise", english: "expertise", hint: "Specialized knowledge" },
+                    { french: "maîtrise", english: "mastery", hint: "Expert skill" },
+                    { french: "proficiency", english: "proficiency", hint: "Skill level" },
+                    { french: "aptitude", english: "aptitude", hint: "Natural ability" },
+                    { french: "talent", english: "talent", hint: "Natural skill" },
+                    { french: "don", english: "gift", hint: "Natural talent" },
+                    { french: "génie", english: "genius", hint: "Exceptional talent" },
+                    { french: "créativité", english: "creativity", hint: "Innovation" },
+                    { french: "innovation", english: "innovation", hint: "New idea" },
+                    { french: "invention", english: "invention", hint: "New creation" },
+                    { french: "découverte", english: "discovery", hint: "Finding" },
+                    { french: "recherche", english: "research", hint: "Investigation" },
+                    { french: "développement", english: "development", hint: "Growth" },
+                    { french: "progrès", english: "progress", hint: "Advancement" },
+                    { french: "avancement", english: "advancement", hint: "Progress" },
+                    { french: "amélioration", english: "improvement", hint: "Enhancement" },
+                    { french: "perfectionnement", english: "perfection", hint: "Improvement" },
+                    { french: "optimisation", english: "optimization", hint: "Best use" },
+                    { french: "maximisation", english: "maximization", hint: "Maximum use" },
+                    { french: "efficacité", english: "efficiency", hint: "Effectiveness" },
+                    { french: "efficience", english: "efficiency", hint: "Productivity" },
+                    { french: "productivité", english: "productivity", hint: "Output" },
+                    { french: "rendement", english: "yield", hint: "Output" },
+                    { french: "performance", english: "performance", hint: "Achievement" },
+                    { french: "résultat", english: "result", hint: "Outcome" },
+                    { french: "résultat", english: "outcome", hint: "Result" },
+                    { french: "succès", english: "success", hint: "Achievement" },
+                    { french: "accomplissement", english: "accomplishment", hint: "Achievement" },
+                    { french: "réalisation", english: "realization", hint: "Achievement" },
+                    { french: "achèvement", english: "completion", hint: "Finishing" },
+                    { french: "finalisation", english: "finalization", hint: "Completion" },
+                    { french: "terminaison", english: "termination", hint: "Ending" },
+                    { french: "conclusion", english: "conclusion", hint: "End" },
+                    { french: "clôture", english: "closure", hint: "Ending" },
+                    { french: "fermeture", english: "closure", hint: "Closing" },
+                    { french: "closing", english: "closing", hint: "End" }
+                ]
+            }
+        };
+
+        // Game state
+        let currentLevel = null;
+        let gameState = {
+            cards: [],
+            flippedCards: [],
+            matchedPairs: 0,
+            score: 0,
+            timeLeft: 0,
+            gameTimer: null,
+            moves: 0,
+            hintsUsed: 0,
+            combo: 0,
+            maxCombo: 0
+        };
+
+        let gameStats = {
+            totalScore: 0,
+            currentStreak: 0,
+            longestStreak: 0,
+            perfectGames: 0,
+            totalGames: 0,
+            achievements: [],
+            stars: 0,
+            lastPlayDate: null
+        };
+
+        // Achievement definitions
+        const achievements = {
+            perfectMemory: {
+                id: 'perfectMemory',
+                title: '🧠 Perfect Memory',
+                description: 'Complete a level without any wrong matches',
+                reward: 100,
+                icon: '🧠'
+            },
+            speedMaster: {
+                id: 'speedMaster',
+                title: '⚡ Speed Master',
+                description: 'Complete a level in under 30 seconds',
+                reward: 75,
+                icon: '⚡'
+            },
+            comboKing: {
+                id: 'comboKing',
+                title: '🔥 Combo King',
+                description: 'Achieve a 5-match combo',
+                reward: 50,
+                icon: '🔥'
+            },
+            memoryPalace: {
+                id: 'memoryPalace',
+                title: '🏰 Memory Palace',
+                description: 'Complete all levels',
+                reward: 200,
+                icon: '🏰'
+            },
+            streakMaster: {
+                id: 'streakMaster',
+                title: '🌟 Streak Master',
+                description: 'Maintain a 7-day streak',
+                reward: 150,
+                icon: '🌟'
+            }
+        };
+
+        // Load game stats from localStorage
+        function loadGameStats() {
+            const savedStats = localStorage.getItem('frenchMemoryPalaceStats');
+            if (savedStats) {
+                gameStats = JSON.parse(savedStats);
+            }
+            updateStreak();
+        }
+
+        // Save game stats to localStorage
+        function saveGameStats() {
+            localStorage.setItem('frenchMemoryPalaceStats', JSON.stringify(gameStats));
+        }
+
+        // Update daily streak
+        function updateStreak() {
+            const today = new Date().toDateString();
+            if (gameStats.lastPlayDate !== today) {
+                if (isConsecutiveDay(gameStats.lastPlayDate)) {
+                    gameStats.currentStreak++;
+                    gameStats.longestStreak = Math.max(gameStats.currentStreak, gameStats.longestStreak);
+                    if (gameStats.currentStreak === 7) {
+                        unlockAchievement('streakMaster');
+                    }
+                } else {
+                    gameStats.currentStreak = 1;
+                }
+                gameStats.lastPlayDate = today;
+                saveGameStats();
+            }
+        }
+
+        // Check if the last play date was yesterday
+        function isConsecutiveDay(lastPlayDate) {
+            if (!lastPlayDate) return false;
+            const last = new Date(lastPlayDate);
+            const today = new Date();
+            const diffTime = Math.abs(today - last);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return diffDays === 1;
+        }
+
+        // Unlock achievement and show notification
+        function unlockAchievement(achievementId) {
+            if (!gameStats.achievements.includes(achievementId)) {
+                gameStats.achievements.push(achievementId);
+                gameStats.stars += achievements[achievementId].reward;
+                saveGameStats();
+                
+                showAchievementNotification(achievements[achievementId]);
+            }
+        }
+
+        // Show floating achievement notification
+        function showAchievementNotification(achievement) {
+            const notification = document.createElement('div');
+            notification.className = 'achievement-notification';
+            notification.innerHTML = `
+                <div class="achievement-icon">${achievement.icon}</div>
+                <div class="achievement-details">
+                    <h3>${achievement.title}</h3>
+                    <p>${achievement.description}</p>
+                    <p class="achievement-reward">+${achievement.reward} ⭐</p>
+                </div>
+            `;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 500);
+            }, 3000);
+        }
+
+        // Show level selection screen
+        function showLevelSelection() {
+            loadGameStats();
+            const content = `
+                <div class="stats-display">
+                    <div>⭐ ${gameStats.stars}</div>
+                    <div class="streak-counter">
+                        <span class="streak-flame">🔥</span>
+                        <span>${gameStats.currentStreak} days</span>
+                    </div>
+                </div>
+
+                <div class="level-selection">
+                    ${Object.entries(gameData).map(([level, data]) => `
+                        <div class="level-card" onclick="startLevel('${level}')">
+                            <h2>${data.title}</h2>
+                            <p>${data.description}</p>
+                            <div style="margin: 10px 0;">
+                                <span style="color: var(--neon-green);">Difficulty: ${data.difficulty}</span><br>
+                                <span style="color: var(--neon-purple);">Time: ${data.timeLimit}s</span><br>
+                                <span style="color: var(--neon-blue);">Pairs: ${data.pairs.length}</span>
+                            </div>
+                            ${gameStats.achievements.includes('perfect' + level) ? 
+                                '<div style="color: var(--neon-green); font-size: 1.5rem;">🏆</div>' : ''}
+                        </div>
+                    `).join('')}
+                </div>
+
+                <div style="text-align: center; margin-top: 2rem;">
+                    <h3 style="color: var(--neon-green); margin-bottom: 1rem;">How to Play</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                        <div style="background: var(--card-bg); padding: 1rem; border-radius: 10px; border: 1px solid var(--border-color);">
+                            <h4 style="color: var(--neon-green);">🎯 Objective</h4>
+                            <p>Match French words with their English translations</p>
+                        </div>
+                        <div style="background: var(--card-bg); padding: 1rem; border-radius: 10px; border: 1px solid var(--border-color);">
+                            <h4 style="color: var(--neon-purple);">⚡ Scoring</h4>
+                            <p>Faster matches = more points. Combos multiply your score!</p>
+                        </div>
+                        <div style="background: var(--card-bg); padding: 1rem; border-radius: 10px; border: 1px solid var(--border-color);">
+                            <h4 style="color: var(--neon-blue);">🧠 Memory</h4>
+                            <p>Remember card positions to make faster matches</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('game-content').innerHTML = content;
+        }
+
+        // Start selected level
+        function startLevel(level) {
+            currentLevel = level;
+            const levelData = gameData[level];
+            
+            // Reset game state
+            gameState = {
+                cards: [],
+                flippedCards: [],
+                matchedPairs: 0,
+                score: 0,
+                timeLeft: levelData.timeLimit,
+                gameTimer: null,
+                moves: 0,
+                hintsUsed: 0,
+                combo: 0,
+                maxCombo: 0
+            };
+
+            // Create cards from level data
+            createCards(levelData.pairs);
+            startGameTimer();
+            displayGame();
+        }
+
+        // Create memory cards
+        function createCards(pairs) {
+            gameState.cards = [];
+            
+            // Create pairs of cards
+            pairs.forEach((pair, index) => {
+                // French card
+                gameState.cards.push({
+                    id: `french-${index}`,
+                    content: pair.french,
+                    type: 'french',
+                    pairId: index,
+                    hint: pair.hint,
+                    matched: false
+                });
+                
+                // English card
+                gameState.cards.push({
+                    id: `english-${index}`,
+                    content: pair.english,
+                    type: 'english',
+                    pairId: index,
+                    hint: pair.hint,
+                    matched: false
+                });
+            });
+
+            // Shuffle cards
+            gameState.cards = gameState.cards.sort(() => Math.random() - 0.5);
+        }
+
+        // Start game timer
+        function startGameTimer() {
+            gameState.gameTimer = setInterval(() => {
+                gameState.timeLeft--;
+                updateTimerDisplay();
+                
+                if (gameState.timeLeft <= 0) {
+                    endGame(false);
+                }
+            }, 1000);
+        }
+
+        // Update timer display
+        function updateTimerDisplay() {
+            const timerElement = document.querySelector('.timer-display');
+            if (timerElement) {
+                timerElement.textContent = gameState.timeLeft;
+                
+                // Change color based on time left
+                if (gameState.timeLeft <= 10) {
+                    timerElement.style.color = 'var(--error-color)';
+                    timerElement.style.animation = 'shake 0.5s infinite';
+                } else if (gameState.timeLeft <= 30) {
+                    timerElement.style.color = 'var(--neon-purple)';
+                } else {
+                    timerElement.style.color = 'var(--neon-green)';
+                    timerElement.style.animation = 'pulse 2s infinite';
+                }
+            }
+        }
+
+        // Display game
+        function displayGame() {
+            const levelData = gameData[currentLevel];
+            const progressPercent = (gameState.matchedPairs / levelData.pairs.length) * 100;
+            
+            const content = `
+                <div class="game-card">
+                    <button class="btn btn-primary" style="margin: 0 0 1rem 0;" onclick="showLevelSelection()">← Back to Levels</button>
+                    
+                    <div class="score-display">
+                        <div class="timer-display">${gameState.timeLeft}</div>
+                        <div>
+                            <div>Level: ${currentLevel} | Score: ${gameState.score}</div>
+                            <div>Moves: ${gameState.moves} | Combo: ${gameState.combo}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="progress-bar">
+                        <div class="progress" style="width: ${progressPercent}%"></div>
+                    </div>
+
+                    <div class="memory-hint">
+                        💡 Hint: ${levelData.pairs[0].hint}
+                    </div>
+
+                    <div class="memory-grid">
+                        ${gameState.cards.map(card => `
+                            <div class="memory-card ${card.matched ? 'matched' : ''}" 
+                                 onclick="flipCard('${card.id}')" 
+                                 data-card-id="${card.id}">
+                                <div class="card-front">?</div>
+                                <div class="card-back">${card.content}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div id="feedback" class="feedback"></div>
+                </div>
+            `;
+            
+            document.getElementById('game-content').innerHTML = content;
+        }
+
+        // Flip a card
+        function flipCard(cardId) {
+            const card = gameState.cards.find(c => c.id === cardId);
+            if (!card || card.matched || gameState.flippedCards.length >= 2) return;
+
+            const cardElement = document.querySelector(`[data-card-id="${cardId}"]`);
+            cardElement.classList.add('flipped');
+            gameState.flippedCards.push(card);
+
+            if (gameState.flippedCards.length === 2) {
+                gameState.moves++;
+                checkMatch();
+            }
+        }
+
+        // Check if flipped cards match
+        function checkMatch() {
+            const [card1, card2] = gameState.flippedCards;
+            
+            if (card1.pairId === card2.pairId && card1.type !== card2.type) {
+                // Match found!
+                card1.matched = true;
+                card2.matched = true;
+                gameState.matchedPairs++;
+                gameState.combo++;
+                gameState.maxCombo = Math.max(gameState.maxCombo, gameState.combo);
+                
+                // Calculate score
+                const baseScore = 100;
+                const timeBonus = Math.max(0, gameState.timeLeft * 2);
+                const comboBonus = gameState.combo * 50;
+                const moveBonus = Math.max(0, 200 - gameState.moves * 10);
+                
+                const totalScore = baseScore + timeBonus + comboBonus + moveBonus;
+                gameState.score += totalScore;
+
+                // Show combo if applicable
+                if (gameState.combo >= 3) {
+                    showComboDisplay();
+                }
+
+                // Check for combo achievement
+                if (gameState.combo === 5) {
+                    unlockAchievement('comboKing');
+                }
+
+                // Show XP gain
+                showXPGain(totalScore);
+
+                // Check if level complete
+                if (gameState.matchedPairs === gameData[currentLevel].pairs.length) {
+                    endGame(true);
+                }
+            } else {
+                // No match
+                gameState.combo = 0;
+                
+                setTimeout(() => {
+                    gameState.flippedCards.forEach(card => {
+                        const cardElement = document.querySelector(`[data-card-id="${card.id}"]`);
+                        cardElement.classList.remove('flipped');
+                        cardElement.classList.add('wrong');
+                        
+                        setTimeout(() => {
+                            cardElement.classList.remove('wrong');
+                        }, 500);
+                    });
+                }, 1000);
+            }
+
+            gameState.flippedCards = [];
+        }
+
+        // Show combo display
+        function showComboDisplay() {
+            const comboDisplay = document.createElement('div');
+            comboDisplay.className = 'combo-display';
+            comboDisplay.innerHTML = `
+                <h3>COMBO!</h3>
+                <div class="combo-number">${gameState.combo}</div>
+                <p>Keep it going! 🔥</p>
+            `;
+            document.body.appendChild(comboDisplay);
+
+            setTimeout(() => {
+                comboDisplay.classList.add('show');
+            }, 100);
+
+            setTimeout(() => {
+                comboDisplay.classList.remove('show');
+                setTimeout(() => {
+                    document.body.removeChild(comboDisplay);
+                }, 500);
+            }, 2000);
+        }
+
+        // Show XP gain animation
+        function showXPGain(amount) {
+            const xpElement = document.createElement('div');
+            xpElement.className = 'xp-gain';
+            xpElement.textContent = `+${amount}`;
+            xpElement.style.left = '50%';
+            xpElement.style.top = '50%';
+            xpElement.style.transform = 'translate(-50%, -50%)';
+            document.body.appendChild(xpElement);
+
+            setTimeout(() => {
+                document.body.removeChild(xpElement);
+            }, 1000);
+        }
+
+        // End game
+        function endGame(won) {
+            clearInterval(gameState.gameTimer);
+            
+            // Update stats
+            gameStats.totalGames++;
+            gameStats.totalScore += gameState.score;
+            
+            if (won) {
+                if (gameState.moves === gameData[currentLevel].pairs.length) {
+                    gameStats.perfectGames++;
+                    unlockAchievement('perfectMemory');
+                }
+                
+                if (gameState.timeLeft >= gameData[currentLevel].timeLimit - 30) {
+                    unlockAchievement('speedMaster');
+                }
+            }
+
+            saveGameStats();
+            showResults(won);
+        }
+
+        // Show results
+        function showResults(won) {
+            const levelData = gameData[currentLevel];
+            const percentage = Math.round((gameState.matchedPairs / levelData.pairs.length) * 100);
+            
+            let resultMessage;
+            if (won) {
+                if (percentage === 100 && gameState.moves === levelData.pairs.length) {
+                    resultMessage = "Perfect! You're a memory master! 🧠✨";
+                } else if (percentage === 100) {
+                    resultMessage = "Excellent! All pairs matched! 🎉";
+                } else {
+                    resultMessage = "Good job! Keep practicing! 👏";
+                }
+            } else {
+                resultMessage = "Time's up! Try again! ⏰";
+            }
+            
+            const content = `
+                <div class="game-card">
+                    <h2 style="text-align: center; color: var(--neon-green); margin-bottom: 1.5rem;">
+                        ${won ? 'Level Complete!' : 'Game Over!'}
+                    </h2>
+                    
+                    <div style="text-align: center; margin-bottom: 2rem;">
+                        <div style="font-size: 4rem; color: var(--neon-green); margin-bottom: 0.5rem;">
+                            ${percentage}%
+                        </div>
+                        <p>${resultMessage}</p>
+                        <div style="margin-top: 1rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
+                            <div style="background: var(--card-bg); padding: 1rem; border-radius: 10px; border: 1px solid var(--border-color);">
+                                <h4 style="color: var(--neon-green);">Score</h4>
+                                <p style="font-size: 1.5rem; font-weight: bold;">${gameState.score}</p>
+                            </div>
+                            <div style="background: var(--card-bg); padding: 1rem; border-radius: 10px; border: 1px solid var(--border-color);">
+                                <h4 style="color: var(--neon-purple);">Moves</h4>
+                                <p style="font-size: 1.5rem; font-weight: bold;">${gameState.moves}</p>
+                            </div>
+                            <div style="background: var(--card-bg); padding: 1rem; border-radius: 10px; border: 1px solid var(--border-color);">
+                                <h4 style="color: var(--neon-blue);">Max Combo</h4>
+                                <p style="font-size: 1.5rem; font-weight: bold;">${gameState.maxCombo}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: center; gap: 15px;">
+                        <button onclick="showLevelSelection()" class="btn btn-primary">
+                            Choose Another Level
+                        </button>
+                        <button onclick="startLevel(currentLevel)" class="btn btn-secondary">
+                            Retry Level
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('game-content').innerHTML = content;
+        }
+
+        // Initialize game
+        window.addEventListener('DOMContentLoaded', showLevelSelection);
+    </script>
+</body>
+</html>

@@ -1,0 +1,3325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>French Fishing Adventure</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Theme colors - matching hub.html */
+            --primary: #00FFB3;
+            --primary-dark: #00CC8F;
+            --primary-light: #66FFD1;
+            --bg-primary: #0A0E1A;
+            --bg-secondary: #141824;
+            --bg-card: #1A1F2E;
+            --text-primary: #FFFFFF;
+            --text-secondary: #94A3B8;
+            --border: rgba(148, 163, 184, 0.1);
+            --gradient-primary: linear-gradient(135deg, #00FFB3 0%, #00D9FF 100%);
+            
+            /* Legacy variables for compatibility */
+            --bg-color: #0A0E1A;
+            --accent-color: #00FFB3;
+            --text-color: #FFFFFF;
+            --card-bg: rgba(0, 255, 179, 0.1);
+            --success-color: #00FFB3;
+            --error-color: #FF4444;
+            --neutral-color: #666666;
+            --water-color-1: rgba(10, 14, 26, 0.3);
+            --water-color-2: rgba(10, 14, 26, 0.8);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .top-nav-wrapper {
+            width: 100%;
+            padding: 20px 20px 0;
+            display: flex;
+            justify-content: center;
+            position: relative;
+            z-index: 20;
+        }
+
+        .top-nav {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2.5rem;
+            background: var(--bg-card);
+            border-radius: 18px;
+            border: 1px solid var(--border);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+        }
+
+        .top-nav .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .top-nav .nav-left img {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+        }
+
+        .top-nav .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .game-stats-compact {
+            display: none;
+            justify-content: space-between;
+            gap: 1.5rem;
+            align-items: center;
+            padding: 0.45rem 1.3rem;
+            background: var(--bg-card);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+            width: 250px;
+            position: fixed;
+            top: 140px;
+            left: 1rem;
+            z-index: 102;
+            color: var(--accent-color);
+            font-size: 1rem;
+            letter-spacing: 0.4px;
+        }
+
+        .game-stats-compact strong {
+            color: var(--text-color);
+            margin-left: 0.35rem;
+            font-size: 1.05rem;
+        }
+
+        .nav-tag {
+            padding: 0.5rem 1rem;
+            border-radius: 999px;
+            background: rgba(0, 255, 179, 0.15);
+            border: 1px solid rgba(0, 255, 179, 0.4);
+            font-size: 0.85rem;
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        .nav-btn {
+            padding: 0.6rem 1.6rem;
+            border-radius: 999px;
+            background: var(--primary);
+            color: var(--bg-primary);
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 26px rgba(0, 255, 179, 0.35);
+        }
+
+        .game-container {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Background Effects */
+        .grid-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(var(--primary) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: -1;
+            animation: pulse 3s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.1; }
+            100% { opacity: 0.2; }
+        }
+
+        /* Water animation */
+        .water {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 65%;
+            background: linear-gradient(to bottom, var(--water-color-1), var(--water-color-2));
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .water:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 200%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0.5 0.2 20 10" preserveAspectRatio="none"><path d="M0,10 L0,5 Q2.5,3 5,5 T10,5 T15,5 T20,5 L20,10 Z" fill="%230099ff" opacity="0.2"/></svg>') repeat-x;
+            animation: waveMove 20s linear infinite;
+        }
+
+        .water:after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            width: 200%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0.5 0.2 20 10" preserveAspectRatio="none"><path d="M0,10 L0,6 Q5,2 10,6 T20,6 L20,10 Z" fill="%230077cc" opacity="0.3"/></svg>') repeat-x;
+            animation: waveMove 15s linear infinite reverse;
+        }
+
+        @keyframes waveMove {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Bubbles */
+        .bubble {
+            position: absolute;
+            bottom: 0;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(0, 255, 179, 0.8), rgba(0, 255, 179, 0.2));
+            opacity: 0.5;
+            z-index: 1;
+            animation: bubbleRise linear forwards;
+            box-shadow: 0 0 5px rgba(0, 255, 179, 0.3);
+        }
+
+        @keyframes bubbleRise {
+            0% { transform: translateY(0) scale(1); opacity: 0.5; }
+            100% { transform: translateY(-100vh) scale(0.5); opacity: 0; }
+        }
+
+        /* Fish - Cuter designs */
+        .fish {
+            position: absolute;
+            width: 80px;
+            height: 60px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            cursor: pointer;
+            z-index: 1;
+            animation: swim 80s linear infinite;
+            filter: drop-shadow(2px 2px 4px rgba(0, 255, 179, 0.2));
+            transition: transform 0.3s ease, filter 0.3s ease;
+        }
+
+        .fish:hover {
+            filter: brightness(1.3) drop-shadow(3px 3px 8px rgba(0, 255, 179, 0.5));
+            z-index: 3;
+            animation-play-state: paused;
+            transform: scale(1.1);
+        }
+
+        .fish:nth-child(even) {
+            animation-duration: 90s;
+            animation-direction: reverse;
+        }
+
+        .fish:nth-child(3n) {
+            animation-duration: 100s;
+        }
+
+        .fish:nth-child(5n) {
+            animation-duration: 110s;
+        }
+
+        @keyframes swim {
+            0% { transform: translateX(-100%) scaleX(1) translateY(0); }
+            25% { transform: translateX(calc(25vw - 20px)) scaleX(1) translateY(20px); }
+            45% { transform: translateX(calc(100vw - 80px)) scaleX(1) translateY(-10px); }
+            50% { transform: translateX(calc(100vw - 80px)) scaleX(-1) translateY(0); }
+            75% { transform: translateX(calc(75vw - 60px)) scaleX(-1) translateY(-20px); }
+            95% { transform: translateX(-100px) scaleX(-1) translateY(10px); }
+            100% { transform: translateX(-100px) scaleX(1) translateY(0); }
+        }
+
+        .fish.caught {
+            animation: caught 1s forwards;
+        }
+
+        @keyframes caught {
+            0% { transform: translateY(0) rotate(0); }
+            50% { transform: translateY(-50vh) rotate(180deg); }
+            100% { transform: translateY(-120vh) rotate(360deg) scale(0.5); opacity: 0; }
+        }
+
+        /* Word Bubble */
+        .word-bubble {
+            position: absolute;
+            background: var(--card-bg);
+            border: 2px solid var(--primary);
+            border-radius: 15px;
+            padding: 0.5rem 1rem;
+            font-size: 1.2rem;
+            color: var(--primary);
+            pointer-events: none;
+            white-space: nowrap;
+            top: -45px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            box-shadow: 0 0 15px rgba(0, 255, 179, 0.3);
+            backdrop-filter: blur(5px);
+            animation: glow 3s infinite alternate;
+        }
+        
+        @keyframes glow {
+            0% { box-shadow: 0 0 10px rgba(0, 255, 155, 0.2); }
+            100% { box-shadow: 0 0 20px rgba(0, 255, 155, 0.4); }
+        }
+
+        /* Topic Selection */
+        .topic-selection {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 14, 26, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1002;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .topic-container {
+            background: var(--card-bg);
+            border: 2px solid var(--primary);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 800px;
+            width: 90%;
+            text-align: center;
+            animation: slideUp 0.5s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .topic-container h2 {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .topic-card {
+            background: rgba(0, 17, 2, 0.7);
+            border: 2px solid rgba(0, 255, 179, 0.3);
+            border-radius: 15px;
+            padding: 1.5rem 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .topic-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 20px rgba(0, 255, 179, 0.2);
+        }
+
+        .topic-card.selected {
+            background: rgba(0, 255, 179, 0.2);
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(0, 255, 179, 0.3);
+        }
+
+        .topic-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .topic-name {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .start-topic-btn {
+            background: var(--primary);
+            color: var(--bg-primary);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.3rem;
+            margin-top: 2rem;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .start-topic-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 255, 179, 0.4);
+        }
+
+        .start-topic-btn:disabled {
+            background: var(--neutral-color);
+            transform: none;
+            box-shadow: none;
+            cursor: not-allowed;
+        }
+
+        /* Feedback Panel */
+        .feedback {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 17, 36, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 2px solid var(--primary);
+            text-align: center;
+            display: none;
+            animation: popIn 0.3s ease;
+            z-index: 200;
+            min-width: 350px;
+            box-shadow: 0 0 30px rgba(0, 255, 179, 0.2);
+        }
+
+        .feedback input {
+            width: 100%;
+            margin-top: 1rem;
+            padding: 1rem;
+            border: 2px solid var(--primary);
+            border-radius: 10px;
+            background: rgba(0, 17, 36, 0.5);
+            color: var(--text-color);
+            font-size: 1.1rem;
+            text-align: center;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .feedback input:focus {
+            box-shadow: 0 0 15px rgba(0, 255, 179, 0.4);
+        }
+
+        /* Sound Toggle and Player */
+        .game-controls {
+            grid-column: 4;
+            position: relative;
+            justify-self: end;
+            display: flex;
+            gap: 1.5rem; /* Increase gap between buttons even more */
+            margin-right: 1.8rem; /* More right margin */
+            top: auto;
+            right: auto;
+        }
+
+        .control-btn {
+            background: rgba(0, 17, 2, 0.8); /* Slightly darker for better visibility */
+            border: 2px solid var(--primary); /* Brighter border */
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(0, 255, 179, 0.3); /* Brighter glow */
+            margin: 0 0.2rem; /* Horizontal margin between buttons */
+        }
+
+        .control-btn:hover {
+            transform: scale(1.1);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px rgba(0, 255, 179, 0.3);
+            filter: brightness(1.2);
+        }
+
+        .control-btn.active {
+            background: rgba(0, 255, 155, 0.2);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px rgba(0, 255, 179, 0.3);
+        }
+
+        .control-btn.info-btn-control {
+            background: #FF4444;
+            border-color: #FF6666;
+            color: white;
+            font-weight: 700;
+            font-style: italic;
+            font-size: 1.3rem;
+            box-shadow: 0 0 10px rgba(255, 68, 68, 0.4);
+        }
+
+        .control-btn.info-btn-control:hover {
+            background: #FF6666;
+            border-color: #FF8888;
+            box-shadow: 0 0 15px rgba(255, 68, 68, 0.6);
+        }
+
+        /* Circular Timer */
+        .circular-timer-container {
+            position: fixed;
+            top: 80px;
+            right: 1rem;
+            z-index: 102;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-btn-standalone {
+            background: #FF4444;
+            border: 2px solid #FF6666;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            font-size: 1.8rem;
+            font-weight: 700;
+            font-style: italic;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(255, 68, 68, 0.5);
+            margin-bottom: 0.5rem;
+        }
+
+        .info-btn-standalone:hover {
+            transform: scale(1.15);
+            background: #FF6666;
+            border-color: #FF8888;
+            box-shadow: 0 0 25px rgba(255, 68, 68, 0.8);
+        }
+
+        .circular-timer {
+            width: 110px;
+            height: 110px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .circular-timer svg {
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+
+        .circular-timer-bg {
+            fill: none;
+            stroke: rgba(0, 255, 179, 0.2);
+            stroke-width: 8;
+        }
+
+        .circular-timer-progress {
+            fill: none;
+            stroke: var(--primary);
+            stroke-width: 8;
+            stroke-linecap: round;
+            stroke-dasharray: 251.2;
+            stroke-dashoffset: 0;
+            transition: stroke-dashoffset 0.1s linear;
+            filter: drop-shadow(0 0 10px var(--primary));
+        }
+
+        .circular-timer-progress.warning {
+            stroke: #FFD700;
+            filter: drop-shadow(0 0 8px #FFD700);
+        }
+
+        .circular-timer-progress.danger {
+            stroke: #FF4444;
+            filter: drop-shadow(0 0 8px #FF4444);
+        }
+
+        .circular-timer-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-shadow: 0 0 10px rgba(0, 255, 179, 0.5);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .circular-timer-text.warning {
+            color: #FFD700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .circular-timer-text.danger {
+            color: #FF4444;
+            text-shadow: 0 0 10px rgba(255, 68, 68, 0.5);
+        }
+
+        .timer-label {
+            font-size: 0.8rem;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            opacity: 0.8;
+        }
+
+        /* Timer bar - Keep for backup but hide */
+        .timer-container {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            width: 100%;
+            padding: 0 1rem;
+            z-index: 100;
+            display: none; /* Hide the old timer bar */
+        }
+
+        /* Game intro */
+        .game-intro {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 14, 26, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .game-intro-content {
+            background: var(--card-bg);
+            border: 2px solid var(--primary);
+            border-radius: 20px;
+            padding: 2.5rem;
+            max-width: 700px;
+            width: 90%;
+            text-align: center;
+            animation: slideUp 0.5s ease;
+        }
+
+        .game-intro h1 {
+            color: var(--primary);
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px rgba(0, 255, 179, 0.5);
+        }
+
+        .game-intro p {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            font-size: 1.2rem;
+        }
+
+        .start-btn {
+            background: var(--primary);
+            color: var(--bg-primary);
+            border: none;
+            padding: 1.2rem 2.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.4rem;
+            margin-top: 1.5rem;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(0, 255, 179, 0.3);
+        }
+
+        .start-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 255, 179, 0.4);
+        }
+
+        /* Sound Warning */
+        .sound-warning {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 17, 2, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .sound-warning-content {
+            background: var(--card-bg);
+            border: 2px solid var(--primary);
+            border-radius: 20px;
+            padding: 2.5rem;
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+            animation: slideUp 0.3s ease;
+        }
+
+        .sound-warning-content h2 {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .sound-warning-content ul {
+            margin: 1.5rem 0;
+        }
+
+        .sound-warning-content li {
+            margin: 0.8rem 0;
+            font-size: 1.1rem;
+        }
+
+        .sound-warning-btn {
+            background: var(--primary);
+            color: var(--bg-primary);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            margin-top: 1.5rem;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .sound-warning-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 255, 179, 0.4);
+        }
+
+        /* Info Modal */
+        .info-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 14, 26, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1002;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .info-modal-content {
+            background: var(--card-bg);
+            border: 2px solid var(--primary);
+            border-radius: 20px;
+            padding: 2.5rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideUp 0.3s ease;
+        }
+
+        .info-modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: transparent;
+            border: none;
+            color: var(--accent-color);
+            font-size: 2.5rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            line-height: 1;
+        }
+
+        .info-modal-close:hover {
+            background: rgba(0, 255, 155, 0.2);
+            transform: rotate(90deg);
+        }
+
+        .info-modal-content h2 {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(0, 255, 155, 0.3);
+        }
+
+        .info-section {
+            margin-bottom: 2rem;
+        }
+
+        .info-section h3 {
+            color: var(--accent-color);
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid rgba(0, 255, 155, 0.3);
+            padding-bottom: 0.5rem;
+        }
+
+        .info-description {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .level-progression {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .level-item {
+            background: rgba(0, 17, 2, 0.6);
+            border: 2px solid rgba(0, 255, 179, 0.3);
+            border-radius: 12px;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .level-item:hover {
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(0, 255, 179, 0.2);
+            transform: translateX(5px);
+        }
+
+        .level-badge {
+            background: var(--primary);
+            color: var(--bg-primary);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1rem;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .level-points {
+            flex: 1;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .level-timer {
+            color: var(--primary);
+            font-size: 0.9rem;
+            font-weight: 600;
+            min-width: 120px;
+            text-align: right;
+        }
+
+        .info-tips {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .info-tips li {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+            padding: 0.8rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        .info-tips li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .info-tips li:not(:last-child) {
+            border-bottom: 1px solid rgba(0, 255, 179, 0.1);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        @keyframes popIn {
+            0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+            .top-nav-wrapper {
+                padding: 15px 12px 0;
+            }
+
+            .top-nav {
+                flex-direction: column;
+                gap: 0.85rem;
+                padding: 0.95rem 1.4rem;
+            }
+
+            .top-nav .nav-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .nav-btn {
+                padding: 0.5rem 1.2rem;
+            }
+
+            .game-header {
+                grid-template-columns: auto auto 1fr;
+                padding: 0.2rem 0.4rem;
+                gap: 0.3rem;
+                min-height: 40px;
+                align-items: center;
+            }
+            
+            .score-container {
+                grid-column: 1;
+                font-size: 0.6rem;
+                margin-right: 0;
+            }
+            
+            .level-container {
+                grid-column: 2;
+                font-size: 0.6rem;
+                margin-right: 0;
+                padding: 2px 0;
+            }
+            
+            .score-icon, .level-icon {
+                width: 14px;
+                height: 14px;
+                font-size: 0.6rem;
+                margin-top: 0;
+            }
+            
+            .score, .level {
+                font-size: 0.7rem;
+                margin-top: 0;
+            }
+            
+            .topic-switcher {
+                position: fixed;
+                top: 50px;
+                left: 50%;
+                transform: translateX(-50%);
+                max-width: 85%;
+                padding: 0.3rem 0.8rem;
+                border-width: 2px;
+                border-radius: 15px;
+            }
+            
+            .current-topic {
+                font-size: 0.6rem;
+                max-width: 80px;
+                gap: 0.2rem;
+                padding-right: 0.2rem;
+            }
+            
+            .topic-icon-small {
+                font-size: 0.7rem;
+            }
+            
+            .change-topic-btn {
+                font-size: 0.55rem;
+                padding: 0.1rem 0.25rem;
+                border-radius: 6px;
+            }
+            
+            .game-controls {
+                grid-column: auto;
+                justify-self: auto;
+                position: absolute;
+                top: 0.2rem;
+                right: 0.2rem;
+                margin-right: 0;
+                gap: 0.3rem;
+                z-index: 105;
+            }
+            
+            .control-btn {
+                display: none;
+            }
+
+            /* Info Modal - Mobile */
+            .info-modal-content {
+                padding: 1.5rem;
+                max-width: 95%;
+            }
+
+            .info-modal-content h2 {
+                font-size: 1.5rem;
+                margin-bottom: 1rem;
+            }
+
+            .info-section h3 {
+                font-size: 1.2rem;
+            }
+
+            .level-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .level-points,
+            .level-timer {
+                text-align: left;
+                width: 100%;
+            }
+
+            .info-tips li {
+                font-size: 0.9rem;
+            }
+            
+            .timer-container {
+                top: 42px;
+                padding: 0 0.5rem;
+            }
+            
+            .timer-bar {
+                height: 6px;
+                border-radius: 3px;
+            }
+            
+            .timer-progress {
+                border-radius: 3px;
+            }
+
+            /* Circular Timer - Mobile */
+            .circular-timer-container {
+                top: 50px;
+                right: 0.5rem;
+            }
+
+            .info-btn-standalone {
+                width: 35px;
+                height: 35px;
+                font-size: 1.4rem;
+            }
+
+            .circular-timer {
+                width: 80px;
+                height: 80px;
+            }
+
+            .circular-timer-text {
+                font-size: 1.5rem;
+            }
+
+            .timer-label {
+                font-size: 0.65rem;
+            }
+
+            /* Change Topic Button - Mobile */
+            .change-topic-container {
+                top: 50px;
+                left: 0.5rem;
+            }
+
+            .change-topic-btn-separate {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.8rem;
+            }
+            
+            .word-bubble {
+                font-size: 0.8rem;
+                padding: 0.2rem 0.5rem;
+                top: -30px;
+                border-width: 1px;
+                border-radius: 8px;
+            }
+            
+            .fish {
+                width: 60px;
+                height: 45px;
+            }
+            
+            .fishing-rod {
+                width: 8px;
+                height: 250px;
+            }
+            
+            .fishing-hook {
+                width: 15px;
+                height: 15px;
+                bottom: -15px;
+            }
+            
+            .feedback {
+                min-width: 280px;
+                padding: 1.2rem;
+            }
+            
+            .feedback input {
+                padding: 0.6rem;
+                font-size: 0.9rem;
+            }
+            
+            /* Topic Selection */
+            .topic-container {
+                padding: 1.2rem;
+            }
+            
+            .topic-container h2 {
+                font-size: 1.4rem;
+            }
+            
+            .topic-card {
+                padding: 0.8rem 0.5rem;
+            }
+            
+            .topic-icon {
+                font-size: 1.8rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .topic-name {
+                font-size: 0.8rem;
+            }
+            
+            .start-topic-btn {
+                padding: 0.6rem 1.2rem;
+                font-size: 1rem;
+                margin-top: 1.2rem;
+            }
+            
+            /* Game intro */
+            .game-intro-content {
+                padding: 1.5rem;
+            }
+            
+            .game-intro h1 {
+                font-size: 2rem;
+            }
+            
+            .game-intro p {
+                font-size: 0.9rem;
+            }
+            
+            .start-btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 1rem;
+            }
+            
+            /* Sound Warning */
+            .sound-warning-content {
+                padding: 1.5rem;
+            }
+            
+            .sound-warning-content h2 {
+                font-size: 1.4rem;
+            }
+            
+            .sound-warning-content li {
+                font-size: 0.8rem;
+                margin: 0.4rem 0;
+            }
+            
+            .sound-warning-btn {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .game-header {
+                padding: 0.1rem 0.2rem;
+                min-height: 36px;
+                gap: 0.2rem;
+            }
+            
+            .score-container, .level-container {
+                font-size: 0.5rem;
+            }
+            
+            .score-icon, .level-icon {
+                width: 12px;
+                height: 12px;
+                font-size: 0.5rem;
+            }
+            
+            .score, .level {
+                font-size: 0.6rem;
+            }
+            
+            .control-btn {
+                width: 18px;
+                height: 18px;
+                font-size: 0.6rem;
+            }
+            
+            .topic-switcher {
+                padding: 0.1rem 0.2rem;
+                max-width: 75%;
+                bottom: 0.4rem;
+            }
+            
+            .current-topic {
+                font-size: 0.55rem;
+                max-width: 70px;
+                gap: 0.15rem;
+            }
+            
+            .change-topic-btn {
+                font-size: 0.5rem;
+                padding: 0.1rem 0.2rem;
+            }
+            
+            .timer-container {
+                top: 38px;
+            }
+            
+            .timer-bar {
+                height: 4px;
+            }
+            
+            .fish {
+                width: 50px;
+                height: 38px;
+            }
+            
+            .word-bubble {
+                font-size: 0.7rem;
+                padding: 0.15rem 0.3rem;
+                top: -25px;
+            }
+            
+            .fishing-rod {
+                width: 6px;
+                height: 200px;
+            }
+            
+            .fishing-hook {
+                width: 12px;
+                height: 12px;
+                bottom: -12px;
+            }
+            
+            .feedback {
+                min-width: 240px;
+                padding: 1rem;
+            }
+            
+            .feedback input {
+                padding: 0.5rem;
+                font-size: 0.8rem;
+            }
+            
+            /* Topic card smaller */
+            .topic-card {
+                padding: 0.6rem 0.4rem;
+            }
+            
+            .topic-icon {
+                font-size: 1.5rem;
+                margin-bottom: 0.3rem;
+            }
+            
+            .topic-name {
+                font-size: 0.7rem;
+            }
+        }
+
+        /* Game Header - Clean up */
+        .game-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1rem;
+            display: grid;
+            grid-template-columns: auto 1fr auto auto;
+            gap: 2rem;
+            align-items: center;
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            border-bottom: 2px solid var(--border);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .score-container {
+            grid-column: 1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .topic-switcher {
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            background: rgba(0, 17, 2, 0.9);
+            border: 2px solid var(--primary);
+            border-radius: 20px;
+            padding: 0.5rem 1.2rem;
+            box-shadow: 0 0 20px rgba(0, 255, 179, 0.3);
+            z-index: 102;
+            white-space: nowrap;
+        }
+
+        /* Change Topic Button - Separate Location */
+        .change-topic-container {
+            position: fixed;
+            top: 80px;
+            left: 1rem;
+            z-index: 102;
+        }
+
+        .change-topic-btn-separate {
+            background: rgba(0, 17, 2, 0.9);
+            border: 2px solid var(--primary);
+            color: var(--accent-color);
+            border-radius: 15px;
+            padding: 0.6rem 1.2rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 255, 179, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .change-topic-btn-separate:hover {
+            background: rgba(0, 255, 179, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 255, 179, 0.5);
+        }
+
+        .level-container {
+            grid-column: 3;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-right: 10px; /* Add spacing between level and controls */
+            padding: 5px 0; /* Add vertical padding */
+        }
+
+        .level-icon {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-card);
+            border-radius: 50%;
+            font-size: 1.2rem;
+            box-shadow: 0 0 10px rgba(0, 255, 179, 0.2);
+            margin-top: 2px; /* Slight adjustment to prevent cutoff */
+        }
+
+        .level {
+            font-size: 1.5rem;
+            color: var(--primary);
+            font-weight: 600;
+            text-shadow: 0 0 5px rgba(0, 255, 179, 0.3);
+            margin-top: 2px; /* Slight adjustment to prevent cutoff */
+        }
+
+        .game-controls {
+            grid-column: 4;
+            position: relative;
+            justify-self: end;
+            display: flex;
+            gap: 1.2rem; /* Increase gap between buttons */
+            margin-right: 1.5rem; /* More right margin */
+            top: auto;
+            right: auto;
+        }
+
+        .current-topic {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--accent-color);
+            font-weight: 500;
+            padding-right: 0.5rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .topic-icon-small {
+            font-size: 1.2rem;
+        }
+
+        .change-topic-btn {
+            background: var(--primary);
+            color: var(--bg-primary);
+            border: none;
+            border-radius: 15px;
+            padding: 0.3rem 0.8rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .change-topic-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 255, 179, 0.3);
+        }
+        
+        .score-container, .level-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .score-icon, .level-icon {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-card);
+            border-radius: 50%;
+            font-size: 1.2rem;
+            box-shadow: 0 0 10px rgba(0, 255, 179, 0.2);
+        }
+
+        .score {
+            font-size: 1.5rem;
+            color: var(--primary);
+            font-weight: 600;
+            text-shadow: 0 0 5px rgba(0, 255, 179, 0.3);
+        }
+
+        /* Fishing Rod */
+        .fishing-rod {
+            position: fixed;
+            bottom: 65%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 12px;
+            height: 350px;
+            background: linear-gradient(to bottom, #A67C52, #8B4513);
+            z-index: 2;
+            transform-origin: bottom center;
+            cursor: pointer;
+            box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+            border-radius: 6px;
+        }
+
+        .fishing-line {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 2px;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.6);
+            transform: translateX(-50%);
+        }
+
+        .fishing-hook {
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            transform: translateX(-50%);
+            animation: bobbing 2s infinite ease-in-out;
+            z-index: 3;
+            box-shadow: 0 0 15px var(--primary);
+            filter: brightness(1.2);
+        }
+
+        @keyframes bobbing {
+            0%, 100% { transform: translateX(-50%) translateY(0); box-shadow: 0 0 15px var(--primary); }
+            50% { transform: translateX(-50%) translateY(-10px); box-shadow: 0 0 25px var(--primary); }
+        }
+
+        .fishing-rod:hover .fishing-hook {
+            animation-duration: 1s;
+            box-shadow: 0 0 30px var(--primary);
+            filter: brightness(1.4);
+        }
+
+        .fishing-rod.casting {
+            animation: cast 1s forwards;
+        }
+
+        @keyframes cast {
+            0% { transform: translateX(-50%) rotate(0); }
+            50% { transform: translateX(-50%) rotate(-30deg); }
+            100% { transform: translateX(-50%) rotate(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-nav-wrapper">
+        <nav class="top-nav">
+            <div class="nav-left">
+                <img src="https://logozonepull.b-cdn.net/Logo-%20Circle%20Cropped.png" alt="Brain Games Logo">
+                <span>Brain Games™</span>
+            </div>
+            <div class="nav-actions">
+                <div class="nav-tag" id="navLicenseStatus">29 days remaining</div>
+                <a href="french_learning_hub.html" class="nav-btn">← Back to Home</a>
+            </div>
+        </nav>
+    </div>
+    <div class="grid-background"></div>
+    <div class="water"></div>
+    
+    <!-- Game Intro -->
+    <div class="game-intro" id="gameIntro">
+        <div class="game-intro-content">
+            <h1>🎣 French Fishing Adventure</h1>
+            <p>Dive into a sea of French vocabulary and catch fish by translating words!</p>
+            <p>The faster you translate, the more points you'll earn. Choose from various topics to improve your French skills!</p>
+            <button class="start-btn" onclick="startGame()">Start Fishing! 🐟</button>
+        </div>
+    </div>
+
+    <!-- Topic Selection -->
+    <div class="topic-selection" id="topicSelection" style="display: none;">
+        <div class="topic-container">
+            <h2>Choose a Topic</h2>
+            <p>Select the vocabulary category you want to practice</p>
+            <div class="topics-grid" id="topicsGrid">
+                <!-- Topics will be generated dynamically -->
+            </div>
+            <button class="start-topic-btn" id="startTopicBtn" disabled>Start Fishing!</button>
+        </div>
+    </div>
+    
+    <!-- Sound Warning -->
+    <div class="sound-warning" id="soundWarning" style="display: none;">
+        <div class="sound-warning-content">
+            <h2>🎮 Sound Effects & Music</h2>
+            <p>This game includes sound effects and background music:</p>
+            <ul style="list-style: none; margin: 1rem 0;">
+                <li>🎣 Fishing rod cast & splashes</li>
+                <li>🐟 Fish caught sound</li>
+                <li>✨ Correct answer celebration</li>
+                <li>❌ Wrong answer alerts</li>
+                <li>🌊 Ocean background music</li>
+            </ul>
+            <p>You can toggle sounds and music anytime using the control buttons in the top right corner.</p>
+            <button class="sound-warning-btn" onclick="closeSoundWarning()">Got it! Let's Fish!</button>
+        </div>
+    </div>
+
+    <div class="game-container">
+        <div class="topic-switcher" id="topicSwitcher" style="display: none;">
+            <div class="current-topic">
+                <span class="topic-icon-small" id="currentTopicIcon">🎮</span>
+                <span id="currentTopicName">Topic</span>
+            </div>
+        </div>
+
+        <div class="game-stats-compact" id="compactStats" style="display:none;">
+            <span>Score: <strong id="score">0</strong></span>
+            <span>Level: <strong id="level">1</strong></span>
+        </div>
+
+        <!-- Separate Change Topic Button -->
+        <div class="change-topic-container" id="changeTopicContainer" style="display: none;">
+            <button class="change-topic-btn-separate" id="changeTopicBtnSeparate">
+                <span>🔄</span>
+                <span>Change Topic</span>
+            </button>
+        </div>
+
+        <!-- Circular Timer -->
+        <div class="circular-timer-container" id="circularTimerContainer" style="display: none;">
+            <button class="info-btn-standalone" id="infoBtnStandalone" title="Game Info & Leveling">i</button>
+            <div class="circular-timer" id="circularTimer">
+                <svg viewBox="0 0 100 100">
+                    <circle class="circular-timer-bg" cx="50" cy="50" r="40"></circle>
+                    <circle class="circular-timer-progress" id="timerCircle" cx="50" cy="50" r="40"></circle>
+                </svg>
+                <div class="circular-timer-text" id="timerText">20</div>
+            </div>
+            <div class="timer-label">Time Left</div>
+        </div>
+
+        <div class="timer-container">
+            <div class="timer-bar">
+                <div class="timer-progress" id="timerProgress"></div>
+            </div>
+        </div>
+
+        <div class="fishing-rod" id="fishingRod">
+            <div class="fishing-line"></div>
+            <div class="fishing-hook"></div>
+        </div>
+
+        <div class="feedback" id="feedback"></div>
+
+        <!-- Info Modal -->
+        <div class="info-modal" id="infoModal" style="display: none;">
+            <div class="info-modal-content">
+                <button class="info-modal-close" id="infoModalClose">&times;</button>
+                <h2>🎮 Game Info & Leveling</h2>
+                
+                <div class="info-section">
+                    <h3>How Leveling Works</h3>
+                    <p class="info-description">Level up automatically by earning points! Catch fish and answer correctly to progress.</p>
+                    
+                    <div class="level-progression">
+                        <div class="level-item">
+                            <span class="level-badge">Level 1</span>
+                            <span class="level-points">Start (0 points)</span>
+                            <span class="level-timer">⏱️ 20 seconds</span>
+                        </div>
+                        <div class="level-item">
+                            <span class="level-badge">Level 2</span>
+                            <span class="level-points">100 points</span>
+                            <span class="level-timer">⏱️ 13 seconds</span>
+                        </div>
+                        <div class="level-item">
+                            <span class="level-badge">Level 3</span>
+                            <span class="level-points">200 points</span>
+                            <span class="level-timer">⏱️ 11 seconds</span>
+                        </div>
+                        <div class="level-item">
+                            <span class="level-badge">Level 4</span>
+                            <span class="level-points">300 points</span>
+                            <span class="level-timer">⏱️ 9 seconds</span>
+                        </div>
+                        <div class="level-item">
+                            <span class="level-badge">Level 5</span>
+                            <span class="level-points">400 points (Max)</span>
+                            <span class="level-timer">⏱️ 5 seconds</span>
+                        </div>
+                    </div>
+        </div>
+
+                <div class="info-section">
+                    <h3>💡 Tips</h3>
+                    <ul class="info-tips">
+                        <li>Answer faster to earn bonus points!</li>
+                        <li>Timer gets shorter as you level up</li>
+                        <li>New fish appear when timer runs out or all fish are caught</li>
+                        <li>Change topics anytime to practice different vocabulary</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game state
+        let score = 0;
+        let level = 1;
+        let soundEnabled = true;
+        let musicEnabled = true;
+        let gameActive = false;
+        let gamePaused = false;
+        let currentTopic = null;
+        let activeFish = [];
+        let timer = null;
+        let timerValue = 20; // seconds
+        let fishCount = 20; // Fish per level
+        
+        // Topic definitions
+        const topics = [
+            {
+                id: 'basics',
+                name: 'Basic Phrases',
+                icon: '👋',
+                words: [
+                    { french: "bonjour", english: "hello" },
+                    { french: "merci", english: "thank you" },
+                    { french: "au revoir", english: "goodbye" },
+                    { french: "s'il vous plaît", english: "please" },
+                    { french: "oui", english: "yes" },
+                    { french: "non", english: "no" },
+                    { french: "excusez-moi", english: "excuse me" },
+                    { french: "pardon", english: "sorry" },
+                    { french: "salut", english: "hi" },
+                    { french: "bonsoir", english: "good evening" },
+                    { french: "comment allez-vous", english: "how are you" },
+                    { french: "je m'appelle", english: "my name is" },
+                    { french: "enchanté", english: "nice to meet you" },
+                    { french: "à bientôt", english: "see you soon" },
+                    { french: "bien sûr", english: "of course" },
+                    { french: "bon appétit", english: "enjoy your meal" },
+                    { french: "à la prochaine", english: "until next time" },
+                    { french: "bonne journée", english: "have a good day" },
+                    { french: "je ne comprends pas", english: "I don't understand" },
+                    { french: "je ne parle pas français", english: "I don't speak French" },
+                    { french: "de rien", english: "you're welcome" },
+                    { french: "bonne nuit", english: "good night" },
+                    { french: "à tout à l'heure", english: "see you later" },
+                    { french: "comment ça va", english: "how are you doing" },
+                    { french: "très bien", english: "very well" },
+                    { french: "pas mal", english: "not bad" },
+                    { french: "ça va", english: "I'm fine" },
+                    { french: "merci beaucoup", english: "thank you very much" },
+                    { french: "je vous en prie", english: "you're welcome" },
+                    { french: "à demain", english: "see you tomorrow" },
+                    { french: "bonne chance", english: "good luck" },
+                    { french: "félicitations", english: "congratulations" },
+                    { french: "joyeux anniversaire", english: "happy birthday" },
+                    { french: "bonne année", english: "happy new year" },
+                    { french: "joyeux Noël", english: "merry Christmas" },
+                    { french: "bonne santé", english: "good health" },
+                    { french: "à votre santé", english: "cheers" },
+                    { french: "excusez-moi de vous déranger", english: "excuse me for bothering you" },
+                    { french: "je suis désolé", english: "I'm sorry" },
+                    { french: "pas de problème", english: "no problem" },
+                    { french: "d'accord", english: "okay" },
+                    { french: "bien entendu", english: "of course" },
+                    { french: "avec plaisir", english: "with pleasure" },
+                    { french: "je vous remercie", english: "I thank you" },
+                    { french: "il n'y a pas de quoi", english: "don't mention it" },
+                    { french: "à plus tard", english: "see you later" },
+                    { french: "à tout de suite", english: "see you in a moment" },
+                    { french: "bonne continuation", english: "all the best" },
+                    { french: "bon courage", english: "hang in there" },
+                    { french: "à votre service", english: "at your service" },
+                    { french: "je vous en prie", english: "please" },
+                    { french: "comment vous appelez-vous", english: "what is your name" },
+                    { french: "ravi de vous rencontrer", english: "pleased to meet you" },
+                    { french: "enchanté de faire votre connaissance", english: "delighted to meet you" },
+                    { french: "comment allez-vous", english: "how are you (formal)" },
+                    { french: "ça va bien", english: "I'm doing well" },
+                    { french: "comme ci, comme ça", english: "so-so" }
+                ]
+            },
+            {
+                id: 'animals',
+                name: 'Animals',
+                icon: '🐾',
+                words: [
+                    { french: "chat", english: "cat" },
+                    { french: "chien", english: "dog" },
+                    { french: "oiseau", english: "bird" },
+                    { french: "poisson", english: "fish" },
+                    { french: "lapin", english: "rabbit" },
+                    { french: "cheval", english: "horse" },
+                    { french: "vache", english: "cow" },
+                    { french: "cochon", english: "pig" },
+                    { french: "mouton", english: "sheep" },
+                    { french: "souris", english: "mouse" },
+                    { french: "grenouille", english: "frog" },
+                    { french: "serpent", english: "snake" },
+                    { french: "lion", english: "lion" },
+                    { french: "tigre", english: "tiger" },
+                    { french: "éléphant", english: "elephant" },
+                    { french: "girafe", english: "giraffe" },
+                    { french: "singe", english: "monkey" },
+                    { french: "ours", english: "bear" },
+                    { french: "loup", english: "wolf" },
+                    { french: "renard", english: "fox" },
+                    { french: "cerf", english: "deer" },
+                    { french: "écureuil", english: "squirrel" },
+                    { french: "hérisson", english: "hedgehog" },
+                    { french: "hibou", english: "owl" },
+                    { french: "canard", english: "duck" },
+                    { french: "cygne", english: "swan" },
+                    { french: "papillon", english: "butterfly" },
+                    { french: "abeille", english: "bee" },
+                    { french: "fourmi", english: "ant" },
+                    { french: "araignée", english: "spider" },
+                    { french: "poule", english: "hen" },
+                    { french: "coq", english: "rooster" },
+                    { french: "dinde", english: "turkey" },
+                    { french: "oie", english: "goose" },
+                    { french: "pigeon", english: "pigeon" },
+                    { french: "perroquet", english: "parrot" },
+                    { french: "colombe", english: "dove" },
+                    { french: "corbeau", english: "crow" },
+                    { french: "mouette", english: "seagull" },
+                    { french: "pingouin", english: "penguin" },
+                    { french: "flamant", english: "flamingo" },
+                    { french: "autruche", english: "ostrich" },
+                    { french: "paon", english: "peacock" },
+                    { french: "tortue", english: "turtle" },
+                    { french: "crocodile", english: "crocodile" },
+                    { french: "alligator", english: "alligator" },
+                    { french: "lézard", english: "lizard" },
+                    { french: "iguane", english: "iguana" },
+                    { french: "gecko", english: "gecko" },
+                    { french: "caméléon", english: "chameleon" },
+                    { french: "salamandre", english: "salamander" },
+                    { french: "triton", english: "newt" },
+                    { french: "requin", english: "shark" },
+                    { french: "baleine", english: "whale" },
+                    { french: "dauphin", english: "dolphin" },
+                    { french: "phoque", english: "seal" },
+                    { french: "otarie", english: "sea lion" },
+                    { french: "pieuvre", english: "octopus" },
+                    { french: "calmar", english: "squid" },
+                    { french: "méduse", english: "jellyfish" },
+                    { french: "étoile de mer", english: "starfish" },
+                    { french: "oursin", english: "sea urchin" },
+                    { french: "crabe", english: "crab" },
+                    { french: "homard", english: "lobster" },
+                    { french: "crevette", english: "shrimp" },
+                    { french: "moule", english: "mussel" },
+                    { french: "huître", english: "oyster" },
+                    { french: "palourde", english: "clam" }
+                ]
+            },
+            {
+                id: 'food',
+                name: 'Food & Drinks',
+                icon: '🍽️',
+                words: [
+                    { french: "pain", english: "bread" },
+                    { french: "fromage", english: "cheese" },
+                    { french: "pomme", english: "apple" },
+                    { french: "banane", english: "banana" },
+                    { french: "orange", english: "orange" },
+                    { french: "lait", english: "milk" },
+                    { french: "eau", english: "water" },
+                    { french: "café", english: "coffee" },
+                    { french: "thé", english: "tea" },
+                    { french: "vin", english: "wine" },
+                    { french: "poulet", english: "chicken" },
+                    { french: "poisson", english: "fish" },
+                    { french: "riz", english: "rice" },
+                    { french: "pâtes", english: "pasta" },
+                    { french: "soupe", english: "soup" },
+                    { french: "salade", english: "salad" },
+                    { french: "beurre", english: "butter" },
+                    { french: "œuf", english: "egg" },
+                    { french: "sucre", english: "sugar" },
+                    { french: "sel", english: "salt" },
+                    { french: "viande", english: "meat" },
+                    { french: "légumes", english: "vegetables" },
+                    { french: "tomate", english: "tomato" },
+                    { french: "carotte", english: "carrot" },
+                    { french: "pomme de terre", english: "potato" },
+                    { french: "oignon", english: "onion" },
+                    { french: "chocolat", english: "chocolate" },
+                    { french: "gâteau", english: "cake" },
+                    { french: "glace", english: "ice cream" },
+                    { french: "jus", english: "juice" },
+                    { french: "fraise", english: "strawberry" },
+                    { french: "framboise", english: "raspberry" },
+                    { french: "myrtille", english: "blueberry" },
+                    { french: "cerise", english: "cherry" },
+                    { french: "pêche", english: "peach" },
+                    { french: "poire", english: "pear" },
+                    { french: "raisin", english: "grape" },
+                    { french: "pastèque", english: "watermelon" },
+                    { french: "melon", english: "melon" },
+                    { french: "ananas", english: "pineapple" },
+                    { french: "mangue", english: "mango" },
+                    { french: "kiwi", english: "kiwi" },
+                    { french: "citron", english: "lemon" },
+                    { french: "citron vert", english: "lime" },
+                    { french: "pamplemousse", english: "grapefruit" },
+                    { french: "brocoli", english: "broccoli" },
+                    { french: "chou-fleur", english: "cauliflower" },
+                    { french: "épinard", english: "spinach" },
+                    { french: "haricot vert", english: "green bean" },
+                    { french: "pois", english: "pea" },
+                    { french: "maïs", english: "corn" },
+                    { french: "courgette", english: "zucchini" },
+                    { french: "aubergine", english: "eggplant" },
+                    { french: "poivron", english: "bell pepper" },
+                    { french: "champignon", english: "mushroom" },
+                    { french: "ail", english: "garlic" },
+                    { french: "gingembre", english: "ginger" },
+                    { french: "basilic", english: "basil" },
+                    { french: "persil", english: "parsley" },
+                    { french: "thym", english: "thyme" },
+                    { french: "romarin", english: "rosemary" },
+                    { french: "bœuf", english: "beef" },
+                    { french: "porc", english: "pork" },
+                    { french: "agneau", english: "lamb" },
+                    { french: "saumon", english: "salmon" },
+                    { french: "thon", english: "tuna" },
+                    { french: "crevette", english: "shrimp" },
+                    { french: "huître", english: "oyster" },
+                    { french: "moule", english: "mussel" },
+                    { french: "crabe", english: "crab" },
+                    { french: "homard", english: "lobster" },
+                    { french: "bière", english: "beer" },
+                    { french: "champagne", english: "champagne" },
+                    { french: "cocktail", english: "cocktail" },
+                    { french: "soda", english: "soda" },
+                    { french: "limonade", english: "lemonade" },
+                    { french: "smoothie", english: "smoothie" },
+                    { french: "yaourt", english: "yogurt" },
+                    { french: "crème", english: "cream" },
+                    { french: "miel", english: "honey" },
+                    { french: "confiture", english: "jam" },
+                    { french: "beurre de cacahuète", english: "peanut butter" },
+                    { french: "céréales", english: "cereal" },
+                    { french: "biscuit", english: "cookie" },
+                    { french: "bonbon", english: "candy" },
+                    { french: "chips", english: "chips" },
+                    { french: "noix", english: "nut" },
+                    { french: "amande", english: "almond" },
+                    { french: "noisette", english: "hazelnut" },
+                    { french: "noix de cajou", english: "cashew" },
+                    { french: "pistache", english: "pistachio" }
+                ]
+            },
+            {
+                id: 'colors',
+                name: 'Colors',
+                icon: '🎨',
+                words: [
+                    { french: "rouge", english: "red" },
+                    { french: "bleu", english: "blue" },
+                    { french: "vert", english: "green" },
+                    { french: "jaune", english: "yellow" },
+                    { french: "noir", english: "black" },
+                    { french: "blanc", english: "white" },
+                    { french: "gris", english: "gray" },
+                    { french: "violet", english: "purple" },
+                    { french: "orange", english: "orange" },
+                    { french: "rose", english: "pink" },
+                    { french: "marron", english: "brown" },
+                    { french: "beige", english: "beige" },
+                    { french: "doré", english: "golden" },
+                    { french: "argenté", english: "silver" },
+                    { french: "turquoise", english: "turquoise" },
+                    { french: "indigo", english: "indigo" },
+                    { french: "bordeaux", english: "burgundy" },
+                    { french: "cyan", english: "cyan" },
+                    { french: "magenta", english: "magenta" },
+                    { french: "multicolore", english: "multicolored" },
+                    { french: "cramoisi", english: "crimson" },
+                    { french: "écarlate", english: "scarlet" },
+                    { french: "sarcelle", english: "teal" },
+                    { french: "lavande", english: "lavender" },
+                    { french: "corail", english: "coral" },
+                    { french: "ivoire", english: "ivory" },
+                    { french: "charbon", english: "charcoal" },
+                    { french: "crème", english: "cream" },
+                    { french: "pêche", english: "peach" },
+                    { french: "menthe", english: "mint" },
+                    { french: "émeraude", english: "emerald" },
+                    { french: "saphir", english: "sapphire" },
+                    { french: "rubis", english: "ruby" },
+                    { french: "topaze", english: "topaz" },
+                    { french: "améthyste", english: "amethyst" },
+                    { french: "perle", english: "pearl" },
+                    { french: "jade", english: "jade" },
+                    { french: "ambre", english: "amber" },
+                    { french: "ivoire", english: "ivory" },
+                    { french: "ébène", english: "ebony" },
+                    { french: "cuivre", english: "copper" },
+                    { french: "bronze", english: "bronze" },
+                    { french: "platine", english: "platinum" },
+                    { french: "champagne", english: "champagne" },
+                    { french: "crème", english: "cream" },
+                    { french: "vanille", english: "vanilla" },
+                    { french: "caramel", english: "caramel" },
+                    { french: "chocolat", english: "chocolate" },
+                    { french: "café", english: "coffee" },
+                    { french: "cacao", english: "cocoa" },
+                    { french: "moka", english: "mocha" },
+                    { french: "cognac", english: "cognac" },
+                    { french: "bordeaux", english: "burgundy" },
+                    { french: "cerise", english: "cherry" },
+                    { french: "framboise", english: "raspberry" },
+                    { french: "pêche", english: "peach" },
+                    { french: "abricot", english: "apricot" },
+                    { french: "citron", english: "lemon" },
+                    { french: "lime", english: "lime" },
+                    { french: "menthe", english: "mint" },
+                    { french: "sauge", english: "sage" },
+                    { french: "olive", english: "olive" },
+                    { french: "kaki", english: "persimmon" },
+                    { french: "aubergine", english: "eggplant" },
+                    { french: "prune", english: "plum" },
+                    { french: "raisin", english: "grape" },
+                    { french: "cassis", english: "blackcurrant" },
+                    { french: "mûre", english: "blackberry" },
+                    { french: "myrtille", english: "blueberry" },
+                    { french: "airelle", english: "cranberry" },
+                    { french: "groseille", english: "redcurrant" },
+                    { french: "cerise", english: "cherry" },
+                    { french: "fraise", english: "strawberry" },
+                    { french: "framboise", english: "raspberry" }
+                ]
+            },
+            {
+                id: 'numbers',
+                name: 'Numbers',
+                icon: '🔢',
+                words: [
+                    { french: "un", english: "one" },
+                    { french: "deux", english: "two" },
+                    { french: "trois", english: "three" },
+                    { french: "quatre", english: "four" },
+                    { french: "cinq", english: "five" },
+                    { french: "six", english: "six" },
+                    { french: "sept", english: "seven" },
+                    { french: "huit", english: "eight" },
+                    { french: "neuf", english: "nine" },
+                    { french: "dix", english: "ten" },
+                    { french: "vingt", english: "twenty" },
+                    { french: "trente", english: "thirty" },
+                    { french: "quarante", english: "forty" },
+                    { french: "cinquante", english: "fifty" },
+                    { french: "soixante", english: "sixty" },
+                    { french: "cent", english: "hundred" },
+                    { french: "mille", english: "thousand" },
+                    { french: "million", english: "million" },
+                    { french: "premier", english: "first" },
+                    { french: "deuxième", english: "second" },
+                    { french: "onze", english: "eleven" },
+                    { french: "douze", english: "twelve" },
+                    { french: "treize", english: "thirteen" },
+                    { french: "quatorze", english: "fourteen" },
+                    { french: "quinze", english: "fifteen" },
+                    { french: "seize", english: "sixteen" },
+                    { french: "dix-sept", english: "seventeen" },
+                    { french: "dix-huit", english: "eighteen" },
+                    { french: "dix-neuf", english: "nineteen" },
+                    { french: "troisième", english: "third" },
+                    { french: "quatrième", english: "fourth" },
+                    { french: "cinquième", english: "fifth" },
+                    { french: "sixième", english: "sixth" },
+                    { french: "septième", english: "seventh" },
+                    { french: "huitième", english: "eighth" },
+                    { french: "neuvième", english: "ninth" },
+                    { french: "dixième", english: "tenth" },
+                    { french: "onzième", english: "eleventh" },
+                    { french: "douzième", english: "twelfth" },
+                    { french: "treizième", english: "thirteenth" },
+                    { french: "quatorzième", english: "fourteenth" },
+                    { french: "quinzième", english: "fifteenth" },
+                    { french: "seizième", english: "sixteenth" },
+                    { french: "dix-septième", english: "seventeenth" },
+                    { french: "dix-huitième", english: "eighteenth" },
+                    { french: "dix-neuvième", english: "nineteenth" },
+                    { french: "vingtième", english: "twentieth" },
+                    { french: "soixante-dix", english: "seventy" },
+                    { french: "quatre-vingts", english: "eighty" },
+                    { french: "quatre-vingt-dix", english: "ninety" },
+                    { french: "soixante-et-onze", english: "seventy-one" },
+                    { french: "quatre-vingt-un", english: "eighty-one" },
+                    { french: "quatre-vingt-onze", english: "ninety-one" },
+                    { french: "deux cents", english: "two hundred" },
+                    { french: "trois cents", english: "three hundred" },
+                    { french: "quatre cents", english: "four hundred" },
+                    { french: "cinq cents", english: "five hundred" },
+                    { french: "mille", english: "one thousand" },
+                    { french: "deux mille", english: "two thousand" },
+                    { french: "dix mille", english: "ten thousand" },
+                    { french: "cent mille", english: "one hundred thousand" },
+                    { french: "un million", english: "one million" },
+                    { french: "un milliard", english: "one billion" },
+                    { french: "zéro", english: "zero" },
+                    { french: "demi", english: "half" },
+                    { french: "quart", english: "quarter" },
+                    { french: "tiers", english: "third" },
+                    { french: "double", english: "double" },
+                    { french: "triple", english: "triple" },
+                    { french: "paire", english: "pair" },
+                    { french: "douzaine", english: "dozen" },
+                    { french: "vingtaine", english: "about twenty" },
+                    { french: "trentaine", english: "about thirty" },
+                    { french: "centaine", english: "about a hundred" }
+                ]
+            },
+            {
+                id: 'body',
+                name: 'Body Parts',
+                icon: '👤',
+                words: [
+                    { french: "tête", english: "head" },
+                    { french: "main", english: "hand" },
+                    { french: "pied", english: "foot" },
+                    { french: "bras", english: "arm" },
+                    { french: "jambe", english: "leg" },
+                    { french: "œil", english: "eye" },
+                    { french: "nez", english: "nose" },
+                    { french: "bouche", english: "mouth" },
+                    { french: "oreille", english: "ear" },
+                    { french: "doigt", english: "finger" },
+                    { french: "cheveux", english: "hair" },
+                    { french: "cœur", english: "heart" },
+                    { french: "dos", english: "back" },
+                    { french: "épaule", english: "shoulder" },
+                    { french: "ventre", english: "stomach" },
+                    { french: "genou", english: "knee" },
+                    { french: "dent", english: "tooth" },
+                    { french: "langue", english: "tongue" },
+                    { french: "cou", english: "neck" },
+                    { french: "poitrine", english: "chest" },
+                    { french: "front", english: "forehead" },
+                    { french: "sourcil", english: "eyebrow" },
+                    { french: "cil", english: "eyelash" },
+                    { french: "joue", english: "cheek" },
+                    { french: "menton", english: "chin" },
+                    { french: "gorge", english: "throat" },
+                    { french: "poignet", english: "wrist" },
+                    { french: "cheville", english: "ankle" },
+                    { french: "orteil", english: "toe" },
+                    { french: "ongle", english: "nail" },
+                    { french: "mollet", english: "calf" },
+                    { french: "cuisse", english: "thigh" },
+                    { french: "hanche", english: "hip" },
+                    { french: "fesse", english: "buttock" },
+                    { french: "lombaire", english: "lower back" },
+                    { french: "omoplate", english: "shoulder blade" },
+                    { french: "coude", english: "elbow" },
+                    { french: "poignet", english: "wrist" },
+                    { french: "paume", english: "palm" },
+                    { french: "pouce", english: "thumb" },
+                    { french: "index", english: "index finger" },
+                    { french: "majeur", english: "middle finger" },
+                    { french: "annulaire", english: "ring finger" },
+                    { french: "auriculaire", english: "pinky" },
+                    { french: "ongle", english: "fingernail" },
+                    { french: "nuque", english: "nape" },
+                    { french: "tempe", english: "temple" },
+                    { french: "pommette", english: "cheekbone" },
+                    { french: "mâchoire", english: "jaw" },
+                    { french: "lèvre", english: "lip" },
+                    { french: "dent", english: "tooth" },
+                    { french: "gencive", english: "gum" },
+                    { french: "palais", english: "palate" },
+                    { french: "gorge", english: "throat" },
+                    { french: "amygdale", english: "tonsil" },
+                    { french: "trachée", english: "windpipe" },
+                    { french: "poumon", english: "lung" },
+                    { french: "cœur", english: "heart" },
+                    { french: "foie", english: "liver" },
+                    { french: "estomac", english: "stomach" },
+                    { french: "intestin", english: "intestine" },
+                    { french: "rein", english: "kidney" },
+                    { french: "vessie", english: "bladder" },
+                    { french: "peau", english: "skin" },
+                    { french: "muscle", english: "muscle" },
+                    { french: "os", english: "bone" },
+                    { french: "articulation", english: "joint" },
+                    { french: "tendon", english: "tendon" },
+                    { french: "ligament", english: "ligament" },
+                    { french: "nerf", english: "nerve" },
+                    { french: "cerveau", english: "brain" },
+                    { french: "moelle épinière", english: "spinal cord" },
+                    { french: "squelette", english: "skeleton" },
+                    { french: "crâne", english: "skull" },
+                    { french: "côtes", english: "ribs" },
+                    { french: "colonne vertébrale", english: "spine" },
+                    { french: "vertèbre", english: "vertebra" }
+                ]
+            },
+            {
+                id: 'professions',
+                name: 'Professions',
+                icon: '💼',
+                words: [
+                    { french: "médecin", english: "doctor" },
+                    { french: "professeur", english: "teacher" },
+                    { french: "ingénieur", english: "engineer" },
+                    { french: "avocat", english: "lawyer" },
+                    { french: "artiste", english: "artist" },
+                    { french: "policier", english: "police officer" },
+                    { french: "pompier", english: "firefighter" },
+                    { french: "chef", english: "chef" },
+                    { french: "serveur", english: "waiter" },
+                    { french: "vendeur", english: "salesperson" },
+                    { french: "écrivain", english: "writer" },
+                    { french: "architecte", english: "architect" },
+                    { french: "journaliste", english: "journalist" },
+                    { french: "musicien", english: "musician" },
+                    { french: "acteur", english: "actor" },
+                    { french: "infirmier", english: "nurse" },
+                    { french: "comptable", english: "accountant" },
+                    { french: "fermier", english: "farmer" },
+                    { french: "photographe", english: "photographer" },
+                    { french: "chauffeur", english: "driver" },
+                    { french: "dentiste", english: "dentist" },
+                    { french: "vétérinaire", english: "veterinarian" },
+                    { french: "plombier", english: "plumber" },
+                    { french: "électricien", english: "electrician" },
+                    { french: "coiffeur", english: "hairdresser" },
+                    { french: "boulanger", english: "baker" },
+                    { french: "mécanicien", english: "mechanic" },
+                    { french: "peintre", english: "painter" },
+                    { french: "secrétaire", english: "secretary" },
+                    { french: "cuisinier", english: "cook" },
+                    { french: "pilot", english: "pilot" },
+                    { french: "hôtesse de l'air", english: "flight attendant" },
+                    { french: "steward", english: "steward" },
+                    { french: "capitaine", english: "captain" },
+                    { french: "marin", english: "sailor" },
+                    { french: "pêcheur", english: "fisherman" },
+                    { french: "jardinier", english: "gardener" },
+                    { french: "paysagiste", english: "landscaper" },
+                    { french: "vétérinaire", english: "veterinarian" },
+                    { french: "zoologiste", english: "zoologist" },
+                    { french: "biologiste", english: "biologist" },
+                    { french: "chimiste", english: "chemist" },
+                    { french: "physicien", english: "physicist" },
+                    { french: "mathématicien", english: "mathematician" },
+                    { french: "astronome", english: "astronomer" },
+                    { french: "géologue", english: "geologist" },
+                    { french: "météorologue", english: "meteorologist" },
+                    { french: "psychologue", english: "psychologist" },
+                    { french: "psychiatre", english: "psychiatrist" },
+                    { french: "thérapeute", english: "therapist" },
+                    { french: "kinésithérapeute", english: "physiotherapist" },
+                    { french: "ostéopathe", english: "osteopath" },
+                    { french: "pharmacien", english: "pharmacist" },
+                    { french: "opticien", english: "optometrist" },
+                    { french: "audioprothésiste", english: "audiologist" },
+                    { french: "sociologue", english: "sociologist" },
+                    { french: "anthropologue", english: "anthropologist" },
+                    { french: "historien", english: "historian" },
+                    { french: "archéologue", english: "archaeologist" },
+                    { french: "linguiste", english: "linguist" },
+                    { french: "traducteur", english: "translator" },
+                    { french: "interprète", english: "interpreter" },
+                    { french: "bibliothécaire", english: "librarian" },
+                    { french: "conservateur", english: "curator" },
+                    { french: "guide touristique", english: "tour guide" },
+                    { french: "réceptionniste", english: "receptionist" },
+                    { french: "concierge", english: "concierge" },
+                    { french: "gérant", english: "manager" },
+                    { french: "directeur", english: "director" },
+                    { french: "PDG", english: "CEO" },
+                    { french: "entrepreneur", english: "entrepreneur" },
+                    { french: "investisseur", english: "investor" },
+                    { french: "banquier", english: "banker" },
+                    { french: "courtier", english: "broker" },
+                    { french: "assureur", english: "insurance agent" },
+                    { french: "agent immobilier", english: "real estate agent" },
+                    { french: "notaire", english: "notary" },
+                    { french: "huissier", english: "bailiff" },
+                    { french: "juge", english: "judge" },
+                    { french: "procureur", english: "prosecutor" },
+                    { french: "greffier", english: "clerk" },
+                    { french: "policier", english: "police officer" },
+                    { french: "gendarme", english: "gendarme" },
+                    { french: "détective", english: "detective" },
+                    { french: "agent de sécurité", english: "security guard" },
+                    { french: "garde du corps", english: "bodyguard" },
+                    { french: "soldat", english: "soldier" },
+                    { french: "marin", english: "marine" },
+                    { french: "aviateur", english: "aviator" },
+                    { french: "militaire", english: "military personnel" },
+                    { french: "diplomate", english: "diplomat" },
+                    { french: "ambassadeur", english: "ambassador" },
+                    { french: "consul", english: "consul" },
+                    { french: "ministre", english: "minister" },
+                    { french: "député", english: "member of parliament" },
+                    { french: "sénateur", english: "senator" },
+                    { french: "maire", english: "mayor" },
+                    { french: "préfet", english: "prefect" },
+                    { french: "fonctionnaire", english: "civil servant" },
+                    { french: "douanier", english: "customs officer" },
+                    { french: "contrôleur", english: "inspector" },
+                    { french: "contrôleur aérien", english: "air traffic controller" }
+                ]
+            },
+            {
+                id: 'verbs',
+                name: 'Common Verbs',
+                icon: '🏃',
+                words: [
+                    { french: "être", english: "to be" },
+                    { french: "avoir", english: "to have" },
+                    { french: "aller", english: "to go" },
+                    { french: "faire", english: "to do/make" },
+                    { french: "dire", english: "to say" },
+                    { french: "voir", english: "to see" },
+                    { french: "vouloir", english: "to want" },
+                    { french: "pouvoir", english: "to be able to" },
+                    { french: "manger", english: "to eat" },
+                    { french: "boire", english: "to drink" },
+                    { french: "parler", english: "to speak" },
+                    { french: "écouter", english: "to listen" },
+                    { french: "lire", english: "to read" },
+                    { french: "écrire", english: "to write" },
+                    { french: "dormir", english: "to sleep" },
+                    { french: "courir", english: "to run" },
+                    { french: "prendre", english: "to take" },
+                    { french: "venir", english: "to come" },
+                    { french: "savoir", english: "to know" },
+                    { french: "aimer", english: "to like/love" },
+                    { french: "donner", english: "to give" },
+                    { french: "recevoir", english: "to receive" },
+                    { french: "ouvrir", english: "to open" },
+                    { french: "fermer", english: "to close" },
+                    { french: "chercher", english: "to look for" },
+                    { french: "trouver", english: "to find" },
+                    { french: "acheter", english: "to buy" },
+                    { french: "vendre", english: "to sell" },
+                    { french: "apprendre", english: "to learn" },
+                    { french: "enseigner", english: "to teach" },
+                    { french: "étudier", english: "to study" },
+                    { french: "comprendre", english: "to understand" },
+                    { french: "penser", english: "to think" },
+                    { french: "croire", english: "to believe" },
+                    { french: "espérer", english: "to hope" },
+                    { french: "souhaiter", english: "to wish" },
+                    { french: "préférer", english: "to prefer" },
+                    { french: "détester", english: "to hate" },
+                    { french: "adorer", english: "to adore" },
+                    { french: "regarder", english: "to watch" },
+                    { french: "observer", english: "to observe" },
+                    { french: "regarder", english: "to look" },
+                    { french: "écouter", english: "to listen" },
+                    { french: "entendre", english: "to hear" },
+                    { french: "sentir", english: "to feel/smell" },
+                    { french: "toucher", english: "to touch" },
+                    { french: "goûter", english: "to taste" },
+                    { french: "marcher", english: "to walk" },
+                    { french: "se promener", english: "to take a walk" },
+                    { french: "courir", english: "to run" },
+                    { french: "sauter", english: "to jump" },
+                    { french: "grimper", english: "to climb" },
+                    { french: "nager", english: "to swim" },
+                    { french: "plonger", english: "to dive" },
+                    { french: "voler", english: "to fly" },
+                    { french: "conduire", english: "to drive" },
+                    { french: "voyager", english: "to travel" },
+                    { french: "visiter", english: "to visit" },
+                    { french: "explorer", english: "to explore" },
+                    { french: "découvrir", english: "to discover" },
+                    { french: "rencontrer", english: "to meet" },
+                    { french: "se rencontrer", english: "to meet each other" },
+                    { french: "se voir", english: "to see each other" },
+                    { french: "se parler", english: "to talk to each other" },
+                    { french: "se connaître", english: "to know each other" },
+                    { french: "s'aimer", english: "to love each other" },
+                    { french: "se marier", english: "to get married" },
+                    { french: "divorcer", english: "to divorce" },
+                    { french: "naître", english: "to be born" },
+                    { french: "vivre", english: "to live" },
+                    { french: "mourir", english: "to die" },
+                    { french: "grandir", english: "to grow" },
+                    { french: "vieillir", english: "to age" },
+                    { french: "changer", english: "to change" },
+                    { french: "devenir", english: "to become" },
+                    { french: "rester", english: "to stay" },
+                    { french: "partir", english: "to leave" },
+                    { french: "arriver", english: "to arrive" },
+                    { french: "entrer", english: "to enter" },
+                    { french: "sortir", english: "to go out" },
+                    { french: "monter", english: "to go up" },
+                    { french: "descendre", english: "to go down" },
+                    { french: "retourner", english: "to return" },
+                    { french: "revenir", english: "to come back" },
+                    { french: "rentrer", english: "to come home" },
+                    { french: "passer", english: "to pass" },
+                    { french: "traverser", english: "to cross" },
+                    { french: "tourner", english: "to turn" },
+                    { french: "s'arrêter", english: "to stop" },
+                    { french: "continuer", english: "to continue" },
+                    { french: "commencer", english: "to begin" },
+                    { french: "finir", english: "to finish" },
+                    { french: "terminer", english: "to end" },
+                    { french: "arrêter", english: "to stop" },
+                    { french: "cesser", english: "to cease" },
+                    { french: "recommencer", english: "to start again" },
+                    { french: "répéter", english: "to repeat" },
+                    { french: "refaire", english: "to redo" },
+                    { french: "essayer", english: "to try" },
+                    { french: "tenter", english: "to attempt" },
+                    { french: "réussir", english: "to succeed" },
+                    { french: "échouer", english: "to fail" },
+                    { french: "gagner", english: "to win" },
+                    { french: "perdre", english: "to lose" },
+                    { french: "jouer", english: "to play" },
+                    { french: "gagner", english: "to earn" },
+                    { french: "dépenser", english: "to spend" },
+                    { french: "économiser", english: "to save" },
+                    { french: "investir", english: "to invest" },
+                    { french: "emprunter", english: "to borrow" },
+                    { french: "prêter", english: "to lend" },
+                    { french: "devoir", english: "to owe" },
+                    { french: "payer", english: "to pay" },
+                    { french: "coûter", english: "to cost" },
+                    { french: "valoir", english: "to be worth" },
+                    { french: "prix", english: "price" },
+                    { french: "valeur", english: "value" },
+                    { french: "argent", english: "money" },
+                    { french: "euro", english: "euro" },
+                    { french: "centime", english: "cent" },
+                    { french: "billet", english: "bill" },
+                    { french: "pièce", english: "coin" },
+                    { french: "portefeuille", english: "wallet" },
+                    { french: "sac à main", english: "purse" },
+                    { french: "carte bancaire", english: "bank card" },
+                    { french: "chèque", english: "check" },
+                    { french: "chèque de voyage", english: "traveler's check" },
+                    { french: "espèces", english: "cash" },
+                    { french: "monnaie", english: "change" },
+                    { french: "distributeur", english: "ATM" },
+                    { french: "guichet", english: "counter" },
+                    { french: "caissier", english: "cashier" },
+                    { french: "client", english: "customer" },
+                    { french: "achat", english: "purchase" },
+                    { french: "vente", english: "sale" },
+                    { french: "solde", english: "sale/discount" },
+                    { french: "réduction", english: "discount" },
+                    { french: "remise", english: "rebate" },
+                    { french: "rabais", english: "reduction" },
+                    { french: "bon d'achat", english: "gift card" },
+                    { french: "cadeau", english: "gift" },
+                    { french: "emballage", english: "packaging" },
+                    { french: "sac", english: "bag" },
+                    { french: "recevoir", english: "to receive" },
+                    { french: "donner", english: "to give" },
+                    { french: "offrir", english: "to offer" },
+                    { french: "accepter", english: "to accept" },
+                    { french: "refuser", english: "to refuse" },
+                    { french: "demander", english: "to ask" },
+                    { french: "répondre", english: "to answer" },
+                    { french: "questionner", english: "to question" },
+                    { french: "interroger", english: "to interrogate" },
+                    { french: "expliquer", english: "to explain" },
+                    { french: "comprendre", english: "to understand" },
+                    { french: "savoir", english: "to know (fact)" },
+                    { french: "connaître", english: "to know (person/place)" },
+                    { french: "oublier", english: "to forget" },
+                    { french: "se souvenir", english: "to remember" },
+                    { french: "rappeler", english: "to recall" },
+                    { french: "mémoriser", english: "to memorize" },
+                    { french: "apprendre par cœur", english: "to learn by heart" },
+                    { french: "réviser", english: "to review" },
+                    { french: "étudier", english: "to study" },
+                    { french: "travailler", english: "to work" },
+                    { french: "boss", english: "boss" },
+                    { french: "collègue", english: "colleague" },
+                    { french: "équipe", english: "team" },
+                    { french: "projet", english: "project" },
+                    { french: "tâche", english: "task" },
+                    { french: "mission", english: "mission" },
+                    { french: "objectif", english: "goal" },
+                    { french: "but", english: "aim" },
+                    { french: "plan", english: "plan" },
+                    { french: "stratégie", english: "strategy" },
+                    { french: "méthode", english: "method" },
+                    { french: "technique", english: "technique" },
+                    { french: "compétence", english: "skill" },
+                    { french: "capacité", english: "ability" },
+                    { french: "talent", english: "talent" },
+                    { french: "don", english: "gift/talent" },
+                    { french: "aptitude", english: "aptitude" },
+                    { french: "faculté", english: "faculty" },
+                    { french: "pouvoir", english: "power" },
+                    { french: "force", english: "strength" },
+                    { french: "faiblesse", english: "weakness" },
+                    { french: "point fort", english: "strength" },
+                    { french: "point faible", english: "weakness" },
+                    { french: "avantage", english: "advantage" },
+                    { french: "inconvénient", english: "disadvantage" },
+                    { french: "qualité", english: "quality" },
+                    { french: "défaut", english: "defect" },
+                    { french: "mérite", english: "merit" },
+                    { french: "démerite", english: "demerit" },
+                    { french: "récompense", english: "reward" },
+                    { french: "punition", english: "punishment" },
+                    { french: "prix", english: "prize" },
+                    { french: "trophée", english: "trophy" },
+                    { french: "médaille", english: "medal" },
+                    { french: "diplôme", english: "diploma" },
+                    { french: "certificat", english: "certificate" },
+                    { french: "attestation", english: "certificate" },
+                    { french: "reconnaissance", english: "recognition" },
+                    { french: "appréciation", english: "appreciation" },
+                    { french: "éloge", english: "praise" },
+                    { french: "compliment", english: "compliment" },
+                    { french: "félicitation", english: "congratulation" },
+                    { french: "bravo", english: "bravo" },
+                    { french: "chapeau", english: "hats off" },
+                    { french: "respect", english: "respect" },
+                    { french: "admiration", english: "admiration" },
+                    { french: "estime", english: "esteem" },
+                    { french: "considération", english: "consideration" },
+                    { french: "égard", english: "regard" },
+                    { french: "attention", english: "attention" },
+                    { french: "soin", english: "care" },
+                    { french: "préoccupation", english: "concern" },
+                    { french: "inquiétude", english: "worry" },
+                    { french: "souci", english: "worry" },
+                    { french: "anxiété", english: "anxiety" },
+                    { french: "angoisse", english: "anguish" },
+                    { french: "peur", english: "fear" },
+                    { french: "crainte", english: "dread" },
+                    { french: "terreur", english: "terror" },
+                    { french: "panique", english: "panic" },
+                    { french: "effroi", english: "horror" },
+                    { french: "épouvante", english: "dread" },
+                    { french: "frayeur", english: "fright" },
+                    { french: "alarme", english: "alarm" },
+                    { french: "alerte", english: "alert" },
+                    { french: "avertissement", english: "warning" },
+                    { french: "préavis", english: "notice" },
+                    { french: "avis", english: "notice" },
+                    { french: "annonce", english: "announcement" },
+                    { french: "publicité", english: "advertisement" },
+                    { french: "propagande", english: "propaganda" },
+                    { french: "publicité", english: "publicity" },
+                    { french: "promotion", english: "promotion" },
+                    { french: "marketing", english: "marketing" },
+                    { french: "vente", english: "sales" },
+                    { french: "commerce", english: "commerce" },
+                    { french: "échange", english: "exchange" },
+                    { french: "transaction", english: "transaction" },
+                    { french: "opération", english: "operation" },
+                    { french: "affaire", english: "business" },
+                    { french: "négociation", english: "negotiation" },
+                    { french: "marchandage", english: "haggling" },
+                    { french: "accord", english: "agreement" },
+                    { french: "contrat", english: "contract" },
+                    { french: "convention", english: "convention" },
+                    { french: "traité", english: "treaty" },
+                    { french: "pacte", english: "pact" },
+                    { french: "alliance", english: "alliance" },
+                    { french: "partenariat", english: "partnership" },
+                    { french: "association", english: "association" },
+                    { french: "société", english: "society" },
+                    { french: "entreprise", english: "company" },
+                    { french: "firme", english: "firm" },
+                    { french: "compagnie", english: "company" },
+                    { french: "organisation", english: "organization" },
+                    { french: "institution", english: "institution" },
+                    { french: "établissement", english: "establishment" },
+                    { french: "fondation", english: "foundation" },
+                    { french: "corporation", english: "corporation" },
+                    { french: "conglomérat", english: "conglomerate" },
+                    { french: "groupe", english: "group" },
+                    { french: "collectif", english: "collective" },
+                    { french: "communauté", english: "community" },
+                    { french: "collectivité", english: "collectivity" },
+                    { french: "communauté", english: "community" },
+                    { french: "société", english: "society" },
+                    { french: "peuple", english: "people" },
+                    { french: "population", english: "population" },
+                    { french: "nation", english: "nation" },
+                    { french: "pays", english: "country" },
+                    { french: "état", english: "state" },
+                    { french: "gouvernement", english: "government" },
+                    { french: "administration", english: "administration" },
+                    { french: "autorité", english: "authority" },
+                    { french: "pouvoir", english: "power" },
+                    { french: "influence", english: "influence" },
+                    { french: "contrôle", english: "control" },
+                    { french: "domination", english: "domination" },
+                    { french: "supériorité", english: "superiority" },
+                    { french: "infériorité", english: "inferiority" },
+                    { french: "égalité", english: "equality" },
+                    { french: "parité", english: "parity" },
+                    { french: "équité", english: "equity" },
+                    { french: "justice", english: "justice" },
+                    { french: "équité", english: "fairness" },
+                    { french: "impartialité", english: "impartiality" },
+                    { french: "objectivité", english: "objectivity" },
+                    { french: "neutralité", english: "neutrality" },
+                    { french: "indépendance", english: "independence" },
+                    { french: "autonomie", english: "autonomy" },
+                    { french: "liberté", english: "freedom" },
+                    { french: "libération", english: "liberation" },
+                    { french: "émancipation", english: "emancipation" },
+                    { french: "affranchissement", english: "enfranchisement" },
+                    { french: "délivrance", english: "deliverance" },
+                    { french: "salut", english: "salvation" },
+                    { french: "sauvetage", english: "rescue" },
+                    { french: "secours", english: "help" },
+                    { french: "aide", english: "aid" },
+                    { french: "assistance", english: "assistance" },
+                    { french: "soutien", english: "support" },
+                    { french: "appui", english: "support" },
+                    { french: "renfort", english: "reinforcement" },
+                ]
+            },
+            {
+                id: 'travel',
+                name: 'Travel & Places',
+                icon: '✈️',
+                words: [
+                    { french: "hôtel", english: "hotel" },
+                    { french: "plage", english: "beach" },
+                    { french: "montagne", english: "mountain" },
+                    { french: "ville", english: "city" },
+                    { french: "village", english: "village" },
+                    { french: "rivière", english: "river" },
+                    { french: "lac", english: "lake" },
+                    { french: "forêt", english: "forest" },
+                    { french: "île", english: "island" },
+                    { french: "passeport", english: "passport" },
+                    { french: "valise", english: "suitcase" },
+                    { french: "avion", english: "airplane" },
+                    { french: "train", english: "train" },
+                    { french: "voiture", english: "car" },
+                    { french: "vélo", english: "bicycle" },
+                    { french: "bus", english: "bus" },
+                    { french: "bateau", english: "boat" },
+                    { french: "aéroport", english: "airport" },
+                    { french: "gare", english: "train station" },
+                    { french: "ticket", english: "ticket" },
+                    { french: "horaire", english: "schedule" },
+                    { french: "départ", english: "departure" },
+                    { french: "arrivée", english: "arrival" },
+                    { french: "bagage", english: "luggage" },
+                    { french: "carte", english: "map" },
+                    { french: "guide", english: "guide" },
+                    { french: "monument", english: "monument" },
+                    { french: "musée", english: "museum" },
+                    { french: "église", english: "church" },
+                    { french: "cathédrale", english: "cathedral" }
+                ]
+            },
+            {
+                id: 'time',
+                name: 'Time Expressions',
+                icon: '⏰',
+                words: [
+                    { french: "aujourd'hui", english: "today" },
+                    { french: "demain", english: "tomorrow" },
+                    { french: "hier", english: "yesterday" },
+                    { french: "maintenant", english: "now" },
+                    { french: "plus tard", english: "later" },
+                    { french: "heure", english: "hour" },
+                    { french: "minute", english: "minute" },
+                    { french: "seconde", english: "second" },
+                    { french: "matin", english: "morning" },
+                    { french: "midi", english: "noon" },
+                    { french: "soir", english: "evening" },
+                    { french: "nuit", english: "night" },
+                    { french: "semaine", english: "week" },
+                    { french: "mois", english: "month" },
+                    { french: "année", english: "year" },
+                    { french: "lundi", english: "Monday" },
+                    { french: "mardi", english: "Tuesday" },
+                    { french: "janvier", english: "January" },
+                    { french: "février", english: "February" },
+                    { french: "saison", english: "season" },
+                    { french: "mercredi", english: "Wednesday" },
+                    { french: "jeudi", english: "Thursday" },
+                    { french: "vendredi", english: "Friday" },
+                    { french: "samedi", english: "Saturday" },
+                    { french: "dimanche", english: "Sunday" },
+                    { french: "mars", english: "March" },
+                    { french: "avril", english: "April" },
+                    { french: "mai", english: "May" },
+                    { french: "juin", english: "June" },
+                    { french: "juillet", english: "July" }
+                ]
+            }
+        ];
+
+        // Create bubble elements for water animation
+        function createBubbles() {
+            const container = document.querySelector('.water');
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const bubble = document.createElement('div');
+                    bubble.className = 'bubble';
+                    
+                    // Random size
+                    const size = Math.random() * 20 + 5;
+                    bubble.style.width = `${size}px`;
+                    bubble.style.height = `${size}px`;
+                    
+                    // Random position
+                    bubble.style.left = `${Math.random() * 100}%`;
+                    
+                    // Random animation duration
+                    const duration = Math.random() * 10 + 5;
+                    bubble.style.animation = `bubbleRise ${duration}s linear forwards`;
+                    
+                    container.appendChild(bubble);
+                    
+                    // Remove bubble after animation
+                    setTimeout(() => {
+                        bubble.remove();
+                    }, duration * 1000);
+                }, Math.random() * 5000);
+            }
+        }
+        
+        // Generate fish SVGs with cuter designs
+        const fishImages = [
+            // Super cute blue fish with smile and fins
+            'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 60"><path d="M70,30 Q80,20 70,10 Q55,0 40,5 L15,10 Q0,20 15,30 Q0,40 15,50 L40,55 Q55,60 70,50 Q80,40 70,30 Z" fill="%230088ff"/><circle cx="65" cy="22" r="4" fill="white"/><circle cx="65" cy="22" r="2" fill="black"/><path d="M45,35 Q52,38 45,42" stroke="white" stroke-width="2" fill="none"/><path d="M20,15 Q10,5 5,15" stroke="%230088ff" stroke-width="4" fill="none"/><path d="M20,45 Q10,55 5,45" stroke="%230088ff" stroke-width="4" fill="none"/><path d="M75,25 Q85,20 85,30 Q85,40 75,35" fill="%230088ff" stroke="none"/></svg>',
+            
+            // Super cute green fish with bubbles and happy eye
+            'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 60"><path d="M70,30 Q80,20 70,10 Q55,0 40,5 L15,10 Q0,20 15,30 Q0,40 15,50 L40,55 Q55,60 70,50 Q80,40 70,30 Z" fill="%2300ff88"/><circle cx="65" cy="22" r="4" fill="white"/><circle cx="65" cy="22" r="2" fill="black"/><path d="M45,35 Q50,40 45,42" stroke="white" stroke-width="2" fill="none"/><path d="M75,15 Q85,15 85,25" stroke="%2300ff88" stroke-width="4" fill="none"/><path d="M75,45 Q85,45 85,35" stroke="%2300ff88" stroke-width="4" fill="none"/><circle cx="15" cy="15" r="3" fill="white" opacity="0.7"/><circle cx="10" cy="25" r="2" fill="white" opacity="0.7"/><circle cx="12" cy="42" r="2.5" fill="white" opacity="0.7"/><path d="M66,22 Q67,20 68,22" stroke="black" stroke-width="1" fill="none"/></svg>',
+            
+            // Super cute orange fish with swishy tail
+            'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 60"><defs><linearGradient id="orangeGradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23ffaa00"/><stop offset="100%" style="stop-color:%23ff8800"/></linearGradient></defs><path d="M70,30 Q80,20 70,10 Q55,0 40,5 L15,10 Q0,20 15,30 Q0,40 15,50 L40,55 Q55,60 70,50 Q80,40 70,30 Z" fill="url(%23orangeGradient)"/><circle cx="65" cy="22" r="4" fill="white"/><circle cx="65" cy="22" r="2" fill="black"/><path d="M45,35 Q52,38 45,41" stroke="white" stroke-width="2" fill="none"/><path d="M10,30 Q0,20 10,10 L5,20 L10,30 Z" fill="%23ff8800"/><path d="M10,30 Q0,40 10,50 L5,40 L10,30 Z" fill="%23ff8800"/><path d="M65,21 Q67,19 69,21" stroke="black" stroke-width="1" fill="none"/></svg>',
+            
+            // Super cute pink heart-shaped fish
+            'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 60"><defs><linearGradient id="pinkGradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23ff99bb"/><stop offset="100%" style="stop-color:%23ff0088"/></linearGradient></defs><path d="M70,20 Q80,0 60,0 Q50,0 45,10 Q40,0 30,0 Q10,0 20,20 Q0,40 20,50 L45,55 Q60,60 70,50 Q90,35 70,20 Z" fill="url(%23pinkGradient)"/><circle cx="60" cy="22" r="4" fill="white"/><circle cx="60" cy="22" r="2" fill="black"/><path d="M40,35 Q45,40 40,45" stroke="white" stroke-width="2" fill="none"/><path d="M20,20 Q10,20 10,30" stroke="%23ff0088" stroke-width="3" fill="none"/><path d="M60,21 Q62,19 64,21" stroke="black" stroke-width="1" fill="none"/></svg>',
+            
+            // Super cute purple fish with fancy fins
+            'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 60"><defs><linearGradient id="purpleGradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23cc99ff"/><stop offset="100%" style="stop-color:%238866cc"/></linearGradient></defs><path d="M70,30 Q80,15 60,10 Q45,5 30,15 L15,20 Q5,30 15,40 L30,45 Q45,55 60,50 Q80,45 70,30 Z" fill="url(%23purpleGradient)"/><circle cx="60" cy="25" r="4" fill="white"/><circle cx="60" cy="25" r="2" fill="black"/><path d="M45,30 Q50,35 45,40" stroke="white" stroke-width="2" fill="none"/><path d="M75,25 L85,15 M75,35 L85,45" stroke="%23aa88ff" stroke-width="3"/><path d="M40,10 Q50,0 60,5" stroke="%23aa88ff" stroke-width="3" fill="none"/><path d="M40,50 Q50,60 60,55" stroke="%23aa88ff" stroke-width="3" fill="none"/><path d="M60,24 Q62,22 64,24" stroke="black" stroke-width="1" fill="none"/></svg>',
+            
+            // Super cute yellow tropical fish with stripes
+            'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 60"><defs><linearGradient id="yellowGradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23ffee00"/><stop offset="100%" style="stop-color:%23ffcc00"/></linearGradient></defs><path d="M60,30 Q75,10 55,5 Q40,0 20,10 L10,20 Q0,30 10,40 L20,50 Q40,60 55,55 Q75,50 60,30 Z" fill="url(%23yellowGradient)"/><path d="M25,10 Q25,30 25,50" stroke="%23ff8800" stroke-width="5" fill="none"/><path d="M35,5 Q35,30 35,55" stroke="%23ff8800" stroke-width="5" fill="none"/><path d="M45,8 Q45,30 45,52" stroke="%23ff8800" stroke-width="5" fill="none"/><circle cx="55" cy="20" r="4" fill="white"/><circle cx="55" cy="20" r="2" fill="black"/><path d="M35,30 Q42,33 35,37" stroke="white" stroke-width="2" fill="none"/><path d="M55,19 Q57,17 59,19" stroke="black" stroke-width="1" fill="none"/></svg>',
+            
+            // Super cute red angelfish
+            'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 60"><defs><linearGradient id="redGradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23ff6666"/><stop offset="100%" style="stop-color:%23cc3333"/></linearGradient></defs><path d="M65,30 Q75,15 65,10 Q50,0 35,10 L15,15 Q0,30 15,45 L35,50 Q50,60 65,50 Q75,45 65,30 Z" fill="url(%23redGradient)"/><circle cx="60" cy="20" r="4" fill="white"/><circle cx="60" cy="20" r="2" fill="black"/><path d="M40,30 Q47,33 40,37" stroke="white" stroke-width="2" fill="none"/><path d="M40,5 C40,30 40,30 40,55" stroke="%23cc3333" stroke-width="10" fill="none"/><path d="M25,7 C25,30 25,30 25,53" stroke="%23cc3333" stroke-width="7" fill="none"/><path d="M60,19 Q62,17 64,19" stroke="black" stroke-width="1" fill="none"/></svg>',
+            
+            // Super cute teal fish with sparkles
+            'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 60"><defs><linearGradient id="tealGradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%2300ffee"/><stop offset="100%" style="stop-color:%2300cccc"/></linearGradient></defs><path d="M70,30 Q80,20 70,10 Q55,0 40,5 L15,10 Q0,20 15,30 Q0,40 15,50 L40,55 Q55,60 70,50 Q80,40 70,30 Z" fill="url(%23tealGradient)"/><circle cx="65" cy="22" r="4" fill="white"/><circle cx="65" cy="22" r="2" fill="black"/><path d="M50,30 Q57,33 50,37" stroke="white" stroke-width="2" fill="none"/><circle cx="15" cy="15" r="3" fill="white" opacity="0.7"/><circle cx="10" cy="25" r="2" fill="white" opacity="0.7"/><circle cx="12" cy="45" r="2.5" fill="white" opacity="0.7"/><path d="M25,20 L28,23 M22,23 L28,17" stroke="white" stroke-width="1"/><path d="M35,15 L38,18 M32,18 L38,12" stroke="white" stroke-width="1"/><path d="M30,40 L33,43 M27,43 L33,37" stroke="white" stroke-width="1"/><path d="M65,21 Q67,19 69,21" stroke="black" stroke-width="1" fill="none"/></svg>',
+            
+            // Super cute pufferfish with expressive face
+            'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 60"><defs><radialGradient id="pufferGradient" cx="50%" cy="50%" r="50%" fx="50%" fy="50%"><stop offset="0%" style="stop-color:%23ffcc33"/><stop offset="100%" style="stop-color:%23ff9900"/></radialGradient></defs><path d="M60,30 A25,25 0 1,0 60,30.1" fill="url(%23pufferGradient)"/><path d="M60,30 L85,35 M60,30 L85,30 M60,30 L85,25 M60,30 L80,15 M60,30 L70,10 M60,30 L60,5 M60,30 L50,10 M60,30 L40,15 M60,30 L35,20 M60,30 L30,30 M60,30 L35,40 M60,30 L40,45 M60,30 L50,50 M60,30 L60,55 M60,30 L70,50 M60,30 L80,45" stroke="%23ff9900" stroke-width="2"/><circle cx="50" cy="25" r="4" fill="white"/><circle cx="50" cy="25" r="2" fill="black"/><circle cx="45" cy="25" r="1" fill="white"/><path d="M43,35 A7,7 0 0,0 57,35" stroke="black" stroke-width="1.5" fill="none"/><path d="M45,32 Q50,29 55,32" stroke="black" stroke-width="1" fill="none"/></svg>',
+            
+            // Super cute clownfish with big eyes
+            'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 60"><defs><linearGradient id="clownGradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23ffaa44"/><stop offset="100%" style="stop-color:%23ff7700"/></linearGradient></defs><path d="M70,30 Q80,20 70,10 Q55,0 40,5 L15,10 Q0,20 15,30 Q0,40 15,50 L40,55 Q55,60 70,50 Q80,40 70,30 Z" fill="url(%23clownGradient)"/><path d="M30,10 Q30,20 30,30 Q30,40 30,50" stroke="white" stroke-width="10" fill="none"/><path d="M50,5 Q50,20 50,30 Q50,40 50,55" stroke="white" stroke-width="10" fill="none"/><circle cx="65" cy="22" r="5" fill="white"/><circle cx="65" cy="22" r="3" fill="black"/><circle cx="65" cy="22" r="1" fill="white"/><path d="M50,30 Q56,34 50,38" stroke="black" stroke-width="2" fill="none"/><path d="M45,45 C50,50 60,50 65,45" stroke="%23ff7700" stroke-width="3" fill="none"/><path d="M75,25 L85,20 M75,35 L85,40" stroke="%23ff7700" stroke-width="3" fill="none"/></svg>',
+            
+            // Super cute blue-green betta fish with flowing fins
+            'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 60"><defs><linearGradient id="bettaGradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%2300ccff"/><stop offset="100%" style="stop-color:%2300ffaa"/></linearGradient></defs><path d="M65,30 Q75,20 65,10 Q50,0 35,10 L20,15 Q10,30 20,45 L35,50 Q50,60 65,50 Q75,40 65,30 Z" fill="url(%23bettaGradient)"/><path d="M65,10 Q85,-10 85,20" stroke="%2300ccff" stroke-width="2" fill="none"/><path d="M65,50 Q85,70 85,40" stroke="%2300ccff" stroke-width="2" fill="none"/><path d="M20,15 Q0,-5 5,25" stroke="%2300ffaa" stroke-width="2" fill="none"/><path d="M20,45 Q0,65 5,35" stroke="%2300ffaa" stroke-width="2" fill="none"/><path d="M35,10 Q35,-10 55,-5" stroke="%2300ccff" stroke-width="2" fill="none"/><path d="M35,50 Q35,70 55,65" stroke="%2300ccff" stroke-width="2" fill="none"/><circle cx="55" cy="25" r="4" fill="white"/><circle cx="55" cy="25" r="2" fill="black"/><path d="M35,32 Q42,35 35,38" stroke="white" stroke-width="2" fill="none"/><circle cx="55" cy="25" r="0.5" fill="white"/></svg>'
+        ];
+
+        // Sound effects
+        const sounds = {
+            cast: new Audio('https://freesound.org/data/previews/332/332464_4486188-lq.mp3'),
+            catch: new Audio('https://freesound.org/data/previews/108/108787_1093376-lq.mp3'),
+            wrong: new Audio('https://freesound.org/data/previews/178/178875_3033349-lq.mp3'),
+            correct: new Audio('https://freesound.org/data/previews/243/243701_1565250-lq.mp3'),
+            levelUp: new Audio('https://freesound.org/data/previews/320/320655_5260872-lq.mp3'),
+            splash: new Audio('https://freesound.org/data/previews/476/476115_7871886-lq.mp3'),
+            bubbles: new Audio('https://freesound.org/data/previews/188/188282_3437302-lq.mp3'),
+            water: new Audio('https://freesound.org/data/previews/339/339810_4764750-lq.mp3')
+        };
+
+        // Background music
+        const backgroundMusic = new Audio('https://freesound.org/data/previews/573/573660_4056068-lq.mp3');
+        backgroundMusic.loop = true;
+        backgroundMusic.volume = 0.4;
+
+        // Preload sounds
+        Object.values(sounds).forEach(sound => {
+            sound.load();
+            sound.volume = 0.6;
+        });
+
+        // Play sound with error handling
+        function playSound(key) {
+            if (!soundEnabled) return;
+            
+            const sound = sounds[key];
+            if (sound) {
+                sound.currentTime = 0;
+                sound.play().catch(err => console.warn('Error playing sound:', err));
+            }
+        }
+
+        // Toggle background music
+        function toggleMusic() {
+            if (musicEnabled) {
+                backgroundMusic.play().catch(err => console.warn('Error playing music:', err));
+            } else {
+                backgroundMusic.pause();
+            }
+        }
+
+        // Start the game
+        function startGame() {
+            const gameIntro = document.getElementById('gameIntro');
+            gameIntro.style.animation = 'fadeOut 0.5s ease';
+            
+            setTimeout(() => {
+                gameIntro.style.display = 'none';
+                document.getElementById('topicSelection').style.display = 'flex';
+                generateTopics();
+            }, 500);
+        }
+
+        // Generate topic cards
+        function generateTopics() {
+            const topicsGrid = document.getElementById('topicsGrid');
+            topicsGrid.innerHTML = '';
+            
+            topics.forEach((topic, index) => {
+                const card = document.createElement('div');
+                card.className = 'topic-card';
+                card.dataset.topicId = index;
+                
+                card.innerHTML = `
+                    <div class="topic-icon">${topic.icon}</div>
+                    <div class="topic-name">${topic.name}</div>
+                `;
+                
+                card.addEventListener('click', () => {
+                    // Remove selected class from all cards
+                    document.querySelectorAll('.topic-card').forEach(c => c.classList.remove('selected'));
+                    // Add selected class to clicked card
+                    card.classList.add('selected');
+                    // Set current topic
+                    currentTopic = index;
+                    // Enable start button
+                    document.getElementById('startTopicBtn').disabled = false;
+                });
+                
+                topicsGrid.appendChild(card);
+            });
+            
+            // Add event listener to start topic button
+            document.getElementById('startTopicBtn').addEventListener('click', () => {
+                document.getElementById('topicSelection').style.display = 'none';
+                document.getElementById('soundWarning').style.display = 'flex';
+            });
+        }
+
+        // Initialize game
+        function initGame() {
+            updateScore(0);
+            updateLevel(1);
+            
+            // Show topic switcher (current topic display only)
+            document.getElementById('topicSwitcher').style.display = 'flex';
+            // Show separate change topic button
+            document.getElementById('changeTopicContainer').style.display = 'block';
+            // Show circular timer
+            document.getElementById('circularTimerContainer').style.display = 'flex';
+            // Show compact stats row
+            document.getElementById('compactStats').style.display = 'flex';
+            updateTopicDisplay();
+            
+            createFish();
+            setupEventListeners();
+            gameActive = true;
+            startTimer();
+            
+            // Create bubbles
+            createBubbles();
+            setInterval(createBubbles, 15000);
+            
+            // Start background music
+            if (musicEnabled) {
+                toggleMusic();
+            }
+        }
+
+        // Update topic display
+        function updateTopicDisplay() {
+            const topic = topics[currentTopic || 0];
+            document.getElementById('currentTopicIcon').textContent = topic.icon;
+            document.getElementById('currentTopicName').textContent = topic.name;
+            document.getElementById('compactStats').style.display = 'flex';
+        }
+
+        // Change topic
+        function changeTopic() {
+            // Pause game temporarily
+            const wasPaused = gamePaused;
+            if (!gamePaused) {
+                gamePaused = true;
+                if (timer) {
+                clearInterval(timer);
+                    timer = null;
+                }
+                document.querySelectorAll('.fish').forEach(fish => {
+                    fish.style.animationPlayState = 'paused';
+                });
+            }
+            
+            // Show topic selection
+            document.getElementById('topicSelection').style.display = 'flex';
+            
+            // Update start button text and functionality
+            const startButton = document.getElementById('startTopicBtn');
+            startButton.textContent = 'Continue Fishing';
+            startButton.disabled = false;
+            
+            // Clear previous event listener
+            const newStartButton = startButton.cloneNode(true);
+            startButton.parentNode.replaceChild(newStartButton, startButton);
+            
+            // Add new event listener
+            newStartButton.addEventListener('click', () => {
+                document.getElementById('topicSelection').style.display = 'none';
+                
+                if (currentTopic !== null) {
+                    // CRITICAL: Clear all existing fish before creating new ones
+                    document.querySelectorAll('.fish').forEach(fish => fish.remove());
+                    activeFish = [];
+                    
+                    // CRITICAL: Ensure timer is cleared before starting fresh
+                    if (timer) {
+                        clearInterval(timer);
+                        timer = null;
+                    }
+                    
+                    // Update topic display
+                    updateTopicDisplay();
+                    
+                    // Create new fish with the new topic
+                    createFish();
+                    
+                    // Resume game if it wasn't paused before
+                    if (!wasPaused) {
+                        gamePaused = false;
+                        startTimer();
+                        document.querySelectorAll('.fish').forEach(fish => {
+                            fish.style.animationPlayState = 'running';
+                        });
+                    }
+                }
+            });
+        }
+
+        // Start timer
+        function startTimer() {
+            // CRITICAL: Always clear any existing timer first to prevent multiple timers running
+            if (timer) {
+                clearInterval(timer);
+                timer = null;
+            }
+            
+            const timerProgress = document.getElementById('timerProgress');
+            const timerCircle = document.getElementById('timerCircle');
+            const timerText = document.getElementById('timerText');
+            let timeLeft = timerValue;
+            
+            // Initialize circular timer
+            const circumference = 2 * Math.PI * 40; // radius = 40
+            timerCircle.style.strokeDasharray = circumference;
+            timerCircle.style.strokeDashoffset = 0;
+            timerText.textContent = Math.ceil(timeLeft);
+            timerText.className = 'circular-timer-text';
+            timerCircle.className = 'circular-timer-progress';
+            
+            timerProgress.style.width = '100%';
+            
+            timer = setInterval(() => {
+                timeLeft -= 0.1;
+                const percentage = (timeLeft / timerValue) * 100;
+                timerProgress.style.width = `${percentage}%`;
+                
+                // Update circular timer
+                const offset = circumference - (percentage / 100) * circumference;
+                timerCircle.style.strokeDashoffset = offset;
+                
+                // Update text with countdown
+                const secondsLeft = Math.ceil(timeLeft);
+                timerText.textContent = secondsLeft;
+                
+                // Change color based on time remaining
+                if (timeLeft <= 5) {
+                    timerText.className = 'circular-timer-text danger';
+                    timerCircle.className = 'circular-timer-progress danger';
+                } else if (timeLeft <= 10) {
+                    timerText.className = 'circular-timer-text warning';
+                    timerCircle.className = 'circular-timer-progress warning';
+                } else {
+                    timerText.className = 'circular-timer-text';
+                    timerCircle.className = 'circular-timer-progress';
+                }
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    timer = null;
+                    if (gameActive && !gamePaused) {
+                        createFish();
+                        startTimer();
+                    }
+                }
+            }, 100);
+        }
+
+        // Create fish with words
+        function createFish() {
+            const container = document.querySelector('.game-container');
+            const levelWords = topics[currentTopic || 0].words;
+            
+            // Clear existing fish
+            activeFish.forEach(fish => fish.remove());
+            activeFish = [];
+            
+            // Water boundaries calculation
+            const waterHeight = window.innerHeight * 0.65;
+            const waterTop = window.innerHeight - waterHeight;
+            
+            // Create new fish - ensure we create all fishCount fish
+            for (let i = 0; i < fishCount; i++) {
+                const fish = document.createElement('div');
+                fish.className = 'fish';
+                
+                // Choose a word - cycle through words if needed to reach fishCount
+                const wordIndex = i % levelWords.length;
+                const word = levelWords[wordIndex];
+                
+                // Set fish image
+                const imageIndex = Math.floor(Math.random() * fishImages.length);
+                fish.style.backgroundImage = `url('${fishImages[imageIndex]}')`;
+                
+                // Distribute fish vertically across the water area
+                // Divide the water into sections based on number of fish
+                const sectionSize = waterHeight / Math.min(fishCount, 10); // Create up to 10 vertical sections
+                const section = i % Math.min(fishCount, 10); // Determine which section this fish belongs to
+                
+                // Calculate position within the section
+                const baseTop = waterTop + (section * sectionSize);
+                const randomOffset = Math.random() * (sectionSize * 0.7); // Random position within section
+                const topPosition = baseTop + randomOffset + 20; // Add some padding from top
+                
+                fish.style.top = `${topPosition}px`;
+                // Store initial position for animation reference
+                fish.dataset.baseTop = topPosition;
+                
+                // Add word bubble
+                const bubble = document.createElement('div');
+                bubble.className = 'word-bubble';
+                bubble.textContent = word.french;
+                fish.appendChild(bubble);
+                
+                // Store word data
+                fish.dataset.word = word.english;
+                
+                // Set animation duration - randomize slightly for more natural movement
+                const baseSpeed = 80;
+                const randomFactor = 0.8 + Math.random() * 0.4; // 0.8 to 1.2
+                const levelFactor = 1 + (Math.min(level, 5) - 1) * 0.1;
+                fish.style.animationDuration = `${baseSpeed * randomFactor / levelFactor}s`;
+                
+                // Randomize starting position in animation
+                fish.style.animationDelay = `-${Math.random() * 80}s`;
+                
+                // Add event listener
+                fish.addEventListener('click', () => catchFish(fish));
+                
+                container.appendChild(fish);
+                activeFish.push(fish);
+            }
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Sound toggle
+            const soundToggleBtn = document.getElementById('soundToggle');
+            if (soundToggleBtn) {
+                soundToggleBtn.addEventListener('click', () => {
+                soundEnabled = !soundEnabled;
+                    soundToggleBtn.textContent = soundEnabled ? '🔊' : '🔈';
+                    soundToggleBtn.classList.toggle('active', soundEnabled);
+            });
+            }
+            
+            // Music toggle
+            const musicToggleBtn = document.getElementById('musicToggle');
+            if (musicToggleBtn) {
+                musicToggleBtn.addEventListener('click', () => {
+                musicEnabled = !musicEnabled;
+                    musicToggleBtn.classList.toggle('active', musicEnabled);
+                toggleMusic();
+            });
+            }
+            
+            // Pause button
+            const pauseBtn = document.getElementById('pauseBtn');
+            if (pauseBtn) {
+                pauseBtn.addEventListener('click', () => {
+                gamePaused = !gamePaused;
+                    pauseBtn.textContent = gamePaused ? '▶️' : '⏸️';
+                
+                if (gamePaused) {
+                        if (timer) {
+                    clearInterval(timer);
+                            timer = null;
+                        }
+                    document.querySelectorAll('.fish').forEach(fish => {
+                        fish.style.animationPlayState = 'paused';
+                    });
+                } else {
+                        if (gameActive) {
+                    startTimer();
+                        }
+                    document.querySelectorAll('.fish').forEach(fish => {
+                        fish.style.animationPlayState = 'running';
+                    });
+                }
+            });
+            }
+            
+            // Topic change button (new separate button)
+            document.getElementById('changeTopicBtnSeparate').addEventListener('click', changeTopic);
+            
+            // Info button (in controls)
+            const infoBtn = document.getElementById('infoBtn');
+            if (infoBtn) {
+                infoBtn.addEventListener('click', () => {
+                    document.getElementById('infoModal').style.display = 'flex';
+                });
+            }
+            
+            // Info button (standalone near timer)
+            const infoBtnStandalone = document.getElementById('infoBtnStandalone');
+            if (infoBtnStandalone) {
+                infoBtnStandalone.addEventListener('click', () => {
+                    document.getElementById('infoModal').style.display = 'flex';
+                });
+            }
+            
+            // Close info modal
+            document.getElementById('infoModalClose').addEventListener('click', () => {
+                document.getElementById('infoModal').style.display = 'none';
+            });
+            
+            // Close info modal when clicking outside
+            document.getElementById('infoModal').addEventListener('click', (e) => {
+                if (e.target.id === 'infoModal') {
+                    document.getElementById('infoModal').style.display = 'none';
+                }
+            });
+            
+            // Fishing rod animation
+            const fishingRod = document.getElementById('fishingRod');
+            fishingRod.addEventListener('click', () => {
+                if (!gamePaused) {
+                    fishingRod.classList.add('casting');
+                    playSound('splash');
+                    
+                    setTimeout(() => {
+                        fishingRod.classList.remove('casting');
+                    }, 1000);
+                }
+            });
+        }
+
+        // Catch fish
+        function catchFish(fish) {
+            // CRITICAL: Clear timer properly
+            if (timer) {
+            clearInterval(timer);
+                timer = null;
+            }
+            playSound('catch');
+            
+            fish.classList.add('caught');
+            const word = fish.dataset.word;
+            const feedback = document.getElementById('feedback');
+            
+            // Show feedback
+            feedback.style.display = 'block';
+            feedback.innerHTML = `<div style="font-size: 1.5rem; margin-bottom: 1rem;">Translate:</div><div style="font-size: 2rem; color: var(--accent-color); margin-bottom: 1rem;">"${fish.querySelector('.word-bubble').textContent}"</div>`;
+            
+            // Create input
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.placeholder = 'Type the English translation...';
+            input.autofocus = true;
+            feedback.appendChild(input);
+            
+            setTimeout(() => {
+                input.focus();
+            }, 100);
+            
+            // Handle answer
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    const answer = input.value.toLowerCase().trim();
+                    const correct = answer === word.toLowerCase();
+                    
+                    if (correct) {
+                        // Calculate points - faster answers get more points
+                        const timeLeft = parseFloat(document.getElementById('timerProgress').style.width) / 100 * timerValue;
+                        const timeBonus = Math.round(timeLeft * 2);
+                        const points = 10 + timeBonus;
+                        
+                        updateScore(score + points);
+                        showFeedback(`Correct! +${points} points 🎉`, 'success');
+                    } else {
+                        playSound('wrong');
+                        showFeedback(`Wrong! The correct answer is "${word}" 📚`, 'error');
+                    }
+                    
+                    // Continue game
+                    setTimeout(() => {
+                        feedback.style.display = 'none';
+                        feedback.innerHTML = '';
+                        
+                        // Remove caught fish
+                        setTimeout(() => {
+                            fish.remove();
+                            activeFish = activeFish.filter(f => f !== fish);
+                            
+                            // Create new fish if all are caught
+                            if (activeFish.length === 0) {
+                                // CRITICAL: Ensure timer is cleared before creating new fish
+                                if (timer) {
+                                    clearInterval(timer);
+                                    timer = null;
+                                }
+                                createFish();
+                            }
+                            
+                            // Only start timer if game is active and not paused
+                            if (gameActive && !gamePaused) {
+                            startTimer();
+                            }
+                        }, 500);
+                    }, 2000);
+                }
+            });
+        }
+
+        // Update score
+        function updateScore(newScore) {
+            score = newScore;
+            document.getElementById('score').textContent = score;
+            
+            // Level up every 100 points
+            if (score >= level * 100 && level < 5) {
+                updateLevel(level + 1);
+            }
+        }
+
+        // Update level
+        function updateLevel(newLevel) {
+            level = newLevel;
+            document.getElementById('level').textContent = level;
+            
+            playSound('levelUp');
+            
+            // Adjust timer with level
+            timerValue = Math.max(15 - (level - 1) * 2, 5);
+            
+            // Update timer display to show new time
+            const timerText = document.getElementById('timerText');
+            timerText.textContent = timerValue;
+            
+            // Show level up message
+            const levelMessages = [
+                "",
+                "Beginner words! 🐠",
+                "Common objects! 🐟",
+                "Action verbs! 🐡",
+                "Time expressions! 🦈"
+            ];
+            
+            showFeedback(`Level ${level}! ${levelMessages[level-1]} 🎉`, 'success');
+            
+            // Clear and create new fish
+            activeFish.forEach(fish => fish.remove());
+            createFish();
+        }
+
+        // Show feedback
+        function showFeedback(message, type) {
+            const feedback = document.getElementById('feedback');
+            feedback.style.display = 'block';
+            feedback.style.backgroundColor = type === 'success' ? 'rgba(0, 255, 179, 0.2)' : 'rgba(255, 68, 68, 0.2)';
+            feedback.style.border = `2px solid ${type === 'success' ? 'var(--primary)' : 'var(--error-color)'}`;
+            feedback.innerHTML = `<div style="font-size: 1.5rem;">${message}</div>`;
+            
+            setTimeout(() => {
+                feedback.style.display = 'none';
+            }, 2000);
+        }
+
+        // Close sound warning
+        function closeSoundWarning() {
+            const warning = document.getElementById('soundWarning');
+            warning.style.animation = 'fadeOut 0.3s ease';
+            setTimeout(() => {
+                warning.style.display = 'none';
+                initGame();
+            }, 300);
+        }
+
+        // Animate fish continuously
+        function animateFish() {
+            activeFish.forEach(fish => {
+                if (!fish.classList.contains('caught') && !gamePaused) {
+                    // Get the base/initial position that was set during fish creation
+                    const baseTop = parseFloat(fish.dataset.baseTop) || parseInt(fish.style.top);
+                    
+                    // Create a small oscillation up and down based on unique seed per fish
+                    const uniqueSeed = baseTop; // Use the base position as a unique seed
+                    const wiggle = Math.sin((Date.now() / 1000) + uniqueSeed) * 5; // More gentle wiggle of ±5px
+                    
+                    // Set the new position, keeping the fish around its base position
+                    fish.style.top = `${baseTop + wiggle}px`;
+                    
+                    // Store the base position if it wasn't stored before
+                    if (!fish.dataset.baseTop) {
+                        fish.dataset.baseTop = baseTop;
+                    }
+                }
+            });
+            
+            requestAnimationFrame(animateFish);
+        }
+
+        // Start animation
+        requestAnimationFrame(animateFish);
+    </script>
+</body>
+</html>

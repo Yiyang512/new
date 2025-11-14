@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>French Matching Game - Learn French Vocabulary</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #0A0E1A;
+            min-height: 100vh;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .game-container {
+            max-width: 1200px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .game-header {
+            margin-bottom: 30px;
+        }
+
+        .exam-badge {
+            background: linear-gradient(135deg, #FF6B6B 0%, #FF8E8E 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            display: inline-block;
+            font-weight: 500;
+        }
+
+        .game-title {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #00FFB3 0%, #00cc8f 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+        }
+
+        .game-subtitle {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.1rem;
+        }
+
+        .game-stats {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: shine 2s infinite;
+        }
+
+        @keyframes shine {
+            0% { left: -100%; }
+            20% { left: 100%; }
+            100% { left: 100%; }
+        }
+
+        .score-display {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2rem;
+            color: #00FFB3;
+            text-shadow: 0 0 10px rgba(0, 255, 179, 0.5);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .score-display.show {
+            opacity: 1;
+        }
+
+        .category-selector {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            max-width: 800px;
+            margin: 0 auto 20px;
+        }
+
+        .category-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .category-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .category-btn.active {
+            background: linear-gradient(135deg, #FF6B6B 0%, #FF8E8E 100%);
+            border: none;
+            color: white;
+            font-weight: 600;
+        }
+
+        .exam-tip {
+            background: rgba(255, 107, 107, 0.1);
+            border: 1px solid rgba(255, 107, 107, 0.2);
+            padding: 15px;
+            border-radius: 12px;
+            margin: 20px 0;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .exam-tip strong {
+            color: #FF6B6B;
+        }
+
+        .level-selector {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .level-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .level-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .level-btn.active {
+            background: linear-gradient(135deg, #00FFB3 0%, #00cc8f 100%);
+            border: none;
+            color: #0A0E1A;
+            font-weight: 600;
+        }
+
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            max-width: 800px;
+            margin: 0 auto;
+            perspective: 1000px;
+        }
+
+        .card {
+            position: relative;
+            height: 150px;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 255, 179, 0.2);
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .card-back {
+            background: linear-gradient(135deg, #00FFB3 0%, #00cc8f 100%);
+            color: #0A0E1A;
+            transform: rotateY(180deg);
+            font-weight: 600;
+        }
+
+        .card.matched .card-front,
+        .card.matched .card-back {
+            background: rgba(0, 255, 179, 0.2);
+            border-color: rgba(0, 255, 179, 0.4);
+            animation: matchPulse 1s ease;
+            box-shadow: 0 0 20px rgba(0, 255, 179, 0.3);
+        }
+
+        @keyframes matchPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .game-controls {
+            margin-top: 30px;
+        }
+
+        .control-btn {
+            background: linear-gradient(135deg, #00FFB3 0%, #00cc8f 100%);
+            color: #0A0E1A;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0 10px;
+        }
+
+        .control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 179, 0.3);
+        }
+
+        .game-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 30px;
+            border-radius: 16px;
+            text-align: center;
+            display: none;
+            z-index: 1000;
+            animation: messageFadeIn 0.5s ease;
+        }
+
+        @keyframes messageFadeIn {
+            from { opacity: 0; transform: translate(-50%, -60%); }
+            to { opacity: 1; transform: translate(-50%, -50%); }
+        }
+
+        .game-message h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: #00FFB3;
+        }
+
+        .game-message p {
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .sound-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .sound-toggle:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        .sound-toggle i {
+            font-size: 24px;
+            color: #00FFB3;
+        }
+
+        @media (max-width: 768px) {
+            .game-title {
+                font-size: 2rem;
+            }
+
+            .game-stats {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .game-board {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                gap: 10px;
+            }
+
+            .card {
+                height: 120px;
+            }
+
+            .card-front, .card-back {
+                font-size: 1rem;
+            }
+        }
+
+        .progress-container {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 800px;
+        }
+
+        .progress-title {
+            color: #00FFB3;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .progress-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .progress-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .progress-item-title {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 5px;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            margin: 5px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00FFB3, #00cc8f);
+            transition: width 0.3s ease;
+        }
+
+        .progress-score {
+            font-size: 1.2rem;
+            color: #00FFB3;
+            font-weight: 600;
+        }
+
+        .scenario-container {
+            background: rgba(255, 107, 107, 0.1);
+            border: 1px solid rgba(255, 107, 107, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 800px;
+        }
+
+        .scenario-title {
+            color: #FF6B6B;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .scenario-text {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .scenario-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+        }
+
+        .scenario-option {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .scenario-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .scenario-option.correct {
+            background: rgba(0, 255, 179, 0.2);
+            border-color: rgba(0, 255, 179, 0.4);
+        }
+
+        .scenario-option.incorrect {
+            background: rgba(255, 107, 107, 0.2);
+            border-color: rgba(255, 107, 107, 0.4);
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-header">
+            <div class="exam-badge">TEF/DELF Exam Preparation</div>
+            <h1 class="game-title">French Matching Game</h1>
+            <p class="game-subtitle">Master essential vocabulary for TEF/DELF exams</p>
+        </div>
+
+        <div class="category-selector">
+            <button class="category-btn active" data-category="general">General</button>
+            <button class="category-btn" data-category="numbers">Numbers</button>
+            <button class="category-btn" data-category="time">Time</button>
+            <button class="category-btn" data-category="directions">Directions</button>
+            <button class="category-btn" data-category="food">Food</button>
+            <button class="category-btn" data-category="transport">Transport</button>
+            <button class="category-btn" data-category="shopping">Shopping</button>
+            <button class="category-btn" data-category="health">Health</button>
+        </div>
+
+        <div class="progress-container">
+            <h3 class="progress-title">Exam Preparation Progress</h3>
+            <div class="progress-grid">
+                <div class="progress-item">
+                    <div class="progress-item-title">General</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="general-progress"></div>
+                    </div>
+                    <div class="progress-score" id="general-score">0%</div>
+                </div>
+                <div class="progress-item">
+                    <div class="progress-item-title">Numbers</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="numbers-progress"></div>
+                    </div>
+                    <div class="progress-score" id="numbers-score">0%</div>
+                </div>
+                <div class="progress-item">
+                    <div class="progress-item-title">Time</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="time-progress"></div>
+                    </div>
+                    <div class="progress-score" id="time-score">0%</div>
+                </div>
+                <div class="progress-item">
+                    <div class="progress-item-title">Directions</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="directions-progress"></div>
+                    </div>
+                    <div class="progress-score" id="directions-score">0%</div>
+                </div>
+                <div class="progress-item">
+                    <div class="progress-item-title">Food</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="food-progress"></div>
+                    </div>
+                    <div class="progress-score" id="food-score">0%</div>
+                </div>
+                <div class="progress-item">
+                    <div class="progress-item-title">Transport</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="transport-progress"></div>
+                    </div>
+                    <div class="progress-score" id="transport-score">0%</div>
+                </div>
+                <div class="progress-item">
+                    <div class="progress-item-title">Shopping</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="shopping-progress"></div>
+                    </div>
+                    <div class="progress-score" id="shopping-score">0%</div>
+                </div>
+                <div class="progress-item">
+                    <div class="progress-item-title">Health</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="health-progress"></div>
+                    </div>
+                    <div class="progress-score" id="health-score">0%</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="scenario-container" id="scenario-container" style="display: none;">
+            <h3 class="scenario-title">Exam Scenario</h3>
+            <p class="scenario-text" id="scenario-text"></p>
+            <div class="scenario-options" id="scenario-options"></div>
+        </div>
+
+        <div class="exam-tip">
+            <strong>Exam Tip:</strong> Focus on understanding both the French and English meanings. This will help you in both the reading and listening sections of the TEF/DELF exam.
+        </div>
+
+        <div class="game-stats">
+            <div class="stat-item">Level: <span id="current-level">1</span></div>
+            <div class="stat-item">Moves: <span id="moves">0</span></div>
+            <div class="stat-item">Time: <span id="time">0:00</span></div>
+            <div class="stat-item">Score: <span id="score">0</span></div>
+        </div>
+
+        <div class="level-selector">
+            <button class="level-btn active" data-level="1">Beginner</button>
+            <button class="level-btn" data-level="2">Intermediate</button>
+            <button class="level-btn" data-level="3">Advanced</button>
+        </div>
+
+        <div class="game-board" id="game-board"></div>
+
+        <div class="game-controls">
+            <button class="control-btn" id="restart-btn">Restart Game</button>
+            <button class="control-btn" id="next-level-btn" style="display: none;">Next Level</button>
+        </div>
+    </div>
+
+    <div class="game-message" id="game-message">
+        <h2>Congratulations!</h2>
+        <p>You've completed level <span id="completed-level"></span>!</p>
+        <p>Moves: <span id="final-moves"></span></p>
+        <p>Time: <span id="final-time"></span></p>
+        <button class="control-btn" id="continue-btn">Continue</button>
+    </div>
+
+    <button class="sound-toggle" id="sound-toggle">
+        <i class="fas fa-volume-up"></i>
+    </button>
+
+    <script>
+        const gameData = {
+            general: {
+                1: [
+                    { french: "Bonjour", english: "Hello" },
+                    { french: "Merci", english: "Thank you" },
+                    { french: "Au revoir", english: "Goodbye" },
+                    { french: "S'il vous plaît", english: "Please" },
+                    { french: "Oui", english: "Yes" },
+                    { french: "Non", english: "No" },
+                    { french: "Salut", english: "Hi" },
+                    { french: "Bonsoir", english: "Good evening" },
+                    { french: "Bonne nuit", english: "Good night" },
+                    { french: "De rien", english: "You're welcome" },
+                    { french: "Pardon", english: "Sorry" },
+                    { french: "Excusez-moi", english: "Excuse me" }
+                ],
+                2: [
+                    { french: "Comment allez-vous?", english: "How are you?" },
+                    { french: "Je m'appelle", english: "My name is" },
+                    { french: "Enchanté(e)", english: "Nice to meet you" },
+                    { french: "À bientôt", english: "See you soon" },
+                    { french: "Bonne journée", english: "Have a good day" },
+                    { french: "Au plaisir", english: "Looking forward to it" },
+                    { french: "Comment ça va?", english: "How are you doing?" },
+                    { french: "Très bien", english: "Very well" },
+                    { french: "Pas mal", english: "Not bad" },
+                    { french: "Ça va", english: "I'm fine" },
+                    { french: "À tout à l'heure", english: "See you later" },
+                    { french: "À demain", english: "See you tomorrow" }
+                ],
+                3: [
+                    { french: "Je ne comprends pas", english: "I don't understand" },
+                    { french: "Pouvez-vous répéter?", english: "Could you repeat?" },
+                    { french: "Parlez-vous anglais?", english: "Do you speak English?" },
+                    { french: "Je suis désolé(e)", english: "I am sorry" },
+                    { french: "Excusez-moi", english: "Excuse me" },
+                    { french: "À votre service", english: "At your service" },
+                    { french: "Je ne parle pas français", english: "I don't speak French" },
+                    { french: "Parlez plus lentement", english: "Speak more slowly" },
+                    { french: "Comment dit-on...?", english: "How do you say...?" },
+                    { french: "Qu'est-ce que ça veut dire?", english: "What does that mean?" },
+                    { french: "Je vous en prie", english: "You're welcome" },
+                    { french: "Pas de problème", english: "No problem" }
+                ]
+            },
+            numbers: {
+                1: [
+                    { french: "Un", english: "One" },
+                    { french: "Deux", english: "Two" },
+                    { french: "Trois", english: "Three" },
+                    { french: "Quatre", english: "Four" },
+                    { french: "Cinq", english: "Five" },
+                    { french: "Six", english: "Six" },
+                    { french: "Sept", english: "Seven" },
+                    { french: "Huit", english: "Eight" },
+                    { french: "Neuf", english: "Nine" },
+                    { french: "Dix", english: "Ten" },
+                    { french: "Onze", english: "Eleven" },
+                    { french: "Douze", english: "Twelve" }
+                ],
+                2: [
+                    { french: "Treize", english: "Thirteen" },
+                    { french: "Quatorze", english: "Fourteen" },
+                    { french: "Quinze", english: "Fifteen" },
+                    { french: "Seize", english: "Sixteen" },
+                    { french: "Dix-sept", english: "Seventeen" },
+                    { french: "Dix-huit", english: "Eighteen" },
+                    { french: "Dix-neuf", english: "Nineteen" },
+                    { french: "Vingt", english: "Twenty" },
+                    { french: "Trente", english: "Thirty" },
+                    { french: "Quarante", english: "Forty" },
+                    { french: "Cinquante", english: "Fifty" },
+                    { french: "Soixante", english: "Sixty" }
+                ],
+                3: [
+                    { french: "Soixante-dix", english: "Seventy" },
+                    { french: "Quatre-vingts", english: "Eighty" },
+                    { french: "Quatre-vingt-dix", english: "Ninety" },
+                    { french: "Cent", english: "Hundred" },
+                    { french: "Mille", english: "Thousand" },
+                    { french: "Million", english: "Million" },
+                    { french: "Premier", english: "First" },
+                    { french: "Deuxième", english: "Second" },
+                    { french: "Troisième", english: "Third" },
+                    { french: "Zéro", english: "Zero" },
+                    { french: "Demi", english: "Half" },
+                    { french: "Quart", english: "Quarter" }
+                ]
+            },
+            time: {
+                1: [
+                    { french: "Lundi", english: "Monday" },
+                    { french: "Mardi", english: "Tuesday" },
+                    { french: "Mercredi", english: "Wednesday" },
+                    { french: "Jeudi", english: "Thursday" },
+                    { french: "Vendredi", english: "Friday" },
+                    { french: "Samedi", english: "Saturday" },
+                    { french: "Dimanche", english: "Sunday" },
+                    { french: "Matin", english: "Morning" },
+                    { french: "Midi", english: "Noon" },
+                    { french: "Après-midi", english: "Afternoon" },
+                    { french: "Soir", english: "Evening" },
+                    { french: "Nuit", english: "Night" }
+                ],
+                2: [
+                    { french: "Aujourd'hui", english: "Today" },
+                    { french: "Demain", english: "Tomorrow" },
+                    { french: "Hier", english: "Yesterday" },
+                    { french: "Maintenant", english: "Now" },
+                    { french: "Plus tard", english: "Later" },
+                    { french: "Bientôt", english: "Soon" },
+                    { french: "Toujours", english: "Always" },
+                    { french: "Souvent", english: "Often" },
+                    { french: "Parfois", english: "Sometimes" },
+                    { french: "Jamais", english: "Never" },
+                    { french: "Heure", english: "Hour" },
+                    { french: "Minute", english: "Minute" }
+                ],
+                3: [
+                    { french: "Semaine", english: "Week" },
+                    { french: "Mois", english: "Month" },
+                    { french: "Année", english: "Year" },
+                    { french: "Saison", english: "Season" },
+                    { french: "Janvier", english: "January" },
+                    { french: "Février", english: "February" },
+                    { french: "Mars", english: "March" },
+                    { french: "Avril", english: "April" },
+                    { french: "Mai", english: "May" },
+                    { french: "Juin", english: "June" },
+                    { french: "Juillet", english: "July" },
+                    { french: "Août", english: "August" }
+                ]
+            },
+            directions: {
+                1: [
+                    { french: "Gauche", english: "Left" },
+                    { french: "Droite", english: "Right" },
+                    { french: "Tout droit", english: "Straight ahead" },
+                    { french: "Devant", english: "In front" },
+                    { french: "Derrière", english: "Behind" },
+                    { french: "Près de", english: "Near" },
+                    { french: "Haut", english: "Up" },
+                    { french: "Bas", english: "Down" },
+                    { french: "Nord", english: "North" },
+                    { french: "Sud", english: "South" },
+                    { french: "Est", english: "East" },
+                    { french: "Ouest", english: "West" }
+                ],
+                2: [
+                    { french: "Loin de", english: "Far from" },
+                    { french: "À côté de", english: "Next to" },
+                    { french: "Entre", english: "Between" },
+                    { french: "En face de", english: "Across from" },
+                    { french: "Au coin de", english: "At the corner of" },
+                    { french: "Dans", english: "In" },
+                    { french: "Sur", english: "On" },
+                    { french: "Sous", english: "Under" },
+                    { french: "Devant", english: "In front of" },
+                    { french: "Derrière", english: "Behind" },
+                    { french: "Autour de", english: "Around" },
+                    { french: "Contre", english: "Against" }
+                ],
+                3: [
+                    { french: "À gauche de", english: "To the left of" },
+                    { french: "À droite de", english: "To the right of" },
+                    { french: "En haut", english: "Upstairs" },
+                    { french: "En bas", english: "Downstairs" },
+                    { french: "Au-dessus de", english: "Above" },
+                    { french: "En dessous de", english: "Below" },
+                    { french: "À travers", english: "Through" },
+                    { french: "Le long de", english: "Along" },
+                    { french: "Vers", english: "Towards" },
+                    { french: "Jusqu'à", english: "Until" },
+                    { french: "Depuis", english: "Since" },
+                    { french: "Pendant", english: "During" }
+                ]
+            },
+            food: {
+                1: [
+                    { french: "Pain", english: "Bread" },
+                    { french: "Lait", english: "Milk" },
+                    { french: "Café", english: "Coffee" },
+                    { french: "Thé", english: "Tea" },
+                    { french: "Eau", english: "Water" },
+                    { french: "Vin", english: "Wine" },
+                    { french: "Fromage", english: "Cheese" },
+                    { french: "Beurre", english: "Butter" },
+                    { french: "Œuf", english: "Egg" },
+                    { french: "Sucre", english: "Sugar" },
+                    { french: "Sel", english: "Salt" },
+                    { french: "Pomme", english: "Apple" }
+                ],
+                2: [
+                    { french: "Fruits", english: "Fruits" },
+                    { french: "Légumes", english: "Vegetables" },
+                    { french: "Viande", english: "Meat" },
+                    { french: "Poisson", english: "Fish" },
+                    { french: "Poulet", english: "Chicken" },
+                    { french: "Riz", english: "Rice" },
+                    { french: "Pâtes", english: "Pasta" },
+                    { french: "Soupe", english: "Soup" },
+                    { french: "Salade", english: "Salad" },
+                    { french: "Tomate", english: "Tomato" },
+                    { french: "Carotte", english: "Carrot" },
+                    { french: "Pomme de terre", english: "Potato" }
+                ],
+                3: [
+                    { french: "Bœuf", english: "Beef" },
+                    { french: "Agneau", english: "Lamb" },
+                    { french: "Porc", english: "Pork" },
+                    { french: "Dessert", english: "Dessert" },
+                    { french: "Gâteau", english: "Cake" },
+                    { french: "Glace", english: "Ice cream" },
+                    { french: "Chocolat", english: "Chocolate" },
+                    { french: "Jus", english: "Juice" },
+                    { french: "Bière", english: "Beer" },
+                    { french: "Restaurant", english: "Restaurant" },
+                    { french: "Menu", english: "Menu" },
+                    { french: "L'addition", english: "The bill" }
+                ]
+            },
+            transport: {
+                1: [
+                    { french: "Train", english: "Train" },
+                    { french: "Bus", english: "Bus" },
+                    { french: "Métro", english: "Subway" },
+                    { french: "Voiture", english: "Car" },
+                    { french: "Vélo", english: "Bicycle" },
+                    { french: "Avion", english: "Airplane" },
+                    { french: "Taxi", english: "Taxi" },
+                    { french: "Moto", english: "Motorcycle" },
+                    { french: "Bateau", english: "Boat" },
+                    { french: "Camion", english: "Truck" },
+                    { french: "Marche", english: "Walking" },
+                    { french: "Voyage", english: "Trip" }
+                ],
+                2: [
+                    { french: "Gare", english: "Train station" },
+                    { french: "Aéroport", english: "Airport" },
+                    { french: "Arrêt de bus", english: "Bus stop" },
+                    { french: "Station de métro", english: "Metro station" },
+                    { french: "Billet", english: "Ticket" },
+                    { french: "Horaires", english: "Schedule" },
+                    { french: "Départ", english: "Departure" },
+                    { french: "Arrivée", english: "Arrival" },
+                    { french: "Passeport", english: "Passport" },
+                    { french: "Valise", english: "Suitcase" },
+                    { french: "Carte", english: "Map" },
+                    { french: "Guide", english: "Guide" }
+                ],
+                3: [
+                    { french: "Quai", english: "Platform" },
+                    { french: "Retard", english: "Delay" },
+                    { french: "Annulation", english: "Cancellation" },
+                    { french: "Correspondance", english: "Connection" },
+                    { french: "Terminal", english: "Terminal" },
+                    { french: "Bagages", english: "Luggage" },
+                    { french: "Douane", english: "Customs" },
+                    { french: "Immigration", english: "Immigration" },
+                    { french: "Visa", english: "Visa" },
+                    { french: "Réservation", english: "Reservation" },
+                    { french: "Classe affaires", english: "Business class" },
+                    { french: "Classe économique", english: "Economy class" }
+                ]
+            },
+            shopping: {
+                1: [
+                    { french: "Magasin", english: "Store" },
+                    { french: "Prix", english: "Price" },
+                    { french: "Cher", english: "Expensive" },
+                    { french: "Bon marché", english: "Cheap" },
+                    { french: "Taille", english: "Size" },
+                    { french: "Couleur", english: "Color" },
+                    { french: "Acheter", english: "To buy" },
+                    { french: "Vendre", english: "To sell" },
+                    { french: "Payer", english: "To pay" },
+                    { french: "Argent", english: "Money" },
+                    { french: "Euro", english: "Euro" },
+                    { french: "Centime", english: "Cent" }
+                ],
+                2: [
+                    { french: "Vendeur/Vendeuse", english: "Salesperson" },
+                    { french: "Caisse", english: "Cash register" },
+                    { french: "Réduction", english: "Discount" },
+                    { french: "Soldes", english: "Sales" },
+                    { french: "Carte bancaire", english: "Credit card" },
+                    { french: "Espèces", english: "Cash" },
+                    { french: "Chèque", english: "Check" },
+                    { french: "Portefeuille", english: "Wallet" },
+                    { french: "Sac", english: "Bag" },
+                    { french: "Essayer", english: "To try on" },
+                    { french: "Changer", english: "To exchange" },
+                    { french: "Rembourser", english: "To refund" }
+                ],
+                3: [
+                    { french: "Garantie", english: "Warranty" },
+                    { french: "Remboursement", english: "Refund" },
+                    { french: "Échange", english: "Exchange" },
+                    { french: "Livraison", english: "Delivery" },
+                    { french: "Commande", english: "Order" },
+                    { french: "Facture", english: "Receipt" },
+                    { french: "Bon d'achat", english: "Gift card" },
+                    { french: "Cadeau", english: "Gift" },
+                    { french: "Emballage", english: "Packaging" },
+                    { french: "Point de vente", english: "Point of sale" },
+                    { french: "Promotion", english: "Promotion" },
+                    { french: "Solde", english: "Sale" }
+                ]
+            },
+            health: {
+                1: [
+                    { french: "Médecin", english: "Doctor" },
+                    { french: "Hôpital", english: "Hospital" },
+                    { french: "Pharmacie", english: "Pharmacy" },
+                    { french: "Malade", english: "Sick" },
+                    { french: "Douleur", english: "Pain" },
+                    { french: "Fièvre", english: "Fever" },
+                    { french: "Toux", english: "Cough" },
+                    { french: "Rhume", english: "Cold" },
+                    { french: "Maux de tête", english: "Headache" },
+                    { french: "Maux de ventre", english: "Stomachache" },
+                    { french: "Fatigué", english: "Tired" },
+                    { french: "Bien", english: "Well" }
+                ],
+                2: [
+                    { french: "Rendez-vous", english: "Appointment" },
+                    { french: "Urgence", english: "Emergency" },
+                    { french: "Ordonnance", english: "Prescription" },
+                    { french: "Médicament", english: "Medicine" },
+                    { french: "Symptômes", english: "Symptoms" },
+                    { french: "Consultation", english: "Consultation" },
+                    { french: "Examen", english: "Examination" },
+                    { french: "Analyse", english: "Analysis" },
+                    { french: "Radio", english: "X-ray" },
+                    { french: "Opération", english: "Operation" },
+                    { french: "Chirurgie", english: "Surgery" },
+                    { french: "Anesthésie", english: "Anesthesia" }
+                ],
+                3: [
+                    { french: "Assurance maladie", english: "Health insurance" },
+                    { french: "Cabinet médical", english: "Medical office" },
+                    { french: "Infirmier/Infirmière", english: "Nurse" },
+                    { french: "Spécialiste", english: "Specialist" },
+                    { french: "Traitement", english: "Treatment" },
+                    { french: "Rétablissement", english: "Recovery" },
+                    { french: "Thérapie", english: "Therapy" },
+                    { french: "Rééducation", english: "Rehabilitation" },
+                    { french: "Prévention", english: "Prevention" },
+                    { french: "Vaccination", english: "Vaccination" },
+                    { french: "Diagnostic", english: "Diagnosis" },
+                    { french: "Pronostic", english: "Prognosis" }
+                ]
+            }
+        };
+
+        const scenarios = {
+            transport: [
+                {
+                    question: "You're at the train station and need to ask about your train's delay. What do you say?",
+                    options: [
+                        "Mon train est en retard?",
+                        "Je vais bien, merci",
+                        "Bonjour, monsieur",
+                        "Au revoir"
+                    ],
+                    correct: 0
+                },
+                {
+                    question: "You need to buy a metro ticket. What do you ask?",
+                    options: [
+                        "Je voudrais un billet",
+                        "Où est la gare?",
+                        "Bonjour, monsieur",
+                        "Merci beaucoup"
+                    ],
+                    correct: 0
+                }
+            ],
+            shopping: [
+                {
+                    question: "You want to know if a shirt is available in your size. What do you ask?",
+                    options: [
+                        "Avez-vous cette taille?",
+                        "C'est cher",
+                        "Je vais bien",
+                        "Au revoir"
+                    ],
+                    correct: 0
+                },
+                {
+                    question: "You want to pay with a credit card. What do you say?",
+                    options: [
+                        "Je peux payer par carte?",
+                        "C'est bon marché",
+                        "Bonjour, monsieur",
+                        "Merci beaucoup"
+                    ],
+                    correct: 0
+                }
+            ],
+            health: [
+                {
+                    question: "You need to make a doctor's appointment. What do you say?",
+                    options: [
+                        "Je voudrais prendre rendez-vous",
+                        "Je vais bien",
+                        "Bonjour, monsieur",
+                        "Au revoir"
+                    ],
+                    correct: 0
+                },
+                {
+                    question: "You're feeling sick and need to see a doctor. What do you say?",
+                    options: [
+                        "Je suis malade",
+                        "Je vais bien",
+                        "Bonjour, monsieur",
+                        "Merci beaucoup"
+                    ],
+                    correct: 0
+                }
+            ]
+        };
+
+        let progress = {
+            general: { score: 0, completed: 0 },
+            numbers: { score: 0, completed: 0 },
+            time: { score: 0, completed: 0 },
+            directions: { score: 0, completed: 0 },
+            food: { score: 0, completed: 0 },
+            transport: { score: 0, completed: 0 },
+            shopping: { score: 0, completed: 0 },
+            health: { score: 0, completed: 0 }
+        };
+
+        function updateProgress(category, score) {
+            progress[category].score = Math.max(progress[category].score, score);
+            progress[category].completed++;
+            
+            const progressFill = document.getElementById(`${category}-progress`);
+            const progressScore = document.getElementById(`${category}-score`);
+            const percentage = Math.min(100, (progress[category].score / 1000) * 100);
+            
+            progressFill.style.width = `${percentage}%`;
+            progressScore.textContent = `${Math.round(percentage)}%`;
+        }
+
+        function showScenario() {
+            const category = currentCategory;
+            if (scenarios[category] && Math.random() < 0.3) {
+                const scenario = scenarios[category][Math.floor(Math.random() * scenarios[category].length)];
+                const container = document.getElementById('scenario-container');
+                const text = document.getElementById('scenario-text');
+                const options = document.getElementById('scenario-options');
+                
+                text.textContent = scenario.question;
+                options.innerHTML = '';
+                
+                scenario.options.forEach((option, index) => {
+                    const button = document.createElement('div');
+                    button.className = 'scenario-option';
+                    button.textContent = option;
+                    button.addEventListener('click', () => checkScenarioAnswer(index, scenario.correct));
+                    options.appendChild(button);
+                });
+                
+                container.style.display = 'block';
+            }
+        }
+
+        function checkScenarioAnswer(selected, correct) {
+            const options = document.querySelectorAll('.scenario-option');
+            options.forEach(option => option.style.pointerEvents = 'none');
+            
+            if (selected === correct) {
+                options[selected].classList.add('correct');
+                score += 200;
+                showScore(200);
+            } else {
+                options[selected].classList.add('incorrect');
+                options[correct].classList.add('correct');
+            }
+            
+            setTimeout(() => {
+                document.getElementById('scenario-container').style.display = 'none';
+                options.forEach(option => {
+                    option.classList.remove('correct', 'incorrect');
+                    option.style.pointerEvents = 'auto';
+                });
+            }, 2000);
+        }
+
+        let currentCategory = 'general';
+        let currentLevel = 1;
+        let moves = 0;
+        let timeElapsed = 0;
+        let timer;
+        let selectedCards = [];
+        let matchedPairs = 0;
+        let score = 0;
+        let soundEnabled = true;
+        let sounds = {
+            flip: new Audio('https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3'),
+            match: new Audio('https://assets.mixkit.co/active_storage/sfx/1434/1434-preview.mp3'),
+            complete: new Audio('https://assets.mixkit.co/active_storage/sfx/1433/1433-preview.mp3')
+        };
+
+        function playSound(soundName) {
+            if (soundEnabled && sounds[soundName]) {
+                sounds[soundName].currentTime = 0;
+                sounds[soundName].play();
+            }
+        }
+
+        function showScore(points) {
+            const scoreDisplay = document.createElement('div');
+            scoreDisplay.className = 'score-display';
+            scoreDisplay.textContent = `+${points}`;
+            document.body.appendChild(scoreDisplay);
+            
+            setTimeout(() => {
+                scoreDisplay.classList.add('show');
+            }, 100);
+
+            setTimeout(() => {
+                scoreDisplay.classList.remove('show');
+                setTimeout(() => {
+                    document.body.removeChild(scoreDisplay);
+                }, 300);
+            }, 1000);
+        }
+
+        function calculateScore(moves, time) {
+            const baseScore = 1000;
+            const movePenalty = moves * 10;
+            const timePenalty = Math.floor(time / 5) * 5;
+            return Math.max(0, baseScore - movePenalty - timePenalty);
+        }
+
+        function initializeGame(level, category) {
+            const board = document.getElementById('game-board');
+            board.innerHTML = '';
+            moves = 0;
+            timeElapsed = 0;
+            matchedPairs = 0;
+            selectedCards = [];
+            updateStats();
+
+            const levelData = [...gameData[category][level], ...gameData[category][level]];
+            const shuffledData = shuffleArray(levelData);
+
+            shuffledData.forEach((item, index) => {
+                const card = createCard(item, index);
+                board.appendChild(card);
+            });
+
+            startTimer();
+        }
+
+        function createCard(item, index) {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.dataset.index = index;
+            card.dataset.french = item.french;
+            card.dataset.english = item.english;
+
+            const front = document.createElement('div');
+            front.className = 'card-front';
+            front.textContent = '?';
+
+            const back = document.createElement('div');
+            back.className = 'card-back';
+            back.textContent = item.french;
+
+            card.appendChild(front);
+            card.appendChild(back);
+
+            card.addEventListener('click', () => flipCard(card));
+            return card;
+        }
+
+        function flipCard(card) {
+            if (selectedCards.length === 2 || card.classList.contains('matched') || 
+                selectedCards.includes(card)) return;
+
+            playSound('flip');
+            card.classList.add('flipped');
+            selectedCards.push(card);
+
+            if (selectedCards.length === 2) {
+                moves++;
+                updateStats();
+                checkMatch();
+            }
+        }
+
+        function checkMatch() {
+            const [card1, card2] = selectedCards;
+            const match = card1.dataset.french === card2.dataset.french;
+
+            if (match) {
+                playSound('match');
+                card1.classList.add('matched');
+                card2.classList.add('matched');
+                matchedPairs++;
+                selectedCards = [];
+                const points = 100;
+                score += points;
+                showScore(points);
+                updateStats();
+                checkGameComplete();
+            } else {
+                setTimeout(() => {
+                    card1.classList.remove('flipped');
+                    card2.classList.remove('flipped');
+                    selectedCards = [];
+                }, 1000);
+            }
+        }
+
+        function checkGameComplete() {
+            const totalPairs = gameData[currentCategory][currentLevel].length;
+            if (matchedPairs === totalPairs) {
+                clearInterval(timer);
+                playSound('complete');
+                const finalScore = calculateScore(moves, timeElapsed);
+                score = finalScore;
+                updateProgress(currentCategory, finalScore);
+                updateStats();
+                showGameComplete();
+                showScenario();
+            }
+        }
+
+        function showGameComplete() {
+            const message = document.getElementById('game-message');
+            document.getElementById('completed-level').textContent = currentLevel;
+            document.getElementById('final-moves').textContent = moves;
+            document.getElementById('final-time').textContent = formatTime(timeElapsed);
+            message.style.display = 'block';
+        }
+
+        function startTimer() {
+            clearInterval(timer);
+            timer = setInterval(() => {
+                timeElapsed++;
+                updateStats();
+            }, 1000);
+        }
+
+        function updateStats() {
+            document.getElementById('current-level').textContent = currentLevel;
+            document.getElementById('moves').textContent = moves;
+            document.getElementById('time').textContent = formatTime(timeElapsed);
+            document.getElementById('score').textContent = score;
+        }
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Update category selector event listeners
+        document.querySelectorAll('.category-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentCategory = btn.dataset.category;
+                initializeGame(currentLevel, currentCategory);
+            });
+        });
+
+        // Update level selector event listeners
+        document.querySelectorAll('.level-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentLevel = parseInt(btn.dataset.level);
+                initializeGame(currentLevel, currentCategory);
+            });
+        });
+
+        // Update restart button event listener
+        document.getElementById('restart-btn').addEventListener('click', () => {
+            initializeGame(currentLevel, currentCategory);
+        });
+
+        document.getElementById('continue-btn').addEventListener('click', () => {
+            document.getElementById('game-message').style.display = 'none';
+            if (currentLevel < 3) {
+                currentLevel++;
+                document.querySelector(`[data-level="${currentLevel}"]`).click();
+            }
+        });
+
+        // Sound toggle functionality
+        document.getElementById('sound-toggle').addEventListener('click', function() {
+            soundEnabled = !soundEnabled;
+            this.querySelector('i').className = soundEnabled ? 'fas fa-volume-up' : 'fas fa-volume-mute';
+        });
+
+        // Initialize the game
+        initializeGame(1, 'general');
+    </script>
+</body>
+</html> 

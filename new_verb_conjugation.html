@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>French Verb Conjugation Trainer</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <style>
+        :root {
+            /* Theme colors - matching hub.html */
+            --primary: #00FFB3;
+            --primary-dark: #00CC8F;
+            --primary-light: #66FFD1;
+            --bg-primary: #0A0E1A;
+            --bg-secondary: #141824;
+            --bg-card: #1A1F2E;
+            --text-primary: #FFFFFF;
+            --text-secondary: #94A3B8;
+            --border: rgba(148, 163, 184, 0.1);
+            --gradient-primary: linear-gradient(135deg, #00FFB3 0%, #00D9FF 100%);
+            
+            /* Legacy variables for compatibility */
+            --dark-bg: #0A0E1A;          /* Very dark blue */
+            --neon-green: #00FFB3;       /* Cyan-green accent */
+            --card-bg: rgba(26, 31, 46, 0.95);
+            --text-color: #ffffff;
+            --border-color: rgba(148, 163, 184, 0.1);
+            --neon-green-dim: rgba(0, 255, 179, 0.1);
+        }
+
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-color);
+            padding: 40px 20px;
+            line-height: 1.8;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+        }
+
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2.5rem;
+            margin: 0 auto 1.5rem;
+            max-width: 900px;
+            width: 100%;
+            background: linear-gradient(135deg, rgba(0, 255, 153, 0.28), rgba(0, 120, 72, 0.22));
+            border-radius: 14px;
+            border: 1px solid rgba(0, 255, 153, 0.45);
+            box-shadow: 0 10px 28px rgba(0, 140, 90, 0.2);
+        }
+
+        .top-nav .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--text-color);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .top-nav .nav-left img {
+            width: 34px;
+            height: 34px;
+        }
+
+        .top-nav .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .nav-tag {
+            padding: 0.45rem 0.9rem;
+            border-radius: 999px;
+            background: rgba(0, 255, 153, 0.12);
+            border: 1px solid rgba(0, 255, 153, 0.4);
+            font-size: 0.85rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .nav-btn {
+            padding: 0.55rem 1.4rem;
+            border-radius: 999px;
+            background: var(--primary);
+            color: #0b3020;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            text-decoration: none;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        h1 {
+            color: var(--primary);
+            font-size: 2.5rem;
+            text-align: center;
+            margin: 1.5rem 0;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .question {
+            font-size: 1.25rem;
+            margin: 2rem 0;
+            padding: 2rem;
+            background: rgba(26, 31, 46, 0.95);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            border-radius: 8px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            max-width: 300px;
+            padding: 12px;
+            margin: 20px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--primary);
+            border-radius: 6px;
+            color: var(--text-color);
+            font-size: 1rem;
+            font-family: 'Poppins', Arial, sans-serif;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            box-shadow: 0 0 5px var(--primary);
+        }
+
+        button {
+            background: var(--primary);
+            color: var(--dark-bg);
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            font-family: 'Poppins', Arial, sans-serif;
+        }
+
+        button:hover {
+            background: rgba(0, 255, 179, 0.8);
+            transform: translateY(-2px);
+        }
+
+        #result {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            animation: slideIn 0.5s ease forwards;
+        }
+
+        #result.correct {
+            background: rgba(0, 255, 179, 0.1);
+            border: 1px solid var(--primary);
+        }
+
+        #result.incorrect {
+            background: rgba(255, 99, 71, 0.1);
+            border: 1px solid #ff6347;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .level-selection {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 2rem 0;
+        }
+
+        .level-card {
+            background: rgba(26, 31, 46, 0.95);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .level-card:hover {
+            border-color: var(--neon-green);
+            transform: translateY(-5px);
+        }
+
+        .level-card h2 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .score-display {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--card-bg);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            padding: 12px 20px;
+            border-radius: 6px;
+            color: var(--text-color);
+        }
+
+        .completed {
+            color: var(--primary);
+            font-weight: 500;
+            display: block;
+            margin-top: 10px;
+        }
+
+        .high-score {
+            color: var(--text-color);
+            opacity: 0.8;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .example-text {
+            color: rgba(255,255,255,0.7);
+            font-style: italic;
+            font-size: 0.9em;
+            margin-top: 10px;
+            padding: 10px;
+            border-left: 2px solid var(--neon-green);
+        }
+
+        .multiple-choice {
+            margin-top: 20px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .answer-option {
+            background: rgba(0, 255, 179, 0.1);
+            color: var(--text-color);
+            border: 1px solid var(--primary);
+            padding: 15px;
+            text-align: left;
+            transition: all 0.2s ease;
+        }
+
+        .answer-option:hover {
+            background: rgba(57, 255, 20, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <nav class="top-nav">
+        <div class="nav-left">
+            <img src="https://logozonepull.b-cdn.net/Logo-%20Circle%20Cropped.png" alt="Brain Games Logo">
+            <span>Brain Games™</span>
+        </div>
+        <div class="nav-actions">
+            <div class="nav-tag" id="navLicenseStatus">29 days remaining</div>
+            <a href="french_learning_hub.html" class="nav-btn">← Back to Home</a>
+        </div>
+    </nav>
+    <div class="container">
+        <h1>French Verb Conjugation Trainer</h1>
+        <p style="text-align: center; color: var(--neon-green); margin-bottom: 2rem;">
+            Choose your level to start practicing French verb conjugations!
+        </p>
+        <div id="quiz-content">
+            <!-- Content will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <script>
+        const quizLevels = {
+            basic: [
+                {
+                    verb: "Parler (to speak)",
+                    tense: "present tense",
+                    prompt: "'je' (I)",
+                    answer: "je parle",
+                    explanation: "For -er verbs in present tense, 'je' form ends in 'e'"
+                },
+                {
+                    verb: "Être (to be)",
+                    tense: "present tense",
+                    prompt: "'nous' (we)",
+                    answer: "nous sommes",
+                    explanation: "Être is irregular, 'nous' form is 'sommes'"
+                },
+                {
+                    verb: "Avoir (to have)",
+                    tense: "present tense",
+                    prompt: "'tu' (you)",
+                    answer: "tu as",
+                    explanation: "Avoir is irregular, 'tu' form is 'as'"
+                },
+                {
+                    verb: "Finir (to finish)",
+                    tense: "present tense",
+                    prompt: "'ils/elles' (they)",
+                    answer: "ils finissent",
+                    explanation: "For -ir verbs, 'ils/elles' form adds 'issent'"
+                },
+                {
+                    verb: "Aller (to go)",
+                    tense: "present tense",
+                    prompt: "'vous' (you formal/plural)",
+                    answer: "vous allez",
+                    explanation: "Aller is irregular, 'vous' form is 'allez'"
+                },
+                {
+                    verb: "Manger (to eat)",
+                    tense: "present tense",
+                    prompt: "'nous' (we)",
+                    answer: "nous mangeons",
+                    explanation: "For verbs ending in -ger, add 'e' before 'ons'"
+                },
+                {
+                    verb: "Faire (to do/make)",
+                    tense: "present tense",
+                    prompt: "'il/elle' (he/she)",
+                    answer: "il fait",
+                    explanation: "Faire is irregular, 'il/elle' form is 'fait'"
+                },
+                {
+                    verb: "Venir (to come)",
+                    tense: "present tense",
+                    prompt: "'je' (I)",
+                    answer: "je viens",
+                    explanation: "Venir is irregular, 'je' form is 'viens'"
+                },
+                {
+                    verb: "Prendre (to take)",
+                    tense: "present tense",
+                    prompt: "'vous' (you formal/plural)",
+                    answer: "vous prenez",
+                    explanation: "Prendre drops 'd' in plural forms"
+                },
+                {
+                    verb: "Voir (to see)",
+                    tense: "present tense",
+                    prompt: "'tu' (you)",
+                    answer: "tu vois",
+                    explanation: "Voir is irregular, 'tu' form is 'vois'"
+                },
+                {
+                    verb: "Dormir (to sleep)",
+                    tense: "present tense",
+                    prompt: "'ils/elles' (they)",
+                    answer: "ils dorment",
+                    explanation: "Dormir is irregular, 'ils/elles' form is 'dorment'"
+                },
+                {
+                    verb: "Lire (to read)",
+                    tense: "present tense",
+                    prompt: "'nous' (we)",
+                    answer: "nous lisons",
+                    explanation: "Lire follows regular pattern for 'nous' form"
+                },
+                {
+                    verb: "Écrire (to write)",
+                    tense: "present tense",
+                    prompt: "'je' (I)",
+                    answer: "j'écris",
+                    explanation: "Écrire is irregular, 'je' form is 'écris'"
+                },
+                {
+                    verb: "Pouvoir (can/to be able)",
+                    tense: "present tense",
+                    prompt: "'il/elle' (he/she)",
+                    answer: "il peut",
+                    explanation: "Pouvoir is irregular, 'il/elle' form is 'peut'"
+                },
+                {
+                    verb: "Vouloir (to want)",
+                    tense: "present tense",
+                    prompt: "'vous' (you formal/plural)",
+                    answer: "vous voulez",
+                    explanation: "Vouloir is irregular, 'vous' form is 'voulez'"
+                },
+                {
+                    verb: "Savoir (to know)",
+                    tense: "present tense",
+                    prompt: "'tu' (you)",
+                    answer: "tu sais",
+                    explanation: "Savoir is irregular, 'tu' form is 'sais'"
+                },
+                {
+                    verb: "Mettre (to put)",
+                    tense: "present tense",
+                    prompt: "'nous' (we)",
+                    answer: "nous mettons",
+                    explanation: "Mettre doubles 't' in plural forms"
+                },
+                {
+                    verb: "Dire (to say)",
+                    tense: "present tense",
+                    prompt: "'ils/elles' (they)",
+                    answer: "ils disent",
+                    explanation: "Dire is irregular, 'ils/elles' form is 'disent'"
+                },
+                {
+                    verb: "Comprendre (to understand)",
+                    tense: "present tense",
+                    prompt: "'je' (I)",
+                    answer: "je comprends",
+                    explanation: "Comprendre adds 's' in singular forms"
+                },
+                {
+                    verb: "Devoir (must/to have to)",
+                    tense: "present tense",
+                    prompt: "'vous' (you formal/plural)",
+                    answer: "vous devez",
+                    explanation: "Devoir is irregular, 'vous' form is 'devez'"
+                },
+                {
+                    verb: "Croire (to believe)",
+                    tense: "present tense",
+                    prompt: "'je' (I)",
+                    answer: "je crois",
+                    explanation: "Croire is irregular, 'je' form is 'crois'"
+                },
+                {
+                    verb: "Recevoir (to receive)",
+                    tense: "present tense",
+                    prompt: "'nous' (we)",
+                    answer: "nous recevons",
+                    explanation: "Recevoir is irregular, 'nous' form is 'recevons'"
+                },
+                {
+                    verb: "Apprendre (to learn)",
+                    tense: "present tense",
+                    prompt: "'tu' (you)",
+                    answer: "tu apprends",
+                    explanation: "Apprendre follows prendre pattern, 'tu' form is 'apprends'"
+                },
+                {
+                    verb: "Ouvrir (to open)",
+                    tense: "present tense",
+                    prompt: "'il' (he)",
+                    answer: "il ouvre",
+                    explanation: "Ouvrir is irregular, 'il' form is 'ouvre'"
+                },
+                {
+                    verb: "Courir (to run)",
+                    tense: "present tense",
+                    prompt: "'vous' (you)",
+                    answer: "vous courez",
+                    explanation: "Courir is irregular, 'vous' form is 'courez'"
+                },
+                {
+                    verb: "Offrir (to offer)",
+                    tense: "present tense",
+                    prompt: "'elles' (they)",
+                    answer: "elles offrent",
+                    explanation: "Offrir is irregular, 'elles' form is 'offrent'"
+                },
+                {
+                    verb: "Souffrir (to suffer)",
+                    tense: "present tense",
+                    prompt: "'je' (I)",
+                    answer: "je souffre",
+                    explanation: "Souffrir is irregular, 'je' form is 'souffre'"
+                },
+                {
+                    verb: "Couvrir (to cover)",
+                    tense: "present tense",
+                    prompt: "'nous' (we)",
+                    answer: "nous couvrons",
+                    explanation: "Couvrir is irregular, 'nous' form is 'couvrons'"
+                },
+                {
+                    verb: "Découvrir (to discover)",
+                    tense: "present tense",
+                    prompt: "'tu' (you)",
+                    answer: "tu découvres",
+                    explanation: "Découvrir follows couvrir pattern, 'tu' form is 'découvres'"
+                },
+                {
+                    verb: "Ouvrir (to open)",
+                    tense: "present tense",
+                    prompt: "'ils' (they)",
+                    answer: "ils ouvrent",
+                    explanation: "Ouvrir is irregular, 'ils' form is 'ouvrent'"
+                },
+                {
+                    verb: "Rire (to laugh)",
+                    tense: "present tense",
+                    prompt: "'je' (I)",
+                    answer: "je ris",
+                    explanation: "Rire is irregular, 'je' form is 'ris'"
+                },
+                {
+                    verb: "Sourire (to smile)",
+                    tense: "present tense",
+                    prompt: "'nous' (we)",
+                    answer: "nous sourions",
+                    explanation: "Sourire follows rire pattern, 'nous' form is 'sourions'"
+                },
+                {
+                    verb: "Connaître (to know)",
+                    tense: "present tense",
+                    prompt: "'tu' (you)",
+                    answer: "tu connais",
+                    explanation: "Connaître is irregular, 'tu' form is 'connais'"
+                },
+                {
+                    verb: "Paraître (to appear)",
+                    tense: "present tense",
+                    prompt: "'il' (he)",
+                    answer: "il paraît",
+                    explanation: "Paraître is irregular, 'il' form is 'paraît'"
+                }
+            ],
+            intermediate: [
+                {
+                    verb: "Finir (to finish)",
+                    tense: "imparfait",
+                    prompt: "'je' (I)",
+                    answer: "je finissais",
+                    explanation: "In imparfait, -ir verbs use stem + -issais for 'je' form"
+                },
+                {
+                    verb: "Prendre (to take)",
+                    tense: "passé composé",
+                    prompt: "'nous' (we)",
+                    answer: "nous avons pris",
+                    explanation: "Prendre uses 'avoir' auxiliary and past participle 'pris'"
+                },
+                {
+                    verb: "Venir (to come)",
+                    tense: "passé composé",
+                    prompt: "'elle' (she)",
+                    answer: "elle est venue",
+                    explanation: "Venir uses 'être' auxiliary and agrees with subject gender"
+                },
+                {
+                    verb: "Boire (to drink)",
+                    tense: "future simple",
+                    prompt: "'vous' (you)",
+                    answer: "vous boirez",
+                    explanation: "Future simple uses infinitive + -ez for 'vous' form"
+                },
+                {
+                    verb: "Conduire (to drive)",
+                    tense: "imparfait",
+                    prompt: "'tu' (you)",
+                    answer: "tu conduisais",
+                    explanation: "In imparfait, -re verbs use stem + -ais for 'tu' form"
+                },
+                {
+                    verb: "Partir (to leave)",
+                    tense: "passé composé",
+                    prompt: "'ils' (they)",
+                    answer: "ils sont partis",
+                    explanation: "Partir uses 'être' auxiliary and agrees with plural subjects"
+                },
+                {
+                    verb: "Choisir (to choose)",
+                    tense: "future simple",
+                    prompt: "'je' (I)",
+                    answer: "je choisirai",
+                    explanation: "Future simple uses infinitive + -ai for 'je' form"
+                },
+                {
+                    verb: "Répondre (to answer)",
+                    tense: "imparfait",
+                    prompt: "'nous' (we)",
+                    answer: "nous répondions",
+                    explanation: "In imparfait, -re verbs use stem + -ions for 'nous' form"
+                },
+                {
+                    verb: "Descendre (to descend)",
+                    tense: "passé composé",
+                    prompt: "'je' (I)",
+                    answer: "je suis descendu",
+                    explanation: "Descendre uses 'être' auxiliary in passé composé"
+                },
+                {
+                    verb: "Ouvrir (to open)",
+                    tense: "future simple",
+                    prompt: "'ils' (they)",
+                    answer: "ils ouvriront",
+                    explanation: "Future simple uses infinitive + -ont for 'ils/elles' form"
+                },
+                {
+                    verb: "Servir (to serve)",
+                    tense: "imparfait",
+                    prompt: "'vous' (you)",
+                    answer: "vous serviez",
+                    explanation: "In imparfait, -ir verbs use stem + -iez for 'vous' form"
+                },
+                {
+                    verb: "Sortir (to go out)",
+                    tense: "passé composé",
+                    prompt: "'tu' (you)",
+                    answer: "tu es sorti",
+                    explanation: "Sortir uses 'être' auxiliary in passé composé"
+                },
+                {
+                    verb: "Attendre (to wait)",
+                    tense: "future simple",
+                    prompt: "'nous' (we)",
+                    answer: "nous attendrons",
+                    explanation: "Future simple uses infinitive + -ons for 'nous' form"
+                },
+                {
+                    verb: "Perdre (to lose)",
+                    tense: "imparfait",
+                    prompt: "'il' (he)",
+                    answer: "il perdait",
+                    explanation: "In imparfait, -re verbs use stem + -ait for 'il/elle' form"
+                },
+                {
+                    verb: "Dormir (to sleep)",
+                    tense: "passé composé",
+                    prompt: "'vous' (you)",
+                    answer: "vous avez dormi",
+                    explanation: "Dormir uses 'avoir' auxiliary in passé composé"
+                },
+                {
+                    verb: "Sentir (to feel)",
+                    tense: "future simple",
+                    prompt: "'elle' (she)",
+                    answer: "elle sentira",
+                    explanation: "Future simple uses infinitive + -a for 'il/elle' form"
+                },
+                {
+                    verb: "Rendre (to return/give back)",
+                    tense: "imparfait",
+                    prompt: "'ils' (they)",
+                    answer: "ils rendaient",
+                    explanation: "In imparfait, -re verbs use stem + -aient for 'ils/elles' form"
+                },
+                {
+                    verb: "Monter (to go up)",
+                    tense: "passé composé",
+                    prompt: "'nous' (we)",
+                    answer: "nous sommes montés",
+                    explanation: "Monter uses 'être' auxiliary and agrees with plural subjects"
+                },
+                {
+                    verb: "Réussir (to succeed)",
+                    tense: "future simple",
+                    prompt: "'tu' (you)",
+                    answer: "tu réussiras",
+                    explanation: "Future simple uses infinitive + -as for 'tu' form"
+                },
+                {
+                    verb: "Vendre (to sell)",
+                    tense: "imparfait",
+                    prompt: "'je' (I)",
+                    answer: "je vendais",
+                    explanation: "In imparfait, -re verbs use stem + -ais for 'je' form"
+                },
+                {
+                    verb: "Écrire (to write)",
+                    tense: "passé composé",
+                    prompt: "'nous' (we)",
+                    answer: "nous avons écrit",
+                    explanation: "Écrire uses 'avoir' auxiliary and past participle 'écrit'"
+                },
+                {
+                    verb: "Lire (to read)",
+                    tense: "imparfait",
+                    prompt: "'vous' (you)",
+                    answer: "vous lisiez",
+                    explanation: "In imparfait, lire uses stem + -iez for 'vous' form"
+                },
+                {
+                    verb: "Croire (to believe)",
+                    tense: "passé composé",
+                    prompt: "'je' (I)",
+                    answer: "j'ai cru",
+                    explanation: "Croire uses 'avoir' auxiliary and past participle 'cru'"
+                },
+                {
+                    verb: "Connaître (to know)",
+                    tense: "future simple",
+                    prompt: "'tu' (you)",
+                    answer: "tu connaîtras",
+                    explanation: "Future simple uses infinitive + -as for 'tu' form"
+                },
+                {
+                    verb: "Apprendre (to learn)",
+                    tense: "imparfait",
+                    prompt: "'ils' (they)",
+                    answer: "ils apprenaient",
+                    explanation: "In imparfait, apprendre uses stem + -aient for 'ils' form"
+                },
+                {
+                    verb: "Comprendre (to understand)",
+                    tense: "passé composé",
+                    prompt: "'elle' (she)",
+                    answer: "elle a compris",
+                    explanation: "Comprendre uses 'avoir' auxiliary and past participle 'compris'"
+                },
+                {
+                    verb: "Mettre (to put)",
+                    tense: "future simple",
+                    prompt: "'nous' (we)",
+                    answer: "nous mettrons",
+                    explanation: "Future simple uses infinitive + -ons for 'nous' form"
+                },
+                {
+                    verb: "Battre (to beat)",
+                    tense: "imparfait",
+                    prompt: "'je' (I)",
+                    answer: "je battais",
+                    explanation: "In imparfait, battre uses stem + -ais for 'je' form"
+                },
+                {
+                    verb: "Permettre (to allow)",
+                    tense: "passé composé",
+                    prompt: "'vous' (you)",
+                    answer: "vous avez permis",
+                    explanation: "Permettre uses 'avoir' auxiliary and past participle 'permis'"
+                },
+                {
+                    verb: "Promettre (to promise)",
+                    tense: "future simple",
+                    prompt: "'il' (he)",
+                    answer: "il promettra",
+                    explanation: "Future simple uses infinitive + -a for 'il' form"
+                },
+                {
+                    verb: "Souffrir (to suffer)",
+                    tense: "imparfait",
+                    prompt: "'tu' (you)",
+                    answer: "tu souffrais",
+                    explanation: "In imparfait, souffrir uses stem + -ais for 'tu' form"
+                },
+                {
+                    verb: "Ouvrir (to open)",
+                    tense: "passé composé",
+                    prompt: "'nous' (we)",
+                    answer: "nous avons ouvert",
+                    explanation: "Ouvrir uses 'avoir' auxiliary and past participle 'ouvert'"
+                },
+                {
+                    verb: "Couvrir (to cover)",
+                    tense: "future simple",
+                    prompt: "'elles' (they)",
+                    answer: "elles couvriront",
+                    explanation: "Future simple uses infinitive + -ont for 'elles' form"
+                },
+                {
+                    verb: "Découvrir (to discover)",
+                    tense: "imparfait",
+                    prompt: "'je' (I)",
+                    answer: "je découvrais",
+                    explanation: "In imparfait, découvrir uses stem + -ais for 'je' form"
+                }
+            ],
+            advanced: [
+                {
+                    verb: "Acquérir (to acquire)",
+                    tense: "subjunctive present",
+                    prompt: "'que je' (that I)",
+                    answer: "que j'acquière",
+                    explanation: "Acquérir changes stem in subjunctive present"
+                },
+                {
+                    verb: "Mourir (to die)",
+                    tense: "plus-que-parfait",
+                    prompt: "'il' (he)",
+                    answer: "il était mort",
+                    explanation: "Mourir uses 'être' auxiliary and past participle 'mort'"
+                },
+                {
+                    verb: "Craindre (to fear)",
+                    tense: "conditional present",
+                    prompt: "'nous' (we)",
+                    answer: "nous craindrions",
+                    explanation: "Conditional uses infinitive + conditional endings (-ions)"
+                },
+                {
+                    verb: "Résoudre (to resolve)",
+                    tense: "subjunctive past",
+                    prompt: "'que vous' (that you)",
+                    answer: "que vous ayez résolu",
+                    explanation: "Past subjunctive uses subjunctive of avoir/être + past participle"
+                },
+                {
+                    verb: "Pleuvoir (to rain)",
+                    tense: "conditional past",
+                    prompt: "impersonal form",
+                    answer: "il aurait plu",
+                    explanation: "Conditional past uses conditional of avoir + past participle"
+                },
+                {
+                    verb: "Croître (to grow)",
+                    tense: "plus-que-parfait",
+                    prompt: "'elles' (they)",
+                    answer: "elles avaient crû",
+                    explanation: "Croître takes circumflex in past participle to distinguish from 'croire'"
+                },
+                {
+                    verb: "Décevoir (to disappoint)",
+                    tense: "subjunctive present",
+                    prompt: "'qu'il' (that he)",
+                    answer: "qu'il déçoive",
+                    explanation: "Décevoir changes 'c' to 'ç' before 'o' in subjunctive"
+                },
+                {
+                    verb: "Joindre (to join)",
+                    tense: "conditional past",
+                    prompt: "'tu' (you)",
+                    answer: "tu aurais joint",
+                    explanation: "Conditional past uses conditional of avoir + past participle 'joint'"
+                },
+                {
+                    verb: "Naître (to be born)",
+                    tense: "plus-que-parfait",
+                    prompt: "'je' (I)",
+                    answer: "j'étais né",
+                    explanation: "Naître uses 'être' auxiliary and agrees with subject"
+                },
+                {
+                    verb: "Conclure (to conclude)",
+                    tense: "subjunctive past",
+                    prompt: "'que nous' (that we)",
+                    answer: "que nous ayons conclu",
+                    explanation: "Past subjunctive uses subjunctive of avoir + past participle"
+                },
+                {
+                    verb: "Vaincre (to conquer)",
+                    tense: "conditional present",
+                    prompt: "'ils' (they)",
+                    answer: "ils vaincraient",
+                    explanation: "Vaincre is irregular but follows conditional endings"
+                },
+                {
+                    verb: "Suffire (to suffice)",
+                    tense: "subjunctive present",
+                    prompt: "'qu'elles' (that they)",
+                    answer: "qu'elles suffisent",
+                    explanation: "Suffire is irregular in subjunctive present"
+                },
+                {
+                    verb: "Absoudre (to absolve)",
+                    tense: "plus-que-parfait",
+                    prompt: "'vous' (you)",
+                    answer: "vous aviez absous",
+                    explanation: "Absoudre has irregular past participle 'absous'"
+                },
+                {
+                    verb: "Médire (to speak ill)",
+                    tense: "conditional past",
+                    prompt: "'elle' (she)",
+                    answer: "elle aurait médit",
+                    explanation: "Médire follows dire conjugation but has different past participle"
+                },
+                {
+                    verb: "Émouvoir (to move/touch)",
+                    tense: "subjunctive present",
+                    prompt: "'que je' (that I)",
+                    answer: "que j'émeuve",
+                    explanation: "Émouvoir changes stem in subjunctive present"
+                },
+                {
+                    verb: "Dissoudre (to dissolve)",
+                    tense: "plus-que-parfait",
+                    prompt: "'ils' (they)",
+                    answer: "ils avaient dissous",
+                    explanation: "Dissoudre has irregular past participle 'dissous'"
+                },
+                {
+                    verb: "Choir (to fall)",
+                    tense: "conditional present",
+                    prompt: "'je' (I)",
+                    answer: "je choirais",
+                    explanation: "Choir is a rare verb, used mainly in conditional and infinitive"
+                },
+                {
+                    verb: "Clore (to close)",
+                    tense: "subjunctive past",
+                    prompt: "'qu'il' (that he)",
+                    answer: "qu'il ait clos",
+                    explanation: "Clore has defective conjugation, past participle 'clos'"
+                },
+                {
+                    verb: "Paître (to graze)",
+                    tense: "conditional past",
+                    prompt: "'nous' (we)",
+                    answer: "nous aurions pu",
+                    explanation: "Paître has limited tenses, uses past participle 'pu'"
+                },
+                {
+                    verb: "Sourdre (to spring forth)",
+                    tense: "subjunctive present",
+                    prompt: "'qu'elles' (that they)",
+                    answer: "qu'elles sourdent",
+                    explanation: "Sourdre is defective, used mainly in third person"
+                },
+                {
+                    verb: "Conquérir (to conquer)",
+                    tense: "subjunctive present",
+                    prompt: "'que je' (that I)",
+                    answer: "que je conquière",
+                    explanation: "Conquérir changes stem in subjunctive present"
+                },
+                {
+                    verb: "Enquérir (to inquire)",
+                    tense: "plus-que-parfait",
+                    prompt: "'nous' (we)",
+                    answer: "nous nous étions enquises",
+                    explanation: "Enquérir is reflexive and uses être auxiliary"
+                },
+                {
+                    verb: "Requérir (to require)",
+                    tense: "conditional past",
+                    prompt: "'vous' (you)",
+                    answer: "vous auriez requis",
+                    explanation: "Requérir has irregular past participle 'requis'"
+                },
+                {
+                    verb: "Accroître (to increase)",
+                    tense: "subjunctive present",
+                    prompt: "'qu'il' (that he)",
+                    answer: "qu'il accroisse",
+                    explanation: "Accroître changes stem in subjunctive present"
+                },
+                {
+                    verb: "Décroître (to decrease)",
+                    tense: "plus-que-parfait",
+                    prompt: "'elles' (they)",
+                    answer: "elles avaient décru",
+                    explanation: "Décroître has past participle 'décru' with circumflex"
+                },
+                {
+                    verb: "Recroître (to grow again)",
+                    tense: "conditional present",
+                    prompt: "'je' (I)",
+                    answer: "je recroîtrais",
+                    explanation: "Recroître uses circumflex in conditional"
+                },
+                {
+                    verb: "Surcroître (to superabound)",
+                    tense: "subjunctive past",
+                    prompt: "'que tu' (that you)",
+                    answer: "que tu aies surcru",
+                    explanation: "Surcroître has irregular past participle"
+                },
+                {
+                    verb: "Croître (to grow)",
+                    tense: "conditional past",
+                    prompt: "'il' (he)",
+                    answer: "il aurait crû",
+                    explanation: "Croître uses circumflex in past participle to distinguish from croire"
+                },
+                {
+                    verb: "Mouvoir (to move)",
+                    tense: "subjunctive present",
+                    prompt: "'que nous' (that we)",
+                    answer: "que nous mouvions",
+                    explanation: "Mouvoir changes stem in subjunctive present"
+                },
+                {
+                    verb: "Promouvoir (to promote)",
+                    tense: "plus-que-parfait",
+                    prompt: "'vous' (you)",
+                    answer: "vous aviez promu",
+                    explanation: "Promouvoir has irregular past participle 'promu'"
+                },
+                {
+                    verb: "Émouvoir (to move/touch)",
+                    tense: "conditional past",
+                    prompt: "'elles' (they)",
+                    answer: "elles auraient ému",
+                    explanation: "Émouvoir has past participle 'ému'"
+                },
+                {
+                    verb: "Pourvoir (to provide)",
+                    tense: "subjunctive present",
+                    prompt: "'que je' (that I)",
+                    answer: "que je pourvoie",
+                    explanation: "Pourvoir changes stem in subjunctive present"
+                },
+                {
+                    verb: "Dépourvoir (to deprive)",
+                    tense: "plus-que-parfait",
+                    prompt: "'tu' (you)",
+                    answer: "tu avais dépourvu",
+                    explanation: "Dépourvoir has irregular past participle 'dépourvu'"
+                },
+                {
+                    verb: "Repourvoir (to provide again)",
+                    tense: "conditional present",
+                    prompt: "'nous' (we)",
+                    answer: "nous repourvrions",
+                    explanation: "Repourvoir follows pourvoir conjugation pattern"
+                }
+            ]
+        };
+
+        const userProgress = {
+            basic: { highScore: 0, completed: false },
+            intermediate: { highScore: 0, completed: false },
+            advanced: { highScore: 0, completed: false }
+        };
+
+        let currentLevel = null;
+        let currentQuestion = 0;
+        let score = 0;
+        let missedQuestions = [];
+
+        function showLevelSelection() {
+            loadProgress();
+            const content = `
+                <div class="level-selection">
+                    <div class="level-card" onclick="startQuiz('basic')">
+                        <h2>Basic</h2>
+                        <p>Practice regular -er verbs and common irregular verbs in present tense</p>
+                        ${userProgress.basic.completed ? '<span class="completed">✓ Completed</span>' : ''}
+                        ${userProgress.basic.highScore > 0 ? `<p class="high-score">High Score: ${userProgress.basic.highScore}%</p>` : ''}
+                    </div>
+                    <div class="level-card" onclick="startQuiz('intermediate')">
+                        <h2>Intermediate</h2>
+                        <p>Practice -ir/-re verbs and more irregular verbs in various tenses</p>
+                        ${userProgress.intermediate.completed ? '<span class="completed">✓ Completed</span>' : ''}
+                        ${userProgress.intermediate.highScore > 0 ? `<p class="high-score">High Score: ${userProgress.intermediate.highScore}%</p>` : ''}
+                    </div>
+                    <div class="level-card" onclick="startQuiz('advanced')">
+                        <h2>Advanced</h2>
+                        <p>Master complex tenses and rare irregular verbs</p>
+                        ${userProgress.advanced.completed ? '<span class="completed">✓ Completed</span>' : ''}
+                        ${userProgress.advanced.highScore > 0 ? `<p class="high-score">High Score: ${userProgress.advanced.highScore}%</p>` : ''}
+                    </div>
+                </div>
+            `;
+            document.getElementById('quiz-content').innerHTML = content;
+        }
+
+        function startQuiz(level) {
+            currentLevel = level;
+            currentQuestion = 0;
+            score = 0;
+            missedQuestions = [];
+            displayQuestion();
+        }
+
+        function displayQuestion() {
+            const questionData = quizLevels[currentLevel][currentQuestion];
+            document.getElementById('quiz-content').innerHTML = `
+                <div class="score-display">Level: ${currentLevel.charAt(0).toUpperCase() + currentLevel.slice(1)} | Score: ${score}/${quizLevels[currentLevel].length}</div>
+                <div class="question">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <button onclick="confirmGoBack()" style="background: rgba(57, 255, 20, 0.2); color: var(--neon-green);">
+                            ← Back to Levels
+                        </button>
+                        <span class="question-number" style="color: var(--neon-green);">
+                            Question ${currentQuestion + 1}/${quizLevels[currentLevel].length}
+                        </span>
+                    </div>
+                    <p><strong>Verb: "${questionData.verb}"</strong></p>
+                    <p>Conjugate in the ${questionData.tense} for ${questionData.prompt}:</p>
+                    <input type="text" id="userAnswer" placeholder="Type your answer here">
+                    <div style="display: flex; gap: 10px; margin-top: 10px;">
+                        <button onclick="checkAnswer()">Submit Answer</button>
+                        <button onclick="showHint()" style="background: rgba(57, 255, 20, 0.2); color: var(--neon-green);">Show Hint</button>
+                    </div>
+                </div>
+                <div id="result" class="hidden"></div>
+            `;
+            document.getElementById('userAnswer').focus();
+        }
+
+        function confirmGoBack() {
+            currentLevel = null;
+            currentQuestion = 0;
+            score = 0;
+            missedQuestions = [];
+            showLevelSelection();
+        }
+
+        function showHint() {
+            const questionData = quizLevels[currentLevel][currentQuestion];
+            const hint = document.createElement('p');
+            hint.style.color = 'var(--neon-green)';
+            hint.style.marginTop = '10px';
+            hint.textContent = `Hint: ${questionData.explanation}`;
+            document.querySelector('.question').appendChild(hint);
+        }
+
+        function checkAnswer() {
+            const userAnswer = document.getElementById('userAnswer').value.trim().toLowerCase();
+            const questionData = quizLevels[currentLevel][currentQuestion];
+            const result = document.getElementById('result');
+
+            if (userAnswer === questionData.answer) {
+                score++;
+                result.innerHTML = `
+                    <strong>Correct! 🎉</strong><br>
+                    ${questionData.explanation}
+                `;
+                result.className = 'correct';
+                
+                setTimeout(() => {
+                    if (currentQuestion < quizLevels[currentLevel].length - 1) {
+                        currentQuestion++;
+                        displayQuestion();
+                    } else {
+                        showFinalResults();
+                        saveProgress();
+                    }
+                }, 1500);
+            } else {
+                if (!missedQuestions.includes(currentQuestion)) {
+                    missedQuestions.push(currentQuestion);
+                }
+                
+                result.innerHTML = `
+                    <strong>Not quite right!</strong><br>
+                    The correct answer is '${questionData.answer}'.<br>
+                    ${questionData.explanation}
+                `;
+                result.className = 'incorrect';
+            }
+
+            result.classList.remove('hidden');
+        }
+
+        function showFinalResults() {
+            const percentage = (score / quizLevels[currentLevel].length) * 100;
+            
+            if (percentage > userProgress[currentLevel].highScore) {
+                userProgress[currentLevel].highScore = percentage;
+            }
+            
+            if (percentage >= 80) {
+                userProgress[currentLevel].completed = true;
+            }
+
+            let recommendation = '';
+            if (percentage >= 80) {
+                if (currentLevel === 'basic') {
+                    recommendation = '<button onclick="startQuiz(\'intermediate\')">Try Intermediate Level</button>';
+                } else if (currentLevel === 'intermediate') {
+                    recommendation = '<button onclick="startQuiz(\'advanced\')">Try Advanced Level</button>';
+                }
+            }
+
+            const reviewButton = missedQuestions.length > 0 ? 
+                '<button onclick="startReviewMode()">Review Missed Questions</button>' : '';
+
+            document.getElementById('quiz-content').innerHTML = `
+                <div class="question">
+                    <h2 style="color: var(--neon-green); text-align: center; margin-bottom: 20px;">
+                        ${currentLevel.charAt(0).toUpperCase() + currentLevel.slice(1)} Level Complete!<br>
+                        Your Score: ${score}/${quizLevels[currentLevel].length} (${percentage}%)
+                    </h2>
+                    <p style="text-align: center; margin-bottom: 20px;">
+                        High Score: ${userProgress[currentLevel].highScore}%<br>
+                        ${percentage >= 80 ? 'Excellent! You\'re ready for the next level!' :
+                        percentage >= 60 ? 'Good job! Keep practicing to improve further.' :
+                        'Keep practicing! French verb conjugation takes time to master.'}
+                    </p>
+                    <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                        <button onclick="startQuiz('${currentLevel}')">Retry Level</button>
+                        <button onclick="showLevelSelection()">Choose Different Level</button>
+                        ${recommendation}
+                        ${reviewButton}
+                    </div>
+                </div>
+            `;
+        }
+
+        function startReviewMode() {
+            currentQuestion = 0;
+            const reviewQuestions = missedQuestions.map(index => quizLevels[currentLevel][index]);
+            quizLevels[currentLevel] = reviewQuestions;
+            score = 0;
+            displayQuestion();
+        }
+
+        // Initialize with level selection
+        window.onload = () => {
+            updateNavLicenseStatus();
+            showLevelSelection();
+        };
+
+        // Keep the Enter key listener
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && document.getElementById('userAnswer')) {
+                checkAnswer();
+            }
+        });
+
+        function updateNavLicenseStatus() {
+            const statusElement = document.getElementById('navLicenseStatus');
+            if (!statusElement) return;
+
+            try {
+                const storedData = localStorage.getItem('validatedLicense');
+                if (!storedData) return;
+
+                const licenseData = JSON.parse(storedData);
+                if (!licenseData || !licenseData.expiryDate) return;
+
+                const expiry = new Date(licenseData.expiryDate);
+                const today = new Date();
+                const diff = Math.ceil((expiry - today) / (1000 * 60 * 60 * 24));
+
+                if (diff < 0) {
+                    statusElement.textContent = 'Expired';
+                } else if (diff === 1) {
+                    statusElement.textContent = '1 day remaining';
+                } else {
+                    statusElement.textContent = `${diff} days remaining`;
+                }
+            } catch (error) {
+                console.warn('Could not update license status', error);
+            }
+        }
+
+        // Add local storage functions
+        function saveProgress() {
+            localStorage.setItem('verbQuizProgress', JSON.stringify(userProgress));
+            localStorage.setItem('verbQuizHighScores', JSON.stringify({
+                basic: userProgress.basic.highScore,
+                intermediate: userProgress.intermediate.highScore,
+                advanced: userProgress.advanced.highScore
+            }));
+        }
+
+        function loadProgress() {
+            const savedProgress = localStorage.getItem('verbQuizProgress');
+            const savedScores = localStorage.getItem('verbQuizHighScores');
+            if (savedProgress) {
+                userProgress = JSON.parse(savedProgress);
+            }
+            if (savedScores) {
+                const scores = JSON.parse(savedScores);
+                Object.keys(scores).forEach(level => {
+                    userProgress[level].highScore = scores[level];
+                });
+            }
+        }
+
+        // Add multiple choice function
+        function showMultipleChoice() {
+            const questionData = quizLevels[currentLevel][currentQuestion];
+            const correctAnswer = questionData.answer;
+            
+            // Generate wrong answers based on common mistakes
+            let options = [correctAnswer];
+            options.push(generateWrongAnswer(questionData));
+            options.push(generateWrongAnswer(questionData));
+            options.push(generateWrongAnswer(questionData));
+            
+            // Shuffle options
+            options = shuffleArray(options);
+
+            const optionsHtml = options.map(option => `
+                <button onclick="checkMultipleChoice('${option}')" class="answer-option">
+                    ${option}
+                </button>
+            `).join('');
+
+            document.querySelector('.question').innerHTML += `
+                <div class="multiple-choice">
+                    <p>Choose the correct answer:</p>
+                    <div class="options-grid">
+                        ${optionsHtml}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Helper function to shuffle array
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+    </script>
+</body>
+</html>

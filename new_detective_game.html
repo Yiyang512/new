@@ -1,0 +1,3622 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>French Word Detective</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Theme colors - matching hub.html */
+            --primary: #00FFB3;
+            --primary-dark: #00CC8F;
+            --primary-light: #66FFD1;
+            --bg-primary: #0A0E1A;
+            --bg-secondary: #141824;
+            --bg-card: #1A1F2E;
+            --text-primary: #FFFFFF;
+            --text-secondary: #94A3B8;
+            --border: rgba(148, 163, 184, 0.1);
+            --gradient-primary: linear-gradient(135deg, #00FFB3 0%, #00D9FF 100%);
+            
+            /* Legacy variables for compatibility */
+            --primary-color: #00FFB3;
+            --secondary-color: #00CC8F;
+            --accent-color: #66FFD1;
+            --background-color: #0A0E1A;
+            --text-color: #FFFFFF;
+            --gradient: linear-gradient(135deg, rgba(0, 255, 179, 0.2), rgba(0, 217, 255, 0.1));
+            --error-color: #FF5252;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            padding: 20px;
+            min-height: 100vh;
+            background: var(--bg-primary);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 2px;
+            background: var(--gradient);
+            animation: glow 2s infinite;
+        }
+
+        h1 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 2.5em;
+            text-shadow: 0 0 10px var(--primary-color);
+            letter-spacing: 2px;
+            animation: float 3s ease-in-out infinite;
+            background: linear-gradient(90deg, 
+                var(--primary-color) 0%, 
+                var(--accent-color) 50%, 
+                var(--primary-color) 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shimmer 3s linear infinite;
+        }
+
+        .game-setup {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .level-selector, .topic-selector {
+            flex: 1;
+            min-width: 300px;
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(12px);
+        }
+
+        .selector-title {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            text-align: center;
+        }
+
+        .level-btn, .topic-btn {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            background-color: rgba(5, 18, 28, 0.9);
+            color: var(--text-color);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-bottom: 0.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .level-btn::after, .topic-btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .level-btn:hover::after, .topic-btn:hover::after {
+            opacity: 1;
+        }
+
+        .level-btn.active, .topic-btn.active {
+            animation: pulse 2s infinite;
+            background-color: rgba(0, 255, 179, 0.1);
+            border-color: var(--primary);
+            box-shadow: 0 0 18px rgba(255, 174, 0, 0.6);
+            color: #FFE9B0;
+        }
+
+        .game-container {
+            background: var(--bg-card);
+            border-radius: 22px;
+            padding: 3rem 3.5rem;
+            margin: 0 auto 3rem;
+            border: 1px solid var(--border);
+            backdrop-filter: blur(14px);
+            box-shadow: 0 20px 48px rgba(0, 0, 0, 0.55);
+            animation: fadeInUp 0.8s ease-out;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            max-width: 1200px;
+        }
+
+        .game-container:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 22px 44px rgba(0, 255, 153, 0.2);
+        }
+
+        .game-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.75rem;
+            padding: 1.5rem 1.75rem;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .stat-item {
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: scale(1.1);
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: var(--accent-color);
+        }
+
+        .stat-value {
+            font-size: 1.4rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .question-container {
+            margin-bottom: 2.5rem;
+        }
+
+        .question-text {
+            font-size: 1.65rem;
+            margin-bottom: 1.75rem;
+            color: var(--accent-color);
+            text-align: center;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .options-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.4rem;
+            margin-top: 1.4rem;
+        }
+
+        .option-btn {
+            padding: 1.2rem 1.5rem;
+            border: 2px solid var(--secondary-color);
+            border-radius: 12px;
+            background-color: rgba(0, 255, 179, 0.12);
+            color: var(--text-color);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            font-size: 1.12rem;
+        }
+
+        .option-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(0, 255, 179, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .option-btn:hover::before {
+            left: 100%;
+        }
+
+        .option-btn:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 18px 28px rgba(0, 255, 179, 0.25);
+        }
+
+        .option-btn.correct {
+            animation: celebrate 0.8s ease;
+        }
+
+        .option-btn.incorrect {
+            animation: shake 0.5s ease;
+        }
+
+        .feedback {
+            padding: 1.2rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            display: none;
+            text-align: center;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .feedback.success {
+            display: block;
+            background: rgba(0, 255, 179, 0.1);
+            border: 1px solid var(--primary);
+            box-shadow: 0 0 15px rgba(0, 255, 179, 0.2);
+        }
+
+        .feedback.error {
+            display: block;
+            background: rgba(255, 82, 82, 0.1);
+            border: 1px solid var(--error-color);
+            color: var(--error-color);
+            box-shadow: 0 0 15px rgba(255, 82, 82, 0.2);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(0, 255, 179, 0.1);
+            border-radius: 3px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            position: relative;
+            background: linear-gradient(90deg, 
+                var(--primary-color) 0%, 
+                var(--accent-color) 50%, 
+                var(--primary-color) 100%);
+            background-size: 200% auto;
+            animation: shimmer 3s linear infinite;
+        }
+
+        .hint-btn {
+            padding: 0.75rem 2rem;
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 1.5rem auto 0;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            background: transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hint-btn:hover {
+            background: rgba(0, 255, 153, 0.1);
+        }
+
+        .hint-text {
+            margin-top: 0.5rem;
+            color: var(--accent-color);
+            font-style: italic;
+            display: none;
+            text-align: center;
+            padding: 1rem;
+            background: rgba(0, 255, 179, 0.1);
+            border-radius: 8px;
+        }
+
+        .hint-text.show {
+            display: block;
+            animation: fadeInUp 0.3s ease-out;
+        }
+
+        .level-complete {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(18, 18, 18, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 16px;
+            text-align: center;
+            border: 2px solid var(--primary);
+            box-shadow: 0 0 30px rgba(0, 255, 153, 0.3);
+            z-index: 1000;
+            animation: fadeInUp 0.5s ease-out;
+            max-width: 90%;
+            width: 500px;
+        }
+
+        .celebration-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            animation: float 2s ease-in-out infinite;
+            background: linear-gradient(90deg, 
+                var(--primary-color) 0%, 
+                var(--accent-color) 50%, 
+                var(--primary-color) 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shimmer 3s linear infinite;
+        }
+
+        .celebration-stats {
+            margin: 1rem 0;
+            padding: 1rem;
+            background: rgba(0, 255, 179, 0.1);
+            border-radius: 8px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .stat-card {
+            background: rgba(0, 204, 122, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--accent-color);
+        }
+
+        .stat-card-title {
+            color: var(--accent-color);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card-value {
+            color: var(--primary);
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        @media (max-width: 900px) {
+            .game-container {
+                padding: 2.25rem 2.5rem;
+                max-width: 95%;
+            }
+
+            .options-container {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .game-container {
+                padding: 1.75rem 1.5rem;
+                margin: 0 auto 2rem;
+                border-radius: 16px;
+                max-width: 100%;
+            }
+
+            .game-stats {
+                flex-direction: column;
+                gap: 0.75rem;
+                padding: 1rem;
+            }
+
+            .stat-label {
+                font-size: 0.85rem;
+            }
+
+            .stat-value {
+                font-size: 1.1rem;
+            }
+
+            .question-text {
+                font-size: 1.25rem;
+                margin-bottom: 1.25rem;
+            }
+
+            .options-container {
+                grid-template-columns: 1fr;
+                gap: 0.9rem;
+            }
+
+            .option-btn {
+                padding: 0.95rem;
+                font-size: 1rem;
+                border-radius: 10px;
+            }
+
+            .hint-btn {
+                padding: 0.6rem 1.5rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        @keyframes glow {
+            0% { box-shadow: 0 0 5px var(--primary-color); }
+            50% { box-shadow: 0 0 20px var(--primary-color); }
+            100% { box-shadow: 0 0 5px var(--primary-color); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+
+        @keyframes celebrate {
+            0% { transform: scale(1); }
+            25% { transform: scale(1.1) rotate(-5deg); }
+            50% { transform: scale(1.1) rotate(5deg); }
+            75% { transform: scale(1.1) rotate(-5deg); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scoreIncrease {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); color: var(--primary-color); }
+            100% { transform: scale(1); }
+        }
+
+        .stat-value.updating {
+            animation: scoreIncrease 0.5s ease;
+        }
+
+        /** New navigation bar **/
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2.5rem;
+            margin-bottom: 1.5rem;
+            background: var(--bg-card);
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+        }
+
+        .top-nav .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--text-color);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .top-nav .nav-left img {
+            width: 34px;
+            height: 34px;
+        }
+
+        .top-nav .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .nav-tag {
+            padding: 0.45rem 0.9rem;
+            border-radius: 999px;
+            background: rgba(0, 255, 153, 0.12);
+            border: 1px solid rgba(0, 255, 153, 0.4);
+            font-size: 0.85rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .nav-btn {
+            padding: 0.55rem 1.4rem;
+            border-radius: 999px;
+            background: var(--primary);
+            color: var(--bg-primary);
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 255, 179, 0.35);
+        }
+
+        @media (max-width: 768px) {
+            .top-nav {
+                flex-direction: column;
+                gap: 0.9rem;
+                padding: 1rem 1.25rem;
+            }
+
+            .top-nav .nav-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .nav-btn {
+                padding: 0.5rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="top-nav">
+            <div class="nav-left">
+                <img src="https://logozonepull.b-cdn.net/Logo-%20Circle%20Cropped.png" alt="Brain Games Logo">
+                <span>Brain Games™</span>
+            </div>
+            <div class="nav-actions">
+                <div class="nav-tag" id="navLicenseStatus">29 days remaining</div>
+                <a href="french_learning_hub.html" class="nav-btn">← Back to Home</a>
+            </div>
+        </nav>
+        <header>
+            <h1>French Word Detective</h1>
+            <p>Solve word puzzles and master French vocabulary!</p>
+        </header>
+
+        <div class="game-container">
+            <div class="game-stats">
+                <div class="stat-item">
+                    <div class="stat-label">Score</div>
+                    <div class="stat-value">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Streak</div>
+                    <div class="stat-value">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Questions Left</div>
+                    <div class="stat-value">12</div>
+                </div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <div class="question-container">
+                <div class="question-text"></div>
+                <div class="options-container"></div>
+                <button class="hint-btn">Show Hint</button>
+                <div class="hint-text"></div>
+            </div>
+            <div class="feedback"></div>
+        </div>
+    </div>
+
+    <script>
+        const gameData = {
+            beginner: {
+                general: [
+                    {
+                        question: "What is the French word for 'cat'?",
+                        options: ["chat", "chien", "oiseau", "poisson"],
+                        correct: "chat",
+                        hint: "This word sounds similar to 'shah'",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'good morning' in French?",
+                        options: ["bonjour", "au revoir", "merci", "s'il vous plaît"],
+                        correct: "bonjour",
+                        hint: "This word literally means 'good day'",
+                        type: "greetings"
+                    },
+                    {
+                        question: "What is the French word for 'book'?",
+                        options: ["livre", "crayon", "table", "fenêtre"],
+                        correct: "livre",
+                        hint: "This word is related to 'library'",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'thank you' in French?",
+                        options: ["merci", "s'il vous plaît", "bonjour", "au revoir"],
+                        correct: "merci",
+                        hint: "This word is used in many languages",
+                        type: "greetings"
+                    },
+                    {
+                        question: "What is the French word for 'house'?",
+                        options: ["maison", "voiture", "école", "restaurant"],
+                        correct: "maison",
+                        hint: "This word is similar to 'mansion'",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'please' in French?",
+                        options: ["s'il vous plaît", "merci", "bonjour", "au revoir"],
+                        correct: "s'il vous plaît",
+                        hint: "This phrase literally means 'if it pleases you'",
+                        type: "greetings"
+                    },
+                    {
+                        question: "What is the French word for 'water'?",
+                        options: ["eau", "vin", "café", "jus"],
+                        correct: "eau",
+                        hint: "This word is pronounced like 'oh'",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'goodbye' in French?",
+                        options: ["au revoir", "bonjour", "merci", "s'il vous plaît"],
+                        correct: "au revoir",
+                        hint: "This phrase literally means 'until we see each other again'",
+                        type: "greetings"
+                    },
+                    {
+                        question: "What is the French word for 'bread'?",
+                        options: ["pain", "fromage", "beurre", "lait"],
+                        correct: "pain",
+                        hint: "This word is similar to 'pane' in Italian",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'yes' in French?",
+                        options: ["oui", "non", "peut-être", "bonjour"],
+                        correct: "oui",
+                        hint: "This word is pronounced like 'we'",
+                        type: "basic"
+                    },
+                    {
+                        question: "What is the French word for 'tree'?",
+                        options: ["arbre", "fleur", "herbe", "feuille"],
+                        correct: "arbre",
+                        hint: "This word is similar to 'arbor'",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'no' in French?",
+                        options: ["non", "oui", "peut-être", "bonjour"],
+                        correct: "non",
+                        hint: "This word is pronounced like 'nohn'",
+                        type: "basic"
+                    }
+                ],
+                food: [
+                    {
+                        question: "What is the French word for 'bread'?",
+                        options: ["pain", "fromage", "beurre", "lait"],
+                        correct: "pain",
+                        hint: "This word is similar to 'pane' in Italian",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'wine' in French?",
+                        options: ["vin", "bière", "jus", "eau"],
+                        correct: "vin",
+                        hint: "This word is similar to 'vino' in Spanish",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'cheese'?",
+                        options: ["fromage", "pain", "beurre", "lait"],
+                        correct: "fromage",
+                        hint: "This word comes from Latin 'formaticus'",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'apple'?",
+                        options: ["pomme", "banane", "orange", "fraise"],
+                        correct: "pomme",
+                        hint: "This word is similar to 'pomme' in other languages",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'milk' in French?",
+                        options: ["lait", "eau", "jus", "café"],
+                        correct: "lait",
+                        hint: "Essential dairy product",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'coffee'?",
+                        options: ["café", "thé", "chocolat", "lait"],
+                        correct: "café",
+                        hint: "Very similar to English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'butter' in French?",
+                        options: ["beurre", "fromage", "lait", "crème"],
+                        correct: "beurre",
+                        hint: "Used on bread",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'egg'?",
+                        options: ["œuf", "poulet", "viande", "poisson"],
+                        correct: "œuf",
+                        hint: "Breakfast food",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'chicken' in French?",
+                        options: ["poulet", "bœuf", "porc", "agneau"],
+                        correct: "poulet",
+                        hint: "Common poultry",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'soup'?",
+                        options: ["soupe", "salade", "sandwich", "pizza"],
+                        correct: "soupe",
+                        hint: "Warm liquid food",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'salad' in French?",
+                        options: ["salade", "soupe", "sandwich", "pizza"],
+                        correct: "salade",
+                        hint: "Fresh vegetables",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'rice'?",
+                        options: ["riz", "pâtes", "pain", "fromage"],
+                        correct: "riz",
+                        hint: "Grain staple",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'pasta' in French?",
+                        options: ["pâtes", "riz", "pain", "soupe"],
+                        correct: "pâtes",
+                        hint: "Italian food",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'meat'?",
+                        options: ["viande", "poisson", "légumes", "fruits"],
+                        correct: "viande",
+                        hint: "Animal protein",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'fish' in French?",
+                        options: ["poisson", "viande", "poulet", "bœuf"],
+                        correct: "poisson",
+                        hint: "From the sea",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'vegetables'?",
+                        options: ["légumes", "fruits", "viande", "poisson"],
+                        correct: "légumes",
+                        hint: "Plant-based food",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'fruits' in French?",
+                        options: ["fruits", "légumes", "viande", "poisson"],
+                        correct: "fruits",
+                        hint: "Sweet plant food",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'chocolate'?",
+                        options: ["chocolat", "sucre", "gâteau", "glace"],
+                        correct: "chocolat",
+                        hint: "Sweet treat",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'cake' in French?",
+                        options: ["gâteau", "chocolat", "glace", "bonbon"],
+                        correct: "gâteau",
+                        hint: "Dessert",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'ice cream'?",
+                        options: ["glace", "gâteau", "chocolat", "bonbon"],
+                        correct: "glace",
+                        hint: "Frozen dessert",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'juice' in French?",
+                        options: ["jus", "eau", "lait", "café"],
+                        correct: "jus",
+                        hint: "Fruit drink",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'sugar'?",
+                        options: ["sucre", "sel", "poivre", "miel"],
+                        correct: "sucre",
+                        hint: "Sweetener",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'salt' in French?",
+                        options: ["sel", "sucre", "poivre", "miel"],
+                        correct: "sel",
+                        hint: "Seasoning",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'restaurant'?",
+                        options: ["restaurant", "café", "boulangerie", "supermarché"],
+                        correct: "restaurant",
+                        hint: "Place to eat",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'breakfast' in French?",
+                        options: ["petit-déjeuner", "déjeuner", "dîner", "goûter"],
+                        correct: "petit-déjeuner",
+                        hint: "First meal of the day",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'lunch'?",
+                        options: ["déjeuner", "petit-déjeuner", "dîner", "goûter"],
+                        correct: "déjeuner",
+                        hint: "Midday meal",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'dinner' in French?",
+                        options: ["dîner", "petit-déjeuner", "déjeuner", "goûter"],
+                        correct: "dîner",
+                        hint: "Evening meal",
+                        type: "vocabulary"
+                    }
+                ],
+                travel: [
+                    {
+                        question: "What is the French word for 'hotel'?",
+                        options: ["hôtel", "maison", "appartement", "chambre"],
+                        correct: "hôtel",
+                        hint: "This word is similar to 'hotel' in English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'airplane' in French?",
+                        options: ["avion", "train", "voiture", "bateau"],
+                        correct: "avion",
+                        hint: "Flies in the sky",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'train'?",
+                        options: ["train", "avion", "voiture", "bus"],
+                        correct: "train",
+                        hint: "Runs on tracks",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'car' in French?",
+                        options: ["voiture", "train", "avion", "bateau"],
+                        correct: "voiture",
+                        hint: "Four-wheeled vehicle",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'passport'?",
+                        options: ["passeport", "billet", "carte", "valise"],
+                        correct: "passeport",
+                        hint: "Travel document",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'suitcase' in French?",
+                        options: ["valise", "sac", "bagage", "passeport"],
+                        correct: "valise",
+                        hint: "For carrying clothes",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'ticket'?",
+                        options: ["billet", "carte", "passeport", "valise"],
+                        correct: "billet",
+                        hint: "For transportation",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'beach' in French?",
+                        options: ["plage", "montagne", "forêt", "lac"],
+                        correct: "plage",
+                        hint: "Sandy shore",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'mountain'?",
+                        options: ["montagne", "plage", "forêt", "rivière"],
+                        correct: "montagne",
+                        hint: "High elevation",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'city' in French?",
+                        options: ["ville", "village", "pays", "région"],
+                        correct: "ville",
+                        hint: "Urban area",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'village'?",
+                        options: ["village", "ville", "pays", "région"],
+                        correct: "village",
+                        hint: "Small settlement",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'map' in French?",
+                        options: ["carte", "billet", "guide", "plan"],
+                        correct: "carte",
+                        hint: "Shows locations",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'airport'?",
+                        options: ["aéroport", "gare", "station", "port"],
+                        correct: "aéroport",
+                        hint: "Where planes land",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'train station' in French?",
+                        options: ["gare", "aéroport", "station", "arrêt"],
+                        correct: "gare",
+                        hint: "Where trains stop",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'luggage'?",
+                        options: ["bagage", "valise", "sac", "passeport"],
+                        correct: "bagage",
+                        hint: "Things you travel with",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'departure' in French?",
+                        options: ["départ", "arrivée", "retard", "annulation"],
+                        correct: "départ",
+                        hint: "Leaving time",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'arrival'?",
+                        options: ["arrivée", "départ", "retard", "annulation"],
+                        correct: "arrivée",
+                        hint: "Arriving time",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'schedule' in French?",
+                        options: ["horaire", "heure", "temps", "moment"],
+                        correct: "horaire",
+                        hint: "Timetable",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'museum'?",
+                        options: ["musée", "église", "cathédrale", "monument"],
+                        correct: "musée",
+                        hint: "Art and history",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'monument' in French?",
+                        options: ["monument", "musée", "église", "cathédrale"],
+                        correct: "monument",
+                        hint: "Historical marker",
+                        type: "vocabulary"
+                    }
+                ],
+                family: [
+                    {
+                        question: "What is the French word for 'mother'?",
+                        options: ["mère", "père", "soeur", "frère"],
+                        correct: "mère",
+                        hint: "Similar to 'maternal'",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "How do you say 'family' in French?",
+                        options: ["famille", "maison", "parent", "enfant"],
+                        correct: "famille",
+                        hint: "Similar to 'family' in English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'father'?",
+                        options: ["père", "mère", "frère", "soeur"],
+                        correct: "père",
+                        hint: "Similar to 'paternal'",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'brother' in French?",
+                        options: ["frère", "soeur", "père", "mère"],
+                        correct: "frère",
+                        hint: "Male sibling",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'sister'?",
+                        options: ["soeur", "frère", "mère", "père"],
+                        correct: "soeur",
+                        hint: "Female sibling",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'child' in French?",
+                        options: ["enfant", "parent", "bébé", "adulte"],
+                        correct: "enfant",
+                        hint: "Young person",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'baby'?",
+                        options: ["bébé", "enfant", "fille", "garçon"],
+                        correct: "bébé",
+                        hint: "Very young child",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'son' in French?",
+                        options: ["fils", "fille", "enfant", "bébé"],
+                        correct: "fils",
+                        hint: "Male child",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'daughter'?",
+                        options: ["fille", "fils", "enfant", "bébé"],
+                        correct: "fille",
+                        hint: "Female child",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'grandfather' in French?",
+                        options: ["grand-père", "grand-mère", "oncle", "tante"],
+                        correct: "grand-père",
+                        hint: "Father's or mother's father",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'grandmother'?",
+                        options: ["grand-mère", "grand-père", "oncle", "tante"],
+                        correct: "grand-mère",
+                        hint: "Father's or mother's mother",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'uncle' in French?",
+                        options: ["oncle", "tante", "cousin", "cousine"],
+                        correct: "oncle",
+                        hint: "Parent's brother",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'aunt'?",
+                        options: ["tante", "oncle", "cousin", "cousine"],
+                        correct: "tante",
+                        hint: "Parent's sister",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'cousin' (male) in French?",
+                        options: ["cousin", "cousine", "oncle", "tante"],
+                        correct: "cousin",
+                        hint: "Uncle or aunt's child",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'cousin' (female)?",
+                        options: ["cousine", "cousin", "oncle", "tante"],
+                        correct: "cousine",
+                        hint: "Uncle or aunt's daughter",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'husband' in French?",
+                        options: ["mari", "femme", "époux", "épouse"],
+                        correct: "mari",
+                        hint: "Married man",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'wife'?",
+                        options: ["femme", "mari", "époux", "épouse"],
+                        correct: "femme",
+                        hint: "Married woman",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'parent' in French?",
+                        options: ["parent", "enfant", "famille", "maison"],
+                        correct: "parent",
+                        hint: "Mother or father",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'boy'?",
+                        options: ["garçon", "fille", "enfant", "bébé"],
+                        correct: "garçon",
+                        hint: "Young male",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'girl' in French?",
+                        options: ["fille", "garçon", "enfant", "bébé"],
+                        correct: "fille",
+                        hint: "Young female",
+                        type: "vocabulary"
+                    }
+                ],
+                health: [
+                    {
+                        question: "What is the French word for 'doctor'?",
+                        options: ["médecin", "infirmier", "pharmacien", "dentiste"],
+                        correct: "médecin",
+                        hint: "Think of 'medicine'",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "How do you say 'hospital' in French?",
+                        options: ["hôpital", "clinique", "pharmacie", "cabinet"],
+                        correct: "hôpital",
+                        hint: "Very similar to English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'pharmacy' in French?",
+                        options: ["pharmacie", "hôpital", "clinique", "cabinet"],
+                        correct: "pharmacie",
+                        hint: "Where you buy medicine",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'nurse'?",
+                        options: ["infirmier", "médecin", "dentiste", "pharmacien"],
+                        correct: "infirmier",
+                        hint: "Healthcare helper",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'dentist' in French?",
+                        options: ["dentiste", "médecin", "infirmier", "pharmacien"],
+                        correct: "dentiste",
+                        hint: "Tooth doctor",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'sick'?",
+                        options: ["malade", "santé", "bien", "guéri"],
+                        correct: "malade",
+                        hint: "Not feeling well",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'pain' in French?",
+                        options: ["douleur", "malade", "fièvre", "rhume"],
+                        correct: "douleur",
+                        hint: "Physical discomfort",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'fever'?",
+                        options: ["fièvre", "douleur", "rhume", "toux"],
+                        correct: "fièvre",
+                        hint: "High temperature",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'medicine' in French?",
+                        options: ["médicament", "ordonnance", "traitement", "santé"],
+                        correct: "médicament",
+                        hint: "Prescribed drug",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'appointment'?",
+                        options: ["rendez-vous", "consultation", "visite", "examen"],
+                        correct: "rendez-vous",
+                        hint: "Scheduled meeting",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'prescription' in French?",
+                        options: ["ordonnance", "médicament", "traitement", "consultation"],
+                        correct: "ordonnance",
+                        hint: "Doctor's written order",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'health'?",
+                        options: ["santé", "maladie", "traitement", "médicament"],
+                        correct: "santé",
+                        hint: "Well-being",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'cold' (illness) in French?",
+                        options: ["rhume", "fièvre", "toux", "mal de tête"],
+                        correct: "rhume",
+                        hint: "Common illness",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'cough'?",
+                        options: ["toux", "rhume", "fièvre", "mal de tête"],
+                        correct: "toux",
+                        hint: "Throat clearing",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'headache' in French?",
+                        options: ["mal de tête", "mal de ventre", "fièvre", "rhume"],
+                        correct: "mal de tête",
+                        hint: "Head pain",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'stomachache'?",
+                        options: ["mal de ventre", "mal de tête", "fièvre", "rhume"],
+                        correct: "mal de ventre",
+                        hint: "Stomach pain",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'treatment' in French?",
+                        options: ["traitement", "médicament", "ordonnance", "consultation"],
+                        correct: "traitement",
+                        hint: "Medical care",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'emergency'?",
+                        options: ["urgence", "rendez-vous", "consultation", "examen"],
+                        correct: "urgence",
+                        hint: "Critical situation",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'clinic' in French?",
+                        options: ["clinique", "hôpital", "pharmacie", "cabinet"],
+                        correct: "clinique",
+                        hint: "Medical facility",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'specialist'?",
+                        options: ["spécialiste", "médecin", "infirmier", "dentiste"],
+                        correct: "spécialiste",
+                        hint: "Expert doctor",
+                        type: "vocabulary"
+                    }
+                ],
+                technology: [
+                    {
+                        question: "What is the French word for 'computer'?",
+                        options: ["ordinateur", "téléphone", "tablette", "clavier"],
+                        correct: "ordinateur",
+                        hint: "Comes from 'to organize'",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "How do you say 'internet' in French?",
+                        options: ["internet", "réseau", "web", "ligne"],
+                        correct: "internet",
+                        hint: "It's the same as in English!",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'phone' in French?",
+                        options: ["téléphone", "ordinateur", "tablette", "clavier"],
+                        correct: "téléphone",
+                        hint: "Very similar to English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'keyboard'?",
+                        options: ["clavier", "souris", "écran", "imprimante"],
+                        correct: "clavier",
+                        hint: "For typing",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'mouse' (computer) in French?",
+                        options: ["souris", "clavier", "écran", "imprimante"],
+                        correct: "souris",
+                        hint: "Same as the animal",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'screen'?",
+                        options: ["écran", "clavier", "souris", "imprimante"],
+                        correct: "écran",
+                        hint: "Display monitor",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'printer' in French?",
+                        options: ["imprimante", "écran", "clavier", "souris"],
+                        correct: "imprimante",
+                        hint: "Makes paper copies",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'email'?",
+                        options: ["email", "courriel", "message", "lettre"],
+                        correct: "email",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'website' in French?",
+                        options: ["site web", "page", "lien", "internet"],
+                        correct: "site web",
+                        hint: "Web location",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'password'?",
+                        options: ["mot de passe", "nom d'utilisateur", "compte", "connexion"],
+                        correct: "mot de passe",
+                        hint: "Security code",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'software' in French?",
+                        options: ["logiciel", "matériel", "application", "programme"],
+                        correct: "logiciel",
+                        hint: "Computer programs",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'application'?",
+                        options: ["application", "logiciel", "programme", "site"],
+                        correct: "application",
+                        hint: "App",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'tablet' in French?",
+                        options: ["tablette", "ordinateur", "téléphone", "écran"],
+                        correct: "tablette",
+                        hint: "Portable device",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'network'?",
+                        options: ["réseau", "internet", "web", "ligne"],
+                        correct: "réseau",
+                        hint: "Connected system",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'download' in French?",
+                        options: ["télécharger", "téléverser", "envoyer", "recevoir"],
+                        correct: "télécharger",
+                        hint: "Get from internet",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'upload'?",
+                        options: ["téléverser", "télécharger", "envoyer", "recevoir"],
+                        correct: "téléverser",
+                        hint: "Send to internet",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'file' in French?",
+                        options: ["fichier", "dossier", "document", "page"],
+                        correct: "fichier",
+                        hint: "Computer file",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'folder'?",
+                        options: ["dossier", "fichier", "document", "page"],
+                        correct: "dossier",
+                        hint: "File container",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'battery' in French?",
+                        options: ["batterie", "chargeur", "câble", "prise"],
+                        correct: "batterie",
+                        hint: "Power source",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'charger'?",
+                        options: ["chargeur", "batterie", "câble", "prise"],
+                        correct: "chargeur",
+                        hint: "Charging device",
+                        type: "vocabulary"
+                    }
+                ],
+                sports: [
+                    {
+                        question: "What is the French word for 'football'?",
+                        options: ["football", "basket", "tennis", "rugby"],
+                        correct: "football",
+                        hint: "Same as English, but pronounced differently",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "How do you say 'team' in French?",
+                        options: ["équipe", "groupe", "club", "joueur"],
+                        correct: "équipe",
+                        hint: "Think of 'equipment'",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'basketball' in French?",
+                        options: ["basket", "football", "tennis", "rugby"],
+                        correct: "basket",
+                        hint: "Shortened form",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'tennis'?",
+                        options: ["tennis", "football", "basket", "rugby"],
+                        correct: "tennis",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'player' in French?",
+                        options: ["joueur", "équipe", "club", "match"],
+                        correct: "joueur",
+                        hint: "Person who plays",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'match' or 'game'?",
+                        options: ["match", "jeu", "sport", "compétition"],
+                        correct: "match",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'stadium' in French?",
+                        options: ["stade", "terrain", "court", "piscine"],
+                        correct: "stade",
+                        hint: "Sports venue",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'swimming'?",
+                        options: ["natation", "course", "saut", "lancer"],
+                        correct: "natation",
+                        hint: "Water sport",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'running' in French?",
+                        options: ["course", "marche", "saut", "lancer"],
+                        correct: "course",
+                        hint: "Fast movement",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'cycling'?",
+                        options: ["cyclisme", "course", "natation", "saut"],
+                        correct: "cyclisme",
+                        hint: "Bike sport",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'gym' in French?",
+                        options: ["salle de sport", "stade", "terrain", "court"],
+                        correct: "salle de sport",
+                        hint: "Exercise room",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'coach'?",
+                        options: ["entraîneur", "joueur", "arbitre", "spectateur"],
+                        correct: "entraîneur",
+                        hint: "Sports trainer",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'referee' in French?",
+                        options: ["arbitre", "entraîneur", "joueur", "spectateur"],
+                        correct: "arbitre",
+                        hint: "Game official",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'championship'?",
+                        options: ["championnat", "compétition", "tournoi", "match"],
+                        correct: "championnat",
+                        hint: "Major competition",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'victory' in French?",
+                        options: ["victoire", "défaite", "match", "compétition"],
+                        correct: "victoire",
+                        hint: "Winning",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'defeat'?",
+                        options: ["défaite", "victoire", "match", "compétition"],
+                        correct: "défaite",
+                        hint: "Losing",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'ball' in French?",
+                        options: ["balle", "ballon", "jeu", "sport"],
+                        correct: "balle",
+                        hint: "Sports equipment",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'goal'?",
+                        options: ["but", "match", "victoire", "défaite"],
+                        correct: "but",
+                        hint: "Scoring point",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'training' in French?",
+                        options: ["entraînement", "match", "compétition", "jeu"],
+                        correct: "entraînement",
+                        hint: "Practice session",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'exercise'?",
+                        options: ["exercice", "sport", "entraînement", "match"],
+                        correct: "exercice",
+                        hint: "Physical activity",
+                        type: "vocabulary"
+                    }
+                ],
+                education: [
+                    {
+                        question: "What is the French word for 'school'?",
+                        options: ["école", "université", "collège", "lycée"],
+                        correct: "école",
+                        hint: "Similar to 'scholastic'",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "How do you say 'teacher' in French?",
+                        options: ["professeur", "étudiant", "élève", "directeur"],
+                        correct: "professeur",
+                        hint: "Similar to 'professor'",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'student' in French?",
+                        options: ["étudiant", "professeur", "élève", "directeur"],
+                        correct: "étudiant",
+                        hint: "Person who studies",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'university'?",
+                        options: ["université", "école", "collège", "lycée"],
+                        correct: "université",
+                        hint: "Higher education",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'homework' in French?",
+                        options: ["devoirs", "leçons", "cours", "examen"],
+                        correct: "devoirs",
+                        hint: "School work at home",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'lesson'?",
+                        options: ["leçon", "cours", "devoirs", "examen"],
+                        correct: "leçon",
+                        hint: "Teaching session",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'class' in French?",
+                        options: ["classe", "cours", "leçon", "examen"],
+                        correct: "classe",
+                        hint: "Group of students",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'exam'?",
+                        options: ["examen", "test", "devoirs", "leçon"],
+                        correct: "examen",
+                        hint: "Academic test",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'book' in French?",
+                        options: ["livre", "cahier", "stylo", "crayon"],
+                        correct: "livre",
+                        hint: "For reading",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'notebook'?",
+                        options: ["cahier", "livre", "stylo", "crayon"],
+                        correct: "cahier",
+                        hint: "For writing notes",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'pen' in French?",
+                        options: ["stylo", "crayon", "gomme", "règle"],
+                        correct: "stylo",
+                        hint: "Writing instrument",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'pencil'?",
+                        options: ["crayon", "stylo", "gomme", "règle"],
+                        correct: "crayon",
+                        hint: "Writing tool",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'library' in French?",
+                        options: ["bibliothèque", "librairie", "école", "université"],
+                        correct: "bibliothèque",
+                        hint: "Place with books",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'grade'?",
+                        options: ["note", "examen", "cours", "leçon"],
+                        correct: "note",
+                        hint: "Academic score",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'subject' (school) in French?",
+                        options: ["matière", "cours", "leçon", "examen"],
+                        correct: "matière",
+                        hint: "Academic discipline",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'diploma'?",
+                        options: ["diplôme", "certificat", "examen", "note"],
+                        correct: "diplôme",
+                        hint: "Graduation document",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'degree' in French?",
+                        options: ["diplôme", "certificat", "examen", "note"],
+                        correct: "diplôme",
+                        hint: "University qualification",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'research'?",
+                        options: ["recherche", "étude", "examen", "cours"],
+                        correct: "recherche",
+                        hint: "Academic investigation",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'thesis' in French?",
+                        options: ["thèse", "recherche", "mémoire", "dissertation"],
+                        correct: "thèse",
+                        hint: "Research paper",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'semester'?",
+                        options: ["semestre", "trimestre", "année", "mois"],
+                        correct: "semestre",
+                        hint: "Half of academic year",
+                        type: "vocabulary"
+                    }
+                ],
+                nature: [
+                    {
+                        question: "What is the French word for 'flower'?",
+                        options: ["fleur", "arbre", "plante", "herbe"],
+                        correct: "fleur",
+                        hint: "Think of 'floral'",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "How do you say 'mountain' in French?",
+                        options: ["montagne", "colline", "vallée", "plage"],
+                        correct: "montagne",
+                        hint: "Similar to 'mountain'",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'tree' in French?",
+                        options: ["arbre", "fleur", "plante", "herbe"],
+                        correct: "arbre",
+                        hint: "Tall plant",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'plant'?",
+                        options: ["plante", "fleur", "arbre", "herbe"],
+                        correct: "plante",
+                        hint: "Living organism",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'grass' in French?",
+                        options: ["herbe", "fleur", "arbre", "plante"],
+                        correct: "herbe",
+                        hint: "Ground covering",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'river'?",
+                        options: ["rivière", "lac", "mer", "océan"],
+                        correct: "rivière",
+                        hint: "Flowing water",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'lake' in French?",
+                        options: ["lac", "rivière", "mer", "océan"],
+                        correct: "lac",
+                        hint: "Body of water",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'sea'?",
+                        options: ["mer", "lac", "rivière", "océan"],
+                        correct: "mer",
+                        hint: "Large body of water",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'ocean' in French?",
+                        options: ["océan", "mer", "lac", "rivière"],
+                        correct: "océan",
+                        hint: "Vast body of water",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'forest'?",
+                        options: ["forêt", "bois", "arbre", "jardin"],
+                        correct: "forêt",
+                        hint: "Many trees",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'hill' in French?",
+                        options: ["colline", "montagne", "vallée", "plaine"],
+                        correct: "colline",
+                        hint: "Small elevation",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'valley'?",
+                        options: ["vallée", "montagne", "colline", "plaine"],
+                        correct: "vallée",
+                        hint: "Low area between hills",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'island' in French?",
+                        options: ["île", "plage", "côte", "port"],
+                        correct: "île",
+                        hint: "Land surrounded by water",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'sky'?",
+                        options: ["ciel", "nuage", "soleil", "lune"],
+                        correct: "ciel",
+                        hint: "Above us",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'cloud' in French?",
+                        options: ["nuage", "ciel", "soleil", "pluie"],
+                        correct: "nuage",
+                        hint: "In the sky",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'sun'?",
+                        options: ["soleil", "lune", "étoile", "ciel"],
+                        correct: "soleil",
+                        hint: "Bright star",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'moon' in French?",
+                        options: ["lune", "soleil", "étoile", "ciel"],
+                        correct: "lune",
+                        hint: "Night light",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'star'?",
+                        options: ["étoile", "soleil", "lune", "planète"],
+                        correct: "étoile",
+                        hint: "In the night sky",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'rain' in French?",
+                        options: ["pluie", "neige", "vent", "orage"],
+                        correct: "pluie",
+                        hint: "Water from sky",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'snow'?",
+                        options: ["neige", "pluie", "vent", "orage"],
+                        correct: "neige",
+                        hint: "White precipitation",
+                        type: "vocabulary"
+                    }
+                ],
+                fashion: [
+                    {
+                        question: "What is the French word for 'clothes'?",
+                        options: ["vêtements", "chaussures", "sac", "chapeau"],
+                        correct: "vêtements",
+                        hint: "Starts with 'v'",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "How do you say 'fashion' in French?",
+                        options: ["mode", "style", "design", "tendance"],
+                        correct: "mode",
+                        hint: "Think of 'modern'",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'shoes' in French?",
+                        options: ["chaussures", "vêtements", "chaussettes", "bottes"],
+                        correct: "chaussures",
+                        hint: "Footwear",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'dress'?",
+                        options: ["robe", "jupe", "pantalon", "chemise"],
+                        correct: "robe",
+                        hint: "Women's garment",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'shirt' in French?",
+                        options: ["chemise", "pantalon", "robe", "jupe"],
+                        correct: "chemise",
+                        hint: "Top garment",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'pants'?",
+                        options: ["pantalon", "chemise", "robe", "jupe"],
+                        correct: "pantalon",
+                        hint: "Trousers",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'skirt' in French?",
+                        options: ["jupe", "robe", "pantalon", "chemise"],
+                        correct: "jupe",
+                        hint: "Women's bottom",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'jacket'?",
+                        options: ["veste", "manteau", "pull", "gants"],
+                        correct: "veste",
+                        hint: "Outerwear",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'coat' in French?",
+                        options: ["manteau", "veste", "pull", "gants"],
+                        correct: "manteau",
+                        hint: "Heavy outerwear",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'hat'?",
+                        options: ["chapeau", "casquette", "bonnet", "écharpe"],
+                        correct: "chapeau",
+                        hint: "Head covering",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'bag' in French?",
+                        options: ["sac", "valise", "portefeuille", "ceinture"],
+                        correct: "sac",
+                        hint: "For carrying things",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'watch'?",
+                        options: ["montre", "horloge", "réveil", "minute"],
+                        correct: "montre",
+                        hint: "Timepiece",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'jewelry' in French?",
+                        options: ["bijoux", "montre", "ceinture", "chaussures"],
+                        correct: "bijoux",
+                        hint: "Decorative accessories",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'belt'?",
+                        options: ["ceinture", "sac", "chaussures", "bijoux"],
+                        correct: "ceinture",
+                        hint: "Waist accessory",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'socks' in French?",
+                        options: ["chaussettes", "chaussures", "bottes", "sandales"],
+                        correct: "chaussettes",
+                        hint: "Foot covering",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'gloves'?",
+                        options: ["gants", "chaussettes", "chaussures", "ceinture"],
+                        correct: "gants",
+                        hint: "Hand covering",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'scarf' in French?",
+                        options: ["écharpe", "chapeau", "gants", "ceinture"],
+                        correct: "écharpe",
+                        hint: "Neck accessory",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'size'?",
+                        options: ["taille", "couleur", "prix", "style"],
+                        correct: "taille",
+                        hint: "Clothing measurement",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'color' in French?",
+                        options: ["couleur", "taille", "prix", "style"],
+                        correct: "couleur",
+                        hint: "Visual property",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'price'?",
+                        options: ["prix", "taille", "couleur", "style"],
+                        correct: "prix",
+                        hint: "Cost",
+                        type: "vocabulary"
+                    }
+                ]
+            },
+            intermediate: {
+                general: [
+                    {
+                        question: "What is the French word for 'environment'?",
+                        options: ["environnement", "entourage", "milieu", "cadre"],
+                        correct: "environnement",
+                        hint: "Related to 'environmental'",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'development' in French?",
+                        options: ["développement", "croissance", "progrès", "évolution"],
+                        correct: "développement",
+                        hint: "Related to 'develop'",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'communication'?",
+                        options: ["communication", "conversation", "discussion", "dialogue"],
+                        correct: "communication",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'education' in French?",
+                        options: ["éducation", "enseignement", "formation", "apprentissage"],
+                        correct: "éducation",
+                        hint: "Similar to English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'culture'?",
+                        options: ["culture", "civilisation", "société", "tradition"],
+                        correct: "culture",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'society' in French?",
+                        options: ["société", "communauté", "groupe", "population"],
+                        correct: "société",
+                        hint: "Related to 'social'",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'economy'?",
+                        options: ["économie", "finances", "argent", "commerce"],
+                        correct: "économie",
+                        hint: "Similar to English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'politics' in French?",
+                        options: ["politique", "gouvernement", "administration", "état"],
+                        correct: "politique",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'science'?",
+                        options: ["science", "recherche", "étude", "connaissance"],
+                        correct: "science",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'technology' in French?",
+                        options: ["technologie", "technique", "informatique", "innovation"],
+                        correct: "technologie",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'history'?",
+                        options: ["histoire", "passé", "mémoire", "tradition"],
+                        correct: "histoire",
+                        hint: "Also means 'story'",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'art' in French?",
+                        options: ["art", "peinture", "dessin", "création"],
+                        correct: "art",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'literature'?",
+                        options: ["littérature", "livre", "écriture", "texte"],
+                        correct: "littérature",
+                        hint: "Similar to English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'philosophy' in French?",
+                        options: ["philosophie", "pensée", "réflexion", "idée"],
+                        correct: "philosophie",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'religion'?",
+                        options: ["religion", "foi", "croyance", "spiritualité"],
+                        correct: "religion",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'language' in French?",
+                        options: ["langue", "langage", "parole", "discours"],
+                        correct: "langue",
+                        hint: "Also means 'tongue'",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'knowledge'?",
+                        options: ["connaissance", "savoir", "sciences", "apprentissage"],
+                        correct: "connaissance",
+                        hint: "Related to 'know'",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'experience' in French?",
+                        options: ["expérience", "aventure", "situation", "événement"],
+                        correct: "expérience",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'opportunity'?",
+                        options: ["opportunité", "chance", "possibilité", "occasion"],
+                        correct: "opportunité",
+                        hint: "Similar to English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'challenge' in French?",
+                        options: ["défi", "difficulté", "problème", "obstacle"],
+                        correct: "défi",
+                        hint: "Short word",
+                        type: "vocabulary"
+                    }
+                ],
+                food: [
+                    {
+                        question: "What is the French word for 'appetizer'?",
+                        options: ["entrée", "plat", "dessert", "boisson"],
+                        correct: "entrée",
+                        hint: "This word literally means 'entry'",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'main course' in French?",
+                        options: ["plat principal", "entrée", "dessert", "boisson"],
+                        correct: "plat principal",
+                        hint: "Two words",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'dessert'?",
+                        options: ["dessert", "gâteau", "glace", "bonbon"],
+                        correct: "dessert",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'beverage' in French?",
+                        options: ["boisson", "eau", "jus", "café"],
+                        correct: "boisson",
+                        hint: "Any drink",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'menu'?",
+                        options: ["menu", "carte", "liste", "plan"],
+                        correct: "menu",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'waiter' in French?",
+                        options: ["serveur", "cuisinier", "chef", "gérant"],
+                        correct: "serveur",
+                        hint: "Person who serves",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'chef'?",
+                        options: ["chef", "cuisinier", "serveur", "gérant"],
+                        correct: "chef",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'recipe' in French?",
+                        options: ["recette", "ingrédient", "cuisine", "plat"],
+                        correct: "recette",
+                        hint: "Cooking instructions",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'ingredient'?",
+                        options: ["ingrédient", "recette", "cuisine", "plat"],
+                        correct: "ingrédient",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'cooking' in French?",
+                        options: ["cuisine", "cuisiner", "recette", "plat"],
+                        correct: "cuisine",
+                        hint: "Also means 'kitchen'",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'taste'?",
+                        options: ["goût", "saveur", "arôme", "odeur"],
+                        correct: "goût",
+                        hint: "Flavor sense",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'flavor' in French?",
+                        options: ["saveur", "goût", "arôme", "odeur"],
+                        correct: "saveur",
+                        hint: "Taste quality",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'spicy'?",
+                        options: ["épicé", "salé", "sucré", "amer"],
+                        correct: "épicé",
+                        hint: "Hot flavor",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'sweet' in French?",
+                        options: ["sucré", "salé", "épicé", "amer"],
+                        correct: "sucré",
+                        hint: "Sugar taste",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'salty'?",
+                        options: ["salé", "sucré", "épicé", "amer"],
+                        correct: "salé",
+                        hint: "Salt taste",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'bitter' in French?",
+                        options: ["amer", "salé", "sucré", "épicé"],
+                        correct: "amer",
+                        hint: "Unpleasant taste",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'fresh'?",
+                        options: ["frais", "nouveau", "jeune", "récent"],
+                        correct: "frais",
+                        hint: "Not stale",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'organic' in French?",
+                        options: ["biologique", "naturel", "frais", "pur"],
+                        correct: "biologique",
+                        hint: "Bio products",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'grocery store'?",
+                        options: ["épicerie", "supermarché", "marché", "boulangerie"],
+                        correct: "épicerie",
+                        hint: "Small food shop",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'bakery' in French?",
+                        options: ["boulangerie", "pâtisserie", "épicerie", "boucherie"],
+                        correct: "boulangerie",
+                        hint: "Bread shop",
+                        type: "vocabulary"
+                    }
+                ],
+                travel: [
+                    {
+                        question: "Which phrase means 'I would like to book a room' in French?",
+                        options: ["Je voudrais réserver une chambre", "Je veux une chambre", "J'ai besoin d'une chambre", "Je cherche une chambre"],
+                        correct: "Je voudrais réserver une chambre",
+                        hint: "This uses the conditional form of 'vouloir'",
+                        type: "phrases"
+                    },
+                    {
+                        question: "What is the French phrase for 'check-in'?",
+                        options: ["enregistrement", "départ", "arrivée", "réservation"],
+                        correct: "enregistrement",
+                        hint: "Registration process",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which phrase means 'check-out' in French?",
+                        options: ["départ", "arrivée", "enregistrement", "réservation"],
+                        correct: "départ",
+                        hint: "Leaving time",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'luggage'?",
+                        options: ["bagage", "valise", "sac", "passeport"],
+                        correct: "bagage",
+                        hint: "Travel items",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'boarding pass' in French?",
+                        options: ["carte d'embarquement", "billet", "passeport", "carte"],
+                        correct: "carte d'embarquement",
+                        hint: "Two words",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'customs'?",
+                        options: ["douane", "passport", "visa", "frontière"],
+                        correct: "douane",
+                        hint: "Border control",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'visa' in French?",
+                        options: ["visa", "passeport", "douane", "frontière"],
+                        correct: "visa",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'tourist'?",
+                        options: ["touriste", "voyageur", "visiteur", "passager"],
+                        correct: "touriste",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'sightseeing' in French?",
+                        options: ["tourisme", "visite", "excursion", "voyage"],
+                        correct: "tourisme",
+                        hint: "Tourism activity",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'guide' (person)?",
+                        options: ["guide", "conseiller", "accompagnateur", "hôte"],
+                        correct: "guide",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'itinerary' in French?",
+                        options: ["itinéraire", "plan", "carte", "guide"],
+                        correct: "itinéraire",
+                        hint: "Travel route",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'accommodation'?",
+                        options: ["hébergement", "hôtel", "logement", "maison"],
+                        correct: "hébergement",
+                        hint: "Place to stay",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'reservation' in French?",
+                        options: ["réservation", "enregistrement", "départ", "arrivée"],
+                        correct: "réservation",
+                        hint: "Booking",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'cancellation'?",
+                        options: ["annulation", "réservation", "confirmation", "modification"],
+                        correct: "annulation",
+                        hint: "Canceling",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'delay' in French?",
+                        options: ["retard", "avance", "heure", "horaire"],
+                        correct: "retard",
+                        hint: "Late arrival",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'currency'?",
+                        options: ["devise", "argent", "monnaie", "euro"],
+                        correct: "devise",
+                        hint: "Foreign money",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'exchange rate' in French?",
+                        options: ["taux de change", "devise", "monnaie", "argent"],
+                        correct: "taux de change",
+                        hint: "Three words",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'travel insurance'?",
+                        options: ["assurance voyage", "assurance santé", "assurance vie", "assurance auto"],
+                        correct: "assurance voyage",
+                        hint: "Two words",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'backpack' in French?",
+                        options: ["sac à dos", "valise", "sac", "bagage"],
+                        correct: "sac à dos",
+                        hint: "Three words",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'souvenir'?",
+                        options: ["souvenir", "cadeau", "achat", "objet"],
+                        correct: "souvenir",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    }
+                ],
+                business: [
+                    {
+                        question: "What is the French word for 'meeting'?",
+                        options: ["réunion", "conférence", "entretien", "séance"],
+                        correct: "réunion",
+                        hint: "This word comes from Latin 'reunire'",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'company' in French?",
+                        options: ["entreprise", "société", "compagnie", "organisation"],
+                        correct: "entreprise",
+                        hint: "Business organization",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'employee'?",
+                        options: ["employé", "employeur", "travailleur", "collègue"],
+                        correct: "employé",
+                        hint: "Worker",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'employer' in French?",
+                        options: ["employeur", "employé", "patron", "directeur"],
+                        correct: "employeur",
+                        hint: "Boss or company",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'salary'?",
+                        options: ["salaire", "revenu", "argent", "paiement"],
+                        correct: "salaire",
+                        hint: "Monthly pay",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'contract' in French?",
+                        options: ["contrat", "accord", "convention", "traité"],
+                        correct: "contrat",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'interview'?",
+                        options: ["entretien", "réunion", "conférence", "discussion"],
+                        correct: "entretien",
+                        hint: "Job interview",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'resume' in French?",
+                        options: ["CV", "lettre", "document", "dossier"],
+                        correct: "CV",
+                        hint: "Curriculum Vitae",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'deadline'?",
+                        options: ["échéance", "date", "limite", "fin"],
+                        correct: "échéance",
+                        hint: "Due date",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'project' in French?",
+                        options: ["projet", "plan", "tâche", "mission"],
+                        correct: "projet",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'client'?",
+                        options: ["client", "clientèle", "acheteur", "consommateur"],
+                        correct: "client",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'customer' in French?",
+                        options: ["client", "clientèle", "acheteur", "consommateur"],
+                        correct: "client",
+                        hint: "Same as 'client'",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'invoice'?",
+                        options: ["facture", "reçu", "billet", "note"],
+                        correct: "facture",
+                        hint: "Bill",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'budget' in French?",
+                        options: ["budget", "budget", "argent", "finance"],
+                        correct: "budget",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'profit'?",
+                        options: ["profit", "bénéfice", "revenu", "gain"],
+                        correct: "profit",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'loss' in French?",
+                        options: ["perte", "déficit", "échec", "échec"],
+                        correct: "perte",
+                        hint: "Financial loss",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'marketing'?",
+                        options: ["marketing", "publicité", "promotion", "vente"],
+                        correct: "marketing",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'advertising' in French?",
+                        options: ["publicité", "marketing", "promotion", "annonce"],
+                        correct: "publicité",
+                        hint: "Ads",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'competition'?",
+                        options: ["concurrence", "compétition", "rivalité", "match"],
+                        correct: "concurrence",
+                        hint: "Business rivalry",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'partnership' in French?",
+                        options: ["partenariat", "association", "alliance", "accord"],
+                        correct: "partenariat",
+                        hint: "Business collaboration",
+                        type: "vocabulary"
+                    }
+                ],
+                culture: [
+                    {
+                        question: "What is the French word for 'exhibition'?",
+                        options: ["exposition", "spectacle", "performance", "présentation"],
+                        correct: "exposition",
+                        hint: "This word comes from Latin 'exponere'",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'theater' in French?",
+                        options: ["théâtre", "cinéma", "spectacle", "pièce"],
+                        correct: "théâtre",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'cinema'?",
+                        options: ["cinéma", "théâtre", "film", "spectacle"],
+                        correct: "cinéma",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'concert' in French?",
+                        options: ["concert", "spectacle", "festival", "réunion"],
+                        correct: "concert",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'festival'?",
+                        options: ["festival", "fête", "célébration", "événement"],
+                        correct: "festival",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'painting' in French?",
+                        options: ["peinture", "dessin", "art", "tableau"],
+                        correct: "peinture",
+                        hint: "Art form",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'sculpture'?",
+                        options: ["sculpture", "statue", "art", "œuvre"],
+                        correct: "sculpture",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'music' in French?",
+                        options: ["musique", "chanson", "mélodie", "rythme"],
+                        correct: "musique",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'dance'?",
+                        options: ["danse", "ballet", "chorégraphie", "mouvement"],
+                        correct: "danse",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'literature' in French?",
+                        options: ["littérature", "livre", "écriture", "roman"],
+                        correct: "littérature",
+                        hint: "Written works",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'poetry'?",
+                        options: ["poésie", "poème", "vers", "littérature"],
+                        correct: "poésie",
+                        hint: "Poetic art",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'novel' in French?",
+                        options: ["roman", "livre", "histoire", "texte"],
+                        correct: "roman",
+                        hint: "Fiction book",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'tradition'?",
+                        options: ["tradition", "coutume", "habitude", "pratique"],
+                        correct: "tradition",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'custom' in French?",
+                        options: ["coutume", "tradition", "habitude", "pratique"],
+                        correct: "coutume",
+                        hint: "Cultural practice",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'heritage'?",
+                        options: ["patrimoine", "héritage", "tradition", "culture"],
+                        correct: "patrimoine",
+                        hint: "Cultural inheritance",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'monument' in French?",
+                        options: ["monument", "statue", "mémorial", "édifice"],
+                        correct: "monument",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'cathedral'?",
+                        options: ["cathédrale", "église", "chapelle", "temple"],
+                        correct: "cathédrale",
+                        hint: "Large church",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'opera' in French?",
+                        options: ["opéra", "théâtre", "spectacle", "concert"],
+                        correct: "opéra",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'ballet'?",
+                        options: ["ballet", "danse", "chorégraphie", "spectacle"],
+                        correct: "ballet",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'gallery' in French?",
+                        options: ["galerie", "musée", "exposition", "salle"],
+                        correct: "galerie",
+                        hint: "Art gallery",
+                        type: "vocabulary"
+                    }
+                ],
+                family: [
+                    {
+                        question: "How do you say 'my younger sister' in French?",
+                        options: ["ma petite sœur", "ma grande sœur", "ma sœur cadette", "ma sœur aînée"],
+                        correct: "ma petite sœur",
+                        hint: "Uses the word 'petite'",
+                        type: "phrases"
+                    },
+                    {
+                        question: "What is the French word for 'elder brother'?",
+                        options: ["grand frère", "petit frère", "frère aîné", "frère cadet"],
+                        correct: "grand frère",
+                        hint: "Older sibling",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which phrase means 'my parents' in French?",
+                        options: ["mes parents", "mon parent", "mes pères", "mes mères"],
+                        correct: "mes parents",
+                        hint: "Plural form",
+                        type: "phrases"
+                    },
+                    {
+                        question: "What is the French word for 'stepmother'?",
+                        options: ["belle-mère", "mère", "marâtre", "mère adoptive"],
+                        correct: "belle-mère",
+                        hint: "Two words with hyphen",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'stepfather' in French?",
+                        options: ["beau-père", "père", "père adoptif", "parrain"],
+                        correct: "beau-père",
+                        hint: "Two words with hyphen",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'sibling'?",
+                        options: ["frère et sœur", "sibling", "frère", "sœur"],
+                        correct: "frère et sœur",
+                        hint: "Brother and sister",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which phrase means 'extended family' in French?",
+                        options: ["famille élargie", "grande famille", "famille nombreuse", "famille proche"],
+                        correct: "famille élargie",
+                        hint: "Two words",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'godfather'?",
+                        options: ["parrain", "père", "oncle", "grand-père"],
+                        correct: "parrain",
+                        hint: "Baptism sponsor",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'godmother' in French?",
+                        options: ["marraine", "mère", "tante", "grand-mère"],
+                        correct: "marraine",
+                        hint: "Baptism sponsor",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'twin'?",
+                        options: ["jumeau", "frère", "sœur", "double"],
+                        correct: "jumeau",
+                        hint: "Same age sibling",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which phrase means 'only child' in French?",
+                        options: ["enfant unique", "seul enfant", "enfant seul", "unique enfant"],
+                        correct: "enfant unique",
+                        hint: "Two words",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'in-law'?",
+                        options: ["beau/belle", "parent", "famille", "mariage"],
+                        correct: "beau/belle",
+                        hint: "Marriage relation",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'ancestor' in French?",
+                        options: ["ancêtre", "aïeul", "grand-parent", "parent"],
+                        correct: "ancêtre",
+                        hint: "Family history",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'descendant'?",
+                        options: ["descendant", "enfant", "héritier", "successeur"],
+                        correct: "descendant",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which phrase means 'family tree' in French?",
+                        options: ["arbre généalogique", "famille arbre", "arbre famille", "généalogie arbre"],
+                        correct: "arbre généalogique",
+                        hint: "Two words",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'generation'?",
+                        options: ["génération", "famille", "âge", "époque"],
+                        correct: "génération",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'heir' in French?",
+                        options: ["héritier", "descendant", "successeur", "enfant"],
+                        correct: "héritier",
+                        hint: "Inheritance recipient",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'widow'?",
+                        options: ["veuve", "veuf", "mari", "femme"],
+                        correct: "veuve",
+                        hint: "Female form",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'widower' in French?",
+                        options: ["veuf", "veuve", "mari", "homme"],
+                        correct: "veuf",
+                        hint: "Male form",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'orphan'?",
+                        options: ["orphelin", "enfant", "seul", "abandonné"],
+                        correct: "orphelin",
+                        hint: "No parents",
+                        type: "vocabulary"
+                    }
+                ],
+                health: [
+                    {
+                        question: "How would you say 'I have a headache' in French?",
+                        options: ["J'ai mal à la tête", "J'ai mal au ventre", "J'ai de la fièvre", "J'ai un rhume"],
+                        correct: "J'ai mal à la tête",
+                        hint: "Uses 'mal à la'",
+                        type: "phrases"
+                    },
+                    {
+                        question: "What is the French word for 'symptom'?",
+                        options: ["symptôme", "maladie", "signe", "indication"],
+                        correct: "symptôme",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'diagnosis' in French?",
+                        options: ["diagnostic", "examen", "analyse", "test"],
+                        correct: "diagnostic",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'treatment'?",
+                        options: ["traitement", "médicament", "thérapie", "soin"],
+                        correct: "traitement",
+                        hint: "Medical care",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'surgery' in French?",
+                        options: ["chirurgie", "opération", "intervention", "traitement"],
+                        correct: "chirurgie",
+                        hint: "Medical operation",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'vaccine'?",
+                        options: ["vaccin", "médicament", "injection", "piqûre"],
+                        correct: "vaccin",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'allergy' in French?",
+                        options: ["allergie", "réaction", "intolérance", "sensibilité"],
+                        correct: "allergie",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'antibiotic'?",
+                        options: ["antibiotique", "médicament", "pilule", "comprimé"],
+                        correct: "antibiotique",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'bandage' in French?",
+                        options: ["pansement", "bandage", "bande", "ruban"],
+                        correct: "pansement",
+                        hint: "Wound covering",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'x-ray'?",
+                        options: ["radiographie", "rayon X", "scanner", "image"],
+                        correct: "radiographie",
+                        hint: "Medical imaging",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'therapy' in French?",
+                        options: ["thérapie", "traitement", "soin", "cure"],
+                        correct: "thérapie",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'recovery'?",
+                        options: ["rétablissement", "guérison", "amélioration", "retour"],
+                        correct: "rétablissement",
+                        hint: "Getting better",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'prevention' in French?",
+                        options: ["prévention", "protection", "précaution", "évitement"],
+                        correct: "prévention",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'hygiene'?",
+                        options: ["hygiène", "propreté", "nettoyage", "santé"],
+                        correct: "hygiène",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'nutrition' in French?",
+                        options: ["nutrition", "alimentation", "nourriture", "régime"],
+                        correct: "nutrition",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'exercise'?",
+                        options: ["exercice", "sport", "activité", "mouvement"],
+                        correct: "exercice",
+                        hint: "Physical activity",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'wellness' in French?",
+                        options: ["bien-être", "santé", "forme", "condition"],
+                        correct: "bien-être",
+                        hint: "Two words with hyphen",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'mental health'?",
+                        options: ["santé mentale", "santé psychique", "bien-être mental", "psychologie"],
+                        correct: "santé mentale",
+                        hint: "Two words",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'rehabilitation' in French?",
+                        options: ["rééducation", "rétablissement", "guérison", "retour"],
+                        correct: "rééducation",
+                        hint: "Recovery process",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'first aid'?",
+                        options: ["premiers secours", "aide urgente", "soins d'urgence", "assistance médicale"],
+                        correct: "premiers secours",
+                        hint: "Two words",
+                        type: "vocabulary"
+                    }
+                ]
+            },
+            advanced: {
+                general: [
+                    {
+                        question: "What is the French word for 'sustainability'?",
+                        options: ["durabilité", "durable", "soutenable", "maintenable"],
+                        correct: "durabilité",
+                        hint: "Environmental concept",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'globalization' in French?",
+                        options: ["mondialisation", "globalisation", "internationalisation", "universalisation"],
+                        correct: "mondialisation",
+                        hint: "World integration",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'democracy'?",
+                        options: ["démocratie", "république", "gouvernement", "état"],
+                        correct: "démocratie",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'bureaucracy' in French?",
+                        options: ["bureaucratie", "administration", "gouvernement", "système"],
+                        correct: "bureaucratie",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'infrastructure'?",
+                        options: ["infrastructure", "construction", "bâtiment", "édifice"],
+                        correct: "infrastructure",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'innovation' in French?",
+                        options: ["innovation", "invention", "création", "découverte"],
+                        correct: "innovation",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'entrepreneurship'?",
+                        options: ["entrepreneuriat", "entreprise", "entrepreneur", "entreprendre"],
+                        correct: "entrepreneuriat",
+                        hint: "Business creation",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'collaboration' in French?",
+                        options: ["collaboration", "coopération", "partenariat", "association"],
+                        correct: "collaboration",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'negotiation'?",
+                        options: ["négociation", "discussion", "accord", "compromis"],
+                        correct: "négociation",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'diplomacy' in French?",
+                        options: ["diplomatie", "négociation", "politique", "relations"],
+                        correct: "diplomatie",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'jurisdiction'?",
+                        options: ["juridiction", "droit", "loi", "justice"],
+                        correct: "juridiction",
+                        hint: "Legal authority",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'legislation' in French?",
+                        options: ["législation", "loi", "droit", "réglementation"],
+                        correct: "législation",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'constitution'?",
+                        options: ["constitution", "loi", "droit", "charte"],
+                        correct: "constitution",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'sovereignty' in French?",
+                        options: ["souveraineté", "pouvoir", "autorité", "gouvernement"],
+                        correct: "souveraineté",
+                        hint: "National independence",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'ideology'?",
+                        options: ["idéologie", "idée", "pensée", "philosophie"],
+                        correct: "idéologie",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'paradigm' in French?",
+                        options: ["paradigme", "modèle", "exemple", "pattern"],
+                        correct: "paradigme",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'methodology'?",
+                        options: ["méthodologie", "méthode", "approche", "technique"],
+                        correct: "méthodologie",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'epistemology' in French?",
+                        options: ["épistémologie", "connaissance", "savoir", "science"],
+                        correct: "épistémologie",
+                        hint: "Theory of knowledge",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'ontology'?",
+                        options: ["ontologie", "être", "existence", "réalité"],
+                        correct: "ontologie",
+                        hint: "Philosophy of being",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'hermeneutics' in French?",
+                        options: ["herméneutique", "interprétation", "explication", "analyse"],
+                        correct: "herméneutique",
+                        hint: "Interpretation theory",
+                        type: "vocabulary"
+                    }
+                ],
+                food: [
+                    {
+                        question: "What is the French word for 'gastronomy'?",
+                        options: ["gastronomie", "cuisine", "restaurant", "nourriture"],
+                        correct: "gastronomie",
+                        hint: "This word comes from Greek 'gastronomia'",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'sommelier' in French?",
+                        options: ["sommelier", "serveur", "chef", "maître d'hôtel"],
+                        correct: "sommelier",
+                        hint: "Wine expert",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'cuisine' (style)?",
+                        options: ["cuisine", "gastronomie", "art culinaire", "cooking"],
+                        correct: "cuisine",
+                        hint: "Cooking style",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'fermentation' in French?",
+                        options: ["fermentation", "transformation", "conservation", "préparation"],
+                        correct: "fermentation",
+                        hint: "Same as English",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'terroir'?",
+                        options: ["terroir", "territoire", "région", "sol"],
+                        correct: "terroir",
+                        hint: "Unique to French",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'mise en place' in French?",
+                        options: ["mise en place", "préparation", "organisation", "arrangement"],
+                        correct: "mise en place",
+                        hint: "Cooking preparation",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'amuse-bouche'?",
+                        options: ["amuse-bouche", "entrée", "hors-d'œuvre", "apéritif"],
+                        correct: "amuse-bouche",
+                        hint: "Small appetizer",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'degustation' in French?",
+                        options: ["dégustation", "tasting", "goût", "saveur"],
+                        correct: "dégustation",
+                        hint: "Wine tasting",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'molecular gastronomy'?",
+                        options: ["gastronomie moléculaire", "cuisine scientifique", "cuisine moderne", "nouvelle cuisine"],
+                        correct: "gastronomie moléculaire",
+                        hint: "Two words",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'nouvelle cuisine' in French?",
+                        options: ["nouvelle cuisine", "cuisine moderne", "cuisine traditionnelle", "haute cuisine"],
+                        correct: "nouvelle cuisine",
+                        hint: "Modern French cooking",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'haute cuisine'?",
+                        options: ["haute cuisine", "cuisine raffinée", "cuisine élégante", "grande cuisine"],
+                        correct: "haute cuisine",
+                        hint: "Fine dining",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'fromagerie' in French?",
+                        options: ["fromagerie", "boulangerie", "boucherie", "pâtisserie"],
+                        correct: "fromagerie",
+                        hint: "Cheese shop",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'charcuterie'?",
+                        options: ["charcuterie", "boucherie", "viande", "charcuterie"],
+                        correct: "charcuterie",
+                        hint: "Cured meats",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'pâtisserie' in French?",
+                        options: ["pâtisserie", "boulangerie", "confiserie", "glacerie"],
+                        correct: "pâtisserie",
+                        hint: "Pastry shop",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'confiserie'?",
+                        options: ["confiserie", "pâtisserie", "boulangerie", "chocolaterie"],
+                        correct: "confiserie",
+                        hint: "Candy shop",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'vinaigrette' in French?",
+                        options: ["vinaigrette", "sauce", "assaisonnement", "dressing"],
+                        correct: "vinaigrette",
+                        hint: "Salad dressing",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'bouillon'?",
+                        options: ["bouillon", "soupe", "consommé", "broth"],
+                        correct: "bouillon",
+                        hint: "Stock or broth",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'consommé' in French?",
+                        options: ["consommé", "bouillon", "soupe", "potage"],
+                        correct: "consommé",
+                        hint: "Clear soup",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French word for 'mirepoix'?",
+                        options: ["mirepoix", "légumes", "garniture", "accompagnement"],
+                        correct: "mirepoix",
+                        hint: "Vegetable base",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Which word means 'roux' in French?",
+                        options: ["roux", "sauce", "épaississant", "base"],
+                        correct: "roux",
+                        hint: "Flour and fat mixture",
+                        type: "vocabulary"
+                    }
+                ],
+                travel: [
+                    {
+                        question: "Which phrase means 'I would have liked to visit the museum' in French?",
+                        options: ["J'aurais aimé visiter le musée", "Je voudrais visiter le musée", "J'aimerais visiter le musée", "Je voulais visiter le musée"],
+                        correct: "J'aurais aimé visiter le musée",
+                        hint: "This uses the conditional perfect tense",
+                        type: "grammar"
+                    },
+                    // ... add more travel-related questions ...
+                ],
+                business: [
+                    {
+                        question: "What is the French word for 'entrepreneurship'?",
+                        options: ["entrepreneuriat", "entreprise", "entrepreneur", "entreprendre"],
+                        correct: "entrepreneuriat",
+                        hint: "This word comes from 'entrepreneur'",
+                        type: "vocabulary"
+                    },
+                    // ... add more business-related questions ...
+                ],
+                culture: [
+                    {
+                        question: "What is the French word for 'aesthetics'?",
+                        options: ["esthétique", "beauté", "art", "design"],
+                        correct: "esthétique",
+                        hint: "This word comes from Greek 'aisthetikos'",
+                        type: "vocabulary"
+                    },
+                    // ... add more culture-related questions ...
+                ],
+                technology: [
+                    {
+                        question: "How would you say 'artificial intelligence' in French?",
+                        options: ["intelligence artificielle", "intelligence machine", "intelligence numérique", "intelligence robotique"],
+                        correct: "intelligence artificielle",
+                        hint: "Direct translation from English",
+                        type: "vocabulary"
+                    }
+                ],
+                nature: [
+                    {
+                        question: "What's the French term for 'biodiversity'?",
+                        options: ["biodiversité", "diversité naturelle", "écosystème", "environnement"],
+                        correct: "biodiversité",
+                        hint: "Similar to English term",
+                        type: "vocabulary"
+                    }
+                ]
+            },
+            bonus: {
+                mix: [
+                    {
+                        question: "Translate to French: 'neighborhood'",
+                        options: ["quartier", "banlieue", "rue", "ville"],
+                        correct: "quartier",
+                        hint: "Often paired with the adjective 'calme'",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Translate to French: 'to improve'",
+                        options: ["améliorer", "aggraver", "diminuer", "réduire"],
+                        correct: "améliorer",
+                        hint: "Verb begins with 'amé-'",
+                        type: "verbs"
+                    },
+                    {
+                        question: "Which phrase means 'on the other hand' in French?",
+                        options: ["d'un autre côté", "par conséquent", "en revanche", "de toute façon"],
+                        correct: "d'un autre côté",
+                        hint: "Literally 'from another side'",
+                        type: "phrases"
+                    },
+                    {
+                        question: "Translate to French: 'sustainable development'",
+                        options: ["développement durable", "croissance rapide", "projet viable", "plan écologique"],
+                        correct: "développement durable",
+                        hint: "Two words starting with 'd'",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "Translate to French: 'brainstorming session'",
+                        options: ["séance de remue-méninges", "réunion d'urgence", "atelier de suivi", "table ronde"],
+                        correct: "séance de remue-méninges",
+                        hint: "Expression literally means 'shake brains'",
+                        type: "phrases"
+                    },
+                    {
+                        question: "Translate to French: 'highlight of the evening'",
+                        options: ["temps fort de la soirée", "fin de soirée", "début de soirée", "soirée complète"],
+                        correct: "temps fort de la soirée",
+                        hint: "Includes the word for 'strong time'",
+                        type: "phrases"
+                    },
+                    {
+                        question: "Translate to French: 'key takeaway'",
+                        options: ["point clé", "idée vague", "détail secondaire", "remarque annexe"],
+                        correct: "point clé",
+                        hint: "Also used in presentations",
+                        type: "vocabulary"
+                    },
+                    {
+                        question: "What is the French phrase for 'to meet a deadline'?",
+                        options: ["respecter une échéance", "retarder une échéance", "manquer une échéance", "oublier une échéance"],
+                        correct: "respecter une échéance",
+                        hint: "Use the verb meaning 'to respect'",
+                        type: "phrases"
+                    }
+                ]
+            }
+        };
+
+        const questionText = document.querySelector('.question-text');
+        const optionsContainer = document.querySelector('.options-container');
+        const feedback = document.querySelector('.feedback');
+        const progressFill = document.querySelector('.progress-fill');
+        const scoreDisplay = document.querySelectorAll('.stat-value')[0];
+        const streakDisplay = document.querySelectorAll('.stat-value')[1];
+        const questionsLeftDisplay = document.querySelectorAll('.stat-value')[2];
+        const hintBtn = document.querySelector('.hint-btn');
+        const hintText = document.querySelector('.hint-text');
+
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        const allQuestions = Object.values(gameData).flatMap(level =>
+            Object.values(level).flat()
+        );
+
+        let questionQueue = shuffleArray(allQuestions.map(q => ({ ...q })));
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let streak = 0;
+
+        function loadQuestion() {
+            if (currentQuestionIndex >= questionQueue.length) {
+                showQuizComplete();
+                return;
+            }
+
+            const question = questionQueue[currentQuestionIndex];
+            questionText.textContent = question.question;
+
+            optionsContainer.innerHTML = '';
+            const shuffledOptions = shuffleArray([...question.options]);
+            shuffledOptions.forEach(option => {
+                const button = document.createElement('button');
+                button.className = 'option-btn';
+                button.textContent = option;
+                button.addEventListener('click', () => checkAnswer(option));
+                optionsContainer.appendChild(button);
+            });
+
+            hintText.textContent = question.hint;
+            hintText.classList.remove('show');
+            hintBtn.style.display = 'block';
+            feedback.style.display = 'none';
+
+            progressFill.style.width = `${(currentQuestionIndex / questionQueue.length) * 100}%`;
+            scoreDisplay.textContent = score;
+            streakDisplay.textContent = streak;
+            questionsLeftDisplay.textContent = questionQueue.length - currentQuestionIndex;
+        }
+
+        function checkAnswer(selectedAnswer) {
+            const question = questionQueue[currentQuestionIndex];
+            const buttons = document.querySelectorAll('.option-btn');
+
+            buttons.forEach(button => {
+                button.disabled = true;
+                if (button.textContent === question.correct) {
+                    button.classList.add('correct');
+                } else if (button.textContent === selectedAnswer) {
+                    button.classList.add('incorrect');
+                }
+            });
+
+            if (selectedAnswer === question.correct) {
+                streak++;
+                score += 10;
+                updateScore(score);
+                feedback.innerHTML = `
+                    <div style="color: var(--accent-color)">Correct! Well done! 🎉</div>
+                    <div style="font-size: 0.9rem; margin-top: 0.5rem">+10 points</div>
+                `;
+                feedback.className = 'feedback success';
+            } else {
+                streak = 0;
+                feedback.innerHTML = `
+                    <div style="color: var(--error-color)">Incorrect. The correct answer was: ${question.correct}</div>
+                `;
+                feedback.className = 'feedback error';
+            }
+
+            feedback.style.display = 'block';
+
+            setTimeout(() => {
+                currentQuestionIndex++;
+                if (currentQuestionIndex >= questionQueue.length) {
+                    showQuizComplete();
+                } else {
+                    loadQuestion();
+                }
+            }, 1500);
+        }
+
+        function showQuizComplete() {
+            progressFill.style.width = '100%';
+            questionsLeftDisplay.textContent = 0;
+
+            const quizComplete = document.createElement('div');
+            quizComplete.className = 'level-complete';
+
+            quizComplete.innerHTML = `
+                <div class="celebration-title">🎉 Quiz Complete! 🎉</div>
+                <div class="celebration-stats">
+                    <div class="stat-card">
+                        <div class="stat-card-title">Final Score</div>
+                        <div class="stat-card-value">${score}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-title">Longest Streak</div>
+                        <div class="stat-card-value">${streak}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-title">Questions Completed</div>
+                        <div class="stat-card-value">${questionQueue.length}</div>
+                    </div>
+                </div>
+                <button class="level-btn" onclick="this.parentElement.remove(); resetGame()">Play Again</button>
+            `;
+
+            document.body.appendChild(quizComplete);
+        }
+
+        function resetGame() {
+            questionQueue = shuffleArray(allQuestions.map(q => ({ ...q })));
+            currentQuestionIndex = 0;
+            score = 0;
+            streak = 0;
+            loadQuestion();
+        }
+
+        function updateScore(newScore) {
+            scoreDisplay.classList.add('updating');
+            scoreDisplay.textContent = newScore;
+            setTimeout(() => {
+                scoreDisplay.classList.remove('updating');
+            }, 500);
+        }
+
+        hintBtn.addEventListener('click', () => {
+            hintText.classList.add('show');
+            hintBtn.style.display = 'none';
+        });
+
+        // Initialize
+        loadQuestion();
+    </script>
+</body>
+</html> 
