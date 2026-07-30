@@ -17,14 +17,11 @@
       --sf-stories-accent-soft: rgba(61, 158, 255, 0.16);
       --sf-stories-accent-glow: rgba(61, 158, 255, 0.4);
       --sf-stories-border: rgba(255, 255, 255, 0.22);
-      --sf-stories-fade: 0.4;
       --sf-stories-ease: cubic-bezier(0.22, 1, 0.36, 1);
       --sf-stories-font: "Instrument Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
       --sf-stories-pad-x: 16px;
-      --sf-stories-max: 1100px;
-      --sf-card-w: clamp(200px, 24vw, 280px);
-      --sf-card-active-w: min(720px, calc(100vw - 96px));
-      --sf-viewport-min-h: calc(var(--sf-card-active-w) * 9 / 16 + 24px);
+      --sf-stories-max: 980px;
+      --sf-stories-gap: 12px;
     }
 
     *,
@@ -43,7 +40,6 @@
     .sf-stories {
       position: relative;
       padding: 24px 0 calc(20px + env(safe-area-inset-bottom, 0px));
-      overflow: hidden;
       background: transparent;
     }
 
@@ -74,7 +70,7 @@
       flex-wrap: wrap;
       gap: 8px;
       width: min(var(--sf-stories-max), calc(100% - (var(--sf-stories-pad-x) * 2)));
-      margin: 0 auto 10px;
+      margin: 0 auto 14px;
     }
 
     .sf-stories__filter {
@@ -90,7 +86,11 @@
       padding: 7px 12px;
       min-height: 36px;
       cursor: pointer;
-      transition: background 0.3s var(--sf-stories-ease), border-color 0.3s var(--sf-stories-ease), color 0.3s var(--sf-stories-ease), box-shadow 0.3s var(--sf-stories-ease);
+      transition:
+        background 0.3s var(--sf-stories-ease),
+        border-color 0.3s var(--sf-stories-ease),
+        color 0.3s var(--sf-stories-ease),
+        box-shadow 0.3s var(--sf-stories-ease);
     }
 
     .sf-stories__filter:hover {
@@ -110,66 +110,40 @@
       outline-offset: 2px;
     }
 
-    .sf-stories__gallery { position: relative; }
-
-    .sf-stories__viewport {
-      overflow: hidden;
-      padding: 8px 0;
-      min-height: var(--sf-viewport-min-h);
-      display: flex;
-      align-items: center;
-      cursor: grab;
-      touch-action: pan-y;
-      user-select: none;
-      -webkit-user-select: none;
-      mask-image: linear-gradient(90deg, transparent, #000 2%, #000 98%, transparent);
-      -webkit-mask-image: linear-gradient(90deg, transparent, #000 2%, #000 98%, transparent);
-    }
-
-    .sf-stories__viewport.is-dragging { cursor: grabbing; }
-    .sf-stories__viewport.is-dragging .sf-stories__card { pointer-events: none; }
-
-    .sf-stories__track {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      width: max-content;
-      will-change: transform;
-      transition: transform 0.45s var(--sf-stories-ease);
+    .sf-stories__grid {
+      width: min(var(--sf-stories-max), calc(100% - (var(--sf-stories-pad-x) * 2)));
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--sf-stories-gap);
     }
 
     .sf-stories__card {
       position: relative;
-      flex: 0 0 auto;
-      width: var(--sf-card-w);
       aspect-ratio: 16 / 9;
       border: 1px solid transparent;
       background: #111;
       overflow: hidden;
       cursor: pointer;
-      opacity: var(--sf-stories-fade);
-      transform: scale(0.92);
       -webkit-tap-highlight-color: transparent;
-      transition: width 0.45s var(--sf-stories-ease), opacity 0.4s var(--sf-stories-ease), transform 0.4s var(--sf-stories-ease), border-color 0.35s var(--sf-stories-ease), box-shadow 0.35s var(--sf-stories-ease);
-    }
-
-    .sf-stories__card.is-active {
-      width: var(--sf-card-active-w);
-      opacity: 1;
-      transform: scale(1);
-      border-color: rgba(61, 158, 255, 0.5);
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5), 0 0 32px var(--sf-stories-accent-soft);
-      z-index: 2;
+      transition:
+        transform 0.3s var(--sf-stories-ease),
+        border-color 0.3s var(--sf-stories-ease),
+        box-shadow 0.3s var(--sf-stories-ease);
     }
 
     @media (hover: hover) and (pointer: fine) {
-      .sf-stories__gallery.is-hovering .sf-stories__card:not(.is-hovered):not(.is-active) { opacity: 0.28; }
-      .sf-stories__card.is-hovered:not(.is-active) {
-        opacity: 0.92;
-        transform: scale(0.97) translateY(-4px);
-        border-color: rgba(61, 158, 255, 0.3);
-        box-shadow: 0 8px 22px rgba(0, 0, 0, 0.4), 0 0 18px var(--sf-stories-accent-soft);
-        z-index: 3;
+      .sf-stories__card:hover {
+        transform: translateY(-3px);
+        border-color: rgba(61, 158, 255, 0.45);
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4), 0 0 20px var(--sf-stories-accent-soft);
+      }
+
+      .sf-stories__card:hover .sf-stories__play {
+        border-color: var(--sf-stories-accent);
+        background: rgba(61, 158, 255, 0.18);
+        box-shadow: 0 0 16px var(--sf-stories-accent-glow);
+        transform: scale(1.05);
       }
     }
 
@@ -182,13 +156,12 @@
       display: block;
       -webkit-backface-visibility: hidden;
       backface-visibility: hidden;
-      transform: translateZ(0);
     }
 
     .sf-stories__overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, transparent 45%, rgba(0, 0, 0, 0.8) 100%);
+      background: linear-gradient(180deg, transparent 42%, rgba(0, 0, 0, 0.82) 100%);
       pointer-events: none;
     }
 
@@ -196,48 +169,44 @@
       position: absolute;
       top: 50%;
       left: 50%;
-      width: 56px;
-      height: 56px;
-      margin: -28px 0 0 -28px;
+      width: 40px;
+      height: 40px;
+      margin: -20px 0 0 -20px;
       border-radius: 50%;
       border: 1px solid rgba(255, 255, 255, 0.5);
       background: rgba(0, 0, 0, 0.4);
       display: grid;
       place-items: center;
-      transition: transform 0.3s var(--sf-stories-ease), border-color 0.3s var(--sf-stories-ease), background 0.3s var(--sf-stories-ease), box-shadow 0.3s var(--sf-stories-ease);
+      transition:
+        transform 0.3s var(--sf-stories-ease),
+        border-color 0.3s var(--sf-stories-ease),
+        background 0.3s var(--sf-stories-ease),
+        box-shadow 0.3s var(--sf-stories-ease);
     }
 
     .sf-stories__play::before {
       content: "";
       width: 0;
       height: 0;
-      margin-left: 3px;
+      margin-left: 2px;
       border-style: solid;
-      border-width: 9px 0 9px 15px;
+      border-width: 6px 0 6px 10px;
       border-color: transparent transparent transparent #fff;
-    }
-
-    .sf-stories__card.is-active .sf-stories__play,
-    .sf-stories__card.is-hovered .sf-stories__play {
-      border-color: var(--sf-stories-accent);
-      background: rgba(61, 158, 255, 0.18);
-      box-shadow: 0 0 16px var(--sf-stories-accent-glow);
-      transform: scale(1.05);
     }
 
     .sf-stories__meta {
       position: absolute;
-      left: 14px;
-      right: 14px;
-      bottom: 12px;
+      left: 10px;
+      right: 10px;
+      bottom: 8px;
       z-index: 1;
       pointer-events: none;
     }
 
     .sf-stories__category {
       display: block;
-      margin-bottom: 3px;
-      font-size: 10px;
+      margin-bottom: 2px;
+      font-size: 9px;
       font-weight: 600;
       letter-spacing: 0.14em;
       text-transform: uppercase;
@@ -246,7 +215,7 @@
 
     .sf-stories__name {
       margin: 0;
-      font-size: 15px;
+      font-size: 13px;
       font-weight: 600;
       line-height: 1.2;
       white-space: nowrap;
@@ -279,57 +248,19 @@
       outline-offset: 3px;
     }
 
-    .sf-stories__bar {
-      width: min(var(--sf-stories-max), calc(100% - (var(--sf-stories-pad-x) * 2)));
-      margin: 8px auto 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
-
-    .sf-stories__nav { display: flex; gap: 8px; }
-
-    .sf-stories__nav-btn {
-      width: 44px;
-      height: 44px;
-      border: 1px solid var(--sf-stories-border);
-      background: transparent;
-      color: var(--sf-stories-text);
-      cursor: pointer;
-      display: grid;
-      place-items: center;
-      -webkit-tap-highlight-color: transparent;
-      transition: border-color 0.3s var(--sf-stories-ease), color 0.3s var(--sf-stories-ease), box-shadow 0.3s var(--sf-stories-ease);
-    }
-
-    .sf-stories__nav-btn svg {
-      width: 18px;
-      height: 18px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 1.8;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .sf-stories__nav-btn:hover:not(:disabled) {
-      border-color: var(--sf-stories-accent);
-      color: var(--sf-stories-accent);
-      box-shadow: 0 0 14px var(--sf-stories-accent-soft);
-    }
-
-    .sf-stories__nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-
     .sf-stories__status {
-      margin: 0;
+      width: min(var(--sf-stories-max), calc(100% - (var(--sf-stories-pad-x) * 2)));
+      margin: 12px auto 0;
       color: var(--sf-stories-muted);
       font-size: 12px;
       letter-spacing: 0.06em;
       text-transform: uppercase;
     }
 
-    .sf-stories__status strong { color: var(--sf-stories-text); font-weight: 600; }
+    .sf-stories__status strong {
+      color: var(--sf-stories-text);
+      font-weight: 600;
+    }
 
     .sf-stories__empty {
       display: none;
@@ -342,24 +273,11 @@
 
     .sf-stories__empty.is-visible { display: block; }
 
-    /* Tablet */
-    @media (max-width: 1024px) {
-      :root {
-        --sf-card-w: clamp(160px, 22vw, 240px);
-        --sf-card-active-w: min(640px, calc(100vw - 72px));
-      }
-      .sf-stories__track { gap: 12px; }
-    }
-
-    /* Small tablet / large phone */
     @media (max-width: 768px) {
-      :root {
-        --sf-stories-pad-x: 14px;
-        --sf-card-w: min(36vw, 168px);
-        --sf-card-active-w: min(86vw, 560px);
-      }
+      :root { --sf-stories-pad-x: 14px; --sf-stories-gap: 10px; }
+
       .sf-stories { padding: 18px 0 16px; }
-      .sf-stories__title { font-size: clamp(17px, 4.5vw, 22px); }
+
       .sf-stories__filters {
         flex-wrap: nowrap;
         overflow-x: auto;
@@ -369,54 +287,37 @@
         width: 100%;
         max-width: none;
         padding: 0 var(--sf-stories-pad-x) 4px;
-        margin: 0 0 8px;
+        margin: 0 0 12px;
         mask-image: linear-gradient(90deg, #000 85%, transparent);
         -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent);
       }
+
       .sf-stories__filters::-webkit-scrollbar { display: none; }
+
       .sf-stories__filter {
         flex: 0 0 auto;
         min-height: 40px;
         padding: 8px 14px;
         font-size: 10px;
       }
-      .sf-stories__viewport {
-        mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
-        -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
-      }
-      .sf-stories__play { width: 48px; height: 48px; margin: -24px 0 0 -24px; }
-      .sf-stories__play::before { border-width: 7px 0 7px 12px; }
-      .sf-stories__meta { left: 10px; right: 10px; bottom: 10px; }
-      .sf-stories__name { font-size: 13px; }
-    }
 
-    /* Phone */
-    @media (max-width: 480px) {
-      :root {
-        --sf-stories-pad-x: 12px;
-        --sf-card-w: min(28vw, 108px);
-        --sf-card-active-w: min(84vw, calc(100vw - 64px));
+      .sf-stories__grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
-      .sf-stories { padding: 16px 0 14px; }
-      .sf-stories__head { margin-bottom: 10px; }
-      .sf-stories__eyebrow { font-size: 10px; letter-spacing: 0.16em; }
-      .sf-stories__title { font-size: 18px; }
-      .sf-stories__track { gap: 10px; }
-      .sf-stories__card { transform: scale(0.94); }
-      .sf-stories__card.is-active { transform: scale(1); }
-      .sf-stories__viewport { padding: 6px 0; mask-image: none; -webkit-mask-image: none; }
-      .sf-stories__category { font-size: 9px; }
+
+      .sf-stories__play { width: 36px; height: 36px; margin: -18px 0 0 -18px; }
       .sf-stories__name { font-size: 12px; }
-      .sf-stories__bar { margin-top: 6px; }
-      .sf-stories__status { font-size: 11px; }
     }
 
-    @media (max-width: 360px) {
-      :root {
-        --sf-card-w: 96px;
-        --sf-card-active-w: calc(100vw - 20px);
-      }
-      .sf-stories__filter { padding: 8px 10px; letter-spacing: 0.06em; }
+    @media (max-width: 480px) {
+      :root { --sf-stories-pad-x: 12px; --sf-stories-gap: 8px; }
+
+      .sf-stories { padding: 16px 0 14px; }
+      .sf-stories__title { font-size: 18px; }
+      .sf-stories__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .sf-stories__category { font-size: 8px; }
+      .sf-stories__name { font-size: 11px; }
+      .sf-stories__meta { left: 8px; right: 8px; bottom: 6px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -425,13 +326,11 @@
   </style>
 </head>
 <body>
-  <!-- Embeddable section: host this page or paste .sf-stories into your site -->
+  <!-- Embeddable 3-column video grid. Host on GitHub Pages for Payhip iframe. -->
   <section class="sf-stories" aria-labelledby="sf-stories-title">
     <div class="sf-stories__head">
-      <div>
-        <p class="sf-stories__eyebrow">Student Stories</p>
-        <h2 class="sf-stories__title" id="sf-stories-title">Hear from our learners</h2>
-      </div>
+      <p class="sf-stories__eyebrow">Student Stories</p>
+      <h2 class="sf-stories__title" id="sf-stories-title">Hear from our learners</h2>
     </div>
 
     <div class="sf-stories__filters" role="tablist" aria-label="Filter by category">
@@ -445,25 +344,9 @@
       <button type="button" class="sf-stories__filter" data-filter="parents" role="tab" aria-selected="false">Parents</button>
     </div>
 
-    <div class="sf-stories__gallery" id="sf-stories-gallery">
-      <div class="sf-stories__viewport">
-        <div class="sf-stories__track" id="sf-stories-track" role="list"></div>
-      </div>
-    </div>
-
+    <div class="sf-stories__grid" id="sf-stories-grid" role="list"></div>
     <p class="sf-stories__empty" id="sf-stories-empty">No videos in this category.</p>
-
-    <div class="sf-stories__bar">
-      <div class="sf-stories__nav">
-        <button type="button" class="sf-stories__nav-btn" id="sf-stories-prev" aria-label="Previous video">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
-        </button>
-        <button type="button" class="sf-stories__nav-btn" id="sf-stories-next" aria-label="Next video">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18l6-6-6-6" /></svg>
-        </button>
-      </div>
-      <p class="sf-stories__status" id="sf-stories-status" aria-live="polite"><strong>1</strong> / 27</p>
-    </div>
+    <p class="sf-stories__status" id="sf-stories-status" aria-live="polite"><strong>27</strong> videos</p>
   </section>
 
   <script>
@@ -498,20 +381,15 @@
         { id: "schPmOat3ho", name: "Watson", category: "challenge", label: "Challenge" }
       ];
 
-      var track = document.getElementById("sf-stories-track");
-      var gallery = document.getElementById("sf-stories-gallery");
+      var grid = document.getElementById("sf-stories-grid");
       var statusEl = document.getElementById("sf-stories-status");
       var emptyEl = document.getElementById("sf-stories-empty");
-      var prevBtn = document.getElementById("sf-stories-prev");
-      var nextBtn = document.getElementById("sf-stories-next");
       var filterBtns = Array.prototype.slice.call(document.querySelectorAll(".sf-stories__filter"));
-
-      var activeIndex = 0;
       var visible = videos.slice();
       var playingId = null;
 
       function stopPlaying() {
-        var playing = track.querySelector(".sf-stories__card.is-playing");
+        var playing = grid.querySelector(".sf-stories__card.is-playing");
         if (!playing) return;
         playing.classList.remove("is-playing");
         var iframe = playing.querySelector(".sf-stories__iframe");
@@ -531,7 +409,6 @@
           origin &&
           origin !== "null";
 
-        // Local file / restricted webviews can't send a valid Referer → Error 153
         if (!canEmbed) {
           window.open("https://www.youtube.com/watch?v=" + id, "_blank", "noopener");
           return;
@@ -541,7 +418,6 @@
           "autoplay=1&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&origin=" +
           encodeURIComponent(origin);
 
-        // Build iframe with referrerpolicy BEFORE src (order matters for Error 153)
         var iframe = document.createElement("iframe");
         iframe.className = "sf-stories__iframe";
         iframe.title = "YouTube video: " + name;
@@ -555,27 +431,24 @@
         card.appendChild(iframe);
         card.classList.add("is-playing");
         playingId = id;
-
-        // Set src only after the iframe is in the DOM with referrerpolicy applied
         iframe.src = "https://www.youtube.com/embed/" + id + "?" + params;
       }
 
       function renderCards() {
         stopPlaying();
-        track.innerHTML = "";
+        grid.innerHTML = "";
 
-        visible.forEach(function (video, index) {
+        visible.forEach(function (video) {
           var card = document.createElement("article");
-          card.className = "sf-stories__card" + (index === activeIndex ? " is-active" : "");
+          card.className = "sf-stories__card";
           card.setAttribute("role", "listitem");
           card.setAttribute("tabindex", "0");
           card.setAttribute("data-id", video.id);
           card.setAttribute("data-name", video.name);
-          card.setAttribute("data-index", String(index));
           card.setAttribute("aria-label", video.label + " testimonial: " + video.name);
 
           card.innerHTML =
-            '<img class="sf-stories__thumb" src="https://i.ytimg.com/vi/' + video.id + '/maxresdefault.jpg" alt="" loading="lazy" width="1280" height="720" data-fallbacks="sddefault,hqdefault" />' +
+            '<img class="sf-stories__thumb" src="https://i.ytimg.com/vi/' + video.id + '/hqdefault.jpg" alt="" loading="lazy" width="480" height="270" data-fallbacks="mqdefault,default" />' +
             '<div class="sf-stories__overlay" aria-hidden="true"></div>' +
             '<div class="sf-stories__play" aria-hidden="true"></div>' +
             '<div class="sf-stories__meta">' +
@@ -595,24 +468,7 @@
             thumb.src = "https://i.ytimg.com/vi/" + video.id + "/" + next + ".jpg";
           });
 
-          card.addEventListener("mouseenter", function () {
-            gallery.classList.add("is-hovering");
-            card.classList.add("is-hovered");
-          });
-
-          card.addEventListener("mouseleave", function () {
-            card.classList.remove("is-hovered");
-            if (!track.querySelector(".sf-stories__card.is-hovered")) {
-              gallery.classList.remove("is-hovering");
-            }
-          });
-
           card.addEventListener("click", function () {
-            var idx = Number(card.getAttribute("data-index"));
-            if (idx !== activeIndex) {
-              setActive(idx);
-              return;
-            }
             if (playingId === video.id) return;
             playCard(card);
           });
@@ -624,82 +480,18 @@
             }
           });
 
-          track.appendChild(card);
+          grid.appendChild(card);
         });
 
         emptyEl.classList.toggle("is-visible", visible.length === 0);
-        updateStatus();
-        centerActive(false);
-        updateNav();
-      }
-
-      var recenterTimer = 0;
-
-      function setActive(index) {
-        if (!visible.length) return;
-        index = Math.max(0, Math.min(visible.length - 1, index));
-        if (index === activeIndex) {
-          centerActive(true);
-          return;
-        }
-        stopPlaying();
-        activeIndex = index;
-
-        Array.prototype.forEach.call(track.children, function (card, i) {
-          card.classList.toggle("is-active", i === activeIndex);
-        });
-
-        updateStatus();
-        centerActive(true);
-        updateNav();
-
-        if (recenterTimer) window.clearTimeout(recenterTimer);
-        recenterTimer = window.setTimeout(function () {
-          recenterTimer = 0;
-          centerActive(true);
-        }, 320);
-      }
-
-      function centerActive(animate) {
-        var card = track.children[activeIndex];
-        if (!card) {
-          track.style.transform = "translate3d(0,0,0)";
-          return;
-        }
-
-        var viewport = track.parentElement;
-        var target = Math.round(card.offsetLeft + card.offsetWidth / 2 - viewport.clientWidth / 2);
-
-        if (!animate) {
-          var prev = track.style.transition;
-          track.style.transition = "none";
-          track.style.transform = "translate3d(" + -target + "px,0,0)";
-          track.offsetHeight;
-          track.style.transition = prev || "";
-          return;
-        }
-
-        track.style.transform = "translate3d(" + -target + "px,0,0)";
-      }
-
-      function updateStatus() {
-        if (!visible.length) {
-          statusEl.innerHTML = "0 / 0";
-          return;
-        }
-        statusEl.innerHTML = "<strong>" + (activeIndex + 1) + "</strong> / " + visible.length;
-      }
-
-      function updateNav() {
-        prevBtn.disabled = activeIndex <= 0 || !visible.length;
-        nextBtn.disabled = activeIndex >= visible.length - 1 || !visible.length;
+        statusEl.innerHTML =
+          "<strong>" + visible.length + "</strong> video" + (visible.length === 1 ? "" : "s");
       }
 
       function applyFilter(filter) {
         visible = videos.filter(function (v) {
           return filter === "all" || v.category === filter;
         });
-        activeIndex = 0;
 
         filterBtns.forEach(function (btn) {
           var on = btn.getAttribute("data-filter") === filter;
@@ -714,214 +506,6 @@
         btn.addEventListener("click", function () {
           applyFilter(btn.getAttribute("data-filter"));
         });
-      });
-
-      prevBtn.addEventListener("click", function () {
-        setActive(activeIndex - 1);
-      });
-
-      nextBtn.addEventListener("click", function () {
-        setActive(activeIndex + 1);
-      });
-
-      document.addEventListener("keydown", function (e) {
-        if (e.target && /INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) return;
-        if (e.key === "ArrowLeft") {
-          e.preventDefault();
-          setActive(activeIndex - 1);
-        } else if (e.key === "ArrowRight") {
-          e.preventDefault();
-          setActive(activeIndex + 1);
-        }
-      });
-
-      var viewport = track.parentElement;
-      var drag = {
-        active: false,
-        startX: 0,
-        startY: 0,
-        startTransform: 0,
-        moved: false,
-        lastX: 0,
-        lastTime: 0,
-        velocity: 0,
-        pointerId: null,
-        axisLocked: null
-      };
-
-      function currentTranslate() {
-        var style = window.getComputedStyle(track).transform;
-        if (!style || style === "none") return 0;
-        var matrix = style.match(/matrix.*\((.+)\)/);
-        if (!matrix) return 0;
-        return parseFloat(matrix[1].split(",")[4]) || 0;
-      }
-
-      function nearestIndexFromTranslate(tx) {
-        var center = viewport.clientWidth / 2;
-        var best = 0;
-        var bestDist = Infinity;
-        Array.prototype.forEach.call(track.children, function (card, i) {
-          var cardCenter = card.offsetLeft + card.offsetWidth / 2 + tx;
-          var dist = Math.abs(cardCenter - center);
-          if (dist < bestDist) {
-            bestDist = dist;
-            best = i;
-          }
-        });
-        return best;
-      }
-
-      function onPointerDown(e) {
-        if (e.pointerType === "mouse" && e.button !== 0) return;
-        if (e.target && e.target.tagName === "IFRAME") return;
-
-        drag.active = true;
-        drag.moved = false;
-        drag.axisLocked = null;
-        drag.startX = e.clientX;
-        drag.startY = e.clientY;
-        drag.lastX = e.clientX;
-        drag.lastTime = performance.now();
-        drag.velocity = 0;
-        drag.startTransform = currentTranslate();
-        drag.pointerId = e.pointerId;
-        track.style.transition = "none";
-      }
-
-      function onPointerMove(e) {
-        if (!drag.active) return;
-
-        var dx = e.clientX - drag.startX;
-        var dy = e.clientY - drag.startY;
-
-        // Only treat as a slide once horizontal motion is clear
-        if (!drag.axisLocked) {
-          if (Math.abs(dx) < 12 && Math.abs(dy) < 12) return;
-          if (Math.abs(dy) > Math.abs(dx)) {
-            // Vertical scroll intent — cancel gallery drag
-            drag.active = false;
-            track.style.transition = "";
-            centerActive(true);
-            return;
-          }
-          drag.axisLocked = "x";
-          viewport.classList.add("is-dragging");
-          try {
-            viewport.setPointerCapture(e.pointerId);
-          } catch (err) {}
-        }
-
-        if (drag.axisLocked !== "x") return;
-
-        var now = performance.now();
-        var dt = Math.max(1, now - drag.lastTime);
-        drag.velocity = (e.clientX - drag.lastX) / dt;
-        drag.lastX = e.clientX;
-        drag.lastTime = now;
-        drag.moved = true;
-
-        track.style.transform = "translate3d(" + (drag.startTransform + dx) + "px,0,0)";
-        e.preventDefault();
-      }
-
-      function onPointerUp() {
-        if (!drag.active && !drag.moved) return;
-
-        var wasDragging = drag.active || drag.moved;
-        drag.active = false;
-        viewport.classList.remove("is-dragging");
-        track.style.transition = "";
-
-        try {
-          if (drag.pointerId != null) viewport.releasePointerCapture(drag.pointerId);
-        } catch (err) {}
-        drag.pointerId = null;
-
-        if (!wasDragging || !drag.moved) {
-          centerActive(true);
-          return;
-        }
-
-        var projected = currentTranslate() + drag.velocity * 160;
-        setActive(nearestIndexFromTranslate(projected));
-
-        window.setTimeout(function () {
-          drag.moved = false;
-        }, 0);
-      }
-
-      viewport.addEventListener("pointerdown", onPointerDown);
-      viewport.addEventListener("pointermove", onPointerMove, { passive: false });
-      viewport.addEventListener("pointerup", onPointerUp);
-      viewport.addEventListener("pointercancel", onPointerUp);
-
-      viewport.addEventListener("click", function (e) {
-        if (drag.moved) {
-          e.preventDefault();
-          e.stopPropagation();
-        }
-      }, true);
-
-      // Two-finger trackpad / horizontal mouse-wheel swipe
-      var wheel = {
-        live: false,
-        startTransform: 0,
-        accum: 0,
-        settleTimer: 0
-      };
-
-      viewport.addEventListener(
-        "wheel",
-        function (e) {
-          var dx = e.deltaX;
-          var dy = e.deltaY;
-
-          // Shift + vertical scroll = horizontal
-          if (e.shiftKey && Math.abs(dy) >= Math.abs(dx)) {
-            dx = dy;
-          }
-
-          // Ignore mostly-vertical page scrolls
-          if (Math.abs(dx) < 2 || Math.abs(dx) < Math.abs(dy) * 1.1) {
-            if (!e.shiftKey) return;
-          }
-
-          e.preventDefault();
-
-          if (!wheel.live) {
-            wheel.live = true;
-            wheel.startTransform = currentTranslate();
-            wheel.accum = 0;
-            track.style.transition = "none";
-            stopPlaying();
-          }
-
-          // Natural trackpad direction: fingers left → content moves left
-          wheel.accum -= dx;
-          track.style.transform =
-            "translate3d(" + (wheel.startTransform + wheel.accum) + "px,0,0)";
-
-          if (wheel.settleTimer) window.clearTimeout(wheel.settleTimer);
-          wheel.settleTimer = window.setTimeout(function () {
-            wheel.live = false;
-            wheel.settleTimer = 0;
-            track.style.transition = "";
-            setActive(nearestIndexFromTranslate(currentTranslate()));
-            wheel.accum = 0;
-          }, 140);
-        },
-        { passive: false }
-      );
-
-      window.addEventListener("resize", function () {
-        centerActive(false);
-      });
-
-      window.addEventListener("orientationchange", function () {
-        window.setTimeout(function () {
-          centerActive(false);
-        }, 180);
       });
 
       renderCards();
