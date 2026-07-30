@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- Required for YouTube embeds (avoids Error 153) -->
   <meta name="referrer" content="origin" />
   <title>VR Pilot Reviews — Simple French with HEMS</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -11,255 +10,254 @@
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --sf-stories-text: #ffffff;
-      --sf-stories-muted: rgba(255, 255, 255, 0.55);
-      --sf-stories-accent: #3d9eff;
-      --sf-stories-accent-soft: rgba(61, 158, 255, 0.16);
-      --sf-stories-accent-glow: rgba(61, 158, 255, 0.4);
-      --sf-stories-border: rgba(255, 255, 255, 0.22);
-      --sf-stories-ease: cubic-bezier(0.22, 1, 0.36, 1);
-      --sf-stories-font: "Instrument Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-      --sf-stories-pad-x: 16px;
-      --sf-stories-max: 860px;
-      --sf-stories-gap: 12px;
+      --text: #ffffff;
+      --muted: rgba(255, 255, 255, 0.55);
+      --soft: rgba(255, 255, 255, 0.72);
+      --accent: #3d9eff;
+      --accent-soft: rgba(61, 158, 255, 0.16);
+      --accent-glow: rgba(61, 158, 255, 0.35);
+      --line: rgba(255, 255, 255, 0.14);
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --font: "Instrument Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      --pad-x: 16px;
+      --max: 920px;
+      --gap: 16px;
     }
 
-    *,
-    *::before,
-    *::after { box-sizing: border-box; }
+    *, *::before, *::after { box-sizing: border-box; }
 
     html, body {
       margin: 0;
       padding: 0;
       background: transparent;
-      color: var(--sf-stories-text);
-      font-family: var(--sf-stories-font);
+      color: var(--text);
+      font-family: var(--font);
       -webkit-font-smoothing: antialiased;
     }
 
-    .sf-stories {
-      position: relative;
-      padding: 24px 0 calc(20px + env(safe-area-inset-bottom, 0px));
-      background: transparent;
+    .sf-vr {
+      padding: 28px 0 calc(24px + env(safe-area-inset-bottom, 0px));
     }
 
-    .sf-stories__head {
-      width: min(var(--sf-stories-max), calc(100% - (var(--sf-stories-pad-x) * 2)));
-      margin: 0 auto 12px;
+    .sf-vr__inner {
+      width: min(var(--max), calc(100% - (var(--pad-x) * 2)));
+      margin: 0 auto;
     }
 
-    .sf-stories__eyebrow {
-      margin: 0 0 4px;
+    .sf-vr__eyebrow {
+      margin: 0 0 6px;
       font-size: 11px;
       font-weight: 600;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: var(--sf-stories-accent);
+      color: var(--accent);
     }
 
-    .sf-stories__title {
-      margin: 0;
-      font-size: clamp(18px, 2.2vw, 24px);
+    .sf-vr__title {
+      margin: 0 0 8px;
+      font-size: clamp(22px, 3vw, 30px);
       font-weight: 700;
-      letter-spacing: -0.02em;
-      line-height: 1.15;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
     }
 
-    .sf-stories__filters {
+    .sf-vr__lead {
+      margin: 0 0 22px;
+      max-width: 46ch;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .sf-vr__filters {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      width: min(var(--sf-stories-max), calc(100% - (var(--sf-stories-pad-x) * 2)));
-      margin: 0 auto 14px;
+      margin-bottom: 28px;
     }
 
-    .sf-stories__filter {
+    .sf-vr__filter {
       appearance: none;
-      border: 1px solid var(--sf-stories-border);
+      border: 1px solid var(--line);
       background: transparent;
-      color: var(--sf-stories-text);
+      color: var(--text);
       font-family: inherit;
       font-size: 11px;
       font-weight: 600;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      padding: 7px 12px;
+      padding: 8px 12px;
       min-height: 36px;
       cursor: pointer;
-      transition:
-        background 0.3s var(--sf-stories-ease),
-        border-color 0.3s var(--sf-stories-ease),
-        color 0.3s var(--sf-stories-ease),
-        box-shadow 0.3s var(--sf-stories-ease);
+      transition: background 0.3s var(--ease), border-color 0.3s var(--ease), color 0.3s var(--ease), box-shadow 0.3s var(--ease);
     }
 
-    .sf-stories__filter:hover {
-      border-color: var(--sf-stories-accent);
-      color: var(--sf-stories-accent);
+    .sf-vr__filter:hover {
+      border-color: var(--accent);
+      color: var(--accent);
     }
 
-    .sf-stories__filter.is-active {
-      background: var(--sf-stories-accent);
-      border-color: var(--sf-stories-accent);
+    .sf-vr__filter.is-active {
+      background: var(--accent);
+      border-color: var(--accent);
       color: #041018;
-      box-shadow: 0 0 18px var(--sf-stories-accent-glow);
+      box-shadow: 0 0 18px var(--accent-glow);
     }
 
-    .sf-stories__filter:focus-visible {
-      outline: 2px solid var(--sf-stories-accent);
+    .sf-vr__filter:focus-visible {
+      outline: 2px solid var(--accent);
       outline-offset: 2px;
     }
 
-    .sf-stories__grid {
-      width: min(var(--sf-stories-max), calc(100% - (var(--sf-stories-pad-x) * 2)));
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: var(--sf-stories-gap);
+    .sf-vr__groups {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
     }
 
-    .sf-stories__card {
+    .sf-vr__group[hidden] { display: none !important; }
+
+    .sf-vr__group-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .sf-vr__group-label {
+      margin: 0;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .sf-vr__group-title {
+      margin: 4px 0 0;
+      font-size: 17px;
+      font-weight: 650;
+      letter-spacing: -0.02em;
+    }
+
+    .sf-vr__group-meta {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+
+    .sf-vr__row {
+      display: grid;
+      gap: var(--gap);
+      align-items: start;
+    }
+
+    .sf-vr__row--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .sf-vr__row--2 { grid-template-columns: repeat(2, minmax(0, 280px)); }
+    .sf-vr__row--1 { grid-template-columns: minmax(0, 280px); }
+
+    .sf-vr__card {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .sf-vr__media {
       position: relative;
       aspect-ratio: 9 / 16;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      background: #0a0a0a;
       overflow: hidden;
+      background: #0a0a0a;
+      border: 1px solid rgba(255, 255, 255, 0.1);
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
-      transition:
-        transform 0.3s var(--sf-stories-ease),
-        border-color 0.3s var(--sf-stories-ease),
-        box-shadow 0.3s var(--sf-stories-ease);
+      transition: border-color 0.3s var(--ease), box-shadow 0.3s var(--ease), transform 0.3s var(--ease);
+    }
+
+    .sf-vr__media:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
     }
 
     @media (hover: hover) and (pointer: fine) {
-      .sf-stories__card:hover {
-        transform: translateY(-4px);
-        border-color: rgba(61, 158, 255, 0.55);
-        box-shadow: 0 14px 32px rgba(0, 0, 0, 0.5), 0 0 24px var(--sf-stories-accent-soft);
+      .sf-vr__media:hover {
+        transform: translateY(-3px);
+        border-color: rgba(61, 158, 255, 0.5);
+        box-shadow: 0 14px 30px rgba(0, 0, 0, 0.45), 0 0 22px var(--accent-soft);
       }
 
-      .sf-stories__card:hover .sf-stories__thumb {
-        transform: scale(1.04);
-        filter: none;
+      .sf-vr__media:hover .sf-vr__thumb {
+        transform: scale(1.03);
       }
 
-      .sf-stories__card:hover .sf-stories__play {
-        border-color: var(--sf-stories-accent);
-        background: rgba(61, 158, 255, 0.22);
-        box-shadow: 0 0 18px var(--sf-stories-accent-glow);
-        transform: scale(1.06);
+      .sf-vr__media:hover .sf-vr__play {
+        border-color: var(--accent);
+        background: rgba(61, 158, 255, 0.2);
+        box-shadow: 0 0 18px var(--accent-glow);
+        transform: translate(-50%, -50%) scale(1.05);
       }
     }
 
-    .sf-stories__thumb {
+    .sf-vr__thumb {
       position: absolute;
       inset: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: center center;
+      object-position: center 20%;
       display: block;
-      /* Tone down busy Shorts caption overlays baked into the frame */
-      filter: saturate(0.92) contrast(1.04) brightness(0.92);
-      transition: transform 0.45s var(--sf-stories-ease), filter 0.35s var(--sf-stories-ease);
-      -webkit-backface-visibility: hidden;
-      backface-visibility: hidden;
+      filter: saturate(0.9) brightness(0.88);
+      transition: transform 0.45s var(--ease);
     }
 
-    .sf-stories__overlay {
+    .sf-vr__shade {
       position: absolute;
       inset: 0;
       pointer-events: none;
       background:
-        linear-gradient(180deg, rgba(0, 0, 0, 0.35) 0%, transparent 28%, transparent 48%, rgba(0, 0, 0, 0.88) 100%),
-        radial-gradient(ellipse 80% 50% at 50% 100%, rgba(0, 0, 0, 0.55), transparent 70%);
+        linear-gradient(180deg, rgba(0, 0, 0, 0.2), transparent 30%, transparent 55%, rgba(0, 0, 0, 0.45));
     }
 
-    .sf-stories__overlay::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
-      pointer-events: none;
-    }
-
-    .sf-stories__play {
+    .sf-vr__play {
       position: absolute;
       top: 50%;
       left: 50%;
-      width: 48px;
-      height: 48px;
-      margin: -24px 0 0 -24px;
+      width: 46px;
+      height: 46px;
+      transform: translate(-50%, -50%);
       border-radius: 50%;
       border: 1px solid rgba(255, 255, 255, 0.55);
-      background: rgba(0, 0, 0, 0.55);
+      background: rgba(0, 0, 0, 0.5);
       backdrop-filter: blur(6px);
       -webkit-backdrop-filter: blur(6px);
       display: grid;
       place-items: center;
-      z-index: 2;
-      transition:
-        transform 0.3s var(--sf-stories-ease),
-        border-color 0.3s var(--sf-stories-ease),
-        background 0.3s var(--sf-stories-ease),
-        box-shadow 0.3s var(--sf-stories-ease);
+      transition: border-color 0.3s var(--ease), background 0.3s var(--ease), box-shadow 0.3s var(--ease), transform 0.3s var(--ease);
     }
 
-    .sf-stories__play::before {
+    .sf-vr__play::before {
       content: "";
       width: 0;
       height: 0;
       margin-left: 3px;
       border-style: solid;
-      border-width: 8px 0 8px 13px;
+      border-width: 7px 0 7px 12px;
       border-color: transparent transparent transparent #fff;
     }
 
-    .sf-stories__meta {
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 2;
-      padding: 28px 12px 12px;
-      pointer-events: none;
-      background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.72) 40%, rgba(0, 0, 0, 0.92));
-    }
-
-    .sf-stories__category {
-      display: inline-block;
-      margin-bottom: 6px;
-      padding: 3px 7px;
-      font-size: 9px;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: #041018;
-      background: var(--sf-stories-accent);
-    }
-
-    .sf-stories__name {
-      margin: 0;
-      font-size: 13px;
-      font-weight: 600;
-      line-height: 1.25;
-      letter-spacing: -0.01em;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .sf-stories__card.is-playing .sf-stories__play,
-    .sf-stories__card.is-playing .sf-stories__overlay,
-    .sf-stories__card.is-playing .sf-stories__meta,
-    .sf-stories__card.is-playing .sf-stories__thumb {
+    .sf-vr__media.is-playing .sf-vr__thumb,
+    .sf-vr__media.is-playing .sf-vr__shade,
+    .sf-vr__media.is-playing .sf-vr__play {
       opacity: 0;
       pointer-events: none;
     }
 
-    .sf-stories__iframe {
+    .sf-vr__iframe {
       position: absolute;
       inset: 0;
       width: 100%;
@@ -269,83 +267,77 @@
       background: #000;
     }
 
-    .sf-stories__card.is-playing .sf-stories__iframe { display: block; }
+    .sf-vr__media.is-playing .sf-vr__iframe { display: block; }
 
-    .sf-stories__card:focus-visible {
-      outline: 2px solid var(--sf-stories-accent);
-      outline-offset: 3px;
+    .sf-vr__copy {
+      padding: 0 2px;
     }
 
-    .sf-stories__status {
-      width: min(var(--sf-stories-max), calc(100% - (var(--sf-stories-pad-x) * 2)));
-      margin: 12px auto 0;
-      color: var(--sf-stories-muted);
-      font-size: 12px;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-    }
-
-    .sf-stories__status strong {
-      color: var(--sf-stories-text);
+    .sf-vr__role {
+      margin: 0 0 4px;
+      font-size: 10px;
       font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
     }
 
-    .sf-stories__empty {
+    .sf-vr__name {
+      margin: 0 0 4px;
+      font-size: 15px;
+      font-weight: 650;
+      letter-spacing: -0.015em;
+      line-height: 1.25;
+    }
+
+    .sf-vr__blurb {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .sf-vr__empty {
       display: none;
-      margin: 24px auto;
-      width: min(var(--sf-stories-max), calc(100% - (var(--sf-stories-pad-x) * 2)));
-      text-align: center;
-      color: var(--sf-stories-muted);
+      margin: 20px 0 0;
+      color: var(--muted);
       font-size: 14px;
     }
 
-    .sf-stories__empty.is-visible { display: block; }
+    .sf-vr__empty.is-visible { display: block; }
 
     @media (max-width: 768px) {
-      :root { --sf-stories-pad-x: 14px; --sf-stories-gap: 10px; }
+      :root { --pad-x: 14px; --gap: 12px; }
 
-      .sf-stories { padding: 18px 0 16px; }
-
-      .sf-stories__filters {
+      .sf-vr__filters {
         flex-wrap: nowrap;
         overflow-x: auto;
-        overscroll-behavior-x: contain;
-        -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
-        width: 100%;
-        max-width: none;
-        padding: 0 var(--sf-stories-pad-x) 4px;
-        margin: 0 0 12px;
-        mask-image: linear-gradient(90deg, #000 85%, transparent);
-        -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent);
+        margin-left: calc(var(--pad-x) * -1);
+        margin-right: calc(var(--pad-x) * -1);
+        padding: 0 var(--pad-x) 4px;
+        -webkit-overflow-scrolling: touch;
       }
 
-      .sf-stories__filters::-webkit-scrollbar { display: none; }
+      .sf-vr__filters::-webkit-scrollbar { display: none; }
+      .sf-vr__filter { flex: 0 0 auto; }
 
-      .sf-stories__filter {
-        flex: 0 0 auto;
-        min-height: 40px;
-        padding: 8px 14px;
-        font-size: 10px;
+      .sf-vr__row--3,
+      .sf-vr__row--2,
+      .sf-vr__row--1 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
-      .sf-stories__grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
-
-      .sf-stories__play { width: 36px; height: 36px; margin: -18px 0 0 -18px; }
-      .sf-stories__name { font-size: 12px; }
+      .sf-vr__group-head { flex-wrap: wrap; }
     }
 
     @media (max-width: 480px) {
-      :root { --sf-stories-pad-x: 12px; --sf-stories-gap: 8px; }
+      :root { --pad-x: 12px; --gap: 10px; }
 
-      .sf-stories { padding: 16px 0 14px; }
-      .sf-stories__title { font-size: 18px; }
-      .sf-stories__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .sf-stories__category { font-size: 8px; }
-      .sf-stories__name { font-size: 11px; }
-      .sf-stories__meta { left: 8px; right: 8px; bottom: 8px; }
+      .sf-vr { padding: 20px 0 16px; }
+      .sf-vr__title { font-size: 20px; }
+      .sf-vr__name { font-size: 14px; }
+      .sf-vr__play { width: 40px; height: 40px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -354,58 +346,117 @@
   </style>
 </head>
 <body>
-  <!-- VR Shorts grid — 3 per row. Host on GitHub Pages for Payhip iframe. -->
-  <section class="sf-stories" aria-labelledby="sf-stories-title">
-    <div class="sf-stories__head">
-      <p class="sf-stories__eyebrow">VR Pilot Sessions</p>
-      <h2 class="sf-stories__title" id="sf-stories-title">Workshops &amp; pilot reviews</h2>
-    </div>
+  <section class="sf-vr" aria-labelledby="sf-vr-title">
+    <div class="sf-vr__inner">
+      <p class="sf-vr__eyebrow">VR Pilot Sessions</p>
+      <h2 class="sf-vr__title" id="sf-vr-title">Workshops &amp; pilot reviews</h2>
+      <p class="sf-vr__lead">
+        Real feedback from partner organizations — seniors programs, schools, and innovation workshops.
+      </p>
 
-    <div class="sf-stories__filters" role="tablist" aria-label="Filter by category">
-      <button type="button" class="sf-stories__filter is-active" data-filter="all" role="tab" aria-selected="true">All</button>
-      <button type="button" class="sf-stories__filter" data-filter="seesa" role="tab" aria-selected="false">SEESA</button>
-      <button type="button" class="sf-stories__filter" data-filter="garneau" role="tab" aria-selected="false">Garneau School</button>
-      <button type="button" class="sf-stories__filter" data-filter="edmonton-unlimited" role="tab" aria-selected="false">Edmonton Unlimited</button>
-    </div>
+      <div class="sf-vr__filters" role="tablist" aria-label="Filter by partner">
+        <button type="button" class="sf-vr__filter is-active" data-filter="all" aria-selected="true">All</button>
+        <button type="button" class="sf-vr__filter" data-filter="edmonton-unlimited" aria-selected="false">Edmonton Unlimited</button>
+        <button type="button" class="sf-vr__filter" data-filter="seesa" aria-selected="false">SEESA</button>
+        <button type="button" class="sf-vr__filter" data-filter="garneau" aria-selected="false">Garneau School</button>
+      </div>
 
-    <div class="sf-stories__grid" id="sf-stories-grid" role="list"></div>
-    <p class="sf-stories__empty" id="sf-stories-empty">No videos in this category.</p>
-    <p class="sf-stories__status" id="sf-stories-status" aria-live="polite"><strong>6</strong> videos</p>
+      <div class="sf-vr__groups" id="sf-vr-groups"></div>
+      <p class="sf-vr__empty" id="sf-vr-empty">No reviews in this category.</p>
+    </div>
   </section>
 
   <script>
     (function () {
-      var videos = [
-        { id: "OfY9T82TW64", name: "SEESA Senior", category: "seesa", label: "SEESA" },
-        { id: "HucC33Zl39A", name: "SEESA Coordinator", category: "seesa", label: "SEESA" },
-        { id: "CSWJo5JorfI", name: "Garneau Participants", category: "garneau", label: "Garneau" },
-        { id: "deS9Um4yWyQ", name: "Garneau Participant", category: "garneau", label: "Garneau" },
-        { id: "OVW9BMsgSHs", name: "Garneau Event Leader", category: "garneau", label: "Garneau" },
-        { id: "jb-ULO88hZ4", name: "Edmonton Unlimited", category: "edmonton-unlimited", label: "Edmonton Unlimited" }
+      // Story order: workshop context → seniors program → school pilot
+      // Within each group: authority / organizer first, then participants
+      var groups = [
+        {
+          id: "edmonton-unlimited",
+          label: "01 — Partner",
+          title: "Edmonton Unlimited",
+          meta: "Workshop pilot",
+          cols: 1,
+          videos: [
+            {
+              id: "jb-ULO88hZ4",
+              role: "Workshop review",
+              name: "French VR workshop",
+              blurb: "Pilot feedback from the Edmonton Unlimited session."
+            }
+          ]
+        },
+        {
+          id: "seesa",
+          label: "02 — Seniors",
+          title: "SEESA",
+          meta: "2 reviews",
+          cols: 2,
+          videos: [
+            {
+              id: "HucC33Zl39A",
+              role: "Program coordinator",
+              name: "VR cognitive workshop",
+              blurb: "How the seniors association experienced the session."
+            },
+            {
+              id: "OfY9T82TW64",
+              role: "Senior learner",
+              name: "First French words in VR",
+              blurb: "A participant speaks French for the first time through immersive learning."
+            }
+          ]
+        },
+        {
+          id: "garneau",
+          label: "03 — School",
+          title: "Garneau Public School",
+          meta: "3 reviews",
+          cols: 3,
+          videos: [
+            {
+              id: "OVW9BMsgSHs",
+              role: "Event leader",
+              name: "Pilot day insights",
+              blurb: "What stood out from the school’s point of view."
+            },
+            {
+              id: "CSWJo5JorfI",
+              role: "Participants",
+              name: "What students said",
+              blurb: "Collective reactions after the VR French pilot."
+            },
+            {
+              id: "deS9Um4yWyQ",
+              role: "Participant",
+              name: "Student testimonial",
+              blurb: "A direct takeaway from the Garneau pilot."
+            }
+          ]
+        }
       ];
 
-      var grid = document.getElementById("sf-stories-grid");
-      var statusEl = document.getElementById("sf-stories-status");
-      var emptyEl = document.getElementById("sf-stories-empty");
-      var filterBtns = Array.prototype.slice.call(document.querySelectorAll(".sf-stories__filter"));
-      var visible = videos.slice();
+      var groupsEl = document.getElementById("sf-vr-groups");
+      var emptyEl = document.getElementById("sf-vr-empty");
+      var filterBtns = Array.prototype.slice.call(document.querySelectorAll(".sf-vr__filter"));
+      var activeFilter = "all";
       var playingId = null;
 
       function stopPlaying() {
-        var playing = grid.querySelector(".sf-stories__card.is-playing");
+        var playing = groupsEl.querySelector(".sf-vr__media.is-playing");
         if (!playing) return;
         playing.classList.remove("is-playing");
-        var iframe = playing.querySelector(".sf-stories__iframe");
+        var iframe = playing.querySelector(".sf-vr__iframe");
         if (iframe) iframe.remove();
         playingId = null;
       }
 
-      function playCard(card) {
-        if (!card) return;
+      function playMedia(media) {
+        if (!media) return;
         stopPlaying();
 
-        var id = card.getAttribute("data-id");
-        var name = card.getAttribute("data-name") || "review";
+        var id = media.getAttribute("data-id");
+        var name = media.getAttribute("data-name") || "review";
         var origin = window.location.origin || "";
         var canEmbed =
           /^https?:$/i.test(window.location.protocol) &&
@@ -417,102 +468,135 @@
           return;
         }
 
-        var params =
-          "autoplay=1&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&origin=" +
-          encodeURIComponent(origin);
-
         var iframe = document.createElement("iframe");
-        iframe.className = "sf-stories__iframe";
+        iframe.className = "sf-vr__iframe";
         iframe.title = "YouTube Short: " + name;
         iframe.allow =
           "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
         iframe.setAttribute("allowfullscreen", "true");
-        iframe.setAttribute("frameborder", "0");
         iframe.referrerPolicy = "strict-origin-when-cross-origin";
         iframe.setAttribute("referrerpolicy", "strict-origin-when-cross-origin");
 
-        card.appendChild(iframe);
-        card.classList.add("is-playing");
+        media.appendChild(iframe);
+        media.classList.add("is-playing");
         playingId = id;
-        iframe.src = "https://www.youtube.com/embed/" + id + "?" + params;
+        iframe.src =
+          "https://www.youtube.com/embed/" +
+          id +
+          "?autoplay=1&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&origin=" +
+          encodeURIComponent(origin);
       }
 
-      function renderCards() {
+      function createCard(video) {
+        var card = document.createElement("article");
+        card.className = "sf-vr__card";
+
+        var media = document.createElement("div");
+        media.className = "sf-vr__media";
+        media.setAttribute("role", "button");
+        media.setAttribute("tabindex", "0");
+        media.setAttribute("data-id", video.id);
+        media.setAttribute("data-name", video.name);
+        media.setAttribute("aria-label", "Play: " + video.name);
+
+        media.innerHTML =
+          '<img class="sf-vr__thumb" src="https://i.ytimg.com/vi/' + video.id + '/maxresdefault.jpg" alt="" width="720" height="1280" loading="lazy" decoding="async" data-fallbacks="hq720,sddefault" />' +
+          '<div class="sf-vr__shade" aria-hidden="true"></div>' +
+          '<div class="sf-vr__play" aria-hidden="true"></div>';
+
+        var thumb = media.querySelector(".sf-vr__thumb");
+        thumb.addEventListener("error", function onErr() {
+          var order = (thumb.getAttribute("data-fallbacks") || "").split(",");
+          if (!order.length || !order[0]) {
+            thumb.removeEventListener("error", onErr);
+            return;
+          }
+          var next = order.shift().trim();
+          thumb.setAttribute("data-fallbacks", order.join(","));
+          thumb.src = "https://i.ytimg.com/vi/" + video.id + "/" + next + ".jpg";
+        });
+
+        media.addEventListener("click", function () {
+          if (playingId === video.id) return;
+          playMedia(media);
+        });
+
+        media.addEventListener("keydown", function (e) {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            media.click();
+          }
+        });
+
+        var copy = document.createElement("div");
+        copy.className = "sf-vr__copy";
+        copy.innerHTML =
+          '<p class="sf-vr__role">' + video.role + "</p>" +
+          '<h3 class="sf-vr__name">' + video.name + "</h3>" +
+          '<p class="sf-vr__blurb">' + video.blurb + "</p>";
+
+        card.appendChild(media);
+        card.appendChild(copy);
+        return card;
+      }
+
+      function render() {
         stopPlaying();
-        grid.innerHTML = "";
+        groupsEl.innerHTML = "";
 
-        visible.forEach(function (video) {
-          var card = document.createElement("article");
-          card.className = "sf-stories__card";
-          card.setAttribute("role", "listitem");
-          card.setAttribute("tabindex", "0");
-          card.setAttribute("data-id", video.id);
-          card.setAttribute("data-name", video.name);
-          card.setAttribute("aria-label", video.label + " review: " + video.name);
+        var shown = 0;
 
-          // Shorts ship true vertical maxres (720x1280). hqdefault is only ~360px and looks blurry.
-          card.innerHTML =
-            '<img class="sf-stories__thumb" src="https://i.ytimg.com/vi/' + video.id + '/maxresdefault.jpg" alt="" loading="lazy" width="720" height="1280" decoding="async" data-fallbacks="hq720,sddefault,hqdefault" />' +
-            '<div class="sf-stories__overlay" aria-hidden="true"></div>' +
-            '<div class="sf-stories__play" aria-hidden="true"></div>' +
-            '<div class="sf-stories__meta">' +
-              '<span class="sf-stories__category">' + video.label + "</span>" +
-              '<p class="sf-stories__name">' + video.name + "</p>" +
-            "</div>";
+        groups.forEach(function (group) {
+          var visible = activeFilter === "all" || activeFilter === group.id;
+          if (!visible) return;
 
-          var thumb = card.querySelector(".sf-stories__thumb");
-          thumb.addEventListener("error", function onThumbError() {
-            var order = (thumb.getAttribute("data-fallbacks") || "").split(",");
-            if (!order.length || !order[0]) {
-              thumb.removeEventListener("error", onThumbError);
-              return;
-            }
-            var next = order.shift().trim();
-            thumb.setAttribute("data-fallbacks", order.join(","));
-            thumb.src = "https://i.ytimg.com/vi/" + video.id + "/" + next + ".jpg";
+          shown += group.videos.length;
+
+          var section = document.createElement("section");
+          section.className = "sf-vr__group";
+          section.setAttribute("data-group", group.id);
+          section.setAttribute("aria-label", group.title);
+
+          var head = document.createElement("div");
+          head.className = "sf-vr__group-head";
+          head.innerHTML =
+            "<div>" +
+              '<p class="sf-vr__group-label">' + group.label + "</p>" +
+              '<h3 class="sf-vr__group-title">' + group.title + "</h3>" +
+            "</div>" +
+            '<p class="sf-vr__group-meta">' + group.meta + "</p>";
+
+          var row = document.createElement("div");
+          row.className = "sf-vr__row sf-vr__row--" + group.cols;
+          row.setAttribute("role", "list");
+
+          group.videos.forEach(function (video) {
+            var card = createCard(video);
+            card.setAttribute("role", "listitem");
+            row.appendChild(card);
           });
 
-          card.addEventListener("click", function () {
-            if (playingId === video.id) return;
-            playCard(card);
-          });
-
-          card.addEventListener("keydown", function (e) {
-            if (e.key === "Enter" || e.key === " ") {
-              e.preventDefault();
-              card.click();
-            }
-          });
-
-          grid.appendChild(card);
+          section.appendChild(head);
+          section.appendChild(row);
+          groupsEl.appendChild(section);
         });
 
-        emptyEl.classList.toggle("is-visible", visible.length === 0);
-        statusEl.innerHTML =
-          "<strong>" + visible.length + "</strong> video" + (visible.length === 1 ? "" : "s");
-      }
-
-      function applyFilter(filter) {
-        visible = videos.filter(function (v) {
-          return filter === "all" || v.category === filter;
-        });
-
-        filterBtns.forEach(function (btn) {
-          var on = btn.getAttribute("data-filter") === filter;
-          btn.classList.toggle("is-active", on);
-          btn.setAttribute("aria-selected", on ? "true" : "false");
-        });
-
-        renderCards();
+        emptyEl.classList.toggle("is-visible", shown === 0);
       }
 
       filterBtns.forEach(function (btn) {
         btn.addEventListener("click", function () {
-          applyFilter(btn.getAttribute("data-filter"));
+          activeFilter = btn.getAttribute("data-filter");
+          filterBtns.forEach(function (b) {
+            var on = b === btn;
+            b.classList.toggle("is-active", on);
+            b.setAttribute("aria-selected", on ? "true" : "false");
+          });
+          render();
         });
       });
 
-      renderCards();
+      render();
     })();
   </script>
 </body>
