@@ -121,8 +121,8 @@
     .sf-stories__card {
       position: relative;
       aspect-ratio: 9 / 16;
-      border: 1px solid transparent;
-      background: #111;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: #0a0a0a;
       overflow: hidden;
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
@@ -134,16 +134,21 @@
 
     @media (hover: hover) and (pointer: fine) {
       .sf-stories__card:hover {
-        transform: translateY(-3px);
-        border-color: rgba(61, 158, 255, 0.45);
-        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4), 0 0 20px var(--sf-stories-accent-soft);
+        transform: translateY(-4px);
+        border-color: rgba(61, 158, 255, 0.55);
+        box-shadow: 0 14px 32px rgba(0, 0, 0, 0.5), 0 0 24px var(--sf-stories-accent-soft);
+      }
+
+      .sf-stories__card:hover .sf-stories__thumb {
+        transform: scale(1.04);
+        filter: none;
       }
 
       .sf-stories__card:hover .sf-stories__play {
         border-color: var(--sf-stories-accent);
-        background: rgba(61, 158, 255, 0.18);
-        box-shadow: 0 0 16px var(--sf-stories-accent-glow);
-        transform: scale(1.05);
+        background: rgba(61, 158, 255, 0.22);
+        box-shadow: 0 0 18px var(--sf-stories-accent-glow);
+        transform: scale(1.06);
       }
     }
 
@@ -153,7 +158,11 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      object-position: center center;
       display: block;
+      /* Tone down busy Shorts caption overlays baked into the frame */
+      filter: saturate(0.92) contrast(1.04) brightness(0.92);
+      transition: transform 0.45s var(--sf-stories-ease), filter 0.35s var(--sf-stories-ease);
       -webkit-backface-visibility: hidden;
       backface-visibility: hidden;
     }
@@ -161,7 +170,17 @@
     .sf-stories__overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, transparent 45%, rgba(0, 0, 0, 0.82) 100%);
+      pointer-events: none;
+      background:
+        linear-gradient(180deg, rgba(0, 0, 0, 0.35) 0%, transparent 28%, transparent 48%, rgba(0, 0, 0, 0.88) 100%),
+        radial-gradient(ellipse 80% 50% at 50% 100%, rgba(0, 0, 0, 0.55), transparent 70%);
+    }
+
+    .sf-stories__overlay::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
       pointer-events: none;
     }
 
@@ -169,14 +188,17 @@
       position: absolute;
       top: 50%;
       left: 50%;
-      width: 42px;
-      height: 42px;
-      margin: -21px 0 0 -21px;
+      width: 48px;
+      height: 48px;
+      margin: -24px 0 0 -24px;
       border-radius: 50%;
-      border: 1px solid rgba(255, 255, 255, 0.5);
-      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.55);
+      background: rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
       display: grid;
       place-items: center;
+      z-index: 2;
       transition:
         transform 0.3s var(--sf-stories-ease),
         border-color 0.3s var(--sf-stories-ease),
@@ -188,29 +210,33 @@
       content: "";
       width: 0;
       height: 0;
-      margin-left: 2px;
+      margin-left: 3px;
       border-style: solid;
-      border-width: 7px 0 7px 11px;
+      border-width: 8px 0 8px 13px;
       border-color: transparent transparent transparent #fff;
     }
 
     .sf-stories__meta {
       position: absolute;
-      left: 10px;
-      right: 10px;
-      bottom: 10px;
-      z-index: 1;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 2;
+      padding: 28px 12px 12px;
       pointer-events: none;
+      background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.72) 40%, rgba(0, 0, 0, 0.92));
     }
 
     .sf-stories__category {
-      display: block;
-      margin-bottom: 2px;
+      display: inline-block;
+      margin-bottom: 6px;
+      padding: 3px 7px;
       font-size: 9px;
       font-weight: 600;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--sf-stories-accent);
+      color: #041018;
+      background: var(--sf-stories-accent);
     }
 
     .sf-stories__name {
@@ -218,6 +244,7 @@
       font-size: 13px;
       font-weight: 600;
       line-height: 1.25;
+      letter-spacing: -0.01em;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
@@ -423,8 +450,9 @@
           card.setAttribute("data-name", video.name);
           card.setAttribute("aria-label", video.label + " review: " + video.name);
 
+          // Shorts ship true vertical maxres (720x1280). hqdefault is only ~360px and looks blurry.
           card.innerHTML =
-            '<img class="sf-stories__thumb" src="https://i.ytimg.com/vi/' + video.id + '/hqdefault.jpg" alt="" loading="lazy" width="480" height="860" data-fallbacks="mqdefault,default" />' +
+            '<img class="sf-stories__thumb" src="https://i.ytimg.com/vi/' + video.id + '/maxresdefault.jpg" alt="" loading="lazy" width="720" height="1280" decoding="async" data-fallbacks="hq720,sddefault,hqdefault" />' +
             '<div class="sf-stories__overlay" aria-hidden="true"></div>' +
             '<div class="sf-stories__play" aria-hidden="true"></div>' +
             '<div class="sf-stories__meta">' +
