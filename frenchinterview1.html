@@ -1,1929 +1,493 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TEF/DELF Speaking Test</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <style>
-        /* Add Poppins font import if not already present */
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
-
-        /* Update the root styles */
-        :root {
-            --primary-color: #00FF99;
-            --bg-color: #121212;
-            --text-color: #00FF99;
-            --card-bg: rgba(0, 255, 153, 0.2);
-            --font-family: 'Poppins', sans-serif;
-        }
-
-        /* Add universal font-family */
-        * {
-            font-family: var(--font-family);
-        }
-
-        body {
-            text-align: center;
-            font-family: var(--font-family);
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-            border: 2px solid var(--primary-color);
-            border-radius: 20px;
-            box-shadow: 0 0 30px var(--primary-color);
-            position: relative;
-        }
-
-        /* Add this new class for the outer glow effect */
-        body::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            border-radius: 22px;
-            background: linear-gradient(45deg, 
-                var(--primary-color) 0%, 
-                transparent 50%,
-                var(--primary-color) 100%
-            );
-            z-index: -1;
-            animation: borderGlow 3s ease-in-out infinite;
-        }
-
-        h2 {
-            font-size: 28px;
-            text-shadow: 0px 0px 10px #00FF99;
-            font-weight: 600;
-        }
-        .test-container {
-            width: 90%;
-            max-width: 700px;
-            margin: auto;
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 15px #00FF99;
-            text-align: center;
-            position: relative;
-        }
-        video {
-            width: 100%;
-            border-radius: 10px;
-            box-shadow: 0px 0px 15px #00FF99;
-        }
-        .overlay-text {
-            position: absolute;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            padding: 10px;
-            background: rgba(0, 255, 153, 0.8);
-            border-radius: 5px;
-            font-size: 18px;
-            color: black;
-            font-weight: bold;
-        }
-        button {
-            padding: 12px 20px;
-            font-size: 18px;
-            font-weight: 500;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: 0.3s ease-in-out;
-            font-family: var(--font-family);
-            margin: 10px;
-        }
-        .btn-green { background-color: #00FF99; color: black; box-shadow: 0px 0px 15px #00FF99; }
-        .btn-red { background-color: #FF4444; color: white; box-shadow: 0px 0px 15px #FF4444; }
-        .btn-blue { background-color: #0056b3; color: white; box-shadow: 0px 0px 15px #0056b3; }
-        button:hover { transform: scale(1.1); box-shadow: 0px 0px 20px white; }
-        #timer {
-            font-size: 24px;
-            font-weight: bold;
-            color: #00FF99;
-            margin: 10px 0;
-            text-shadow: 0px 0px 10px #00FF99;
-        }
-        .level-selector {
-            margin: 20px 0;
-        }
-        .level-selector button {
-            margin: 0 5px;
-            padding: 8px 15px;
-            border-radius: 5px;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .level-selector button.active {
-            transform: scale(1.1);
-            box-shadow: 0px 0px 15px #00FF99;
-        }
-        .error {
-            color: #FF4444;
-            margin: 5px 0;
-            font-size: 14px;
-        }
-        .success {
-            color: #00FF99;
-            margin: 5px 0;
-            font-size: 14px;
-        }
-        @keyframes flash {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); box-shadow: 0px 0px 20px #00FF99; }
-            100% { transform: scale(1); }
-        }
-        .controls-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            width: 90%;
-            max-width: 700px;
-            margin: 20px auto;
-        }
-        .main-controls {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .recording-controls {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .level-result {
-            font-size: 24px;
-            font-weight: 600;
-            color: #00FF99;
-            margin: 15px 0;
-        }
-        .assessment-details {
-            background: rgba(0, 255, 153, 0.1);
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 15px;
-        }
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(8px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        .contact-form {
-            background: rgba(18, 18, 18, 0.9);
-            border-radius: 20px;
-            width: 90%;
-            max-width: 650px;
-            padding: 40px;
-            box-shadow: 0 0 30px rgba(0, 255, 153, 0.3);
-            position: relative;
-            border: 1px solid rgba(0, 255, 153, 0.2);
-            overflow: hidden;
-        }
-        .form-header {
-            text-align: center;
-            margin-bottom: 30px;
-            position: relative;
-        }
-        .logo-container {
-            position: relative;
-            width: 90px;
-            height: 90px;
-            margin: 0 auto 20px;
-        }
-        .logo-image {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--primary-color);
-            position: relative;
-            z-index: 2;
-        }
-        .logo-glow {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 110%;
-            height: 110%;
-            background: var(--primary-color);
-            border-radius: 50%;
-            filter: blur(12px);
-            opacity: 0.6;
-            animation: pulse 3s ease-in-out infinite;
-            z-index: 1;
-        }
-        .form-header h2 {
-            font-size: 28px;
-            margin: 0 0 8px;
-            color: white;
-            font-weight: 600;
-            text-shadow: 0 0 10px rgba(0, 255, 153, 0.5);
-        }
-        .form-header p {
-            font-size: 16px;
-            margin: 0;
-            color: rgba(255, 255, 255, 0.7);
-        }
-        #contactForm {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            padding: 20px 0;
-        }
-        .input-group {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            margin-bottom: 20px;
-        }
-        .input-container {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        .input-container label {
-            display: block;
-            font-size: 14px;
-            color: var(--primary-color);
-            font-weight: 500;
-            margin: 0;
-        }
-        .input-container input,
-        .input-container select,
-        .input-container textarea {
-            width: 100%;
-            padding: 12px 16px;
-            background: rgba(18, 18, 18, 0.8);
-            border: 1px solid rgba(0, 255, 153, 0.2);
-            border-radius: 10px;
-            color: white;
-            font-size: 15px;
-            transition: all 0.3s;
-            margin: 0;
-        }
-        .input-container input:focus,
-        .input-container select:focus,
-        .input-container textarea:focus {
-            outline: none;
-            background: rgba(0, 255, 153, 0.1);
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 2px rgba(0, 255, 153, 0.2);
-        }
-        .input-container input::placeholder,
-        .input-container textarea::placeholder {
-            color: rgba(255, 255, 255, 0.3);
-        }
-        .input-border {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            height: 2px;
-            width: 0;
-            background: var(--primary-color);
-            transition: width 0.3s ease;
-        }
-        .input-container input:focus ~ .input-border,
-        .input-container select:focus ~ .input-border,
-        .input-container textarea:focus ~ .input-border {
-            width: 100%;
-        }
-        .submit-btn {
-            background: var(--primary-color);
-            color: black;
-            font-size: 16px;
-            font-weight: 600;
-            padding: 16px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            margin-top: 10px;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s;
-            box-shadow: 0 0 15px rgba(0, 255, 153, 0.4);
-        }
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 20px rgba(0, 255, 153, 0.6);
-        }
-        .submit-btn:active {
-            transform: translateY(1px);
-        }
-        .decoration-dot {
-            position: absolute;
-            border-radius: 50%;
-            background: var(--primary-color);
-            opacity: 0.3;
-            z-index: -1;
-        }
-        .dot-1 {
-            width: 200px;
-            height: 200px;
-            top: -100px;
-            right: -100px;
-            filter: blur(60px);
-        }
-        .dot-2 {
-            width: 150px;
-            height: 150px;
-            bottom: -50px;
-            left: -70px;
-            filter: blur(50px);
-        }
-        .dot-3 {
-            width: 100px;
-            height: 100px;
-            bottom: 40%;
-            right: -50px;
-            filter: blur(40px);
-        }
-        .twinkle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: white;
-            border-radius: 50%;
-        }
-        .twinkle-1 {
-            top: 15%;
-            left: 10%;
-            animation: twinkle 4s infinite;
-        }
-        .twinkle-2 {
-            top: 80%;
-            left: 80%;
-            animation: twinkle 6s infinite 1s;
-        }
-        .twinkle-3 {
-            top: 30%;
-            left: 85%;
-            animation: twinkle 5s infinite 2s;
-        }
-        @keyframes pulse {
-            0% { opacity: 0.4; transform: translate(-50%, -50%) scale(1); }
-            50% { opacity: 0.7; transform: translate(-50%, -50%) scale(1.15); }
-            100% { opacity: 0.4; transform: translate(-50%, -50%) scale(1); }
-        }
-        @keyframes twinkle {
-            0% { opacity: 0; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.5); }
-            100% { opacity: 0; transform: scale(1); }
-        }
-        @media (max-width: 768px) {
-            .contact-form {
-                padding: 30px 20px;
-            }
-            .input-group {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-            .form-header h2 {
-                font-size: 24px;
-            }
-            .form-header p {
-                font-size: 14px;
-            }
-        }
-        .theme-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: rgba(0, 255, 153, 0.2);
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            z-index: 1001;
-        }
-        .progress-bar {
-            width: 100%;
-            height: 20px;
-            background-color: #ddd;
-            border-radius: 10px;
-            margin: 20px 0;
-        }
-        .progress-fill {
-            height: 100%;
-            background-color: var(--primary-color);
-            border-radius: 10px;
-            transition: width 0.3s ease;
-        }
-        .notification {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(0, 255, 153, 0.9);
-            color: black;
-            padding: 15px 25px;
-            border-radius: 8px;
-            font-size: 14px;
-            box-shadow: 0 0 15px rgba(0, 255, 153, 0.5);
-            transform: translateX(200%);
-            transition: transform 0.3s ease-in-out;
-            z-index: 1000;
-        }
-        .notification.show {
-            transform: translateX(0);
-        }
-        .hidden {
-            display: none !important;
-        }
-        .intro-container {
-            background: rgba(0, 255, 153, 0.1);
-            border-radius: 15px;
-            padding: 30px;
-            margin: 20px auto;
-            max-width: 800px;
-            display: flex;
-            align-items: center;
-            gap: 30px;
-            border: 1px solid var(--primary-color);
-            box-shadow: 0 0 20px rgba(0, 255, 153, 0.2);
-        }
-        .ai-avatar {
-            flex-shrink: 0;
-            position: relative;
-            cursor: pointer;
-        }
-        .avatar-img {
-            width: 120px;
-            height: 120px;
-            border-radius: 60px;
-            border: 2px solid var(--primary-color);
-            box-shadow: 0 0 15px var(--primary-color);
-            object-fit: cover;
-        }
-        .intro-text {
-            text-align: left;
-        }
-        .intro-text h1 {
-            font-size: 32px;
-            margin: 0;
-            background: linear-gradient(45deg, var(--primary-color), #00ffcc);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: none;
-        }
-        .intro-text p {
-            font-size: 18px;
-            margin: 10px 0 20px;
-            opacity: 0.9;
-        }
-        .features-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-        }
-        .feature {
-            font-size: 14px;
-            padding: 8px 15px;
-            background: rgba(0, 255, 153, 0.1);
-            border-radius: 8px;
-            border: 1px solid rgba(0, 255, 153, 0.2);
-        }
-        @media (max-width: 768px) {
-            .intro-container {
-                flex-direction: column;
-                text-align: center;
-                padding: 20px;
-            }
-            .intro-text {
-                text-align: center;
-            }
-            .features-list {
-                grid-template-columns: 1fr;
-            }
-        }
-        .contact-header {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            margin-bottom: 25px;
-        }
-        .contact-header .ai-avatar {
-            flex-shrink: 0;
-        }
-        .contact-header .ai-avatar img {
-            width: 80px;
-            height: 80px;
-            border-radius: 40px;
-            border: 2px solid var(--primary-color);
-            box-shadow: 0 0 15px var(--primary-color);
-        }
-        .contact-header .header-text {
-            text-align: left;
-        }
-        .contact-header h2 {
-            margin: 0;
-            font-size: 24px;
-        }
-        .contact-header p {
-            margin: 10px 0 0;
-            opacity: 0.8;
-        }
-        @media (max-width: 768px) {
-            .contact-header {
-                flex-direction: column;
-                text-align: center;
-                gap: 15px;
-            }
-            .contact-header .header-text {
-                text-align: center;
-            }
-        }
-        .troubleshoot-container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 0 20px;
-        }
-        .troubleshoot-btn {
-            background: rgba(0, 255, 153, 0.1);
-            color: var(--primary-color);
-            border: 1px solid var(--primary-color);
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: all 0.3s ease;
-        }
-        .troubleshoot-btn:hover {
-            background: rgba(0, 255, 153, 0.2);
-            box-shadow: 0 0 15px rgba(0, 255, 153, 0.3);
-        }
-        .troubleshoot-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-        .troubleshoot-item {
-            background: rgba(0, 255, 153, 0.1);
-            border: 1px solid rgba(0, 255, 153, 0.2);
-            border-radius: 10px;
-            padding: 20px;
-            text-align: left;
-        }
-        .troubleshoot-item h3 {
-            color: var(--primary-color);
-            margin-top: 0;
-            font-size: 18px;
-        }
-        .troubleshoot-item ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-        }
-        .troubleshoot-item li {
-            margin: 10px 0;
-            font-size: 14px;
-            line-height: 1.4;
-        }
-        .start-note {
-            margin-top: 15px;
-            padding: 8px 16px;
-            background: rgba(0, 255, 153, 0.1);
-            border-radius: 8px;
-            font-size: 14px;
-            border: 1px solid rgba(0, 255, 153, 0.2);
-            display: inline-block;
-        }
-        .form-header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .logo-container {
-            position: relative;
-            margin-bottom: 10px;
-        }
-        .logo-image {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-        .logo-glow {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(0, 255, 153, 0.2) 0%, rgba(0, 255, 153, 0) 70%);
-            transform: scale(1.1);
-            pointer-events: none;
-        }
-        .input-group {
-            display: flex;
-            gap: 10px;
-        }
-        .input-container {
-            flex: 1;
-            position: relative;
-        }
-        .input-border {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: transparent;
-            pointer-events: none;
-        }
-        .submit-btn {
-            width: 100%;
-            padding: 15px;
-            font-size: 18px;
-            font-weight: 500;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: 0.3s ease-in-out;
-            background-color: var(--primary-color);
-            color: black;
-            box-shadow: 0px 0px 15px var(--primary-color);
-        }
-        .submit-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0px 0px 20px var(--primary-color);
-        }
-        .decoration-dot {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: var(--primary-color);
-        }
-        .dot-1 { top: 10px; left: 10px; }
-        .dot-2 { top: 10px; right: 10px; }
-        .dot-3 { bottom: 10px; left: 10px; }
-        .twinkle {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: var(--primary-color);
-            opacity: 0.5;
-        }
-        .twinkle-1 { top: 10px; left: 10px; }
-        .twinkle-2 { top: 10px; right: 10px; }
-        .twinkle-3 { bottom: 10px; left: 10px; }
-        @keyframes vibrate {
-            0%, 100% { transform: translate(0); }
-            25% { transform: translate(-1px, 1px); }
-            50% { transform: translate(1px, -1px); }
-            75% { transform: translate(-1px, -1px); }
-        }
-        .avatar-vibrating {
-            animation: vibrate 0.3s ease-in-out infinite 2s;
-            animation-play-state: running;
-            animation-direction: alternate;
-            animation-delay: 2s;
-        }
-        .ai-avatar:hover .avatar-img {
-            box-shadow: 0 0 25px var(--primary-color);
-        }
-        .ai-avatar::after {
-            content: '🔊';
-            position: absolute;
-            bottom: -5px;
-            right: -5px;
-            background: rgba(0, 255, 153, 0.2);
-            padding: 5px;
-            border-radius: 50%;
-            font-size: 14px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        .ai-avatar:hover::after {
-            opacity: 1;
-        }
-        @keyframes pulse-vibrate {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-        .avatar-vibrating {
-            animation: pulse-vibrate 1s ease-in-out infinite;
-            animation-play-state: running;
-        }
-        @keyframes funny-pulse {
-            0% { transform: scale(1) rotate(0deg); filter: brightness(1); }
-            25% { transform: scale(1.08) rotate(-3deg); filter: brightness(1.2); }
-            50% { transform: scale(1.04) rotate(0deg); filter: brightness(1.1); }
-            75% { transform: scale(1.08) rotate(3deg); filter: brightness(1.2); }
-            100% { transform: scale(1) rotate(0deg); filter: brightness(1); }
-        }
-        .avatar-vibrating {
-            animation: funny-pulse 0.8s ease-in-out infinite;
-            border-radius: 60px;
-            box-shadow: 0 0 20px var(--primary-color), 0 0 40px rgba(0, 255, 153, 0.4);
-        }
-        .ai-avatar:hover .avatar-img {
-            transform: scale(1.1) rotate(5deg);
-            box-shadow: 0 0 30px var(--primary-color);
-            transition: all 0.3s ease;
-        }
-        @keyframes super-funny-pulse {
-            0% { transform: scale(1) rotate(0deg) translateY(0); filter: brightness(1.1) hue-rotate(0deg); }
-            20% { transform: scale(1.15) rotate(-3deg) translateY(-2px); filter: brightness(1.4) hue-rotate(10deg); }
-            40% { transform: scale(1.05) rotate(1deg) translateY(0); filter: brightness(1.2) hue-rotate(-5deg); }
-            60% { transform: scale(1.12) rotate(3deg) translateY(-1px); filter: brightness(1.3) hue-rotate(-10deg); }
-            80% { transform: scale(1.07) rotate(-2deg) translateY(0); filter: brightness(1.25) hue-rotate(5deg); }
-            100% { transform: scale(1) rotate(0deg) translateY(0); filter: brightness(1.1) hue-rotate(0deg); }
-        }
-        .avatar-vibrating {
-            animation: super-funny-pulse 1s ease-in-out infinite;
-            border-radius: 60px;
-            box-shadow: 0 0 25px var(--primary-color), 0 0 40px rgba(0, 255, 153, 0.5);
-            transition: all 0.3s ease;
-        }
-        /* Enhanced colorful border animation */
-        .avatar-vibrating::before {
-            content: '';
-            position: absolute;
-            top: -5px;
-            left: -5px;
-            right: -5px;
-            bottom: -5px;
-            border-radius: 70px;
-            background: linear-gradient(45deg, #00ff99, #00ffcc, #00ccff, #ff00cc, #ffcc00, #00ff99);
-            background-size: 300% 300%;
-            z-index: -1;
-            animation: gradient-shift 3s ease infinite;
-            opacity: 0.8;
-            filter: blur(3px);
-        }
-        @keyframes gradient-shift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        /* Add cute animated sparkles */
-        .sparkle {
-            position: absolute;
-            background: white;
-            border-radius: 50%;
-            filter: blur(1px);
-            pointer-events: none;
-            z-index: 10;
-            opacity: 0;
-            animation: sparkle-fade 1.5s ease-in-out forwards;
-        }
-        @keyframes sparkle-fade {
-            0% { transform: scale(0) rotate(0deg); opacity: 0; }
-            50% { transform: scale(1) rotate(180deg); opacity: 1; }
-            100% { transform: scale(0) rotate(360deg); opacity: 0; }
-        }
-        /* Add bounce effect */
-        @keyframes cute-bounce {
-            0%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-20px); }
-            60% { transform: translateY(-15px); }
-            80% { transform: translateY(-5px); }
-        }
-        /* Add hover effect for avatar */
-        .ai-avatar:hover .avatar-img {
-            transform: scale(1.1) rotate(5deg);
-            box-shadow: 0 0 30px var(--primary-color), 0 0 50px rgba(0, 255, 153, 0.3);
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-    </style>
-</head>
-<body>
-    <div class="intro-container">
-        <div class="ai-avatar">
-            <img src="https://yiyang512.github.io/new/hemiya.jpg" alt="Hemiya AI" class="avatar-img">
+<!-- Hemiya Speaking — lightweight direct Payhip embed -->
+<div id="hemiyaSpeaking">
+  <div class="hm-shell">
+    <header class="hm-hero">
+      <div class="hm-avatar-wrap"><img class="hm-avatar hm-avatar-main" alt="Hemiya AI"></div>
+      <div>
+        <div class="hm-eyebrow">HEMIYA SPEAKING</div>
+        <h1>French speaking practice with structured feedback</h1>
+        <p>Generate a prompt, prepare your response, speak in French, and review your transcript, grammar notes and estimated speaking level.</p>
+        <div class="hm-chips">
+          <span>A1–B2 practice</span><span>Speech recognition</span><span>Grammar feedback</span><span>Private video recording</span>
         </div>
-        <div class="intro-text">
-            <h1>Meet Hemiya - Your AI French Coach 👋</h1>
-            <p>Practice TEF/DELF Speaking with Real-time Feedback</p>
-            <div class="features-list">
-                <div class="feature">⦿ Smart Level Assessment (A1-B2)</div>
-                <div class="feature">⦿ Live Speech Recognition & Analysis</div>
-                <div class="feature">⦿ Instant Grammar Corrections</div>
-                <div class="feature">⦿ Self-Review Video Recording</div>
-                <div class="feature">⦿ Exam Format Timer & Preparation</div>
-                <div class="feature">⦿ 100% Private - No Data Stored</div>
-            </div>
-            <p class="start-note">Enable camera & microphone for the best experience!</p>
+      </div>
+    </header>
+
+    <details class="hm-help">
+      <summary>Camera, microphone or browser help</summary>
+      <div class="hm-help-grid">
+        <div><strong>Camera</strong><p>Allow camera access in your browser. Chrome or Edge is recommended for recording.</p></div>
+        <div><strong>Microphone</strong><p>Allow microphone access and speak clearly in French. Speech recognition availability depends on the browser.</p></div>
+        <div><strong>Recording</strong><p>Your recording stays in your browser and downloads to your device when you stop it.</p></div>
+      </div>
+    </details>
+
+    <section class="hm-panel">
+      <div class="hm-section-head">
+        <div><div class="hm-kicker">1 · Choose a practice level</div><h2>Select your level</h2></div>
+        <span id="hmLevelBadge" class="hm-badge">B1 · Intermediate</span>
+      </div>
+      <div class="hm-levels">
+        <button type="button" data-level="beginner">A1–A2 · Beginner</button>
+        <button type="button" class="active" data-level="intermediate">B1 · Intermediate</button>
+        <button type="button" data-level="advanced">B2 · Upper intermediate</button>
+      </div>
+    </section>
+
+    <section class="hm-panel">
+      <div class="hm-section-head">
+        <div><div class="hm-kicker">2 · Prompt</div><h2>Your speaking question</h2></div>
+        <button type="button" id="hmGenerate" class="hm-primary hm-compact">Generate question</button>
+      </div>
+      <div class="hm-question">
+        <div class="hm-question-icon">FR</div>
+        <div>
+          <div id="hmQuestionFr" class="hm-question-fr">Choose your level, then generate a question.</div>
+          <div id="hmQuestionEn" class="hm-question-en">The English translation will appear here.</div>
         </div>
-    </div>
+      </div>
+      <div id="hmTimer" class="hm-timer">Ready</div>
+    </section>
 
-    <!-- Add this right after the intro-container div -->
-    <audio id="introAudio" preload="auto" style="display: none;">
-        <source src="https://yiyang512.github.io/new/hemiya.mp3" type="audio/mpeg">
-    </audio>
-
-    <div class="troubleshoot-container">
-        <button class="troubleshoot-btn" onclick="toggleTroubleshoot()">
-            ⚙️ Need Help? Click here for troubleshooting
-        </button>
-        <div id="troubleshoot-content" class="hidden">
-            <div class="troubleshoot-grid">
-                <div class="troubleshoot-item">
-                    <h3>🎥 Camera Issues</h3>
-                    <ul>
-                        <li>Using browsers other than Chrome? Camera toggle might not work - please turn off camera manually in browser settings</li>
-                        <li>Camera not showing? Click the camera icon in your browser's address bar and allow access</li>
-                        <li>Still having issues? Try refreshing the page or checking your device's camera settings</li>
-                    </ul>
-                </div>
-                <div class="troubleshoot-item">
-                    <h3>🎤 Microphone Issues</h3>
-                    <ul>
-                        <li>Speech not being recognized? Make sure you've allowed microphone access</li>
-                        <li>Click the microphone icon in your browser's address bar to check permissions</li>
-                        <li>Speaking but no text appears? Make sure you're speaking clearly and in French</li>
-                    </ul>
-                </div>
-                <div class="troubleshoot-item">
-                    <h3>⚡ Performance Tips</h3>
-                    <ul>
-                        <li>For best results, use Google Chrome browser</li>
-                        <li>Ensure you have a stable internet connection</li>
-                        <li>Close other tabs and applications for better performance</li>
-                    </ul>
-                </div>
-                <div class="troubleshoot-item">
-                    <h3>📝 Practice Tips</h3>
-                    <ul>
-                        <li>Use headphones to hear yourself better</li>
-                        <li>Position yourself in a quiet environment</li>
-                        <li>Speak clearly and at a normal pace</li>
-                    </ul>
-                </div>
-            </div>
+    <section class="hm-grid">
+      <div class="hm-panel">
+        <div class="hm-section-head">
+          <div><div class="hm-kicker">3 · Speak</div><h2>Live practice</h2></div>
+          <span id="hmSpeechState" class="hm-state">Not listening</span>
         </div>
-    </div>
-
-    <h2>Select your level and start speaking</h2>
-    
-    <div class="level-selector">
-        <button onclick="setLevel('beginner')" class="btn-green">Débutant</button>
-        <button onclick="setLevel('intermediate')" class="btn-blue">Intermédiaire</button>
-        <button onclick="setLevel('advanced')" class="btn-red">Avancé</button>
-    </div>
-
-    <div id="question-box" class="intro-container" style="display: none;">
-        <div class="ai-avatar">
-            <img src="https://yiyang512.github.io/new/hemiya.jpg" alt="Hemiya AI" class="avatar-img">
+        <div class="hm-video-wrap">
+          <video id="hmVideo" autoplay playsinline muted></video>
+          <div id="hmCaption" class="hm-caption">Your French transcript will appear here.</div>
         </div>
-        <div class="intro-text">
-            <h3 id="question-text" style="color: var(--primary-color);">Your question will appear here...</h3>
-            <p id="question-translation" style="font-style: italic;">Translation will appear here...</p>
+        <div class="hm-actions">
+          <button type="button" id="hmStartSpeech" class="hm-primary">Start speaking</button>
+          <button type="button" id="hmStopSpeech" class="hm-secondary">Stop & assess</button>
         </div>
-    </div>
+      </div>
 
-    <div id="timer">⏳ Prep: 0:00</div>
-    
-    <p>Click "Generate Question" to start. Speak while watching yourself.</p>
-
-    <button class="btn-green" onclick="generateNewQuestion()">Generate Question</button>
-    <button class="btn-blue" id="toggle-camera">Turn Off Camera</button>
-    <button class="btn-blue" id="mute-btn">🔇 Mute</button>
-
-    <div class="test-container">
-        <video id="video" autoplay></video>
-        <div class="overlay-text" id="live-caption">Your speech will appear here...</div>
-    </div>
-
-    <div class="controls-container">
-        <div class="main-controls">
-            <button id="start-btn" class="btn-green">Start Speaking</button>
-            <button id="stop-btn" class="btn-red">Stop</button>
+      <div class="hm-panel">
+        <div class="hm-section-head">
+          <div><div class="hm-kicker">Camera & recording</div><h2>Self-review</h2></div>
+          <span id="hmMediaState" class="hm-state">Starting camera…</span>
         </div>
-        <div class="recording-controls">
-            <button id="start-record" class="btn-green">🔴 Start Recording</button>
-            <button id="stop-record" class="btn-red">Stop & Download</button>
+        <p class="hm-muted">Record yourself if you want to review delivery, posture and fluency. The video is not uploaded by this tool.</p>
+        <div class="hm-actions hm-stack">
+          <button type="button" id="hmToggleCamera" class="hm-secondary">Turn camera off</button>
+          <button type="button" id="hmToggleMute" class="hm-secondary">Mute microphone</button>
+          <button type="button" id="hmRecord" class="hm-primary">Start recording</button>
+          <button type="button" id="hmStopRecord" class="hm-secondary" disabled>Stop & download</button>
         </div>
-    </div>
+      </div>
+    </section>
 
-    <div id="speaking-assessment"></div>
-
-    <p><strong>Grammar & Conversation Fixes:</strong></p>
-    <p id="grammar-errors"></p>
-
-    <div id="contactOverlay" class="overlay">
-        <div class="contact-form">
-            <div class="form-header">
-                <div class="logo-container">
-                    <img src="https://yiyang512.github.io/new/hemiya.jpg" alt="Hemiya AI" class="logo-image">
-                    <div class="logo-glow"></div>
-                </div>
-                <h2>Welcome to Hemiya AI</h2>
-                <p>Let's personalize your French learning experience</p>
-                </div>
-            
-            <form id="contactForm">
-                <div class="input-group">
-                    <div class="input-container">
-                        <label for="name">Full Name</label>
-                        <input type="text" id="name" required placeholder="Enter your full name">
-                        <div class="input-border"></div>
-                </div>
-                    
-                    <div class="input-container">
-                        <label for="email">Email Address</label>
-                        <input type="email" id="email" required placeholder="Enter your email address">
-                        <div class="input-border"></div>
-                </div>
-                </div>
-                
-                <div class="input-group">
-                    <div class="input-container">
-                        <label for="phone">Phone Number (optional)</label>
-                        <input type="tel" id="phone" placeholder="Enter your phone number">
-                        <div class="input-border"></div>
-                    </div>
-                    
-                    <div class="input-container">
-                        <label for="level">Current French Level</label>
-                    <select id="level" required>
-                            <option value="" disabled selected>Select your level</option>
-                        <option value="A1">A1 Beginner</option>
-                        <option value="A2">A2 Elementary</option>
-                        <option value="B1">B1 Intermediate</option>
-                        <option value="B2">B2 Upper Intermediate</option>
-                            <option value="C1">C1 Advanced</option>
-                            <option value="none">Complete Beginner</option>
-                    </select>
-                        <div class="input-border"></div>
-                </div>
-                </div>
-                
-                <div class="input-container full-width">
-                    <label for="exam_type">Preparing For</label>
-                    <select id="exam_type" required>
-                        <option value="" disabled selected>Select your goal</option>
-                        <option value="TEF">TEF Exam</option>
-                        <option value="DELF">DELF Exam</option>
-                        <option value="TCF">TCF Exam</option>
-                        <option value="hobby">Learning for personal interest</option>
-                        <option value="work">Professional opportunities</option>
-                        <option value="travel">Travel and cultural experiences</option>
-                        <option value="immigration">Immigration purposes</option>
-                        <option value="academic">Academic studies</option>
-                    </select>
-                    <div class="input-border"></div>
-                </div>
-                
-                <div class="input-container full-width">
-                    <label for="goals">Your Learning Goals</label>
-                    <textarea id="goals" rows="3" placeholder="Share what you hope to accomplish with your French..."></textarea>
-                    <div class="input-border"></div>
-                </div>
-                
-                <button type="submit" class="submit-btn">Start Your French Journey</button>
-            </form>
-            
-            <!-- Add decorative elements -->
-            <div class="decoration-dot dot-1"></div>
-            <div class="decoration-dot dot-2"></div>
-            <div class="decoration-dot dot-3"></div>
-            <div class="twinkle twinkle-1"></div>
-            <div class="twinkle twinkle-2"></div>
-            <div class="twinkle twinkle-3"></div>
+    <section class="hm-grid">
+      <div class="hm-panel">
+        <div class="hm-section-head">
+          <div><div class="hm-kicker">4 · Assessment</div><h2>Speaking snapshot</h2></div>
         </div>
+        <div id="hmAssessment" class="hm-empty">Complete a speaking response to see your estimated level and feedback.</div>
+      </div>
+
+      <div class="hm-panel">
+        <div class="hm-section-head">
+          <div><div class="hm-kicker">Language feedback</div><h2>Grammar & corrections</h2></div>
+        </div>
+        <div id="hmGrammar" class="hm-empty">Grammar feedback will appear after speech is detected.</div>
+      </div>
+    </section>
+
+    <div id="hmNotice" class="hm-notice" aria-live="polite"></div>
+  </div>
+
+  <div id="hmGate" class="hm-gate" aria-modal="true" role="dialog">
+    <div class="hm-gate-card">
+      <div class="hm-gate-brand">
+        <img class="hm-avatar hm-avatar-gate" alt="Hemiya AI">
+        <div>
+          <div class="hm-eyebrow">HEMIYA SPEAKING</div>
+          <h2>Before you begin</h2>
+          <p>Tell us a little about your French goals to open the speaking practice.</p>
+        </div>
+      </div>
+
+      <form id="hmLeadForm">
+        <div class="hm-form-grid">
+          <label>Full name
+            <input id="hmName" type="text" autocomplete="name" required placeholder="Your full name">
+          </label>
+          <label>Email address
+            <input id="hmEmail" type="email" autocomplete="email" required placeholder="you@example.com">
+          </label>
+          <label>Phone number <span>(optional)</span>
+            <input id="hmPhone" type="tel" autocomplete="tel" placeholder="Phone number">
+          </label>
+          <label>Current French level
+            <select id="hmCurrentLevel" required>
+              <option value="">Select your level</option>
+              <option value="none">Complete beginner</option>
+              <option value="A1">A1 Beginner</option>
+              <option value="A2">A2 Elementary</option>
+              <option value="B1">B1 Intermediate</option>
+              <option value="B2">B2 Upper intermediate</option>
+              <option value="C1">C1 Advanced</option>
+            </select>
+          </label>
+        </div>
+
+        <label>Preparing for
+          <select id="hmGoal" required>
+            <option value="">Select your goal</option>
+            <option value="TEF">TEF exam</option>
+            <option value="DELF">DELF exam</option>
+            <option value="TCF">TCF exam</option>
+            <option value="hobby">Personal interest</option>
+            <option value="work">Professional opportunities</option>
+            <option value="travel">Travel and culture</option>
+            <option value="immigration">Immigration</option>
+            <option value="academic">Academic studies</option>
+          </select>
+        </label>
+
+        <label>Learning goals <span>(optional)</span>
+          <textarea id="hmGoals" rows="3" placeholder="What would you like to improve?"></textarea>
+        </label>
+
+        <div id="hmEmailStatus" class="hm-form-status" aria-live="polite"></div>
+        <button id="hmSubmitLead" type="submit" class="hm-primary hm-full">Continue to speaking practice</button>
+        <p class="hm-small">Your registration details are submitted before access. Video recordings are not sent with this form.</p>
+      </form>
     </div>
+  </div>
+</div>
 
-    <button id="theme-toggle" class="theme-toggle">
-        <span class="light">☀️</span>
-        <span class="dark">🌙</span>
-    </button>
+<style>
+#hemiyaSpeaking{--hm-blue:#2563eb;--hm-blue2:#1d4ed8;--hm-navy:#172033;--hm-text:#344054;--hm-muted:#667085;--hm-line:#dbe4f0;--hm-soft:#eff6ff;--hm-bg:#f5f7fb;--hm-danger:#b42318;font-family:Inter,Arial,sans-serif;color:var(--hm-navy);background:var(--hm-bg);padding:22px 0}
+#hemiyaSpeaking *{box-sizing:border-box}
+#hemiyaSpeaking .hm-shell{width:min(1120px,calc(100% - 28px));margin:auto}
+#hemiyaSpeaking h1,#hemiyaSpeaking h2,#hemiyaSpeaking p{margin-top:0}
+#hemiyaSpeaking h1{font-size:clamp(30px,4vw,46px);line-height:1.08;letter-spacing:-.035em;margin-bottom:12px}
+#hemiyaSpeaking h2{font-size:21px;line-height:1.2;margin:3px 0 0}
+#hemiyaSpeaking p{color:var(--hm-muted);line-height:1.6}
+#hemiyaSpeaking .hm-hero{display:grid;grid-template-columns:84px 1fr;gap:22px;align-items:center;background:#fff;border:1px solid var(--hm-line);border-radius:18px;padding:30px;box-shadow:0 10px 30px rgba(23,32,51,.05);margin-bottom:16px}
+#hemiyaSpeaking .hm-avatar{display:block;width:74px;height:74px;object-fit:cover;border-radius:16px;border:1px solid var(--hm-line);background:#fff}
+#hemiyaSpeaking .hm-eyebrow,#hemiyaSpeaking .hm-kicker{font-size:11px;font-weight:800;letter-spacing:.12em;color:var(--hm-blue2)}
+#hemiyaSpeaking .hm-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+#hemiyaSpeaking .hm-chips span,#hemiyaSpeaking .hm-badge,#hemiyaSpeaking .hm-state,#hemiyaSpeaking .hm-timer{display:inline-flex;align-items:center;border-radius:999px;padding:7px 10px;font-size:12px;font-weight:700}
+#hemiyaSpeaking .hm-chips span{background:#f8fafc;border:1px solid var(--hm-line);color:#475467}
+#hemiyaSpeaking .hm-help{background:#fff;border:1px solid var(--hm-line);border-radius:14px;margin-bottom:16px;overflow:hidden}
+#hemiyaSpeaking .hm-help summary{cursor:pointer;padding:14px 16px;font-weight:700;color:#344054}
+#hemiyaSpeaking .hm-help-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--hm-line);border-top:1px solid var(--hm-line)}
+#hemiyaSpeaking .hm-help-grid>div{background:#fff;padding:16px}
+#hemiyaSpeaking .hm-help-grid p{font-size:13px;margin:5px 0 0}
+#hemiyaSpeaking .hm-panel{background:#fff;border:1px solid var(--hm-line);border-radius:16px;padding:22px;box-shadow:0 8px 24px rgba(23,32,51,.04);margin-bottom:16px}
+#hemiyaSpeaking .hm-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+#hemiyaSpeaking .hm-section-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:16px}
+#hemiyaSpeaking .hm-badge,#hemiyaSpeaking .hm-state,#hemiyaSpeaking .hm-timer{background:var(--hm-soft);color:var(--hm-blue2);white-space:nowrap}
+#hemiyaSpeaking .hm-levels{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+#hemiyaSpeaking button{font:inherit;cursor:pointer;transition:.16s ease;border-radius:10px;padding:11px 15px;font-weight:700}
+#hemiyaSpeaking button:hover{transform:translateY(-1px)}
+#hemiyaSpeaking .hm-levels button,#hemiyaSpeaking .hm-secondary{background:#fff;color:#344054;border:1px solid #cfd9e6}
+#hemiyaSpeaking .hm-levels button.active{color:var(--hm-blue2);border-color:#8fb1e9;background:var(--hm-soft);box-shadow:0 0 0 3px rgba(37,99,235,.09)}
+#hemiyaSpeaking .hm-primary{background:var(--hm-blue);color:#fff;border:1px solid var(--hm-blue)}
+#hemiyaSpeaking .hm-primary:hover{background:var(--hm-blue2);border-color:var(--hm-blue2)}
+#hemiyaSpeaking .hm-secondary:hover{background:#f8fafc}
+#hemiyaSpeaking button:disabled{opacity:.5;cursor:not-allowed;transform:none}
+#hemiyaSpeaking .hm-compact{padding:9px 12px;font-size:13px}
+#hemiyaSpeaking .hm-question{display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:flex-start;background:#f8fbff;border:1px solid #cfe0fb;border-radius:12px;padding:16px}
+#hemiyaSpeaking .hm-question-icon{width:44px;height:44px;display:grid;place-items:center;border-radius:10px;background:var(--hm-blue);color:#fff;font-weight:800;font-size:12px}
+#hemiyaSpeaking .hm-question-fr{font-size:18px;font-weight:700;color:#163e79;line-height:1.45}
+#hemiyaSpeaking .hm-question-en{margin-top:4px;color:var(--hm-muted);font-size:14px}
+#hemiyaSpeaking .hm-timer{margin-top:12px}
+#hemiyaSpeaking .hm-video-wrap{position:relative;overflow:hidden;border-radius:12px;background:#0f172a;min-height:280px}
+#hemiyaSpeaking video{display:block;width:100%;height:100%;min-height:280px;object-fit:cover;background:#0f172a}
+#hemiyaSpeaking .hm-caption{position:absolute;left:14px;right:14px;bottom:14px;background:rgba(255,255,255,.94);border:1px solid rgba(219,228,240,.95);border-radius:9px;padding:11px 12px;color:#172033;font-size:13px;line-height:1.5;box-shadow:0 8px 20px rgba(15,23,42,.12)}
+#hemiyaSpeaking .hm-actions{display:flex;gap:10px;margin-top:14px}
+#hemiyaSpeaking .hm-actions button{flex:1}
+#hemiyaSpeaking .hm-stack{display:grid;grid-template-columns:1fr 1fr}
+#hemiyaSpeaking .hm-muted{font-size:13px}
+#hemiyaSpeaking .hm-empty{padding:16px;border:1px dashed #cfd9e6;border-radius:11px;color:var(--hm-muted);background:#fbfcfe;line-height:1.55;font-size:14px}
+#hemiyaSpeaking .hm-result{display:grid;gap:10px}
+#hemiyaSpeaking .hm-result-main{background:var(--hm-soft);border:1px solid #cfe0fb;border-radius:11px;padding:14px}
+#hemiyaSpeaking .hm-result-main strong{font-size:23px;color:var(--hm-blue2)}
+#hemiyaSpeaking .hm-result ul{margin:4px 0 0;padding-left:20px;color:#475467}
+#hemiyaSpeaking .hm-grammar-item{padding:10px 12px;background:#fff7f6;border:1px solid #f0c8c4;border-radius:9px;margin-bottom:8px;color:#7a271a;font-size:13px;line-height:1.5}
+#hemiyaSpeaking .hm-ok{padding:12px;background:#f0fdf8;border:1px solid #c6eadc;border-radius:9px;color:#116149;font-size:13px}
+#hemiyaSpeaking .hm-notice{position:fixed;left:50%;bottom:20px;z-index:2147483001;transform:translate(-50%,150%);width:min(520px,calc(100% - 28px));background:#172033;color:#fff;border-radius:10px;padding:12px 15px;text-align:center;font-size:13px;box-shadow:0 16px 35px rgba(15,23,42,.2);transition:.22s ease}
+#hemiyaSpeaking .hm-notice.show{transform:translate(-50%,0)}
+#hemiyaSpeaking .hm-gate{position:fixed;inset:0;z-index:2147483000;display:flex;align-items:flex-start;justify-content:center;padding:clamp(12px,3vh,28px) 16px;background:rgba(15,32,58,.52);backdrop-filter:blur(7px);overflow:auto}
+#hemiyaSpeaking .hm-gate.hidden{display:none}
+#hemiyaSpeaking .hm-gate-card{width:min(700px,100%);max-height:calc(100vh - 24px);overflow:auto;background:#fff;border:1px solid var(--hm-line);border-radius:18px;padding:28px;box-shadow:0 24px 70px rgba(15,32,58,.18)}
+#hemiyaSpeaking .hm-gate-brand{display:grid;grid-template-columns:66px 1fr;gap:16px;align-items:center;margin-bottom:20px}
+#hemiyaSpeaking .hm-avatar-gate{width:62px;height:62px;border-radius:14px}
+#hemiyaSpeaking .hm-gate-brand h2{font-size:27px;letter-spacing:-.02em;margin:3px 0 4px}
+#hemiyaSpeaking .hm-gate-brand p{font-size:14px;margin:0}
+#hemiyaSpeaking #hmLeadForm{display:grid;gap:14px}
+#hemiyaSpeaking .hm-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+#hemiyaSpeaking label{display:grid;gap:6px;color:#344054;font-size:13px;font-weight:700}
+#hemiyaSpeaking label span{font-weight:500;color:#98a2b3}
+#hemiyaSpeaking input,#hemiyaSpeaking select,#hemiyaSpeaking textarea{width:100%;font:inherit;font-size:14px;color:#172033;background:#fff;border:1px solid #cfd9e6;border-radius:9px;padding:11px 12px;outline:none}
+#hemiyaSpeaking input:focus,#hemiyaSpeaking select:focus,#hemiyaSpeaking textarea:focus{border-color:var(--hm-blue);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+#hemiyaSpeaking textarea{resize:vertical}
+#hemiyaSpeaking .hm-full{width:100%}
+#hemiyaSpeaking .hm-small{font-size:11px;text-align:center;margin:0;color:#98a2b3}
+#hemiyaSpeaking .hm-form-status{display:none;border-radius:9px;padding:10px 11px;font-size:12px;line-height:1.45}
+#hemiyaSpeaking .hm-form-status.sending{display:block;background:var(--hm-soft);border:1px solid #cfe0fb;color:#174780}
+#hemiyaSpeaking .hm-form-status.error{display:block;background:#fff4f2;border:1px solid #f3c7c3;color:#9f1c16}
+#hemiyaSpeaking .hm-form-status.success{display:block;background:#eefbf5;border:1px solid #bfe8d5;color:#0f6848}
+@media(max-width:760px){
+ #hemiyaSpeaking{padding-top:10px}
+ #hemiyaSpeaking .hm-shell{width:min(100% - 18px,1120px)}
+ #hemiyaSpeaking .hm-hero{grid-template-columns:1fr;padding:22px}
+ #hemiyaSpeaking .hm-grid,#hemiyaSpeaking .hm-help-grid,#hemiyaSpeaking .hm-levels,#hemiyaSpeaking .hm-form-grid{grid-template-columns:1fr}
+ #hemiyaSpeaking .hm-section-head{flex-direction:column}
+ #hemiyaSpeaking .hm-stack{grid-template-columns:1fr}
+ #hemiyaSpeaking .hm-actions{flex-direction:column}
+ #hemiyaSpeaking .hm-gate{padding:8px}
+ #hemiyaSpeaking .hm-gate-card{padding:20px 16px;max-height:calc(100vh - 16px);border-radius:14px}
+}
+</style>
 
-    <div class="progress-bar">
-        <div class="progress-fill"></div>
-    </div>
+<script>
+(function(){
+  const root=document.getElementById('hemiyaSpeaking');
+  if(!root||root.dataset.ready==='1')return;
+  root.dataset.ready='1';
 
-    <div id="notification" class="notification"></div>
+  const AVATAR="data:image/webp;base64,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";
+  root.querySelectorAll('.hm-avatar').forEach(img=>img.src=AVATAR);
 
-    <script>
-        let mediaRecorder;
-        let recordedChunks = [];
-        let stream;
-        let isMuted = false;
-        let isCameraOn = true;
-        let timer;
-        let timeLeft;
-        let currentLevel = 'intermediate';
+  const $=id=>document.getElementById(id);
+  const leadKey='hemiyaSpeakingLeadV2';
+  const EMAILJS={service:'service_fr7pas9',template:'template_qk5xq0o',key:'_KKm93NyfWfCIx2nC'};
 
-        const tefQuestions = {
-            beginner: [
-                { fr: "Décrivez votre routine quotidienne.", en: "Describe your daily routine." },
-                { fr: "Parlez-moi de votre famille.", en: "Tell me about your family." },
-                { fr: "Quels sont vos loisirs préférés?", en: "What are your favorite hobbies?" },
-                { fr: "Décrivez votre ville.", en: "Describe your city." },
-                { fr: "Quel temps fait-il aujourd'hui?", en: "How's the weather today?" }
-            ],
-            intermediate: [
-                { fr: "Que pensez-vous des réseaux sociaux?", en: "What do you think about social media?" },
-                { fr: "Faut-il interdire les voitures en centre-ville?", en: "Should cars be banned in city centers?" },
-                { fr: "Les jeunes devraient-ils apprendre plusieurs langues?", en: "Should young people learn multiple languages?" },
-                { fr: "Le télétravail est-il l'avenir?", en: "Is remote work the future?" },
-                { fr: "Comment protéger l'environnement?", en: "How can we protect the environment?" }
-            ],
-            advanced: [
-                { fr: "Quelles solutions proposez-vous pour réduire les inégalités sociales?", en: "What solutions do you propose to reduce social inequalities?" },
-                { fr: "Comment la technologie influence-t-elle notre façon de penser?", en: "How does technology influence our way of thinking?" },
-                { fr: "Quel est l'impact de la mondialisation sur les cultures locales?", en: "What is the impact of globalization on local cultures?" },
-                { fr: "Comment concilier croissance économique et protection de l'environnement?", en: "How can we reconcile economic growth and environmental protection?" },
-                { fr: "Discutez des enjeux éthiques de l'intelligence artificielle.", en: "Discuss the ethical issues of artificial intelligence." }
-            ]
-        };
+  const questions={
+    beginner:[
+      ["Décrivez votre routine quotidienne.","Describe your daily routine."],
+      ["Parlez-moi de votre famille.","Tell me about your family."],
+      ["Quels sont vos loisirs préférés ?","What are your favourite hobbies?"],
+      ["Décrivez votre ville.","Describe your city."],
+      ["Quel temps fait-il aujourd'hui ?","What is the weather like today?"]
+    ],
+    intermediate:[
+      ["Que pensez-vous des réseaux sociaux ?","What do you think about social media?"],
+      ["Faut-il interdire les voitures en centre-ville ?","Should cars be banned in city centres?"],
+      ["Les jeunes devraient-ils apprendre plusieurs langues ?","Should young people learn several languages?"],
+      ["Le télétravail est-il l'avenir ?","Is remote work the future?"],
+      ["Comment peut-on mieux protéger l'environnement ?","How can we better protect the environment?"]
+    ],
+    advanced:[
+      ["Quelles solutions proposez-vous pour réduire les inégalités sociales ?","What solutions do you propose to reduce social inequalities?"],
+      ["Comment la technologie influence-t-elle notre façon de penser ?","How does technology influence the way we think?"],
+      ["Quel est l'impact de la mondialisation sur les cultures locales ?","What is the impact of globalization on local cultures?"],
+      ["Comment concilier croissance économique et protection de l'environnement ?","How can economic growth and environmental protection be reconciled?"],
+      ["Discutez des enjeux éthiques de l'intelligence artificielle.","Discuss the ethical issues of artificial intelligence."]
+    ]
+  };
 
-        const sounds = {
-            countdown: new Audio('https://www.soundjay.com/clock/sounds/clock-ticking-2.mp3'),
-            startSpeak: new Audio('https://www.soundjay.com/button/sounds/button-09.mp3'),
-            timeUp: new Audio('https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3'),
-            success: new Audio('https://www.soundjay.com/misc/sounds/success-fanfare-trumpets-6.mp3')
-        };
+  let level='intermediate',currentQuestion=null,recognition=null,finalTranscript='',timer=null,timeLeft=0,phase='idle';
+  let stream=null,mediaRecorder=null,chunks=[],cameraOn=true,micOn=true,recording=false;
 
-        function setLevel(level) {
-            currentLevel = level;
-            document.querySelectorAll('.level-selector button').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-        }
+  function notice(text){
+    const n=$('hmNotice'); n.textContent=text;n.classList.add('show');
+    clearTimeout(n._t);n._t=setTimeout(()=>n.classList.remove('show'),4500);
+  }
+  function setFormStatus(type,text){
+    const s=$('hmEmailStatus');s.className='hm-form-status'+(type?' '+type:'');s.textContent=text||'';
+  }
 
-        function startTimer(duration) {
-            clearInterval(timer);
-            timeLeft = 60; // 1 minute prep time
-            let isPreparationTime = true;
-            updateTimerDisplay(true);
-            
-            // Start ticking sound
-            sounds.countdown.loop = true;
-            sounds.countdown.play();
-            
-            timer = setInterval(() => {
-                timeLeft--;
-                updateTimerDisplay(isPreparationTime);
-                
-                if (timeLeft <= 0) {
-                    if (isPreparationTime) {
-                        // Switch to speaking time
-                        timeLeft = duration;
-                        isPreparationTime = false;
-                        sounds.countdown.pause(); // Stop countdown sound
-                        sounds.timeUp.play(); // Play bell sound
-                        document.getElementById('live-caption').innerHTML += '<br>⏰ Preparation time is over! Click "Start Speaking" to begin.';
-                        // Flash the start speaking button
-                        const startBtn = document.getElementById('start-btn');
-                        startBtn.style.animation = 'flash 1s infinite';
-                    } else {
-                        clearInterval(timer);
-                        sounds.timeUp.play(); // Play bell sound again
-                        document.getElementById('live-caption').innerHTML += '<br>⏰ Temps écoulé!';
-                        recognition.stop();
-                        document.getElementById('start-btn').style.animation = '';
-                    }
-                }
-            }, 1000);
-        }
+  root.querySelectorAll('.hm-levels button').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      level=btn.dataset.level;
+      root.querySelectorAll('.hm-levels button').forEach(b=>b.classList.toggle('active',b===btn));
+      $('hmLevelBadge').textContent=level==='beginner'?'A1–A2 · Beginner':level==='intermediate'?'B1 · Intermediate':'B2 · Upper intermediate';
+    });
+  });
 
-        function updateTimerDisplay(isPreparationTime) {
-            const minutes = Math.floor(timeLeft / 60);
-            const seconds = timeLeft % 60;
-            const timerElement = document.getElementById('timer');
-            timerElement.textContent = `${isPreparationTime ? '⏳ Prep: ' : '🎤 Speaking: '}${minutes}:${seconds.toString().padStart(2, '0')}`;
-        }
+  $('hmGenerate').addEventListener('click',()=>{
+    const list=questions[level];
+    currentQuestion=list[Math.floor(Math.random()*list.length)];
+    $('hmQuestionFr').textContent=currentQuestion[0];
+    $('hmQuestionEn').textContent=currentQuestion[1];
+    finalTranscript='';
+    $('hmCaption').textContent='Prepare your response. Your French transcript will appear here.';
+    startPrepTimer();
+    try{
+      speechSynthesis.cancel();
+      const u=new SpeechSynthesisUtterance(currentQuestion[0]);u.lang='fr-FR';u.rate=.85;speechSynthesis.speak(u);
+    }catch(e){}
+  });
 
-        function addCSS() {
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes flash {
-                    0% { transform: scale(1); }
-                    50% { transform: scale(1.1); box-shadow: 0px 0px 20px #00FF99; }
-                    100% { transform: scale(1); }
-                }
-            `;
-            document.head.appendChild(style);
-        }
-        addCSS();
+  function startPrepTimer(){
+    clearInterval(timer);timeLeft=60;phase='prep';drawTimer();
+    timer=setInterval(()=>{
+      timeLeft--;drawTimer();
+      if(timeLeft<=0){
+        clearInterval(timer);phase='ready';$('hmTimer').textContent='Preparation complete · Start speaking when ready';
+        notice('Preparation time is complete.');
+      }
+    },1000);
+  }
+  function drawTimer(){
+    $('hmTimer').textContent=(phase==='prep'?'Preparation · ':'Speaking · ')+Math.floor(timeLeft/60)+':'+String(timeLeft%60).padStart(2,'0');
+  }
 
-        function generateNewQuestion() {
-            const questions = tefQuestions[currentLevel];
-            const question = questions[Math.floor(Math.random() * questions.length)];
-            
-            // Show the question box
-            document.getElementById('question-box').style.display = 'flex';
-            
-            // Update the question text
-            document.getElementById('question-text').textContent = question.fr;
-            document.getElementById('question-translation').textContent = question.en;
-            
-            // Start the timer and read the question
-            startTimer(60); // 1 minute prep time
-            
-            // Read the question in French and English
-            let synth = window.speechSynthesis;
-            let frenchUtterance = new SpeechSynthesisUtterance(question.fr);
-            frenchUtterance.lang = "fr-FR";
-            frenchUtterance.rate = 0.8;
-            
-            let englishUtterance = new SpeechSynthesisUtterance(question.en);
-            englishUtterance.lang = "en-US";
-            englishUtterance.rate = 0.8;
-            
-            synth.speak(frenchUtterance);
-            frenchUtterance.onend = () => {
-                setTimeout(() => {
-                    synth.speak(englishUtterance);
-                }, 500);
-            };
-        }
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(SR){
+    recognition=new SR();recognition.lang='fr-FR';recognition.continuous=true;recognition.interimResults=true;
+    recognition.onresult=e=>{
+      let interim='',finalNow='';
+      for(let i=e.resultIndex;i<e.results.length;i++){
+        const t=e.results[i][0].transcript;
+        if(e.results[i].isFinal)finalNow+=t+' ';else interim+=t;
+      }
+      finalTranscript+=(finalNow||'');
+      const shown=(finalTranscript+' '+interim).trim();
+      $('hmCaption').textContent=shown||'Listening…';
+      if(shown)checkGrammar(shown);
+    };
+    recognition.onerror=e=>{
+      $('hmSpeechState').textContent='Recognition unavailable';
+      notice('Speech recognition error: '+e.error);
+    };
+    recognition.onend=()=>{if(phase==='speaking'){$('hmSpeechState').textContent='Stopped';phase='idle';}};
+  }else{
+    $('hmSpeechState').textContent='Browser unsupported';
+    $('hmStartSpeech').disabled=true;
+  }
 
-        // Speech-to-Text with Grammar Check
-        window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        if (window.SpeechRecognition) {
-            const recognition = new SpeechRecognition();
-            recognition.lang = 'fr-FR';
-            recognition.continuous = true;
-            recognition.interimResults = true;
+  $('hmStartSpeech').addEventListener('click',()=>{
+    if(!recognition)return;
+    try{
+      finalTranscript='';recognition.start();phase='speaking';timeLeft=60;$('hmSpeechState').textContent='Listening';
+      clearInterval(timer);drawTimer();
+      timer=setInterval(()=>{timeLeft--;drawTimer();if(timeLeft<=0){clearInterval(timer);try{recognition.stop()}catch(e){};assess(finalTranscript.trim());phase='idle'}},1000);
+    }catch(e){notice('Speech recognition is already active or unavailable.');}
+  });
 
-            const liveCaption = document.getElementById('live-caption');
-            document.getElementById('start-btn').addEventListener('click', () => {
-                recognition.start();
-                liveCaption.innerText = "🎤 Listening...";
-                sounds.startSpeak.play(); // Play beep sound when starting to speak
-            });
-            document.getElementById('stop-btn').addEventListener('click', () => {
-                recognition.stop();
-                sounds.countdown.pause(); // Ensure countdown sound is stopped
-                const transcript = document.getElementById('live-caption').innerText;
-                // Show final assessment
-                assessSpeaking(transcript);
-                sounds.success.play(); // Play success sound when assessment is shown
-            });
+  $('hmStopSpeech').addEventListener('click',()=>{
+    clearInterval(timer);phase='idle';
+    if(recognition){try{recognition.stop()}catch(e){}}
+    $('hmSpeechState').textContent='Stopped';
+    const t=($('hmCaption').textContent||'').trim();
+    assess(t);
+  });
 
-            recognition.onresult = (event) => {
-                let transcript = Array.from(event.results).map(result => result[0].transcript).join(" ");
-                liveCaption.innerText = transcript;
-                checkGrammar(transcript);
-                // Only update word count while speaking
-                const words = transcript.split(' ').length;
-                document.getElementById('speaking-assessment').innerHTML = `
-                    <h3>Speaking Progress</h3>
-                    <p>Words Spoken: ${words}</p>
-                `;
-            };
-        }
+  async function checkGrammar(text){
+    if(text.length<4)return;
+    clearTimeout(checkGrammar._t);
+    checkGrammar._t=setTimeout(async()=>{
+      try{
+        const body=new URLSearchParams({text,language:'fr'});
+        const r=await fetch('https://api.languagetool.org/v2/check',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body});
+        if(!r.ok)throw new Error('Grammar service unavailable');
+        const data=await r.json();
+        if(!data.matches.length){$('hmGrammar').innerHTML='<div class="hm-ok">No grammar issues were detected in the recognized transcript.</div>';return;}
+        $('hmGrammar').innerHTML=data.matches.slice(0,6).map(m=>{
+          const reps=(m.replacements||[]).slice(0,4).map(x=>x.value).join(', ');
+          return '<div class="hm-grammar-item"><strong>'+escapeHtml(m.message)+'</strong>'+(reps?'<br>Suggested: '+escapeHtml(reps):'')+'</div>';
+        }).join('');
+      }catch(e){$('hmGrammar').innerHTML='<div class="hm-empty">Grammar service could not be reached. Your speaking transcript is still available.</div>';}
+    },650);
+  }
 
-        // Grammar Check Feature
-        async function checkGrammar(text) {
-            const url = "https://api.languagetool.org/v2/check";
-            const params = new URLSearchParams({ text: text, language: "fr" });
+  function assess(text){
+    const clean=text.replace(/^🎤 Listening…/,'').trim();
+    if(!clean||clean==='Your French transcript will appear here.'||clean==='Prepare your response. Your French transcript will appear here.'){
+      $('hmAssessment').innerHTML='<div class="hm-empty">No recognized French response was available to assess.</div>';return;
+    }
+    const words=clean.split(/\s+/).filter(Boolean).length,lower=clean.toLowerCase();
+    const banks={
+      A1:{min:20,terms:["je suis","j'ai","je veux","c'est","il y a"]},
+      A2:{min:40,terms:["parce que","quand","mais","aussi"]},
+      B1:{min:60,terms:["cependant","néanmoins","donc","ainsi"]},
+      B2:{min:80,terms:["en revanche","par conséquent","en effet","d'ailleurs"]}
+    };
+    let best='A1',bestScore=-1;
+    Object.entries(banks).forEach(([k,v])=>{
+      let score=Math.min(6,Math.floor(words/v.min*4));
+      score+=v.terms.filter(x=>lower.includes(x)).length;
+      if(score>=bestScore){bestScore=score;best=k}
+    });
+    const tips={A1:'Build longer sentences and connect simple ideas.',A2:'Add reasons, time expressions and more varied sentence structures.',B1:'Develop arguments with linking expressions and specific examples.',B2:'Work on nuance, precision and sophisticated transitions.'};
+    $('hmAssessment').innerHTML='<div class="hm-result"><div class="hm-result-main"><div class="hm-kicker">Estimated speaking level</div><strong>'+best+'</strong></div><ul><li>'+words+' recognized words</li><li>Indicative fluency score: '+Math.min(10,Math.max(1,bestScore))+'/10</li><li>'+tips[best]+'</li></ul></div>';
+  }
 
-            try {
-                const response = await fetch(url, { method: "POST", body: params, headers: { "Content-Type": "application/x-www-form-urlencoded" } });
-                const data = await response.json();
-                document.getElementById("grammar-errors").innerHTML = data.matches.length > 0 
-                    ? data.matches.map(match => `<p class="error">❌ ${match.message} (Correction: ${match.replacements.map(r => r.value).join(", ")})</p>`).join("")
-                    : "✅ No grammar mistakes detected!";
-            } catch (error) {
-                document.getElementById("grammar-errors").innerHTML = "⚠️ Unable to check grammar.";
-            }
-        }
+  function escapeHtml(v){return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 
-        // Speaking Assessment
-        async function assessSpeaking(transcript) {
-            // Basic assessment criteria
-            const criteria = {
-                A1: {
-                    minWords: 20,
-                    maxPause: 5,
-                    basicPhrases: ["je suis", "j'ai", "je veux", "c'est", "il y a"],
-                    score: 0
-                },
-                A2: {
-                    minWords: 40,
-                    maxPause: 4,
-                    complexPhrases: ["parce que", "quand", "mais", "ou"],
-                    score: 0
-                },
-                B1: {
-                    minWords: 60,
-                    maxPause: 3,
-                    advancedPhrases: ["cependant", "néanmoins", "donc", "ainsi"],
-                    score: 0
-                },
-                B2: {
-                    minWords: 80,
-                    maxPause: 2,
-                    sophisticatedPhrases: ["en revanche", "par conséquent", "en effet", "d'ailleurs"],
-                    score: 0
-                }
-            };
+  async function initMedia(){
+    if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){$('hmMediaState').textContent='Media unavailable';return}
+    try{
+      stream=await navigator.mediaDevices.getUserMedia({video:true,audio:true});
+      $('hmVideo').srcObject=stream;$('hmMediaState').textContent='Camera ready';
+    }catch(e){$('hmMediaState').textContent='Permission needed';notice('Allow camera and microphone access to use all features.');}
+  }
 
-            const words = transcript.split(' ').length;
-            const pauses = (transcript.match(/\.\.\./g) || []).length;
-            const transcriptLower = transcript.toLowerCase();
+  $('hmToggleCamera').addEventListener('click',()=>{
+    if(!stream)return notice('Camera is not available yet.');
+    const t=stream.getVideoTracks()[0];if(!t)return;
+    cameraOn=!cameraOn;t.enabled=cameraOn;$('hmToggleCamera').textContent=cameraOn?'Turn camera off':'Turn camera on';
+  });
+  $('hmToggleMute').addEventListener('click',()=>{
+    if(!stream)return notice('Microphone is not available yet.');
+    const t=stream.getAudioTracks()[0];if(!t)return;
+    micOn=!micOn;t.enabled=micOn;$('hmToggleMute').textContent=micOn?'Mute microphone':'Unmute microphone';
+  });
+  $('hmRecord').addEventListener('click',()=>{
+    if(!stream)return notice('Camera and microphone access are required before recording.');
+    try{
+      chunks=[];mediaRecorder=new MediaRecorder(stream);
+      mediaRecorder.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data)};
+      mediaRecorder.onstop=()=>{
+        const type=mediaRecorder.mimeType||'video/webm',blob=new Blob(chunks,{type}),url=URL.createObjectURL(blob),a=document.createElement('a');
+        a.href=url;a.download='hemiya-speaking-practice.'+(type.includes('mp4')?'mp4':'webm');document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);
+      };
+      mediaRecorder.start();recording=true;$('hmRecord').disabled=true;$('hmStopRecord').disabled=false;$('hmMediaState').textContent='Recording';
+    }catch(e){notice('Recording is not supported in this browser. Try Chrome or Edge.');}
+  });
+  $('hmStopRecord').addEventListener('click',()=>{
+    if(mediaRecorder&&recording){recording=false;mediaRecorder.stop();$('hmRecord').disabled=false;$('hmStopRecord').disabled=true;$('hmMediaState').textContent='Camera ready'}
+  });
 
-            // Calculate scores for each level
-            Object.entries(criteria).forEach(([level, data]) => {
-                // Word count score (0-4 points)
-                if (words >= data.minWords) {
-                    data.score += 4;
-                }
-                
-                // Pause penalty (0-2 points)
-                if (pauses <= data.maxPause) {
-                    data.score += 2;
-                }
-                
-                // Phrase usage score (0-4 points)
-                const phrases = data.basicPhrases || data.complexPhrases || 
-                               data.advancedPhrases || data.sophisticatedPhrases;
-                
-                phrases.forEach(phrase => {
-                    if (transcriptLower.includes(phrase.toLowerCase())) {
-                        data.score += 1;
-                    }
-                });
-            });
+  async function sendLead(d){
+    const message=`Email: ${d.email}
+Current Level: ${d.level}
+Target Exam: ${d.exam}
+Phone: ${d.phone||'Not provided'}
+Learning Goals: ${d.goals||'Not specified'}
 
-            // Determine the level
-            let finalLevel = 'A1';
-            let maxScore = criteria.A1.score;
-
-            Object.entries(criteria).forEach(([level, data]) => {
-                if (data.score > maxScore) {
-                    maxScore = data.score;
-                    finalLevel = level;
-                }
-            });
-
-            // Always show the final assessment
-            const assessmentDiv = document.getElementById('speaking-assessment');
-            assessmentDiv.innerHTML = `
-                <h3>Final Speaking Assessment</h3>
-                <p class="level-result">Estimated Level: ${finalLevel}</p>
-                <p>Total Words: ${words}</p>
-                <p>Fluency Score: ${maxScore}/10</p>
-                <div class="assessment-details">
-                    <p>💡 Tips for improvement:</p>
-                    ${getFeedback(finalLevel)}
-                    <p>Detailed Analysis:</p>
-                    <ul>
-                        <li>Word Count: ${words} words</li>
-                        <li>Pauses: ${pauses}</li>
-                        <li>Vocabulary Range: ${getVocabFeedback(maxScore)}</li>
-                    </ul>
-                </div>
-            `;
-        }
-
-        // Add this helper function for vocabulary feedback
-        function getVocabFeedback(score) {
-            if (score <= 3) return "Basic vocabulary - focus on everyday expressions";
-            if (score <= 5) return "Good basic vocabulary - try adding more connecting words";
-            if (score <= 7) return "Strong vocabulary - continue adding advanced expressions";
-            return "Excellent vocabulary range - maintain this level";
-        }
-
-        function getFeedback(level) {
-            const feedback = {
-                'A1': 'Try using more basic connecting words and longer sentences.',
-                'A2': 'Practice using more complex sentence structures and time expressions.',
-                'B1': 'Incorporate more advanced vocabulary and opinion expressions.',
-                'B2': 'Focus on nuanced arguments and sophisticated connecting phrases.'
-            };
-            return feedback[level];
-        }
-
-        // Replace the function that checks for media permissions and browser type
-        function checkMediaPermissions() {
-            // First detect if this is Safari
-            const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-            
-            if (isSafari) {
-                // Show notification about Safari limitations
-                showNotification("⚠️ Safari has limited recording support. For best experience, use Chrome.", "warning", 8000);
-                
-                // Add a permanent warning banner for Safari users
-                const controlsContainer = document.querySelector('.controls-container');
-                const safariWarningHTML = `
-                    <div id="safari-warning" style="background: rgba(255, 180, 0, 0.15); border: 1px solid #FFB400; padding: 15px; border-radius: 10px; margin: 20px auto; max-width: 700px; text-align: center;">
-                        <h3 style="color: #FFB400; margin-top: 0;">Safari Browser Detected</h3>
-                        <p>Video recording and downloading is not fully supported in Safari.</p>
-                        <p><strong>For the full experience with video recording:</strong></p>
-                        <a href="https://www.google.com/chrome/" target="_blank" style="display: inline-block; background: #FFB400; color: black; padding: 8px 15px; border-radius: 5px; text-decoration: none; margin-top: 10px; font-weight: bold;">
-                            Download Chrome Browser
-                        </a>
-                    </div>
-                `;
-                
-                // Insert the warning before the controls container
-                controlsContainer.insertAdjacentHTML('beforebegin', safariWarningHTML);
-                
-                // Disable recording buttons
-                const startRecordBtn = document.getElementById('start-record');
-                const stopRecordBtn = document.getElementById('stop-record');
-                
-                // Add "disabled" class and attribute to buttons
-                startRecordBtn.disabled = true;
-                stopRecordBtn.disabled = true;
-                startRecordBtn.style.opacity = "0.5";
-                stopRecordBtn.style.opacity = "0.5";
-                startRecordBtn.title = "Recording not available in Safari - please use Chrome";
-                stopRecordBtn.title = "Recording not available in Safari - please use Chrome";
-                
-                // Update button text to indicate disabled state
-                startRecordBtn.textContent = "🚫 Recording (Safari not supported)";
-            }
-            
-            // Continue with regular permission checks
-            navigator.permissions.query({name: 'camera'})
-                .then(permissionStatus => {
-                    if (permissionStatus.state === 'denied') {
-                        showNotification("⚠️ Please enable camera access to use all features", "error");
-                    }
-                })
-                .catch(err => {
-                    console.log("Camera permission check failed:", err);
-                });
-            
-            navigator.permissions.query({name: 'microphone'})
-                .then(permissionStatus => {
-                    if (permissionStatus.state === 'denied') {
-                        showNotification("⚠️ Please enable microphone access for speech recognition", "error");
-                    }
-                })
-                .catch(err => {
-                    console.log("Microphone permission check failed:", err);
-                });
-        }
-
-        // Enhance the showNotification function to support different durations
-        function showNotification(message, type = 'success', duration = 5000) {
-            const notification = document.getElementById('notification');
-            notification.textContent = message;
-            
-            // Set color based on notification type
-            if (type === 'error') {
-                notification.style.background = 'rgba(255, 68, 68, 0.9)';
-            } else if (type === 'warning') {
-                notification.style.background = 'rgba(255, 180, 0, 0.9)';
-            } else {
-                notification.style.background = 'rgba(0, 255, 153, 0.9)';
-            }
-            
-            notification.classList.add('show');
-            
-            // Hide notification after specified duration
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, duration);
-        }
-
-        // Replace the existing MediaRecorder setup with this simplified version
-        navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-            .then(s => {
-                stream = s;
-                const videoElement = document.getElementById('video');
-                videoElement.srcObject = stream;
-                videoElement.muted = true;
-                
-                // Detect Safari
-                const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-                
-                // Only set up MediaRecorder for non-Safari browsers
-                if (!isSafari) {
-                    try {
-                        // Try to use the preferred MIME type or fall back to a supported one
-                        try {
-                            mediaRecorder = new MediaRecorder(stream, {
-                                mimeType: 'video/webm;codecs=vp8,opus',
-                                videoBitsPerSecond: 2500000
-                            });
-                        } catch (e) {
-                            console.warn("MediaRecorder with options failed:", e);
-                            mediaRecorder = new MediaRecorder(stream);
-                        }
-                        
-                        // Add recording handlers
-                document.getElementById('start-record').addEventListener('click', () => {
-                    recordedChunks = [];
-                    mediaRecorder.start();
-                            document.getElementById('start-record').textContent = "🔴 Recording...";
-                            showNotification("Recording started", "success");
-                });
-
-                document.getElementById('stop-record').addEventListener('click', () => {
-                            if (mediaRecorder.state === 'recording') {
-                    mediaRecorder.stop();
-                                document.getElementById('start-record').textContent = "🔴 Start Recording";
-                                showNotification("Preparing download...", "success");
-                            } else {
-                                showNotification("Not currently recording", "error");
-                            }
-                        });
-                        
-                        // Handle recording data
-                        mediaRecorder.ondataavailable = event => {
-                            if (event.data && event.data.size > 0) {
-                                recordedChunks.push(event.data);
-                            }
-                        };
-                        
-                        // Handle recording stop and download (for Chrome/Firefox/Edge)
-                    mediaRecorder.onstop = () => {
-                            const blob = new Blob(recordedChunks, { type: 'video/webm' });
-                            const url = URL.createObjectURL(blob);
-                            const a = document.createElement('a');
-                            a.style.display = 'none';
-                            a.href = url;
-                            a.download = `french-speaking-practice-${new Date().toISOString().slice(0,19).replace(/:/g,'-')}.webm`;
-                            document.body.appendChild(a);
-                        a.click();
-                            
-                            setTimeout(() => {
-                                document.body.removeChild(a);
-                                URL.revokeObjectURL(url);
-                            }, 100);
-                            
-                            showNotification("Your recording has been downloaded!", "success");
-                        };
-                    } catch (e) {
-                        console.error("MediaRecorder setup failed:", e);
-                        showNotification("Recording setup failed. Try refreshing the page.", "error");
-                    }
-                }
-                
-                // Toggle camera and mic (all browsers)
-                document.getElementById('toggle-camera').addEventListener('click', () => {
-                    const videoTracks = stream.getVideoTracks();
-                    if (videoTracks.length > 0) {
-                        const isEnabled = !videoTracks[0].enabled;
-                        videoTracks[0].enabled = isEnabled;
-                        document.getElementById('toggle-camera').textContent = 
-                            isEnabled ? "Turn Off Camera" : "Turn On Camera";
-                    }
-                });
-
-                document.getElementById('mute-btn').addEventListener('click', () => {
-                    const audioTracks = stream.getAudioTracks();
-                    if (audioTracks.length > 0) {
-                        const isEnabled = !audioTracks[0].enabled;
-                        audioTracks[0].enabled = isEnabled;
-                        document.getElementById('mute-btn').textContent = 
-                            isEnabled ? "🔇 Mute" : "🔊 Unmute";
-                    }
-                });
-            })
-            .catch(err => {
-                console.error("Media error:", err);
-                showNotification("Camera or microphone access denied. Some features won't work.", "error");
-            });
-
-        // EmailJS initialization
-        (function(){
-            emailjs.init("_KKm93NyfWfCIx2nC");
-        })();
-
-        // Contact form handling
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const contactData = {
-                name: document.getElementById('name').value,
-                email: document.getElementById('email').value,
-                level: document.getElementById('level').value,
-                phone: document.getElementById('phone').value,
-                exam_type: document.getElementById('exam_type').value,
-                goals: document.getElementById('goals').value,
-                date: new Date().toLocaleString()
-            };
-
-            // Store contact info in localStorage
-            localStorage.setItem('userContact', JSON.stringify(contactData));
-
-            // Send email notification
-            emailjs.send("service_fr7pas9", "template_qk5xq0o", {
-                name: contactData.name,
-                time: contactData.date,
-                message: `Email: ${contactData.email}
-Current Level: ${contactData.level}
-Target Exam: ${contactData.exam_type}
-Phone: ${contactData.phone || 'Not provided'}
-Learning Goals: ${contactData.goals || 'Not specified'}
-
-Registration Time: ${contactData.date}
+Registration Time: ${d.date}
 Browser: ${navigator.userAgent}
-Screen Size: ${window.innerWidth}x${window.innerHeight}`
-            })
-            .then(function() {
-                // Hide the overlay immediately
-                document.getElementById('contactOverlay').style.display = 'none';
-                
-                // Show notification
-                const notification = document.getElementById('notification');
-                notification.textContent = `Welcome ${contactData.name}! You can now start your practice. We'll send you study tips tomorrow!`;
-                notification.classList.add('show');
-                
-                // Play the intro audio and animation immediately after entering the speaking board
-                setTimeout(() => {
-                    const introAudio = document.getElementById('introAudio');
-                    const avatarImg = document.querySelector('.ai-avatar .avatar-img');
-                    
-                    if (introAudio && avatarImg) {
-                        introAudio.play();
-                        startPulsingWithIntervals(avatarImg);
-                    }
-                }, 800); // Short delay to ensure smooth transition
-                
-                // Hide notification after 5 seconds
-                setTimeout(() => {
-                    notification.classList.remove('show');
-                }, 5000);
-            }, function(error) {
-                console.error('Email sending failed:', error);
-                // Still hide the overlay on error
-                document.getElementById('contactOverlay').style.display = 'none';
-                
-                // Show error notification
-                const notification = document.getElementById('notification');
-                notification.textContent = 'Welcome! You can start your practice now.';
-                notification.style.background = 'rgba(255, 68, 68, 0.9)';
-                notification.classList.add('show');
-                
-                // Still play the animation even if email fails
-                setTimeout(() => {
-                    const introAudio = document.getElementById('introAudio');
-                    const avatarImg = document.querySelector('.ai-avatar .avatar-img');
-                    
-                    if (introAudio && avatarImg) {
-                        introAudio.play();
-                        startPulsingWithIntervals(avatarImg);
-                    }
-                }, 800);
-                
-                setTimeout(() => {
-                    notification.classList.remove('show');
-                }, 5000);
-            });
+Screen Size: ${window.innerWidth}x${window.innerHeight}`;
+    const r=await fetch('https://api.emailjs.com/api/v1.0/email/send',{
+      method:'POST',headers:{'Content-Type':'application/json','Accept':'text/plain'},
+      body:JSON.stringify({
+        service_id:EMAILJS.service,template_id:EMAILJS.template,user_id:EMAILJS.key,
+        template_params:{name:d.name,time:d.date,message,email:d.email,user_email:d.email,reply_to:d.email,level:d.level,phone:d.phone||'Not provided',exam_type:d.exam,goals:d.goals||'Not specified',page_url:location.href}
+      })
+    });
+    const text=await r.text();
+    if(!r.ok)throw new Error((r.status+' '+text).trim());
+  }
 
-            trackLead(contactData);
-        });
+  $('hmLeadForm').addEventListener('submit',async e=>{
+    e.preventDefault();
+    const d={name:$('hmName').value.trim(),email:$('hmEmail').value.trim(),phone:$('hmPhone').value.trim(),level:$('hmCurrentLevel').value,exam:$('hmGoal').value,goals:$('hmGoals').value.trim(),date:new Date().toLocaleString()};
+    if(!d.name||!d.email||!d.level||!d.exam){setFormStatus('error','Please complete all required fields.');return}
+    const b=$('hmSubmitLead'),label=b.textContent;b.disabled=true;b.textContent='Submitting…';setFormStatus('sending','Submitting your registration…');
+    try{
+      await sendLead(d);
+      localStorage.setItem(leadKey,JSON.stringify({...d,emailSent:true,verifiedAt:new Date().toISOString()}));
+      setFormStatus('success','Registration received. Opening the speaking practice…');
+      setTimeout(()=>{$('hmGate').classList.add('hidden');notice('Welcome '+d.name+'. Your speaking practice is ready.');initMedia()},250);
+    }catch(err){
+      localStorage.removeItem(leadKey);
+      setFormStatus('error','Registration could not be sent. EmailJS returned: '+err.message+'. Please try again.');
+    }finally{b.disabled=false;b.textContent=label}
+  });
 
-        // Check if user has already registered
-        window.addEventListener('load', function() {
-            const userContact = localStorage.getItem('userContact');
-            if (userContact) {
-                document.getElementById('contactOverlay').classList.add('hidden');
-                
-                // Auto-play for returning users after a short delay
-                setTimeout(() => {
-                    const introAudio = document.getElementById('introAudio');
-                    const avatarImg = document.querySelector('.ai-avatar .avatar-img');
-                    
-                    if (introAudio && avatarImg) {
-                        introAudio.play();
-                        startPulsingWithIntervals(avatarImg);
-                    }
-                }, 1500);
-            }
-        });
-
-        function trackLead(contactData) {
-            // Basic analytics
-            const analytics = {
-                timestamp: new Date().toISOString(),
-                user: {
-                    level: contactData.level,
-                    exam: contactData.exam_type,
-                    hasPhone: !!contactData.phone,
-                    hasGoals: !!contactData.goals,
-                    browser: navigator.userAgent,
-                    screen: `${window.innerWidth}x${window.innerHeight}`,
-                    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
-                }
-            };
-            
-            // Store analytics
-            let allLeads = JSON.parse(localStorage.getItem('leads') || '[]');
-            allLeads.push(analytics);
-            localStorage.setItem('leads', JSON.stringify(allLeads));
-        }
-
-        // Theme toggle
-        document.getElementById('theme-toggle').addEventListener('click', () => {
-            document.body.classList.toggle('light-theme');
-        });
-
-        // Progress bar update
-        function updateProgress(current, total) {
-            const progress = (current / total) * 100;
-            document.querySelector('.progress-fill').style.width = `${progress}%`;
-        }
-
-        // Add loading states
-        function setLoading(element, isLoading) {
-            if (isLoading) {
-                element.classList.add('loading');
-                element.disabled = true;
-            } else {
-                element.classList.remove('loading');
-                element.disabled = false;
-            }
-        }
-
-        function toggleTroubleshoot() {
-            const content = document.getElementById('troubleshoot-content');
-            content.classList.toggle('hidden');
-        }
-
-        // Add this to your existing window.onload or DOMContentLoaded event
-        window.addEventListener('DOMContentLoaded', (event) => {
-            // Check for permissions on page load
-            checkMediaPermissions();
-            
-            // Add the intro audio setup
-            setupIntroAudio();
-        });
-
-        // Add this to your existing JavaScript, right before the window.addEventListener('DOMContentLoaded') line
-        function setupIntroAudio() {
-            const introAudio = document.getElementById('introAudio');
-            const avatar = document.querySelector('.ai-avatar');
-            const avatarImg = avatar.querySelector('.avatar-img');
-            let pulseInterval;
-
-            // Function to handle audio playback and animation
-            function playIntroAudio() {
-                if (introAudio.paused) {
-                    introAudio.play();
-                    startPulsingWithIntervals(avatarImg);
-                } else {
-                    introAudio.pause();
-                    introAudio.currentTime = 0;
-                    avatarImg.classList.remove('avatar-vibrating');
-                    if (pulseInterval) {
-                        clearInterval(pulseInterval);
-                    }
-                }
-            }
-
-            // Handle audio ending
-            introAudio.addEventListener('ended', () => {
-                avatarImg.classList.remove('avatar-vibrating');
-                if (pulseInterval) {
-                    clearInterval(pulseInterval);
-                }
-            });
-
-            // Make avatar clickable for replay
-            avatar.addEventListener('click', () => {
-                playIntroAudio();
-            });
-        }
-
-        // The startPulsingWithIntervals function is now used directly from multiple places,
-        // so we need to move it outside of setupIntroAudio to make it globally accessible
-        let pulseInterval; // Make this globally accessible
-
-        function startPulsingWithIntervals(element) {
-            let pulseCount = 0;
-            
-            // Cute emoji array with French-themed ones
-            let emojis = ['💬', '🇫🇷', '👋', '😊', '🎉', '🎓', '🤔', '👍', '✨', '🥐', '🧁', '🌟', '🌈', '🦄', '🎵', '🥰'];
-            
-            // Start initial pulse
-            element.classList.add('avatar-vibrating');
-            
-            // Clear any existing interval
-            if (pulseInterval) {
-                clearInterval(pulseInterval);
-            }
-            
-            // Add floating particles around the avatar
-            createFloatingParticles(element.parentNode);
-            
-            // Add initial sparkles
-            addSparkleEffect(element.parentNode);
-            
-            // Create a random "talking" effect with cuter animations
-            pulseInterval = setInterval(() => {
-                pulseCount++;
-                
-                // Create a pattern of animation
-                if (pulseCount % 5 === 0) {
-                    // Add sparkle effects randomly around the avatar
-                    addSparkleEffect(element.parentNode);
-                    
-                    // Add a random emoji speech bubble with cuter styling
-                    const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
-                    createSpeechBubble(element.parentNode, randomEmoji);
-                }
-                
-                // Occasionally make the avatar do a cute bounce
-                if (pulseCount % 15 === 0) {
-                    element.style.animation = 'cute-bounce 0.8s cubic-bezier(0.28, 0.84, 0.42, 1) forwards';
-                    
-                    setTimeout(() => {
-                        element.style.animation = '';
-                        element.classList.add('avatar-vibrating');
-                    }, 1000);
-                }
-            }, 300);
-
-            // Make sure the audio element knows to stop the animation when it ends
-            const introAudio = document.getElementById('introAudio');
-            introAudio.addEventListener('ended', () => {
-                if (pulseInterval) {
-                    clearInterval(pulseInterval);
-                }
-                element.classList.remove('avatar-vibrating');
-                element.style.transform = '';
-            });
-        }
-
-        // These helper functions should also be moved outside of setupIntroAudio
-        function addSparkleEffect(container) {
-            const sparkleCount = Math.floor(Math.random() * 3) + 2;
-            
-            for (let i = 0; i < sparkleCount; i++) {
-                setTimeout(() => {
-                    const sparkle = document.createElement('div');
-                    sparkle.classList.add('sparkle');
-                    
-                    // Random size between 3px and 10px
-                    const size = Math.random() * 7 + 3;
-                    
-                    // Position randomly around the avatar
-                    const angle = Math.random() * 360;
-                    const distance = Math.random() * 40 + 60; // Distance from center
-                    const centerX = 60; // Assuming avatar is 120px wide
-                    const centerY = 60; // Assuming avatar is 120px high
-                    
-                    const x = centerX + distance * Math.cos(angle * Math.PI / 180);
-                    const y = centerY + distance * Math.sin(angle * Math.PI / 180);
-                    
-                    Object.assign(sparkle.style, {
-                        width: `${size}px`,
-                        height: `${size}px`,
-                        left: `${x}px`,
-                        top: `${y}px`,
-                        background: `radial-gradient(circle, white 20%, ${getRandomColor()} 70%)`,
-                        boxShadow: `0 0 ${size/2}px ${size/2}px rgba(255, 255, 255, 0.7)`
-                    });
-                    
-                    container.appendChild(sparkle);
-                    
-                    // Remove the sparkle after animation completes
-                    setTimeout(() => {
-                        if (sparkle.parentNode) {
-                            container.removeChild(sparkle);
-                        }
-                    }, 1500);
-                }, i * 100); // Stagger the sparkles
-            }
-        }
-
-        function createSpeechBubble(container, emoji) {
-            const bubble = document.createElement('div');
-            bubble.innerHTML = emoji;
-            bubble.style.position = 'absolute';
-            bubble.style.zIndex = '10';
-            
-            // Randomize position with more options
-            const positions = [
-                { top: '-30px', right: '-5px' },
-                { top: '-25px', right: '15px' },
-                { top: '-20px', left: '-15px' },
-                { top: '0px', right: '-35px' },
-                { top: '10px', left: '-30px' },
-                { top: '-15px', left: '60px' }
-            ];
-            const position = positions[Math.floor(Math.random() * positions.length)];
-            
-            Object.assign(bubble.style, {
-                ...position,
-                fontSize: '28px',
-                padding: '5px',
-                borderRadius: '50%',
-                background: 'rgba(255, 255, 255, 0.2)',
-                animation: 'popBubble 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-                filter: 'drop-shadow(0 0 5px rgba(0,255,153,0.7))',
-                transform: 'scale(0.1)',
-                opacity: '0'
-            });
-            
-            container.appendChild(bubble);
-            
-            // Remove the speech bubble after animation
-            setTimeout(() => {
-                if (bubble.parentNode) {
-                    container.removeChild(bubble);
-                }
-            }, 1200);
-        }
-
-        function createFloatingParticles(container) {
-            const colors = ['#00FF99', '#00FFCC', '#00CCFF', '#CCFF00', '#FFCC00', '#FF66CC', '#CC99FF'];
-            const shapes = ['circle', 'circle', 'star', 'heart', 'circle'];
-            
-            // Create more particles for a vivid effect
-            for (let i = 0; i < 8; i++) {
-                const particle = document.createElement('div');
-                const size = Math.random() * 12 + 5;
-                const color = colors[Math.floor(Math.random() * colors.length)];
-                const shape = shapes[Math.floor(Math.random() * shapes.length)];
-                
-                let shapeCSS = 'border-radius: 50%;'; // Default circle
-                
-                if (shape === 'star') {
-                    // Simple star-like shape using clip-path
-                    shapeCSS = 'clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);';
-                } else if (shape === 'heart') {
-                    // Simple heart-like shape
-                    shapeCSS = 'transform: rotate(-45deg); border-radius: 50% 50% 0 50%;';
-                }
-                
-                Object.assign(particle.style, {
-                    position: 'absolute',
-                    width: `${size}px`,
-                    height: `${size}px`,
-                    backgroundColor: color,
-                    top: `${Math.random() * 120}px`,
-                    left: `${Math.random() * 120}px`,
-                    filter: 'blur(1px)',
-                    opacity: '0.7',
-                    animation: `float ${Math.random() * 4 + 3}s ease-in-out infinite, twinkle ${Math.random() * 2 + 1}s ease-in-out infinite`,
-                    zIndex: '1'
-                });
-                
-                // Apply the shape CSS
-                particle.style.cssText += shapeCSS;
-                
-                container.appendChild(particle);
-                
-                // Remove particles when audio ends
-                const introAudio = document.getElementById('introAudio');
-                introAudio.addEventListener('ended', () => {
-                    if (particle.parentNode) {
-                        container.removeChild(particle);
-                    }
-                });
-            }
-        }
-
-        function getRandomColor() {
-            const hue = Math.floor(Math.random() * 360);
-            return `hsl(${hue}, 100%, 75%)`;
-        }
-
-        // Add animation styles to the document when DOM is loaded
-        window.addEventListener('DOMContentLoaded', () => {
-            // Add animation styles
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes popBubble {
-                    0% { transform: scale(0) rotate(-10deg); opacity: 0; }
-                    40% { transform: scale(1.2) rotate(5deg); opacity: 1; }
-                    60% { transform: scale(1.1) rotate(-5deg); opacity: 1; }
-                    100% { transform: scale(1.3) translateY(-25px); opacity: 0; }
-                }
-                
-                @keyframes float {
-                    0% { transform: translate(0, 0) rotate(0deg); opacity: 0.7; }
-                    25% { transform: translate(15px, -15px) rotate(5deg); opacity: 0.9; }
-                    50% { transform: translate(25px, -5px) rotate(0deg); opacity: 0.7; }
-                    75% { transform: translate(10px, 10px) rotate(-5deg); opacity: 0.9; }
-                    100% { transform: translate(0, 0) rotate(0deg); opacity: 0.7; }
-                }
-                
-                @keyframes twinkle {
-                    0%, 100% { opacity: 0.3; transform: scale(1); }
-                    50% { opacity: 1; transform: scale(1.5); filter: brightness(1.3); }
-                }
-            `;
-            document.head.appendChild(style);
-        });
-    </script>
-</body>
-</html> 
+  try{
+    const saved=JSON.parse(localStorage.getItem(leadKey)||'null');
+    if(saved&&saved.emailSent===true&&saved.email){$('hmGate').classList.add('hidden');initMedia()}
+  }catch(e){localStorage.removeItem(leadKey)}
+})();
+</script>
