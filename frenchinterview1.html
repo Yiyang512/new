@@ -49,7 +49,27 @@ Registration form positioned in the upper visible viewport on first load.
         root ? root.offsetHeight : 0,
         root ? root.clientHeight : 0
       );
-      if (h > 0) frame.style.height = Math.max(1200, h + 30) + 'px';
+      if (h > 0) {
+        const innerHeight = Math.max(1200, h + 30);
+        frame.style.height = innerHeight + 'px';
+
+        // Tell the Payhip parent page how tall this GitHub-hosted page now is.
+        // requestAnimationFrame lets the browser apply the iframe height first.
+        requestAnimationFrame(() => {
+          const outerHeight = Math.max(
+            document.body ? document.body.scrollHeight : 0,
+            document.body ? document.body.offsetHeight : 0,
+            document.documentElement ? document.documentElement.scrollHeight : 0,
+            document.documentElement ? document.documentElement.offsetHeight : 0,
+            innerHeight
+          );
+
+          window.parent.postMessage({
+            type: 'HEMIYA_AUTO_RESIZE',
+            height: outerHeight
+          }, '*');
+        });
+      }
     } catch (e) {
       console.warn('Hemiya auto-size unavailable:', e);
     }
@@ -64,12 +84,36 @@ Registration form positioned in the upper visible viewport on first load.
         ro.observe(doc.documentElement);
         if (doc.body) ro.observe(doc.body);
       }
+
+      // Dynamic results, grammar feedback, troubleshooting sections, etc.
+      // can change the content height without a full page reload.
+      if (doc && window.MutationObserver) {
+        const mo = new MutationObserver(() => {
+          requestAnimationFrame(sizeFrame);
+        });
+        mo.observe(doc.documentElement, {
+          childList: true,
+          subtree: true,
+          attributes: true,
+          characterData: true
+        });
+      }
     } catch (e) {}
+
+    setTimeout(sizeFrame, 150);
     setTimeout(sizeFrame, 500);
-    setTimeout(sizeFrame, 1500);
-    setTimeout(sizeFrame, 3000);
+    setTimeout(sizeFrame, 1000);
+    setTimeout(sizeFrame, 2000);
+    setTimeout(sizeFrame, 4000);
   });
 
   window.addEventListener('resize', sizeFrame);
+
+  // Re-send the current height when Payhip explicitly asks for it.
+  window.addEventListener('message', function (event) {
+    if (event.data && event.data.type === 'HEMIYA_REQUEST_HEIGHT') {
+      sizeFrame();
+    }
+  });
 })();
 </script>
