@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>French Writing Practice with Hemiya AI</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <style>
         /* Base styles from frenchinterview.html */
@@ -162,7 +162,7 @@
             padding: 20px;
             font-size: 18px;
             background: rgba(0, 0, 0, 0.4);
-            color: white !important;
+            color: #142033 !important;
             outline: none;
             border-radius: 15px;
             margin: 20px auto;
@@ -495,9 +495,9 @@
 
         .topic-text {
             font-size: 20px;
-            color: white;
+            color: #142033;
             font-weight: bold;
-            text-shadow: 0 0 10px var(--primary-color);
+            text-shadow: none;
         }
 
         .form-intro {
@@ -574,7 +574,7 @@
         }
 
         .intro-message p {
-            color: white;
+            color: #344054;
             margin: 0;
             font-size: 16px;
             line-height: 1.4;
@@ -1256,7 +1256,7 @@
             background: rgba(0, 0, 0, 0.4);
             border: 2px solid var(--primary-color);
             border-radius: 10px;
-            color: white;
+            color: #142033;
             font-size: 16px;
             line-height: 1.5;
             outline: none;
@@ -1331,7 +1331,7 @@
             background: rgba(37, 99, 235, 0.1);
             border: 2px solid #2563EB;
             border-radius: 10px;
-            color: white;
+            color: #142033;
             font-size: 16px;
             line-height: 1.5;
             overflow-y: auto;
@@ -1660,6 +1660,1107 @@
             }
         }
 
+
+        /* ============================================================
+           HEMIYA PROFESSIONAL ASSESSMENT UI — visual layer only
+           ============================================================ */
+        :root {
+            --primary-color: #2457C5;
+            --primary-dark: #1D469E;
+            --primary-soft: #F3F7FD;
+            --primary-border: #C9D8F3;
+            --bg-color: #FFFFFF;
+            --surface: #FFFFFF;
+            --surface-soft: #F8FAFC;
+            --text-color: #142033;
+            --muted-text: #667085;
+            --border-color: #DCE3EA;
+            --error-color: #B42318;
+            --error-bg: #FEF3F2;
+            --success-color: #2F6B4F;
+            --success-bg: #F3F8F5;
+            --font-family: 'Inter', Arial, sans-serif;
+        }
+
+        html {
+            background: #FFFFFF !important;
+        }
+
+        body {
+            max-width: 1100px !important;
+            margin: 0 auto !important;
+            padding: 24px 28px 48px !important;
+            background: #FFFFFF !important;
+            color: var(--text-color) !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            text-align: left !important;
+            font-family: var(--font-family) !important;
+        }
+
+        body::before { display: none !important; }
+
+        /* Compact institutional header */
+        .intro-container {
+            width: 100% !important;
+            max-width: 1000px !important;
+            box-sizing: border-box;
+            margin: 8px auto 20px !important;
+            padding: 18px 20px !important;
+            display: flex !important;
+            align-items: flex-start !important;
+            gap: 16px !important;
+            background: #FFFFFF !important;
+            border: 1px solid var(--border-color) !important;
+            border-top: 3px solid var(--primary-color) !important;
+            border-radius: 10px !important;
+            box-shadow: 0 2px 8px rgba(20, 32, 51, 0.04) !important;
+            text-align: left !important;
+            position: relative;
+        }
+
+        .intro-container::before,
+        .ai-avatar::before,
+        .ai-avatar::after { display: none !important; }
+
+        .ai-avatar {
+            width: 56px !important;
+            height: 56px !important;
+            flex: 0 0 56px !important;
+            margin: 1px 0 0 !important;
+            cursor: pointer;
+            overflow: visible;
+        }
+
+        .avatar-img {
+            width: 56px !important;
+            height: 56px !important;
+            border-radius: 9px !important;
+            border: 1px solid var(--border-color) !important;
+            box-shadow: none !important;
+            animation: none !important;
+            transform: none !important;
+            filter: none !important;
+        }
+
+        .ai-avatar:hover .avatar-img,
+        .avatar-img:hover,
+        .avatar-vibrating {
+            transform: none !important;
+            box-shadow: none !important;
+            animation: none !important;
+            filter: none !important;
+        }
+
+        /* Hide legacy decorative avatar particles/speech bubbles without changing JS/audio behavior. */
+        .ai-avatar > div,
+        .ai-avatar .sparkle,
+        .ai-avatar .particle,
+        .form-particles .particle { display: none !important; }
+
+        .intro-text {
+            min-width: 0;
+            flex: 1;
+            text-align: left !important;
+        }
+
+        .intro-text h1 {
+            margin: 0 0 4px !important;
+            font-size: clamp(25px, 3vw, 31px) !important;
+            line-height: 1.2 !important;
+            letter-spacing: -0.025em;
+            font-weight: 650 !important;
+            color: var(--text-color) !important;
+            background: none !important;
+            -webkit-text-fill-color: var(--text-color) !important;
+            text-shadow: none !important;
+            white-space: normal !important;
+            overflow: visible !important;
+            animation: none !important;
+        }
+
+        .intro-text > p {
+            margin: 0 0 13px !important;
+            color: var(--muted-text) !important;
+            font-size: 15px !important;
+            line-height: 1.5 !important;
+        }
+
+        .features-list {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            gap: 0 !important;
+            margin: 0 !important;
+        }
+
+        .feature {
+            position: relative;
+            padding: 0 12px 0 0 !important;
+            margin: 0 12px 5px 0 !important;
+            color: #475467 !important;
+            background: transparent !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            font-size: 12.5px !important;
+            font-weight: 500;
+            line-height: 1.45;
+        }
+
+        .feature:not(:last-child)::after {
+            content: '' !important;
+            display: block !important;
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            background: #98A2B3;
+            right: 0;
+            top: 8px;
+        }
+
+        .feature::before { display: none !important; }
+        .feature:hover {
+            transform: none !important;
+            background: transparent !important;
+            box-shadow: none !important;
+        }
+
+        /* Professional two-step progress indicator */
+        .step-indicator {
+            width: 100% !important;
+            max-width: 1000px !important;
+            box-sizing: border-box;
+            margin: 0 auto 22px !important;
+            padding: 0 !important;
+            display: flex !important;
+            justify-content: flex-start !important;
+            gap: 32px !important;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .step {
+            position: relative;
+            display: inline-flex !important;
+            align-items: center;
+            gap: 9px;
+            margin: 0 !important;
+            padding: 11px 2px 12px !important;
+            color: #667085 !important;
+            background: transparent !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            opacity: 1 !important;
+            transform: none !important;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .step-number {
+            font-size: 12px;
+            letter-spacing: .04em;
+            font-weight: 700;
+            color: #98A2B3;
+        }
+
+        .step.active {
+            color: var(--text-color) !important;
+            background: transparent !important;
+        }
+
+        .step.active .step-number { color: var(--primary-color); }
+        .step.active::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -1px;
+            height: 2px;
+            background: var(--primary-color);
+        }
+
+        /* Task selection */
+        #topicSelection {
+            width: 100%;
+            max-width: 1000px;
+            box-sizing: border-box;
+            margin: 0 auto 24px;
+            padding: 24px;
+            background: #FFFFFF;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(20, 32, 51, 0.035);
+            text-align: left;
+        }
+
+        #topicSelection::before {
+            content: 'WRITING TASK SETUP';
+            display: block;
+            margin-bottom: 12px;
+            color: #667085;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .09em;
+        }
+
+        #levelSelect {
+            min-width: 220px;
+            height: 42px !important;
+            padding: 0 36px 0 12px !important;
+            margin: 0 8px 12px 0 !important;
+            background: #FFFFFF !important;
+            color: var(--text-color) !important;
+            border: 1px solid #CBD5DF !important;
+            border-radius: 7px !important;
+            font-size: 14px !important;
+            box-shadow: none !important;
+        }
+
+        #topicSelection > button,
+        #writingBoard button {
+            min-height: 40px;
+            margin: 0 8px 12px 0 !important;
+            padding: 9px 15px !important;
+            border-radius: 7px !important;
+            border: 1px solid transparent !important;
+            box-shadow: none !important;
+            transform: none !important;
+            font-family: inherit;
+            font-size: 14px !important;
+            font-weight: 600 !important;
+            letter-spacing: 0;
+            transition: background-color .15s ease, border-color .15s ease, color .15s ease !important;
+        }
+
+        #topicSelection .btn-green,
+        #writingBoard .btn-green,
+        #writingBoard .btn-primary {
+            background: var(--primary-color) !important;
+            color: #FFFFFF !important;
+            border-color: var(--primary-color) !important;
+        }
+
+        #topicSelection .btn-green:hover,
+        #writingBoard .btn-green:hover,
+        #writingBoard .btn-primary:hover {
+            background: var(--primary-dark) !important;
+            border-color: var(--primary-dark) !important;
+            box-shadow: none !important;
+            transform: none !important;
+        }
+
+        /* Randomize is a neutral secondary action; red is reserved for true destructive/error states. */
+        #topicSelection .btn-red,
+        #writingBoard .btn-blue,
+        #writingBoard .btn-secondary,
+        #writingBoard .btn-small {
+            background: #FFFFFF !important;
+            color: #344054 !important;
+            border-color: #CBD5DF !important;
+        }
+
+        #topicSelection .btn-red:hover,
+        #writingBoard .btn-blue:hover,
+        #writingBoard .btn-secondary:hover,
+        #writingBoard .btn-small:hover {
+            background: #F8FAFC !important;
+            border-color: #AEB9C6 !important;
+            box-shadow: none !important;
+        }
+
+        #writingBoard .controls .btn-red {
+            background: #FFFFFF !important;
+            color: var(--error-color) !important;
+            border-color: #E4B7B2 !important;
+        }
+
+        #writingBoard .controls .btn-red:hover {
+            background: var(--error-bg) !important;
+            border-color: #D99A94 !important;
+        }
+
+        .topic-box {
+            position: relative;
+            width: 100%;
+            box-sizing: border-box;
+            min-height: 126px;
+            margin: 8px 0 16px !important;
+            padding: 38px 20px 18px !important;
+            background: var(--primary-soft) !important;
+            border: 1px solid var(--primary-border) !important;
+            border-radius: 8px !important;
+            box-shadow: none !important;
+            animation: none !important;
+            text-align: left !important;
+            color: var(--text-color) !important;
+            font-size: 16px !important;
+            font-weight: 400 !important;
+            line-height: 1.6;
+        }
+
+        .topic-box::before {
+            content: 'WRITING TASK';
+            position: absolute;
+            left: 20px;
+            top: 13px;
+            color: #667085;
+            font-size: 10.5px;
+            font-weight: 700;
+            letter-spacing: .09em;
+        }
+
+        #writingTopic > div:first-child,
+        #selectedTopic > div:first-child {
+            color: var(--primary-color) !important;
+            font-size: 12px !important;
+            font-weight: 700 !important;
+            letter-spacing: .05em;
+            margin-bottom: 8px !important;
+        }
+
+        #writingTopic > div:nth-child(2),
+        #selectedTopic > div:nth-child(2) {
+            color: var(--text-color) !important;
+            font-size: 17px !important;
+            font-weight: 600 !important;
+            line-height: 1.5;
+            margin-bottom: 5px !important;
+        }
+
+        #writingTopic > div:nth-child(3),
+        #selectedTopic > div:nth-child(3) {
+            color: #475467 !important;
+            font-size: 15px !important;
+            line-height: 1.55;
+            font-style: normal !important;
+        }
+
+        .topic-warning {
+            margin: 0 0 12px !important;
+            padding: 10px 12px !important;
+            color: var(--error-color) !important;
+            background: var(--error-bg) !important;
+            border: 1px solid #F2C5C1 !important;
+            border-radius: 7px !important;
+            text-shadow: none !important;
+            animation: none !important;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Writing examination workspace */
+        #writingBoard {
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .assessment-toolbar {
+            display: grid;
+            grid-template-columns: minmax(0, 1.45fr) minmax(290px, .75fr);
+            gap: 14px;
+            margin-bottom: 14px;
+            align-items: stretch;
+        }
+
+        .selected-topic-box {
+            width: auto !important;
+            max-width: none !important;
+            margin: 0 !important;
+            padding: 16px 18px !important;
+            background: #FFFFFF !important;
+            border: 1px solid var(--border-color) !important;
+            border-radius: 8px !important;
+            box-shadow: none !important;
+            text-align: left !important;
+        }
+
+        .topic-label,
+        .timer-label,
+        .stat-label,
+        .assessment-kicker,
+        .char-limit-label {
+            display: block;
+            margin-bottom: 6px;
+            color: #667085 !important;
+            font-size: 10.5px !important;
+            font-weight: 700 !important;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            text-shadow: none !important;
+        }
+
+        .topic-text {
+            margin-bottom: 11px;
+            color: var(--text-color) !important;
+            text-shadow: none !important;
+            font-weight: 400 !important;
+        }
+
+        .selected-topic-box .btn-blue {
+            min-height: 32px !important;
+            margin: 2px 0 0 !important;
+            padding: 6px 10px !important;
+            font-size: 12px !important;
+        }
+
+        .session-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .timer-container {
+            width: auto !important;
+            max-width: none !important;
+            margin: 0 !important;
+            display: block !important;
+        }
+
+        .timer {
+            min-height: 70px;
+            box-sizing: border-box;
+            padding: 12px 14px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between;
+            gap: 12px !important;
+            background: #FFFFFF !important;
+            border: 1px solid var(--border-color) !important;
+            border-radius: 8px !important;
+            box-shadow: none !important;
+        }
+
+        .timer-readout { min-width: 90px; }
+        #timerDisplay {
+            display: block;
+            min-width: 0 !important;
+            color: var(--text-color) !important;
+            font-size: 22px !important;
+            line-height: 1.15;
+            font-weight: 650 !important;
+            font-variant-numeric: tabular-nums;
+            letter-spacing: -0.02em;
+        }
+
+        .timer-controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            gap: 5px !important;
+        }
+
+        .timer-controls .btn-small {
+            min-height: 29px !important;
+            margin: 0 !important;
+            padding: 5px 8px !important;
+            font-size: 11px !important;
+        }
+
+        .timer.warning #timerDisplay {
+            color: var(--error-color) !important;
+            animation: none !important;
+        }
+
+        .writing-stats {
+            width: auto !important;
+            max-width: none !important;
+            margin: 0 !important;
+            padding: 10px 12px !important;
+            display: grid !important;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0;
+            color: var(--text-color) !important;
+            background: #F8FAFC !important;
+            border: 1px solid var(--border-color) !important;
+            border-radius: 8px !important;
+            box-shadow: none !important;
+            font-size: 12px !important;
+        }
+
+        .writing-stats .stat {
+            min-width: 0;
+            padding: 0 8px;
+            display: block !important;
+            border-right: 1px solid var(--border-color);
+        }
+        .writing-stats .stat:first-child { padding-left: 0; }
+        .writing-stats .stat:last-child { border-right: 0; padding-right: 0; }
+        .writing-stats .stat strong {
+            display: block;
+            color: var(--text-color);
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .editor,
+        #textEditor {
+            box-sizing: border-box;
+            width: 100% !important;
+            max-width: none !important;
+            min-height: 430px !important;
+            height: auto !important;
+            margin: 0 !important;
+            padding: 24px 26px !important;
+            background: #FFFFFF !important;
+            color: var(--text-color) !important;
+            border: 1px solid #C9D2DC !important;
+            border-radius: 8px !important;
+            box-shadow: none !important;
+            font-family: var(--font-family) !important;
+            font-size: 16px !important;
+            line-height: 1.7 !important;
+            text-align: left !important;
+            transition: border-color .15s ease, box-shadow .15s ease !important;
+        }
+
+        .editor:focus,
+        #textEditor:focus {
+            background: #FFFFFF !important;
+            border-color: var(--primary-color) !important;
+            box-shadow: 0 0 0 3px rgba(36, 87, 197, 0.09) !important;
+        }
+
+        .char-limit {
+            position: static !important;
+            width: 100%;
+            box-sizing: border-box;
+            margin: 8px 0 0;
+            padding: 0 2px;
+            display: flex !important;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 8px !important;
+            color: #667085;
+            font-size: 11px;
+        }
+
+        .char-limit-label { display: inline !important; margin: 0 !important; }
+        .char-limit-bar {
+            width: 90px !important;
+            height: 4px !important;
+            background: #E7ECF2 !important;
+            border-radius: 2px;
+        }
+        .char-limit-fill { background: var(--primary-color) !important; }
+
+        .controls {
+            margin: 13px 0 4px;
+            display: flex;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .controls button { margin: 0 !important; }
+
+        /* Grammar analysis — examiner/report treatment */
+        #grammar-errors {
+            margin-top: 16px;
+        }
+
+        #grammar-errors .feedback-message {
+            width: 100% !important;
+            max-width: none !important;
+            box-sizing: border-box;
+            margin: 0 !important;
+            padding: 20px !important;
+            background: #FFFFFF !important;
+            color: var(--text-color) !important;
+            border: 1px solid var(--border-color) !important;
+            border-radius: 8px !important;
+            box-shadow: none !important;
+            text-align: left !important;
+            font-size: 14px;
+            font-weight: 400 !important;
+            line-height: 1.6;
+            animation: none !important;
+        }
+
+        #grammar-errors .grammar-success {
+            background: var(--success-bg) !important;
+            border-color: #CFE1D7 !important;
+        }
+
+        .grammar-report-heading {
+            padding-bottom: 13px;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .grammar-report-heading strong {
+            color: var(--text-color);
+            font-size: 19px;
+            font-weight: 650;
+        }
+        .grammar-report-heading span {
+            color: #667085;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .analysis-scope {
+            margin-top: 8px !important;
+            color: #667085 !important;
+            font-size: 12.5px !important;
+            line-height: 1.5;
+        }
+
+        .grammar-summary-block,
+        .grammar-system-note {
+            margin: 0 0 14px !important;
+            padding: 12px 14px !important;
+            background: #F8FAFC !important;
+            border: 1px solid var(--border-color) !important;
+            border-radius: 7px !important;
+            color: #344054 !important;
+            font-size: 13px !important;
+            line-height: 1.6;
+        }
+        .grammar-summary-block strong,
+        .grammar-system-note strong {
+            display: block;
+            margin-bottom: 4px;
+            color: var(--text-color);
+            font-weight: 600;
+        }
+
+        .grammar-issue-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .error-item {
+            margin: 0 !important;
+            padding: 14px 15px !important;
+            background: var(--error-bg) !important;
+            border: 1px solid #F2C5C1 !important;
+            border-left: 3px solid var(--error-color) !important;
+            border-radius: 6px !important;
+            color: #344054 !important;
+            box-shadow: none !important;
+        }
+
+        .error-item-heading {
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            color: var(--error-color) !important;
+            font-size: 13px;
+            font-weight: 650;
+        }
+        .error-item-heading span:last-child {
+            color: #8F3B34;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .error-item-field {
+            margin: 7px 0 !important;
+            display: grid;
+            grid-template-columns: 140px minmax(0, 1fr);
+            gap: 10px;
+            color: #344054 !important;
+        }
+        .error-field-label {
+            color: #667085;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+        }
+        .error-item-field.suggestion > span:last-child {
+            color: #2457C5;
+            font-weight: 600;
+        }
+        .error-item-meta {
+            margin-top: 8px !important;
+            color: #7A8699 !important;
+            font-size: 11px !important;
+        }
+
+        .grammar-hint {
+            margin-top: 13px;
+            color: #667085 !important;
+            font-size: 12px;
+        }
+        .report-actions {
+            margin-top: 14px;
+            display: flex;
+            justify-content: flex-start;
+        }
+        .report-actions button { margin: 0 !important; }
+
+        .error {
+            padding: 1px 2px !important;
+            color: inherit !important;
+            background: #FDE7E5 !important;
+            border: 0 !important;
+            border-bottom: 1.5px solid var(--error-color) !important;
+            border-radius: 2px !important;
+            box-shadow: none !important;
+        }
+        .error:hover { background: #FBD8D5 !important; box-shadow: none !important; }
+
+        /* Dark tooltip retains light text for accessible contrast. */
+        .error:hover::after,
+        #floating-tooltip {
+            background: #7A271A !important;
+            color: #FFFFFF !important;
+            border: 0 !important;
+            border-radius: 6px !important;
+            box-shadow: 0 6px 18px rgba(20, 32, 51, .18) !important;
+        }
+
+        /* Corrected version */
+        #correction-area {
+            width: 100%;
+            max-width: none !important;
+            box-sizing: border-box;
+            margin: 16px 0 0 !important;
+            padding: 20px !important;
+            background: #FFFFFF !important;
+            border: 1px solid var(--border-color) !important;
+            border-radius: 8px !important;
+            box-shadow: none !important;
+            animation: none !important;
+        }
+        .section-title {
+            margin: 0 0 12px !important;
+            color: var(--text-color) !important;
+            font-size: 19px !important;
+            font-weight: 650;
+            text-align: left !important;
+            text-shadow: none !important;
+        }
+        .corrected-text-box {
+            width: 100% !important;
+            max-width: none !important;
+            box-sizing: border-box;
+            min-height: 180px !important;
+            margin: 0 !important;
+            padding: 18px !important;
+            background: #FFFFFF !important;
+            color: var(--text-color) !important;
+            border: 1px solid #CBD5DF !important;
+            border-radius: 7px !important;
+            box-shadow: none !important;
+            font-size: 15px !important;
+            line-height: 1.65 !important;
+        }
+        .button-container {
+            margin: 12px 0 0 !important;
+            justify-content: flex-start !important;
+            flex-wrap: wrap;
+            gap: 8px !important;
+        }
+        .button-container button { margin: 0 !important; }
+
+        .correction-summary {
+            margin-top: 14px !important;
+            padding: 0 !important;
+            color: var(--text-color) !important;
+            background: transparent !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+            font-size: 13px !important;
+        }
+        .correction-summary-title {
+            padding-bottom: 8px;
+            margin-bottom: 8px;
+            color: var(--text-color);
+            font-size: 14px;
+            font-weight: 650;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .correction-summary-list { display: grid; gap: 8px; }
+        .correction-summary-item {
+            padding: 11px 12px;
+            background: #F8FAFC;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: #344054;
+        }
+        .correction-summary-type { margin-bottom: 5px; color: var(--text-color); font-weight: 600; }
+        .correction-original { color: var(--error-color); }
+        .correction-replacement { color: var(--success-color); font-weight: 600; }
+        .correction-arrow { color: #98A2B3; padding: 0 4px; }
+        .correction-explanation { margin-top: 5px; color: #667085; font-size: 11.5px; }
+
+        /* Formal assessment report */
+        .assessment-panel {
+            width: 100% !important;
+            max-width: none !important;
+            box-sizing: border-box;
+            margin: 18px 0 0 !important;
+            padding: 22px !important;
+            background: #FFFFFF !important;
+            color: var(--text-color) !important;
+            border: 1px solid var(--border-color) !important;
+            border-radius: 8px !important;
+            box-shadow: none !important;
+            text-align: left !important;
+        }
+
+        .assessment-header {
+            margin-bottom: 16px !important;
+            padding-bottom: 15px;
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: flex-start !important;
+            gap: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .assessment-kicker { margin-bottom: 4px !important; }
+        .assessment-header h3 {
+            margin: 0 !important;
+            color: var(--text-color);
+            font-size: 22px !important;
+            line-height: 1.3;
+            font-weight: 650 !important;
+            letter-spacing: -0.015em;
+        }
+
+        .cefr-status {
+            min-width: 190px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+            color: #667085;
+            font-size: 11px;
+            text-align: right;
+        }
+        .level-badge {
+            min-width: 34px;
+            padding: 5px 8px !important;
+            background: var(--primary-soft) !important;
+            color: var(--primary-dark) !important;
+            border: 1px solid var(--primary-border);
+            border-radius: 5px !important;
+            box-shadow: none !important;
+            animation: none !important;
+            font-size: 13px;
+            font-weight: 700 !important;
+            text-align: center;
+        }
+
+        .assessment-grid {
+            margin: 0 0 18px !important;
+            display: block !important;
+            border: 1px solid var(--border-color);
+            border-radius: 7px;
+            overflow: hidden;
+        }
+        .assessment-category {
+            padding: 14px 15px !important;
+            display: grid !important;
+            grid-template-columns: minmax(150px, .7fr) minmax(180px, .8fr) minmax(220px, 1.5fr);
+            gap: 18px;
+            align-items: start;
+            background: #FFFFFF !important;
+            color: #344054 !important;
+            border: 0 !important;
+            border-bottom: 1px solid var(--border-color) !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+        }
+        .assessment-category:last-child { border-bottom: 0 !important; }
+        .assessment-category h4 {
+            margin: 0 !important;
+            color: var(--text-color);
+            font-size: 14px;
+            line-height: 1.5;
+            font-weight: 600;
+        }
+        .progress-bar {
+            height: 6px !important;
+            margin: 8px 0 0 !important;
+            background: #E8EDF3 !important;
+            border-radius: 3px !important;
+            overflow: visible;
+        }
+        .progress {
+            height: 6px !important;
+            background: var(--primary-color) !important;
+            border-radius: 3px !important;
+        }
+        .score-label {
+            top: -21px !important;
+            right: 0 !important;
+            color: #475467 !important;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .details-list {
+            margin: 0 !important;
+            color: #475467 !important;
+            font-size: 12px !important;
+            line-height: 1.55;
+        }
+        .details-list li {
+            margin: 0 0 4px !important;
+            padding-left: 11px !important;
+        }
+        .details-list li::before {
+            content: '' !important;
+            width: 4px;
+            height: 4px;
+            left: 0 !important;
+            top: 7px;
+            border-radius: 50%;
+            background: #98A2B3;
+        }
+
+        .improvement-suggestions,
+        .vocabulary-analysis {
+            margin: 0 !important;
+            padding: 16px 0 !important;
+            background: transparent !important;
+            border: 0 !important;
+            border-top: 1px solid var(--border-color) !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            color: #344054 !important;
+        }
+        .improvement-suggestions h4,
+        .vocabulary-analysis h4 {
+            margin: 0 0 10px !important;
+            color: var(--text-color);
+            font-size: 16px;
+            font-weight: 650;
+        }
+        #improvementList {
+            margin: 0;
+            padding-left: 18px;
+            color: #475467;
+            font-size: 13px;
+            line-height: 1.65;
+        }
+        #improvementList li { margin: 0 0 7px; }
+
+        .vocab-chart {
+            display: grid !important;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 8px !important;
+            margin: 0 !important;
+        }
+        .vocab-level {
+            padding: 10px 12px !important;
+            background: #F8FAFC !important;
+            color: #475467 !important;
+            border: 1px solid var(--border-color) !important;
+            border-radius: 6px !important;
+            box-shadow: none !important;
+            font-size: 12px;
+        }
+        .vocab-level span { color: var(--text-color); font-weight: 650; }
+
+        .writing-metrics {
+            margin: 0 0 16px !important;
+            display: grid !important;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 8px !important;
+        }
+        .metric {
+            padding: 11px 12px !important;
+            background: #FFFFFF !important;
+            border: 1px solid var(--border-color) !important;
+            border-radius: 6px !important;
+            box-shadow: none !important;
+        }
+        .metric-label {
+            color: #667085 !important;
+            font-size: 11px !important;
+        }
+        .metric-value {
+            margin-top: 5px !important;
+            color: var(--text-color) !important;
+            font-size: 19px !important;
+            font-weight: 650 !important;
+        }
+
+        .assessment-panel > .btn-green { margin: 0 !important; }
+
+        /* Autosave: compact status, no decorative icon */
+        .autosave-indicator {
+            padding: 6px 9px !important;
+            color: #667085 !important;
+            background: #FFFFFF !important;
+            border: 1px solid var(--border-color) !important;
+            border-radius: 6px !important;
+            box-shadow: 0 2px 6px rgba(20,32,51,.06) !important;
+            font-size: 10.5px !important;
+        }
+
+        /* Remove remaining light-surface white-text leakage caused by legacy inline report styles. */
+        #grammar-errors .feedback-message div:not(.report-actions):not(.error):not(#floating-tooltip),
+        #grammar-errors .feedback-message span:not(.error),
+        .assessment-panel,
+        .assessment-panel div,
+        .assessment-panel li,
+        #correction-area,
+        #correction-area div {
+            text-shadow: none !important;
+        }
+
+        /* Keep the existing information-collection overlay positioned at the top of the viewport. */
+        .overlay { align-items: flex-start !important; overflow-y: auto !important; }
+
+        @media (max-width: 820px) {
+            body { padding: 14px 14px 36px !important; }
+            .intro-container { padding: 16px !important; }
+            .intro-text h1 { font-size: 25px !important; }
+            .features-list { display: block !important; }
+            .feature { display: inline !important; padding: 0 !important; margin: 0 !important; }
+            .feature:not(:last-child)::after { position: static; display: inline !important; content: ' · ' !important; background: none; }
+            .step-indicator { gap: 20px !important; overflow-x: auto; }
+            #topicSelection { padding: 18px !important; }
+            #levelSelect { width: 100% !important; margin-right: 0 !important; }
+            #topicSelection > button { width: 100%; margin-right: 0 !important; }
+            .assessment-toolbar { grid-template-columns: 1fr; }
+            .writing-stats { grid-template-columns: repeat(3, minmax(0,1fr)); }
+            .editor, #textEditor { min-height: 360px !important; padding: 20px !important; }
+            .assessment-category { grid-template-columns: 1fr; gap: 9px; }
+            .progress-bar { margin-top: 16px !important; }
+            .assessment-header { display: block !important; }
+            .cefr-status { margin-top: 10px; justify-content: flex-start; text-align: left; }
+            .vocab-chart, .writing-metrics { grid-template-columns: 1fr; }
+            .error-item-field { grid-template-columns: 1fr; gap: 3px; }
+            .grammar-report-heading { display: block; }
+            .grammar-report-heading span { display: block; margin-top: 3px; }
+        }
+
+        @media (max-width: 520px) {
+            body { padding: 10px 10px 30px !important; }
+            .intro-container { align-items: flex-start !important; gap: 12px !important; }
+            .ai-avatar { width: 44px !important; height: 44px !important; flex-basis: 44px !important; }
+            .avatar-img { width: 44px !important; height: 44px !important; }
+            .intro-text h1 { font-size: 22px !important; }
+            .intro-text > p { font-size: 13px !important; }
+            .step { font-size: 12px; }
+            #topicSelection { padding: 15px !important; }
+            .topic-box { padding: 36px 15px 15px !important; }
+            .topic-box::before { left: 15px; }
+            .timer { display: block !important; }
+            .timer-controls { margin-top: 10px; justify-content: flex-start; }
+            .writing-stats { grid-template-columns: 1fr; }
+            .writing-stats .stat { padding: 7px 0 !important; border-right: 0; border-bottom: 1px solid var(--border-color); }
+            .writing-stats .stat:last-child { border-bottom: 0; }
+            .controls { display: grid; grid-template-columns: 1fr; }
+            .controls button { width: 100%; }
+            .assessment-panel { padding: 16px !important; }
+            .button-container { display: grid !important; grid-template-columns: 1fr; }
+            .button-container button { width: 100%; }
+        }
+
     </style>
 </head>
 <body>
@@ -1669,15 +2770,15 @@
             <img src="https://yiyang512.github.io/new/hemiya.jpg" alt="Hemiya AI" class="avatar-img">
         </div>
         <div class="intro-text">
-            <h1>Meet Hemiya - Your AI French Coach 👋</h1>
-            <p>Practice your French writing with real-time feedback</p>
-            <div class="features-list">
-                <div class="feature">⦿ Smart Level Assessment (A1-B2)</div>
-                <div class="feature">⦿ Real-time Grammar Corrections</div>
-                <div class="feature">⦿ Vocabulary Suggestions</div>
-                <div class="feature">⦿ Writing Structure Guidance</div>
-                <div class="feature">⦿ Personalized Feedback</div>
-                <div class="feature">⦿ 100% Private - No Data Stored</div>
+            <h1>Hemiya Writing Assessment</h1>
+            <p>French Writing Practice &amp; Performance Analysis</p>
+            <div class="features-list" aria-label="Assessment features">
+                <div class="feature">Level-based prompts</div>
+                <div class="feature">Grammar analysis</div>
+                <div class="feature">Vocabulary analysis</div>
+                <div class="feature">Writing feedback</div>
+                <div class="feature">CEFR performance indicators</div>
+                <div class="feature">Private session data</div>
             </div>
         </div>
     </div>
@@ -1688,9 +2789,9 @@
     </audio>
 
     <!-- Step Indicators -->
-    <div class="step-indicator">
-        <div class="step active" id="step1">Step 1: Choose Level & Topic</div>
-        <div class="step" id="step2">Step 2: Write Your Response</div>
+    <div class="step-indicator" aria-label="Assessment progress">
+        <div class="step active" id="step1"><span class="step-number">01</span><span class="step-label">Select task</span></div>
+        <div class="step" id="step2"><span class="step-number">02</span><span class="step-label">Writing response</span></div>
     </div>
 
     <!-- Step 1: Topic Selection -->
@@ -1707,24 +2808,35 @@
         <button class="btn-green" onclick="generateTopic()">Generate Topic</button>
         <button class="btn-red" onclick="randomizeTopic()">Randomize Topic</button>
         <div class="topic-box" id="writingTopic">Click "Generate Topic" or "Randomize Topic"</div>
-        <button class="btn-green" onclick="proceedToWriting()">Continue to Writing ➡️</button>
+        <button class="btn-green" onclick="proceedToWriting()">Continue to Writing</button>
     </div>
 
     <!-- Step 2: Writing Board -->
     <div id="writingBoard" class="hidden">
-        <div class="selected-topic-box">
-            <div class="topic-label">Your Topic:</div>
-            <div id="selectedTopic" class="topic-text"></div>
-            <!-- Add Select Another Topic button -->
-            <button class="btn-blue" onclick="goBackToTopicSelection()">Select Another Topic</button>
-        </div>
-        <div class="timer-container">
-            <div class="timer" id="timer">
-                <span id="timerDisplay">30:00</span>
-                <div class="timer-controls">
-                    <button class="btn-small" onclick="startTimer()">Start</button>
-                    <button class="btn-small" onclick="pauseTimer()">Pause</button>
-                    <button class="btn-small" onclick="resetTimer()">Reset</button>
+        <div class="assessment-toolbar">
+            <div class="selected-topic-box">
+                <div class="topic-label">Writing task</div>
+                <div id="selectedTopic" class="topic-text"></div>
+                <button class="btn-blue" onclick="goBackToTopicSelection()">Change task</button>
+            </div>
+            <div class="session-meta">
+                <div class="timer-container">
+                    <div class="timer" id="timer">
+                        <div class="timer-readout">
+                            <span class="timer-label">Time remaining</span>
+                            <span id="timerDisplay">30:00</span>
+                        </div>
+                        <div class="timer-controls">
+                            <button class="btn-small" onclick="startTimer()">Start</button>
+                            <button class="btn-small" onclick="pauseTimer()">Pause</button>
+                            <button class="btn-small" onclick="resetTimer()">Reset</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="writing-stats">
+                    <div class="stat"><span class="stat-label">Words</span><strong id="wordCount">0</strong></div>
+                    <div class="stat"><span class="stat-label">Characters</span><strong id="charCount">0</strong></div>
+                    <div class="stat"><span class="stat-label">Reading time</span><strong><span id="readingTime">0</span> min</strong></div>
                 </div>
             </div>
         </div>
@@ -1732,34 +2844,21 @@
             Type your response in French here...
         </div>
         <div class="char-limit">
+            <span class="char-limit-label">Character limit</span>
             <div class="char-limit-bar">
                 <div class="char-limit-fill" id="charLimitFill"></div>
             </div>
             <span id="charLimitText">0/500</span>
         </div>
         <div class="controls">
-            <button class="btn-red" onclick="clearText()">Clear</button>
-            <button class="btn-green" onclick="checkGrammar()">Check Grammar</button>
+            <button class="btn-red" onclick="clearText()">Clear response</button>
+            <button class="btn-green" onclick="checkGrammar()">Analyze writing</button>
         </div>
         <div id="grammar-errors"></div>
-        <div class="writing-stats">
-            <div class="stat">
-                <span class="icon">📝</span>
-                <span id="wordCount">0</span> words
-            </div>
-            <div class="stat">
-                <span class="icon">⌨️</span>
-                <span id="charCount">0</span> characters
-            </div>
-            <div class="stat">
-                <span class="icon">⏱️</span>
-                Est. reading time: <span id="readingTime">0</span> min
-            </div>
-        </div>
         <div class="assessment-panel hidden" id="assessmentPanel">
             <div class="assessment-header">
-                <h3>📊 Comprehensive Writing Assessment</h3>
-                <div class="level-badge" id="assessedLevel">A2</div>
+                <div><div class="assessment-kicker">Assessment report</div><h3>Writing Performance</h3></div>
+                <div class="cefr-status"><span>Estimated CEFR Writing Level</span><div class="level-badge" id="assessedLevel">A2</div></div>
             </div>
             
             <div class="assessment-grid">
@@ -1792,12 +2891,12 @@
             </div>
 
             <div class="improvement-suggestions">
-                <h4>🎯 Areas for Improvement</h4>
+                <h4>Priority Areas</h4>
                 <ul id="improvementList"></ul>
             </div>
 
             <div class="vocabulary-analysis">
-                <h4>📚 Vocabulary Analysis</h4>
+                <h4>Vocabulary Analysis</h4>
                 <div class="vocab-chart" id="vocabChart">
                     <div class="vocab-level">Advanced Words: <span id="advancedCount">12</span></div>
                     <div class="vocab-level">Intermediate Words: <span id="intermediateCount">25</span></div>
@@ -1821,7 +2920,7 @@
             </div>
 
             <button class="btn-green" onclick="generateDetailedReport()">
-                📋 Generate Detailed Report
+                Generate Detailed Report
             </button>
         </div>
         <!-- Add this HTML section after the grammar-errors div in the writingBoard section -->
@@ -1907,7 +3006,7 @@
 
     <!-- Add this near the end of the body -->
     <div class="autosave-indicator">
-        <span class="icon">💾</span> Auto-saving...
+        Auto-saving...
     </div>
 
     <script>
@@ -2074,7 +3173,7 @@
             warningDiv.className = 'topic-warning';
             
             if (!level) {
-                warningDiv.innerText = "⚠️ Please select a level first!";
+                warningDiv.innerText = "Please select a level first.";
                 const topicBox = document.getElementById('writingTopic');
                 topicBox.parentNode.insertBefore(warningDiv, topicBox);
                 return;
@@ -2088,8 +3187,8 @@
             const topic = topics[level][Math.floor(Math.random() * topics[level].length)];
             document.getElementById('writingTopic').innerHTML = `
                 <div style="font-size: 18px; margin-bottom: 10px; color: var(--primary-color); font-weight: bold;">(${level})</div>
-                <div style="font-size: 16px; margin-bottom: 8px; color: white;">${topic.en}</div>
-                <div style="font-size: 16px; color: #3B82F6; font-style: italic;">${topic.fr}</div>
+                <div style="font-size: 16px; margin-bottom: 8px; color: #142033;">${topic.en}</div>
+                <div style="font-size: 16px; color: #2457C5;">${topic.fr}</div>
             `;
         }
 
@@ -2099,8 +3198,8 @@
             const topic = topics[randomLevel][Math.floor(Math.random() * topics[randomLevel].length)];
             document.getElementById('writingTopic').innerHTML = `
                 <div style="font-size: 18px; margin-bottom: 10px; color: var(--primary-color); font-weight: bold;">(${randomLevel})</div>
-                <div style="font-size: 16px; margin-bottom: 8px; color: white;">${topic.en}</div>
-                <div style="font-size: 16px; color: #3B82F6; font-style: italic;">${topic.fr}</div>
+                <div style="font-size: 16px; margin-bottom: 8px; color: #142033;">${topic.en}</div>
+                <div style="font-size: 16px; color: #2457C5;">${topic.fr}</div>
             `;
         }
 
@@ -2113,7 +3212,7 @@
             warningDiv.className = 'topic-warning';
             
             if (topicContent === 'Click "Generate Topic" or "Randomize Topic"') {
-                warningDiv.innerText = "⚠️ Please generate a topic first!";
+                warningDiv.innerText = "Please generate a topic first.";
                 topicBox.parentNode.insertBefore(warningDiv, topicBox);
                 return;
             }
@@ -2197,8 +3296,8 @@
                 grammarErrors.innerHTML = `
                     <div class="feedback-message">
                         <i class="fas fa-spinner fa-spin"></i> Performing comprehensive grammar analysis...
-                        <div style="font-size: 12px; margin-top: 8px; opacity: 0.8;">
-                            ✍️ Deep correction: Grammar • Structure • Verb tenses • Articles • Natural expressions
+                        <div class="analysis-scope">
+                            Analysis scope: Grammar · Structure · Verb tenses · Articles · Natural expressions
                         </div>
                     </div>`;
 
@@ -2222,15 +3321,10 @@
 
                 if (!data.matches || data.matches.length === 0) {
                     grammarErrors.innerHTML = `
-                        <div class="feedback-message" style="border-color: #2563EB; box-shadow: 0 0 10px #2563EB;">
-                            🎉 Comprehensive analysis complete - No grammar mistakes found! 
-                            <div style="font-size: 12px; margin-top: 5px; opacity: 0.8;">
-                                ✅ Grammar • Structure • Verb tenses • Articles • Natural flow
-                            </div>
-                            <div style="font-size: 12px; margin-top: 8px; padding: 8px; background: rgba(37,99,235,0.05); border-radius: 5px;">
-                                🎓 <strong>14-Rule C1-C2 System also applied:</strong><br>
-                                Advanced agreements, subjunctive, prepositions, native vocabulary, formal register
-                            </div>
+                        <div class="feedback-message grammar-success" style="border-color: #2F6B4F;">
+                            <div class="grammar-report-heading"><strong>Grammar Analysis</strong><span>No issues identified</span></div>
+                            <div class="analysis-scope">Grammar · Structure · Verb tenses · Articles · Natural flow</div>
+                            <div class="grammar-system-note"><strong>14-Rule C1-C2 system applied</strong><br>Advanced agreements, subjunctive, prepositions, native vocabulary, formal register</div>
                         </div>`;
                     return;
                 }
@@ -2260,7 +3354,7 @@
                     const correctionType = getCorrectionType(match);
                     const replacement = `<span class="error" 
                         data-error-id="${index}"
-                        data-tooltip="${correctionType}: ${match.message}${match.replacements.length > 0 ? '\n✅ Correction: ' + match.replacements[0].value : ''}"
+                        data-tooltip="${correctionType}: ${match.message}${match.replacements.length > 0 ? '\nSuggested correction: ' + match.replacements[0].value : ''}"
                         style="background-color: rgba(255, 68, 68, 0.15); border-bottom: 2px solid #FF4444;"
                         >${errorText}</span>`;
 
@@ -2270,12 +3364,12 @@
                     // Enhanced error summary with categories
                     errorSummary = `
                         <div class="error-item">
-                            <div style="color: #FF4444; font-weight: bold;">${correctionType} Error ${data.matches.length - index}:</div>
-                            <div style="color: white;">"${errorText}" - ${match.message}</div>
+                            <div class="error-item-heading"><span>${correctionType}</span><span>Issue ${data.matches.length - index}</span></div>
+                            <div class="error-item-field"><span class="error-field-label">Original</span><span>"${errorText}" — ${match.message}</span></div>
                             ${match.replacements.length > 0 ? 
-                                `<div style="color: #2563EB;">✅ Professional correction: "${match.replacements[0].value}"</div>` : 
+                                `<div class="error-item-field suggestion"><span class="error-field-label">Suggested correction</span><span>"${match.replacements[0].value}"</span></div>` : 
                                 ''}
-                            <div style="color: rgba(255,255,255,0.5); font-size: 0.8em;">Category: ${correctionType}</div>
+                            <div class="error-item-meta">Category: ${correctionType}</div>
                         </div>
                     ` + errorSummary;
                 });
@@ -2285,31 +3379,25 @@
 
                 // Enhanced error summary with professional analysis
                 grammarErrors.innerHTML = `
-                    <div class="feedback-message" style="border-color: #FF4444; box-shadow: 0 0 10px #FF4444;">
-                        <div style="font-size: 1.1em; margin-bottom: 15px;">
-                            📝 Professional Grammar Analysis: Found ${data.matches.length} ${data.matches.length === 1 ? 'issue' : 'issues'}
+                    <div class="feedback-message grammar-report" style="border-color: #DCE3EA;">
+                        <div class="grammar-report-heading">
+                            <strong>Grammar Analysis</strong>
+                            <span>${data.matches.length} ${data.matches.length === 1 ? 'issue' : 'issues'} identified</span>
                         </div>
-                        <div style="font-size: 0.9em; margin-bottom: 15px; padding: 10px; background: rgba(37,99,235,0.1); border-radius: 5px;">
-                            <strong>🎯 Correction Focus:</strong><br>
-                            ${Object.entries(errorCategories).map(([category, count]) => 
-                                `• ${category}: ${count} ${count === 1 ? 'issue' : 'issues'}`
-                            ).join('<br>')}
+                        <div class="grammar-summary-block">
+                            <strong>Issue summary</strong>
+                            <div>${Object.entries(errorCategories).map(([category, count]) => 
+                                `${category}: ${count} ${count === 1 ? 'issue' : 'issues'}`
+                            ).join('<br>')}</div>
                         </div>
-                        <div style="font-size: 0.9em; margin-bottom: 15px; padding: 10px; background: rgba(37,99,235,0.05); border-radius: 5px; border-left: 3px solid var(--primary-color);">
-                            <strong>🎓 14-Rule C1-C2 Grammar System Applied:</strong><br>
-                            • Past participle agreements (passive & reflexive)<br>
-                            • Gender/number agreements (nouns, adjectives, pronouns)<br>
-                            • Quantity expressions & subjunctive triggers<br>
-                            • Preposition accuracy & pronoun placement<br>
-                            • Anglicized vocabulary → Native French equivalents<br>
-                            • Spelling, accents & person/number consistency
+                        <div class="grammar-system-note">
+                            <strong>14-Rule C1-C2 grammar system applied</strong><br>
+                            Past participle agreements · Gender/number agreements · Quantity expressions & subjunctive triggers · Preposition accuracy & pronoun placement · Native French equivalents · Spelling, accents & person/number consistency
                         </div>
-                        ${errorSummary}
-                        <div style="margin-top: 15px; font-size: 0.9em; color: rgba(255, 255, 255, 0.7);">
-                            💡 Hover over highlighted text for detailed professional corrections.
-                        </div>
-                        <div style="margin-top: 15px; text-align: center;">
-                            <button id="show-corrected" class="btn btn-primary">Show Professionally Corrected Version</button>
+                        <div class="grammar-issue-list">${errorSummary}</div>
+                        <div class="grammar-hint">Hover over highlighted text for detailed corrections.</div>
+                        <div class="report-actions">
+                            <button id="show-corrected" class="btn btn-primary">Show Corrected Version</button>
                         </div>
                     </div>
                 `;
@@ -2331,14 +3419,13 @@
                     color: var(--primary-color);
                 `;
                 correctionSummary.innerHTML = `
-                    <strong>✅ Professional Corrections Applied (${corrections.length}):</strong>
-                    <div style="margin-top: 10px;">
+                    <div class="correction-summary-title">Corrections (${corrections.length})</div>
+                    <div class="correction-summary-list">
                         ${corrections.map((corr, idx) => 
-                            `<div style="margin: 8px 0; padding: 8px; background: rgba(37,99,235,0.05); border-radius: 4px;">
-                                <strong>${idx + 1}. ${corr.type}:</strong><br>
-                                <span style="color: #FF6B6B;">"${corr.original}"</span> → 
-                                <span style="color: #4ECDC4;">"${corr.replacement}"</span>
-                                <div style="font-size: 11px; opacity: 0.8; margin-top: 4px;">${corr.explanation}</div>
+                            `<div class="correction-summary-item">
+                                <div class="correction-summary-type">${idx + 1}. ${corr.type}</div>
+                                <div><span class="correction-original">"${corr.original}"</span> <span class="correction-arrow">→</span> <span class="correction-replacement">"${corr.replacement}"</span></div>
+                                <div class="correction-explanation">${corr.explanation}</div>
                             </div>`
                         ).join('')}
                     </div>
@@ -3307,7 +4394,7 @@
                 document.getElementById('correction-area').classList.add('hidden');
                 document.getElementById('grammar-errors').innerHTML = `
                     <div class="feedback-message" style="border-color: #2563EB; box-shadow: 0 0 10px #2563EB;">
-                        ✅ Professional corrections applied successfully! Your text has been comprehensively improved.
+                        Professional corrections applied successfully. Your text has been comprehensively improved.
                     </div>`;
                 updateWritingStats();
             });
@@ -4173,17 +5260,17 @@ Generated by Hemiya AI - Your French Writing Coach
                 // Most common error category with detailed advice
                 const mostCommonCategory = Object.entries(categories).sort((a, b) => b[1] - a[1])[0];
                 const categoryName = formatCategoryName(mostCommonCategory[0]);
-                suggestions.push(`📝 <strong>${categoryName} Focus:</strong> This was your most frequent error type (${mostCommonCategory[1]} instances). Review ${getDetailedGrammarAdvice(categoryName)} and practice specific exercises.`);
+                suggestions.push(`<strong>${categoryName} Focus:</strong> This was your most frequent error type (${mostCommonCategory[1]} instances). Review ${getDetailedGrammarAdvice(categoryName)} and practice specific exercises.`);
                 
                 // Error density analysis
                 const errorDensity = grammarAnalysis.errorCount / metrics.textLength;
                 if (errorDensity > 0.1) {
-                    suggestions.push(`🎯 <strong>Accuracy Target:</strong> Your error rate is ${Math.round(errorDensity * 100)}%. Aim to reduce this by proofreading each sentence and checking verb agreements, gender concordance, and article usage.`);
+                    suggestions.push(`<strong>Accuracy Target:</strong> Your error rate is ${Math.round(errorDensity * 100)}%. Aim to reduce this by proofreading each sentence and checking verb agreements, gender concordance, and article usage.`);
                 } else if (errorDensity > 0.05) {
-                    suggestions.push(`✨ <strong>Polish Your Writing:</strong> You're doing well with only ${Math.round(errorDensity * 100)}% errors. Focus on the remaining details like prepositions and subtle grammar rules.`);
+                    suggestions.push(`<strong>Polish Your Writing:</strong> You're doing well with only ${Math.round(errorDensity * 100)}% errors. Focus on the remaining details like prepositions and subtle grammar rules.`);
                 }
             } else {
-                suggestions.push(`🎉 <strong>Grammar Mastery:</strong> Excellent! No grammar errors detected. Your structural accuracy is impressive for ${level} level.`);
+                suggestions.push(`<strong>Grammar Mastery:</strong> Excellent! No grammar errors detected. Your structural accuracy is impressive for ${level} level.`);
             }
             
             // 📚 VOCABULARY ENHANCEMENT
@@ -4192,32 +5279,32 @@ Generated by Hemiya AI - Your French Writing Coach
             const uniqueRatio = vocabAnalysis.uniqueWords / totalWords;
             
             if (advancedRatio < 0.1 && ['B2', 'C1', 'C2'].includes(level)) {
-                suggestions.push(`📚 <strong>Vocabulary Sophistication:</strong> Only ${Math.round(advancedRatio * 100)}% of your vocabulary is advanced. For ${level} level, incorporate more nuanced terms, academic vocabulary, and idiomatic expressions. Try reading French literature or newspapers.`);
+                suggestions.push(`<strong>Vocabulary Sophistication:</strong> Only ${Math.round(advancedRatio * 100)}% of your vocabulary is advanced. For ${level} level, incorporate more nuanced terms, academic vocabulary, and idiomatic expressions. Try reading French literature or newspapers.`);
             } else if (advancedRatio < 0.05 && ['B1'].includes(level)) {
-                suggestions.push(`📚 <strong>Expand Your Lexicon:</strong> Challenge yourself with more varied vocabulary. Learn 5 new words daily and try to use synonyms instead of repeating the same terms.`);
+                suggestions.push(`<strong>Expand Your Lexicon:</strong> Challenge yourself with more varied vocabulary. Learn 5 new words daily and try to use synonyms instead of repeating the same terms.`);
             }
             
             if (uniqueRatio < 0.6) {
-                suggestions.push(`🔄 <strong>Word Variety:</strong> You repeated words frequently (${Math.round(uniqueRatio * 100)}% unique). Practice using synonyms: instead of "très" try "vraiment, extrêmement, particulièrement". Create a personal synonym dictionary.`);
+                suggestions.push(`<strong>Word Variety:</strong> You repeated words frequently (${Math.round(uniqueRatio * 100)}% unique). Practice using synonyms: instead of "très" try "vraiment, extrêmement, particulièrement". Create a personal synonym dictionary.`);
             } else if (uniqueRatio > 0.8) {
-                suggestions.push(`🌟 <strong>Lexical Richness:</strong> Outstanding vocabulary diversity (${Math.round(uniqueRatio * 100)}% unique words)! This shows excellent command of French lexicon.`);
+                suggestions.push(`<strong>Lexical Richness:</strong> Outstanding vocabulary diversity (${Math.round(uniqueRatio * 100)}% unique words)! This shows excellent command of French lexicon.`);
             }
             
             // ✍️ WRITING STYLE & FLOW
             if (metrics.averageSentenceLength < 8 && !['A1', 'A2'].includes(level)) {
-                suggestions.push(`✍️ <strong>Sentence Development:</strong> Your average sentence length is ${Math.round(metrics.averageSentenceLength)} words. For ${level} level, aim for 12-15 words per sentence by adding descriptive details, subordinate clauses, and connecting ideas.`);
+                suggestions.push(`<strong>Sentence Development:</strong> Your average sentence length is ${Math.round(metrics.averageSentenceLength)} words. For ${level} level, aim for 12-15 words per sentence by adding descriptive details, subordinate clauses, and connecting ideas.`);
             } else if (metrics.averageSentenceLength > 20) {
-                suggestions.push(`✂️ <strong>Sentence Clarity:</strong> Some sentences are quite long (avg: ${Math.round(metrics.averageSentenceLength)} words). Break complex ideas into clearer, more digestible sentences for better readability.`);
+                suggestions.push(`<strong>Sentence Clarity:</strong> Some sentences are quite long (avg: ${Math.round(metrics.averageSentenceLength)} words). Break complex ideas into clearer, more digestible sentences for better readability.`);
             }
             
             if (metrics.complexSentences < 0.2 && ['B1', 'B2', 'C1', 'C2'].includes(level)) {
-                suggestions.push(`🔗 <strong>Complex Structures:</strong> Only ${Math.round(metrics.complexSentences * 100)}% of your sentences use complex structures. Practice with subordinating conjunctions (bien que, puisque, tandis que) and relative pronouns (dont, où, lequel).`);
+                suggestions.push(`<strong>Complex Structures:</strong> Only ${Math.round(metrics.complexSentences * 100)}% of your sentences use complex structures. Practice with subordinating conjunctions (bien que, puisque, tandis que) and relative pronouns (dont, où, lequel).`);
             } else if (metrics.complexSentences > 0.6) {
-                suggestions.push(`🎭 <strong>Structural Sophistication:</strong> Excellent use of complex sentences (${Math.round(metrics.complexSentences * 100)}%)! This demonstrates advanced French syntax mastery.`);
+                suggestions.push(`<strong>Structural Sophistication:</strong> Excellent use of complex sentences (${Math.round(metrics.complexSentences * 100)}%)! This demonstrates advanced French syntax mastery.`);
             }
             
             if (metrics.sentenceLengthVariation < 0.3) {
-                suggestions.push(`🎵 <strong>Rhythm & Flow:</strong> Your sentences have similar lengths. Create better rhythm by mixing short impact sentences with longer, detailed ones. Vary between 5-word and 15-word sentences.`);
+                suggestions.push(`<strong>Rhythm & Flow:</strong> Your sentences have similar lengths. Create better rhythm by mixing short impact sentences with longer, detailed ones. Vary between 5-word and 15-word sentences.`);
             }
             
             // 🎯 LEVEL-SPECIFIC DETAILED GUIDANCE
@@ -4226,17 +5313,17 @@ Generated by Hemiya AI - Your French Writing Coach
             
             // 📖 CONTENT & COHERENCE
             if (metrics.textLength < 100) {
-                suggestions.push(`📏 <strong>Content Development:</strong> Your text is quite concise (${metrics.textLength} words). Develop your ideas further with examples, explanations, and personal experiences to demonstrate deeper linguistic competence.`);
+                suggestions.push(`<strong>Content Development:</strong> Your text is quite concise (${metrics.textLength} words). Develop your ideas further with examples, explanations, and personal experiences to demonstrate deeper linguistic competence.`);
             } else if (metrics.textLength > 300) {
-                suggestions.push(`📖 <strong>Comprehensive Response:</strong> Excellent length (${metrics.textLength} words)! You've demonstrated ability to sustain extended discourse in French.`);
+                suggestions.push(`<strong>Comprehensive Response:</strong> Excellent length (${metrics.textLength} words)! You've demonstrated ability to sustain extended discourse in French.`);
             }
             
             // 💡 PRACTICAL STUDY TIPS
-            suggestions.push(`💡 <strong>Next Steps:</strong> ${getPersonalizedStudyTips(level, grammarAnalysis, vocabAnalysis, metrics)}`);
+            suggestions.push(`<strong>Next Steps:</strong> ${getPersonalizedStudyTips(level, grammarAnalysis, vocabAnalysis, metrics)}`);
             
             // 🌟 ENCOURAGING MESSAGE
             const encouragement = getEncouragingMessage(level, grammarAnalysis.errorCount, metrics.textLength);
-            suggestions.push(`🌟 <strong>Motivation:</strong> ${encouragement}`);
+            suggestions.push(`<strong>Motivation:</strong> ${encouragement}`);
             
             // Add all suggestions to the list with proper HTML formatting
             suggestions.forEach(suggestion => {
@@ -4265,28 +5352,28 @@ Generated by Hemiya AI - Your French Writing Coach
         function getDetailedCEFRAdvice(level, metrics, vocabAnalysis) {
             const advice = {
                 'A1': [
-                    '🔤 <strong>A1 Foundation:</strong> Focus on mastering basic verb conjugations (present tense), essential vocabulary (family, numbers, time), and simple sentence structures with "Je suis, j\'ai, il y a".',
-                    '📝 <strong>A1 Practice:</strong> Write simple descriptions, practice basic conversations, and learn high-frequency words. Aim for 50-100 words per text.'
+                    '<strong>A1 Foundation:</strong> Focus on mastering basic verb conjugations (present tense), essential vocabulary (family, numbers, time), and simple sentence structures with "Je suis, j\'ai, il y a".',
+                    '<strong>A1 Practice:</strong> Write simple descriptions, practice basic conversations, and learn high-frequency words. Aim for 50-100 words per text.'
                 ],
                 'A2': [
-                    '⚡ <strong>A2 Development:</strong> Expand to past tenses (passé composé, imparfait), future simple, and time expressions (hier, demain, pendant). Practice connecting ideas with "parce que, mais, donc".',
-                    '🗣️ <strong>A2 Expression:</strong> Share opinions with "Je pense que", describe experiences, and use comparative forms (plus que, moins que).'
+                    '<strong>A2 Development:</strong> Expand to past tenses (passé composé, imparfait), future simple, and time expressions (hier, demain, pendant). Practice connecting ideas with "parce que, mais, donc".',
+                    '<strong>A2 Expression:</strong> Share opinions with "Je pense que", describe experiences, and use comparative forms (plus que, moins que).'
                 ],
                 'B1': [
-                    '🎯 <strong>B1 Advancement:</strong> Master subjunctive in common expressions, conditional tense, and complex time relationships. Practice argumentation with "d\'une part, d\'autre part".',
-                    '💭 <strong>B1 Critical Thinking:</strong> Express hypotheses, give detailed explanations, and discuss abstract topics. Aim for 150-250 words with varied sentence structures.'
+                    '<strong>B1 Advancement:</strong> Master subjunctive in common expressions, conditional tense, and complex time relationships. Practice argumentation with "d\'une part, d\'autre part".',
+                    '<strong>B1 Critical Thinking:</strong> Express hypotheses, give detailed explanations, and discuss abstract topics. Aim for 150-250 words with varied sentence structures.'
                 ],
                 'B2': [
-                    '🔄 <strong>B2 Sophistication:</strong> Use advanced connectors (néanmoins, en revanche, par ailleurs), passive voice, and nuanced expressions. Practice formal vs informal registers.',
-                    '📊 <strong>B2 Argumentation:</strong> Develop complex arguments, use statistics and examples, synthesize information from multiple sources.'
+                    '<strong>B2 Sophistication:</strong> Use advanced connectors (néanmoins, en revanche, par ailleurs), passive voice, and nuanced expressions. Practice formal vs informal registers.',
+                    '<strong>B2 Argumentation:</strong> Develop complex arguments, use statistics and examples, synthesize information from multiple sources.'
                 ],
                 'C1': [
-                    '🎓 <strong>C1 Mastery:</strong> Employ subtle linguistic nuances, cultural references, and sophisticated grammatical structures. Use literary tenses (passé simple) when appropriate.',
-                    '🌍 <strong>C1 Discourse:</strong> Engage with complex social issues, demonstrate cultural awareness, and adapt style to different contexts and audiences.'
+                    '<strong>C1 Mastery:</strong> Employ subtle linguistic nuances, cultural references, and sophisticated grammatical structures. Use literary tenses (passé simple) when appropriate.',
+                    '<strong>C1 Discourse:</strong> Engage with complex social issues, demonstrate cultural awareness, and adapt style to different contexts and audiences.'
                 ],
                 'C2': [
-                    '👑 <strong>C2 Excellence:</strong> Achieve near-native fluency with idiomatic expressions, wordplay, and implicit meaning. Master all French grammatical subtleties.',
-                    '🎨 <strong>C2 Artistry:</strong> Create engaging, persuasive texts with personal style. Demonstrate creativity, humor, and sophisticated cultural knowledge.'
+                    '<strong>C2 Excellence:</strong> Achieve near-native fluency with idiomatic expressions, wordplay, and implicit meaning. Master all French grammatical subtleties.',
+                    '<strong>C2 Artistry:</strong> Create engaging, persuasive texts with personal style. Demonstrate creativity, humor, and sophisticated cultural knowledge.'
                 ]
             };
             return advice[level] || ['Continue practicing to reach the next level!'];
