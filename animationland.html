@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         html {
-            background: transparent;
+            background: #ffffff;
         }
 
         * {
@@ -20,21 +20,22 @@
         }
 
         body {
-            background: transparent;
-            min-height: 100vh;
+            background: #ffffff;
+            min-height: 0;
         }
 
         .hero-section {
             width: 100%;
-            min-height: 100vh;
+            min-height: 0;
             margin: 0;
-            padding: 20px;
+            padding: 24px;
             display: grid;
             grid-template-columns: 0.8fr 1.2fr;
-            gap: 20px;
+            gap: 24px;
             align-items: center;
             position: relative;
             overflow: hidden;
+            background: #ffffff;
         }
 
         .hero-content {
@@ -51,15 +52,13 @@
             width: 100%;
             max-width: 600px;
             margin: 0 auto;
-            background: rgba(0, 17, 2, 0.5);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
             border-radius: 20px;
             padding: 40px;
             padding-top: 75px;
             position: relative;
-            border: 1px solid rgba(0, 255, 155, 0.2);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid #d8e5f0;
+            box-shadow: 0 12px 34px rgba(8, 40, 79, 0.08);
         }
         
         .hero-bubble::before {
@@ -68,8 +67,8 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, #00FF9B, rgba(0, 255, 155, 0.3));
+            height: 4px;
+            background: linear-gradient(90deg, #1261D8, #7FB2F3);
             border-radius: 20px 20px 0 0;
         }
 
@@ -77,24 +76,25 @@
             position: absolute;
             top: 20px;
             right: 20px;
-            background: #00FF9B;
-            color: white;
+            background: #EEF5FF;
+            color: #1261D8;
             padding: 8px 16px;
+            border: 1px solid #CFE0F3;
             border-radius: 20px;
             font-size: 0.9rem;
-            font-weight: 600;
+            font-weight: 700;
             display: flex;
             align-items: center;
             gap: 6px;
             z-index: 2;
-            letter-spacing: 0.02em;
+            letter-spacing: 0.01em;
             white-space: nowrap;
         }
 
         .recommended-badge::before {
             content: '★';
             font-size: 1.1rem;
-            color: white;
+            color: #1261D8;
         }
 
         .hero-title {
@@ -102,36 +102,36 @@
             line-height: 1.2;
             margin-bottom: 24px;
             margin-top: 10px;
-            font-weight: 600;
-            letter-spacing: -0.02em;
+            font-weight: 700;
+            letter-spacing: -0.03em;
             position: relative;
-            color: #ffffff;
+            color: #08284F;
         }
 
         .hero-title span {
             display: block;
             font-size: 3.8rem;
-            color: #00FF9B;
+            color: #1261D8;
             position: relative;
-            font-weight: 700;
+            font-weight: 800;
             margin-top: 8px;
-            letter-spacing: -0.03em;
-            text-shadow: 0 0 20px rgba(0, 255, 155, 0.3);
+            letter-spacing: -0.04em;
+            text-shadow: none;
         }
 
         .hero-description {
             font-size: 1.1rem;
             line-height: 1.7;
-            color: rgba(255, 255, 255, 0.85);
+            color: #5F7488;
             max-width: 500px;
             position: relative;
             letter-spacing: -0.01em;
-            font-weight: 300;
+            font-weight: 500;
         }
 
         .highlight {
-            color: #00FF9B;
-            font-weight: 500;
+            color: #1261D8;
+            font-weight: 700;
             position: relative;
             display: inline-block;
         }
@@ -163,7 +163,7 @@
             position: absolute;
             font-size: 1.8rem;
             opacity: 0;
-            filter: drop-shadow(0 2px 8px rgba(0, 255, 155, 0.3));
+            filter: drop-shadow(0 2px 8px rgba(18, 97, 216, 0.18));
             will-change: transform;
             animation: emojiJump 4s ease-in-out infinite;
             z-index: 2;
@@ -290,7 +290,7 @@
         }
 
         .hero-images:hover .image-container {
-            filter: drop-shadow(0 20px 40px rgba(0, 255, 155, 0.2));
+            filter: drop-shadow(0 20px 40px rgba(18, 97, 216, 0.12));
             transform: translateY(-4px);
         }
 
@@ -442,10 +442,9 @@
             }
 
             .hero-bubble:hover {
-                transform: translateY(-6px);
-                box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4),
-                            0 0 0 1px rgba(0, 255, 155, 0.3);
-                border-color: rgba(0, 255, 155, 0.4);
+                transform: translateY(-4px);
+                box-shadow: 0 16px 42px rgba(8, 40, 79, 0.11);
+                border-color: #C8DAEC;
             }
 
             .image-container {
@@ -505,5 +504,34 @@
             </div>
         </div>
     </section>
+
+    <script>
+    (function () {
+        function sendHeight() {
+            var height = Math.max(
+                document.documentElement.scrollHeight,
+                document.body.scrollHeight
+            );
+
+            window.parent.postMessage({
+                type: 'sfwh-animationland:resize',
+                height: height
+            }, '*');
+        }
+
+        window.addEventListener('load', function () {
+            sendHeight();
+            setTimeout(sendHeight, 250);
+            setTimeout(sendHeight, 800);
+        });
+
+        window.addEventListener('resize', sendHeight);
+
+        if ('ResizeObserver' in window) {
+            new ResizeObserver(sendHeight).observe(document.body);
+        }
+    })();
+    </script>
+
 </body>
 </html> 
