@@ -1,0 +1,10 @@
+name: IMMP Visual PDF
+on:
+  push:
+    branches: [immp-director-pdf-build-20261011]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo ready
